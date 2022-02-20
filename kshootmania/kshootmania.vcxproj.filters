@@ -136,9 +136,30 @@
     <Filter Include="Resource Files\engine\font\min">
       <UniqueIdentifier>{1b103960-f11a-4515-b4f1-f59333ce00d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\scene">
+      <UniqueIdentifier>{7561fd7d-07c0-45da-baa0-f2771cce4fba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\scene\title">
+      <UniqueIdentifier>{06d51002-dabe-4b44-93eb-624f6e54ae0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scene">
+      <UniqueIdentifier>{dbad57e1-4485-46df-8f1d-e630dda5500c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scene\title">
+      <UniqueIdentifier>{987a87ef-3722-4f47-983d-5905a3fa05b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\title\title_scene.cpp">
+      <Filter>Source Files\scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="screen_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
@@ -773,6 +794,15 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\title\title_scene.hpp">
+      <Filter>Header Files\scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="screen_utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>

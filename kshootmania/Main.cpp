@@ -1,10 +1,15 @@
 ﻿#include <Siv3D.hpp> // OpenSiv3D v0.6.3
-#include "ksh/chart.hpp"
+#include "scene.hpp"
 
 void Main()
 {
-	Scene::SetBackground(ColorF{ 0.0, 0.0, 0.0 });
+	SceneManager<String> sceneManager = SceneManagement::MakeSceneManager();
+
 	while (System::Update())
 	{
+		if (!sceneManager.update())
+		{
+			break;
+		}
 	}
 }
