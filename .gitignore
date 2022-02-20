@@ -400,3 +400,7 @@ FodyWeavers.xsd
 **/App/AS_DEBUG/
 **/App/example/
 **/App/*.exe
+**/App/songs/*
+!**/App/songs/K-Shoot MANIA/
+**/App/songs/K-Shoot MANIA/*
+!**/App/songs/K-Shoot MANIA/.gitkeep
