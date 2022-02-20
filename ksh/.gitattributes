@@ -1,0 +1,2 @@
+* linguist-detectable=true
+*.ksh linguist-detectable=false

@@ -5,16 +5,32 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kshootmania-v1-remake", "kshootmania-v1-remake\kshootmania-v1-remake.vcxproj", "{B4609A06-16A9-42DB-B710-A95587A0A5C1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ksh", "ksh\ksh.vcxproj", "{E8FC8484-971E-48D5-8523-1F38E5F9A45E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Debug|x64.ActiveCfg = Debug|x64
 		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Debug|x64.Build.0 = Debug|x64
+		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Debug|x86.ActiveCfg = Debug|x64
+		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Debug|x86.Build.0 = Debug|x64
 		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Release|x64.ActiveCfg = Release|x64
 		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Release|x64.Build.0 = Release|x64
+		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Release|x86.ActiveCfg = Release|x64
+		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Release|x86.Build.0 = Release|x64
+		{E8FC8484-971E-48D5-8523-1F38E5F9A45E}.Debug|x64.ActiveCfg = Debug|x64
+		{E8FC8484-971E-48D5-8523-1F38E5F9A45E}.Debug|x64.Build.0 = Debug|x64
+		{E8FC8484-971E-48D5-8523-1F38E5F9A45E}.Debug|x86.ActiveCfg = Debug|Win32
+		{E8FC8484-971E-48D5-8523-1F38E5F9A45E}.Debug|x86.Build.0 = Debug|Win32
+		{E8FC8484-971E-48D5-8523-1F38E5F9A45E}.Release|x64.ActiveCfg = Release|x64
+		{E8FC8484-971E-48D5-8523-1F38E5F9A45E}.Release|x64.Build.0 = Release|x64
+		{E8FC8484-971E-48D5-8523-1F38E5F9A45E}.Release|x86.ActiveCfg = Release|Win32
+		{E8FC8484-971E-48D5-8523-1F38E5F9A45E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
