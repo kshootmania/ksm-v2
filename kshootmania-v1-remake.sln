@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kshootmania-v1-remake", "kshootmania-v1-remake\kshootmania-v1-remake.vcxproj", "{B4609A06-16A9-42DB-B710-A95587A0A5C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Debug|x64.ActiveCfg = Debug|x64
+		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Debug|x64.Build.0 = Debug|x64
+		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Release|x64.ActiveCfg = Release|x64
+		{B4609A06-16A9-42DB-B710-A95587A0A5C1}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B8835B7E-3D77-420C-A8AF-031AD934FE65}
+	EndGlobalSection
+EndGlobal
