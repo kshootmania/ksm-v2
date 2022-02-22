@@ -119,6 +119,8 @@
     <ClCompile Include="scene\title\title_scene.cpp" />
     <ClCompile Include="screen_utils.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="ui\menu.cpp" />
+    <ClCompile Include="ui\simple_menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -318,6 +320,8 @@
     <ClInclude Include="scene\title\title_scene.hpp" />
     <ClInclude Include="screen_utils.hpp" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="ui\menu.hpp" />
+    <ClInclude Include="ui\simple_menu.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">

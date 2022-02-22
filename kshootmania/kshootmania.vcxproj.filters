@@ -148,6 +148,12 @@
     <Filter Include="Source Files\scene\title">
       <UniqueIdentifier>{987a87ef-3722-4f47-983d-5905a3fa05b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ui">
+      <UniqueIdentifier>{c63c36d9-9448-45ea-8e1d-40978dc6d13d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{66946cd1-89fc-4d95-a495-9f144e2559c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -164,6 +170,12 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\menu.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\simple_menu.cpp">
+      <Filter>Source Files\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -805,6 +817,12 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\menu.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\simple_menu.hpp">
+      <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
