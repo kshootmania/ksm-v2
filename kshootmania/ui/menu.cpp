@@ -54,7 +54,15 @@ void Menu::moveCursorTo(int cursorIdx)
 
 void Menu::runEvent(MenuEventTrigger trigger)
 {
-	m_menuItems[m_cursorIdx].runEvent(this, m_cursorIdx, trigger);
+	const bool handlerExists = m_menuItems[m_cursorIdx].runEvent(this, m_cursorIdx, trigger);
+	if (!handlerExists && m_defaultEventHandler)
+	{
+		m_defaultEventHandler->run({
+			.pMenu = this,
+			.menuItemIdx = m_cursorIdx,
+			.pMenuItem = &m_menuItems[m_cursorIdx],
+			.trigger = trigger });
+	}
 }
 
 int Menu::cursorIdx() const
@@ -62,7 +70,7 @@ int Menu::cursorIdx() const
 	return m_cursorIdx;
 }
 
-void MenuItem::runEvent(Menu* pMenu, int menuItemIdx, MenuEventTrigger trigger)
+bool MenuItem::runEvent(Menu* pMenu, int menuItemIdx, MenuEventTrigger trigger)
 {
 	int triggerInt = static_cast<int>(trigger);
 	if (triggerInt < 0 || m_eventHandlers.size() <= triggerInt)
@@ -76,8 +84,11 @@ void MenuItem::runEvent(Menu* pMenu, int menuItemIdx, MenuEventTrigger trigger)
 			.pMenu = pMenu,
 			.menuItemIdx = menuItemIdx,
 			.pMenuItem = this,
-			.trigger = trigger});
+			.trigger = trigger });
+		return true;
 	}
+
+	return false;
 }
 
 MoveMenuCursorTo::MoveMenuCursorTo(int destIdx)

@@ -17,23 +17,9 @@ namespace
 
 		virtual void run(const MenuEvent& event) override
 		{
-			if (!m_pHandler)
+			if (m_pHandler)
 			{
-				return;
-			}
-
-			switch (event.trigger)
-			{
-			case MenuEventTrigger::Enter:
-				m_pHandler->enterKeyPressed(event);
-				break;
-
-			case MenuEventTrigger::Esc:
-				m_pHandler->escKeyPressed(event);
-				break;
-
-			default:
-				break;
+				m_pHandler->keyPressed(event);
 			}
 		}
 	};
@@ -41,6 +27,12 @@ namespace
 	Menu MakeSimpleMenuCommon(ISimpleMenuEventHandler* pHandler, int itemSize, bool cyclic, MenuEventTrigger triggerPrev, MenuEventTrigger triggerNext)
 	{
 		Menu menu;
+
+		if (pHandler)
+		{
+			menu.emplaceDefaultEventHandler<SimpleMenuEventHandlerPipe>(pHandler);
+		}
+
 		for (int i = 0; i < itemSize; ++i)
 		{
 			MenuItem& menuItem = menu.emplaceMenuItem();
@@ -68,13 +60,8 @@ namespace
 			{
 				menuItem.emplaceEventHandler<MoveMenuCursorTo>(triggerNext, i + 1);
 			}
-
-			if (pHandler)
-			{
-				menuItem.emplaceEventHandler<SimpleMenuEventHandlerPipe>(MenuEventTrigger::Enter, pHandler);
-				menuItem.emplaceEventHandler<SimpleMenuEventHandlerPipe>(MenuEventTrigger::Esc, pHandler);
-			}
 		}
+
 		return menu; // <- implicitly moved
 	}
 }

@@ -24,7 +24,7 @@ namespace
 
 	double EaseValue(double currentValue, double targetValue, double relaxationTime)
 	{
-		const float blendRate = Max(relaxationTime - Scene::DeltaTime(), 0.0) / relaxationTime;
+		const double blendRate = Max(relaxationTime - Scene::DeltaTime(), 0.0) / relaxationTime;
 		return Math::Lerp(currentValue, targetValue, blendRate);
 	}
 }
@@ -43,7 +43,6 @@ void TitleMenu::update()
 	if (m_exitStopwatch.isStarted() && m_exitStopwatch.sF() > kExitFadeOutDurationSec)
 	{
 		System::Exit();
-		Print << U"exited";
 		return;
 	}
 
@@ -89,6 +88,23 @@ void TitleMenu::draw() const
 	{
 		const double alpha = m_exitStopwatch.sF() / kExitFadeOutDurationSec;
 		Scene::Rect().draw(ColorF{ 0.0, 0.0, 0.0, alpha });
+	}
+}
+
+void TitleMenu::keyPressed(const MenuEvent& event)
+{
+	switch (event.trigger)
+	{
+	case MenuEventTrigger::Enter:
+		enterKeyPressed(event);
+		break;
+
+	case MenuEventTrigger::Esc:
+		escKeyPressed(event);
+		break;
+
+	default:
+		break;
 	}
 }
 

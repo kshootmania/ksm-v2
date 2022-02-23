@@ -16,17 +16,22 @@ enum class MenuEventTrigger : int
 constexpr int kMenuEventTriggerMax = static_cast<int>(MenuEventTrigger::Max);
 
 class MenuItem;
+class IMenuEventHandler;
 
 class Menu
 {
 private:
 	Array<MenuItem> m_menuItems;
 	int m_cursorIdx = 0;
+	std::unique_ptr<IMenuEventHandler> m_defaultEventHandler;
 	
 public:
 	Menu() = default;
 
 	MenuItem& emplaceMenuItem();
+
+	template <class MenuEventHandler, class... Args>
+	void emplaceDefaultEventHandler(Args&&... args);
 
 	void update();
 
@@ -67,7 +72,7 @@ public:
 	template <class MenuEventHandler, class... Args>
 	MenuItem& emplaceEventHandler(MenuEventTrigger trigger, Args&&... args);
 
-	virtual void runEvent(Menu* pMenu, int menuItemIdx, MenuEventTrigger trigger);
+	virtual bool runEvent(Menu* pMenu, int menuItemIdx, MenuEventTrigger trigger);
 };
 
 class MoveMenuCursorTo : public IMenuEventHandler
@@ -86,8 +91,15 @@ public:
 
 // --- Member function template definitions from here ---
 
-template<class MenuEventHandler, class ...Args>
-inline MenuItem& MenuItem::emplaceEventHandler(MenuEventTrigger trigger, Args && ...args)
+template<class MenuEventHandler, class... Args>
+inline void Menu::emplaceDefaultEventHandler(Args&&... args)
+{
+	m_defaultEventHandler = std::make_unique<MenuEventHandler>(std::forward<Args>(args)...);
+}
+
+
+template<class MenuEventHandler, class... Args>
+inline MenuItem& MenuItem::emplaceEventHandler(MenuEventTrigger trigger, Args&&... args)
 {
 	int triggerInt = static_cast<int>(trigger);
 	if (triggerInt < 0 || m_eventHandlers.size() <= triggerInt)
