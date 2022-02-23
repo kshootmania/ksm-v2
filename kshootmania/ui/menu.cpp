@@ -1,5 +1,10 @@
 ﻿#include "menu.hpp"
 
+Menu::Menu(IMenuEventHandler* pDefaultEventHandler)
+	: m_pDefaultEventHandler(pDefaultEventHandler)
+{
+}
+
 MenuItem& Menu::emplaceMenuItem()
 {
 	return m_menuItems.emplace_back();
@@ -9,37 +14,37 @@ void Menu::update()
 {
 	if (KeyEnter.down())
 	{
-		runEvent(MenuEventTrigger::Enter);
+		publishEvent(MenuEventTrigger::Enter);
 	}
 
 	if (KeyBackspace.down())
 	{
-		runEvent(MenuEventTrigger::Backspace);
+		publishEvent(MenuEventTrigger::Backspace);
 	}
 
 	if (KeyUp.down())
 	{
-		runEvent(MenuEventTrigger::Up);
+		publishEvent(MenuEventTrigger::Up);
 	}
 
 	if (KeyDown.down())
 	{
-		runEvent(MenuEventTrigger::Down);
+		publishEvent(MenuEventTrigger::Down);
 	}
 
 	if (KeyLeft.down())
 	{
-		runEvent(MenuEventTrigger::Left);
+		publishEvent(MenuEventTrigger::Left);
 	}
 
 	if (KeyRight.down())
 	{
-		runEvent(MenuEventTrigger::Right);
+		publishEvent(MenuEventTrigger::Right);
 	}
 
 	if (KeyEscape.down())
 	{
-		runEvent(MenuEventTrigger::Esc);
+		publishEvent(MenuEventTrigger::Esc);
 	}
 }
 
@@ -52,12 +57,12 @@ void Menu::moveCursorTo(int32 cursorIdx)
 	m_cursorIdx = cursorIdx;
 }
 
-void Menu::runEvent(MenuEventTrigger trigger)
+void Menu::publishEvent(MenuEventTrigger trigger)
 {
-	const bool handlerExists = m_menuItems[m_cursorIdx].runEvent(this, m_cursorIdx, trigger);
-	if (!handlerExists && m_defaultEventHandler)
+	const bool eventProcessed = m_menuItems[m_cursorIdx].publishEvent(this, m_cursorIdx, trigger);
+	if (!eventProcessed && m_pDefaultEventHandler)
 	{
-		m_defaultEventHandler->run({
+		m_pDefaultEventHandler->processMenuEvent({
 			.pMenu = this,
 			.menuItemIdx = m_cursorIdx,
 			.pMenuItem = &m_menuItems[m_cursorIdx],
@@ -70,17 +75,17 @@ int32 Menu::cursorIdx() const
 	return m_cursorIdx;
 }
 
-bool MenuItem::runEvent(Menu* pMenu, int32 menuItemIdx, MenuEventTrigger trigger)
+bool MenuItem::publishEvent(Menu* pMenu, int32 menuItemIdx, MenuEventTrigger trigger)
 {
 	int32 triggerInt = static_cast<int32>(trigger);
 	if (triggerInt < 0 || m_eventHandlers.size() <= triggerInt)
 	{
-		throw Error(U"MenuItem::runEvent(): triggerInt(={}) is out of range! (m_eventHandlers.size()={})"_fmt(triggerInt, m_eventHandlers.size()));
+		throw Error(U"MenuItem::publishEvent(): triggerInt(={}) is out of range! (m_eventHandlers.size()={})"_fmt(triggerInt, m_eventHandlers.size()));
 	}
 
 	if (m_eventHandlers[triggerInt])
 	{
-		m_eventHandlers[triggerInt]->run({
+		m_eventHandlers[triggerInt]->processMenuEvent({
 			.pMenu = pMenu,
 			.menuItemIdx = menuItemIdx,
 			.pMenuItem = this,
@@ -96,7 +101,7 @@ MoveMenuCursorTo::MoveMenuCursorTo(int32 destIdx)
 {
 }
 
-void MoveMenuCursorTo::run(const MenuEvent& event)
+void MoveMenuCursorTo::processMenuEvent(const MenuEvent& event)
 {
 	event.pMenu->moveCursorTo(m_destIdx);
 }

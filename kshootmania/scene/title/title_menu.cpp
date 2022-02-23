@@ -30,7 +30,7 @@ namespace
 }
 
 TitleMenu::TitleMenu()
-	: m_menu(MakeVerticalSimpleMenu(this, kItemMax))
+	: m_menu(MenuHelper::MakeVerticalMenu(this, kItemMax))
 	, m_menuItemTextureAtlas(TitleTexture::kMenuItem, kItemMax, 2/* <- Additive Texture & Subtractive Texture */)
 	, m_menuCursorTexture(TextureAsset(TitleTexture::kMenuCursor))
 	, m_stopwatch(StartImmediately::Yes)
@@ -91,16 +91,16 @@ void TitleMenu::draw() const
 	}
 }
 
-void TitleMenu::menuKeyPressed(const MenuEvent& event)
+void TitleMenu::processMenuEvent(const MenuEvent& event)
 {
 	switch (event.trigger)
 	{
 	case MenuEventTrigger::Enter:
-		menuEnterKeyPressed(event);
+		enterKeyPressed(event);
 		break;
 
 	case MenuEventTrigger::Esc:
-		menuEscKeyPressed(event);
+		escKeyPressed(event);
 		break;
 
 	default:
@@ -108,7 +108,7 @@ void TitleMenu::menuKeyPressed(const MenuEvent& event)
 	}
 }
 
-void TitleMenu::menuEnterKeyPressed(const MenuEvent& event)
+void TitleMenu::enterKeyPressed(const MenuEvent& event)
 {
 	switch (event.menuItemIdx)
 	{
@@ -127,7 +127,7 @@ void TitleMenu::menuEnterKeyPressed(const MenuEvent& event)
 	}
 }
 
-void TitleMenu::menuEscKeyPressed(const MenuEvent&)
+void TitleMenu::escKeyPressed(const MenuEvent&)
 {
 	m_menu.moveCursorTo(kExit);
 }

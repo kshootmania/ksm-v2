@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "ui/simple_menu.hpp"
+#include "ui/menu_helper.hpp"
 #include "graphics/texture_atlas.hpp"
 
-class TitleMenu : public ISimpleMenuEventHandler
+class TitleMenu : public IMenuEventHandler
 {
 private:
 	enum Item : int32
@@ -27,9 +27,9 @@ private:
 
 	double m_easedCursorPos = 0.0;
 
-	void menuEnterKeyPressed(const MenuEvent& event);
+	void enterKeyPressed(const MenuEvent& event);
 
-	void menuEscKeyPressed(const MenuEvent& event);
+	void escKeyPressed(const MenuEvent& event);
 
 public:
 	TitleMenu();
@@ -38,5 +38,5 @@ public:
 
 	void draw() const;
 
-	virtual void menuKeyPressed(const MenuEvent& event) override;
+	virtual void processMenuEvent(const MenuEvent& event) override;
 };

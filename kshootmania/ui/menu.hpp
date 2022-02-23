@@ -23,21 +23,18 @@ class Menu
 private:
 	Array<MenuItem> m_menuItems;
 	int32 m_cursorIdx = 0;
-	std::unique_ptr<IMenuEventHandler> m_defaultEventHandler;
+	IMenuEventHandler* const m_pDefaultEventHandler;
 	
 public:
-	Menu() = default;
+	explicit Menu(IMenuEventHandler* pDefaultEventHandler = nullptr);
 
 	MenuItem& emplaceMenuItem();
-
-	template <class MenuEventHandler, class... Args>
-	void emplaceDefaultEventHandler(Args&&... args);
 
 	void update();
 
 	void moveCursorTo(int32 cursorIdx);
 
-	void runEvent(MenuEventTrigger trigger);
+	void publishEvent(MenuEventTrigger trigger);
 
 	int32 cursorIdx() const;
 };
@@ -58,7 +55,7 @@ class IMenuEventHandler
 public:
 	virtual ~IMenuEventHandler() = default;
 
-	virtual void run(const MenuEvent& event) = 0;
+	virtual void processMenuEvent(const MenuEvent& event) = 0;
 };
 
 class MenuItem
@@ -72,7 +69,7 @@ public:
 	template <class MenuEventHandler, class... Args>
 	MenuItem& emplaceEventHandler(MenuEventTrigger trigger, Args&&... args);
 
-	virtual bool runEvent(Menu* pMenu, int32 menuItemIdx, MenuEventTrigger trigger);
+	virtual bool publishEvent(Menu* pMenu, int32 menuItemIdx, MenuEventTrigger trigger);
 };
 
 class MoveMenuCursorTo : public IMenuEventHandler
@@ -85,18 +82,11 @@ public:
 
 	virtual ~MoveMenuCursorTo() = default;
 
-	virtual void run(const MenuEvent& event) override;
+	virtual void processMenuEvent(const MenuEvent& event) override;
 };
 
 
 // --- Member function template definitions from here ---
-
-template<class MenuEventHandler, class... Args>
-inline void Menu::emplaceDefaultEventHandler(Args&&... args)
-{
-	m_defaultEventHandler = std::make_unique<MenuEventHandler>(std::forward<Args>(args)...);
-}
-
 
 template<class MenuEventHandler, class... Args>
 inline MenuItem& MenuItem::emplaceEventHandler(MenuEventTrigger trigger, Args&&... args)

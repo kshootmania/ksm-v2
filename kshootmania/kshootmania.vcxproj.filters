@@ -174,7 +174,7 @@
     <ClCompile Include="ui\menu.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
-    <ClCompile Include="ui\simple_menu.cpp">
+    <ClCompile Include="ui\menu_helper.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
     <ClCompile Include="scene\title\title_menu.cpp">
@@ -835,7 +835,7 @@
     <ClInclude Include="ui\menu.hpp">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
-    <ClInclude Include="ui\simple_menu.hpp">
+    <ClInclude Include="ui\menu_helper.hpp">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
     <ClInclude Include="scene\title\title_menu.hpp">
