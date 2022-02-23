@@ -6,7 +6,7 @@ class ISimpleMenuEventHandler
 public:
 	virtual ~ISimpleMenuEventHandler() = default;
 
-	virtual void keyPressed(const MenuEvent& event) = 0;
+	virtual void menuKeyPressed(const MenuEvent& event) = 0;
 };
 
 Menu MakeVerticalSimpleMenu(ISimpleMenuEventHandler* pHandler, int itemSize, bool cyclic = false);

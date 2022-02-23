@@ -27,9 +27,9 @@ private:
 
 	double m_easedCursorPos = 0.0;
 
-	void enterKeyPressed(const MenuEvent& event);
+	void menuEnterKeyPressed(const MenuEvent& event);
 
-	void escKeyPressed(const MenuEvent& event);
+	void menuEscKeyPressed(const MenuEvent& event);
 
 public:
 	TitleMenu();
@@ -38,5 +38,5 @@ public:
 
 	void draw() const;
 
-	virtual void keyPressed(const MenuEvent& event) override;
+	virtual void menuKeyPressed(const MenuEvent& event) override;
 };

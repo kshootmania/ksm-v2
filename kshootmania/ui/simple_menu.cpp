@@ -19,7 +19,7 @@ namespace
 		{
 			if (m_pHandler)
 			{
-				m_pHandler->keyPressed(event);
+				m_pHandler->menuKeyPressed(event);
 			}
 		}
 	};

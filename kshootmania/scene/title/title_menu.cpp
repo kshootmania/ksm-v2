@@ -91,16 +91,16 @@ void TitleMenu::draw() const
 	}
 }
 
-void TitleMenu::keyPressed(const MenuEvent& event)
+void TitleMenu::menuKeyPressed(const MenuEvent& event)
 {
 	switch (event.trigger)
 	{
 	case MenuEventTrigger::Enter:
-		enterKeyPressed(event);
+		menuEnterKeyPressed(event);
 		break;
 
 	case MenuEventTrigger::Esc:
-		escKeyPressed(event);
+		menuEscKeyPressed(event);
 		break;
 
 	default:
@@ -108,7 +108,7 @@ void TitleMenu::keyPressed(const MenuEvent& event)
 	}
 }
 
-void TitleMenu::enterKeyPressed(const MenuEvent& event)
+void TitleMenu::menuEnterKeyPressed(const MenuEvent& event)
 {
 	switch (event.menuItemIdx)
 	{
@@ -127,7 +127,7 @@ void TitleMenu::enterKeyPressed(const MenuEvent& event)
 	}
 }
 
-void TitleMenu::escKeyPressed(const MenuEvent&)
+void TitleMenu::menuEscKeyPressed(const MenuEvent&)
 {
 	m_menu.moveCursorTo(kExit);
 }
