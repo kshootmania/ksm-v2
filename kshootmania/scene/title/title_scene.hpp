@@ -1,22 +1,12 @@
 ﻿#pragma once
 #include "scene.hpp"
-#include "ui/simple_menu.hpp"
+#include "title_menu.hpp"
 
-class TitleScene : public SceneManager<String>::Scene, public ISimpleMenuEventHandler
+class TitleScene : public SceneManager<String>::Scene
 {
 private:
 	Texture m_bgTexture;
-	Menu m_menu;
-
-	enum MenuItemType : int
-	{
-		kStart = 0,
-		kOption,
-		kInputGate,
-		kExit,
-
-		kMenuItemTypeMax,
-	};
+	TitleMenu m_menu;
 
 public:
 	static const String kSceneName;
@@ -26,8 +16,4 @@ public:
 	virtual void update() override;
 
 	virtual void draw() const override;
-
-	virtual void enterKeyPressed(const MenuEvent& event) override;
-
-	virtual void escKeyPressed(const MenuEvent& event) override;
 };

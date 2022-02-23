@@ -116,6 +116,7 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="scene.cpp" />
+    <ClCompile Include="scene\title\title_menu.cpp" />
     <ClCompile Include="scene\title\title_scene.cpp" />
     <ClCompile Include="screen_utils.cpp" />
     <ClCompile Include="stdafx.cpp" />
@@ -317,6 +318,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene.hpp" />
+    <ClInclude Include="scene\title\title_menu.hpp" />
     <ClInclude Include="scene\title\title_scene.hpp" />
     <ClInclude Include="screen_utils.hpp" />
     <ClInclude Include="stdafx.h" />

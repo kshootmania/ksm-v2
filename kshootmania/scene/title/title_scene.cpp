@@ -6,7 +6,7 @@ const String TitleScene::kSceneName = U"Title";
 TitleScene::TitleScene(const InitData& initData)
 	: SceneManager<String>::Scene(initData)
 	, m_bgTexture(U"imgs/standby.jpg")
-	, m_menu(MakeVerticalSimpleMenu(this, kMenuItemTypeMax, false))
+	, m_menu(this)
 {
 }
 
@@ -18,14 +18,4 @@ void TitleScene::update()
 void TitleScene::draw() const
 {
 	ScreenUtils::FitToHeight(m_bgTexture).drawAt(Scene::Center());
-}
-
-void TitleScene::enterKeyPressed(const MenuEvent& event)
-{
-	Print << event.menuItemIdx;
-}
-
-void TitleScene::escKeyPressed(const MenuEvent&)
-{
-	m_menu.moveCursorTo(kExit);
 }

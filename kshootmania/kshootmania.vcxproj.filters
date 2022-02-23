@@ -177,6 +177,9 @@
     <ClCompile Include="ui\simple_menu.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
+    <ClCompile Include="scene\title\title_menu.cpp">
+      <Filter>Source Files\scene\title</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -560,7 +563,6 @@
     <None Include="App\example\zip\zip_test.zip">
       <Filter>Resource Files\example\zip</Filter>
     </None>
-    <None Include=".editorconfig" />
     <None Include="App\example\obj\blacksmith.mtl">
       <Filter>Resource Files\example\obj</Filter>
     </None>
@@ -765,6 +767,9 @@
     <None Include="App\engine\font\min\siv3d-min.woff">
       <Filter>Resource Files\engine\font\min</Filter>
     </None>
+    <None Include=".editorconfig">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -823,6 +828,9 @@
     </ClInclude>
     <ClInclude Include="ui\simple_menu.hpp">
       <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\title\title_menu.hpp">
+      <Filter>Header Files\scene\title</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
