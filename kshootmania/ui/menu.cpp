@@ -7,6 +7,16 @@ MenuItem& Menu::emplaceMenuItem()
 
 void Menu::update()
 {
+	if (KeyEnter.down())
+	{
+		runEvent(MenuEventTrigger::Enter);
+	}
+
+	if (KeyBackspace.down())
+	{
+		runEvent(MenuEventTrigger::Backspace);
+	}
+
 	if (KeyUp.down())
 	{
 		runEvent(MenuEventTrigger::Up);
@@ -25,11 +35,6 @@ void Menu::update()
 	if (KeyRight.down())
 	{
 		runEvent(MenuEventTrigger::Right);
-	}
-
-	if (KeyEnter.down())
-	{
-		runEvent(MenuEventTrigger::Enter);
 	}
 
 	if (KeyEscape.down())

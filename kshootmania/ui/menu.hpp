@@ -4,12 +4,10 @@ enum class MenuEventTrigger : int
 {
 	Enter = 0,
 	Esc,
-
 	Up,
 	Down,
 	Left,
 	Right,
-
 	Backspace,
 
 	Max,
