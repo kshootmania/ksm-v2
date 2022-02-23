@@ -13,8 +13,8 @@ namespace
 
 	double MenuCursorAlphaValue(double sec)
 	{
-		constexpr double baseValue = 166.0 / 256;
-		constexpr double maxValue = 1.0;
+		constexpr double baseValue = 121.0 / 256;
+		constexpr double maxValue = 211.0 / 256;
 		constexpr double periodSec = Math::TwoPi * 0.15;
 		constexpr double secOffset = 1.0 / 0.15;
 		return baseValue + (maxValue - baseValue) * Periodic::Sine0_1(periodSec, sec + secOffset);
