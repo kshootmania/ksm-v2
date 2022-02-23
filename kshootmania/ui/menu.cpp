@@ -52,6 +52,11 @@ void Menu::runEvent(MenuEventTrigger trigger)
 	m_menuItems[m_cursorIdx].runEvent(this, m_cursorIdx, trigger);
 }
 
+int Menu::cursorIdx() const
+{
+	return m_cursorIdx;
+}
+
 void MenuItem::runEvent(Menu* pMenu, int menuItemIdx, MenuEventTrigger trigger)
 {
 	int triggerInt = static_cast<int>(trigger);

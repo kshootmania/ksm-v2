@@ -2,14 +2,14 @@
 #include "scene.hpp"
 #include "title_menu.hpp"
 
-class TitleScene : public SceneManager<String>::Scene
+class TitleScene : public SceneManager<StringView>::Scene
 {
 private:
 	Texture m_bgTexture;
 	TitleMenu m_menu;
 
 public:
-	static const String kSceneName;
+	static constexpr StringView kSceneName = U"Title";
 
 	explicit TitleScene(const InitData& initData);
 

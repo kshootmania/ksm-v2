@@ -75,8 +75,7 @@ namespace
 				menuItem.emplaceEventHandler<SimpleMenuEventHandlerPipe>(MenuEventTrigger::Esc, pHandler);
 			}
 		}
-
-		return menu;
+		return menu; // <- implicitly moved
 	}
 }
 
@@ -89,4 +88,3 @@ Menu MakeHorizontalSimpleMenu(ISimpleMenuEventHandler* pHandler, int itemSize, b
 {
 	return MakeSimpleMenuCommon(pHandler, itemSize, cyclic, MenuEventTrigger::Left, MenuEventTrigger::Right);
 }
-

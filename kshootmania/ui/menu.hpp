@@ -35,6 +35,8 @@ public:
 	void moveCursorTo(int cursorIdx);
 
 	void runEvent(MenuEventTrigger trigger);
+
+	int cursorIdx() const;
 };
 
 struct MenuEvent

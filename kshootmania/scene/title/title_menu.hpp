@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "title_scene.hpp"
 #include "ui/simple_menu.hpp"
+#include "graphics/texture_atlas.hpp"
 
 class TitleMenu : public ISimpleMenuEventHandler
 {
@@ -14,13 +14,23 @@ private:
 
 		kItemMax,
 	};
-	TitleScene* m_pTitleScene;
+
 	Menu m_menu;
 
+	TextureAtlas m_menuItemTextureAtlas;
+
+	Texture m_menuCursorTexture;
+
+	Stopwatch m_stopwatch;
+
+	double m_easedCursorPos = 0.0;
+
 public:
-	explicit TitleMenu(TitleScene* pTitleScene);
+	TitleMenu();
 
 	void update();
+
+	void draw() const;
 
 	virtual void enterKeyPressed(const MenuEvent& event) override;
 

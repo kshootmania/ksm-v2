@@ -154,19 +154,19 @@
     <Filter Include="Source Files\ui">
       <UniqueIdentifier>{66946cd1-89fc-4d95-a495-9f144e2559c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\graphics">
+      <UniqueIdentifier>{11a5a00a-df37-4e4e-8cf5-9f87b5d27d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphics">
+      <UniqueIdentifier>{b215ceba-cfe7-4630-9b24-cab7a842dd1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scene\title\title_scene.cpp">
       <Filter>Source Files\scene\title</Filter>
-    </ClCompile>
-    <ClCompile Include="screen_utils.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
@@ -179,6 +179,18 @@
     </ClCompile>
     <ClCompile Include="scene\title\title_menu.cpp">
       <Filter>Source Files\scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\title\title_assets.cpp">
+      <Filter>Source Files\scene\title</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\texture_atlas.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\screen_utils.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -817,9 +829,6 @@
     <ClInclude Include="scene\title\title_scene.hpp">
       <Filter>Header Files\scene\title</Filter>
     </ClInclude>
-    <ClInclude Include="screen_utils.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -831,6 +840,15 @@
     </ClInclude>
     <ClInclude Include="scene\title\title_menu.hpp">
       <Filter>Header Files\scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\title\title_assets.hpp">
+      <Filter>Header Files\scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\texture_atlas.hpp">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\screen_utils.hpp">
+      <Filter>Header Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

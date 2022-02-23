@@ -7,9 +7,9 @@ namespace
 
 namespace SceneManagement
 {
-	SceneManager<String> MakeSceneManager()
+	SceneManager<StringView> MakeSceneManager()
 	{
-		SceneManager<String> sceneManager;
+		SceneManager<StringView> sceneManager;
 
 		sceneManager.add<TitleScene>(TitleScene::kSceneName);
 

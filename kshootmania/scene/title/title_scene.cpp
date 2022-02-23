@@ -1,12 +1,9 @@
 ﻿#include "title_scene.hpp"
-#include <screen_utils.hpp>
-
-const String TitleScene::kSceneName = U"Title";
+#include "title_assets.hpp"
 
 TitleScene::TitleScene(const InitData& initData)
-	: SceneManager<String>::Scene(initData)
-	, m_bgTexture(U"imgs/standby.jpg")
-	, m_menu(this)
+	: SceneManager<StringView>::Scene(initData)
+	, m_bgTexture(TextureAsset(TitleTexture::kBG))
 {
 }
 
@@ -18,4 +15,5 @@ void TitleScene::update()
 void TitleScene::draw() const
 {
 	ScreenUtils::FitToHeight(m_bgTexture).drawAt(Scene::Center());
+	m_menu.draw();
 }

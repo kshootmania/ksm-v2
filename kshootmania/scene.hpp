@@ -4,10 +4,10 @@
 
 namespace SceneManagement
 {
-	SceneManager<String> MakeSceneManager();
+	SceneManager<StringView> MakeSceneManager();
 
 	template <class SceneType>
-	bool ChangeScene(SceneManager<String>& sceneManager)
+	bool ChangeScene(SceneManager<StringView>& sceneManager)
 	{
 		return sceneManager.changeScene(SceneType::kSceneName);
 	}
