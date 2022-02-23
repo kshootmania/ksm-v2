@@ -5,7 +5,7 @@
 void Main()
 {
 	// Disable application termination by Esc key
-	System::SetTerminationTriggers(UserAction::NoAction);
+	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 
 	// Register asset list
 	// (Note: Assets are not loaded here. They are loaded at the time of use.)

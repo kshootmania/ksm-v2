@@ -23,6 +23,8 @@ private:
 
 	Stopwatch m_stopwatch;
 
+	Stopwatch m_exitStopwatch;
+
 	double m_easedCursorPos = 0.0;
 
 public:

@@ -9,7 +9,9 @@ namespace
 	constexpr int32 kMenuItemOffsetY = 260;
 	constexpr int32 kMenuItemDiffY = 25;
 
-	constexpr double kMenuCursorPosRelaxationTime = 0.03;
+	constexpr double kMenuCursorPosRelaxationTimeSec = 0.03;
+
+	constexpr double kExitFadeOutDurationSec = 0.8;
 
 	double MenuCursorAlphaValue(double sec)
 	{
@@ -32,14 +34,22 @@ TitleMenu::TitleMenu()
 	, m_menuItemTextureAtlas(TitleTexture::kMenuItem, kItemMax, 2/* <- Additive Texture & Subtractive Texture */)
 	, m_menuCursorTexture(TextureAsset(TitleTexture::kMenuCursor))
 	, m_stopwatch(StartImmediately::Yes)
+	, m_exitStopwatch(StartImmediately::No)
 {
 }
 
 void TitleMenu::update()
 {
+	if (m_exitStopwatch.isStarted() && m_exitStopwatch.sF() > kExitFadeOutDurationSec)
+	{
+		System::Exit();
+		Print << U"exited";
+		return;
+	}
+
 	m_menu.update();
 
-	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(m_menu.cursorIdx()), kMenuCursorPosRelaxationTime);
+	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(m_menu.cursorIdx()), kMenuCursorPosRelaxationTimeSec);
 }
 
 void TitleMenu::draw() const
@@ -73,6 +83,13 @@ void TitleMenu::draw() const
 			textureRegion.draw(x - textureRegion.size.x / 2, y);
 		}
 	}
+
+	// Fadeout before exit
+	if (m_exitStopwatch.isStarted())
+	{
+		const double alpha = m_exitStopwatch.sF() / kExitFadeOutDurationSec;
+		Scene::Rect().draw(ColorF{ 0.0, 0.0, 0.0, alpha });
+	}
 }
 
 void TitleMenu::enterKeyPressed(const MenuEvent& event)
@@ -89,6 +106,7 @@ void TitleMenu::enterKeyPressed(const MenuEvent& event)
 		break;
 
 	case kExit:
+		m_exitStopwatch.start();
 		break;
 	}
 }
