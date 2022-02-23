@@ -1,0 +1,411 @@
+﻿m00-000|MS PGothic
+m00-001|MS Gothic
+m00-002|Error
+m00-003|Cannot find the file bassconv.dll.
+m00-004|Cannot find the file bass.dll.
+m00-005|BASS initialization failed.\nSpeakers might be disconnected or disabled.
+m00-010|_en
+m01-000|msel_info.gif
+m01-001|Judgment/Display Settings
+m01-002|BT Object    : 
+m01-003|FX Object    : 
+m01-004|LASER Object : 
+m01-005|   On 
+m01-006|  Off 
+m01-007| Auto 
+m01-008| Hide 
+m01-009|Eff. Rate: 
+m01-010|   Easy   
+m01-011|  Normal  
+m01-012|   Hard   
+m01-015|Turn: 
+m01-016|  Normal  
+m01-017|  Mirror  
+m01-018|  Random  
+m01-019| S-Random 
+m01-020| H-Random 
+m01-030|Assist Tick:  
+m01-031|     On     
+m01-032|    Off     
+m01-037|Auto Sync:    
+m01-038|  On (High) 
+m01-039|  On (Mid)  
+m01-040|  On (Low)  
+m01-041|    Off     
+m01-042|FAST/SLOW:    
+m01-043|    Hide    
+m01-044|    Show    
+m01-045|Noteskin:    
+m01-046|   Default  
+m01-047|    Note    
+m01-050|Perspective:  
+m01-051|  Incoming  
+m01-052|  Overhead  
+m01-060|Movie:        
+m01-061|    Off     
+m01-062|     On     
+m01-063|Hispeed: 
+m01-070|Play count: 
+m01-071|  Clear   : 
+m01-072|Full combo: 
+m01-073| Perfect  : 
+m02-000|LOADING...
+m02-001|The first measure (--) must be specified at the start of the chart.
+m02-005|An error occurred while loading the chart.
+m02-010|---
+m02-011|Some charts in this course are missing.
+m02-012|The latest version of K-Shoot MANIA is required to play this course.
+m02-013|Cannot find the chart file.
+m02-050|Save the chart with the timing adjustment?\n(Offset timing: 
+m02-051|ms)
+m02-052|[  Yes  ]    No   
+m02-053|   Yes     [ No ] 
+m02-055|Saving...
+m02-070|Unlocked track:
+m03-000|Window
+m03-001|Fullscreen
+m03-002|x
+m03-003|High quality
+m03-004|Normal quality
+m03-005|Low quality (unrecommended)
+m03-006|Off
+m03-007|On
+m03-008|Off
+m03-009|On
+m03-010|Hide
+m03-011|Show (Animation off)
+m03-012|Show (Animation on)
+m03-013|%
+m03-014|Off
+m03-015|On
+m03-016|Judgement On
+m03-017|Judgement Off
+m03-018|Autoplay
+m03-019|Note Hidden
+m03-020|Hold key (for Keyboard Play)
+m03-021|Repeat key (for PowerMate)
+m03-022|Mouse X/Y signal (for Controller)
+m03-023|Analog Stick
+m03-024|Slider signal (for Controller)
+m03-025|Analog Stick X/Y
+m03-028|On
+m03-029|Off
+m03-030|Off
+m03-031|On - Low
+m03-032|On - Mid
+m03-033|On - High (Recommended)
+m03-034| (No change)
+m03-035| (Slow)
+m03-036| (Fast)
+m03-037|ms
+m03-038| (Slower than button)
+m03-039| (Faster than button)
+m03-040| Left signal > Right move
+m03-041|Right signal > Right move
+m03-042|  Up  signal > Right move
+m03-043| Down signal > Right move
+m03-044|0 (don't move)
+m03-045|Off
+m03-046|On
+m03-047|Backspace
+m03-048|Esc (Back button)
+m03-053|Hide
+m03-054|Show
+m03-055|Off
+m03-056|On
+m03-057|Off
+m03-058|On (Keyboard)
+m03-059|On (Controller/NumLock)
+m03-061|---
+m03-062|/
+m03-063| ---
+m03-064|Start:
+m03-065|Back :
+m03-066|Auto :
+m03-067|-
+m03-070|      Keyboard 
+m03-071|      Gamepad 
+m03-072|      
+m03-090|Up/Down: Scroll  Enter: Select  ESC: Save and return
+m03-091|Up/Down: Scroll  Left/Right: Modify selection  ESC: Return
+m03-092|Up/Down: Scroll  Left/Right: Modify selection  ESC: Return  (*)Requires restart
+m03-093|Arrow keys: Select  Enter: Change mapping/Cancel  Space: Remove mapping  ESC: Return
+m04-000|Could not connect to server.\nPlease check your Internet connection.\n(There is a possibility of your antivirus blocking this program.)
+m04-001|404 Not Found
+m04-002|File not found (404)。\nThe server might be under maintenance.
+m04-003|Connection dropped.\nFailed to retrieve song list from server.
+m04-004|The latest version of K-Shoot MANIA is required to use the INPUT GATE.
+m04-005|Could not find songs to input.
+m04-006|Incorrect file version.\nRedundancy check failed.
+m04-008|An error occurred during the file download.\nThe download was canceled.
+m04-010|MS Gothic
+m04-011|Downloading chart: 
+m04-012|/
+m04-013|\nDownloading file: 
+m04-014|\nProgress: 
+m04-015|%
+m04-016|\n(
+m04-017|/
+m04-018|)
+m04-019|B
+m04-020|KB
+m04-021|MB
+m04-022|GB
+e00-000|MS Gothic
+e00-001|MS PGothic
+e00-002|Error
+e00-003|Cannot find the file bassconv.dll.
+e00-004|Cannot find the file bass.dll.
+e00-005|Failed to initialize the bass.
+e00-006|An internal error has occurred. It might not be possible to continue.\nDo you want to save a copy of the project?
+e00-008|The first measure (--) must be specified at the start of the chart.
+e00-010|Attention
+e00-011|The LEFT(Blue)LASER object is not starting from its normal position. (Measure %0)\nContinue anyway?
+e00-012|The RIGHT(Red)LASER object is not starting from its normal position. (Measure %0)\nContinue anyway?
+e00-015|The song title is not specified.\nContinue anyway?
+e00-016|The song title can be edited by going to "Edit" -> "Chart metadata(T)".
+e00-020|There is an object immediately after a pause.\nContinue anyway?
+e00-021|There is a LASER object with a nonzero gradient during a pause.\nContinue anyway?
+e00-022|There is a LASER object slam during or immediately after a pause.\nContinue anyway?
+e00-025|Due to abnormal notes present in the chart, saving it might corrupt the data.
+e00-026|Confirmation
+e00-027|"%0"[%1] has been changed.\n%2Do you want to save the changes?
+e00-028|
+e00-029|
+e00-030|K-Shoot MANIA chart file
+e00-031|Stepmania file
+e00-032|REAPER Project Files
+e00-040|Available difficulties
+e00-041|Do you choose "
+e00-042|"(
+e00-043|)?
+e00-044|"
+e00-045|"(
+e00-046|) will be imported.
+e00-047|TapeStop effects cannot overlap or be placed consecutively. (Measure %0)
+e00-048|Note:\nExporting to REAPER is only for backward compatibility with older versions. Effects added after v1.60 will not be properly effected.
+e00-050|keyinfo_en.gif
+e00-055|Measure
+e00-056|
+e00-060|OK
+e00-061|Cancel
+e01-000|&File
+e01-010|&New\tCtrl+N
+e01-011|&Open...\tCtrl+O
+e01-012|&Save\tCtrl+S
+e01-013|Save &As...\tCtrl+Shift+S
+e01-016|&Export
+e01-020|&Close
+e01-030|&Export REAPER project...\tCtrl+Alt+R
+e02-000|&Edit
+e02-010|&Undo\tCtrl+Z
+e02-011|&Redo\tCtrl+Y
+e02-015|Cu&t\tCtrl+X
+e02-016|&Copy\tCtrl+C
+e02-017|&Paste\tCtrl+V
+e02-018|&Delete\tDelete
+e02-030|Select &All\tCtrl+A
+e02-031|Dese&lect\tCtrl+D
+e02-040|Reverse selected notes(&F)\tCtrl+R
+e02-041|&Randomize selected notes\tCtrl+Shift+R
+e02-042|Copy lane &zooms in selection\tCtrl+Shift+C
+e02-043|Remove lane z&ooms in selection\tShift+Delete
+e02-045|R&emove selected measures...
+e02-046|Add a &blank at cursor...
+e02-047|&View cursor time in millisecond...
+e02-048|Remove all c&omments
+e02-049|Clear c&hart's contents...
+e02-050|Char&t metadata - General...\tCtrl+T
+e02-051|Chart &metadata - Detail...\tCtrl+Shift+T
+e02-052|Use cursor time for "&sample start"
+e02-054|S&witch color of selected LASER objects
+e02-055|Copy lane tilt effects &in selection
+e02-056|Remove lane tilt effects i&n selection
+e03-000|&View
+e03-010|&Trace
+e03-015|&Reduce spacing between lanes\t-
+e03-016|&Increase spacing between lanes\t^
+e03-017|Increase &lane width
+e03-018|Increase &window size to show more lanes
+e03-019|&Highlight quarter measures
+e03-020|&Number of measures per column
+e03-021|Show &double the space between notes\t:
+e03-030|&View with trace\tCtrl+Alt+V
+e03-031|&Open chart to trace...\tCtrl+Alt+O
+e03-032|Revert to &initial trace position
+e03-033|Shift trace position &up
+e03-034|Shift trace positon &down
+e03-035|Shift trace position u&p by 1 measure
+e03-036|Shift trace position do&wn by 1 measure
+e03-040|&1
+e03-041|&2
+e03-042|&3
+e03-043|&4
+e03-044|&5
+e04-000|&Tool
+e04-010|Selection tool(&P)\tP
+e04-011|Pen tool(&N)\tN
+e04-012|Eraser tool(&A)\tE
+e04-015|Position(&O)\tO
+e04-018|Chip &BT object\tH
+e04-019|Long B&T object\tJ
+e04-020|Chip &FX object\tK
+e04-021|Long F&X object\tL
+e04-025|Left(blue) LAS&ER object\tQ
+e04-026|Right(red) LASE&R object\tW
+e04-027|LASER sounds &gain/type\tG
+e04-028|LASER &slam sound volume/sample\tV
+e04-030|Lane sp&in effect\tS
+e04-034|Lane ti&lt effect type\tR
+e04-035|Lane &zoom (Top)\tZ
+e04-036|Lane zoo&m (Bottom)\tX
+e04-037|&Horizontal lane movement\tC
+e04-038|Pause(&F)\tF
+e04-040|1/4th note\tCtrl+4
+e04-041|1/8th note\tCtrl+8
+e04-042|1/12th note\tCtrl+2
+e04-043|1/16th note\tCtrl+6
+e04-044|1/24th note\tCtrl+Shift+4
+e04-045|1/32nd note\tCtrl+Shift+2
+e04-046|1/48th note\tCtrl+Shift+8
+e04-047|1/64th note\tCtrl+Shift+6
+e04-048|1/96th note\tCtrl+Shift+9
+e04-049|1/192nd note\tCtrl+Shift+1
+e04-050|LASER object placement: Normal
+e04-051|LASER object placement: Fine
+e04-052|LASER object placement: Very fine
+e04-055|Prevent adding repeated LASER slams when editing on 1/16th (Recommended)
+e04-056|Prevent adding narrow LASER slams (Recommended)
+e04-060|Wide range LASERs start from default position
+e04-070|Enable direct editing of KSH files with the comment feature
+e05-000|&Play
+e05-010|&Play/Stop\tSpace
+e05-015|Lane scrolls with cursor(&Y)
+e05-016|Play with &Assist tick\tCtrl+Alt+T
+e05-017|Play with the slam sound(&C)
+e05-018|Play at &half BPM
+e05-019|Song &volume
+e05-020|Assist tick v&olume
+e05-021|Play with &FX effects
+e05-022|Play with &LASER sound effects
+e05-023|Play selection on &repeat
+e05-030|100%
+e05-031| 75%
+e05-032| 50%
+e05-033| 25%
+e05-034|  0%
+e05-040|Preview &sample
+e05-050|&Test play...\tF5
+e05-051|Test play (&Auto)...\tF11
+e05-052|T&est play from cursor...\tF6
+e05-053|Test play from cursor (A&uto)...\tF12
+e06-000|&Help
+e06-010|Find topic(&H)...
+e06-020|&About K-Shoot MANIA...
+e07-000|Chart metadata (General)
+e07-001|Song title:
+e07-002|Artist:
+e07-003|Effected by:
+e07-004|Jacket illust filepath:
+e07-005|Illustrated by:
+e07-006|Difficulty:
+e07-007|Level [1-20]:
+e07-008|BPM:
+e07-009|Song filename:
+e07-010|Offset[ms]:
+e07-011|Sample start[ms]:
+e07-012|Sample length[ms]:
+e07-020|Comments:
+e07-025|Background:
+e07-026|Desert
+e07-027|Grass
+e07-028|Night
+e07-029|Deep sea
+e07-030|Sky
+e07-031|Sunset
+e07-032|Ocean
+e07-033|Sakura
+e07-034|Flower field
+e07-035|Autumn leaf
+e07-036|Snow
+e07-037|City
+e07-038|Flame
+e07-039|Cyber
+e07-040|Space
+e07-041|Canyon
+e07-042|Mars
+e07-043|Cloudy
+e07-044|Fantasy
+e07-048|Foreground layer:
+e07-049|Arrows
+e07-050|Smoke
+e07-051|Wave
+e07-052|Stars
+e07-053|Rain
+e07-054|Snow
+e07-055|Fire
+e07-056|Lightning
+e07-057|Sakura storm
+e07-058|Techno
+e07-063|None
+e08-000|Insert time signature change
+e08-001|Numerator(*/ ):
+e08-002|Denominator( /*):
+e08-005|Please select a divisor for 192 for the denominator.
+e08-010|Change BPM
+e08-011|BPM:
+e08-018|Set lane tilt manually
+e08-019|Tilt [-100 - 100] (or tilt type):
+e08-020|Change the tilt effect type
+e08-021|Tilt type:
+e08-022|Change the LASER sound effects gain
+e08-023|Gain[0-100]:
+e08-030|Change the slam sound volume
+e08-031|Volume[0-100]:
+e08-040|Add a blank
+e08-041|Length:
+e08-042|1/4 measures
+e08-043|1/2 measures
+e08-044|1 measure
+e08-045|2 measures
+e08-046|4 measures
+e08-047|8 measures
+e08-050|Change the speed of the TapeStop effect
+e08-051|Speed [0-100]:
+e08-052|Change the level of the BitCrusher effect
+e08-053|Level [0-64]:
+e08-054|Change the speed of the %0 effect
+e08-055|Wavelength(1/*Measures)[1-]:
+e08-056|Change the %0 effect value
+e08-057|Feedback level [%]:
+e08-058|Pitch [-48 - 48]:
+e08-060|Swing effect settings
+e08-061|Amplitude [0-](Default:250):
+e08-062|Frequency [1-]:
+e08-063|Decay:
+e08-064|Off
+e08-065|On (Slow)
+e08-066|On
+e08-070|Change the lane zoom level
+e08-071|Level [-100 - 100]:
+e08-080|Insert comment
+e08-081|Comment:
+e08-090|Set note sound
+e08-091|Sound:
+e08-092|None
+e08-093|Volume [%]:
+e09-000|Chart metadata (Detail)
+e09-003|Standard BPM of HiSpeed [0:Auto]:
+e09-005|Song volume [%]:
+e09-007|Reduce volume for narrow LASER slams:
+e09-008|Disable
+e09-009|Enable
+e09-010|Peaking filter delay[ms]:
+e09-015|Total [0:Auto 100-:Manual]:
+e09-020|Genre icon filename (2:1, PNG):
+e09-050|KSH format version (Recommended:%1):
+e10-000|   %0ms \t... Cursor position\n+) %1ms \t... Offset\n------------\n   %2ms \t... Cursor position (for "Sample start")
+e10-020|Are you sure?\n(BPM and time signature settings will not be cleared)
+e10-040|Please select the measures you want to remove.
+e10-041|Objects in the selection will be deleted, is that okay?
+e10-050|Please save changes before test play.
