@@ -5,7 +5,7 @@
 class TitleMenu : public ISimpleMenuEventHandler
 {
 private:
-	enum Item : int
+	enum Item : int32
 	{
 		kStart = 0,
 		kOption,

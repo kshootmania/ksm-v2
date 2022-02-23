@@ -24,7 +24,7 @@ namespace
 		}
 	};
 	
-	Menu MakeSimpleMenuCommon(ISimpleMenuEventHandler* pHandler, int itemSize, bool cyclic, MenuEventTrigger triggerPrev, MenuEventTrigger triggerNext)
+	Menu MakeSimpleMenuCommon(ISimpleMenuEventHandler* pHandler, int32 itemSize, bool cyclic, MenuEventTrigger triggerPrev, MenuEventTrigger triggerNext)
 	{
 		Menu menu;
 
@@ -33,7 +33,7 @@ namespace
 			menu.emplaceDefaultEventHandler<SimpleMenuEventHandlerPipe>(pHandler);
 		}
 
-		for (int i = 0; i < itemSize; ++i)
+		for (int32 i = 0; i < itemSize; ++i)
 		{
 			MenuItem& menuItem = menu.emplaceMenuItem();
 
@@ -66,12 +66,12 @@ namespace
 	}
 }
 
-Menu MakeVerticalSimpleMenu(ISimpleMenuEventHandler* pHandler, int itemSize, bool cyclic)
+Menu MakeVerticalSimpleMenu(ISimpleMenuEventHandler* pHandler, int32 itemSize, bool cyclic)
 {
 	return MakeSimpleMenuCommon(pHandler, itemSize, cyclic, MenuEventTrigger::Up, MenuEventTrigger::Down);
 }
 
-Menu MakeHorizontalSimpleMenu(ISimpleMenuEventHandler* pHandler, int itemSize, bool cyclic)
+Menu MakeHorizontalSimpleMenu(ISimpleMenuEventHandler* pHandler, int32 itemSize, bool cyclic)
 {
 	return MakeSimpleMenuCommon(pHandler, itemSize, cyclic, MenuEventTrigger::Left, MenuEventTrigger::Right);
 }

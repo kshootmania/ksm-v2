@@ -43,7 +43,7 @@ void Menu::update()
 	}
 }
 
-void Menu::moveCursorTo(int cursorIdx)
+void Menu::moveCursorTo(int32 cursorIdx)
 {
 	if (cursorIdx < 0 || m_menuItems.size() <= cursorIdx)
 	{
@@ -65,14 +65,14 @@ void Menu::runEvent(MenuEventTrigger trigger)
 	}
 }
 
-int Menu::cursorIdx() const
+int32 Menu::cursorIdx() const
 {
 	return m_cursorIdx;
 }
 
-bool MenuItem::runEvent(Menu* pMenu, int menuItemIdx, MenuEventTrigger trigger)
+bool MenuItem::runEvent(Menu* pMenu, int32 menuItemIdx, MenuEventTrigger trigger)
 {
-	int triggerInt = static_cast<int>(trigger);
+	int32 triggerInt = static_cast<int32>(trigger);
 	if (triggerInt < 0 || m_eventHandlers.size() <= triggerInt)
 	{
 		throw Error(U"MenuItem::runEvent(): triggerInt(={}) is out of range! (m_eventHandlers.size()={})"_fmt(triggerInt, m_eventHandlers.size()));
@@ -91,7 +91,7 @@ bool MenuItem::runEvent(Menu* pMenu, int menuItemIdx, MenuEventTrigger trigger)
 	return false;
 }
 
-MoveMenuCursorTo::MoveMenuCursorTo(int destIdx)
+MoveMenuCursorTo::MoveMenuCursorTo(int32 destIdx)
 	: m_destIdx(destIdx)
 {
 }

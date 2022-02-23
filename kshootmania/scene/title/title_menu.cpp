@@ -55,7 +55,7 @@ void TitleMenu::draw() const
 {
 	using namespace ScreenUtils;
 
-	const int x = Scene::Center().x;
+	const int32 x = Scene::Center().x;
 
 	// Draw menu cursor (additive)
 	{
@@ -66,9 +66,9 @@ void TitleMenu::draw() const
 	}
 
 	// Draw menu items
-	for (int i = 0; i < kItemMax; ++i)
+	for (int32 i = 0; i < kItemMax; ++i)
 	{
-		const int y = Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * i;
+		const int32 y = Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * i;
 		{
 			// Sub-texture (subtractive)
 			const ScopedRenderStates2D subtractive(BlendState::Subtractive);

@@ -9,6 +9,6 @@ public:
 	virtual void menuKeyPressed(const MenuEvent& event) = 0;
 };
 
-Menu MakeVerticalSimpleMenu(ISimpleMenuEventHandler* pHandler, int itemSize, bool cyclic = false);
+Menu MakeVerticalSimpleMenu(ISimpleMenuEventHandler* pHandler, int32 itemSize, bool cyclic = false);
 
-Menu MakeHorizontalSimpleMenu(ISimpleMenuEventHandler* pHandler, int itemSize, bool cyclic = false);
+Menu MakeHorizontalSimpleMenu(ISimpleMenuEventHandler* pHandler, int32 itemSize, bool cyclic = false);

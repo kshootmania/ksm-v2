@@ -2,7 +2,7 @@
 
 namespace
 {
-	constexpr int kDefaultTransitionMs = 500;
+	constexpr int32 kDefaultTransitionMs = 500;
 }
 
 namespace SceneManagement

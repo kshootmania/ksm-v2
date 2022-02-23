@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-enum class MenuEventTrigger : int
+enum class MenuEventTrigger : int32
 {
 	Enter = 0,
 	Esc,
@@ -13,7 +13,7 @@ enum class MenuEventTrigger : int
 	Max,
 };
 
-constexpr int kMenuEventTriggerMax = static_cast<int>(MenuEventTrigger::Max);
+constexpr int32 kMenuEventTriggerMax = static_cast<int32>(MenuEventTrigger::Max);
 
 class MenuItem;
 class IMenuEventHandler;
@@ -22,7 +22,7 @@ class Menu
 {
 private:
 	Array<MenuItem> m_menuItems;
-	int m_cursorIdx = 0;
+	int32 m_cursorIdx = 0;
 	std::unique_ptr<IMenuEventHandler> m_defaultEventHandler;
 	
 public:
@@ -35,18 +35,18 @@ public:
 
 	void update();
 
-	void moveCursorTo(int cursorIdx);
+	void moveCursorTo(int32 cursorIdx);
 
 	void runEvent(MenuEventTrigger trigger);
 
-	int cursorIdx() const;
+	int32 cursorIdx() const;
 };
 
 struct MenuEvent
 {
 	Menu* pMenu;
 
-	int menuItemIdx;
+	int32 menuItemIdx;
 
 	MenuItem* pMenuItem;
 
@@ -72,16 +72,16 @@ public:
 	template <class MenuEventHandler, class... Args>
 	MenuItem& emplaceEventHandler(MenuEventTrigger trigger, Args&&... args);
 
-	virtual bool runEvent(Menu* pMenu, int menuItemIdx, MenuEventTrigger trigger);
+	virtual bool runEvent(Menu* pMenu, int32 menuItemIdx, MenuEventTrigger trigger);
 };
 
 class MoveMenuCursorTo : public IMenuEventHandler
 {
 private:
-	const int m_destIdx;
+	const int32 m_destIdx;
 
 public:
-	explicit MoveMenuCursorTo(int destIdx);
+	explicit MoveMenuCursorTo(int32 destIdx);
 
 	virtual ~MoveMenuCursorTo() = default;
 
@@ -101,7 +101,7 @@ inline void Menu::emplaceDefaultEventHandler(Args&&... args)
 template<class MenuEventHandler, class... Args>
 inline MenuItem& MenuItem::emplaceEventHandler(MenuEventTrigger trigger, Args&&... args)
 {
-	int triggerInt = static_cast<int>(trigger);
+	int32 triggerInt = static_cast<int32>(trigger);
 	if (triggerInt < 0 || m_eventHandlers.size() <= triggerInt)
 	{
 		throw Error(U"MenuItem::emplaceEventHandler(): triggerInt(={}) is out of range! (m_eventHandlers.size()={})"_fmt(triggerInt, m_eventHandlers.size()));
