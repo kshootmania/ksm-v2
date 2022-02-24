@@ -12,6 +12,12 @@ MenuItem& Menu::emplaceMenuItem()
 
 void Menu::update()
 {
+	if (m_pOverridenMenu)
+	{
+		m_pOverridenMenu->update();
+		return;
+	}
+
 	if (KeyEnter.down())
 	{
 		publishEvent(MenuEventTrigger::Enter);
@@ -48,6 +54,31 @@ void Menu::update()
 	}
 }
 
+void Menu::setDefaultEventHandler(IMenuEventHandler* pDefaultEventHandler)
+{
+	m_pDefaultEventHandler = pDefaultEventHandler;
+}
+
+Menu* Menu::getCurrentTargetOverridenMenu()
+{
+	if (m_pOverridenMenu)
+	{
+		return m_pOverridenMenu->getCurrentTargetOverridenMenu();
+	}
+
+	return this;
+}
+
+bool Menu::isOverriden() const
+{
+	return m_pOverridenMenu != nullptr;
+}
+
+void Menu::setOverridenMenu(Menu* pOverridenMenu)
+{
+	m_pOverridenMenu = pOverridenMenu;
+}
+
 void Menu::moveCursorTo(int32 cursorIdx)
 {
 	if (cursorIdx < 0 || m_menuItems.size() <= cursorIdx)
@@ -59,14 +90,33 @@ void Menu::moveCursorTo(int32 cursorIdx)
 
 void Menu::publishEvent(MenuEventTrigger trigger)
 {
-	const bool eventProcessed = m_menuItems[m_cursorIdx].publishEvent(this, m_cursorIdx, trigger);
-	if (!eventProcessed && m_pDefaultEventHandler)
+	if (m_pOverridenMenu)
+	{
+		m_pOverridenMenu->publishEvent(trigger);
+		return;
+	}
+
+	if (!m_menuItems.empty() && m_menuItems[m_cursorIdx].publishEvent(this, m_cursorIdx, trigger))
+	{
+		return;
+	}
+
+	if (m_pDefaultEventHandler)
 	{
 		m_pDefaultEventHandler->processMenuEvent({
 			.pMenu = this,
 			.menuItemIdx = m_cursorIdx,
 			.pMenuItem = &m_menuItems[m_cursorIdx],
 			.trigger = trigger });
+		return;
+	}
+}
+
+void Menu::publishEventToDefaultEventHandler(const MenuEvent& event)
+{
+	if (m_pDefaultEventHandler)
+	{
+		m_pDefaultEventHandler->processMenuEvent(event);
 	}
 }
 

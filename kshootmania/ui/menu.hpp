@@ -17,13 +17,15 @@ constexpr int32 kMenuEventTriggerMax = static_cast<int32>(MenuEventTrigger::Max)
 
 class MenuItem;
 class IMenuEventHandler;
+struct MenuEvent;
 
 class Menu
 {
 private:
 	Array<MenuItem> m_menuItems;
 	int32 m_cursorIdx = 0;
-	IMenuEventHandler* const m_pDefaultEventHandler;
+	IMenuEventHandler* m_pDefaultEventHandler;
+	Menu* m_pOverridenMenu = nullptr;
 	
 public:
 	explicit Menu(IMenuEventHandler* pDefaultEventHandler = nullptr);
@@ -39,7 +41,17 @@ public:
 
 	void publishEvent(MenuEventTrigger trigger);
 
+	void publishEventToDefaultEventHandler(const MenuEvent& event);
+
 	int32 cursorIdx() const;
+
+	void setDefaultEventHandler(IMenuEventHandler* pDefaultEventHandler);
+
+	void setOverridenMenu(Menu* pOverridenMenu);
+
+	Menu* getCurrentTargetOverridenMenu();
+
+	bool isOverriden() const;
 };
 
 struct MenuEvent
@@ -99,7 +111,7 @@ inline MenuEventHandler& Menu::emplaceEventHandler(int32 idx, MenuEventTrigger t
 		throw Error(U"Menu::emplaceEventHandler(): idx(={}) is out of range! (m_menuItems.size()={})"_fmt(idx, m_menuItems.size()));
 	}
 
-	return m_menuItems[idx].emplaceEventHandler(trigger, std::forward<Args>(args)...);
+	return m_menuItems[idx].emplaceEventHandler<MenuEventHandler>(trigger, std::forward<Args>(args)...);
 }
 
 template<class MenuEventHandler, class... Args>

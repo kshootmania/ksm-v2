@@ -204,7 +204,7 @@
     <ClCompile Include="scene\option\option_scene.cpp">
       <Filter>Source Files\scene\option</Filter>
     </ClCompile>
-    <ClCompile Include="scene\option\option_top_menu.cpp">
+    <ClCompile Include="scene\option\option_menu.cpp">
       <Filter>Source Files\scene\option</Filter>
     </ClCompile>
     <ClCompile Include="scene\option\option_assets.cpp">
@@ -871,7 +871,7 @@
     <ClInclude Include="i18n.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scene\option\option_top_menu.hpp">
+    <ClInclude Include="scene\option\option_menu.hpp">
       <Filter>Header Files\scene\option</Filter>
     </ClInclude>
     <ClInclude Include="scene\option\option_scene.hpp">

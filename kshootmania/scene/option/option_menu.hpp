@@ -4,18 +4,18 @@
 
 class OptionScene;
 
-class OptionTopMenu : public IMenuEventHandler
+class OptionMenu : public IMenuEventHandler
 {
 private:
 	OptionScene* m_pOptionScene;
 
 	Menu m_menu;
 
+	Menu m_subMenu;//FIXME
+
 	TextureAtlas m_menuItemTextureAtlas;
 
 	Stopwatch m_stopwatch;
-
-	bool m_active = true;
 
 public:
 	enum Item : int32
@@ -28,7 +28,7 @@ public:
 		kItemMax,
 	};
 
-	explicit OptionTopMenu(OptionScene* pOptionScene);
+	explicit OptionMenu(OptionScene* pOptionScene);
 
 	void update();
 
@@ -36,7 +36,5 @@ public:
 
 	virtual void processMenuEvent(const MenuEvent& event) override;
 
-	bool active() const;
-
-	void activate();
+	Optional<Item> currentActiveMenu() const;
 };

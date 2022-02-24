@@ -1,4 +1,4 @@
-﻿#include "option_top_menu.hpp"
+﻿#include "option_menu.hpp"
 #include "option_scene.hpp"
 #include "option_assets.hpp"
 
@@ -22,25 +22,21 @@ namespace
 	}
 }
 
-OptionTopMenu::OptionTopMenu(OptionScene* pOptionScene)
+OptionMenu::OptionMenu(OptionScene* pOptionScene)
 	: m_pOptionScene(pOptionScene)
 	, m_menu(MenuHelper::MakeVerticalMenu(this, kItemMax))
 	, m_menuItemTextureAtlas(OptionTexture::kTopMenuItem, kItemMax)
 	, m_stopwatch(StartImmediately::Yes)
 {
+	MenuHelper::SetChildMenu(&m_menu, 0, &m_subMenu);
 }
 
-void OptionTopMenu::update()
+void OptionMenu::update()
 {
-	if (!m_active)
-	{
-		return;
-	}
-
 	m_menu.update();
 }
 
-void OptionTopMenu::draw() const
+void OptionMenu::draw() const
 {
 	using namespace ScreenUtils;
 
@@ -56,17 +52,11 @@ void OptionTopMenu::draw() const
 	}
 }
 
-void OptionTopMenu::processMenuEvent(const MenuEvent& event)
+void OptionMenu::processMenuEvent(const MenuEvent& event)
 {
-	if (!m_active)
-	{
-		return;
-	}
-
 	switch (event.trigger)
 	{
 	case MenuEventTrigger::Enter:
-		m_active = false;
 		break;
 
 	case MenuEventTrigger::Esc:
@@ -78,12 +68,15 @@ void OptionTopMenu::processMenuEvent(const MenuEvent& event)
 	}
 }
 
-bool OptionTopMenu::active() const
+Optional<OptionMenu::Item> OptionMenu::currentActiveMenu() const
 {
-	return m_active;
-}
-
-void OptionTopMenu::activate()
-{
-	m_active = true;
+	if (!m_menu.isOverriden())
+	{
+		return std::nullopt;
+	}
+	else
+	{
+		//FIXME
+		return kDisplaySound;
+	}
 }

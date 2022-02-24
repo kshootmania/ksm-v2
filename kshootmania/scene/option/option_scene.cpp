@@ -11,23 +11,23 @@ namespace
 OptionScene::OptionScene(const InitData& initData)
 	: SceneManager<StringView>::Scene(initData)
 	, m_bgTexture(TextureAsset(OptionTexture::kBG))
-	, m_topMenu(this)
+	, m_menu(this)
 	, m_font(ScreenUtils::Scaled(18), FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc")
 {
 }
 
 void OptionScene::update()
 {
-	m_topMenu.update();
+	m_menu.update();
 }
 
 void OptionScene::draw() const
 {
 	ScreenUtils::FitToHeight(m_bgTexture).drawAt(Scene::Center());
 
-	if (m_topMenu.active())
+	if (!m_menu.currentActiveMenu().has_value())
 	{
-		m_topMenu.draw();
+		m_menu.draw();
 
 		m_font(I18n::Get(I18n::Option::kGuideTop)).draw(ScreenUtils::ScaledByWidth(kGuideX), ScreenUtils::Scaled(kGuideY), Palette::White);
 	}

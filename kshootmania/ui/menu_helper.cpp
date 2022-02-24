@@ -39,6 +39,42 @@ namespace
 
 		return menu; // <- implicitly moved
 	}
+
+	class SharedHandlerForMenuHierarchy : public IMenuEventHandler
+	{
+	private:
+		Menu* const m_pMenu;
+		Menu* const m_pOverridenMenu;
+		MenuEventTrigger m_enterTrigger;
+		MenuEventTrigger m_escapeTrigger;
+
+	public:
+		explicit SharedHandlerForMenuHierarchy(Menu* pMenu, Menu* pOverridenMenu, MenuEventTrigger enterTrigger, MenuEventTrigger escapeTrigger)
+			: m_pMenu(pMenu)
+			, m_pOverridenMenu(pOverridenMenu)
+			, m_enterTrigger(enterTrigger)
+			, m_escapeTrigger(escapeTrigger)
+		{
+		}
+
+		virtual ~SharedHandlerForMenuHierarchy() = default;
+
+		virtual void processMenuEvent(const MenuEvent& event) override
+		{
+			if (event.pMenu == m_pOverridenMenu && event.trigger == m_escapeTrigger)
+			{
+				m_pMenu->setOverridenMenu(nullptr);
+			}
+			else if (event.pMenu == m_pMenu && event.trigger == m_enterTrigger)
+			{
+				m_pMenu->setOverridenMenu(m_pOverridenMenu);
+			}
+			else
+			{
+				m_pMenu->publishEventToDefaultEventHandler(event);
+			}
+		}
+	};
 }
 
 Menu MenuHelper::MakeVerticalMenu(IMenuEventHandler* pDefaultHandler, int32 itemSize, bool cyclic, int32 initialCursorIdx)
@@ -49,4 +85,12 @@ Menu MenuHelper::MakeVerticalMenu(IMenuEventHandler* pDefaultHandler, int32 item
 Menu MenuHelper::MakeHorizontalMenu(IMenuEventHandler* pDefaultHandler, int32 itemSize, bool cyclic, int32 initialCursorIdx)
 {
 	return MakeMenuCommon(pDefaultHandler, itemSize, cyclic, initialCursorIdx, MenuEventTrigger::Left, MenuEventTrigger::Right);
+}
+
+void MenuHelper::SetChildMenu(Menu* pParentMenu, int32 idx, Menu* pChildMenu, MenuEventTrigger enterTrigger, MenuEventTrigger escapeTrigger)
+{
+	// HACK: Force to get pointer to share parent's event handler with children
+	// (No problem, since parents are supposed to live longer than children)
+	SharedHandlerForMenuHierarchy* pSharedHandler = &pParentMenu->emplaceEventHandler<SharedHandlerForMenuHierarchy>(idx, enterTrigger, pParentMenu, pChildMenu, enterTrigger, escapeTrigger);
+	pChildMenu->setDefaultEventHandler(pSharedHandler);
 }
