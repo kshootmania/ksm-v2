@@ -1,4 +1,4 @@
-﻿m00-000|MS PGothic
+m00-000|MS PGothic
 m00-001|MS Gothic
 m00-002|Error
 m00-003|Cannot find the file bassconv.dll.
@@ -132,7 +132,7 @@ m03-092|Up/Down: Scroll  Left/Right: Modify selection  ESC: Return  (*)Requires 
 m03-093|Arrow keys: Select  Enter: Change mapping/Cancel  Space: Remove mapping  ESC: Return
 m04-000|Could not connect to server.\nPlease check your Internet connection.\n(There is a possibility of your antivirus blocking this program.)
 m04-001|404 Not Found
-m04-002|File not found (404)。\nThe server might be under maintenance.
+m04-002|File not found (404).\nThe server might be under maintenance.
 m04-003|Connection dropped.\nFailed to retrieve song list from server.
 m04-004|The latest version of K-Shoot MANIA is required to use the INPUT GATE.
 m04-005|Could not find songs to input.

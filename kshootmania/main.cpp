@@ -1,6 +1,7 @@
 ﻿#include <Siv3D.hpp> // OpenSiv3D v0.6.3
 #include "scene.hpp"
 #include "scene/title/title_assets.hpp"
+#include "i18n.hpp"
 
 void Main()
 {
@@ -10,6 +11,9 @@ void Main()
 	// Register asset list
 	// (Note: Assets are not loaded here. They are loaded at the time of use.)
 	TitleAssets::RegisterAssets();
+
+	// Load language text file
+	I18n::LoadLanguage(U"Japanese");
 
 	// Main loop
 	SceneManager<StringView> sceneManager = SceneManagement::MakeSceneManager();

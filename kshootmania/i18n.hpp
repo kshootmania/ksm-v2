@@ -7,7 +7,7 @@ namespace I18n
 
 	Array<String> GetAvailableLanguageList();
 
-	void LoadLanguage(StringView name);
+	void LoadLanguage(StringView name, StringView fallback = U"English");
 
 	enum Category : int32
 	{
@@ -16,6 +16,8 @@ namespace I18n
 		kPlay = 2,
 		kOption = 3,
 		kInputGate = 4,
+
+		kCategoryMax,
 	};
 
 	enum class General : int32
@@ -25,6 +27,8 @@ namespace I18n
 		kError = 2,
 		kAssetPathSuffix = 10,
 	};
+
+	constexpr int32 kKeyIdxMax = 100;
 
 	enum class Select : int32
 	{
@@ -96,5 +100,123 @@ namespace I18n
 		kAlwaysShowOtherFoldersOn = 7,
 		kHideAllFolderOff = 8,
 		kHideAllFolderOn = 9,
+		kBGHide = 10,
+		kBGShowAnimationOff = 11,
+		kBGShowAnimationOn = 12,
+		kMasterVolumePercent = 13,
+		kVsyncOff = 14,
+		kVsyncOn = 15,
+		kJudgmentOn = 16,
+		kJudgmentOff = 17,
+		kJudgmentAuto = 18,
+		kJudgmentHide = 19,
+		kLaserInputTypeKeyboard = 20,
+		kLaserInputTypeMouseXY = 22,
+		kLaserInputTypeSlider = 24,
+		kLaserInputTypeAnalogStickXY = 25,
+		kAssistTickOff = 28,
+		kAssistTickOn = 29,
+		kDisableIMEOff = 30,
+		kDisableIMEOnLow = 31,
+		kDisableIMEOnMid = 32,
+		kDisableIMEOnHigh = 33,
+		kTimingAdjustSuffixNoAdjustment = 34,
+		kTimingAdjustSuffixLater = 35,
+		kTimingAdjustSuffixEarlier = 36,
+		kTimingAdjustMs = 37,
+		kLaserTimingAdjustLater = 38,
+		kLaserTimingAdjustEarlier = 39,
+		kLaserMouseDirectionLeftThenRight = 40,
+		kLaserMouseDirectionRightThenRight = 41,
+		kLaserMouseDirectionUpThenRight = 42,
+		kLaserMouseDirectionDownThenRight = 43,
+		kLaserSignalSensitivityZero = 44,
+		kSwitchLRLaserOff = 45,
+		kSwitchLRLaserOn = 46,
+		kKeyCloseFolderBackspace = 47,
+		kKeyCloseFolderEsc = 48,
+		kHispeedTypeHide = 53,
+		kHispeedTypeShow = 54,
+		kHideMouseCursorOff = 55,
+		kHideMouseCursorOn = 56,
+		kUseNumpadAsArrowKeysOff = 57,
+		kUseNumpadAsArrowKeysOnKeyboard = 58,
+		kUseNumpadAsArrowKeysOnController = 59,
+		kKeyConfigKeyboardNoAssign = 61,
+		kKeyConfigLaserKeySeparator = 62,
+		kKeyConfigGamepadNoAssign = 63,
+		kKeyConfigStart = 64,
+		kKeyConfigBack = 65,
+		kKeyConfigAuto = 66,
+		kKeyConfigGamepadHyphen = 67,
+		kKeyConfigCategoryPrefixKeyboard = 70,
+		kKeyConfigCategoryPrefixGamepad = 71,
+		kKeyConfigCategorySuffix = 72,
+		kGuideTop = 90,
+		kGuideOption = 91,
+		kGuideOptionWithRestartRequired = 92,
+		kGuideKeyConfig = 93,
 	};
+
+	enum class InputGate : int32
+	{
+		kErrorServerNotFound = 0,
+		k404NotFound = 1,
+		kErrorFileNotFound = 2,
+		kErrorConnectionDropped = 3,
+		kErrorLatestVersionRequired = 4,
+		kErrorSongNotFound = 5,
+		kErrorInvalidFileVersion = 6,
+		kErrorDuringFileDownload = 8,
+		kFont = 10,
+		kDownloadingChart = 11,
+		kDownloadingChartSlash = 12,
+		kDownloadingFile = 13,
+		kProgress = 14,
+		kProgressPercent = 15,
+		kProgressOpenBracket = 16,
+		kProgressSlash = 17,
+		kProgressClosedBracket = 18,
+		kB = 19,
+		kKB = 20,
+		kMB = 21,
+		kGB = 22,
+	};
+
+	template <typename T>
+	constexpr Category GetCategoryOfEnumType()
+	{
+		if constexpr (std::is_same_v<T, General>)
+		{
+			return kGeneral;
+		}
+		else if constexpr (std::is_same_v<T, Select>)
+		{
+			return kSelect;
+		}
+		else if constexpr (std::is_same_v<T, Play>)
+		{
+			return kPlay;
+		}
+		else if constexpr (std::is_same_v<T, Option>)
+		{
+			return kOption;
+		}
+		else if constexpr (std::is_same_v<T, InputGate>)
+		{
+			return kInputGate;
+		}
+		else
+		{
+			static_assert(false, "Unknown type!");
+		}
+	}
+
+	template <typename T>
+	StringView Get(T key)
+	{
+		return Get(GetCategoryOfEnumType<T>(), static_cast<int32>(key));
+	}
+
+	StringView Get(Category category, int32 keyIdx);
 };

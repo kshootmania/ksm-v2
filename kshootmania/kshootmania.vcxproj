@@ -116,6 +116,7 @@
   <ItemGroup>
     <ClCompile Include="graphics\screen_utils.cpp" />
     <ClCompile Include="graphics\texture_atlas.cpp" />
+    <ClCompile Include="i18n.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene\title\title_assets.cpp" />
@@ -321,6 +322,7 @@
   <ItemGroup>
     <ClInclude Include="graphics\screen_utils.hpp" />
     <ClInclude Include="graphics\texture_atlas.hpp" />
+    <ClInclude Include="i18n.hpp" />
     <ClInclude Include="scene.hpp" />
     <ClInclude Include="scene\title\title_assets.hpp" />
     <ClInclude Include="scene\title\title_menu.hpp" />
