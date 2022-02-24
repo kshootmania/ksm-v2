@@ -1,10 +1,5 @@
 ﻿#include "scene.hpp"
 
-namespace
-{
-	constexpr int32 kDefaultTransitionMs = 500;
-}
-
 namespace SceneManagement
 {
 	SceneManager<StringView> MakeSceneManager()
@@ -12,6 +7,7 @@ namespace SceneManagement
 		SceneManager<StringView> sceneManager;
 
 		sceneManager.add<TitleScene>(TitleScene::kSceneName);
+		sceneManager.add<OptionScene>(OptionScene::kSceneName);
 
 		sceneManager.changeScene(TitleScene::kSceneName, kDefaultTransitionMs);
 

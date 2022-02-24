@@ -7,6 +7,7 @@ class TitleScene : public SceneManager<StringView>::Scene
 private:
 	Texture m_bgTexture;
 	TitleMenu m_menu;
+	Stopwatch m_exitStopwatch;
 
 public:
 	static constexpr StringView kSceneName = U"Title";
@@ -16,4 +17,6 @@ public:
 	virtual void update() override;
 
 	virtual void draw() const override;
+
+	void processMenuItem(TitleMenu::Item item);
 };

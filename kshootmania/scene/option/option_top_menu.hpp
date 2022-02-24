@@ -2,39 +2,41 @@
 #include "ui/menu_helper.hpp"
 #include "graphics/texture_atlas.hpp"
 
-class TitleScene;
+class OptionScene;
 
-class TitleMenu : public IMenuEventHandler
+class OptionTopMenu : public IMenuEventHandler
 {
 private:
-	TitleScene* m_pTitleScene;
+	OptionScene* m_pOptionScene;
 
 	Menu m_menu;
 
 	TextureAtlas m_menuItemTextureAtlas;
 
-	Texture m_menuCursorTexture;
-
 	Stopwatch m_stopwatch;
 
-	double m_easedCursorPos = 0.0;
+	bool m_active = true;
 
 public:
 	enum Item : int32
 	{
-		kStart = 0,
-		kOption,
-		kInputGate,
-		kExit,
+		kDisplaySound,
+		kInputJudgment,
+		kOther,
+		kKeyConfig,
 
 		kItemMax,
 	};
 
-	explicit TitleMenu(TitleScene* pTitleScene);
+	explicit OptionTopMenu(OptionScene* pOptionScene);
 
 	void update();
 
 	void draw() const;
 
 	virtual void processMenuEvent(const MenuEvent& event) override;
+
+	bool active() const;
+
+	void activate();
 };

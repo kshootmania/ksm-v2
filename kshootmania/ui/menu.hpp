@@ -30,6 +30,9 @@ public:
 
 	MenuItem& emplaceMenuItem();
 
+	template <class MenuEventHandler, class... Args>
+	MenuEventHandler& emplaceEventHandler(int32 idx, MenuEventTrigger trigger, Args&&... args);
+
 	void update();
 
 	void moveCursorTo(int32 cursorIdx);
@@ -67,7 +70,7 @@ public:
 	MenuItem() = default;
 
 	template <class MenuEventHandler, class... Args>
-	MenuItem& emplaceEventHandler(MenuEventTrigger trigger, Args&&... args);
+	MenuEventHandler& emplaceEventHandler(MenuEventTrigger trigger, Args&&... args);
 
 	virtual bool publishEvent(Menu* pMenu, int32 menuItemIdx, MenuEventTrigger trigger);
 };
@@ -89,7 +92,18 @@ public:
 // --- Member function template definitions from here ---
 
 template<class MenuEventHandler, class... Args>
-inline MenuItem& MenuItem::emplaceEventHandler(MenuEventTrigger trigger, Args&&... args)
+inline MenuEventHandler& Menu::emplaceEventHandler(int32 idx, MenuEventTrigger trigger, Args&&... args)
+{
+	if (idx < 0 || m_menuItems.size() <= idx)
+	{
+		throw Error(U"Menu::emplaceEventHandler(): idx(={}) is out of range! (m_menuItems.size()={})"_fmt(idx, m_menuItems.size()));
+	}
+
+	return m_menuItems[idx].emplaceEventHandler(trigger, std::forward<Args>(args)...);
+}
+
+template<class MenuEventHandler, class... Args>
+inline MenuEventHandler& MenuItem::emplaceEventHandler(MenuEventTrigger trigger, Args&&... args)
 {
 	int32 triggerInt = static_cast<int32>(trigger);
 	if (triggerInt < 0 || m_eventHandlers.size() <= triggerInt)
@@ -97,7 +111,8 @@ inline MenuItem& MenuItem::emplaceEventHandler(MenuEventTrigger trigger, Args&&.
 		throw Error(U"MenuItem::emplaceEventHandler(): triggerInt(={}) is out of range! (m_eventHandlers.size()={})"_fmt(triggerInt, m_eventHandlers.size()));
 	}
 
-	m_eventHandlers[triggerInt] = std::make_unique<MenuEventHandler>(std::forward<Args>(args)...);
+	MenuEventHandler* const pMenuEventHandler = new MenuEventHandler(std::forward<Args>(args)...);
+	m_eventHandlers[triggerInt] = std::unique_ptr<IMenuEventHandler>{ pMenuEventHandler };
 
-	return *this;
+	return *pMenuEventHandler;
 }

@@ -1,4 +1,5 @@
 ﻿#include "title_menu.hpp"
+#include "title_scene.hpp"
 #include "title_assets.hpp"
 
 namespace
@@ -10,8 +11,6 @@ namespace
 	constexpr int32 kMenuItemDiffY = 25;
 
 	constexpr double kMenuCursorPosRelaxationTimeSec = 0.03;
-
-	constexpr double kExitFadeOutDurationSec = 0.8;
 
 	double MenuCursorAlphaValue(double sec)
 	{
@@ -29,23 +28,17 @@ namespace
 	}
 }
 
-TitleMenu::TitleMenu()
-	: m_menu(MenuHelper::MakeVerticalMenu(this, kItemMax))
+TitleMenu::TitleMenu(TitleScene* pTitleScene)
+	: m_pTitleScene(pTitleScene)
+	, m_menu(MenuHelper::MakeVerticalMenu(this, kItemMax))
 	, m_menuItemTextureAtlas(TitleTexture::kMenuItem, kItemMax, 2/* <- Additive Texture & Subtractive Texture */)
 	, m_menuCursorTexture(TextureAsset(TitleTexture::kMenuCursor))
 	, m_stopwatch(StartImmediately::Yes)
-	, m_exitStopwatch(StartImmediately::No)
 {
 }
 
 void TitleMenu::update()
 {
-	if (m_exitStopwatch.isStarted() && m_exitStopwatch.sF() > kExitFadeOutDurationSec)
-	{
-		System::Exit();
-		return;
-	}
-
 	m_menu.update();
 
 	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(m_menu.cursorIdx()), kMenuCursorPosRelaxationTimeSec);
@@ -61,7 +54,7 @@ void TitleMenu::draw() const
 	{
 		const ScopedColorMul2D colorMultiply(MenuCursorAlphaValue(m_stopwatch.sF()));
 		const ScopedRenderStates2D additive(BlendState::Additive);
-		const TextureRegion textureRegion = ScaledL(m_menuCursorTexture);
+		const TextureRegion textureRegion = Scaled3x(m_menuCursorTexture);
 		textureRegion.draw(x - textureRegion.size.x / 2, Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * m_easedCursorPos);
 	}
 
@@ -72,22 +65,15 @@ void TitleMenu::draw() const
 		{
 			// Sub-texture (subtractive)
 			const ScopedRenderStates2D subtractive(BlendState::Subtractive);
-			const TextureRegion textureRegion = ScaledL(m_menuItemTextureAtlas(i, kSubTexCol));
+			const TextureRegion textureRegion = Scaled3x(m_menuItemTextureAtlas(i, kSubTexCol));
 			textureRegion.draw(x - textureRegion.size.x / 2, y);
 		}
 		{
 			// Main texture (additive)
 			const ScopedRenderStates2D additive(BlendState::Additive);
-			const TextureRegion textureRegion = ScaledL(m_menuItemTextureAtlas(i, kMainTexCol));
+			const TextureRegion textureRegion = Scaled3x(m_menuItemTextureAtlas(i, kMainTexCol));
 			textureRegion.draw(x - textureRegion.size.x / 2, y);
 		}
-	}
-
-	// Fadeout before exit
-	if (m_exitStopwatch.isStarted())
-	{
-		const double alpha = m_exitStopwatch.sF() / kExitFadeOutDurationSec;
-		Scene::Rect().draw(ColorF{ 0.0, 0.0, 0.0, alpha });
 	}
 }
 
@@ -96,38 +82,14 @@ void TitleMenu::processMenuEvent(const MenuEvent& event)
 	switch (event.trigger)
 	{
 	case MenuEventTrigger::Enter:
-		enterKeyPressed(event);
+		m_pTitleScene->processMenuItem(Item{ event.menuItemIdx });
 		break;
 
 	case MenuEventTrigger::Esc:
-		escKeyPressed(event);
+		m_menu.moveCursorTo(kExit);
 		break;
 
 	default:
 		break;
 	}
-}
-
-void TitleMenu::enterKeyPressed(const MenuEvent& event)
-{
-	switch (event.menuItemIdx)
-	{
-	case kStart:
-		break;
-
-	case kOption:
-		break;
-
-	case kInputGate:
-		break;
-
-	case kExit:
-		m_exitStopwatch.start();
-		break;
-	}
-}
-
-void TitleMenu::escKeyPressed(const MenuEvent&)
-{
-	m_menu.moveCursorTo(kExit);
 }

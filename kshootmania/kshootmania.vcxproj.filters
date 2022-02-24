@@ -160,6 +160,12 @@
     <Filter Include="Header Files\graphics">
       <UniqueIdentifier>{b215ceba-cfe7-4630-9b24-cab7a842dd1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\scene\option">
+      <UniqueIdentifier>{87a39f5a-b4ec-4d0b-8b90-243e2d40aed0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scene\option">
+      <UniqueIdentifier>{59aa9199-f440-4e0d-ba25-781b1fd6065e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene.cpp">
@@ -194,6 +200,15 @@
     </ClCompile>
     <ClCompile Include="i18n.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\option\option_scene.cpp">
+      <Filter>Source Files\scene\option</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\option\option_top_menu.cpp">
+      <Filter>Source Files\scene\option</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\option\option_assets.cpp">
+      <Filter>Source Files\scene\option</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -855,6 +870,15 @@
     </ClInclude>
     <ClInclude Include="i18n.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\option\option_top_menu.hpp">
+      <Filter>Header Files\scene\option</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\option\option_scene.hpp">
+      <Filter>Header Files\scene\option</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\option\option_assets.hpp">
+      <Filter>Header Files\scene\option</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
