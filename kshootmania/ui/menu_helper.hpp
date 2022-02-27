@@ -17,7 +17,7 @@ namespace MenuHelper
 		};
 	}
 
-	template <typename T> requires Int32<T> || Int32Enum<T>
+	template <typename T>
 	LinearMenu<T> MakeHorizontalMenu(
 		T enumCount,
 		int32 buttonFlags = kArrow,
@@ -71,7 +71,7 @@ namespace MenuHelper
 			intervalSec);
 	}
 
-	template <typename T> requires Int32<T> || Int32Enum<T>
+	template <typename T>
 	LinearMenu<T> MakeVerticalMenu(
 		T enumCount,
 		int32 buttonFlags = kArrow,

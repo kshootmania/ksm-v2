@@ -892,9 +892,6 @@
     <ClInclude Include="key_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="concepts.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ksm_ini_data.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

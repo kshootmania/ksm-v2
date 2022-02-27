@@ -1,10 +1,9 @@
 ﻿#pragma once
 #include "key_config.hpp"
-#include "concepts.hpp"
 
 using IsCyclicMenu = YesNo<struct IsCyclicMenu_tag>;
 
-template <typename T> requires Int32<T> || Int32Enum<T>
+template <typename T>
 class LinearMenu
 {
 private:
@@ -43,7 +42,7 @@ public:
 	void update();
 };
 
-template<typename T> requires Int32<T> || Int32Enum<T>
+template<typename T>
 LinearMenu<T>::LinearMenu(
 	T enumCount,
 	const Array<KeyConfig::Button>& incrementButtons,
@@ -60,7 +59,7 @@ LinearMenu<T>::LinearMenu(
 {
 }
 
-template<typename T> requires Int32<T> || Int32Enum<T>
+template<typename T>
 LinearMenu<T>::LinearMenu(
 	T cursorMin,
 	T cursorMax,
@@ -78,19 +77,19 @@ LinearMenu<T>::LinearMenu(
 {
 }
 
-template<typename T> requires Int32<T> || Int32Enum<T>
+template<typename T>
 T LinearMenu<T>::cursor() const
 {
 	return static_cast<T>(m_cursor);
 }
 
-template<typename T> requires Int32<T> || Int32Enum<T>
+template<typename T>
 void LinearMenu<T>::setCursor(T value)
 {
 	m_cursor = Clamp(static_cast<int32>(value), m_cursorMin, m_cursorMax);
 }
 
-template<typename T> requires Int32<T> || Int32Enum<T>
+template<typename T>
 void LinearMenu<T>::update()
 {
 	if (m_intervalTimer.has_value()) // Menu accepting hold-down
