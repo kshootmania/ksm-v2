@@ -4,19 +4,8 @@
 
 class OptionScene;
 
-class OptionMenu : public IMenuEventHandler
+class OptionMenu
 {
-private:
-	OptionScene* m_pOptionScene;
-
-	Menu m_menu;
-
-	Menu m_subMenu;//FIXME
-
-	TextureAtlas m_menuItemTextureAtlas;
-
-	Stopwatch m_stopwatch;
-
 public:
 	enum Item : int32
 	{
@@ -25,16 +14,22 @@ public:
 		kOther,
 		kKeyConfig,
 
-		kItemMax,
+		kItemEnumCount,
 	};
 
+private:
+	OptionScene* m_pOptionScene;
+
+	LinearMenu<Item> m_menu;
+
+	TextureAtlas m_menuItemTextureAtlas;
+
+	Stopwatch m_stopwatch;
+
+public:
 	explicit OptionMenu(OptionScene* pOptionScene);
 
 	void update();
 
 	void draw() const;
-
-	virtual void processMenuEvent(const MenuEvent& event) override;
-
-	Optional<Item> currentActiveMenu() const;
 };

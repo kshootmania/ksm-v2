@@ -24,11 +24,12 @@ namespace
 
 OptionMenu::OptionMenu(OptionScene* pOptionScene)
 	: m_pOptionScene(pOptionScene)
-	, m_menu(MenuHelper::MakeVerticalMenu(this, kItemMax))
-	, m_menuItemTextureAtlas(OptionTexture::kTopMenuItem, kItemMax)
+	, m_menu(MenuHelper::MakeVerticalMenu(
+		kItemEnumCount,
+		MenuHelper::ButtonFlags::kArrow | MenuHelper::ButtonFlags::kBT | MenuHelper::ButtonFlags::kBTOpposite))
+	, m_menuItemTextureAtlas(OptionTexture::kTopMenuItem, kItemEnumCount)
 	, m_stopwatch(StartImmediately::Yes)
 {
-	MenuHelper::SetChildMenu(&m_menu, 0, &m_subMenu);
 }
 
 void OptionMenu::update()
@@ -43,40 +44,11 @@ void OptionMenu::draw() const
 	const int32 x = Scene::Center().x;
 
 	// Draw menu items
-	for (int32 i = 0; i < kItemMax; ++i)
+	for (int32 i = 0; i < kItemEnumCount; ++i)
 	{
 		const int32 y = Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * i;
 		const TextureRegion textureRegion = Scaled2x(m_menuItemTextureAtlas(i));
-		const double alpha = MenuCursorAlphaValue(m_stopwatch.sF(), i == m_menu.cursorIdx());
+		const double alpha = MenuCursorAlphaValue(m_stopwatch.sF(), i == m_menu.cursor());
 		textureRegion.draw(x - textureRegion.size.x / 2, y, ColorF{ 1.0, alpha });
-	}
-}
-
-void OptionMenu::processMenuEvent(const MenuEvent& event)
-{
-	switch (event.trigger)
-	{
-	case MenuEventTrigger::Enter:
-		break;
-
-	case MenuEventTrigger::Esc:
-		m_pOptionScene->exitScene();
-		break;
-
-	default:
-		break;
-	}
-}
-
-Optional<OptionMenu::Item> OptionMenu::currentActiveMenu() const
-{
-	if (!m_menu.isOverriden())
-	{
-		return std::nullopt;
-	}
-	else
-	{
-		//FIXME
-		return kDisplaySound;
 	}
 }

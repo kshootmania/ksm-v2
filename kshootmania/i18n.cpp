@@ -55,12 +55,12 @@ void I18n::LoadLanguage(StringView name, StringView fallback)
 
 		if (line.size() >= kHeaderLength && line[0] == U'm' && line[3] == U'-' && line[7] == U'|')
 		{
-			StringView categoryIdxStr = TrimZeroPadding(line.substrView(1, 2));
-			StringView keyIdxStr = TrimZeroPadding(line.substrView(4, 3));
+			const StringView categoryIdxStr = TrimZeroPadding(line.substrView(1, 2));
+			const StringView keyIdxStr = TrimZeroPadding(line.substrView(4, 3));
 			try
 			{
-				int32 categoryIdx = Parse<int32>(categoryIdxStr);
-				int32 keyIdx = Parse<int32>(keyIdxStr);
+				const int32 categoryIdx = Parse<int32>(categoryIdxStr);
+				const int32 keyIdx = Parse<int32>(keyIdxStr);
 
 				if (categoryIdx < 0 || kCategoryMax <= categoryIdx || keyIdx < 0 || kKeyIdxMax <= keyIdx)
 				{

@@ -30,8 +30,15 @@ namespace
 
 TitleMenu::TitleMenu(TitleScene* pTitleScene)
 	: m_pTitleScene(pTitleScene)
-	, m_menu(MenuHelper::MakeVerticalMenu(this, kItemMax))
-	, m_menuItemTextureAtlas(TitleTexture::kMenuItem, kItemMax, 2/* <- Additive Texture & Subtractive Texture */)
+	, m_menu(MenuHelper::MakeVerticalMenu<Item>(
+		Item::kItemEnumCount,
+		MenuHelper::ButtonFlags::kArrow |
+		MenuHelper::ButtonFlags::kBT |
+		MenuHelper::ButtonFlags::kBTOpposite |
+		MenuHelper::ButtonFlags::kLaser |
+		MenuHelper::ButtonFlags::kLaserOpposite,
+		IsCyclicMenu::No))
+	, m_menuItemTextureAtlas(TitleTexture::kMenuItem, kItemEnumCount, 2/* <- Additive Texture & Subtractive Texture */)
 	, m_menuCursorTexture(TextureAsset(TitleTexture::kMenuCursor))
 	, m_stopwatch(StartImmediately::Yes)
 {
@@ -40,8 +47,16 @@ TitleMenu::TitleMenu(TitleScene* pTitleScene)
 void TitleMenu::update()
 {
 	m_menu.update();
+	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(m_menu.cursor()), kMenuCursorPosRelaxationTimeSec);
 
-	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(m_menu.cursorIdx()), kMenuCursorPosRelaxationTimeSec);
+	if (KeyConfig::Down(KeyConfig::kStart))
+	{
+		m_pTitleScene->processMenuItem(m_menu.cursor());
+	}
+	else if (KeyConfig::Down(KeyConfig::kBack))
+	{
+		m_menu.setCursor(kExit);
+	}
 }
 
 void TitleMenu::draw() const
@@ -59,7 +74,7 @@ void TitleMenu::draw() const
 	}
 
 	// Draw menu items
-	for (int32 i = 0; i < kItemMax; ++i)
+	for (int32 i = 0; i < kItemEnumCount; ++i)
 	{
 		const int32 y = Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * i;
 		{
@@ -74,22 +89,5 @@ void TitleMenu::draw() const
 			const TextureRegion textureRegion = Scaled3x(m_menuItemTextureAtlas(i, kMainTexCol));
 			textureRegion.draw(x - textureRegion.size.x / 2, y);
 		}
-	}
-}
-
-void TitleMenu::processMenuEvent(const MenuEvent& event)
-{
-	switch (event.trigger)
-	{
-	case MenuEventTrigger::Enter:
-		m_pTitleScene->processMenuItem(Item{ event.menuItemIdx });
-		break;
-
-	case MenuEventTrigger::Esc:
-		m_menu.moveCursorTo(kExit);
-		break;
-
-	default:
-		break;
 	}
 }

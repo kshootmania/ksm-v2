@@ -166,6 +166,12 @@
     <Filter Include="Source Files\scene\option">
       <UniqueIdentifier>{59aa9199-f440-4e0d-ba25-781b1fd6065e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{d6ebece8-0468-43cf-8697-cdb6e76f31a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{84755739-8c4c-4c0a-9a55-5c0625556d47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene.cpp">
@@ -176,12 +182,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ui\menu.cpp">
-      <Filter>Source Files\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="ui\menu_helper.cpp">
-      <Filter>Source Files\ui</Filter>
     </ClCompile>
     <ClCompile Include="scene\title\title_menu.cpp">
       <Filter>Source Files\scene\title</Filter>
@@ -209,6 +209,15 @@
     </ClCompile>
     <ClCompile Include="scene\option\option_assets.cpp">
       <Filter>Source Files\scene\option</Filter>
+    </ClCompile>
+    <ClCompile Include="key_config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ksm_ini_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="config_ini.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -850,9 +859,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\menu.hpp">
-      <Filter>Header Files\ui</Filter>
-    </ClInclude>
     <ClInclude Include="ui\menu_helper.hpp">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
@@ -879,6 +885,21 @@
     </ClInclude>
     <ClInclude Include="scene\option\option_assets.hpp">
       <Filter>Header Files\scene\option</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\linear_menu.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="key_config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="concepts.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ksm_ini_data.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config_ini.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

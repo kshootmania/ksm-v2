@@ -114,9 +114,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="config_ini.cpp" />
     <ClCompile Include="graphics\screen_utils.cpp" />
     <ClCompile Include="graphics\texture_atlas.cpp" />
     <ClCompile Include="i18n.cpp" />
+    <ClCompile Include="key_config.cpp" />
+    <ClCompile Include="ksm_ini_data.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene\option\option_assets.cpp" />
@@ -126,8 +129,6 @@
     <ClCompile Include="scene\title\title_menu.cpp" />
     <ClCompile Include="scene\title\title_scene.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="ui\menu.cpp" />
-    <ClCompile Include="ui\menu_helper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -323,9 +324,13 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="concepts.hpp" />
+    <ClInclude Include="config_ini.hpp" />
+    <ClInclude Include="ksm_ini_data.hpp" />
     <ClInclude Include="graphics\screen_utils.hpp" />
     <ClInclude Include="graphics\texture_atlas.hpp" />
     <ClInclude Include="i18n.hpp" />
+    <ClInclude Include="key_config.hpp" />
     <ClInclude Include="scene.hpp" />
     <ClInclude Include="scene\option\option_assets.hpp" />
     <ClInclude Include="scene\option\option_scene.hpp" />
@@ -334,7 +339,7 @@
     <ClInclude Include="scene\title\title_menu.hpp" />
     <ClInclude Include="scene\title\title_scene.hpp" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="ui\menu.hpp" />
+    <ClInclude Include="ui\linear_menu.hpp" />
     <ClInclude Include="ui\menu_helper.hpp" />
   </ItemGroup>
   <ItemGroup>

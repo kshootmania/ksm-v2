@@ -25,16 +25,16 @@ void OptionScene::draw() const
 {
 	ScreenUtils::FitToHeight(m_bgTexture).drawAt(Scene::Center());
 
-	if (!m_menu.currentActiveMenu().has_value())
+	//if (!m_menu.level() == 0)
 	{
 		m_menu.draw();
 
 		m_font(I18n::Get(I18n::Option::kGuideTop)).draw(ScreenUtils::ScaledByWidth(kGuideX), ScreenUtils::Scaled(kGuideY), Palette::White);
 	}
-	else
-	{
-		m_font(I18n::Get(I18n::Option::kGuideOption)).draw(ScreenUtils::ScaledByWidth(kGuideX), ScreenUtils::Scaled(kGuideY), Palette::White);
-	}
+	//else
+	//{
+	//	m_font(I18n::Get(I18n::Option::kGuideOption)).draw(ScreenUtils::ScaledByWidth(kGuideX), ScreenUtils::Scaled(kGuideY), Palette::White);
+	//}
 }
 
 void OptionScene::exitScene()

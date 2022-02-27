@@ -3,6 +3,7 @@
 #include "scene/title/title_assets.hpp"
 #include "scene/option/option_assets.hpp"
 #include "i18n.hpp"
+#include "config_ini.hpp"
 
 void Main()
 {
@@ -16,6 +17,9 @@ void Main()
 
 	// Load language text file
 	I18n::LoadLanguage(U"Japanese");
+
+	// Load config.ini
+	ConfigIni::Load();
 
 	// Main loop
 	SceneManager<StringView> sceneManager = SceneManagement::MakeSceneManager();

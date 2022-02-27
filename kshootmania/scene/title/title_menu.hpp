@@ -4,12 +4,23 @@
 
 class TitleScene;
 
-class TitleMenu : public IMenuEventHandler
+class TitleMenu
 {
+public:
+	enum Item : int32
+	{
+		kStart = 0,
+		kOption,
+		kInputGate,
+		kExit,
+
+		kItemEnumCount,
+	};
+
 private:
 	TitleScene* m_pTitleScene;
 
-	Menu m_menu;
+	LinearMenu<Item> m_menu;
 
 	TextureAtlas m_menuItemTextureAtlas;
 
@@ -20,21 +31,9 @@ private:
 	double m_easedCursorPos = 0.0;
 
 public:
-	enum Item : int32
-	{
-		kStart = 0,
-		kOption,
-		kInputGate,
-		kExit,
-
-		kItemMax,
-	};
-
 	explicit TitleMenu(TitleScene* pTitleScene);
 
 	void update();
 
 	void draw() const;
-
-	virtual void processMenuEvent(const MenuEvent& event) override;
 };
