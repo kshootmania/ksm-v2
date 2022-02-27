@@ -1,6 +1,6 @@
 ﻿#include "option_scene.hpp"
 #include "option_assets.hpp"
-#include "i18n.hpp"
+#include "i18n/i18n.hpp"
 
 namespace
 {

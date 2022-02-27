@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "key_config.hpp"
+#include "input/key_config.hpp"
 
 using IsCyclicMenu = YesNo<struct IsCyclicMenu_tag>;
 

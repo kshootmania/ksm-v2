@@ -114,12 +114,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="config_ini.cpp" />
     <ClCompile Include="graphics\screen_utils.cpp" />
     <ClCompile Include="graphics\texture_atlas.cpp" />
-    <ClCompile Include="i18n.cpp" />
-    <ClCompile Include="key_config.cpp" />
-    <ClCompile Include="ksm_ini_data.cpp" />
+    <ClCompile Include="i18n\i18n.cpp" />
+    <ClCompile Include="ini\config_ini.cpp" />
+    <ClCompile Include="ini\ksm_ini_data.cpp" />
+    <ClCompile Include="input\key_config.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene\option\option_assets.cpp" />
@@ -324,12 +324,12 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config_ini.hpp" />
-    <ClInclude Include="ksm_ini_data.hpp" />
     <ClInclude Include="graphics\screen_utils.hpp" />
     <ClInclude Include="graphics\texture_atlas.hpp" />
-    <ClInclude Include="i18n.hpp" />
-    <ClInclude Include="key_config.hpp" />
+    <ClInclude Include="i18n\i18n.hpp" />
+    <ClInclude Include="ini\config_ini.hpp" />
+    <ClInclude Include="ini\ksm_ini_data.hpp" />
+    <ClInclude Include="input\key_config.hpp" />
     <ClInclude Include="scene.hpp" />
     <ClInclude Include="scene\option\option_assets.hpp" />
     <ClInclude Include="scene\option\option_scene.hpp" />

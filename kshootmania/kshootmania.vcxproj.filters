@@ -151,9 +151,6 @@
     <Filter Include="Header Files\ui">
       <UniqueIdentifier>{c63c36d9-9448-45ea-8e1d-40978dc6d13d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ui">
-      <UniqueIdentifier>{66946cd1-89fc-4d95-a495-9f144e2559c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\graphics">
       <UniqueIdentifier>{11a5a00a-df37-4e4e-8cf5-9f87b5d27d8d}</UniqueIdentifier>
     </Filter>
@@ -166,11 +163,23 @@
     <Filter Include="Source Files\scene\option">
       <UniqueIdentifier>{59aa9199-f440-4e0d-ba25-781b1fd6065e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\util">
-      <UniqueIdentifier>{d6ebece8-0468-43cf-8697-cdb6e76f31a5}</UniqueIdentifier>
+    <Filter Include="Header Files\i18n">
+      <UniqueIdentifier>{7dba25b3-c476-49d4-9050-88925f11d4c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\util">
-      <UniqueIdentifier>{84755739-8c4c-4c0a-9a55-5c0625556d47}</UniqueIdentifier>
+    <Filter Include="Source Files\i18n">
+      <UniqueIdentifier>{0cd44259-0dd0-448d-b0d4-28d4bfea9965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{e5f218a8-f193-4974-a720-105dcebf11d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\input">
+      <UniqueIdentifier>{406ff180-8949-463e-859b-981e95f59292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ini">
+      <UniqueIdentifier>{a58e93a7-4cc8-4fb5-928d-dd58599a0eec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ini">
+      <UniqueIdentifier>{e2a544a5-8cf4-44db-a021-dfe8e0c8eab3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -198,9 +207,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="i18n.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="scene\option\option_scene.cpp">
       <Filter>Source Files\scene\option</Filter>
     </ClCompile>
@@ -210,14 +216,17 @@
     <ClCompile Include="scene\option\option_assets.cpp">
       <Filter>Source Files\scene\option</Filter>
     </ClCompile>
-    <ClCompile Include="key_config.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="input\key_config.cpp">
+      <Filter>Source Files\input</Filter>
     </ClCompile>
-    <ClCompile Include="ksm_ini_data.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="i18n\i18n.cpp">
+      <Filter>Source Files\i18n</Filter>
     </ClCompile>
-    <ClCompile Include="config_ini.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ini\config_ini.cpp">
+      <Filter>Source Files\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="ini\ksm_ini_data.cpp">
+      <Filter>Source Files\ini</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -874,9 +883,6 @@
     <ClInclude Include="graphics\screen_utils.hpp">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="i18n.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="scene\option\option_menu.hpp">
       <Filter>Header Files\scene\option</Filter>
     </ClInclude>
@@ -889,14 +895,17 @@
     <ClInclude Include="ui\linear_menu.hpp">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
-    <ClInclude Include="key_config.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="input\key_config.hpp">
+      <Filter>Header Files\input</Filter>
     </ClInclude>
-    <ClInclude Include="ksm_ini_data.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="i18n\i18n.hpp">
+      <Filter>Header Files\i18n</Filter>
     </ClInclude>
-    <ClInclude Include="config_ini.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ini\ksm_ini_data.hpp">
+      <Filter>Header Files\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="ini\config_ini.hpp">
+      <Filter>Header Files\ini</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

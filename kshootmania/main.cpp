@@ -2,8 +2,8 @@
 #include "scene.hpp"
 #include "scene/title/title_assets.hpp"
 #include "scene/option/option_assets.hpp"
-#include "i18n.hpp"
-#include "config_ini.hpp"
+#include "i18n/i18n.hpp"
+#include "ini/config_ini.hpp"
 
 void Main()
 {
