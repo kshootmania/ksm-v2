@@ -11,7 +11,6 @@ namespace
 OptionScene::OptionScene(const InitData& initData)
 	: SceneManager<StringView>::Scene(initData)
 	, m_bgTexture(TextureAsset(OptionTexture::kBG))
-	, m_menu(this)
 	, m_font(ScreenUtils::Scaled(18), FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc")
 {
 }

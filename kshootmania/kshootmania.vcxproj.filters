@@ -195,9 +195,6 @@
     <ClCompile Include="scene\title\title_menu.cpp">
       <Filter>Source Files\scene\title</Filter>
     </ClCompile>
-    <ClCompile Include="scene\title\title_assets.cpp">
-      <Filter>Source Files\scene\title</Filter>
-    </ClCompile>
     <ClCompile Include="graphics\texture_atlas.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
@@ -211,9 +208,6 @@
       <Filter>Source Files\scene\option</Filter>
     </ClCompile>
     <ClCompile Include="scene\option\option_menu.cpp">
-      <Filter>Source Files\scene\option</Filter>
-    </ClCompile>
-    <ClCompile Include="scene\option\option_assets.cpp">
       <Filter>Source Files\scene\option</Filter>
     </ClCompile>
     <ClCompile Include="input\key_config.cpp">

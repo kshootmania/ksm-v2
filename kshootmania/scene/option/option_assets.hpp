@@ -2,11 +2,6 @@
 
 namespace OptionTexture
 {
-	constexpr StringView kBG = U"Option_BG";
-	constexpr StringView kTopMenuItem = U"Option_TopMenuItem";
-}
-
-namespace OptionAssets
-{
-	void RegisterAssets();
+	constexpr StringView kBG = U"bg.jpg";
+	constexpr StringView kTopMenuItem = U"config_item.gif";
 }

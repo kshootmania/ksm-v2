@@ -22,9 +22,8 @@ namespace
 	}
 }
 
-OptionMenu::OptionMenu(OptionScene* pOptionScene)
-	: m_pOptionScene(pOptionScene)
-	, m_menu(MenuHelper::MakeVerticalMenu(
+OptionMenu::OptionMenu()
+	: m_menu(MenuHelper::MakeVerticalMenu(
 		kItemEnumCount,
 		MenuHelper::ButtonFlags::kArrow | MenuHelper::ButtonFlags::kBT | MenuHelper::ButtonFlags::kBTOpposite))
 	, m_menuItemTextureAtlas(OptionTexture::kTopMenuItem, kItemEnumCount)

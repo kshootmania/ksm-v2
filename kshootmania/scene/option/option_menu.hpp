@@ -18,8 +18,6 @@ public:
 	};
 
 private:
-	OptionScene* m_pOptionScene;
-
 	LinearMenu<Item> m_menu;
 
 	TextureAtlas m_menuItemTextureAtlas;
@@ -27,7 +25,7 @@ private:
 	Stopwatch m_stopwatch;
 
 public:
-	explicit OptionMenu(OptionScene* pOptionScene);
+	OptionMenu();
 
 	void update();
 
