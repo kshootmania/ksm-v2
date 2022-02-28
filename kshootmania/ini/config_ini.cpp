@@ -1,6 +1,6 @@
 ﻿#include "config_ini.hpp"
 #include "ksm_ini_data.hpp"
-#include "key_config.hpp"
+#include "input/key_config.hpp"
 
 namespace
 {

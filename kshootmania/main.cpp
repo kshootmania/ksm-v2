@@ -7,6 +7,9 @@
 
 void RegisterAssets()
 {
+	// Note: Assets are not loaded here. They are loaded at the time of use.
+
+	// Register all files under the "imgs" directory
 	constexpr FilePathView kImgPath = U"imgs";
 	const FilePath imgFullPath = FileSystem::FullPath(kImgPath);
 	for (const FilePath& path : FileSystem::DirectoryContents(imgFullPath, Recursive::Yes))
@@ -14,6 +17,7 @@ void RegisterAssets()
 		TextureAsset::Register(FileSystem::RelativePath(path, imgFullPath), path);
 	}
 
+	// Register all files under the "se" directory
 	constexpr FilePathView kSePath = U"se";
 	const FilePath seFullPath = FileSystem::FullPath(kSePath);
 	for (const FilePath& path : FileSystem::DirectoryContents(seFullPath, Recursive::Yes))
@@ -34,7 +38,6 @@ void Main()
 	ConfigIni::Load();
 
 	// Register asset list
-	// (Note: Assets are not loaded here. They are loaded at the time of use.)
 	RegisterAssets();
 
 	// Main loop
