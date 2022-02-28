@@ -181,6 +181,9 @@
     <Filter Include="Header Files\ini">
       <UniqueIdentifier>{e2a544a5-8cf4-44db-a021-dfe8e0c8eab3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{4acadc9e-0378-4a21-8de5-48077219f27e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene.cpp">
@@ -221,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="ini\ksm_ini_data.cpp">
       <Filter>Source Files\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\linear_menu.cpp">
+      <Filter>Source Files\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,6 @@
 
 using IsCyclicMenu = YesNo<struct IsCyclicMenu_tag>;
 
-template <typename T>
 class LinearMenu
 {
 private:
@@ -20,6 +19,7 @@ private:
 	Optional<Timer> m_intervalTimer;
 
 public:
+	template <typename T>
 	LinearMenu(
 		T enumCount,
 		const Array<KeyConfig::Button>& incrementButtons,
@@ -27,6 +27,7 @@ public:
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0);
 
+	template <typename T>
 	LinearMenu(
 		T cursorMin,
 		T cursorMax,
@@ -35,15 +36,17 @@ public:
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0);
 
+	template <typename T = int32>
 	T cursor() const;
 
+	template <typename T>
 	void setCursor(T value);
 
 	void update();
 };
 
 template<typename T>
-LinearMenu<T>::LinearMenu(
+LinearMenu::LinearMenu(
 	T enumCount,
 	const Array<KeyConfig::Button>& incrementButtons,
 	const Array<KeyConfig::Button>& decrementButtons,
@@ -60,7 +63,7 @@ LinearMenu<T>::LinearMenu(
 }
 
 template<typename T>
-LinearMenu<T>::LinearMenu(
+LinearMenu::LinearMenu(
 	T cursorMin,
 	T cursorMax,
 	const Array<KeyConfig::Button>& incrementButtons,
@@ -78,81 +81,13 @@ LinearMenu<T>::LinearMenu(
 }
 
 template<typename T>
-T LinearMenu<T>::cursor() const
+T LinearMenu::cursor() const
 {
 	return static_cast<T>(m_cursor);
 }
 
 template<typename T>
-void LinearMenu<T>::setCursor(T value)
+void LinearMenu::setCursor(T value)
 {
 	m_cursor = Clamp(static_cast<int32>(value), m_cursorMin, m_cursorMax);
-}
-
-template<typename T>
-void LinearMenu<T>::update()
-{
-	if (m_intervalTimer.has_value()) // Menu accepting hold-down
-	{
-		if (m_intervalTimer->isStarted() && !m_intervalTimer->reachedZero())
-		{
-			return;
-		}
-
-		const bool decrementKeyPressed = KeyConfig::AnyButtonPressed(m_decrementButtons);
-		const bool incrementKeyPressed = KeyConfig::AnyButtonPressed(m_incrementButtons);
-		if (decrementKeyPressed && !incrementKeyPressed)
-		{
-			if (m_cursor > m_cursorMin)
-			{
-				--m_cursor;
-				m_intervalTimer->restart();
-			}
-			else if (m_cyclic)
-			{
-				m_cursor = m_cursorMax;
-				m_intervalTimer->restart();
-			}
-		}
-		else if (incrementKeyPressed && !decrementKeyPressed)
-		{
-			if (m_cursor < m_cursorMax)
-			{
-				++m_cursor;
-				m_intervalTimer->restart();
-			}
-			else if (m_cyclic)
-			{
-				m_cursor = 0;
-				m_intervalTimer->restart();
-			}
-		}
-	}
-	else // Menu not accepting hold-down
-	{
-		const bool decrementKeyDown = KeyConfig::AnyButtonDown(m_decrementButtons);
-		const bool incrementKeyDown = KeyConfig::AnyButtonDown(m_incrementButtons);
-		if (decrementKeyDown && !incrementKeyDown)
-		{
-			if (m_cursor > m_cursorMin)
-			{
-				--m_cursor;
-			}
-			else if (m_cyclic)
-			{
-				m_cursor = m_cursorMax;
-			}
-		}
-		else if (incrementKeyDown && !decrementKeyDown)
-		{
-			if (m_cursor < m_cursorMax)
-			{
-				++m_cursor;
-			}
-			else if (m_cyclic)
-			{
-				m_cursor = 0;
-			}
-		}
-	}
 }

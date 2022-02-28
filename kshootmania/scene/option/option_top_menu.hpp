@@ -4,6 +4,13 @@
 
 class OptionTopMenu
 {
+private:
+	LinearMenu m_menu;
+
+	TextureAtlas m_itemTextureAtlas;
+
+	Stopwatch m_stopwatch;
+
 public:
 	enum Item : int32
 	{
@@ -15,14 +22,6 @@ public:
 		kItemEnumCount,
 	};
 
-private:
-	LinearMenu<Item> m_menu;
-
-	TextureAtlas m_itemTextureAtlas;
-
-	Stopwatch m_stopwatch;
-
-public:
 	OptionTopMenu();
 
 	void update();

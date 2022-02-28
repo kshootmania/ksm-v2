@@ -127,6 +127,7 @@
     <ClCompile Include="scene\title\title_menu.cpp" />
     <ClCompile Include="scene\title\title_scene.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="ui\linear_menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />

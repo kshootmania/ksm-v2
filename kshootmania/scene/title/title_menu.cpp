@@ -30,7 +30,7 @@ namespace
 
 TitleMenu::TitleMenu(TitleScene* pTitleScene)
 	: m_pTitleScene(pTitleScene)
-	, m_menu(MenuHelper::MakeVerticalMenu<Item>(
+	, m_menu(MenuHelper::MakeVerticalMenu(
 		Item::kItemEnumCount,
 		MenuHelper::ButtonFlags::kArrow |
 		MenuHelper::ButtonFlags::kBT |
@@ -51,7 +51,7 @@ void TitleMenu::update()
 
 	if (KeyConfig::Down(KeyConfig::kStart))
 	{
-		m_pTitleScene->processMenuItem(m_menu.cursor());
+		m_pTitleScene->processMenuItem(m_menu.cursor<Item>());
 	}
 	else if (KeyConfig::Down(KeyConfig::kBack))
 	{

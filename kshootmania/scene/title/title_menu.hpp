@@ -6,6 +6,19 @@ class TitleScene;
 
 class TitleMenu
 {
+private:
+	TitleScene* const m_pTitleScene;
+
+	LinearMenu m_menu;
+
+	TextureAtlas m_menuItemTextureAtlas;
+
+	Texture m_menuCursorTexture;
+
+	Stopwatch m_stopwatch;
+
+	double m_easedCursorPos = 0.0;
+
 public:
 	enum Item : int32
 	{
@@ -17,20 +30,6 @@ public:
 		kItemEnumCount,
 	};
 
-private:
-	TitleScene* m_pTitleScene;
-
-	LinearMenu<Item> m_menu;
-
-	TextureAtlas m_menuItemTextureAtlas;
-
-	Texture m_menuCursorTexture;
-
-	Stopwatch m_stopwatch;
-
-	double m_easedCursorPos = 0.0;
-
-public:
 	explicit TitleMenu(TitleScene* pTitleScene);
 
 	void update();

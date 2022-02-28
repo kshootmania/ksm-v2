@@ -43,11 +43,12 @@ void OptionTopMenu::draw() const
 	const int32 x = Scene::Center().x;
 
 	// Draw menu items
+	const int32 cursorIdx = m_menu.cursor();
 	for (int32 i = 0; i < kItemEnumCount; ++i)
 	{
 		const int32 y = Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * i;
 		const TextureRegion textureRegion = Scaled2x(m_itemTextureAtlas(i));
-		const double alpha = MenuCursorAlphaValue(m_stopwatch.sF(), i == m_menu.cursor());
+		const double alpha = MenuCursorAlphaValue(m_stopwatch.sF(), i == cursorIdx);
 		textureRegion.draw(x - textureRegion.size.x / 2, y, ColorF{ 1.0, alpha });
 	}
 }

@@ -18,7 +18,7 @@ namespace MenuHelper
 	}
 
 	template <typename T>
-	LinearMenu<T> MakeHorizontalMenu(
+	LinearMenu MakeHorizontalMenu(
 		T enumCount,
 		int32 buttonFlags = kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
@@ -62,7 +62,7 @@ namespace MenuHelper
 			incrementButtons.push_back(KeyConfig::kLeftLaserR);
 		}
 
-		return LinearMenu<T>(
+		return LinearMenu(
 			static_cast<T>(0),
 			static_cast<T>(static_cast<int32>(enumCount) - 1),
 			incrementButtons,
@@ -72,7 +72,7 @@ namespace MenuHelper
 	}
 
 	template <typename T>
-	LinearMenu<T> MakeVerticalMenu(
+	LinearMenu MakeVerticalMenu(
 		T enumCount,
 		int32 buttonFlags = kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
@@ -116,7 +116,7 @@ namespace MenuHelper
 			incrementButtons.push_back(KeyConfig::kRightLaserR);
 		}
 
-		return LinearMenu<T>(
+		return LinearMenu(
 			static_cast<T>(0),
 			static_cast<T>(static_cast<int32>(enumCount) - 1),
 			incrementButtons,
