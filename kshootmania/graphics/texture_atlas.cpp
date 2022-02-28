@@ -4,6 +4,11 @@ namespace
 {
 	Array<Rect> MakeRects(const Texture & texture, int32 rowSize, int32 columnSize)
 	{
+		if (rowSize == 0)
+		{
+			return Array<Rect>();
+		}
+
 		const Size textureSize = texture.size();
 		const int32 w = textureSize.x / columnSize;
 		const int32 h = textureSize.y / rowSize;

@@ -90,8 +90,8 @@ namespace I18n
 
 	enum class Option : int32
 	{
-		kWindow = 0,
-		kFullscreen = 1,
+		kFullscreenOff = 0,
+		kFullscreenOn = 1,
 		kResolutionX = 2,
 		kTextureSizeHighQuality = 3,
 		kTextureSizeNormalQuality = 4,

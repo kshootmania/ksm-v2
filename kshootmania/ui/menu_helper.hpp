@@ -7,13 +7,21 @@ namespace MenuHelper
 	{
 		enum ButtonFlags : int32
 		{
-			kArrow         = 1 << 0,
-			kBT            = 1 << 1,
-			kBTOpposite    = 1 << 2,
-			kFX            = 1 << 3,
-			kFXOpposite    = 1 << 4,
-			kLaser         = 1 << 5,
+			kArrow = 1 << 0,
+			kBT = 1 << 1,
+			kBTOpposite = 1 << 2,
+			kFX = 1 << 3,
+			kFXOpposite = 1 << 4,
+			kLaser = 1 << 5,
 			kLaserOpposite = 1 << 6,
+
+			kArrowOrBT = kArrow | kBT,
+			kArrowOrBTAll = kArrow | kBT | kBTOpposite,
+			kArrowOrFX = kArrow | kFX,
+			kArrowOrLaser = kArrow | kLaser,
+			kArrowOrLaserAll = kArrow | kLaser | kLaserOpposite,
+			kArrowOrBTOrLaser = kArrow | kBT | kLaser,
+			kArrowOrBTOrFXOrLaser = kArrow | kBT | kFX | kLaser,
 		};
 	}
 

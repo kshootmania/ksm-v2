@@ -27,4 +27,10 @@ public:
 	void update();
 
 	void draw() const;
+
+	template <typename T>
+	T cursor()
+	{
+		return m_menu.cursor<T>();
+	}
 };

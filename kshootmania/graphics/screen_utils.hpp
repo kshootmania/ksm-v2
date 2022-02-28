@@ -42,6 +42,17 @@ namespace ScreenUtils
 		return textureRegion.resized(w, h);
 	}
 
+	inline int32 LeftMargin()
+	{
+		const Size screenSize = Scene::Size();
+		return (screenSize.x - screenSize.y * kBaseScreenWidth / kBaseScreenHeight) / 2;
+	}
+
+	inline Vec2 LeftMarginVec()
+	{
+		return Vec2{ LeftMargin(), 0.0 };
+	}
+
 	// Scaling functions for 2x-resolution textures
 
 	constexpr int32 kScale2xNumerator = 1;

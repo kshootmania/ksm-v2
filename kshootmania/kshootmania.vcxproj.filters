@@ -228,6 +228,12 @@
     <ClCompile Include="ui\linear_menu.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
+    <ClCompile Include="scene\option\option_menu_field.cpp">
+      <Filter>Source Files\scene\option</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\option\option_menu.cpp">
+      <Filter>Source Files\scene\option</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -906,6 +912,12 @@
     </ClInclude>
     <ClInclude Include="ini\config_ini.hpp">
       <Filter>Header Files\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\option\option_menu.hpp">
+      <Filter>Header Files\scene\option</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\option\option_menu_field.hpp">
+      <Filter>Header Files\scene\option</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
