@@ -207,7 +207,7 @@
     <ClCompile Include="scene\option\option_scene.cpp">
       <Filter>Source Files\scene\option</Filter>
     </ClCompile>
-    <ClCompile Include="scene\option\option_menu.cpp">
+    <ClCompile Include="scene\option\option_top_menu.cpp">
       <Filter>Source Files\scene\option</Filter>
     </ClCompile>
     <ClCompile Include="input\key_config.cpp">
@@ -877,7 +877,7 @@
     <ClInclude Include="graphics\screen_utils.hpp">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="scene\option\option_menu.hpp">
+    <ClInclude Include="scene\option\option_top_menu.hpp">
       <Filter>Header Files\scene\option</Filter>
     </ClInclude>
     <ClInclude Include="scene\option\option_scene.hpp">

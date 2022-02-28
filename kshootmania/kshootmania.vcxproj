@@ -122,7 +122,7 @@
     <ClCompile Include="input\key_config.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene.cpp" />
-    <ClCompile Include="scene\option\option_menu.cpp" />
+    <ClCompile Include="scene\option\option_top_menu.cpp" />
     <ClCompile Include="scene\option\option_scene.cpp" />
     <ClCompile Include="scene\title\title_menu.cpp" />
     <ClCompile Include="scene\title\title_scene.cpp" />
@@ -331,7 +331,7 @@
     <ClInclude Include="scene.hpp" />
     <ClInclude Include="scene\option\option_assets.hpp" />
     <ClInclude Include="scene\option\option_scene.hpp" />
-    <ClInclude Include="scene\option\option_menu.hpp" />
+    <ClInclude Include="scene\option\option_top_menu.hpp" />
     <ClInclude Include="scene\title\title_assets.hpp" />
     <ClInclude Include="scene\title\title_menu.hpp" />
     <ClInclude Include="scene\title\title_scene.hpp" />

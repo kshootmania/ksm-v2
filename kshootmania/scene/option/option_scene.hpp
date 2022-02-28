@@ -1,12 +1,12 @@
 ﻿#pragma once
 #include "scene.hpp"
-#include "option_menu.hpp"
+#include "option_top_menu.hpp"
 
 class OptionScene : public SceneManager<StringView>::Scene
 {
 private:
 	Texture m_bgTexture;
-	OptionMenu m_menu;
+	OptionTopMenu m_menu;
 	Font m_font;
 
 public:

@@ -2,9 +2,7 @@
 #include "ui/menu_helper.hpp"
 #include "graphics/texture_atlas.hpp"
 
-class OptionScene;
-
-class OptionMenu
+class OptionTopMenu
 {
 public:
 	enum Item : int32
@@ -20,12 +18,12 @@ public:
 private:
 	LinearMenu<Item> m_menu;
 
-	TextureAtlas m_menuItemTextureAtlas;
+	TextureAtlas m_itemTextureAtlas;
 
 	Stopwatch m_stopwatch;
 
 public:
-	OptionMenu();
+	OptionTopMenu();
 
 	void update();
 

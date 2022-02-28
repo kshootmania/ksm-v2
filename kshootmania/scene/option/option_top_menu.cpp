@@ -1,4 +1,4 @@
-﻿#include "option_menu.hpp"
+﻿#include "option_top_menu.hpp"
 #include "option_scene.hpp"
 #include "option_assets.hpp"
 
@@ -22,21 +22,21 @@ namespace
 	}
 }
 
-OptionMenu::OptionMenu()
+OptionTopMenu::OptionTopMenu()
 	: m_menu(MenuHelper::MakeVerticalMenu(
 		kItemEnumCount,
 		MenuHelper::ButtonFlags::kArrow | MenuHelper::ButtonFlags::kBT | MenuHelper::ButtonFlags::kBTOpposite))
-	, m_menuItemTextureAtlas(OptionTexture::kTopMenuItem, kItemEnumCount)
+	, m_itemTextureAtlas(OptionTexture::kTopMenuItem, kItemEnumCount)
 	, m_stopwatch(StartImmediately::Yes)
 {
 }
 
-void OptionMenu::update()
+void OptionTopMenu::update()
 {
 	m_menu.update();
 }
 
-void OptionMenu::draw() const
+void OptionTopMenu::draw() const
 {
 	using namespace ScreenUtils;
 
@@ -46,7 +46,7 @@ void OptionMenu::draw() const
 	for (int32 i = 0; i < kItemEnumCount; ++i)
 	{
 		const int32 y = Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * i;
-		const TextureRegion textureRegion = Scaled2x(m_menuItemTextureAtlas(i));
+		const TextureRegion textureRegion = Scaled2x(m_itemTextureAtlas(i));
 		const double alpha = MenuCursorAlphaValue(m_stopwatch.sF(), i == m_menu.cursor());
 		textureRegion.draw(x - textureRegion.size.x / 2, y, ColorF{ 1.0, alpha });
 	}
