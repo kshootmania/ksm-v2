@@ -5,7 +5,7 @@ void LinearMenu::increment()
 	m_cursor += m_cursorStep;
 
 	const int32 range = m_cursorMax - m_cursorMin;
-	if (m_cyclic && !IsNaN(m_cursor) && !IsNaN(range) && range > 0)
+	if (m_cyclic && range > 0)
 	{
 		while (m_cursor > m_cursorMax)
 		{
@@ -23,7 +23,7 @@ void LinearMenu::decrement()
 	m_cursor -= m_cursorStep;
 
 	const int32 range = m_cursorMax - m_cursorMin;
-	if (m_cyclic && !IsNaN(m_cursor) && !IsNaN(range) && range > 0)
+	if (m_cyclic && range > 0)
 	{
 		while (m_cursor < m_cursorMin)
 		{

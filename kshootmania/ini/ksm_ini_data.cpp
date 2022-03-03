@@ -32,8 +32,6 @@ void KSMIniData::load(FilePathView path)
 		const StringView key = line.substrView(0, equalPos);
 		const StringView value = line.substrView(equalPos + 1);
 		m_hashTable[key] = value;
-
-		Print << key << U"=" << value;
 	}
 }
 

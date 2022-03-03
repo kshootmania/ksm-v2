@@ -1,5 +1,6 @@
 ﻿#include "option_menu_field.hpp"
 #include "ui/menu_helper.hpp"
+#include "ini/config_ini.hpp"
 
 namespace
 {
@@ -34,14 +35,14 @@ namespace
 		return pairs;
 	}
 
-	LinearMenu MakeMenuInt(int32 valueMin, int32 valueMax, int32 valueStep)
+	LinearMenu MakeMenuInt(int32 valueMin, int32 valueMax, int32 valueDefault, int32 valueStep)
 	{
-		return MenuHelper::MakeHorizontalMenuWithMinMax(valueMin, valueMax, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser, IsCyclicMenu::No, 0.0, valueStep);
+		return MenuHelper::MakeHorizontalMenuWithMinMax(valueMin, valueMax, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser, IsCyclicMenu::No, 0.0, valueDefault, valueStep);
 	}
 
-	LinearMenu MakeMenuEnum(int32 enumCount)
+	LinearMenu MakeMenuEnum(int32 enumCount, int32 valueDefault)
 	{
-		return MenuHelper::MakeHorizontalMenu(enumCount, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser);
+		return MenuHelper::MakeHorizontalMenu(enumCount, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser, IsCyclicMenu::No, 0.0, valueDefault);
 	}
 
 	// Note: The order is strange, but do not change this in order to preserve the order of the textures.
@@ -75,17 +76,39 @@ namespace
 
 		return kArrowLeftRight;
 	}
+
+	int32 FindDefaultCursor(StringView configIniKey, bool isEnum, const Array<std::pair<String, String>>& valueDisplayNamePairs, int32 cursorMin)
+	{
+		if (ConfigIni::HasValue(configIniKey))
+		{
+			if (isEnum)
+			{
+				const StringView value = ConfigIni::GetString(configIniKey);
+				for (std::size_t i = 0; i < valueDisplayNamePairs.size(); ++i)
+				{
+					if (valueDisplayNamePairs[i].first == value)
+					{
+						return static_cast<int32>(i);
+					}
+				}
+			}
+			else
+			{
+				return ConfigIni::GetInt(configIniKey, cursorMin);
+			}
+		}
+
+		return cursorMin;
+	}
 }
 
 OptionMenuFieldCreateInfo::OptionMenuFieldCreateInfo(StringView configIniKey, const Array<String>& valueDisplayNames)
-	: configIniKey(configIniKey)
-	, valueDisplayNamePairs(ConvertValueDisplayNamePairs(valueDisplayNames))
+	: OptionMenuFieldCreateInfo(configIniKey, ConvertValueDisplayNamePairs(valueDisplayNames))
 {
 }
 
 OptionMenuFieldCreateInfo::OptionMenuFieldCreateInfo(StringView configIniKey, const Array<StringView>& valueDisplayNames)
-	: configIniKey(configIniKey)
-	, valueDisplayNamePairs(ConvertValueDisplayNamePairs(valueDisplayNames))
+	: OptionMenuFieldCreateInfo(configIniKey, ConvertValueDisplayNamePairs(valueDisplayNames))
 {
 }
 
@@ -96,14 +119,12 @@ OptionMenuFieldCreateInfo::OptionMenuFieldCreateInfo(StringView configIniKey, co
 }
 
 OptionMenuFieldCreateInfo::OptionMenuFieldCreateInfo(StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs)
-	: configIniKey(configIniKey)
-	, valueDisplayNamePairs(ConvertValueDisplayNamePairs(valueDisplayNamePairs))
+	: OptionMenuFieldCreateInfo(configIniKey, ConvertValueDisplayNamePairs(valueDisplayNamePairs))
 {
 }
 
 OptionMenuFieldCreateInfo::OptionMenuFieldCreateInfo(StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs)
-	: configIniKey(configIniKey)
-	, valueDisplayNamePairs(ConvertValueDisplayNamePairs(valueDisplayNamePairs))
+	: OptionMenuFieldCreateInfo(configIniKey, ConvertValueDisplayNamePairs(valueDisplayNamePairs))
 {
 }
 
@@ -122,8 +143,8 @@ OptionMenuField::OptionMenuField(const OptionMenuFieldCreateInfo& createInfo)
 	, m_suffixStr(createInfo.suffixStr)
 	, m_valueDisplayNamePairs(createInfo.valueDisplayNamePairs)
 	, m_menu(createInfo.valueStep == 0
-		? MakeMenuEnum(static_cast<int32>(createInfo.valueDisplayNamePairs.size()))
-		: MakeMenuInt(createInfo.valueMin, createInfo.valueMax, createInfo.valueStep))
+		? MakeMenuEnum(static_cast<int32>(createInfo.valueDisplayNamePairs.size()), FindDefaultCursor(m_configIniKey, m_isEnum, m_valueDisplayNamePairs, createInfo.valueMin))
+		: MakeMenuInt(createInfo.valueMin, createInfo.valueMax, FindDefaultCursor(m_configIniKey, m_isEnum, m_valueDisplayNamePairs, createInfo.valueMin), createInfo.valueStep))
 {
 }
 

@@ -32,6 +32,7 @@ namespace MenuHelper
 		int32 buttonFlags = kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		int32 defaultCursor = std::numeric_limits<int32>::min(),
 		int32 cursorStep = 1)
 	{
 		Array<KeyConfig::Button> incrementButtons, decrementButtons;
@@ -79,6 +80,7 @@ namespace MenuHelper
 			decrementButtons,
 			cyclic,
 			intervalSec,
+			defaultCursor,
 			cursorStep);
 	}
 
@@ -88,6 +90,7 @@ namespace MenuHelper
 		int32 buttonFlags = kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		int32 defaultCursor = 0,
 		int32 cursorStep = 1)
 	{
 		return MakeHorizontalMenuWithMinMax(
@@ -96,6 +99,7 @@ namespace MenuHelper
 			buttonFlags,
 			cyclic,
 			intervalSec,
+			defaultCursor,
 			cursorStep);
 	}
 
@@ -106,6 +110,7 @@ namespace MenuHelper
 		int32 buttonFlags = kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		int32 defaultCursor = std::numeric_limits<int32>::min(),
 		int32 cursorStep = 1)
 	{
 		Array<KeyConfig::Button> incrementButtons, decrementButtons;
@@ -153,6 +158,7 @@ namespace MenuHelper
 			decrementButtons,
 			cyclic,
 			intervalSec,
+			defaultCursor,
 			cursorStep);
 	}
 
@@ -162,6 +168,7 @@ namespace MenuHelper
 		int32 buttonFlags = kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		int32 defaultCursor = 0,
 		int32 cursorStep = 1)
 	{
 		return MakeVerticalMenuWithMinMax(
@@ -170,6 +177,7 @@ namespace MenuHelper
 			buttonFlags,
 			cyclic,
 			intervalSec,
+			defaultCursor,
 			cursorStep);
 	}
 }

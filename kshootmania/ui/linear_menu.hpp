@@ -31,6 +31,7 @@ public:
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		int32 defaultCursor = 0,
 		int32 cursorStep = 1);
 
 	template <typename T>
@@ -41,6 +42,7 @@ public:
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		int32 defaultCursor = std::numeric_limits<int32>::min(),
 		int32 cursorStep = 1);
 
 	template <typename T = int32>
@@ -63,6 +65,7 @@ LinearMenu::LinearMenu(
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic,
 		double intervalSec,
+		int32 defaultCursor,
 		int32 cursorStep)
 	: LinearMenu(
 		static_cast<T>(0),
@@ -71,6 +74,7 @@ LinearMenu::LinearMenu(
 		decrementButtons,
 		cyclic,
 		intervalSec,
+		defaultCursor,
 		cursorStep)
 {
 }
@@ -83,13 +87,14 @@ LinearMenu::LinearMenu(
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic,
 		double intervalSec,
+		int32 defaultCursor,
 		int32 cursorStep)
 	: m_incrementButtons(incrementButtons)
 	, m_decrementButtons(decrementButtons)
-	, m_cursorMin(cursorMin)
-	, m_cursorMax(cursorMax)
+	, m_cursorMin(static_cast<int32>(cursorMin))
+	, m_cursorMax(static_cast<int32>(cursorMax))
 	, m_cursorStep(cursorStep)
-	, m_cursor(cursorMin)
+	, m_cursor(Clamp(defaultCursor, static_cast<int32>(cursorMin), static_cast<int32>(cursorMax)))
 	, m_cyclic(cyclic)
 	, m_intervalTimer((intervalSec > 0.0) ? MakeOptional<Timer>(SecondsF(intervalSec), StartImmediately::No) : Optional<Timer>(none))
 {
