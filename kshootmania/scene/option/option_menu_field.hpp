@@ -10,6 +10,10 @@ struct OptionMenuFieldCreateInfo
 
 	Array<std::pair<String, String>> valueDisplayNamePairs;
 
+	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<String>& valueDisplayNames);
+
+	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<StringView>& valueDisplayNames);
+
 	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<std::pair<String, String>>& valueDisplayNamePairs);
 
 	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs);

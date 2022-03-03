@@ -14,11 +14,32 @@ namespace
 		});
 	}
 
+	Array<std::pair<String, String>> ConvertValueDisplayNamePairs(const Array<String>& valueDisplayNames)
+	{
+		Array<std::pair<String, String>> pairs;
+		for (std::size_t i = 0; i < valueDisplayNames.size(); ++i)
+		{
+			pairs.emplace_back(Format(i), valueDisplayNames[i]);
+		}
+		return pairs;
+	}
+
+	Array<std::pair<String, String>> ConvertValueDisplayNamePairs(const Array<StringView>& valueDisplayNames)
+	{
+		Array<std::pair<String, String>> pairs;
+		for (std::size_t i = 0; i < valueDisplayNames.size(); ++i)
+		{
+			pairs.emplace_back(Format(i), valueDisplayNames[i]);
+		}
+		return pairs;
+	}
+
 	LinearMenu MakeMenu(int32 enumCount)
 	{
 		return MenuHelper::MakeHorizontalMenu(enumCount, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser);
 	}
 
+	// Note: The order is strange, but do not change this in order to preserve the order of the textures.
 	enum MenuFieldValueArrowType
 	{
 		kArrowLeft = 0,
@@ -33,19 +54,31 @@ namespace
 		{
 			return kArrowNone;
 		}
-		
+
 		if (cursorIdx == 0)
 		{
 			return kArrowRight;
 		}
 
-		if (cursorIdx = enumCount - 1)
+		if (cursorIdx == enumCount - 1)
 		{
 			return kArrowLeft;
 		}
 
 		return kArrowLeftRight;
 	}
+}
+
+OptionMenuFieldCreateInfo::OptionMenuFieldCreateInfo(StringView configIniKey, const Array<String>& valueDisplayNames)
+	: configIniKey(configIniKey)
+	, valueDisplayNamePairs(ConvertValueDisplayNamePairs(valueDisplayNames))
+{
+}
+
+OptionMenuFieldCreateInfo::OptionMenuFieldCreateInfo(StringView configIniKey, const Array<StringView>& valueDisplayNames)
+	: configIniKey(configIniKey)
+	, valueDisplayNamePairs(ConvertValueDisplayNamePairs(valueDisplayNames))
+{
 }
 
 OptionMenuFieldCreateInfo::OptionMenuFieldCreateInfo(StringView configIniKey, const Array<std::pair<String, String>>& valueDisplayNamePairs)
@@ -84,13 +117,16 @@ void OptionMenuField::draw(const Vec2& position, const TextureRegion& keyTexture
 
 	const Vec2 size{ Scaled(kHalfWidth), Scaled(kHeight) };
 
+	// Draw left half (key)
 	keyTextureRegion.resized(size).draw(position);
 
+	// Draw right half (value)
 	const int32 cursorIdx = m_menu.cursor();
 	const int32 enumCount = static_cast<int32>(m_valueDisplayNamePairs.size());
 	const MenuFieldValueArrowType arrowType = GetMenuFieldValueArrowType(cursorIdx, enumCount);
 	valueTextureAtlas(arrowType).resized(size).draw(position + Vec2{ size.x, 0.0 });
 
+	// Draw text on the right half
 	if (cursorIdx < 0 || enumCount <= cursorIdx)
 	{
 		Print << U"Warning: Option enum value index is out of range! (func=OptionMenuField::draw(), index={}, min=0, max={})"_fmt(cursorIdx, enumCount - 1);

@@ -20,7 +20,7 @@ void ConfigIni::Load()
 			{ Key::kKeyConfigKeyboard1, KeyConfig::kKeyboard1 },
 			{ Key::kKeyConfigKeyboard2, KeyConfig::kKeyboard2 },
 			{ Key::kKeyConfigGamepad1,  KeyConfig::kGamepad1  },
-			{ Key::kKeyConfigGamepad2,  KeyConfig::kGamepad2  }})
+			{ Key::kKeyConfigGamepad2,  KeyConfig::kGamepad2  } })
 	{
 		const StringView defaultValue = KeyConfig::kDefaultConfigValues[targetConfigSet];
 		const StringView configValue = GetString(iniKey, defaultValue);

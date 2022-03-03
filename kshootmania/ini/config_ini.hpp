@@ -6,10 +6,10 @@ namespace ConfigIni
 	{
 		// Option > Display / Sound Settings
 		constexpr StringView kFullScreen = U"fullscr";
-		constexpr StringView kScreenSizeWindow = U"windowsize";
-		constexpr StringView kScreenSizeFullScreen = U"fullscrsize";
+		constexpr StringView kWindowResolution = U"windowsize";
+		constexpr StringView kFullScreenResolution = U"fullscrsize";
 		constexpr StringView kLanguage = U"currentlang";
-		constexpr StringView kTextureSizeDownscale = U"lowquality";
+		constexpr StringView kTextureSize = U"lowquality";
 		constexpr StringView kBGDisplayMode = U"background";
 		constexpr StringView kAlwaysShowOtherFolders = U"showalldir";
 		constexpr StringView kHideAllFolder = U"hide_itemall";
@@ -77,6 +77,42 @@ namespace ConfigIni
 
 		constexpr StringView kNetworkProxyHost = U"proxy_host";
 		constexpr StringView kNetworkProxyPortNumber = U"proxy_port";
+	}
+
+	namespace Value
+	{
+		// Note: "enum class" is not used here to use implicit cast to int32
+
+		namespace TextureSize
+		{
+			enum TextureSize : int32
+			{
+				kSmall = 0,
+				kMedium,
+				kLarge,
+			};
+		}
+
+		namespace BGDisplayMode
+		{
+			enum BGDisplayMode : int32
+			{
+				kHide = 0,
+				kShowNoAnim,
+				kShowAnim,
+			};
+		}
+
+		namespace JudgmentMode
+		{
+			enum JudgmentMode : int32
+			{
+				kOn = 0,
+				kOff,
+				kAuto,
+				kHide,
+			};
+		}
 	}
 
 	void Load();

@@ -31,7 +31,7 @@ OptionMenu::OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMen
 	, m_fieldKeyTextureAtlas(fieldKeyTextureAssetKey, static_cast<int32>(fieldCreateInfos.size()))
 	, m_fieldValueTextureAtlas(OptionTexture::kMenuFieldValue, 4)
 	, m_fieldCursorTexture(TextureAsset(OptionTexture::kMenuFieldCursor))
-	, m_font(ScreenUtils::Scaled(15), FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc")
+	, m_font(ScreenUtils::Scaled(15), FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
 	, m_stopwatch(StartImmediately::Yes)
 {
 }
