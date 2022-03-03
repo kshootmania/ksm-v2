@@ -26,7 +26,6 @@ namespace
 			availableLanguageStrPairs.emplace_back(language, language);
 		}
 
-		// FIXME
 		return {
 			OptionMenu(OptionTexture::kMenuKeyValueDisplaySound, {
 				OptionMenuFieldCreateInfo(ConfigIni::Key::kFullScreen, Array<StringView>{
@@ -76,17 +75,17 @@ namespace
 					I18n::Get(I18n::Option::kHideAllFolderOff),
 					I18n::Get(I18n::Option::kHideAllFolderOn),
 				}),
-				OptionMenuFieldCreateInfo(ConfigIni::Key::kMasterVolume, Array<IntStrPair>{
-					IntStrPair{ 100, U"100" + I18n::Get(I18n::Option::kMasterVolumePercent) },
-				}),
+				OptionMenuFieldCreateInfo(ConfigIni::Key::kMasterVolume, 0, 100, I18n::Get(I18n::Option::kMasterVolumePercent), 5),
 				OptionMenuFieldCreateInfo(ConfigIni::Key::kVsync, Array<StringView>{
 					I18n::Get(I18n::Option::kVsyncOff),
 					I18n::Get(I18n::Option::kVsyncOn),
 				}),
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueInputJudgment, {
+				// TODO
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueOther, {
+				// TODO
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueOther/*FIXME*/, {
 			}),

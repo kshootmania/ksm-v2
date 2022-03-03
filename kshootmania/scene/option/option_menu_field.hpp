@@ -8,6 +8,13 @@ struct OptionMenuFieldCreateInfo
 {
 	String configIniKey;
 
+	// For non-enum
+	int32 valueMin = 0;
+	int32 valueMax = 0;
+	int32 valueStep = 0;
+	String suffixStr;
+
+	// For enum
 	Array<std::pair<String, String>> valueDisplayNamePairs;
 
 	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<String>& valueDisplayNames);
@@ -19,13 +26,21 @@ struct OptionMenuFieldCreateInfo
 	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs);
 
 	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs);
+
+	OptionMenuFieldCreateInfo(StringView configIniKey, int32 valueMin, int32 valueMax, StringView suffixStr = U"", int32 valueStep = 1);
 };
 
-class OptionMenuField // TODO: rename as OptionMenuEnumField in future
+class OptionMenuField
 {
 private:
 	const String m_configIniKey;
 
+	bool m_isEnum;
+
+	// For non-enum
+	const String m_suffixStr;
+
+	// For enum
 	const Array<std::pair<String, String>> m_valueDisplayNamePairs;
 
 	LinearMenu m_menu;

@@ -34,7 +34,12 @@ namespace
 		return pairs;
 	}
 
-	LinearMenu MakeMenu(int32 enumCount)
+	LinearMenu MakeMenuInt(int32 valueMin, int32 valueMax, int32 valueStep)
+	{
+		return MenuHelper::MakeHorizontalMenuWithMinMax(valueMin, valueMax, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser, IsCyclicMenu::No, 0.0, valueStep);
+	}
+
+	LinearMenu MakeMenuEnum(int32 enumCount)
 	{
 		return MenuHelper::MakeHorizontalMenu(enumCount, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser);
 	}
@@ -48,19 +53,22 @@ namespace
 		kArrowNone,
 	};
 
-	MenuFieldValueArrowType GetMenuFieldValueArrowType(int32 cursorIdx, int32 enumCount)
+	MenuFieldValueArrowType GetMenuFieldValueArrowType(const LinearMenu& menu)
 	{
-		if (enumCount <= 1)
+		const bool isMin = menu.isCursorMin();
+		const bool isMax = menu.isCursorMax();
+
+		if (isMin && isMax)
 		{
 			return kArrowNone;
 		}
 
-		if (cursorIdx == 0)
+		if (isMin)
 		{
 			return kArrowRight;
 		}
 
-		if (cursorIdx == enumCount - 1)
+		if (isMax)
 		{
 			return kArrowLeft;
 		}
@@ -99,10 +107,23 @@ OptionMenuFieldCreateInfo::OptionMenuFieldCreateInfo(StringView configIniKey, co
 {
 }
 
+OptionMenuFieldCreateInfo::OptionMenuFieldCreateInfo(StringView configIniKey, int32 valueMin, int32 valueMax, StringView suffixStr, int32 valueStep)
+	: configIniKey(configIniKey)
+	, valueMin(valueMin)
+	, valueMax(valueMax)
+	, valueStep(valueStep)
+	, suffixStr(suffixStr)
+{
+}
+
 OptionMenuField::OptionMenuField(const OptionMenuFieldCreateInfo& createInfo)
 	: m_configIniKey(createInfo.configIniKey)
+	, m_isEnum(createInfo.valueStep == 0)
+	, m_suffixStr(createInfo.suffixStr)
 	, m_valueDisplayNamePairs(createInfo.valueDisplayNamePairs)
-	, m_menu(MakeMenu(static_cast<int32>(createInfo.valueDisplayNamePairs.size())))
+	, m_menu(createInfo.valueStep == 0
+		? MakeMenuEnum(static_cast<int32>(createInfo.valueDisplayNamePairs.size()))
+		: MakeMenuInt(createInfo.valueMin, createInfo.valueMax, createInfo.valueStep))
 {
 }
 
@@ -121,17 +142,25 @@ void OptionMenuField::draw(const Vec2& position, const TextureRegion& keyTexture
 	keyTextureRegion.resized(size).draw(position);
 
 	// Draw right half (value)
-	const int32 cursorIdx = m_menu.cursor();
+	const int32 cursor = m_menu.cursor();
 	const int32 enumCount = static_cast<int32>(m_valueDisplayNamePairs.size());
-	const MenuFieldValueArrowType arrowType = GetMenuFieldValueArrowType(cursorIdx, enumCount);
+	const MenuFieldValueArrowType arrowType = GetMenuFieldValueArrowType(m_menu);
 	valueTextureAtlas(arrowType).resized(size).draw(position + Vec2{ size.x, 0.0 });
 
 	// Draw text on the right half
-	if (cursorIdx < 0 || enumCount <= cursorIdx)
+	const Vec2 textPosition = position + Vec2{ size.x, 0.0 } + size / 2;
+	if (m_isEnum)
 	{
-		Print << U"Warning: Option enum value index is out of range! (func=OptionMenuField::draw(), index={}, min=0, max={})"_fmt(cursorIdx, enumCount - 1);
-		return;
+		if (cursor < 0 || enumCount <= cursor)
+		{
+			Print << U"Warning: Option enum value index is out of range! (func=OptionMenuField::draw(), index={}, min=0, max={})"_fmt(cursor, enumCount - 1);
+			return;
+		}
+		const StringView displayName = m_valueDisplayNamePairs[cursor].second;
+		font(displayName).drawAt(textPosition);
 	}
-	const StringView displayName = m_valueDisplayNamePairs[cursorIdx].second;
-	font(displayName).drawAt(position + Vec2{ size.x, 0.0 } + size / 2);
+	else
+	{
+		font(Format(cursor) + m_suffixStr).drawAt(textPosition);
+	}
 }

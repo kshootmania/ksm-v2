@@ -26,11 +26,13 @@ namespace MenuHelper
 	}
 
 	template <typename T>
-	LinearMenu MakeHorizontalMenu(
-		T enumCount,
+	LinearMenu MakeHorizontalMenuWithMinMax(
+		T cursorMin,
+		T cursorMax,
 		int32 buttonFlags = kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
-		double intervalSec = 0.0)
+		double intervalSec = 0.0,
+		int32 cursorStep = 1)
 	{
 		Array<KeyConfig::Button> incrementButtons, decrementButtons;
 
@@ -71,20 +73,40 @@ namespace MenuHelper
 		}
 
 		return LinearMenu(
-			static_cast<T>(0),
-			static_cast<T>(static_cast<int32>(enumCount) - 1),
+			cursorMin,
+			cursorMax,
 			incrementButtons,
 			decrementButtons,
 			cyclic,
-			intervalSec);
+			intervalSec,
+			cursorStep);
 	}
 
 	template <typename T>
-	LinearMenu MakeVerticalMenu(
+	LinearMenu MakeHorizontalMenu(
 		T enumCount,
 		int32 buttonFlags = kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
-		double intervalSec = 0.0)
+		double intervalSec = 0.0,
+		int32 cursorStep = 1)
+	{
+		return MakeHorizontalMenuWithMinMax(
+			static_cast<T>(0),
+			static_cast<T>(enumCount - 1),
+			buttonFlags,
+			cyclic,
+			intervalSec,
+			cursorStep);
+	}
+
+	template <typename T>
+	LinearMenu MakeVerticalMenuWithMinMax(
+		T cursorMin,
+		T cursorMax,
+		int32 buttonFlags = kArrow,
+		IsCyclicMenu cyclic = IsCyclicMenu::No,
+		double intervalSec = 0.0,
+		int32 cursorStep = 1)
 	{
 		Array<KeyConfig::Button> incrementButtons, decrementButtons;
 
@@ -125,11 +147,29 @@ namespace MenuHelper
 		}
 
 		return LinearMenu(
-			static_cast<T>(0),
-			static_cast<T>(static_cast<int32>(enumCount) - 1),
+			cursorMin,
+			cursorMax,
 			incrementButtons,
 			decrementButtons,
 			cyclic,
-			intervalSec);
+			intervalSec,
+			cursorStep);
+	}
+
+	template <typename T>
+	LinearMenu MakeVerticalMenu(
+		T enumCount,
+		int32 buttonFlags = kArrow,
+		IsCyclicMenu cyclic = IsCyclicMenu::No,
+		double intervalSec = 0.0,
+		int32 cursorStep = 1)
+	{
+		return MakeVerticalMenuWithMinMax(
+			static_cast<T>(0),
+			static_cast<T>(enumCount - 1),
+			buttonFlags,
+			cyclic,
+			intervalSec,
+			cursorStep);
 	}
 }
