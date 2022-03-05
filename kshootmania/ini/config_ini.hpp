@@ -27,9 +27,9 @@ namespace ConfigIni
 		constexpr StringView kLaserTimingAdjust = U"laserdelay";
 		constexpr StringView kLaserMouseDirectionX = U"mouse_directionx";
 		constexpr StringView kLaserMouseDirectionY = U"mouse_directiony";
-		constexpr StringView kLaserSignalSensitivity = U"mouse_senstivity";
+		constexpr StringView kLaserSignalSensitivity = U"mouse_sensitivity";
 		constexpr StringView kSwapLaserLR = U"switchlaser";
-		constexpr StringView kSelectKeyCloseFolder = U"closekey";
+		constexpr StringView kSelectCloseFolderKey = U"closekey";
 		constexpr StringView kUse3BTsPlusStartAsBack = U"esckey_bt3";
 
 		// Option > Other Settings
@@ -111,6 +111,19 @@ namespace ConfigIni
 				kOff,
 				kAuto,
 				kHide,
+			};
+		}
+
+		namespace LaserInputType
+		{
+			enum LaserInputType : int32
+			{
+				kKeyboard = 0,
+				// PowerMate = 1 (legacy),
+				kMouseXY = 2,
+				// AnalogStickLR = 3 (legacy),
+				kSlider = 4,
+				kAnalogStickXY,
 			};
 		}
 	}

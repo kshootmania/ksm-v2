@@ -1,8 +1,6 @@
 ﻿#pragma once
 #include "ui/linear_menu.hpp"
-#include "graphics/texture_atlas.hpp"
-
-// TODO: Add IOptionMenuField interface, and OptionMenuIntField and OptionMenuEnumField that implement it
+#include "graphics/tiled_texture.hpp"
 
 struct OptionMenuFieldCreateInfo
 {
@@ -11,23 +9,24 @@ struct OptionMenuFieldCreateInfo
 	// For non-enum
 	int32 valueMin = 0;
 	int32 valueMax = 0;
+	int32 valueDefault = 0;
 	int32 valueStep = 0;
 	String suffixStr;
 
 	// For enum
 	Array<std::pair<String, String>> valueDisplayNamePairs;
 
-	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<String>& valueDisplayNames);
+	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<String>& valueDisplayNames);
 
-	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<StringView>& valueDisplayNames);
+	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<StringView>& valueDisplayNames);
 
-	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<std::pair<String, String>>& valueDisplayNamePairs);
+	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<std::pair<String, String>>& valueDisplayNamePairs);
 
-	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs);
+	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs);
 
-	OptionMenuFieldCreateInfo(StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs);
+	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs);
 
-	OptionMenuFieldCreateInfo(StringView configIniKey, int32 valueMin, int32 valueMax, StringView suffixStr = U"", int32 valueStep = 1);
+	static OptionMenuFieldCreateInfo Int(StringView configIniKey, int32 valueMin = std::numeric_limits<int32>::min(), int32 valueMax = std::numeric_limits<int32>::max(), int32 valueDefault = 0, StringView suffixStr = U"", int32 valueStep = 1);
 };
 
 class OptionMenuField
@@ -50,5 +49,16 @@ public:
 
 	void update();
 
-	void draw(const Vec2& position, const TextureRegion& keyTextureRegion, const TextureAtlas& valueTextureAtlas, const Font& font) const;
+	void draw(const Vec2& position, const TextureRegion& keyTextureRegion, const TiledTexture& valueTiledTexture, const Font& font) const;
+
+	// Note: Do not change the order as it is used for texture index.
+	enum ArrowType
+	{
+		kArrowTypeLeft = 0,
+		kArrowTypeRight,
+		kArrowTypeLeftRight,
+		kArrowTypeNone,
+
+		kArrowTypeEnumCount,
+	};
 };

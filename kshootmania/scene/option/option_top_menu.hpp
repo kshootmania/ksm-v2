@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include "ui/menu_helper.hpp"
-#include "graphics/texture_atlas.hpp"
+#include "graphics/tiled_texture.hpp"
 
 class OptionTopMenu
 {
 private:
 	LinearMenu m_menu;
 
-	TextureAtlas m_itemTextureAtlas;
+	TiledTexture m_itemTiledTexture;
 
 	Stopwatch m_stopwatch;
 

@@ -19,7 +19,7 @@ public:
 private:
 	Texture m_bgTexture;
 
-	TextureAtlas m_headerTextureAtlas;
+	TiledTexture m_headerTiledTexture;
 
 	OptionTopMenu m_topMenu;
 

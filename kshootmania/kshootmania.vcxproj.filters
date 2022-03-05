@@ -198,7 +198,7 @@
     <ClCompile Include="scene\title\title_menu.cpp">
       <Filter>Source Files\scene\title</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\texture_atlas.cpp">
+    <ClCompile Include="graphics\tiled_texture.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
     <ClCompile Include="graphics\screen_utils.cpp">
@@ -868,9 +868,6 @@
     <ClInclude Include="scene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scene\title\title_scene.hpp">
-      <Filter>Header Files\scene\title</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -883,7 +880,7 @@
     <ClInclude Include="scene\title\title_assets.hpp">
       <Filter>Header Files\scene\title</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\texture_atlas.hpp">
+    <ClInclude Include="graphics\tiled_texture.hpp">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="graphics\screen_utils.hpp">
@@ -918,6 +915,9 @@
     </ClInclude>
     <ClInclude Include="scene\option\option_menu_field.hpp">
       <Filter>Header Files\scene\option</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\title\title_scene.hpp">
+      <Filter>Header Files\scene\title</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

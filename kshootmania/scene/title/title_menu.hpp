@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "ui/menu_helper.hpp"
-#include "graphics/texture_atlas.hpp"
+#include "graphics/tiled_texture.hpp"
 
 class TitleScene;
 
@@ -11,9 +11,9 @@ private:
 
 	LinearMenu m_menu;
 
-	TextureAtlas m_menuItemTextureAtlas;
+	TiledTexture m_menuItemTexture;
 
-	Texture m_menuCursorTexture;
+	TiledTexture m_menuCursorTexture;
 
 	Stopwatch m_stopwatch;
 

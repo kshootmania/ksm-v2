@@ -38,8 +38,14 @@ TitleMenu::TitleMenu(TitleScene* pTitleScene)
 		MenuHelper::ButtonFlags::kLaser |
 		MenuHelper::ButtonFlags::kLaserOpposite,
 		IsCyclicMenu::No))
-	, m_menuItemTextureAtlas(TitleTexture::kMenuItem, kItemEnumCount, 2/* <- Additive Texture & Subtractive Texture */)
-	, m_menuCursorTexture(TextureAsset(TitleTexture::kMenuCursor))
+	, m_menuItemTexture(TitleTexture::kMenuItem,
+		{
+			.row = kItemEnumCount,
+			.column = 2, // Additive Texture & Subtractive Texture
+			.sourceScale = ScreenUtils::SourceScale::k3x,
+			.sourceSize = { 525, 75 },
+		})
+	, m_menuCursorTexture(TitleTexture::kMenuCursor, ScreenUtils::SourceScale::k3x)
 	, m_stopwatch(StartImmediately::Yes)
 {
 }
@@ -69,7 +75,7 @@ void TitleMenu::draw() const
 	{
 		const ScopedColorMul2D colorMultiply(MenuCursorAlphaValue(m_stopwatch.sF()));
 		const ScopedRenderStates2D additive(BlendState::Additive);
-		const TextureRegion textureRegion = Scaled3x(m_menuCursorTexture);
+		const TextureRegion textureRegion = m_menuCursorTexture();
 		textureRegion.draw(x - textureRegion.size.x / 2, Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * m_easedCursorPos);
 	}
 
@@ -80,13 +86,13 @@ void TitleMenu::draw() const
 		{
 			// Sub-texture (subtractive)
 			const ScopedRenderStates2D subtractive(BlendState::Subtractive);
-			const TextureRegion textureRegion = Scaled3x(m_menuItemTextureAtlas(i, kSubTexCol));
+			const TextureRegion textureRegion = m_menuItemTexture(i, kSubTexCol);
 			textureRegion.draw(x - textureRegion.size.x / 2, y);
 		}
 		{
 			// Main texture (additive)
 			const ScopedRenderStates2D additive(BlendState::Additive);
-			const TextureRegion textureRegion = Scaled3x(m_menuItemTextureAtlas(i, kMainTexCol));
+			const TextureRegion textureRegion = m_menuItemTexture(i, kMainTexCol);
 			textureRegion.draw(x - textureRegion.size.x / 2, y);
 		}
 	}

@@ -4,9 +4,10 @@
 
 namespace
 {
+	constexpr Size kFieldTextureSourceSize = { 1200, 48 };
+	constexpr Size kFieldTextureHalfSourceSize = { 600, 48 };
+
 	constexpr int32 kFieldDiffY = 30;
-	constexpr int32 kFieldWidth = 600;
-	constexpr int32 kFieldHeight = 24;
 
 	Array<OptionMenuField> MakeFields(const Array<OptionMenuFieldCreateInfo>& fieldCreateInfos)
 	{
@@ -28,9 +29,23 @@ namespace
 OptionMenu::OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMenuFieldCreateInfo>& fieldCreateInfos)
 	: m_menu(MenuHelper::MakeVerticalMenu(static_cast<int32>(fieldCreateInfos.size()), MenuHelper::ButtonFlags::kArrowOrBTOrLaser))
 	, m_fields(MakeFields(fieldCreateInfos))
-	, m_fieldKeyTextureAtlas(fieldKeyTextureAssetKey, static_cast<int32>(fieldCreateInfos.size()))
-	, m_fieldValueTextureAtlas(OptionTexture::kMenuFieldValue, 4)
-	, m_fieldCursorTexture(TextureAsset(OptionTexture::kMenuFieldCursor))
+	, m_fieldKeyTexture(fieldKeyTextureAssetKey,
+		{
+			.row = static_cast<int32>(fieldCreateInfos.size()),
+			.sourceScale = ScreenUtils::SourceScale::k2x,
+			.sourceSize = kFieldTextureHalfSourceSize,
+		})
+	, m_fieldValueTexture(OptionTexture::kMenuFieldValue,
+		{
+			.row = 4,
+			.sourceScale = ScreenUtils::SourceScale::k2x,
+			.sourceSize = kFieldTextureHalfSourceSize,
+		})
+	, m_fieldCursorTexture(OptionTexture::kMenuFieldCursor,
+		{
+			.sourceScale = ScreenUtils::SourceScale::k2x,
+			.sourceSize = kFieldTextureSourceSize,
+		})
 	, m_font(ScreenUtils::Scaled(15), FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
 	, m_stopwatch(StartImmediately::Yes)
 {
@@ -61,14 +76,14 @@ void OptionMenu::draw(const Vec2& position) const
 	{
 		const Vec2 fieldPos = position + Vec2{ 0, Scaled(kFieldDiffY) * i };
 
-		m_fields[i].draw(fieldPos, m_fieldKeyTextureAtlas(i), m_fieldValueTextureAtlas, m_font);
+		m_fields[i].draw(fieldPos, m_fieldKeyTexture(i), m_fieldValueTexture, m_font);
 
 		// Draw cursor (additive)
 		if (i == m_menu.cursor())
 		{
 			const ScopedRenderStates2D additive(BlendState::Additive);
 			const double alpha = MenuCursorAlphaValue(m_stopwatch.sF());
-			m_fieldCursorTexture.resized(Scaled(kFieldWidth), Scaled(kFieldHeight)).draw(fieldPos, ColorF{ 1.0, alpha });
+			m_fieldCursorTexture().draw(fieldPos, ColorF{ 1.0, alpha });
 		}
 	}
 }

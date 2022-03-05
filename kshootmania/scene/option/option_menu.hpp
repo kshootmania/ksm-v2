@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "ui/linear_menu.hpp"
-#include "graphics/texture_atlas.hpp"
+#include "graphics/tiled_texture.hpp"
 #include "option_menu_field.hpp"
 
 class OptionMenu
@@ -10,11 +10,11 @@ private:
 
 	Array<OptionMenuField> m_fields;
 
-	const TextureAtlas m_fieldKeyTextureAtlas;
+	const TiledTexture m_fieldKeyTexture;
 
-	const TextureAtlas m_fieldValueTextureAtlas;
+	const TiledTexture m_fieldValueTexture;
 
-	const Texture m_fieldCursorTexture;
+	const TiledTexture m_fieldCursorTexture;
 
 	const Font m_font;
 

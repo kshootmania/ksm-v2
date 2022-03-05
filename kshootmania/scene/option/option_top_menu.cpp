@@ -26,7 +26,12 @@ OptionTopMenu::OptionTopMenu()
 	: m_menu(MenuHelper::MakeVerticalMenu(
 		kItemEnumCount,
 		MenuHelper::ButtonFlags::kArrow | MenuHelper::ButtonFlags::kBT | MenuHelper::ButtonFlags::kBTOpposite))
-	, m_itemTextureAtlas(OptionTexture::kTopMenuItem, kItemEnumCount)
+	, m_itemTiledTexture(OptionTexture::kTopMenuItem,
+		{
+			.row = kItemEnumCount,
+			.sourceScale = ScreenUtils::SourceScale::k2x,
+			.sourceSize = { 960, 160 },
+		})
 	, m_stopwatch(StartImmediately::Yes)
 {
 }
@@ -47,7 +52,7 @@ void OptionTopMenu::draw() const
 	for (int32 i = 0; i < kItemEnumCount; ++i)
 	{
 		const int32 y = Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * i;
-		const TextureRegion textureRegion = Scaled2x(m_itemTextureAtlas(i));
+		const TextureRegion textureRegion = m_itemTiledTexture(i);
 		const double alpha = MenuCursorAlphaValue(m_stopwatch.sF(), i == cursorIdx);
 		textureRegion.draw(x - textureRegion.size.x / 2, y, ColorF{ 1.0, alpha });
 	}
