@@ -49,4 +49,7 @@ void Main()
 			break;
 		}
 	}
+
+	// Save config.ini
+	ConfigIni::Save();
 }

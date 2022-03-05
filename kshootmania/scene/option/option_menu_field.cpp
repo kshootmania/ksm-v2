@@ -149,7 +149,31 @@ OptionMenuField::OptionMenuField(const OptionMenuFieldCreateInfo& createInfo)
 
 void OptionMenuField::update()
 {
+	const int32 cursorPrev = m_menu.cursor();
+
 	m_menu.update();
+
+	// Update config.ini value if cursor is changed
+	const int32 cursor = m_menu.cursor();
+	if (cursor != cursorPrev)
+	{
+		if (m_isEnum)
+		{
+			const int32 enumCount = static_cast<int32>(m_valueDisplayNamePairs.size());
+			if (0 <= cursor && cursor < enumCount)
+			{
+				ConfigIni::SetString(m_configIniKey, m_valueDisplayNamePairs[cursor].first);
+			}
+			else
+			{
+				Print << U"Warning[ OptionMenuField::update() ]: Option enum value index is out of range! (func=OptionMenuField::draw(), index={}, min=0, max={})"_fmt(cursor, enumCount - 1);
+			}
+		}
+		else
+		{
+			ConfigIni::SetInt(m_configIniKey, cursor);
+		}
+	}
 }
 
 void OptionMenuField::draw(const Vec2& position, const TextureRegion& keyTextureRegion, const TiledTexture& valueTiledTexture, const Font& font) const
@@ -172,7 +196,7 @@ void OptionMenuField::draw(const Vec2& position, const TextureRegion& keyTexture
 		const int32 enumCount = static_cast<int32>(m_valueDisplayNamePairs.size());
 		if (cursor < 0 || enumCount <= cursor)
 		{
-			Print << U"Warning: Option enum value index is out of range! (func=OptionMenuField::draw(), index={}, min=0, max={})"_fmt(cursor, enumCount - 1);
+			Print << U"Warning[ OptionMenuField::draw() ]: Option enum value index is out of range! (func=OptionMenuField::draw(), index={}, min=0, max={})"_fmt(cursor, enumCount - 1);
 			return;
 		}
 

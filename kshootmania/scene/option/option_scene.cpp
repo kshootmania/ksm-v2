@@ -231,5 +231,7 @@ void OptionScene::draw() const
 
 void OptionScene::exitScene()
 {
+	ConfigIni::Save();
+
 	changeScene(TitleScene::kSceneName, SceneManagement::kDefaultTransitionMs);
 }

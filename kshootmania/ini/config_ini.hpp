@@ -119,9 +119,9 @@ namespace ConfigIni
 			enum LaserInputType : int32
 			{
 				kKeyboard = 0,
-				// PowerMate = 1 (legacy),
+				// PowerMate = 1 (obsolete),
 				kMouseXY = 2,
-				// AnalogStickLR = 3 (legacy),
+				// AnalogStickLR = 3 (obsolete),
 				kSlider = 4,
 				kAnalogStickXY,
 			};
@@ -130,7 +130,7 @@ namespace ConfigIni
 
 	void Load();
 
-	// TODO: save function
+	void Save();
 
 	bool HasValue(StringView key);
 
@@ -140,5 +140,9 @@ namespace ConfigIni
 
 	StringView GetString(StringView key, StringView defaultValue = U"");
 
-	// TODO: setter functions
+	void SetInt(StringView key, int32 value);
+
+	void SetDouble(StringView key, double value);
+
+	void SetString(StringView key, StringView value);
 }

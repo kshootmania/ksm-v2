@@ -1,4 +1,5 @@
 ﻿#include "ksm_ini_data.hpp"
+#include <ranges>
 
 KSMIniData::KSMIniData(FilePathView path)
 {
@@ -37,8 +38,71 @@ void KSMIniData::load(FilePathView path)
 
 void KSMIniData::save(FilePathView path) const
 {
-	// TODO: implement
-	Print << U"Warning: KSMIniData::save() is not implemented!";
+	constexpr std::size_t kReserveSize{ 4096 };
+
+	String ini;
+	ini.reserve(kReserveSize);
+
+	// Set of remaining keys to write unappeared keys
+	const auto keysView = std::views::keys(m_hashTable);
+	std::set<StringView> remainingKeys(keysView.begin(), keysView.end()); // Use ordered set to make write order stable
+
+	// Read latest content and replace value
+	if (FileSystem::Exists(path))
+	{
+		TextReader reader(path); // TODO: Deal with Shift-JIS
+		String line;
+		while (reader.readLine(line))
+		{
+			// Skip comments
+			if (line[0] == U';' || line.substrView(0, 2) == U"//")
+			{
+				ini += line;
+				ini += U'\n';
+				continue;
+			}
+
+			const std::size_t equalPos = line.indexOf(U'=');
+			if (equalPos == String::npos)
+			{
+				// The line doesn't have '='
+				ini += line;
+				ini += U'\n';
+				continue;
+			}
+
+			const StringView key = line.substrView(0, equalPos);
+			const StringView originalValue = line.substrView(equalPos + 1);
+			if (hasValue(key))
+			{
+				line = key + U'=' + getString(key);
+				remainingKeys.erase(key);
+			}
+
+			ini += line;
+			ini += U'\n';
+		}
+	}
+
+	// Append remaining key values
+	for (const auto& key : remainingKeys)
+	{
+		ini += key;
+		ini += U'=';
+		ini += getString(key);
+		ini += U'\n';
+	}
+
+	// Write
+	TextWriter writer(path, TextEncoding::UTF8_NO_BOM);
+	if (writer)
+	{
+		writer.write(ini);
+	}
+	else
+	{
+		Print << U"Warning: Could not save INI file '{}'!"_fmt(path);
+	}
 }
 
 bool KSMIniData::hasValue(StringView key) const
@@ -85,4 +149,19 @@ double KSMIniData::getDouble(StringView key, double defaultValue) const
 StringView KSMIniData::getString(StringView key, StringView defaultValue) const
 {
 	return m_hashTable.contains(key) ? m_hashTable.at(key) : defaultValue;
+}
+
+void KSMIniData::setInt(StringView key, int32 value)
+{
+	m_hashTable[key] = Format(value);
+}
+
+void KSMIniData::setDouble(StringView key, double value)
+{
+	m_hashTable[key] = Format(value);
+}
+
+void KSMIniData::setString(StringView key, StringView value)
+{
+	m_hashTable[key] = value;
 }

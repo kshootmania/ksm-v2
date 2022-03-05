@@ -15,7 +15,7 @@ void ConfigIni::Load()
 
 	// Set key configurations
 	using KeyConfigTypes = std::initializer_list<std::tuple<StringView, KeyConfig::ConfigSet>>;
-	for (auto [iniKey, targetConfigSet]
+	for (const auto & [iniKey, targetConfigSet]
 		: KeyConfigTypes{
 			{ Key::kKeyConfigKeyboard1, KeyConfig::kKeyboard1 },
 			{ Key::kKeyConfigKeyboard2, KeyConfig::kKeyboard2 },
@@ -26,6 +26,11 @@ void ConfigIni::Load()
 		const StringView configValue = GetString(iniKey, defaultValue);
 		KeyConfig::SetConfigValue(targetConfigSet, configValue);
 	}
+}
+
+void ConfigIni::Save()
+{
+	s_configIniData.save(kConfigIniFilePath);
 }
 
 bool ConfigIni::HasValue(StringView key)
@@ -46,4 +51,19 @@ double ConfigIni::GetDouble(StringView key, double defaultValue)
 StringView ConfigIni::GetString(StringView key, StringView defaultValue)
 {
 	return s_configIniData.getString(key, defaultValue);
+}
+
+void ConfigIni::SetInt(StringView key, int32 value)
+{
+	s_configIniData.setInt(key, value);
+}
+
+void ConfigIni::SetDouble(StringView key, double value)
+{
+	s_configIniData.setDouble(key, value);
+}
+
+void ConfigIni::SetString(StringView key, StringView value)
+{
+	s_configIniData.setString(key, value);
 }

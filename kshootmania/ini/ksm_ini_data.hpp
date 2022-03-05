@@ -23,5 +23,9 @@ public:
 
 	StringView getString(StringView key, StringView defaultValue = U"") const;
 
-	// TODO: setter functions
+	void setInt(StringView key, int32 value);
+
+	void setDouble(StringView key, double value);
+
+	void setString(StringView key, StringView value);
 };
