@@ -9,10 +9,13 @@ namespace
 
 	constexpr int32 kFieldDiffY = 30;
 
-	Array<OptionMenuField> MakeFields(const Array<OptionMenuFieldCreateInfo>& fieldCreateInfos)
+	Array<OptionMenuField> MakeFields(const TiledTexture& fieldKeyTexture, const Array<OptionMenuFieldCreateInfo>& fieldCreateInfos)
 	{
-		return fieldCreateInfos.map([](const OptionMenuFieldCreateInfo& createInfo) {
-			return OptionMenuField(createInfo);
+		int32 i = 0;
+		return fieldCreateInfos.map([&i, &fieldKeyTexture](const OptionMenuFieldCreateInfo& createInfo) {
+			const int32 keyTextureIdx = (createInfo.keyTextureIdx == OptionMenuFieldCreateInfo::kKeyTextureIdxAutoSet) ? i : createInfo.keyTextureIdx;
+			i++;
+			return OptionMenuField(fieldKeyTexture(keyTextureIdx), createInfo);
 		});
 	}
 
@@ -28,10 +31,9 @@ namespace
 
 OptionMenu::OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMenuFieldCreateInfo>& fieldCreateInfos)
 	: m_menu(MenuHelper::MakeVerticalMenu(static_cast<int32>(fieldCreateInfos.size()), MenuHelper::ButtonFlags::kArrowOrBTOrLaser))
-	, m_fields(MakeFields(fieldCreateInfos))
 	, m_fieldKeyTexture(fieldKeyTextureAssetKey,
 		{
-			.row = static_cast<int32>(fieldCreateInfos.size()),
+			.row = TiledTextureSizeInfo::kAutoDetect,
 			.sourceScale = ScreenUtils::SourceScale::k2x,
 			.sourceSize = kFieldTextureHalfSourceSize,
 		})
@@ -46,6 +48,7 @@ OptionMenu::OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMen
 			.sourceScale = ScreenUtils::SourceScale::k2x,
 			.sourceSize = kFieldTextureSourceSize,
 		})
+	, m_fields(MakeFields(m_fieldKeyTexture, fieldCreateInfos))
 	, m_font(ScreenUtils::Scaled(15), FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
 	, m_stopwatch(StartImmediately::Yes)
 {
@@ -76,7 +79,7 @@ void OptionMenu::draw(const Vec2& position) const
 	{
 		const Vec2 fieldPos = position + Vec2{ 0, Scaled(kFieldDiffY) * i };
 
-		m_fields[i].draw(fieldPos, m_fieldKeyTexture(i), m_fieldValueTexture, m_font);
+		m_fields[i].draw(fieldPos, m_fieldValueTexture, m_font);
 
 		// Draw cursor (additive)
 		if (i == m_menu.cursor())

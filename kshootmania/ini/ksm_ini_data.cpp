@@ -110,6 +110,11 @@ bool KSMIniData::hasValue(StringView key) const
 	return m_hashTable.contains(key);
 }
 
+bool KSMIniData::getBool(StringView key, bool defaultValue) const
+{
+	return getInt(key, defaultValue ? 1 : 0) != 0;
+}
+
 int32 KSMIniData::getInt(StringView key, int32 defaultValue) const
 {
 	if (!m_hashTable.contains(key))
@@ -149,6 +154,11 @@ double KSMIniData::getDouble(StringView key, double defaultValue) const
 StringView KSMIniData::getString(StringView key, StringView defaultValue) const
 {
 	return m_hashTable.contains(key) ? m_hashTable.at(key) : defaultValue;
+}
+
+void KSMIniData::setBool(StringView key, bool value)
+{
+	setInt(key, value ? 1 : 0);
 }
 
 void KSMIniData::setInt(StringView key, int32 value)

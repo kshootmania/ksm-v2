@@ -33,7 +33,10 @@ namespace ConfigIni
 		constexpr StringView kUse3BTsPlusStartAsBack = U"esckey_bt3";
 
 		// Option > Other Settings
-		constexpr StringView kActiveHispeedTypes = U"hispeedtype";
+		constexpr StringView kHispeedShownModsLegacy = U"hispeedtype";
+		constexpr StringView kHispeedShowOMod = U"hispeedtype_o";
+		constexpr StringView kHispeedShowXMod = U"hispeedtype_x";
+		constexpr StringView kHispeedShowCMod = U"hispeedtype_c";
 		constexpr StringView kHideMouseCursor = U"hidemousecursor";
 		constexpr StringView kUseNumpadAsArrowKeys = U"usenumpad";
 
@@ -134,11 +137,15 @@ namespace ConfigIni
 
 	bool HasValue(StringView key);
 
+	bool GetBool(StringView key, bool defaultValue = false);
+
 	int32 GetInt(StringView key, int32 defaultValue = 0);
 
 	double GetDouble(StringView key, double defaultValue = 0.0);
 
 	StringView GetString(StringView key, StringView defaultValue = U"");
+
+	void SetBool(StringView key, bool value);
 
 	void SetInt(StringView key, int32 value);
 

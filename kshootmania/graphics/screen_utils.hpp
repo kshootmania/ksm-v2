@@ -159,6 +159,8 @@ namespace ScreenUtils
 			return Scaled2x(v);
 		case SourceScale::k3x:
 			return Scaled3x(v);
+		case SourceScale::kL:
+			return ScaledL(v);
 		default:
 			return v;
 		}

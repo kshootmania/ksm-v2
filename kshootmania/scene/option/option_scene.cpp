@@ -151,7 +151,27 @@ namespace
 				}),
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueOther, {
-				// TODO
+				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kHispeedShowXMod, Array<StringView>{
+					I18n::Get(I18n::Option::kHispeedTypeHide),
+					I18n::Get(I18n::Option::kHispeedTypeShow),
+				}),
+				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kHispeedShowOMod, Array<StringView>{
+					I18n::Get(I18n::Option::kHispeedTypeHide),
+					I18n::Get(I18n::Option::kHispeedTypeShow),
+				}),
+				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kHispeedShowCMod, Array<StringView>{
+					I18n::Get(I18n::Option::kHispeedTypeHide),
+					I18n::Get(I18n::Option::kHispeedTypeShow),
+				}),
+				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kHideMouseCursor, Array<StringView>{
+					I18n::Get(I18n::Option::kHideMouseCursorOff),
+					I18n::Get(I18n::Option::kHideMouseCursorOn),
+				}).setKeyTextureIdx(5),
+				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kUseNumpadAsArrowKeys, Array<StringView>{
+					I18n::Get(I18n::Option::kUseNumpadAsArrowKeysOff),
+					I18n::Get(I18n::Option::kUseNumpadAsArrowKeysOnKeyboard),
+					I18n::Get(I18n::Option::kUseNumpadAsArrowKeysOnController),
+				}).setKeyTextureIdx(6),
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueOther/*FIXME*/, {
 			}),

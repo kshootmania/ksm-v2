@@ -2,11 +2,18 @@
 
 struct TiledTextureSizeInfo
 {
+	static constexpr int kAutoDetect = 0;
+	static constexpr Size kAutoDetectSize = { 0, 0 };
+
+	// Set to kAutoDetect to automatically set based on sourceSize
 	int32 row = 1;
 	int32 column = 1;
+
 	Point offset = { 0, 0 };
 	ScreenUtils::SourceScale sourceScale = ScreenUtils::SourceScale::kUnspecified;
-	Size sourceSize = { 0, 0 };
+
+	// Set to kAutoDetectSize to automatically set based on row/column
+	Size sourceSize = kAutoDetectSize;
 };
 
 class TiledTexture

@@ -13,6 +13,25 @@ void ConfigIni::Load()
 {
 	s_configIniData.load(kConfigIniFilePath);
 
+	// Convert legacy "hispeedtype" value
+	if (s_configIniData.hasValue(Key::kHispeedShownModsLegacy))
+	{
+		const String commaSeparatedMods = s_configIniData.getString(Key::kHispeedShownModsLegacy) + U',';
+
+		// Note: The "O" and "C" are *intentionally* swapped to simulate mistakes in the old version...
+		using StrPair = std::pair<StringView, StringView>;
+		for (const auto& [key, modComma] : {
+				StrPair{ Key::kHispeedShowXMod, U"x," },
+				StrPair{ Key::kHispeedShowOMod, U"C,"/* <- Intentional swap!! */ },
+				StrPair{ Key::kHispeedShowCMod, U"O,"/* <- Intentional swap!! */ } })
+		{
+			if (!s_configIniData.hasValue(key))
+			{
+				s_configIniData.setBool(key, commaSeparatedMods.includes(modComma));
+			}
+		}
+	}
+
 	// Set key configurations
 	using KeyConfigTypes = std::initializer_list<std::tuple<StringView, KeyConfig::ConfigSet>>;
 	for (const auto & [iniKey, targetConfigSet]
@@ -38,6 +57,11 @@ bool ConfigIni::HasValue(StringView key)
 	return s_configIniData.hasValue(key);
 }
 
+bool ConfigIni::GetBool(StringView key, bool defaultValue)
+{
+	return s_configIniData.getBool(key, defaultValue);
+}
+
 int32 ConfigIni::GetInt(StringView key, int32 defaultValue)
 {
 	return s_configIniData.getInt(key, defaultValue);
@@ -51,6 +75,11 @@ double ConfigIni::GetDouble(StringView key, double defaultValue)
 StringView ConfigIni::GetString(StringView key, StringView defaultValue)
 {
 	return s_configIniData.getString(key, defaultValue);
+}
+
+void ConfigIni::SetBool(StringView key, bool value)
+{
+	s_configIniData.setBool(key, value);
 }
 
 void ConfigIni::SetInt(StringView key, int32 value)

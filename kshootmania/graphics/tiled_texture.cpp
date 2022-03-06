@@ -2,20 +2,44 @@
 
 namespace
 {
-	TiledTextureSizeInfo AutoDetectSourceSizeIfZero(TiledTextureSizeInfo sizeInfo, const Size& textureSize)
+	TiledTextureSizeInfo AutoDetectSizeIfZero(TiledTextureSizeInfo sizeInfo, const Size& textureSize)
 	{
-		if (sizeInfo.sourceSize.isZero())
+		// Note: Here, kAutoDetect(=0) is written as 0 to make it clear that zero division is avoided.
+
+		if ((sizeInfo.row == 0 && sizeInfo.sourceSize.y == 0) || (sizeInfo.column == 0 && sizeInfo.sourceSize.x == 0))
+		{
+			Print << U"Warning[ AutoDetectSizeIfZero() ]: Could not auto-detect size because row & column & sourceSize are all zero!";
+			sizeInfo.row = 1;
+			sizeInfo.column = 1;
+		}
+
+		if (sizeInfo.row == 0 && sizeInfo.sourceSize.y != 0)
+		{
+			sizeInfo.row = textureSize.y / sizeInfo.sourceSize.y;
+		}
+
+		if (sizeInfo.column == 0 && sizeInfo.sourceSize.x != 0)
+		{
+			sizeInfo.column = textureSize.x / sizeInfo.sourceSize.x;
+		}
+
+		if (sizeInfo.sourceSize.x == 0 && sizeInfo.column != 0)
 		{
 			sizeInfo.sourceSize.x = textureSize.x / sizeInfo.column;
+		}
+
+		if (sizeInfo.sourceSize.y == 0 && sizeInfo.row != 0)
+		{
 			sizeInfo.sourceSize.y = textureSize.y / sizeInfo.row;
 		}
+
 		return sizeInfo;
 	}
 }
 
 TiledTexture::TiledTexture(StringView textureAssetKey, const TiledTextureSizeInfo& sizeInfo)
 	: m_texture(TextureAsset(textureAssetKey))
-	, m_sizeInfo(AutoDetectSourceSizeIfZero(sizeInfo, m_texture.size()))
+	, m_sizeInfo(AutoDetectSizeIfZero(sizeInfo, m_texture.size()))
 	, m_scaledSize(ScreenUtils::Scaled(m_sizeInfo.sourceScale, m_sizeInfo.sourceSize))
 {
 }
@@ -34,6 +58,17 @@ TextureRegion TiledTexture::operator()(int32 row, int32 column) const
 	if (column < 0 || m_sizeInfo.column <= column)
 	{
 		Print << U"Warning[ TiledTexture::draw() ]: column(={}) is out of range! (min:0, max:{})"_fmt(column, m_sizeInfo.column - 1);
+	}
+
+	if (m_sizeInfo.sourceSize.x <= 0 || m_sizeInfo.sourceSize.y <= 0)
+	{
+		Print << U"Warning[ TiledTexture::draw() ]: sourceSize is invalid! ({})"_fmt(m_sizeInfo.sourceSize);
+		return TextureRegion{};
+	}
+	if (m_scaledSize.x <= 0 || m_scaledSize.y <= 0)
+	{
+		Print << U"Warning[ TiledTexture::draw() ]: m_scaledSize is invalid! ({})"_fmt(m_scaledSize);
+		return TextureRegion{};
 	}
 
 	const double x = m_sizeInfo.offset.x + m_sizeInfo.sourceSize.x * column;

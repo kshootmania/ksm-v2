@@ -8,20 +8,20 @@ class OptionMenu
 private:
 	LinearMenu m_menu;
 
-	Array<OptionMenuField> m_fields;
-
 	const TiledTexture m_fieldKeyTexture;
 
 	const TiledTexture m_fieldValueTexture;
 
 	const TiledTexture m_fieldCursorTexture;
 
+	Array<OptionMenuField> m_fields;
+
 	const Font m_font;
 
 	Stopwatch m_stopwatch;
 
 public:
-	explicit OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMenuFieldCreateInfo>& fieldCreateInfos);
+	OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMenuFieldCreateInfo>& fieldCreateInfos);
 
 	void update();
 

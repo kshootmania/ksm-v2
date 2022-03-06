@@ -16,6 +16,9 @@ struct OptionMenuFieldCreateInfo
 	// For enum
 	Array<std::pair<String, String>> valueDisplayNamePairs;
 
+	static constexpr int32 kKeyTextureIdxAutoSet = -1;
+	int32 keyTextureIdx = kKeyTextureIdxAutoSet;
+
 	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<String>& valueDisplayNames);
 
 	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<StringView>& valueDisplayNames);
@@ -27,6 +30,10 @@ struct OptionMenuFieldCreateInfo
 	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs);
 
 	static OptionMenuFieldCreateInfo Int(StringView configIniKey, int32 valueMin = std::numeric_limits<int32>::min(), int32 valueMax = std::numeric_limits<int32>::max(), int32 valueDefault = 0, StringView suffixStr = U"", int32 valueStep = 1);
+
+	OptionMenuFieldCreateInfo& setKeyTextureIdx(int32 idx)&;
+
+	OptionMenuFieldCreateInfo&& setKeyTextureIdx(int32 idx)&&;
 };
 
 class OptionMenuField
@@ -44,12 +51,14 @@ private:
 
 	LinearMenu m_menu;
 
+	TextureRegion m_keyTextureRegion;
+
 public:
-	explicit OptionMenuField(const OptionMenuFieldCreateInfo& createInfo);
+	OptionMenuField(const TextureRegion& keyTextureRegion, const OptionMenuFieldCreateInfo& createInfo);
 
 	void update();
 
-	void draw(const Vec2& position, const TextureRegion& keyTextureRegion, const TiledTexture& valueTiledTexture, const Font& font) const;
+	void draw(const Vec2& position, const TiledTexture& valueTiledTexture, const Font& font) const;
 
 	// Note: Do not change the order as it is used for texture index.
 	enum ArrowType

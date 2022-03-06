@@ -136,7 +136,19 @@ OptionMenuFieldCreateInfo OptionMenuFieldCreateInfo::Int(StringView configIniKey
 	};
 }
 
-OptionMenuField::OptionMenuField(const OptionMenuFieldCreateInfo& createInfo)
+OptionMenuFieldCreateInfo& OptionMenuFieldCreateInfo::setKeyTextureIdx(int32 idx)&
+{
+	keyTextureIdx = idx;
+	return *this;
+}
+
+OptionMenuFieldCreateInfo&& OptionMenuFieldCreateInfo::setKeyTextureIdx(int32 idx)&&
+{
+	keyTextureIdx = idx;
+	return std::move(*this);
+}
+
+OptionMenuField::OptionMenuField(const TextureRegion& keyTextureRegion, const OptionMenuFieldCreateInfo& createInfo)
 	: m_configIniKey(createInfo.configIniKey)
 	, m_isEnum(createInfo.valueStep == 0)
 	, m_suffixStr(createInfo.suffixStr)
@@ -144,6 +156,7 @@ OptionMenuField::OptionMenuField(const OptionMenuFieldCreateInfo& createInfo)
 	, m_menu(createInfo.valueStep == 0
 		? MakeMenuEnum(static_cast<int32>(createInfo.valueDisplayNamePairs.size()), FindDefaultCursor(m_configIniKey, m_isEnum, m_valueDisplayNamePairs, 0))
 		: MakeMenuInt(createInfo.valueMin, createInfo.valueMax, FindDefaultCursor(m_configIniKey, m_isEnum, m_valueDisplayNamePairs, createInfo.valueDefault), createInfo.valueStep))
+	, m_keyTextureRegion(keyTextureRegion)
 {
 }
 
@@ -176,15 +189,15 @@ void OptionMenuField::update()
 	}
 }
 
-void OptionMenuField::draw(const Vec2& position, const TextureRegion& keyTextureRegion, const TiledTexture& valueTiledTexture, const Font& font) const
+void OptionMenuField::draw(const Vec2& position, const TiledTexture& valueTiledTexture, const Font& font) const
 {
 	using namespace ScreenUtils;
 
 	// Draw left half (key)
-	keyTextureRegion.draw(position);
+	m_keyTextureRegion.draw(position);
 
 	// Draw right half (value)
-	const Vec2 rightHalfOffsetPosition{ position.x + keyTextureRegion.size.x, position.y };
+	const Vec2 rightHalfOffsetPosition{ position.x + m_keyTextureRegion.size.x, position.y };
 	const int32 cursor = m_menu.cursor();
 	const ArrowType arrowType = GetMenuFieldValueArrowType(m_menu);
 	valueTiledTexture(arrowType).draw(rightHalfOffsetPosition);
