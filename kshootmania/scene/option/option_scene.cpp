@@ -253,5 +253,5 @@ void OptionScene::exitScene()
 {
 	ConfigIni::Save();
 
-	changeScene(TitleScene::kSceneName, SceneManagement::kDefaultTransitionMs);
+	changeScene(SceneName::kTitle, SceneManagement::kDefaultTransitionMs);
 }

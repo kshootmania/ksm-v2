@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "scene.hpp"
 #include "option_top_menu.hpp"
 #include "option_menu.hpp"
 

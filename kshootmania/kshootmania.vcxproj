@@ -121,11 +121,11 @@
     <ClCompile Include="ini\ksm_ini_data.cpp" />
     <ClCompile Include="input\key_config.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene\option\option_menu.cpp" />
     <ClCompile Include="scene\option\option_menu_field.cpp" />
     <ClCompile Include="scene\option\option_top_menu.cpp" />
     <ClCompile Include="scene\option\option_scene.cpp" />
+    <ClCompile Include="scene\scene_management.cpp" />
     <ClCompile Include="scene\title\title_menu.cpp" />
     <ClCompile Include="scene\title\title_scene.cpp" />
     <ClCompile Include="stdafx.cpp" />
@@ -331,12 +331,12 @@
     <ClInclude Include="ini\config_ini.hpp" />
     <ClInclude Include="ini\ksm_ini_data.hpp" />
     <ClInclude Include="input\key_config.hpp" />
-    <ClInclude Include="scene.hpp" />
     <ClInclude Include="scene\option\option_assets.hpp" />
     <ClInclude Include="scene\option\option_menu.hpp" />
     <ClInclude Include="scene\option\option_menu_field.hpp" />
     <ClInclude Include="scene\option\option_scene.hpp" />
     <ClInclude Include="scene\option\option_top_menu.hpp" />
+    <ClInclude Include="scene\scene_management.hpp" />
     <ClInclude Include="scene\title\title_assets.hpp" />
     <ClInclude Include="scene\title\title_menu.hpp" />
     <ClInclude Include="scene\title\title_scene.hpp" />

@@ -186,9 +186,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="scene\title\title_scene.cpp">
       <Filter>Source Files\scene\title</Filter>
     </ClCompile>
@@ -233,6 +230,9 @@
     </ClCompile>
     <ClCompile Include="scene\option\option_menu.cpp">
       <Filter>Source Files\scene\option</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\scene_management.cpp">
+      <Filter>Source Files\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -865,9 +865,6 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="scene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -918,6 +915,9 @@
     </ClInclude>
     <ClInclude Include="scene\title\title_scene.hpp">
       <Filter>Header Files\scene\title</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\scene_management.hpp">
+      <Filter>Header Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

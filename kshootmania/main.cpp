@@ -1,5 +1,4 @@
 ﻿#include <Siv3D.hpp> // OpenSiv3D v0.6.3
-#include "scene.hpp"
 #include "scene/title/title_assets.hpp"
 #include "scene/option/option_assets.hpp"
 #include "i18n/i18n.hpp"

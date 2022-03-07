@@ -47,7 +47,7 @@ void TitleScene::processMenuItem(TitleMenu::Item item)
 		break;
 
 	case TitleMenu::kOption:
-		changeScene(OptionScene::kSceneName, SceneManagement::kDefaultTransitionMs);
+		changeScene(SceneName::kOption, SceneManagement::kDefaultTransitionMs);
 		break;
 
 	case TitleMenu::kInputGate:
