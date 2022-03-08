@@ -18,6 +18,24 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ksh\audio\audio.hpp" />
+    <ClInclude Include="include\ksh\audio\audio_effect.hpp" />
+    <ClInclude Include="include\ksh\audio\bgm_info.hpp" />
+    <ClInclude Include="include\ksh\audio\key_sound.hpp" />
+    <ClInclude Include="include\ksh\audio\legacy_audio_info.hpp" />
+    <ClInclude Include="include\ksh\beat\beat_map.hpp" />
+    <ClInclude Include="include\ksh\beat\time_sig.hpp" />
+    <ClInclude Include="include\ksh\bg\bg.hpp" />
+    <ClInclude Include="include\ksh\camera\cam.hpp" />
+    <ClInclude Include="include\ksh\camera\camera.hpp" />
+    <ClInclude Include="include\ksh\camera\tilt.hpp" />
+    <ClInclude Include="include\ksh\common\common.hpp" />
+    <ClInclude Include="include\ksh\chart_data.hpp" />
+    <ClInclude Include="include\ksh\gauge\gauge.hpp" />
+    <ClInclude Include="include\ksh\meta\meta.hpp" />
+    <ClInclude Include="include\ksh\note\note.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -144,31 +162,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="include\ksh\beat_map\beat_map.hpp" />
-    <ClInclude Include="include\ksh\beat_map\time_sig.hpp" />
-    <ClInclude Include="include\ksh\chart.hpp" />
-    <ClInclude Include="include\ksh\chart_object\abstract_musical_segment.hpp" />
-    <ClInclude Include="include\ksh\chart_object\abstract_note.hpp" />
-    <ClInclude Include="include\ksh\chart_object\bt_note.hpp" />
-    <ClInclude Include="include\ksh\chart_object\fx_note.hpp" />
-    <ClInclude Include="include\ksh\chart_object\lane_spin.hpp" />
-    <ClInclude Include="include\ksh\chart_object\laser_note.hpp" />
-    <ClInclude Include="include\ksh\chart_object\line_graph.hpp" />
-    <ClInclude Include="include\ksh\chart_object\note_judgment.hpp" />
-    <ClInclude Include="include\ksh\editable_chart.hpp" />
-    <ClInclude Include="include\ksh\note_builder.hpp" />
-    <ClInclude Include="include\ksh\playable_chart.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\beat_map\beat_map.cpp" />
-    <ClCompile Include="src\chart.cpp" />
-    <ClCompile Include="src\chart_object\lane_spin.cpp" />
-    <ClCompile Include="src\chart_object\laser_note.cpp" />
-    <ClCompile Include="src\chart_object\line_graph.cpp" />
-    <ClCompile Include="src\note_builder.cpp" />
-    <ClCompile Include="src\playable_chart.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
