@@ -37,6 +37,9 @@
     <Filter Include="Header Files\meta">
       <UniqueIdentifier>{13b32fa0-d846-42fe-a3db-70351950232d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{9b12689f-4bc7-4397-a75d-309ec8fb44aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ksh\common\common.hpp">
@@ -87,5 +90,13 @@
     <ClInclude Include="include\ksh\meta\meta.hpp">
       <Filter>Header Files\meta</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksh\util\timing_utils.hpp">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\util\timing_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

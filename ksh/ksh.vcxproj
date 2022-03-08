@@ -35,6 +35,10 @@
     <ClInclude Include="include\ksh\gauge\gauge.hpp" />
     <ClInclude Include="include\ksh\meta\meta.hpp" />
     <ClInclude Include="include\ksh\note\note.hpp" />
+    <ClInclude Include="include\ksh\util\timing_utils.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\util\timing_utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
