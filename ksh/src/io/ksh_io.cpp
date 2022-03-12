@@ -603,6 +603,8 @@ namespace
 		{ u8"keep_bigger", 1.75 },
 		{ u8"keep_biggest", 2.5 },
 		{ u8"zero", 0.0 },
+		{ u8"big", 1.75 },  // legacy
+		{ u8"keep", 1.75 }, // legacy
 	};
 
 	const std::unordered_map<std::u8string_view, bool> s_tiltTypeKeepTable
@@ -614,6 +616,8 @@ namespace
 		{ u8"keep_bigger", true },
 		{ u8"keep_biggest", true },
 		{ u8"zero", false },
+		{ u8"big", false }, // legacy
+		{ u8"keep", true }, // legacy
 	};
 
 	class PreparedGraphSection
@@ -1062,6 +1066,8 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 						auto& target = chartData.camera.cams.tiltAssignScale.rotationZ;
 						const double prevValue = target.empty() ? kNormalTiltAssignRotateZ : target.crbegin()->second.vf;
 						target.insert_or_assign(time, GraphValue(prevValue, tiltAssignRotateZ));
+
+						// TODO: Keep tilt
 					}
 				}
 				else
