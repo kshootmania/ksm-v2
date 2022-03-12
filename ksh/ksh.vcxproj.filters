@@ -40,6 +40,24 @@
     <Filter Include="Header Files\util">
       <UniqueIdentifier>{9b12689f-4bc7-4397-a75d-309ec8fb44aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\io">
+      <UniqueIdentifier>{2c98438b-8a80-4821-b14d-d49e8792fe49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{a2090f85-fc49-4788-ba90-288585399b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\io">
+      <UniqueIdentifier>{6ca76504-536e-4d4d-8c01-9cbe68f5a282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\encoding">
+      <UniqueIdentifier>{6953bb0c-d184-4934-b293-ef98787f5b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\encoding">
+      <UniqueIdentifier>{86abbf6b-112a-4cd9-bdfa-51388100d32c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\impl">
+      <UniqueIdentifier>{8f6b340d-32fe-4f47-9145-41f71e03249f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ksh\common\common.hpp">
@@ -93,10 +111,25 @@
     <ClInclude Include="include\ksh\util\timing_utils.hpp">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksh\io\ksh_io.hpp">
+      <Filter>Header Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksh\encoding\encoding.hpp">
+      <Filter>Header Files\encoding</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksh\impl\impl.hpp">
+      <Filter>Header Files\impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\timing_utils.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\ksh_io.cpp">
+      <Filter>Source Files\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\encoding\encoding_win.cpp">
+      <Filter>Source Files\encoding</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

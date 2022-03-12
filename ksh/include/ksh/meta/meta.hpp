@@ -5,31 +5,31 @@ namespace ksh
 {
 	struct DifficultyInfo
 	{
-		int8_t idx; // 0-3 in KSH
+		std::int8_t idx; // 0-3 in KSH
 	};
 
 	struct LegacyMetaInfo
 	{
-		String titleImageFilename;
-		String artistImageFilename;
+		std::u8string titleImageFilename;
+		std::u8string artistImageFilename;
 	};
 
 	struct MetaRoot
 	{
-		String title;
-		String titleTranslit;
-		String subtitle;
-		String artist;
-		String artistTranslit;
-		String chartAuthor;
+		std::u8string title;
+		std::u8string titleTranslit;
+		std::u8string subtitle;
+		std::u8string artist;
+		std::u8string artistTranslit;
+		std::u8string chartAuthor;
 		DifficultyInfo difficulty;
-		int8_t level = 1;
-		String dispBPM;
+		std::int8_t level = 1;
+		std::u8string dispBPM;
 		double standardBPM = 0.0;
-		String jacketFilename;
-		String jacketAuthor;
-		String information;
+		std::u8string jacketFilename;
+		std::u8string jacketAuthor;
+		std::u8string information;
 		LegacyMetaInfo legacy;
-		String kshVersion;
+		std::u8string kshVersion;
 	};
 }

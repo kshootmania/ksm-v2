@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <string_view>
 #include <array>
 #include <vector>
 #include <map>
@@ -9,10 +10,15 @@
 namespace ksh
 {
 	using String = std::u32string;
+	using StringView = std::u32string_view;
+
+	// Since the encoding of a KSH file can be either UTF-8 or Shift-JIS, char is used here instead of u32char.
+	using StringC = std::string;
+	using StringViewC = std::string_view;
 
 	using Ms = double;
-	using Pulse = int64_t;
-	using RelPulse = int64_t;
+	using Pulse = std::int64_t;
+	using RelPulse = std::int64_t;
 
 	template <typename T>
 	using ByPulse = std::map<Pulse, T>;
@@ -27,7 +33,7 @@ namespace ksh
 	using ByRelPulseMulti = std::multimap<RelPulse, T>;
 
 	template <typename T>
-	using ByMeasureIdx = std::map<int64_t, T>;
+	using ByMeasureIdx = std::map<std::int64_t, T>;
 
 	template <typename Params>
 	struct ByBtnNote
@@ -56,23 +62,40 @@ namespace ksh
 		std::vector<ByLaserNote<Params>> laser;
 	};
 
-	struct Interval
-	{
-		RelPulse length = 0;
-	};
-
 	struct GraphValue
 	{
-		double value = 0.0;
+		double v = 0.0;
+		double vf = 0.0;
 
-		// More members will be added here in the kson format
+		GraphValue(double v)
+			: v(v)
+			, vf(v)
+		{
+		}
+
+		GraphValue(double v, double vf)
+			: v(v)
+			, vf(vf)
+		{
+		}
 	};
 
 	struct RelGraphValue
 	{
-		double relativeValue = 0.0;
+		double rv = 0.0;
+		double rvf = 0.0;
 
-		// More members will be added here in the kson format
+		RelGraphValue(double rv)
+			: rv(rv)
+			, rvf(rv)
+		{
+		}
+
+		RelGraphValue(double rv, double rvf)
+			: rv(rv)
+			, rvf(rvf)
+		{
+		}
 	};
 
 	using Graph = ByPulse<GraphValue>;
@@ -83,12 +106,16 @@ namespace ksh
 
 	using RelGraphSections = ByRelPulse<RelGraphValue>;
 
-	template <typename T, std::size_t N>
-	using Lane = std::array<ByPulse<T>, N>; // TODO: For editor, ByPulseMulti would be used instead of ByPulse?
+	template <typename T>
+	using Lane = ByPulse<T>; // TODO: For editor, ByPulseMulti would be used instead of ByPulse?
 
 	template <typename T>
-	using DefList = std::unordered_map<String, T>;
+	using DefList = std::unordered_map<std::u8string, T>;
 
 	template <typename T>
-	using InvokeList = std::unordered_map<String, T>;
+	using InvokeList = std::unordered_map<std::u8string, T>;
+
+	constexpr std::size_t kNumBTLanes = 4;
+	constexpr std::size_t kNumFXLanes = 2;
+	constexpr std::size_t kNumLaserLanes = 2;
 }

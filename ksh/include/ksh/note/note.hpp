@@ -5,15 +5,15 @@ namespace ksh
 {
 	struct LaserSection
 	{
-		GraphSections points;
+		ByRelPulse<GraphValue> points;
 
 		int8_t xScale = 1; // 1-2, sets whether the laser section is 2x-widen or not
 	};
 
 	struct NoteRoot
 	{
-		Lane<Interval, 4> btLanes;
-		Lane<Interval, 2> fxLanes;
-		Lane<LaserSection, 2> laserLanes;
+		std::array<Lane<RelPulse>, 4> btLanes;
+		std::array<Lane<RelPulse>, 2> fxLanes;
+		std::array<Lane<LaserSection>, 2> laserLanes;
 	};
 }

@@ -4,8 +4,10 @@
 #include "ksh/beat/beat_map.hpp"
 #include "ksh/gauge/gauge.hpp"
 #include "ksh/note/note.hpp"
+#include "ksh/audio/audio.hpp"
 #include "ksh/camera/camera.hpp"
 #include "ksh/bg/bg.hpp"
+#include "ksh/impl/impl.hpp"
 
 namespace ksh
 {
@@ -15,7 +17,9 @@ namespace ksh
 		BeatMap beat;
 		GaugeRoot gauge;
 		NoteRoot note;
+		AudioRoot audio;
 		CameraRoot camera;
 		BGRoot bg;
+		ImplRoot impl;
 	};
 }

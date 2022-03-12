@@ -32,12 +32,17 @@
     <ClInclude Include="include\ksh\camera\tilt.hpp" />
     <ClInclude Include="include\ksh\common\common.hpp" />
     <ClInclude Include="include\ksh\chart_data.hpp" />
+    <ClInclude Include="include\ksh\encoding\encoding.hpp" />
     <ClInclude Include="include\ksh\gauge\gauge.hpp" />
+    <ClInclude Include="include\ksh\impl\impl.hpp" />
+    <ClInclude Include="include\ksh\io\ksh_io.hpp" />
     <ClInclude Include="include\ksh\meta\meta.hpp" />
     <ClInclude Include="include\ksh\note\note.hpp" />
     <ClInclude Include="include\ksh\util\timing_utils.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\encoding\encoding_win.cpp" />
+    <ClCompile Include="src\io\ksh_io.cpp" />
     <ClCompile Include="src\util\timing_utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

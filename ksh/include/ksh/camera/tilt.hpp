@@ -6,6 +6,6 @@ namespace ksh
 	struct TiltRoot
 	{
 		GraphSections manualTilts;
-		ByPulse<Interval> keepIntervals;
+		ByPulse<RelPulse> keepIntervals;
 	};
 }

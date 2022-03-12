@@ -27,9 +27,33 @@ namespace ksh
 		double valueOff = 0.0;
 		double valueOnMin = 0.0;
 		double valueOnMax = 0.0;
+
+		AudioEffectParam() = default;
+
+		// Note: Implicit conversion from double to AudioEffectParam is allowed
+		AudioEffectParam(double value)
+			: valueOff(value)
+			, valueOnMin(value)
+			, valueOnMax(value)
+		{
+		}
+
+		AudioEffectParam(double valueOff, double valueOn)
+			: valueOff(valueOff)
+			, valueOnMin(valueOn)
+			, valueOnMax(valueOn)
+		{
+		}
+
+		AudioEffectParam(double valueOff, double valueOnMin, double valueOnMax)
+			: valueOff(valueOff)
+			, valueOnMin(valueOnMin)
+			, valueOnMax(valueOnMax)
+		{
+		}
 	};
 
-	using AudioEffectParams = std::unordered_map<String, AudioEffectParam>;
+	using AudioEffectParams = std::unordered_map<std::u8string, AudioEffectParam>;
 
 	struct AudioEffectDef
 	{
