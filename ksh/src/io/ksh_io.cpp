@@ -133,14 +133,27 @@ namespace
 		};
 	}
 
-	std::pair<std::u8string, std::int64_t> SplitAudioEffectStr(std::u8string_view optionLine)
+	std::tuple<std::u8string, std::int64_t, std::int64_t> SplitAudioEffectStr(std::u8string_view optionLine)
 	{
-		const std::size_t semicolonIdx = optionLine.find_first_of(kAudioEffectStrSeparator);
+		// TODO: default values of linked params
+		using Tuple = std::tuple<std::u8string, std::int64_t, std::int64_t>;
 
-		return std::pair<std::u8string, std::int64_t>{
-			optionLine.substr(0, semicolonIdx),
-			ParseNumeric<std::int64_t>(optionLine.substr(semicolonIdx + 1))
-		};
+		const std::size_t semicolonIdx1 = optionLine.find_first_of(kAudioEffectStrSeparator);
+		if (semicolonIdx1 == std::u8string_view::npos)
+		{
+			return Tuple{ optionLine, 0, 0 };
+		}
+
+		const std::size_t semicolonIdx2 = optionLine.substr(semicolonIdx1 + 1).find_first_of(kAudioEffectStrSeparator);
+		const std::int64_t linkedParam1 = ParseNumeric<std::int64_t>(optionLine.substr(semicolonIdx1 + 1));
+		if (semicolonIdx2 == std::u8string_view::npos)
+		{
+			return Tuple{ optionLine.substr(0, semicolonIdx1), linkedParam1, 0 };
+		}
+
+		const std::int64_t linkedParam2 = ParseNumeric<std::int64_t>(optionLine.substr(semicolonIdx1 + semicolonIdx2 + 2));
+
+		return Tuple{ optionLine.substr(0, semicolonIdx1), linkedParam1, linkedParam2 };
 	}
 
 	std::u8string_view KSHLegacyFXCharToKSHAudioEffectStr(char c)
@@ -395,7 +408,7 @@ namespace
 
 			if (inserted)
 			{
-				auto [audioEffectName, audioEffectLinkedParamValue] = SplitAudioEffectStr(m_audioEffectStr);
+				auto [audioEffectName, audioEffectLinkedParamValue1, audioEffectLinkedParamValue2] = SplitAudioEffectStr(m_audioEffectStr);
 				if (s_kshFXToKsonAudioEffectNameTable.contains(audioEffectName))
 				{
 					// Convert the name of preset audio effects
@@ -408,7 +421,8 @@ namespace
 						// Store the value of the linked parameter in a temporary key
 						// (Since the conversion requires determining the type of audio effect, it is processed
 						//  after reading the "#define_fx"/"#define_filter" lines.)
-						{ u8"_linked_param", AudioEffectParam(static_cast<double>(audioEffectLinkedParamValue)) },
+						{ u8"_linked_param1", AudioEffectParam(static_cast<double>(audioEffectLinkedParamValue1)) },
+						{ u8"_linked_param2", AudioEffectParam(static_cast<double>(audioEffectLinkedParamValue2)) },
 					},
 				});
 			}
