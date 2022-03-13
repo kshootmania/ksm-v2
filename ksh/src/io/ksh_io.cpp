@@ -36,9 +36,9 @@ namespace
 	constexpr double kManualTiltAbsMax = 1000.0;
 
 	template <typename T>
-	T ParseNumeric(std::string_view str)
+	T ParseNumeric(std::string_view str, T defaultValue = T{ 0 })
 	{
-		T result;
+		T result{ defaultValue };
 		std::from_chars_result r;
 		if constexpr (std::is_integral_v<T>)
 		{
@@ -54,37 +54,19 @@ namespace
 			return static_cast<T>(result);
 		}
 
-		// TODO: Error handling
-		return T{ 0 };
+		return defaultValue;
 	}
 
 	template <typename T>
-	T ParseNumeric(std::u8string_view str)
+	T ParseNumeric(std::u8string_view str, T defaultValue = T{ 0 })
 	{
-		T result;
-		std::from_chars_result r;
-		if constexpr (std::is_integral_v<T>)
-		{
-			r = std::from_chars(reinterpret_cast<const char*>(str.data()), reinterpret_cast<const char*>(str.data() + str.size()), result, 10);
-		}
-		else
-		{
-			r = std::from_chars(reinterpret_cast<const char*>(str.data()), reinterpret_cast<const char*>(str.data() + str.size()), result, std::chars_format::fixed);
-		}
-
-		if (r.ec == std::errc{})
-		{
-			return static_cast<T>(result);
-		}
-
-		// TODO: Error handling
-		return T{ 0 };
+		return ParseNumeric<T>(UnU8(str), defaultValue);
 	}
 
 	template <typename T, typename U>
-	T ParseNumeric(const std::basic_string<U>& str)
+	T ParseNumeric(const std::basic_string<U>& str, T defaultValue = T{ 0 })
 	{
-		return ParseNumeric<T>(std::basic_string_view<U>(str));
+		return ParseNumeric<T>(std::basic_string_view<U>(str), defaultValue);
 	}
 
 	std::u8string ToUTF8(std::string_view str, bool isUTF8)
@@ -135,7 +117,7 @@ namespace
 
 	std::tuple<std::u8string, std::int64_t, std::int64_t> SplitAudioEffectStr(std::u8string_view optionLine)
 	{
-		// TODO: default values of linked params
+		// TODO: default values of params
 		using Tuple = std::tuple<std::u8string, std::int64_t, std::int64_t>;
 
 		const std::size_t semicolonIdx1 = optionLine.find_first_of(kAudioEffectStrSeparator);
@@ -145,15 +127,37 @@ namespace
 		}
 
 		const std::size_t semicolonIdx2 = optionLine.substr(semicolonIdx1 + 1).find_first_of(kAudioEffectStrSeparator);
-		const std::int64_t linkedParam1 = ParseNumeric<std::int64_t>(optionLine.substr(semicolonIdx1 + 1));
+		const std::int64_t param1 = ParseNumeric<std::int64_t>(optionLine.substr(semicolonIdx1 + 1));
 		if (semicolonIdx2 == std::u8string_view::npos)
 		{
-			return Tuple{ optionLine.substr(0, semicolonIdx1), linkedParam1, 0 };
+			return Tuple{ optionLine.substr(0, semicolonIdx1), param1, 0 };
 		}
 
-		const std::int64_t linkedParam2 = ParseNumeric<std::int64_t>(optionLine.substr(semicolonIdx1 + semicolonIdx2 + 2));
+		const std::int64_t param2 = ParseNumeric<std::int64_t>(optionLine.substr(semicolonIdx1 + semicolonIdx2 + 2));
 
-		return Tuple{ optionLine.substr(0, semicolonIdx1), linkedParam1, linkedParam2 };
+		return Tuple{ optionLine.substr(0, semicolonIdx1), param1, param2 };
+	}
+
+	template <std::size_t N>
+	std::array<std::u8string, N> Split(std::u8string_view str, char8_t separator)
+	{
+		std::array<std::u8string, N> arr;
+
+		std::size_t cursor = 0;
+		for (std::size_t i = 0; i < N; ++i)
+		{
+			std::u8string_view s = str.substr(cursor);
+			const std::size_t semicolonIdx = s.find_first_of(separator);
+			if (semicolonIdx == std::u8string_view::npos)
+			{
+				arr[i] = s;
+				break;
+			}
+			arr[i] = s.substr(0, semicolonIdx);
+			cursor += semicolonIdx + 1;
+		}
+
+		return arr;
 	}
 
 	std::u8string_view KSHLegacyFXCharToKSHAudioEffectStr(char c)
@@ -267,7 +271,7 @@ namespace
 		return isUTF8;
 	}
 
-	bool InsertBPMChange(decltype(ChartData::beat.bpmChanges)& bpmChanges, Pulse time, std::u8string_view value)
+	bool InsertBPMChange(ByPulse<double>& bpmChanges, Pulse time, std::u8string_view value)
 	{
 		if (value.find('-') != std::u8string_view::npos)
 		{
@@ -363,7 +367,7 @@ namespace
 		// FX audio effect string ("fx-l=" or "fx-r=" in .ksh)
 		std::u8string m_audioEffectStr;
 
-		// FX audio effect parameters ("fx-l_param1=" or "fx-r_param1=" in .ksh)
+		// Legacy FX audio effect parameters ("fx-l_param1=" or "fx-r_param1=" in .ksh)
 		std::u8string m_audioEffectParamStr;
 
 	public:
@@ -402,29 +406,33 @@ namespace
 			auto& targetLane = m_pTargetChartData->note.fxLanes[m_targetLaneIdx];
 
 			// Publish prepared long FX note
-			const auto [itr, inserted] = targetLane.emplace(
+			const auto [_, inserted] = targetLane.emplace(
 				m_time,
 				m_length);
 
 			if (inserted)
 			{
-				auto [audioEffectName, audioEffectLinkedParamValue1, audioEffectLinkedParamValue2] = SplitAudioEffectStr(m_audioEffectStr);
+				auto [audioEffectName, audioEffectParamValue1, audioEffectParamValue2] = SplitAudioEffectStr(m_audioEffectStr);
+				if (!m_audioEffectParamStr.empty())
+				{
+					// Apply legacy FX audio effect parameters
+					audioEffectParamValue1 = ParseNumeric<std::int64_t>(m_audioEffectParamStr);
+				}
 				if (s_kshFXToKsonAudioEffectNameTable.contains(audioEffectName))
 				{
 					// Convert the name of preset audio effects
 					audioEffectName = s_kshFXToKsonAudioEffectNameTable.at(audioEffectName);
 				}
-				m_pTargetChartData->audio.audioEffects.noteEventList[audioEffectName].fx.push_back(ByBtnNote<AudioEffectParams>{
-					.laneIdx = m_targetLaneIdx,
-					.noteIdx = static_cast<std::size_t>(std::distance(targetLane.begin(), itr)),
-					.params = {
-						// Store the value of the linked parameter in a temporary key
+				if (!audioEffectName.empty())
+				{
+					m_pTargetChartData->audio.audioEffects.noteEventList[audioEffectName].fx[m_targetLaneIdx].emplace(m_time, AudioEffectParams{
+						// Store the value of the parameters in temporary keys
 						// (Since the conversion requires determining the type of audio effect, it is processed
 						//  after reading the "#define_fx"/"#define_filter" lines.)
-						{ u8"_linked_param1", AudioEffectParam(static_cast<double>(audioEffectLinkedParamValue1)) },
-						{ u8"_linked_param2", AudioEffectParam(static_cast<double>(audioEffectLinkedParamValue2)) },
-					},
-				});
+						{ u8"_param1", AudioEffectParam(static_cast<double>(audioEffectParamValue1)) },
+						{ u8"_param2", AudioEffectParam(static_cast<double>(audioEffectParamValue2)) },
+					});
+				}
 			}
 
 			clear();
@@ -466,6 +474,8 @@ namespace
 			ParseNumeric<std::int64_t>(params[3]));
 	}
 
+	constexpr double kKSHToKSONCamScale = 1.0 / 100.0;
+	constexpr double kKSHToKSONTiltScale = 1.0 / 100.0;
 	constexpr double kKSHToKSONSwingScale = 1.0 / 60.0;
 
 	struct PreparedLaneSpin
@@ -738,7 +748,7 @@ namespace
 			auto& targetLane = m_pTargetChartData->note.laserLanes[m_targetLaneIdx];
 
 			// Publish prepared laser section
-			const auto [itr, inserted] = targetLane.emplace(
+			const auto [_, inserted] = targetLane.emplace(
 				m_time,
 				LaserSection{
 					.points = m_values,
@@ -748,13 +758,10 @@ namespace
 			if (inserted)
 			{
 				// Publish prepared lane spin
-				const std::size_t sectionIdx = static_cast<std::size_t>(std::distance(targetLane.begin(), itr));
 				for (const auto& [relPulse, laneSpin] : m_preparedLaneSpins)
 				{
 					if (m_values.contains(relPulse) && laneSpin.isValid() && s_kshSpinTypeToKsonCamPatternNameTable.contains(laneSpin.type))
 					{
-						const std::size_t pointIdx = static_cast<std::size_t>(std::distance(m_values.begin(), m_values.find(relPulse)));
-
 						const std::u8string patternKey(s_kshSpinTypeToKsonCamPatternNameTable.at(laneSpin.type));
 
 						CamPatternParams params;
@@ -767,15 +774,17 @@ namespace
 								.decayOrder = static_cast<double>(laneSpin.swingDecayOrder),
 							};
 						}
-
-						m_pTargetChartData->camera.cams.patternInfo.noteEventList[patternKey].laser.push_back({
-							.laneIdx = m_targetLaneIdx,
-							.sectionIdx = sectionIdx,
-							.pointIdx = pointIdx,
-							.params = {
+						else
+						{
+							params = {
 								.length = laneSpin.duration,
-							},
-						});
+							};
+						}
+
+						if (!patternKey.empty())
+						{
+							m_pTargetChartData->camera.cams.patternInfo.noteEventList[patternKey].laser[m_targetLaneIdx].emplace(m_time + relPulse, params);
+						}
 					}
 				}
 			}
@@ -870,13 +879,135 @@ namespace
 			}
 
 			const auto [key, value] = SplitOptionLine(line, isUTF8);
-			metaDataHashMap.insert_or_assign(std::move(key), std::move(value));
+			metaDataHashMap.insert_or_assign(key, value);
 		}
 
 		// .ksh files must have at least one bar line ("--")
 		assert(barLineExists);
 
 		return metaDataHashMap;
+	}
+
+	std::u8string_view Get(const std::unordered_map<std::u8string, std::u8string>& meta, const std::u8string& key, std::u8string_view defaultValue = u8"")
+	{
+		if (meta.contains(key)) // Note: unordered_map<u8string, u8string> does not support u8string_view as key
+		{
+			return meta.at(key);
+		}
+		else
+		{
+			return defaultValue;
+		}
+	}
+
+	template <typename T>
+	T GetInt(const std::unordered_map<std::u8string, std::u8string>& meta, const std::u8string& key, T defaultValue = T{ 0 })
+	{
+		std::u8string_view str = Get(meta, key);
+		if (str.empty())
+		{
+			return defaultValue;
+		}
+		return ParseNumeric<T>(str);
+	}
+
+	template <typename T>
+	T GetInt(const std::unordered_map<std::u8string, std::u8string>& meta, const std::u8string& key, T defaultValue, T min, T max)
+	{
+		return std::clamp(GetInt<T>(meta, key, defaultValue), min, max);
+	}
+
+	const std::unordered_map<std::u8string_view, std::int8_t> s_difficultyNameTable
+	{
+		{ u8"light", 0 },
+		{ u8"challenge", 1 },
+		{ u8"extended", 2 },
+		{ u8"infinite", 3 },
+	};
+
+	ksh::ChartData CreateChartDataFromKSHMetaData(const std::unordered_map<std::u8string, std::u8string>& meta)
+	{
+		ChartData chartData;
+
+		chartData.meta.kshVersion = Get(meta, u8"ver", u8"");
+		std::int32_t kshVersionInt = ParseNumeric<std::int32_t>(chartData.meta.kshVersion, 100);
+
+		chartData.meta.title = Get(meta, u8"title");
+		chartData.meta.artist = Get(meta, u8"artist");
+		chartData.meta.chartAuthor = Get(meta, u8"effect");
+		chartData.meta.jacketFilename = Get(meta, u8"jacket");
+		chartData.meta.jacketAuthor = Get(meta, u8"illustrator");
+
+		const std::u8string_view difficultyName = Get(meta, u8"difficulty", u8"infinite");
+		if (s_difficultyNameTable.contains(difficultyName))
+		{
+			chartData.meta.difficulty.idx = s_difficultyNameTable.at(difficultyName);
+		}
+		else
+		{
+			chartData.meta.difficulty.idx = 3;
+		}
+
+		const std::int8_t level =  GetInt<std::int8_t>(meta, u8"level", 1, 1, 20);
+
+		chartData.meta.dispBPM = Get(meta, u8"tempo", u8"120");
+
+		const auto bgmFilenames = Split<4>(Get(meta, u8"m"), u8';');
+		chartData.audio.bgmInfo.filename = bgmFilenames[0];
+		chartData.audio.bgmInfo.previewFilename = bgmFilenames[0];
+		chartData.audio.legacy.legacyBGMInfo.filenameF = bgmFilenames[1];
+		chartData.audio.legacy.legacyBGMInfo.filenameP = bgmFilenames[2];
+		chartData.audio.legacy.legacyBGMInfo.filenameFP = bgmFilenames[3];
+
+		std::int32_t volumeInt = GetInt<std::int32_t>(meta, u8"mvol", 50);
+		chartData.audio.bgmInfo.volume = volumeInt / 100.0;
+		if (chartData.meta.kshVersion.empty())
+		{
+			// For historical reasons, the value is multiplied by 0.6 if the value of "ver" is not specified.
+			chartData.audio.bgmInfo.volume *= 0.6;
+		}
+
+		chartData.audio.legacy.laserSlamAutoVolume = (GetInt<std::int32_t>(meta, u8"chokkakuautovol", 0) != 0);
+
+		chartData.audio.bgmInfo.offsetMs = GetInt<std::int64_t>(meta, u8"o", 0);
+		chartData.audio.bgmInfo.previewOffsetMs = GetInt<std::int64_t>(meta, u8"po", 0);
+		chartData.audio.bgmInfo.previewDurationMs = GetInt<std::int64_t>(meta, u8"plength", 0);
+
+		// "bg"
+		const std::u8string_view bgStr = Get(meta, u8"bg", u8"desert");
+		if (bgStr.find(u8';') != std::u8string_view::npos)
+		{
+			const auto bgFilenames = Split<2>(bgStr, u8';');
+			chartData.bg.legacy.bgInfos[0].filename = bgFilenames[0];
+			chartData.bg.legacy.bgInfos[1].filename = bgFilenames[1];
+		}
+		else
+		{
+			chartData.bg.legacy.bgInfos[0].filename = bgStr;
+			chartData.bg.legacy.bgInfos[1].filename = bgStr;
+		}
+
+		// "layer"
+		const char8_t layerSeparator = kshVersionInt >= 166 ? u8';' : u8'/';
+		const std::u8string_view layerStr = Get(meta, u8"layer", u8"arrow");
+		const auto layerOptionArray = Split<3>(layerStr, layerSeparator);
+		auto& layerInfos = chartData.bg.legacy.layerInfos;
+		layerInfos[0].filename = layerInfos[1].filename = layerOptionArray[0];
+		layerInfos[0].durationMs = layerInfos[1].durationMs = ParseNumeric<int64_t>(layerOptionArray[1]);
+		const std::int32_t rotationFlagsInt = ParseNumeric<std::int32_t>(layerOptionArray[1], 3);
+		layerInfos[0].rotationFlags = layerInfos[1].rotationFlags = {
+			.tiltAffected = ((rotationFlagsInt & 1) != 0),
+			.spinAffected = ((rotationFlagsInt & 2) != 0),
+		};
+
+		chartData.bg.legacy.movieInfos.filename = Get(meta, u8"v");
+		chartData.bg.legacy.movieInfos.offsetMs = GetInt<std::int64_t>(meta, u8"vo");
+
+		chartData.gauge.total = static_cast<double>(GetInt<std::int32_t>(meta, u8"total", 0));
+
+		chartData.meta.information = Get(meta, u8"information");
+
+		return chartData;
 	}
 }
 
@@ -885,7 +1016,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 	bool isUTF8 = false;
 	const auto meta = LoadKSHMetaDataHashMap(stream, &isUTF8);
 
-	ChartData chartData;
+	ChartData chartData = CreateChartDataFromKSHMetaData(meta);
 
 	// Insert the first tempo change
 	double currentTempo = 120.0;
@@ -905,15 +1036,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 	}
 	chartData.beat.timeSigChanges.emplace(0, currentTimeSig);
 
-	if (meta.count(u8"beat"))
-	{
-		chartData.meta.kshVersion = meta.at(u8"ver");
-	}
-	else
-	{
-		chartData.meta.kshVersion = u8"100";
-	}
-	std::int64_t kshVersionInt = ParseNumeric<std::int64_t>(chartData.meta.kshVersion);
+	std::int32_t kshVersionInt = ParseNumeric<std::int32_t>(chartData.meta.kshVersion, 100);
 
 	// For backward compatibility of zoom_top/zoom_bottom/zoom_side
 	const double zoomAbsMax = (kshVersionInt >= 167) ? kZoomAbsMax : kZoomAbsMaxLegacy;
@@ -936,6 +1059,8 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 
 	Pulse currentPulse = 0;
 	std::int64_t currentMeasureIdx = 0;
+
+	// TODO: chokkakuvol (laser slam volume envelope)
 
 	// Read chart body
 	// The stream start from the next of the first bar line ("--")
@@ -1024,7 +1149,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 				}
 				else if (key == u8"zoom_top")
 				{
-					const double dValue = ParseNumeric<double>(std::u8string_view(value).substr(0, zoomMaxChar));
+					const double dValue = ParseNumeric<double>(std::u8string_view(value).substr(0, zoomMaxChar)) * kKSHToKSONCamScale;
 					if (std::abs(dValue) <= zoomAbsMax || (kshVersionInt < 167 && chartData.camera.cams.body.rotationX.contains(time)))
 					{
 						chartData.camera.cams.body.rotationX.insert_or_assign(time, dValue);
@@ -1032,7 +1157,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 				}
 				else if (key == u8"zoom_bottom")
 				{
-					const double dValue = ParseNumeric<double>(std::u8string_view(value).substr(0, zoomMaxChar));
+					const double dValue = ParseNumeric<double>(std::u8string_view(value).substr(0, zoomMaxChar)) * kKSHToKSONCamScale;
 					if (std::abs(dValue) <= zoomAbsMax || (kshVersionInt < 167 && chartData.camera.cams.body.zoom.contains(time)))
 					{
 						chartData.camera.cams.body.zoom.insert_or_assign(time, dValue);
@@ -1040,7 +1165,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 				}
 				else if (key == u8"zoom_side")
 				{
-					const double dValue = ParseNumeric<double>(std::u8string_view(value).substr(0, zoomMaxChar));
+					const double dValue = ParseNumeric<double>(std::u8string_view(value).substr(0, zoomMaxChar)) * kKSHToKSONCamScale;
 					if (std::abs(dValue) <= zoomAbsMax || (kshVersionInt < 167 && chartData.camera.cams.body.shiftX.contains(time)))
 					{
 						chartData.camera.cams.body.shiftX.insert_or_assign(time, dValue);
@@ -1048,7 +1173,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 				}
 				else if (key == u8"center_split")
 				{
-					const double dValue = ParseNumeric<double>(value);
+					const double dValue = ParseNumeric<double>(value) * kKSHToKSONCamScale;
 					if (std::abs(dValue) <= kCenterSplitAbsMax)
 					{
 						chartData.camera.cams.body.centerSplit.insert_or_assign(time, dValue);
@@ -1058,7 +1183,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 				{
 					if (IsTiltValueManual(value))
 					{
-						const double dValue = ParseNumeric<double>(value);
+						const double dValue = ParseNumeric<double>(value) * kKSHToKSONTiltScale;
 						if (std::abs(dValue) <= kManualTiltAbsMax)
 						{
 							preparedManualTilt.prepare(time);
@@ -1161,16 +1286,16 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 						case ':': // Connection
 							break;
 						default:
-						{
-							const std::int32_t laserX = CharToLaserX(buf[j]);
-							if (laserX >= 0)
 							{
-								preparedLaserSectionRef.prepare(time);
+								const std::int32_t laserX = CharToLaserX(buf[j]);
+								if (laserX >= 0)
+								{
+									preparedLaserSectionRef.prepare(time);
 
-								const double dLaserX = static_cast<double>(laserX) / kLaserXMax;
-								preparedLaserSectionRef.addGraphPoint(time, dLaserX);
+									const double dLaserX = static_cast<double>(laserX) / kLaserXMax;
+									preparedLaserSectionRef.addGraphPoint(time, dLaserX);
+								}
 							}
-						}
 						}
 					}
 					else if (currentBlock == kBlockIdxLaser && laneIdx == kNumLaserLanes) // Lane spin

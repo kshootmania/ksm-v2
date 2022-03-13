@@ -5,7 +5,7 @@ namespace ksh
 {
 	struct DifficultyInfo
 	{
-		std::int8_t idx; // 0-3 in KSH
+		std::int8_t idx = 0; // 0-3 in KSH
 	};
 
 	struct LegacyMetaInfo

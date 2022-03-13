@@ -11,16 +11,16 @@ ksh::BeatMapTimingCache ksh::TimingUtils::CreateBeatMapTimingCache(const BeatMap
     // FIXME: DO NOT USE UNFLEXIBLE C ASSERTION
 
     // There must be at least one tempo change
-    assert(m_tempoChanges.size() > 0);
+    assert(beatMap.bpmChanges.size() > 0);
 
     // Tempo at zero position must be set
-    assert(m_tempoChanges.count(0) > 0);
+    assert(beatMap.bpmChanges.contains(0));
 
     // There must be at least one time signature change
-    assert(m_timeSigChanges.size() > 0);
+    assert(beatMap.timeSigChanges.size() > 0);
 
     // Time signature at zero position must be set
-    assert(m_timeSigChanges.count(0) > 0);
+    assert(beatMap.timeSigChanges.contains(0));
 
     BeatMapTimingCache cache;
 
@@ -57,6 +57,8 @@ ksh::BeatMapTimingCache ksh::TimingUtils::CreateBeatMapTimingCache(const BeatMap
             prevItr = itr;
         }
     }
+
+    return cache;
 }
 
 ksh::Ms ksh::TimingUtils::PulseToMs(Pulse pulse, const BeatMap& beatMap, const BeatMapTimingCache& cache)

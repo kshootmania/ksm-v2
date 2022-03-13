@@ -58,6 +58,9 @@
     <Filter Include="Header Files\impl">
       <UniqueIdentifier>{8f6b340d-32fe-4f47-9145-41f71e03249f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\third_party">
+      <UniqueIdentifier>{3eb524fe-e604-41a6-8582-7ad07c0f1384}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ksh\common\common.hpp">
@@ -120,6 +123,12 @@
     <ClInclude Include="include\ksh\impl\impl.hpp">
       <Filter>Header Files\impl</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksh\io\kson_io.hpp">
+      <Filter>Header Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksh\third_party\nlohmann\json.hpp">
+      <Filter>Header Files\third_party</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\timing_utils.cpp">
@@ -130,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="src\encoding\encoding_win.cpp">
       <Filter>Source Files\encoding</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\kson_io.cpp">
+      <Filter>Source Files\io</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
