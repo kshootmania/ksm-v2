@@ -83,7 +83,12 @@ namespace ksh
 	struct KSHMovieInfo
 	{
 		std::u8string filename;
-		int64_t offsetMs = 0;
+		std::int64_t offsetMs = 0;
+
+		bool empty() const
+		{
+			return filename.empty() && offsetMs == 0;
+		}
 	};
 
 	inline void to_json(nlohmann::json& j, const KSHMovieInfo& movie)
@@ -101,6 +106,11 @@ namespace ksh
 		std::array<KSHLayerInfo, 2> layerInfos;
 
 		KSHMovieInfo movieInfos;
+
+		bool empty() const
+		{
+			return bgInfos.empty() && layerInfos.empty() && movieInfos.empty();
+		}
 	};
 
 	inline void to_json(nlohmann::json& j, const LegacyBGRoot& legacy)
@@ -139,8 +149,11 @@ namespace ksh
 
 	inline void to_json(nlohmann::json& j, const BGRoot& bg)
 	{
-		j = {
-			{ "legacy", bg.legacy },
-		};
+		j = nlohmann::json::object();
+
+		if (!bg.legacy.empty())
+		{
+			j["legacy"] = bg.legacy;
+		}
 	}
 }

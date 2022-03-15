@@ -55,10 +55,12 @@ namespace ksh
 	inline void to_json(nlohmann::json& j, const LegacyAudioInfo& legacy)
 	{
 		j = nlohmann::json::object();
+
 		if (legacy.laserSlamAutoVolume)
 		{
 			j["laser_slam_auto_vol"] = true;
 		}
+
 		if (!legacy.legacyBGMInfo.empty())
 		{
 			j["bgm"] = legacy.legacyBGMInfo.toStrArray();

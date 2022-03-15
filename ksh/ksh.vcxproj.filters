@@ -61,6 +61,9 @@
     <Filter Include="Header Files\third_party">
       <UniqueIdentifier>{3eb524fe-e604-41a6-8582-7ad07c0f1384}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\audio">
+      <UniqueIdentifier>{62055d93-0e73-4ab1-85e8-32f35abaaa38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ksh\common\common.hpp">
@@ -126,9 +129,6 @@
     <ClInclude Include="include\ksh\io\kson_io.hpp">
       <Filter>Header Files\io</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksh\third_party\nlohmann\json.hpp">
-      <Filter>Header Files\third_party</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\timing_utils.cpp">
@@ -142,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="src\io\kson_io.cpp">
       <Filter>Source Files\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\audio_effect.cpp">
+      <Filter>Source Files\audio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

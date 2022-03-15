@@ -2,6 +2,7 @@
 #include "ksh/encoding/encoding.hpp"
 #include <fstream>
 #include <sstream>
+#include <unordered_set>
 #include <optional>
 #include <charconv>
 #include <cmath>
@@ -683,10 +684,12 @@ namespace
 		void addGraphPoint(Pulse time, double value)
 		{
 			const RelPulse relativeTime = time - m_time;
+
 			if (relativeTime < 0)
 			{
 				return;
 			}
+
 			if (m_values.contains(relativeTime))
 			{
 				m_values.at(relativeTime).vf = value;
@@ -745,13 +748,32 @@ namespace
 				return;
 			}
 
-			auto& targetLane = m_pTargetChartData->note.laserLanes[m_targetLaneIdx];
+			assert(m_values.size() >= 2);
+
+			// Convert a 32th or shorter laser segment to a laser slam
+			const Pulse laserSlamThreshold = m_pTargetChartData->beat.resolution / 32;
+			ByRelPulse<GraphValue> convertedGraphSection;
+			for (auto itr = m_values.cbegin(); itr != m_values.cend() && std::next(itr) != m_values.cend(); ++itr)
+			{
+				const auto& [ry, value] = *itr;
+				const auto& [nextRy, nextValue] = *std::next(itr);
+				if (0 <= nextRy - ry && nextRy - ry <= laserSlamThreshold)
+				{
+					convertedGraphSection.emplace(ry, GraphValue(value.v, nextValue.v));
+					++itr;
+				}
+				else
+				{
+					convertedGraphSection.emplace(ry, value);
+				}
+			}
 
 			// Publish prepared laser section
+			auto& targetLane = m_pTargetChartData->note.laserLanes[m_targetLaneIdx];
 			const auto [_, inserted] = targetLane.emplace(
 				m_time,
 				LaserSection{
-					.points = m_values,
+					.points = convertedGraphSection,
 					.xScale = 1, // TODO
 				});
 
@@ -796,7 +818,6 @@ namespace
 		{
 			PreparedGraphSection::clear();
 
-			m_targetLaneIdx = 0;
 			m_preparedLaneSpins.clear();
 		}
 
@@ -948,9 +969,11 @@ namespace
 			chartData.meta.difficulty.idx = 3;
 		}
 
-		const std::int8_t level =  GetInt<std::int8_t>(meta, u8"level", 1, 1, 20);
+		chartData.meta.level = GetInt<std::int8_t>(meta, u8"level", 1, 1, 20);
 
-		chartData.meta.dispBPM = Get(meta, u8"tempo", u8"120");
+		chartData.meta.dispBPM = Get(meta, u8"t", u8"");
+
+		chartData.meta.standardBPM = ParseNumeric<double>(Get(meta, u8"to", u8"0"), 0.0);
 
 		const auto bgmFilenames = Split<4>(Get(meta, u8"m"), u8';');
 		chartData.audio.bgmInfo.filename = bgmFilenames[0];
@@ -1142,10 +1165,18 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 			// Add options that require their position
 			for (const auto& [lineIdx, key, value] : optionLines)
 			{
-				Pulse time = currentPulse + lineIdx * oneLinePulse;
+				const Pulse time = currentPulse + lineIdx * oneLinePulse;
 				if (key == u8"t")
 				{
-					InsertBPMChange(chartData.beat.bpmChanges, time, value);
+					if (chartData.beat.bpmChanges.empty())
+					{
+						// In rare cases where BPM is not specified on the chart metadata
+						InsertBPMChange(chartData.beat.bpmChanges, 0, value);
+					}
+					else
+					{
+						InsertBPMChange(chartData.beat.bpmChanges, time, value);
+					}
 				}
 				else if (key == u8"zoom_top")
 				{
@@ -1349,6 +1380,69 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 	for (auto& preparedFXSection : preparedLongNoteArray.laser)
 	{
 		preparedFXSection.publishLaserNote();
+	}
+
+	// Convert FX parameters
+	for (auto& [audioEffectName, noteEvents] : chartData.audio.audioEffects.noteEventList)
+	{
+		AudioEffectType type = AudioEffectType::kUnspecified;
+		if (chartData.audio.audioEffects.defList.contains(audioEffectName))
+		{
+			// User-defined audio effects
+			type = chartData.audio.audioEffects.defList.at(audioEffectName).type;
+		}
+		else
+		{
+			// Preset audio effects
+			type = StrToAudioEffectType(audioEffectName);
+		}
+
+		assert(type != AudioEffectType::kUnspecified);
+
+		for (auto& lane : noteEvents.fx)
+		{
+			for (auto& [y, params] : lane)
+			{
+				// Convert temporary stored "_param1"/"_param2" values to parameter values for each audio effect type
+				if (params.contains(u8"_param1") && params.contains(u8"_param2"))
+				{
+					const std::int32_t param1 = static_cast<std::int32_t>(std::round(params.at(u8"_param1").valueOff));
+					const std::int32_t param2 = static_cast<std::int32_t>(std::round(params.at(u8"_param2").valueOff));
+
+					switch (type)
+					{
+					case AudioEffectType::kRetrigger:
+					case AudioEffectType::kGate:
+					case AudioEffectType::kWobble:
+						if (param1 > 0)
+						{
+							params.emplace(u8"wave_length", 1.0 / param1);
+							// Comment out as the default value is 1.0
+							//params.emplace(u8"wave_length@tempo_sync", 1.0);
+						}
+						break;
+					case AudioEffectType::kPitchShift:
+						params.emplace(u8"pitch", static_cast<double>(param1));
+						break;
+					case AudioEffectType::kBitcrusher:
+						params.emplace(u8"reduction", static_cast<double>(param1));
+						break;
+					case AudioEffectType::kTapestop:
+						params.emplace(u8"speed", param1 / 100.0);
+						break;
+					case AudioEffectType::kEcho:
+						params.emplace(u8"wave_length", 1.0 / param1);
+						// Comment out as the default value is 1.0
+						//params.emplace(u8"wave_length@tempo_sync", 1.0);
+						params.emplace(u8"feedback", param2 / 100.0);
+						break;
+					};
+					
+					params.erase(u8"_param1");
+					params.erase(u8"_param2");
+				}
+			}
+		}
 	}
 
 	return chartData;

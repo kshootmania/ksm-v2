@@ -4,7 +4,9 @@
 
 namespace
 {
-	// Note: CP_ACP is not used here for non-Japanese locales.
+	// Shift-JIS (Japanese) codepage
+	// Note: CP_ACP is not used for non-Japanese locales.
+	//       Almost all non-UTF8 legacy charts are in Japanese, so they are always considered Shift-JIS here.
 	constexpr UINT kShiftJISCodePage = 932;
 }
 

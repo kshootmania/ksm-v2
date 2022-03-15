@@ -22,6 +22,8 @@ namespace ksh
 		kPeakingFilter,
 	};
 
+	AudioEffectType StrToAudioEffectType(std::u8string_view str);
+
 	NLOHMANN_JSON_SERIALIZE_ENUM(AudioEffectType, {
 		{ AudioEffectType::kUnspecified, nullptr },
 		{ AudioEffectType::kRetrigger, "retrigger" },
@@ -119,10 +121,12 @@ namespace ksh
 
 	inline void to_json(nlohmann::json& j, const AudioEffectDef& def)
 	{
-		j = {
-			{ "type", def.type },
-			{ "v", def.params },
-		};
+		j["type"] = def.type;
+
+		if (!nlohmann::json(def.params).empty())
+		{
+			j["v"] = def.params;
+		}
 	}
 
 	struct AudioEffectRoot
@@ -139,6 +143,8 @@ namespace ksh
 
 	inline void to_json(nlohmann::json& j, const AudioEffectRoot& audioEffect)
 	{
+		j = nlohmann::json::object();
+
 		if (!audioEffect.defList.empty())
 		{
 			j["def"] = audioEffect.defList;

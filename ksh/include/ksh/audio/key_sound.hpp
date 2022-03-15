@@ -10,9 +10,12 @@ namespace ksh
 
 	inline void to_json(nlohmann::json& j, const KeySoundParams& params)
 	{
-		j = {
-			{ "vol", params.volume },
-		};
+		j = nlohmann::json::object();
+
+		if (params.volume != 1.0)
+		{
+			j["vol"] = params.volume;
+		}
 	}
 
 	struct KeySoundDef
@@ -24,10 +27,12 @@ namespace ksh
 
 	inline void to_json(nlohmann::json& j, const KeySoundDef& def)
 	{
-		j = {
-			{ "filename", UnU8(def.filename) },
-			{ "v", def.defaultParams },
-		};
+		j["filename"] = UnU8(def.filename);
+
+		if (!nlohmann::json(def.defaultParams).empty())
+		{
+			j["v"] = def.defaultParams;
+		}
 	}
 
 	struct KeySoundRoot

@@ -30,6 +30,8 @@ namespace ksh
 	template <typename G> // G: Graph or RelGraph
 	inline void to_json(nlohmann::json& j, const CamGraphs<G>& camGraphs)
 	{
+		j = nlohmann::json::object();
+
 		if (!camGraphs.zoom.empty())
 		{
 			j["zoom"] = camGraphs.zoom;
@@ -128,6 +130,8 @@ namespace ksh
 
 	inline void to_json(nlohmann::json& j, const CamPatternInfo& info)
 	{
+		j = nlohmann::json::object();
+
 		if (!info.defList.empty())
 		{
 			j["def"] = info.defList;
@@ -147,7 +151,7 @@ namespace ksh
 	struct CamRoot
 	{
 		CamGraphs<Graph> body;
-		CamGraphs<Graph> tiltAssignScale;
+		CamGraphs<Graph> tiltAssignScale = { .rotationZ = { { 0, 10.0 } } };
 		CamPatternInfo patternInfo;
 
 		bool empty() const
@@ -158,6 +162,8 @@ namespace ksh
 
 	inline void to_json(nlohmann::json& j, const CamRoot& cam)
 	{
+		j = nlohmann::json::object();
+
 		if (!cam.body.empty())
 		{
 			j["body"] = cam.body;

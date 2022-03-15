@@ -9,10 +9,17 @@ namespace ksh
 	{
 		CamRoot cams;
 		TiltRoot tilts;
+
+		bool empty() const
+		{
+			return cams.empty() && tilts.empty();
+		}
 	};
 
 	inline void to_json(nlohmann::json& j, const CameraRoot& camera)
 	{
+		j = nlohmann::json::object();
+
 		if (!camera.cams.empty())
 		{
 			j["cam"] = camera.cams;

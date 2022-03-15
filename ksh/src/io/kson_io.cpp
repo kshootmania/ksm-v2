@@ -4,6 +4,8 @@ using json = nlohmann::json;
 
 bool ksh::SaveKSONChartData(std::ostream& stream, const ChartData& chartData)
 {
-	// TODO: implement
+	const json j = chartData;
+	stream << j.dump();
+	// TODO: Error handling
 	return true;
 }

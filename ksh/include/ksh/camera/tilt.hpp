@@ -16,6 +16,8 @@ namespace ksh
 
 	inline void to_json(nlohmann::json& j, const TiltRoot& tilt)
 	{
+		j = nlohmann::json::object();
+
 		if (!tilt.manualTilts.empty())
 		{
 			j["manual"] = tilt.manualTilts;
