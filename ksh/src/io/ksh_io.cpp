@@ -283,6 +283,7 @@ namespace
 		return true;
 	}
 
+	// TODO: refactor
 	class PreparedLongNote
 	{
 	protected:
@@ -726,6 +727,7 @@ namespace
 	{
 	private:
 		std::size_t m_targetLaneIdx = 0;
+		std::int8_t m_xScale = 1;
 		ByRelPulse<PreparedLaneSpin> m_preparedLaneSpins;
 
 	public:
@@ -740,6 +742,17 @@ namespace
 		virtual ~PreparedLaserSection() = default;
 
 		void publishManualTilt() = delete;
+
+		void prepare(Pulse) = delete;
+
+		void prepare(Pulse time, std::int8_t xScale)
+		{
+			if (!m_prepared)
+			{
+				PreparedGraphSection::prepare(time);
+				m_xScale = xScale;
+			}
+		}
 
 		void publishLaserNote()
 		{
@@ -774,7 +787,7 @@ namespace
 				m_time,
 				LaserSection{
 					.points = convertedGraphSection,
-					.xScale = 1, // TODO
+					.xScale = m_xScale,
 				});
 
 			if (inserted)
@@ -818,6 +831,7 @@ namespace
 		{
 			PreparedGraphSection::clear();
 
+			m_xScale = 1;
 			m_preparedLaneSpins.clear();
 		}
 
@@ -1077,6 +1091,9 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 	// FX audio effect parameters ("fx-l_param1=" or "fx-r_param1=" in .ksh; currently no "param2")
 	std::array<std::u8string, kNumFXLanes> currentFXAudioEffectParamStrs;
 
+	// Laser X scale (normal=1, wide=2)
+	std::array<std::int8_t, kNumLaserLanes> currentLaserXScales;
+
 	// GraphSections buffers
 	PreparedGraphSection preparedManualTilt(&chartData);
 
@@ -1140,6 +1157,8 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 			{
 				currentFXAudioEffectStrs[1] = value;
 			}
+			// Note: "fx-l_param1"/"fx-r_param1" is legacy (< v1.60) and no need to process "fx-l_param2"/"fx-r_param2"
+			//       although a second parameter exists in Echo. This is because Echo is added in v1.60.
 			else if (key == u8"fx-l_param1")
 			{
 				currentFXAudioEffectParamStrs[0] = value;
@@ -1147,6 +1166,20 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 			else if (key == u8"fx-r_param1")
 			{
 				currentFXAudioEffectParamStrs[1] = value;
+			}
+			else if (key == u8"laserrange_l")
+			{
+				if (value == u8"2x")
+				{
+					currentLaserXScales[0] = 2;
+				}
+			}
+			else if (key == u8"laserrange_r")
+			{
+				if (value == u8"2x")
+				{
+					currentLaserXScales[1] = 2;
+				}
 			}
 			else
 			{
@@ -1321,7 +1354,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 								const std::int32_t laserX = CharToLaserX(buf[j]);
 								if (laserX >= 0)
 								{
-									preparedLaserSectionRef.prepare(time);
+									preparedLaserSectionRef.prepare(time, currentLaserXScales[laneIdx]);
 
 									const double dLaserX = static_cast<double>(laserX) / kLaserXMax;
 									preparedLaserSectionRef.addGraphPoint(time, dLaserX);
@@ -1354,6 +1387,10 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 			for (auto& str : currentFXAudioEffectParamStrs)
 			{
 				str.clear();
+			}
+			for (auto& xScale : currentLaserXScales)
+			{
+				xScale = 1;
 			}
 			currentPulse += chartData.beat.resolution * 4 * currentTimeSig.numerator / currentTimeSig.denominator;
 			++currentMeasureIdx;
