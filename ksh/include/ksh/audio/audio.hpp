@@ -29,7 +29,7 @@ namespace ksh
 			j["key_sound"] = audio.keySounds;
 		}
 
-		if (!nlohmann::json(audio.legacy).empty())
+		if (!audio.legacy.empty())
 		{
 			j["legacy"] = audio.legacy;
 		}

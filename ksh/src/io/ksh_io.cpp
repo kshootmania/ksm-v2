@@ -992,9 +992,9 @@ namespace
 		const auto bgmFilenames = Split<4>(Get(meta, u8"m"), u8';');
 		chartData.audio.bgmInfo.filename = bgmFilenames[0];
 		chartData.audio.bgmInfo.previewFilename = bgmFilenames[0];
-		chartData.audio.legacy.legacyBGMInfo.filenameF = bgmFilenames[1];
-		chartData.audio.legacy.legacyBGMInfo.filenameP = bgmFilenames[2];
-		chartData.audio.legacy.legacyBGMInfo.filenameFP = bgmFilenames[3];
+		chartData.audio.legacy.bgmInfo.filenameF = bgmFilenames[1];
+		chartData.audio.legacy.bgmInfo.filenameP = bgmFilenames[2];
+		chartData.audio.legacy.bgmInfo.filenameFP = bgmFilenames[3];
 
 		std::int32_t volumeInt = GetInt<std::int32_t>(meta, u8"mvol", 50);
 		chartData.audio.bgmInfo.volume = volumeInt / 100.0;
@@ -1004,7 +1004,7 @@ namespace
 			chartData.audio.bgmInfo.volume *= 0.6;
 		}
 
-		chartData.audio.legacy.laserSlamAutoVolume = (GetInt<std::int32_t>(meta, u8"chokkakuautovol", 0) != 0);
+		// TODO: Adjust volume if chokkakuautovol is 1
 
 		chartData.audio.bgmInfo.offsetMs = GetInt<std::int64_t>(meta, u8"o", 0);
 		chartData.audio.bgmInfo.previewOffsetMs = GetInt<std::int64_t>(meta, u8"po", 0);

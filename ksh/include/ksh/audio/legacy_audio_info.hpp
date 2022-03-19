@@ -45,25 +45,33 @@ namespace ksh
 		}
 	};
 
+	inline void to_json(nlohmann::json& j, const LegacyAudioBGMInfo& legacy)
+	{
+		j = nlohmann::json::object();
+		
+		if (!legacy.empty())
+		{
+			j["fp_filenames"] = legacy.toStrArray();
+		}
+	}
+
 	struct LegacyAudioInfo
 	{
-		bool laserSlamAutoVolume = false; // "chokkakuautovol" in KSH
+		LegacyAudioBGMInfo bgmInfo;
 
-		LegacyAudioBGMInfo legacyBGMInfo;
+		bool empty() const
+		{
+			return bgmInfo.empty();
+		}
 	};
 
 	inline void to_json(nlohmann::json& j, const LegacyAudioInfo& legacy)
 	{
 		j = nlohmann::json::object();
 
-		if (legacy.laserSlamAutoVolume)
+		if (!legacy.bgmInfo.empty())
 		{
-			j["laser_slam_auto_vol"] = true;
-		}
-
-		if (!legacy.legacyBGMInfo.empty())
-		{
-			j["bgm"] = legacy.legacyBGMInfo.toStrArray();
+			j["bgm"] = legacy.bgmInfo;
 		}
 	}
 }
