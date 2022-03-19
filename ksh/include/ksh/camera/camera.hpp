@@ -7,12 +7,12 @@ namespace ksh
 {
 	struct CameraRoot
 	{
-		CamRoot cams;
-		TiltRoot tilts;
+		CamRoot cam;
+		TiltRoot tilt;
 
 		bool empty() const
 		{
-			return cams.empty() && tilts.empty();
+			return cam.empty() && tilt.empty();
 		}
 	};
 
@@ -20,14 +20,14 @@ namespace ksh
 	{
 		j = nlohmann::json::object();
 
-		if (!camera.cams.empty())
+		if (!camera.cam.empty())
 		{
-			j["cam"] = camera.cams;
+			j["cam"] = camera.cam;
 		}
 
-		if (!camera.tilts.empty())
+		if (!camera.tilt.empty())
 		{
-			j["tilt"] = camera.tilts;
+			j["tilt"] = camera.tilt;
 		}
 	}
 }

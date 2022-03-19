@@ -6,11 +6,11 @@ namespace ksh
 	struct TiltRoot
 	{
 		GraphSections manualTilts;
-		ByPulse<RelPulse> keepIntervals;
+		ByPulse<bool> keep;
 
 		bool empty() const
 		{
-			return manualTilts.empty() && keepIntervals.empty();
+			return manualTilts.empty() && keep.empty();
 		}
 	};
 
@@ -23,9 +23,29 @@ namespace ksh
 			j["manual"] = tilt.manualTilts;
 		}
 
-		if (!tilt.keepIntervals.empty())
+		if (!tilt.keep.empty())
 		{
-			j["keep"] = tilt.keepIntervals;
+			auto keep = nlohmann::json::array();
+
+			// Skip the same value
+			// (The first "false" is also skipped)
+			bool prevValue = false;
+			for (const auto& [y, v] : tilt.keep)
+			{
+				if (v == prevValue)
+				{
+					continue;
+				}
+
+				keep.push_back({
+					{ "y", y },
+					{ "v", v },
+				});
+
+				prevValue = v;
+			}
+
+			j["keep"] = keep;
 		}
 	}
 }

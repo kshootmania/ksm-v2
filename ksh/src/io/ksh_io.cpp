@@ -708,7 +708,7 @@ namespace
 				return;
 			}
 
-			m_pTargetChartData->camera.tilts.manualTilts.emplace(
+			m_pTargetChartData->camera.tilt.manualTilts.emplace(
 				m_time,
 				m_values);
 
@@ -818,7 +818,7 @@ namespace
 
 						if (!patternKey.empty())
 						{
-							m_pTargetChartData->camera.cams.patternInfo.noteEventList[patternKey].laser[m_targetLaneIdx].emplace(m_time + relPulse, params);
+							m_pTargetChartData->camera.cam.patternInfo.noteEventList[patternKey].laser[m_targetLaneIdx].emplace(m_time + relPulse, params);
 						}
 					}
 				}
@@ -1120,7 +1120,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 		}
 
 		// TODO: Read user-defined audio effects
-		if (line[0] == '#')
+		if (!line.empty() && line[0] == '#')
 		{
 			continue;
 		}
@@ -1157,8 +1157,8 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 			{
 				currentFXAudioEffectStrs[1] = value;
 			}
-			// Note: "fx-l_param1"/"fx-r_param1" is legacy (< v1.60) and no need to process "fx-l_param2"/"fx-r_param2"
-			//       although a second parameter exists in Echo. This is because Echo is added in v1.60.
+			// Note: "fx-l_param2"/"fx-r_param2" need not be processed because "fx-l_param1"/"fx-r_param1" is legacy (< v1.60) and 
+			//       Echo, the only audio effect that uses a second parameter, was added in v1.60.
 			else if (key == u8"fx-l_param1")
 			{
 				currentFXAudioEffectParamStrs[0] = value;
@@ -1214,25 +1214,25 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 				else if (key == u8"zoom_top")
 				{
 					const double dValue = ParseNumeric<double>(std::u8string_view(value).substr(0, zoomMaxChar)) * kKSHToKSONCamScale;
-					if (std::abs(dValue) <= zoomAbsMax || (kshVersionInt < 167 && chartData.camera.cams.body.rotationX.contains(time)))
+					if (std::abs(dValue) <= zoomAbsMax || (kshVersionInt < 167 && chartData.camera.cam.body.rotationX.contains(time)))
 					{
-						chartData.camera.cams.body.rotationX.insert_or_assign(time, dValue);
+						chartData.camera.cam.body.rotationX.insert_or_assign(time, dValue);
 					}
 				}
 				else if (key == u8"zoom_bottom")
 				{
 					const double dValue = ParseNumeric<double>(std::u8string_view(value).substr(0, zoomMaxChar)) * kKSHToKSONCamScale;
-					if (std::abs(dValue) <= zoomAbsMax || (kshVersionInt < 167 && chartData.camera.cams.body.zoom.contains(time)))
+					if (std::abs(dValue) <= zoomAbsMax || (kshVersionInt < 167 && chartData.camera.cam.body.zoom.contains(time)))
 					{
-						chartData.camera.cams.body.zoom.insert_or_assign(time, dValue);
+						chartData.camera.cam.body.zoom.insert_or_assign(time, dValue);
 					}
 				}
 				else if (key == u8"zoom_side")
 				{
 					const double dValue = ParseNumeric<double>(std::u8string_view(value).substr(0, zoomMaxChar)) * kKSHToKSONCamScale;
-					if (std::abs(dValue) <= zoomAbsMax || (kshVersionInt < 167 && chartData.camera.cams.body.shiftX.contains(time)))
+					if (std::abs(dValue) <= zoomAbsMax || (kshVersionInt < 167 && chartData.camera.cam.body.shiftX.contains(time)))
 					{
-						chartData.camera.cams.body.shiftX.insert_or_assign(time, dValue);
+						chartData.camera.cam.body.shiftX.insert_or_assign(time, dValue);
 					}
 				}
 				else if (key == u8"center_split")
@@ -1240,7 +1240,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 					const double dValue = ParseNumeric<double>(value) * kKSHToKSONCamScale;
 					if (std::abs(dValue) <= kCenterSplitAbsMax)
 					{
-						chartData.camera.cams.body.centerSplit.insert_or_assign(time, dValue);
+						chartData.camera.cam.body.centerSplit.insert_or_assign(time, dValue);
 					}
 				}
 				else if (key == u8"tilt")
@@ -1266,11 +1266,24 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 						{
 							tiltAssignRotateZ *= s_tiltTypeScaleTable.at(value);
 						}
-						auto& target = chartData.camera.cams.tiltAssignScale.rotationZ;
-						const double prevValue = target.empty() ? kNormalTiltAssignRotateZ : target.crbegin()->second.vf;
-						target.insert_or_assign(time, GraphValue(prevValue, tiltAssignRotateZ));
 
-						// TODO: Keep tilt
+						// Insert cam.tilt_assign
+						{
+							auto& target = chartData.camera.cam.tiltAssignScale.rotationZ;
+							const double prevValue = target.empty() ? kNormalTiltAssignRotateZ : target.crbegin()->second.vf;
+							target.insert_or_assign(time, GraphValue(prevValue, tiltAssignRotateZ));
+						}
+
+						// Insert tilt.keep
+						{
+							auto& target = chartData.camera.tilt.keep;
+							const bool prevValue = target.empty() ? false : target.crbegin()->second;
+							const bool currentValue = value.starts_with(u8"keep_");
+							if (currentValue != prevValue)
+							{
+								target.insert_or_assign(time, currentValue);
+							}
+						}
 					}
 				}
 				else
