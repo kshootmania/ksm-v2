@@ -38,7 +38,7 @@ void KSMIniData::load(FilePathView path)
 
 void KSMIniData::save(FilePathView path) const
 {
-	constexpr std::size_t kReserveSize{ 4096 };
+	constexpr std::size_t kReserveSize = 4096;
 
 	String ini;
 	ini.reserve(kReserveSize);
@@ -72,11 +72,10 @@ void KSMIniData::save(FilePathView path) const
 			}
 
 			const StringView key = line.substrView(0, equalPos);
-			const StringView originalValue = line.substrView(equalPos + 1);
 			if (hasValue(key))
 			{
-				line = key + U'=' + getString(key);
 				remainingKeys.erase(key);
+				line = key + U'=' + getString(key); // Note: This assignment breaks the StringView reference of key
 			}
 
 			ini += line;
