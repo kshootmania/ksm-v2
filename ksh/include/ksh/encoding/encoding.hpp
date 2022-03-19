@@ -17,6 +17,10 @@ namespace ksh
 	{
 		return *reinterpret_cast<const std::string*>(&u8str);
 	}
+	inline const char* UnU8(const char8_t* u8str)
+	{
+		return reinterpret_cast<const char*>(u8str);
+	}
 	template <typename T>
 	const std::unordered_map<std::string, T>& UnU8(const std::unordered_map<std::u8string, T>& u8map)
 	{
