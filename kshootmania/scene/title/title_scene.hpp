@@ -4,7 +4,7 @@
 class TitleScene : public SceneManager<StringView>::Scene
 {
 private:
-	Texture m_bgTexture;
+	const Texture m_bgTexture;
 	TitleMenu m_menu;
 	Stopwatch m_exitStopwatch;
 

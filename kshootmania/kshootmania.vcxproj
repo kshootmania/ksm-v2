@@ -125,7 +125,7 @@
     <ClCompile Include="scene\option\option_menu_field.cpp" />
     <ClCompile Include="scene\option\option_top_menu.cpp" />
     <ClCompile Include="scene\option\option_scene.cpp" />
-    <ClCompile Include="scene\scene_management.cpp" />
+    <ClCompile Include="scene\select\select_scene.cpp" />
     <ClCompile Include="scene\title\title_menu.cpp" />
     <ClCompile Include="scene\title\title_scene.cpp" />
     <ClCompile Include="stdafx.cpp" />
@@ -336,7 +336,9 @@
     <ClInclude Include="scene\option\option_menu_field.hpp" />
     <ClInclude Include="scene\option\option_scene.hpp" />
     <ClInclude Include="scene\option\option_top_menu.hpp" />
-    <ClInclude Include="scene\scene_management.hpp" />
+    <ClInclude Include="scene\scene.hpp" />
+    <ClInclude Include="scene\select\select_assets.hpp" />
+    <ClInclude Include="scene\select\select_scene.hpp" />
     <ClInclude Include="scene\title\title_assets.hpp" />
     <ClInclude Include="scene\title\title_menu.hpp" />
     <ClInclude Include="scene\title\title_scene.hpp" />

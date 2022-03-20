@@ -16,7 +16,7 @@ public:
 	};
 
 private:
-	Texture m_bgTexture;
+	const Texture m_bgTexture;
 
 	TiledTexture m_headerTiledTexture;
 
@@ -24,13 +24,11 @@ private:
 
 	std::array<OptionMenu, kOptionMenuTypeEnumCount> m_optionMenus;
 
-	Font m_font;
+	const Font m_font;
 
 	Optional<OptionMenuType> m_currentOptionMenuIdx = none;
 
 public:
-	static constexpr StringView kSceneName = U"Option";
-
 	explicit OptionScene(const InitData& initData);
 
 	virtual void update() override;

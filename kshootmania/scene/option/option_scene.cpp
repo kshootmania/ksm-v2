@@ -1,7 +1,5 @@
 ﻿#include "option_scene.hpp"
 #include "option_assets.hpp"
-#include "i18n/i18n.hpp"
-#include "ini/config_ini.hpp"
 
 namespace
 {
@@ -253,5 +251,5 @@ void OptionScene::exitScene()
 {
 	ConfigIni::Save();
 
-	changeScene(SceneName::kTitle, SceneManagement::kDefaultTransitionMs);
+	changeScene(SceneName::kTitle, kDefaultTransitionMs);
 }

@@ -1,6 +1,5 @@
 ﻿#include "title_scene.hpp"
 #include "title_assets.hpp"
-#include "scene/option/option_scene.hpp"
 
 namespace
 {
@@ -44,10 +43,12 @@ void TitleScene::processMenuItem(TitleMenu::Item item)
 	switch (item)
 	{
 	case TitleMenu::kStart:
+		// TODO: Sign in to Internet Ranking
+		changeScene(SceneName::kSelect, kDefaultTransitionMs);
 		break;
 
 	case TitleMenu::kOption:
-		changeScene(SceneName::kOption, SceneManagement::kDefaultTransitionMs);
+		changeScene(SceneName::kOption, kDefaultTransitionMs);
 		break;
 
 	case TitleMenu::kInputGate:

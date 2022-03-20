@@ -1,8 +1,4 @@
 ﻿#include <Siv3D.hpp> // OpenSiv3D v0.6.3
-#include "scene/title/title_assets.hpp"
-#include "scene/option/option_assets.hpp"
-#include "i18n/i18n.hpp"
-#include "ini/config_ini.hpp"
 
 void RegisterAssets()
 {
@@ -39,8 +35,14 @@ void Main()
 	// Register asset list
 	RegisterAssets();
 
+	// Create scene manager
+	SceneManager<StringView> sceneManager;
+	sceneManager.add<TitleScene>(SceneName::kTitle);
+	sceneManager.add<OptionScene>(SceneName::kOption);
+	sceneManager.add<SelectScene>(SceneName::kSelect);
+	sceneManager.changeScene(SceneName::kTitle, kDefaultTransitionMs);
+
 	// Main loop
-	SceneManager<StringView> sceneManager = SceneManagement::MakeSceneManager();
 	while (System::Update())
 	{
 		if (!sceneManager.update())
