@@ -3,7 +3,7 @@
 
 SelectScene::SelectScene(const InitData& initData)
 	: SceneManager<StringView>::Scene(initData)
-	, m_bgTexture(SelectTexture::kBG)
+	, m_bgTexture(TextureAsset(SelectTexture::kBG))
 {
 }
 
@@ -13,4 +13,6 @@ void SelectScene::update()
 
 void SelectScene::draw() const
 {
+	ScreenUtils::FitToHeight(m_bgTexture).drawAt(Scene::Center());
+	m_bgAnim.draw();
 }

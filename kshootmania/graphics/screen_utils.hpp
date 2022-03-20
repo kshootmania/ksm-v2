@@ -14,7 +14,19 @@ namespace ScreenUtils
 		return v * screenSize.y / kBaseScreenHeight;
 	}
 
+	inline double Scaled(double v)
+	{
+		const Size screenSize = Scene::Size();
+		return v * screenSize.y / kBaseScreenHeight;
+	}
+
 	inline int32 ScaledByWidth(int32 v)
+	{
+		const Size screenSize = Scene::Size();
+		return v * screenSize.x / kBaseScreenWidth;
+	}
+
+	inline double ScaledByWidth(double v)
 	{
 		const Size screenSize = Scene::Size();
 		return v * screenSize.x / kBaseScreenWidth;
@@ -28,6 +40,11 @@ namespace ScreenUtils
 	inline Point Scaled(const int32 x, const int32 y)
 	{
 		return { Scaled(x), Scaled(y) };
+	}
+
+	inline Vec2 Scaled(const Vec2& vec)
+	{
+		return { Scaled(vec.x), Scaled(vec.y) };
 	}
 
 	inline TextureRegion Scaled(const Texture& texture)
@@ -64,6 +81,12 @@ namespace ScreenUtils
 		return v * screenSize.y * kScale2xNumerator / kBaseScreenHeight / kScale2xDenominator;
 	}
 
+	inline double Scaled2x(double v)
+	{
+		const Size screenSize = Scene::Size();
+		return v * screenSize.y * kScale2xNumerator / kBaseScreenHeight / kScale2xDenominator;
+	}
+
 	inline Point Scaled2x(const Point& point)
 	{
 		return { Scaled2x(point.x), Scaled2x(point.y) };
@@ -72,6 +95,11 @@ namespace ScreenUtils
 	inline Point Scaled2x(const int32 x, const int32 y)
 	{
 		return { Scaled2x(x), Scaled2x(y) };
+	}
+
+	inline Vec2 Scaled2x(const Vec2& vec)
+	{
+		return { Scaled2x(vec.x), Scaled2x(vec.y) };
 	}
 
 	inline TextureRegion Scaled2x(const TextureRegion& textureRegion)
@@ -92,6 +120,12 @@ namespace ScreenUtils
 		return v * screenSize.y * kScale3xNumerator / kBaseScreenHeight / kScale3xDenominator;
 	}
 
+	inline double Scaled3x(double v)
+	{
+		const Size screenSize = Scene::Size();
+		return v * screenSize.y * kScale3xNumerator / kBaseScreenHeight / kScale3xDenominator;
+	}
+
 	inline Point Scaled3x(const Point& point)
 	{
 		return { Scaled3x(point.x), Scaled3x(point.y) };
@@ -100,6 +134,11 @@ namespace ScreenUtils
 	inline Point Scaled3x(const int32 x, const int32 y)
 	{
 		return { Scaled3x(x), Scaled3x(y) };
+	}
+
+	inline Vec2 Scaled3x(const Vec2& vec)
+	{
+		return { Scaled3x(vec.x), Scaled3x(vec.y) };
 	}
 
 	inline TextureRegion Scaled3x(const TextureRegion& textureRegion)
@@ -121,6 +160,12 @@ namespace ScreenUtils
 		return v * screenSize.y * kScaleLNumerator / kBaseScreenHeight / kScaleLDenominator;
 	}
 
+	inline double ScaledL(double v)
+	{
+		const Size screenSize = Scene::Size();
+		return v * screenSize.y * kScaleLNumerator / kBaseScreenHeight / kScaleLDenominator;
+	}
+
 	inline Point ScaledL(const Point& point)
 	{
 		return { ScaledL(point.x), ScaledL(point.y) };
@@ -129,6 +174,11 @@ namespace ScreenUtils
 	inline Point ScaledL(const int32 x, const int32 y)
 	{
 		return { ScaledL(x), ScaledL(y) };
+	}
+
+	inline Vec2 ScaledL(const Vec2& vec)
+	{
+		return { ScaledL(vec.x), ScaledL(vec.y) };
 	}
 
 	inline TextureRegion ScaledL(const TextureRegion& textureRegion)
@@ -150,6 +200,23 @@ namespace ScreenUtils
 	};
 
 	inline int32 Scaled(SourceScale scale, int32 v)
+	{
+		switch (scale)
+		{
+		case SourceScale::k1x:
+			return Scaled(v);
+		case SourceScale::k2x:
+			return Scaled2x(v);
+		case SourceScale::k3x:
+			return Scaled3x(v);
+		case SourceScale::kL:
+			return ScaledL(v);
+		default:
+			return v;
+		}
+	}
+
+	inline double Scaled(SourceScale scale, double v)
 	{
 		switch (scale)
 		{
@@ -197,6 +264,23 @@ namespace ScreenUtils
 			return ScaledL(x, y);
 		default:
 			return Point{ x, y };
+		}
+	}
+
+	inline Vec2 Scaled(SourceScale scale, const Vec2& vec)
+	{
+		switch (scale)
+		{
+		case SourceScale::k1x:
+			return Scaled(vec);
+		case SourceScale::k2x:
+			return Scaled2x(vec);
+		case SourceScale::k3x:
+			return Scaled3x(vec);
+		case SourceScale::kL:
+			return ScaledL(vec);
+		default:
+			return vec;
 		}
 	}
 

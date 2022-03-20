@@ -240,6 +240,9 @@
     <ClCompile Include="scene\select\select_scene.cpp">
       <Filter>Source Files\scene\select</Filter>
     </ClCompile>
+    <ClCompile Include="scene\select\select_bg_anim.cpp">
+      <Filter>Source Files\scene\select</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -929,6 +932,9 @@
       <Filter>Header Files\scene\select</Filter>
     </ClInclude>
     <ClInclude Include="scene\select\select_assets.hpp">
+      <Filter>Header Files\scene\select</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\select\select_bg_anim.hpp">
       <Filter>Header Files\scene\select</Filter>
     </ClInclude>
   </ItemGroup>
