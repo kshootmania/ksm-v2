@@ -873,56 +873,6 @@ namespace
 		std::u8string value;
 	};
 
-	std::unordered_map<std::u8string, std::u8string> LoadKSHMetaDataHashMap(std::istream& stream, bool* pIsUTF8)
-	{
-		std::unordered_map<std::u8string, std::u8string> metaDataHashMap;
-
-		const bool isUTF8 = EliminateUTF8BOM(stream);
-		if (pIsUTF8)
-		{
-			*pIsUTF8 = isUTF8;
-		}
-
-		std::string line;
-		bool barLineExists = false;
-		while (std::getline(stream, line, '\n'))
-		{
-			// Eliminate CR
-			if (!line.empty() && *line.crbegin() == '\r')
-			{
-				line.pop_back();
-			}
-
-			if (IsBarLine(line))
-			{
-				// Chart meta data is before the first bar line ("--")
-				barLineExists = true;
-				break;
-			}
-
-			// Skip comments
-			// TODO: Store comments if editor
-			if (IsCommentLine(line))
-			{
-				continue;
-			}
-
-			// Skip unexpected header lines
-			if (!IsOptionLine(line))
-			{
-				continue;
-			}
-
-			const auto [key, value] = SplitOptionLine(line, isUTF8);
-			metaDataHashMap.insert_or_assign(key, value);
-		}
-
-		// .ksh files must have at least one bar line ("--")
-		assert(barLineExists);
-
-		return metaDataHashMap;
-	}
-
 	std::u8string_view Get(const std::unordered_map<std::u8string, std::u8string>& meta, const std::u8string& key, std::u8string_view defaultValue = u8"")
 	{
 		if (meta.contains(key)) // Note: unordered_map<u8string, u8string> does not support u8string_view as key
@@ -1046,6 +996,56 @@ namespace
 
 		return chartData;
 	}
+}
+
+std::unordered_map<std::u8string, std::u8string> ksh::LoadKSHMetaDataHashMap(std::istream& stream, bool* pIsUTF8)
+{
+	std::unordered_map<std::u8string, std::u8string> metaDataHashMap;
+
+	const bool isUTF8 = EliminateUTF8BOM(stream);
+	if (pIsUTF8)
+	{
+		*pIsUTF8 = isUTF8;
+	}
+
+	std::string line;
+	bool barLineExists = false;
+	while (std::getline(stream, line, '\n'))
+	{
+		// Eliminate CR
+		if (!line.empty() && *line.crbegin() == '\r')
+		{
+			line.pop_back();
+		}
+
+		if (IsBarLine(line))
+		{
+			// Chart meta data is before the first bar line ("--")
+			barLineExists = true;
+			break;
+		}
+
+		// Skip comments
+		// TODO: Store comments if editor
+		if (IsCommentLine(line))
+		{
+			continue;
+		}
+
+		// Skip unexpected header lines
+		if (!IsOptionLine(line))
+		{
+			continue;
+		}
+
+		const auto [key, value] = SplitOptionLine(line, isUTF8);
+		metaDataHashMap.insert_or_assign(key, value);
+	}
+
+	// .ksh files must have at least one bar line ("--")
+	assert(barLineExists);
+
+	return metaDataHashMap;
 }
 
 ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)

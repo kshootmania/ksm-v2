@@ -41,6 +41,9 @@ namespace ksh
 	{
 		j.at("bpm").get_to(beatMap.bpmChanges);
 		j.at("time_sig").get_to(beatMap.timeSigChanges);
-		j.at("resolution").get_to(beatMap.resolution); // TODO: default value logic
+		if (j.contains("resolution"))
+		{
+			j.at("resolution").get_to(beatMap.resolution);
+		}
 	}
 }

@@ -63,7 +63,7 @@ namespace ksh
 		j = {
 			{ "title", UnU8(meta.title) },
 			{ "artist", UnU8(meta.artist) },
-			{ "chartAuthor", UnU8(meta.chartAuthor) },
+			{ "chart_author", UnU8(meta.chartAuthor) },
 			{ "difficulty", meta.difficulty },
 			{ "level", meta.level },
 			{ "disp_bpm", UnU8(meta.dispBPM) },
