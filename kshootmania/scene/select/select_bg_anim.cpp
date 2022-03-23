@@ -5,6 +5,8 @@ namespace
 {
 	constexpr double kPeriodSec = 4.5;
 	constexpr double kScrollPeriodSec = 18.0;
+	constexpr double kWidth = 853.0;
+	constexpr double kHeight = 12.0;
 
 	double AlphaValue(double sec)
 	{
@@ -13,25 +15,21 @@ namespace
 		return kMaxValue + kMinValue - Min(Sin(Fmod(sec, kPeriodSec) * Math::Pi / kPeriodSec) * 2 + kMinValue, kMaxValue);
 	}
 
-	constexpr double kWidth = 853.0;
-
 	double XOffsetValue(double sec)
 	{
 		return kWidth * Fmod(sec, kScrollPeriodSec) / kScrollPeriodSec;
 	}
 
-	constexpr double kMaxHeightValue = 12.0;
-
 	double HeightValue(double sec)
 	{
 		constexpr double kOffsetSec = kPeriodSec / 2;
 		constexpr double kPeriodicFactor = 20.0;
-		return Min(kPeriodicFactor * Sin(Fmod(sec + kOffsetSec, kPeriodSec) * Math::Pi / kPeriodSec), kMaxHeightValue);
+		return Min(kPeriodicFactor * Sin(Fmod(sec + kOffsetSec, kPeriodSec) * Math::Pi / kPeriodSec), kHeight);
 	}
 
 	double YOffsetValue(double sec)
 	{
-		return kMaxHeightValue / 2 - HeightValue(sec) / 2;
+		return kHeight / 2 - HeightValue(sec) / 2;
 	}
 
 	Vec2 PosValue(double sec)

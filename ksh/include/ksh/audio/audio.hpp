@@ -41,4 +41,9 @@ namespace ksh
 		j.at("key_sound").get_to(audio.keySounds);
 		j.at("audio_effect").get_to(audio.audioEffects);
 	}*/
+
+	struct MetaAudioRoot
+	{
+		MetaBGMInfo bgmInfo;
+	};
 }

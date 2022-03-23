@@ -126,6 +126,7 @@
     <ClCompile Include="scene\option\option_top_menu.cpp" />
     <ClCompile Include="scene\option\option_scene.cpp" />
     <ClCompile Include="scene\select\select_bg_anim.cpp" />
+    <ClCompile Include="scene\select\select_menu.cpp" />
     <ClCompile Include="scene\select\select_scene.cpp" />
     <ClCompile Include="scene\title\title_menu.cpp" />
     <ClCompile Include="scene\title\title_scene.cpp" />
@@ -326,6 +327,7 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\common_defines.hpp" />
     <ClInclude Include="graphics\screen_utils.hpp" />
     <ClInclude Include="graphics\tiled_texture.hpp" />
     <ClInclude Include="i18n\i18n.hpp" />
@@ -340,10 +342,14 @@
     <ClInclude Include="scene\scene.hpp" />
     <ClInclude Include="scene\select\select_assets.hpp" />
     <ClInclude Include="scene\select\select_bg_anim.hpp" />
+    <ClInclude Include="scene\select\select_folder_state.hpp" />
+    <ClInclude Include="scene\select\select_menu.hpp" />
+    <ClInclude Include="scene\select\select_menu_item.hpp" />
     <ClInclude Include="scene\select\select_scene.hpp" />
     <ClInclude Include="scene\title\title_assets.hpp" />
     <ClInclude Include="scene\title\title_menu.hpp" />
     <ClInclude Include="scene\title\title_scene.hpp" />
+    <ClInclude Include="scoring\high_score_info.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ui\linear_menu.hpp" />
     <ClInclude Include="ui\menu_helper.hpp" />

@@ -52,6 +52,8 @@ namespace KeyConfig
 		kLeft,
 		kRight,
 
+		kBackspace,
+
 		kButtonEnumCount,
 	};
 

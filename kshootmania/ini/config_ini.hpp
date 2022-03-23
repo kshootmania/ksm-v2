@@ -129,6 +129,15 @@ namespace ConfigIni
 				kAnalogStickXY,
 			};
 		}
+
+		namespace SelectCloseFolderKey
+		{
+			enum SelectCloseFolderKey : int32
+			{
+				kBackspaceKey = 0,
+				kBackButton,
+			};
+		}
 	}
 
 	void Load();

@@ -190,6 +190,12 @@
     <Filter Include="Source Files\scene\select">
       <UniqueIdentifier>{159d7840-d844-4bb0-88f2-ddbaee653f9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\scoring">
+      <UniqueIdentifier>{77e8f166-a9ca-41f8-b54d-7e1f2aea4d15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\common">
+      <UniqueIdentifier>{0297cf3a-d302-46cd-9caa-159ab033c77c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\title\title_scene.cpp">
@@ -241,6 +247,9 @@
       <Filter>Source Files\scene\select</Filter>
     </ClCompile>
     <ClCompile Include="scene\select\select_bg_anim.cpp">
+      <Filter>Source Files\scene\select</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\select\select_menu.cpp">
       <Filter>Source Files\scene\select</Filter>
     </ClCompile>
   </ItemGroup>
@@ -936,6 +945,21 @@
     </ClInclude>
     <ClInclude Include="scene\select\select_bg_anim.hpp">
       <Filter>Header Files\scene\select</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\select\select_menu.hpp">
+      <Filter>Header Files\scene\select</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\select\select_folder_state.hpp">
+      <Filter>Header Files\scene\select</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\select\select_menu_item.hpp">
+      <Filter>Header Files\scene\select</Filter>
+    </ClInclude>
+    <ClInclude Include="scoring\high_score_info.hpp">
+      <Filter>Header Files\scoring</Filter>
+    </ClInclude>
+    <ClInclude Include="common\common_defines.hpp">
+      <Filter>Header Files\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

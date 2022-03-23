@@ -11,6 +11,23 @@
 
 namespace ksh
 {
+	enum class Error
+	{
+		kNone = 0,
+		kFileNotFound,
+		kCannotOpenFileStream,
+		kChartFormatError,
+		kUnknownError,
+	};
+
+	struct MetaChartData
+	{
+		MetaRoot meta;
+		MetaAudioRoot audio;
+
+		Error error = Error::kNone;
+	};
+
 	struct ChartData
 	{
 		MetaRoot meta;
@@ -21,6 +38,8 @@ namespace ksh
 		CameraRoot camera;
 		BGRoot bg;
 		ImplRoot impl;
+
+		Error error = Error::kNone;
 	};
 
 	inline void to_json(nlohmann::json& j, const ChartData& chartData)

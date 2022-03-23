@@ -45,5 +45,9 @@ namespace ksh
 		{
 			j.at("resolution").get_to(beatMap.resolution);
 		}
+		else
+		{
+			beatMap.resolution = kDefaultResolution;
+		}
 	}
 }

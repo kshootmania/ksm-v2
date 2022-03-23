@@ -43,4 +43,15 @@ namespace ksh
 		j.at("preview_offset").get_to(bgm.previewOffsetMs);
 		j.at("preview_duration").get_to(bgm.previewDurationMs);
 	}*/
+
+	struct MetaBGMInfo
+	{
+		double volume = 1.0;
+
+		std::u8string previewFilename;
+
+		int64_t previewOffsetMs = 0;
+
+		int64_t previewDurationMs = 0;
+	};
 }

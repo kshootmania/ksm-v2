@@ -1,5 +1,6 @@
 #include "ksh/io/ksh_io.hpp"
 #include "ksh/encoding/encoding.hpp"
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <unordered_set>
@@ -910,9 +911,11 @@ namespace
 		{ u8"infinite", 3 },
 	};
 
-	ksh::ChartData CreateChartDataFromKSHMetaData(const std::unordered_map<std::u8string, std::u8string>& meta)
+	template <typename ChartDataType>
+	ChartDataType CreateChartDataFromKSHMetaData(const std::unordered_map<std::u8string, std::u8string>& meta)
+		requires std::is_same_v<ChartDataType, ksh::ChartData> || std::is_same_v<ChartDataType, ksh::MetaChartData>
 	{
-		ChartData chartData;
+		ChartDataType chartData;
 
 		chartData.meta.kshVersion = Get(meta, u8"ver", u8"");
 		std::int32_t kshVersionInt = ParseNumeric<std::int32_t>(chartData.meta.kshVersion, 100);
@@ -940,11 +943,14 @@ namespace
 		chartData.meta.standardBPM = ParseNumeric<double>(Get(meta, u8"to", u8"0"), 0.0);
 
 		const auto bgmFilenames = Split<4>(Get(meta, u8"m"), u8';');
-		chartData.audio.bgmInfo.filename = bgmFilenames[0];
+		if constexpr (std::is_same_v<ChartDataType, ChartData>)
+		{
+			chartData.audio.bgmInfo.filename = bgmFilenames[0];
+			chartData.audio.legacy.bgmInfo.filenameF = bgmFilenames[1];
+			chartData.audio.legacy.bgmInfo.filenameP = bgmFilenames[2];
+			chartData.audio.legacy.bgmInfo.filenameFP = bgmFilenames[3];
+		}
 		chartData.audio.bgmInfo.previewFilename = bgmFilenames[0];
-		chartData.audio.legacy.bgmInfo.filenameF = bgmFilenames[1];
-		chartData.audio.legacy.bgmInfo.filenameP = bgmFilenames[2];
-		chartData.audio.legacy.bgmInfo.filenameFP = bgmFilenames[3];
 
 		std::int32_t volumeInt = GetInt<std::int32_t>(meta, u8"mvol", 50);
 		chartData.audio.bgmInfo.volume = volumeInt / 100.0;
@@ -956,41 +962,47 @@ namespace
 
 		// TODO: Adjust volume if chokkakuautovol is 1
 
-		chartData.audio.bgmInfo.offsetMs = GetInt<std::int64_t>(meta, u8"o", 0);
+		if constexpr (std::is_same_v<ChartDataType, ChartData>)
+		{
+			chartData.audio.bgmInfo.offsetMs = GetInt<std::int64_t>(meta, u8"o", 0);
+		}
 		chartData.audio.bgmInfo.previewOffsetMs = GetInt<std::int64_t>(meta, u8"po", 0);
 		chartData.audio.bgmInfo.previewDurationMs = GetInt<std::int64_t>(meta, u8"plength", 0);
 
-		// "bg"
-		const std::u8string_view bgStr = Get(meta, u8"bg", u8"desert");
-		if (bgStr.find(u8';') != std::u8string_view::npos)
+		if constexpr (std::is_same_v<ChartDataType, ChartData>)
 		{
-			const auto bgFilenames = Split<2>(bgStr, u8';');
-			chartData.bg.legacy.bgInfos[0].filename = bgFilenames[0];
-			chartData.bg.legacy.bgInfos[1].filename = bgFilenames[1];
+			// "bg"
+			const std::u8string_view bgStr = Get(meta, u8"bg", u8"desert");
+			if (bgStr.find(u8';') != std::u8string_view::npos)
+			{
+				const auto bgFilenames = Split<2>(bgStr, u8';');
+				chartData.bg.legacy.bgInfos[0].filename = bgFilenames[0];
+				chartData.bg.legacy.bgInfos[1].filename = bgFilenames[1];
+			}
+			else
+			{
+				chartData.bg.legacy.bgInfos[0].filename = bgStr;
+				chartData.bg.legacy.bgInfos[1].filename = bgStr;
+			}
+
+			// "layer"
+			const char8_t layerSeparator = kshVersionInt >= 166 ? u8';' : u8'/';
+			const std::u8string_view layerStr = Get(meta, u8"layer", u8"arrow");
+			const auto layerOptionArray = Split<3>(layerStr, layerSeparator);
+			auto& layerInfos = chartData.bg.legacy.layerInfos;
+			layerInfos[0].filename = layerInfos[1].filename = layerOptionArray[0];
+			layerInfos[0].durationMs = layerInfos[1].durationMs = ParseNumeric<int64_t>(layerOptionArray[1]);
+			const std::int32_t rotationFlagsInt = ParseNumeric<std::int32_t>(layerOptionArray[1], 3);
+			layerInfos[0].rotationFlags = layerInfos[1].rotationFlags = {
+				.tiltAffected = ((rotationFlagsInt & 1) != 0),
+				.spinAffected = ((rotationFlagsInt & 2) != 0),
+			};
+
+			chartData.bg.legacy.movieInfos.filename = Get(meta, u8"v");
+			chartData.bg.legacy.movieInfos.offsetMs = GetInt<std::int64_t>(meta, u8"vo");
+
+			chartData.gauge.total = static_cast<double>(GetInt<std::int32_t>(meta, u8"total", 0));
 		}
-		else
-		{
-			chartData.bg.legacy.bgInfos[0].filename = bgStr;
-			chartData.bg.legacy.bgInfos[1].filename = bgStr;
-		}
-
-		// "layer"
-		const char8_t layerSeparator = kshVersionInt >= 166 ? u8';' : u8'/';
-		const std::u8string_view layerStr = Get(meta, u8"layer", u8"arrow");
-		const auto layerOptionArray = Split<3>(layerStr, layerSeparator);
-		auto& layerInfos = chartData.bg.legacy.layerInfos;
-		layerInfos[0].filename = layerInfos[1].filename = layerOptionArray[0];
-		layerInfos[0].durationMs = layerInfos[1].durationMs = ParseNumeric<int64_t>(layerOptionArray[1]);
-		const std::int32_t rotationFlagsInt = ParseNumeric<std::int32_t>(layerOptionArray[1], 3);
-		layerInfos[0].rotationFlags = layerInfos[1].rotationFlags = {
-			.tiltAffected = ((rotationFlagsInt & 1) != 0),
-			.spinAffected = ((rotationFlagsInt & 2) != 0),
-		};
-
-		chartData.bg.legacy.movieInfos.filename = Get(meta, u8"v");
-		chartData.bg.legacy.movieInfos.offsetMs = GetInt<std::int64_t>(meta, u8"vo");
-
-		chartData.gauge.total = static_cast<double>(GetInt<std::int32_t>(meta, u8"total", 0));
 
 		chartData.meta.information = Get(meta, u8"information");
 
@@ -1048,12 +1060,38 @@ std::unordered_map<std::u8string, std::u8string> ksh::LoadKSHMetaDataHashMap(std
 	return metaDataHashMap;
 }
 
+MetaChartData ksh::LoadKSHMetaChartData(std::istream& stream)
+{
+	const auto meta = LoadKSHMetaDataHashMap(stream);
+	return CreateChartDataFromKSHMetaData<MetaChartData>(meta);
+}
+
+MetaChartData ksh::LoadKSHMetaChartData(const std::string& filePath)
+{
+	if (!std::filesystem::exists(filePath))
+	{
+		return {
+			.error = Error::kFileNotFound,
+		};
+	}
+
+	std::ifstream ifs(filePath, std::ios_base::binary);
+	if (!ifs.good())
+	{
+		return {
+			.error = Error::kCannotOpenFileStream,
+		};
+	}
+
+	return LoadKSHMetaChartData(ifs);
+}
+
 ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 {
 	bool isUTF8 = false;
 	const auto meta = LoadKSHMetaDataHashMap(stream, &isUTF8);
 
-	ChartData chartData = CreateChartDataFromKSHMetaData(meta);
+	ChartData chartData = CreateChartDataFromKSHMetaData<ChartData>(meta);
 
 	// Insert the first tempo change
 	double currentTempo = 120.0;
@@ -1496,4 +1534,24 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 	}
 
 	return chartData;
+}
+
+ChartData ksh::LoadKSHChartData(const std::string& filePath)
+{
+	if (!std::filesystem::exists(filePath))
+	{
+		return {
+			.error = Error::kFileNotFound,
+		};
+	}
+
+	std::ifstream ifs(filePath, std::ios_base::binary);
+	if (!ifs.good())
+	{
+		return {
+			.error = Error::kCannotOpenFileStream,
+		};
+	}
+
+	return LoadKSHChartData(ifs);
 }
