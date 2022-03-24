@@ -14,6 +14,7 @@ struct SelectMenuItem
 		kUndefined = 0,
 
 		kSong,
+		kCourse,
 
 		kAllFolder,
 		kDirectoryFolder,
@@ -73,12 +74,22 @@ struct SelectMenuFolderItemInfo : public ISelectMenuItemInfo
 {
 	String displayName;
 
+	explicit SelectMenuFolderItemInfo(StringView displayName)
+		: displayName(displayName)
+	{
+	}
+
 	virtual ~SelectMenuFolderItemInfo() = default;
 };
 
 struct SelectMenuSectionItemInfo : public ISelectMenuItemInfo
 {
 	String displayName;
+
+	explicit SelectMenuSectionItemInfo(StringView displayName)
+		: displayName(displayName)
+	{
+	}
 
 	virtual ~SelectMenuSectionItemInfo() = default;
 };
