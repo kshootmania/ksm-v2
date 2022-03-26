@@ -18,7 +18,10 @@ private:
 
 	IsCyclicMenu m_cyclic;
 
-	Optional<Timer> m_intervalTimer;
+	Optional<Stopwatch> m_pressedTimeStopwatch;
+	double m_pressedTimeSecPrev = 0.0;
+	double m_intervalSec;
+	double m_intervalSecFirst;
 
 	void increment();
 
@@ -32,6 +35,7 @@ public:
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		double intervalSecFirst = 0.0,
 		int32 defaultCursor = 0,
 		int32 cursorStep = 1);
 
@@ -43,6 +47,7 @@ public:
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		double intervalSecFirst = 0.0,
 		int32 defaultCursor = std::numeric_limits<int32>::min(),
 		int32 cursorStep = 1);
 
@@ -72,6 +77,7 @@ LinearMenu::LinearMenu(
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic,
 		double intervalSec,
+		double intervalSecFirst,
 		int32 defaultCursor,
 		int32 cursorStep)
 	: LinearMenu(
@@ -81,6 +87,7 @@ LinearMenu::LinearMenu(
 		decrementButtons,
 		cyclic,
 		intervalSec,
+		intervalSecFirst,
 		defaultCursor,
 		cursorStep)
 {
@@ -94,6 +101,7 @@ LinearMenu::LinearMenu(
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic,
 		double intervalSec,
+		double intervalSecFirst,
 		int32 defaultCursor,
 		int32 cursorStep)
 	: m_incrementButtons(incrementButtons)
@@ -103,7 +111,9 @@ LinearMenu::LinearMenu(
 	, m_cursorStep(cursorStep)
 	, m_cursor(Clamp(defaultCursor, static_cast<int32>(cursorMin), static_cast<int32>(cursorMax)))
 	, m_cyclic(cyclic)
-	, m_intervalTimer((intervalSec > 0.0) ? MakeOptional<Timer>(SecondsF(intervalSec), StartImmediately::No) : Optional<Timer>(none))
+	, m_pressedTimeStopwatch(m_intervalSec == 0.0 ? none : MakeOptional<Stopwatch>(StartImmediately::No))
+	, m_intervalSec(intervalSec)
+	, m_intervalSecFirst(intervalSecFirst == 0.0 ? intervalSec : intervalSecFirst)
 {
 }
 

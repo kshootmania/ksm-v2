@@ -37,6 +37,7 @@ namespace MenuHelper
 		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		double intervalSecFirst = 0.0,
 		int32 defaultCursor = std::numeric_limits<int32>::min(),
 		int32 cursorStep = 1)
 	{
@@ -47,6 +48,7 @@ namespace MenuHelper
 			DecrementButtonsForHorizontalMenu(buttonFlags),
 			cyclic,
 			intervalSec,
+			intervalSecFirst,
 			defaultCursor,
 			cursorStep);
 	}
@@ -57,6 +59,7 @@ namespace MenuHelper
 		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		double intervalSecFirst = 0.0,
 		int32 defaultCursor = 0,
 		int32 cursorStep = 1)
 	{
@@ -66,15 +69,17 @@ namespace MenuHelper
 			buttonFlags,
 			cyclic,
 			intervalSec,
+			intervalSecFirst,
 			defaultCursor,
 			cursorStep);
 	}
 
 	template <typename T>
-	ArrayWithLinearMenu<T> MakeArrayBindedHorizontalMenu(
+	ArrayWithLinearMenu<T> MakeArrayWithHorizontalMenu(
 		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		double intervalSecFirst = 0.0,
 		int32 defaultCursor = 0,
 		int32 cursorStep = 1)
 	{
@@ -83,16 +88,18 @@ namespace MenuHelper
 			DecrementButtonsForHorizontalMenu(buttonFlags),
 			cyclic,
 			intervalSec,
+			intervalSecFirst,
 			defaultCursor,
 			cursorStep);
 	}
 
 	template <typename T>
-	ArrayWithLinearMenu<T> MakeArrayBindedHorizontalMenu(
+	ArrayWithLinearMenu<T> MakeArrayWithHorizontalMenu(
 		const Array<T>& array,
 		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		double intervalSecFirst = 0.0,
 		int32 defaultCursor = 0,
 		int32 cursorStep = 1)
 	{
@@ -102,6 +109,7 @@ namespace MenuHelper
 			DecrementButtonsForHorizontalMenu(buttonFlags),
 			cyclic,
 			intervalSec,
+			intervalSecFirst,
 			defaultCursor,
 			cursorStep);
 	}
@@ -117,6 +125,7 @@ namespace MenuHelper
 		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		double intervalSecFirst = 0.0,
 		int32 defaultCursor = std::numeric_limits<int32>::min(),
 		int32 cursorStep = 1)
 	{
@@ -127,6 +136,7 @@ namespace MenuHelper
 			DecrementButtonsForVerticalMenu(buttonFlags),
 			cyclic,
 			intervalSec,
+			intervalSecFirst,
 			defaultCursor,
 			cursorStep);
 	}
@@ -137,6 +147,7 @@ namespace MenuHelper
 		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		double intervalSecFirst = 0.0,
 		int32 defaultCursor = 0,
 		int32 cursorStep = 1)
 	{
@@ -146,15 +157,17 @@ namespace MenuHelper
 			buttonFlags,
 			cyclic,
 			intervalSec,
+			intervalSecFirst,
 			defaultCursor,
 			cursorStep);
 	}
 
 	template <typename T>
-	ArrayWithLinearMenu<T> MakeArrayBindedVerticalMenu(
+	ArrayWithLinearMenu<T> MakeArrayWithVerticalMenu(
 		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		double intervalSecFirst = 0.0,
 		int32 defaultCursor = 0,
 		int32 cursorStep = 1)
 	{
@@ -163,16 +176,18 @@ namespace MenuHelper
 			DecrementButtonsForVerticalMenu(buttonFlags),
 			cyclic,
 			intervalSec,
+			intervalSecFirst,
 			defaultCursor,
 			cursorStep);
 	}
 
 	template <typename T>
-	ArrayWithLinearMenu<T> MakeArrayBindedVerticalMenu(
+	ArrayWithLinearMenu<T> MakeArrayWithVerticalMenu(
 		const Array<T>& array,
 		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
+		double intervalSecFirst = 0.0,
 		int32 defaultCursor = 0,
 		int32 cursorStep = 1)
 	{
@@ -182,6 +197,7 @@ namespace MenuHelper
 			DecrementButtonsForVerticalMenu(buttonFlags),
 			cyclic,
 			intervalSec,
+			intervalSecFirst,
 			defaultCursor,
 			cursorStep);
 	}

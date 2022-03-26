@@ -38,35 +38,51 @@ void LinearMenu::decrement()
 
 void LinearMenu::update()
 {
-	if (m_intervalTimer.has_value()) // Menu accepting hold-down
-	{
-		if (m_intervalTimer->isStarted() && !m_intervalTimer->reachedZero())
-		{
-			return;
-		}
+	const bool decrementKeyDown = KeyConfig::AnyButtonDown(m_decrementButtons);
+	const bool incrementKeyDown = KeyConfig::AnyButtonDown(m_incrementButtons);
 
-		const int32 cursorPrev = m_cursor;
+	if (m_pressedTimeStopwatch.has_value()) // Menu accepting hold-down
+	{
+		bool moveCursor = false;
+
+		if (decrementKeyDown || incrementKeyDown)
+		{
+			m_pressedTimeStopwatch->restart();
+			moveCursor = true;
+		}
 
 		const bool decrementKeyPressed = KeyConfig::AnyButtonPressed(m_decrementButtons);
 		const bool incrementKeyPressed = KeyConfig::AnyButtonPressed(m_incrementButtons);
-		if (decrementKeyPressed && !incrementKeyPressed)
+		const bool onlyDecrementKeyPressed = decrementKeyPressed && !incrementKeyPressed;
+		const bool onlyIncrementKeyPressed = incrementKeyPressed && !decrementKeyPressed;
+
+		const double pressedTimeSec = m_pressedTimeStopwatch->sF();
+		if (!moveCursor && (onlyDecrementKeyPressed || onlyIncrementKeyPressed))
 		{
-			decrement();
-		}
-		else if (incrementKeyPressed && !decrementKeyPressed)
-		{
-			increment();
+			const int32 tickCount = std::max(static_cast<int>((pressedTimeSec - m_intervalSecFirst + m_intervalSec) / m_intervalSec), 0);
+			const int32 tickCountPrev = std::max(static_cast<int>((m_pressedTimeSecPrev - m_intervalSecFirst + m_intervalSec) / m_intervalSec), 0);
+			if (tickCount > tickCountPrev)
+			{
+				moveCursor = true;
+			}
 		}
 
-		if (m_cursor != cursorPrev)
+		if (moveCursor)
 		{
-			m_intervalTimer->restart();
+			if (onlyDecrementKeyPressed)
+			{
+				decrement();
+			}
+			else if (onlyIncrementKeyPressed)
+			{
+				increment();
+			}
 		}
+
+		m_pressedTimeSecPrev = pressedTimeSec;
 	}
 	else // Menu not accepting hold-down
 	{
-		const bool decrementKeyDown = KeyConfig::AnyButtonDown(m_decrementButtons);
-		const bool incrementKeyDown = KeyConfig::AnyButtonDown(m_incrementButtons);
 		if (decrementKeyDown && !incrementKeyDown)
 		{
 			decrement();

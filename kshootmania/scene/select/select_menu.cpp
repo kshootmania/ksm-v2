@@ -172,7 +172,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 }
 
 SelectMenu::SelectMenu()
-	: m_menu(MenuHelper::MakeArrayBindedVerticalMenu<SelectMenuItem>(MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::Yes, 0.05))
+	: m_menu(MenuHelper::MakeArrayWithVerticalMenu<SelectMenuItem>(MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::Yes, 0.05, 0.3))
 {
 	if (!openDirectory(ConfigIni::GetString(ConfigIni::Key::kSelectDirectory)))
 	{

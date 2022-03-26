@@ -16,6 +16,7 @@ public:
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic,
 		double intervalSec,
+		double intervalSecFirst,
 		int32 defaultCursor,
 		int32 cursorStep);
 
@@ -25,6 +26,7 @@ public:
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic,
 		double intervalSec,
+		double intervalSecFirst,
 		int32 defaultCursor,
 		int32 cursorStep);
 
@@ -100,6 +102,7 @@ ArrayWithLinearMenu<T>::ArrayWithLinearMenu(
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic,
 		double intervalSec,
+		double intervalSecFirst,
 		int32 defaultCursor,
 		int32 cursorStep)
 	: m_linearMenu(
@@ -109,6 +112,7 @@ ArrayWithLinearMenu<T>::ArrayWithLinearMenu(
 		decrementButtons,
 		cyclic,
 		intervalSec,
+		intervalSecFirst,
 		defaultCursor,
 		cursorStep)
 {
@@ -121,6 +125,7 @@ ArrayWithLinearMenu<T>::ArrayWithLinearMenu(
 		const Array<KeyConfig::Button>& decrementButtons,
 		IsCyclicMenu cyclic,
 		double intervalSec,
+		double intervalSecFirst,
 		int32 defaultCursor,
 		int32 cursorStep)
 	: m_array(array)
@@ -131,6 +136,7 @@ ArrayWithLinearMenu<T>::ArrayWithLinearMenu(
 		decrementButtons,
 		cyclic,
 		intervalSec,
+		intervalSecFirst,
 		defaultCursor,
 		cursorStep)
 {
