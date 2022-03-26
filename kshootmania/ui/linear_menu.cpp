@@ -4,7 +4,7 @@ void LinearMenu::increment()
 {
 	m_cursor += m_cursorStep;
 
-	const int32 range = m_cursorMax - m_cursorMin;
+	const int32 range = m_cursorMax + 1 - m_cursorMin;
 	if (m_cyclic && range > 0)
 	{
 		while (m_cursor > m_cursorMax)
@@ -22,7 +22,7 @@ void LinearMenu::decrement()
 {
 	m_cursor -= m_cursorStep;
 
-	const int32 range = m_cursorMax - m_cursorMin;
+	const int32 range = m_cursorMax + 1 - m_cursorMin;
 	if (m_cyclic && range > 0)
 	{
 		while (m_cursor < m_cursorMin)
