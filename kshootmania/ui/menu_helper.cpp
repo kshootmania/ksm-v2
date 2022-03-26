@@ -26,12 +26,12 @@ Array<KeyConfig::Button> MenuHelper::IncrementButtonsForHorizontalMenu(int32 but
 
 	if (buttonFlags & ButtonFlags::kLaser)
 	{
-		incrementButtons.push_back(KeyConfig::kRightLaserR);
+		incrementButtons.push_back(KeyConfig::kLeftLaserR);
 	}
 
 	if (buttonFlags & ButtonFlags::kLaserOpposite)
 	{
-		incrementButtons.push_back(KeyConfig::kLeftLaserR);
+		incrementButtons.push_back(KeyConfig::kRightLaserR);
 	}
 
 	return incrementButtons;
@@ -63,12 +63,12 @@ Array<KeyConfig::Button> MenuHelper::DecrementButtonsForHorizontalMenu(int32 but
 
 	if (buttonFlags & ButtonFlags::kLaser)
 	{
-		decrementButtons.push_back(KeyConfig::kRightLaserL);
+		decrementButtons.push_back(KeyConfig::kLeftLaserL);
 	}
 
 	if (buttonFlags & ButtonFlags::kLaserOpposite)
 	{
-		decrementButtons.push_back(KeyConfig::kLeftLaserL);
+		decrementButtons.push_back(KeyConfig::kRightLaserL);
 	}
 
 	return decrementButtons;
@@ -100,12 +100,12 @@ Array<KeyConfig::Button> MenuHelper::IncrementButtonsForVerticalMenu(int32 butto
 
 	if (buttonFlags & ButtonFlags::kLaser)
 	{
-		incrementButtons.push_back(KeyConfig::kLeftLaserR);
+		incrementButtons.push_back(KeyConfig::kRightLaserR);
 	}
 
 	if (buttonFlags & ButtonFlags::kLaserOpposite)
 	{
-		incrementButtons.push_back(KeyConfig::kRightLaserR);
+		incrementButtons.push_back(KeyConfig::kLeftLaserR);
 	}
 
 	return incrementButtons;
@@ -137,12 +137,12 @@ Array<KeyConfig::Button> MenuHelper::DecrementButtonsForVerticalMenu(int32 butto
 
 	if (buttonFlags & ButtonFlags::kLaser)
 	{
-		decrementButtons.push_back(KeyConfig::kLeftLaserL);
+		decrementButtons.push_back(KeyConfig::kRightLaserL);
 	}
 
 	if (buttonFlags & ButtonFlags::kLaserOpposite)
 	{
-		decrementButtons.push_back(KeyConfig::kRightLaserL);
+		decrementButtons.push_back(KeyConfig::kLeftLaserL);
 	}
 
 	return decrementButtons;
