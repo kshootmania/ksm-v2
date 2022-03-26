@@ -149,10 +149,10 @@ namespace ScreenUtils
 	}
 
 	// Scaling functions for high resolution textures
-	// (Historical note: This scale was determined based on the display size of msel_0.png (original width:766px))
+	// (Historical note: This scale was determined based on the display size of msel_0.png (original width:1532px), which is resized to 1/2 scale later)
 
-	constexpr int32 kScaleLNumerator = 225;
-	constexpr int32 kScaleLDenominator = 766;
+	constexpr int32 kScaleLNumerator = 450;
+	constexpr int32 kScaleLDenominator = 1532;
 
 	inline int32 ScaledL(int32 v)
 	{

@@ -197,7 +197,16 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 		}
 	}
 
+	refreshGraphics();
+
 	return true;
+}
+
+void SelectMenu::refreshGraphics()
+{
+	const int32 difficultyCursor = m_difficultyMenu.cursor(); // could be -1
+	const int32 difficultyIdx = (difficultyCursor >= 0) ? difficultyCursor : m_difficultyMenu.rawCursor();
+	m_graphics.refresh(m_menu, difficultyIdx);
 }
 
 SelectMenu::SelectMenu()
@@ -217,6 +226,11 @@ SelectMenu::SelectMenu()
 void SelectMenu::update()
 {
 	m_menu.update();
+	if (m_menu.isCursorChanged())
+	{
+		refreshGraphics();
+	}
+
 	m_difficultyMenu.update();
 
 	// TODO: Delete this debug code
@@ -264,6 +278,9 @@ void SelectMenu::update()
 
 void SelectMenu::draw() const
 {
+	m_graphics.draw();
+
+	// TODO: Delete this debug code
 	m_debugFont(m_debugStr).draw(Vec2{ 100, 100 });
 }
 

@@ -18,4 +18,6 @@ public:
 	void update();
 
 	int32 cursor() const;
+
+	int32 rawCursor() const;
 };

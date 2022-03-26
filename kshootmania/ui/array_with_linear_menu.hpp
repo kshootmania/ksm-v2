@@ -62,6 +62,10 @@ public:
 
 	const auto& at(std::size_t idx) const;
 
+	auto& atCyclic(int32 idx);
+
+	const auto& atCyclic(int32 idx) const;
+
 	void clear();
 
 	void push_back(T&& value);
@@ -246,6 +250,56 @@ template <typename T>
 const auto& ArrayWithLinearMenu<T>::at(std::size_t idx) const
 {
 	return m_array.at(idx);
+}
+
+template<typename T>
+auto& ArrayWithLinearMenu<T>::atCyclic(int32 idx)
+{
+	const int32 size = static_cast<int32>(m_array.size());
+	if (size > 0)
+	{
+		if (idx < 0)
+		{
+			while (idx < 0)
+			{
+				idx += size;
+			}
+		}
+		else
+		{
+			while (idx >= size)
+			{
+				idx -= size;
+			}
+		}
+	}
+
+	return at(idx);
+}
+
+template<typename T>
+const auto& ArrayWithLinearMenu<T>::atCyclic(int32 idx) const
+{
+	const int32 size = static_cast<int32>(m_array.size());
+	if (size > 0)
+	{
+		if (idx < 0)
+		{
+			while (idx < 0)
+			{
+				idx += size;
+			}
+		}
+		else
+		{
+			while (idx >= size)
+			{
+				idx -= size;
+			}
+		}
+	}
+
+	return at(idx);
 }
 
 template <typename T>

@@ -139,7 +139,7 @@ void LinearMenu::setCursor(T value)
 
 	if (m_cyclic && m_cursorMin < m_cursorMax)
 	{
-		const int32 range = m_cursorMax - m_cursorMin;
+		const int32 range = m_cursorMax + 1 - m_cursorMin;
 		if (cursor < m_cursorMin)
 		{
 			while (cursor < m_cursorMin)

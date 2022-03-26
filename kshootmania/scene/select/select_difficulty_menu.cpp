@@ -113,3 +113,8 @@ int32 SelectDifficultyMenu::cursor() const
 
 	return altCursor;
 }
+
+int32 SelectDifficultyMenu::rawCursor() const
+{
+	return m_menu.cursor();
+}

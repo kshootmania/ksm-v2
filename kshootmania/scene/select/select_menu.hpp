@@ -1,8 +1,9 @@
 ﻿#pragma once
-#include "select_menu_item.hpp"
-#include "select_difficulty_menu.hpp"
 #include "select_folder_state.hpp"
 #include "ui/array_with_linear_menu.hpp"
+#include "select_menu_item.hpp"
+#include "select_difficulty_menu.hpp"
+#include "select_menu_graphics.hpp"
 
 class SelectMenu
 {
@@ -12,6 +13,8 @@ private:
 	ArrayWithLinearMenu<SelectMenuItem> m_menu;
 
 	SelectDifficultyMenu m_difficultyMenu;
+
+	SelectMenuGraphics m_graphics;
 
 	// TODO: Delete this
 	Font m_debugFont;
@@ -23,6 +26,8 @@ private:
 
 	// Note: Set directoryPath to empty to close folder
 	bool openDirectory(FilePathView directoryPath);
+
+	void refreshGraphics();
 
 public:
 	SelectMenu(); // TODO: Restore previous selection
