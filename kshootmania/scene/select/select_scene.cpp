@@ -23,6 +23,8 @@ void SelectScene::update()
 		// Back to title screen
 		changeScene(SceneName::kTitle, kDefaultTransitionMs);
 	}
+
+	m_menu.update();
 }
 
 void SelectScene::draw() const

@@ -964,7 +964,7 @@
     <ClInclude Include="common\common_defines.hpp">
       <Filter>Header Files\common</Filter>
     </ClInclude>
-    <ClInclude Include="ui\array_binded_linear_menu.hpp">
+    <ClInclude Include="ui\array_with_linear_menu.hpp">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>

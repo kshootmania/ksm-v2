@@ -172,7 +172,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 }
 
 SelectMenu::SelectMenu()
-	: m_menu(MenuHelper::MakeArrayBindedVerticalMenu<SelectMenuItem>())
+	: m_menu(MenuHelper::MakeArrayBindedVerticalMenu<SelectMenuItem>(MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::Yes, 0.05))
 {
 	if (!openDirectory(ConfigIni::GetString(ConfigIni::Key::kSelectDirectory)))
 	{
@@ -181,19 +181,34 @@ SelectMenu::SelectMenu()
 
 	// TODO: Delete this debug code
 	Print << openDirectory(U"songs/K-Shoot MANIA");
+}
+
+void SelectMenu::update()
+{
+	m_menu.update();
+
+	// TODO: Delete this debug code
+	SelectMenuItem* const pCursorItem = &m_menu.cursorValue();
 	for (const auto& item : m_menu)
 	{
+		String s;
+		if (&item == pCursorItem)
+		{
+			s += U"> ";
+		}
+		else
+		{
+			s += U"  ";
+		}
+
 		{
 			auto pInfo = dynamic_cast<SelectMenuSongItemInfo*>(item.info.get());
 			if (pInfo)
 			{
-				String s;
 				for (int i = 0; i < 4; ++i)
 				{
 					s += pInfo->chartInfos[i].has_value() ? Format(pInfo->chartInfos[i]->title, U",") : U"x,";
 				}
-				Print << s;
-				continue;
 			}
 		}
 
@@ -201,15 +216,16 @@ SelectMenu::SelectMenu()
 			auto pInfo = dynamic_cast<SelectMenuFolderItemInfo*>(item.info.get());
 			if (pInfo)
 			{
-				Print << pInfo->displayName;
-				continue;
+				s += pInfo->displayName;
 			}
 		}
 
 		if (item.itemType == SelectMenuItem::kAllFolder)
 		{
-			Print << U"All";
+			s += U"All";
 		}
+
+		Print << s;
 	}
 }
 

@@ -352,7 +352,7 @@
     <ClInclude Include="scene\title\title_scene.hpp" />
     <ClInclude Include="scoring\high_score_info.hpp" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="ui\array_binded_linear_menu.hpp" />
+    <ClInclude Include="ui\array_with_linear_menu.hpp" />
     <ClInclude Include="ui\linear_menu.hpp" />
     <ClInclude Include="ui\menu_helper.hpp" />
   </ItemGroup>

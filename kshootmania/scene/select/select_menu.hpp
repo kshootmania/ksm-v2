@@ -16,6 +16,8 @@ private:
 public:
 	SelectMenu();
 
+	void update();
+
 	bool isFolderOpen() const;
 
 	void closeFolder();
