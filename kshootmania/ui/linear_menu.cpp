@@ -2,6 +2,8 @@
 
 void LinearMenu::increment()
 {
+	const int32 cursorPrev = m_cursor;
+
 	m_cursor += m_cursorStep;
 
 	const int32 range = m_cursorMax + 1 - m_cursorMin;
@@ -16,10 +18,17 @@ void LinearMenu::increment()
 	{
 		m_cursor = Min(m_cursor, m_cursorMax);
 	}
+
+	if (m_cursor != cursorPrev || (m_cyclic && m_cursorMin == m_cursorMax))
+	{
+		m_isCursorIncremented = true;
+	}
 }
 
 void LinearMenu::decrement()
 {
+	const int32 cursorPrev = m_cursor;
+
 	m_cursor -= m_cursorStep;
 
 	const int32 range = m_cursorMax + 1 - m_cursorMin;
@@ -34,10 +43,18 @@ void LinearMenu::decrement()
 	{
 		m_cursor = Max(m_cursor, m_cursorMin);
 	}
+
+	if (m_cursor != cursorPrev || (m_cyclic && m_cursorMin == m_cursorMax))
+	{
+		m_isCursorDecremented = true;
+	}
 }
 
 void LinearMenu::update()
 {
+	m_isCursorIncremented = false;
+	m_isCursorDecremented = false;
+
 	const bool decrementKeyDown = KeyConfig::AnyButtonDown(m_decrementButtons);
 	const bool incrementKeyDown = KeyConfig::AnyButtonDown(m_incrementButtons);
 
@@ -102,4 +119,19 @@ bool LinearMenu::isCursorMin() const
 bool LinearMenu::isCursorMax() const
 {
 	return m_cursor >= m_cursorMax;
+}
+
+bool LinearMenu::isCursorChanged() const
+{
+	return m_isCursorIncremented || m_isCursorDecremented;
+}
+
+bool LinearMenu::isCursorIncremented() const
+{
+	return m_isCursorIncremented;
+}
+
+bool LinearMenu::isCursorDecremented() const
+{
+	return m_isCursorDecremented;
 }

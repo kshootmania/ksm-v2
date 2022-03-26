@@ -42,6 +42,12 @@ public:
 
 	bool isCursorMax() const;
 
+	bool isCursorChanged() const;
+
+	bool isCursorIncremented() const;
+
+	bool isCursorDecremented() const;
+
 	T& cursorValue();
 
 	const T& cursorValue() const;
@@ -94,6 +100,8 @@ public:
 	const auto& back() const;
 
 	auto size() const;
+
+	auto empty() const;
 };
 
 template <typename T>
@@ -178,6 +186,24 @@ template <typename T>
 bool ArrayWithLinearMenu<T>::isCursorMax() const
 {
 	return m_linearMenu.isCursorMax();
+}
+
+template<typename T>
+bool ArrayWithLinearMenu<T>::isCursorChanged() const
+{
+	return m_linearMenu.isCursorChanged();
+}
+
+template<typename T>
+bool ArrayWithLinearMenu<T>::isCursorIncremented() const
+{
+	return m_linearMenu.isCursorIncremented();
+}
+
+template<typename T>
+bool ArrayWithLinearMenu<T>::isCursorDecremented() const
+{
+	return m_linearMenu.isCursorDecremented();
 }
 
 template <typename T>
@@ -339,4 +365,10 @@ template <typename T>
 auto ArrayWithLinearMenu<T>::size() const
 {
 	return m_array.size();
+}
+
+template <typename T>
+auto ArrayWithLinearMenu<T>::empty() const
+{
+	return m_array.empty();
 }

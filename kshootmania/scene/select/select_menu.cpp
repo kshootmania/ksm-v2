@@ -173,6 +173,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 
 SelectMenu::SelectMenu()
 	: m_menu(MenuHelper::MakeArrayWithVerticalMenu<SelectMenuItem>(MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::Yes, 0.05, 0.3))
+	, m_difficultyMenu(this)
 {
 	if (!openDirectory(ConfigIni::GetString(ConfigIni::Key::kSelectDirectory)))
 	{
@@ -186,9 +187,10 @@ SelectMenu::SelectMenu()
 void SelectMenu::update()
 {
 	m_menu.update();
+	m_difficultyMenu.update();
 
 	// TODO: Delete this debug code
-	SelectMenuItem* const pCursorItem = &m_menu.cursorValue();
+	SelectMenuItem* const pCursorItem = m_menu.empty() ? nullptr : &m_menu.cursorValue();
 	for (const auto& item : m_menu)
 	{
 		String s;
@@ -227,6 +229,8 @@ void SelectMenu::update()
 
 		Print << s;
 	}
+
+	Print << m_difficultyMenu.cursor();
 }
 
 bool SelectMenu::isFolderOpen() const
@@ -237,4 +241,14 @@ bool SelectMenu::isFolderOpen() const
 void SelectMenu::closeFolder()
 {
 	m_folderState.folderType = SelectFolderState::kNone;
+}
+
+const SelectMenuItem& SelectMenu::cursorMenuItem() const
+{
+	return m_menu.cursorValue();
+}
+
+bool SelectMenu::empty() const
+{
+	return m_menu.empty();
 }

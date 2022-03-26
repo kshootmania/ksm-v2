@@ -126,6 +126,7 @@
     <ClCompile Include="scene\option\option_top_menu.cpp" />
     <ClCompile Include="scene\option\option_scene.cpp" />
     <ClCompile Include="scene\select\select_bg_anim.cpp" />
+    <ClCompile Include="scene\select\select_difficulty_menu.cpp" />
     <ClCompile Include="scene\select\select_menu.cpp" />
     <ClCompile Include="scene\select\select_scene.cpp" />
     <ClCompile Include="scene\title\title_menu.cpp" />
@@ -343,6 +344,7 @@
     <ClInclude Include="scene\scene.hpp" />
     <ClInclude Include="scene\select\select_assets.hpp" />
     <ClInclude Include="scene\select\select_bg_anim.hpp" />
+    <ClInclude Include="scene\select\select_difficulty_menu.hpp" />
     <ClInclude Include="scene\select\select_folder_state.hpp" />
     <ClInclude Include="scene\select\select_menu.hpp" />
     <ClInclude Include="scene\select\select_menu_item.hpp" />

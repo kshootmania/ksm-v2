@@ -255,6 +255,9 @@
     <ClCompile Include="ui\menu_helper.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
+    <ClCompile Include="scene\select\select_difficulty_menu.cpp">
+      <Filter>Source Files\scene\select</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -966,6 +969,9 @@
     </ClInclude>
     <ClInclude Include="ui\array_with_linear_menu.hpp">
       <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\select\select_difficulty_menu.hpp">
+      <Filter>Header Files\scene\select</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -23,6 +23,9 @@ private:
 	double m_intervalSec;
 	double m_intervalSecFirst;
 
+	bool m_isCursorIncremented = false;
+	bool m_isCursorDecremented = false;
+
 	void increment();
 
 	void decrement();
@@ -68,6 +71,12 @@ public:
 	bool isCursorMin() const;
 
 	bool isCursorMax() const;
+
+	bool isCursorChanged() const;
+
+	bool isCursorIncremented() const;
+
+	bool isCursorDecremented() const;
 };
 
 template<typename T>
@@ -126,7 +135,28 @@ T LinearMenu::cursor() const
 template<typename T>
 void LinearMenu::setCursor(T value)
 {
-	m_cursor = Clamp(static_cast<int32>(value), m_cursorMin, m_cursorMax);
+	int32 cursor = static_cast<int32>(value);
+
+	if (m_cyclic && m_cursorMin < m_cursorMax)
+	{
+		const int32 range = m_cursorMax - m_cursorMin;
+		if (cursor < m_cursorMin)
+		{
+			while (cursor < m_cursorMin)
+			{
+				cursor += range;
+			}
+		}
+		else
+		{
+			while (cursor > m_cursorMax)
+			{
+				cursor -= range;
+			}
+		}
+	}
+
+	m_cursor = Clamp(cursor, m_cursorMin, m_cursorMax);
 }
 
 template<typename T>
