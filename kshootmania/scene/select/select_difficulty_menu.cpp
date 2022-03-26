@@ -26,7 +26,7 @@ void SelectDifficultyMenu::update()
 	}
 
 	const int32 cursor = m_menu.cursor();
-	assert(0 <= cursor && cursor < kNumDifficulties);
+	assert(0 <= cursor && cursor < pMenuItem->chartInfos.size());
 	if (pMenuItem->chartInfos[cursor].has_value())
 	{
 		// If the cursor difficulty exists, okay
@@ -75,7 +75,7 @@ int32 SelectDifficultyMenu::cursor() const
 	}
 
 	const int32 cursor = m_menu.cursor();
-	assert(0 <= cursor && cursor < kNumDifficulties);
+	assert(0 <= cursor && cursor < pMenuItem->chartInfos.size());
 	
 	// If the cursor difficulty exists, return it as is
 	if (pMenuItem->chartInfos[cursor].has_value())

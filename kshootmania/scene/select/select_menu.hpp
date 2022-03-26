@@ -13,6 +13,14 @@ private:
 
 	SelectDifficultyMenu m_difficultyMenu;
 
+	// TODO: Delete this
+	Font m_debugFont;
+	String m_debugStr;
+
+	void decideSongItem();
+
+	void decideDirectoryFolderItem();
+
 	// Note: Set directoryPath to empty to close folder
 	bool openDirectory(FilePathView directoryPath);
 
@@ -21,11 +29,17 @@ public:
 
 	void update();
 
+	void draw() const;
+
+	void decide();
+
 	bool isFolderOpen() const;
 
 	void closeFolder();
 
 	const SelectMenuItem& cursorMenuItem() const;
+
+	const SelectMenuSongItemChartInfo* cursorChartInfoPtr() const;
 
 	bool empty() const;
 };

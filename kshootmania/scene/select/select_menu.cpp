@@ -1,4 +1,6 @@
 ﻿#include "select_menu.hpp"
+#include <cassert>
+
 #include "ui/menu_helper.hpp"
 #include "ksh/io/ksh_io.hpp"
 
@@ -19,6 +21,33 @@ namespace
 						return FileSystem::IsDirectory(p);
 					});
 	}
+}
+
+void SelectMenu::decideSongItem()
+{
+	assert(!m_menu.empty());
+	assert(m_menu.cursorValue().itemType == SelectMenuItem::kSong);
+
+	// Get information of the selected chart
+	const auto pChartInfo = cursorChartInfoPtr();
+	if (pChartInfo == nullptr) [[unlikely]]
+	{
+		return;
+	}
+
+	// TODO: Start playing
+	Print << pChartInfo->chartFilePath;
+}
+
+void SelectMenu::decideDirectoryFolderItem()
+{
+	assert(!m_menu.empty());
+	assert(m_menu.cursorValue().itemType == SelectMenuItem::kDirectoryFolder);
+
+	// Open folder
+	// Note: Here, fullPath is copied to a new FilePath instance because m_menu is cleared within openDirectory() and the original FilePath is destroyed.
+	const FilePath directoryPath = m_menu.cursorValue().fullPath;
+	openDirectory(directoryPath);
 }
 
 bool SelectMenu::openDirectory(FilePathView directoryPath)
@@ -174,6 +203,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 SelectMenu::SelectMenu()
 	: m_menu(MenuHelper::MakeArrayWithVerticalMenu<SelectMenuItem>(MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::Yes, 0.05, 0.3))
 	, m_difficultyMenu(this)
+	, m_debugFont(12)
 {
 	if (!openDirectory(ConfigIni::GetString(ConfigIni::Key::kSelectDirectory)))
 	{
@@ -190,47 +220,74 @@ void SelectMenu::update()
 	m_difficultyMenu.update();
 
 	// TODO: Delete this debug code
-	SelectMenuItem* const pCursorItem = m_menu.empty() ? nullptr : &m_menu.cursorValue();
+	m_debugStr.clear();
+	const auto pCursorItem = m_menu.empty() ? nullptr : &m_menu.cursorValue();
 	for (const auto& item : m_menu)
 	{
-		String s;
 		if (&item == pCursorItem)
 		{
-			s += U"> ";
+			m_debugStr += U"> ";
 		}
 		else
 		{
-			s += U"  ";
+			m_debugStr += U"  ";
 		}
 
 		{
-			auto pInfo = dynamic_cast<SelectMenuSongItemInfo*>(item.info.get());
+			const auto pInfo = dynamic_cast<SelectMenuSongItemInfo*>(item.info.get());
 			if (pInfo)
 			{
 				for (int i = 0; i < 4; ++i)
 				{
-					s += pInfo->chartInfos[i].has_value() ? Format(pInfo->chartInfos[i]->title, U",") : U"x,";
+					m_debugStr += pInfo->chartInfos[i].has_value() ? Format(pInfo->chartInfos[i]->title, U",") : U"x,";
 				}
 			}
 		}
 
 		{
-			auto pInfo = dynamic_cast<SelectMenuFolderItemInfo*>(item.info.get());
+			const auto pInfo = dynamic_cast<SelectMenuFolderItemInfo*>(item.info.get());
 			if (pInfo)
 			{
-				s += pInfo->displayName;
+				m_debugStr += pInfo->displayName;
 			}
 		}
 
 		if (item.itemType == SelectMenuItem::kAllFolder)
 		{
-			s += U"All";
+			m_debugStr += U"All";
 		}
 
-		Print << s;
+		m_debugStr += '\n';
+	}
+	m_debugStr += Format(m_difficultyMenu.cursor());
+}
+
+void SelectMenu::draw() const
+{
+	m_debugFont(m_debugStr).draw(Vec2{ 100, 100 });
+}
+
+void SelectMenu::decide()
+{
+	if (m_menu.empty())
+	{
+		return;
 	}
 
-	Print << m_difficultyMenu.cursor();
+	switch (m_menu.cursorValue().itemType)
+	{
+	case SelectMenuItem::kSong:
+		decideSongItem();
+		break;
+
+	case SelectMenuItem::kDirectoryFolder:
+		decideDirectoryFolderItem();
+		break;
+
+	default:
+		Print << U"Not implemented!";
+		break;
+	}
 }
 
 bool SelectMenu::isFolderOpen() const
@@ -246,6 +303,33 @@ void SelectMenu::closeFolder()
 const SelectMenuItem& SelectMenu::cursorMenuItem() const
 {
 	return m_menu.cursorValue();
+}
+
+const SelectMenuSongItemChartInfo* SelectMenu::cursorChartInfoPtr() const
+{
+	// Check if item type is kSong
+	const SelectMenuItem& item = m_menu.cursorValue();
+	if (item.itemType != SelectMenuItem::kSong)
+	{
+		return nullptr;
+	}
+
+	// Check if SelectMenuItem::info can be casted to SelectMenuSongItemInfo*
+	const SelectMenuSongItemInfo* const pSongInfo = dynamic_cast<const SelectMenuSongItemInfo*>(item.info.get());
+	if (pSongInfo == nullptr) [[unlikely]]
+	{
+		return nullptr;
+	}
+
+	// Check the song item has the current cursor difficulty
+	const int32 cursor = m_difficultyMenu.cursor();
+	assert(0 <= cursor && cursor < pSongInfo->chartInfos.size());
+	if (!pSongInfo->chartInfos[cursor].has_value()) [[unlikely]]
+	{
+		return nullptr;
+	}
+
+	return &*pSongInfo->chartInfos[cursor];
 }
 
 bool SelectMenu::empty() const
