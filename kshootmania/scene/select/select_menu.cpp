@@ -1,4 +1,5 @@
 ﻿#include "select_menu.hpp"
+#include "ui/menu_helper.hpp"
 #include "ksh/io/ksh_io.hpp"
 
 namespace
@@ -29,10 +30,10 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 			return false;
 		}
 
-		m_items.clear();
+		m_menu.clear();
 
 		// Insert the directory heading item
-		m_items.push_back({
+		m_menu.push_back({
 			.itemType = SelectMenuItem::kCurrentFolder,
 			.fullPath = FileSystem::FullPath(directoryPath),
 			.info = std::make_unique<SelectMenuFolderItemInfo>(FileSystem::BaseName(directoryPath)),
@@ -95,7 +96,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 				};
 			}
 
-			m_items.push_back({
+			m_menu.push_back({
 				.itemType = SelectMenuItem::kSong,
 				.fullPath = FileSystem::FullPath(songDirectory),
 				.info = std::make_unique<SelectMenuSongItemInfo>(chartInfos),
@@ -107,7 +108,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 	}
 	else
 	{
-		m_items.clear();
+		m_menu.clear();
 
 		m_folderState.folderType = SelectFolderState::kNone;
 		m_folderState.fullPath = U"";
@@ -145,7 +146,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 			if (rotatedIdx == 0)
 			{
 				// Insert "All" folder item
-				m_items.push_back({
+				m_menu.push_back({
 					.itemType = SelectMenuItem::kAllFolder,
 				});
 
@@ -159,7 +160,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 			}
 
 			const auto& directory = directories[rotatedIdx];
-			m_items.push_back({
+			m_menu.push_back({
 				.itemType = SelectMenuItem::kDirectoryFolder,
 				.fullPath = FileSystem::FullPath(directory),
 				.info = std::make_unique<SelectMenuFolderItemInfo>(FileSystem::BaseName(directory)),
@@ -171,7 +172,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 }
 
 SelectMenu::SelectMenu()
-	: m_menu(nullptr)
+	: m_menu(MenuHelper::MakeArrayBindedVerticalMenu<SelectMenuItem>())
 {
 	if (!openDirectory(ConfigIni::GetString(ConfigIni::Key::kSelectDirectory)))
 	{
@@ -180,7 +181,7 @@ SelectMenu::SelectMenu()
 
 	// TODO: Delete this debug code
 	Print << openDirectory(U"songs/K-Shoot MANIA");
-	for (const auto& item : m_items)
+	for (const auto& item : m_menu)
 	{
 		{
 			auto pInfo = dynamic_cast<SelectMenuSongItemInfo*>(item.info.get());

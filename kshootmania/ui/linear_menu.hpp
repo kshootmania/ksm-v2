@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <cassert>
 #include "input/key_config.hpp"
 
 using IsCyclicMenu = YesNo<struct IsCyclicMenu_tag>;
@@ -9,8 +10,8 @@ private:
 	const Array<KeyConfig::Button> m_incrementButtons;
 	const Array<KeyConfig::Button> m_decrementButtons;
 
-	const int32 m_cursorMin;
-	const int32 m_cursorMax;
+	int32 m_cursorMin;
+	int32 m_cursorMax;
 	const int32 m_cursorStep;
 
 	int32 m_cursor;
@@ -52,6 +53,12 @@ public:
 	void setCursor(T value);
 
 	void update();
+
+	template <typename T>
+	void setCursorMin(T value);
+
+	template <typename T>
+	void setCursorMax(T value);
 
 	bool isCursorMin() const;
 
@@ -110,4 +117,32 @@ template<typename T>
 void LinearMenu::setCursor(T value)
 {
 	m_cursor = Clamp(static_cast<int32>(value), m_cursorMin, m_cursorMax);
+}
+
+template<typename T>
+void LinearMenu::setCursorMin(T value)
+{
+	assert(value <= m_cursorMax);
+
+	m_cursorMin = value;
+	if (value > m_cursorMax)
+	{
+		Print << U"LinearMenu::setCursorMax(): value must be smaller than or equal to m_cursorMax";
+		m_cursorMin = value;
+	}
+	m_cursor = Clamp(m_cursor, m_cursorMin, m_cursorMax);
+}
+
+template<typename T>
+void LinearMenu::setCursorMax(T value)
+{
+	assert(value >= m_cursorMin);
+
+	m_cursorMax = value;
+	if (value < m_cursorMin)
+	{
+		Print << U"LinearMenu::setCursorMax(): value must be larger than or equal to m_cursorMin";
+		m_cursorMax = value;
+	}
+	m_cursor = Clamp(m_cursor, m_cursorMin, m_cursorMax);
 }

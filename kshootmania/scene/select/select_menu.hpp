@@ -1,15 +1,16 @@
 ﻿#pragma once
 #include "select_menu_item.hpp"
 #include "select_folder_state.hpp"
+#include "ui/array_with_linear_menu.hpp"
 
 class SelectMenu
 {
 private:
-	std::unique_ptr<LinearMenu> m_menu;
-	Array<SelectMenuItem> m_items;
+	ArrayWithLinearMenu<SelectMenuItem> m_menu;
 
 	SelectFolderState m_folderState;
 
+	// Note: Set directoryPath to empty to close folder
 	bool openDirectory(FilePathView directoryPath);
 
 public:

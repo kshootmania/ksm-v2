@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "linear_menu.hpp"
+#include "array_with_linear_menu.hpp"
 
 namespace MenuHelper
 {
@@ -25,59 +26,25 @@ namespace MenuHelper
 		};
 	}
 
+	Array<KeyConfig::Button> IncrementButtonsForHorizontalMenu(int32 buttonFlags);
+
+	Array<KeyConfig::Button> DecrementButtonsForHorizontalMenu(int32 buttonFlags);
+
 	template <typename T>
 	LinearMenu MakeHorizontalMenuWithMinMax(
 		T cursorMin,
 		T cursorMax,
-		int32 buttonFlags = kArrow,
+		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
 		int32 defaultCursor = std::numeric_limits<int32>::min(),
 		int32 cursorStep = 1)
 	{
-		Array<KeyConfig::Button> incrementButtons, decrementButtons;
-
-		if (buttonFlags & ButtonFlags::kArrow)
-		{
-			decrementButtons.push_back(KeyConfig::kLeft);
-			incrementButtons.push_back(KeyConfig::kRight);
-		}
-
-		if (buttonFlags & ButtonFlags::kBT)
-		{
-			decrementButtons.push_back(KeyConfig::kBT_A);
-			incrementButtons.push_back(KeyConfig::kBT_D);
-		}
-
-		if (buttonFlags & ButtonFlags::kBTOpposite)
-		{
-			decrementButtons.push_back(KeyConfig::kBT_C);
-			incrementButtons.push_back(KeyConfig::kBT_B);
-		}
-
-		if (buttonFlags & ButtonFlags::kFX)
-		{
-			decrementButtons.push_back(KeyConfig::kFX_L);
-			incrementButtons.push_back(KeyConfig::kFX_R);
-		}
-
-		if (buttonFlags & ButtonFlags::kLaser)
-		{
-			decrementButtons.push_back(KeyConfig::kRightLaserL);
-			incrementButtons.push_back(KeyConfig::kRightLaserR);
-		}
-
-		if (buttonFlags & ButtonFlags::kLaserOpposite)
-		{
-			decrementButtons.push_back(KeyConfig::kLeftLaserL);
-			incrementButtons.push_back(KeyConfig::kLeftLaserR);
-		}
-
 		return LinearMenu(
 			cursorMin,
 			cursorMax,
-			incrementButtons,
-			decrementButtons,
+			IncrementButtonsForHorizontalMenu(buttonFlags),
+			DecrementButtonsForHorizontalMenu(buttonFlags),
 			cyclic,
 			intervalSec,
 			defaultCursor,
@@ -87,15 +54,15 @@ namespace MenuHelper
 	template <typename T>
 	LinearMenu MakeHorizontalMenu(
 		T enumCount,
-		int32 buttonFlags = kArrow,
+		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
 		int32 defaultCursor = 0,
 		int32 cursorStep = 1)
 	{
 		return MakeHorizontalMenuWithMinMax(
-			static_cast<T>(0),
-			static_cast<T>(enumCount - 1),
+			0,
+			std::max(static_cast<int32>(enumCount) - 1, 0),
 			buttonFlags,
 			cyclic,
 			intervalSec,
@@ -104,58 +71,60 @@ namespace MenuHelper
 	}
 
 	template <typename T>
+	ArrayWithLinearMenu<T> MakeArrayBindedHorizontalMenu(
+		int32 buttonFlags = ButtonFlags::kArrow,
+		IsCyclicMenu cyclic = IsCyclicMenu::No,
+		double intervalSec = 0.0,
+		int32 defaultCursor = 0,
+		int32 cursorStep = 1)
+	{
+		return ArrayWithLinearMenu<T>(
+			IncrementButtonsForHorizontalMenu(buttonFlags),
+			DecrementButtonsForHorizontalMenu(buttonFlags),
+			cyclic,
+			intervalSec,
+			defaultCursor,
+			cursorStep);
+	}
+
+	template <typename T>
+	ArrayWithLinearMenu<T> MakeArrayBindedHorizontalMenu(
+		const Array<T>& array,
+		int32 buttonFlags = ButtonFlags::kArrow,
+		IsCyclicMenu cyclic = IsCyclicMenu::No,
+		double intervalSec = 0.0,
+		int32 defaultCursor = 0,
+		int32 cursorStep = 1)
+	{
+		return ArrayWithLinearMenu<T>(
+			array,
+			IncrementButtonsForHorizontalMenu(buttonFlags),
+			DecrementButtonsForHorizontalMenu(buttonFlags),
+			cyclic,
+			intervalSec,
+			defaultCursor,
+			cursorStep);
+	}
+
+	Array<KeyConfig::Button> IncrementButtonsForVerticalMenu(int32 buttonFlags);
+
+	Array<KeyConfig::Button> DecrementButtonsForVerticalMenu(int32 buttonFlags);
+
+	template <typename T>
 	LinearMenu MakeVerticalMenuWithMinMax(
 		T cursorMin,
 		T cursorMax,
-		int32 buttonFlags = kArrow,
+		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
 		int32 defaultCursor = std::numeric_limits<int32>::min(),
 		int32 cursorStep = 1)
 	{
-		Array<KeyConfig::Button> incrementButtons, decrementButtons;
-
-		if (buttonFlags & ButtonFlags::kArrow)
-		{
-			decrementButtons.push_back(KeyConfig::kUp);
-			incrementButtons.push_back(KeyConfig::kDown);
-		}
-
-		if (buttonFlags & ButtonFlags::kBT)
-		{
-			decrementButtons.push_back(KeyConfig::kBT_C);
-			incrementButtons.push_back(KeyConfig::kBT_B);
-		}
-
-		if (buttonFlags & ButtonFlags::kBTOpposite)
-		{
-			decrementButtons.push_back(KeyConfig::kBT_A);
-			incrementButtons.push_back(KeyConfig::kBT_D);
-		}
-
-		if (buttonFlags & ButtonFlags::kFXOpposite)
-		{
-			decrementButtons.push_back(KeyConfig::kFX_L);
-			incrementButtons.push_back(KeyConfig::kFX_R);
-		}
-
-		if (buttonFlags & ButtonFlags::kLaser)
-		{
-			decrementButtons.push_back(KeyConfig::kLeftLaserL);
-			incrementButtons.push_back(KeyConfig::kLeftLaserR);
-		}
-
-		if (buttonFlags & ButtonFlags::kLaserOpposite)
-		{
-			decrementButtons.push_back(KeyConfig::kRightLaserL);
-			incrementButtons.push_back(KeyConfig::kRightLaserR);
-		}
-
 		return LinearMenu(
 			cursorMin,
 			cursorMax,
-			incrementButtons,
-			decrementButtons,
+			IncrementButtonsForVerticalMenu(buttonFlags),
+			DecrementButtonsForVerticalMenu(buttonFlags),
 			cyclic,
 			intervalSec,
 			defaultCursor,
@@ -165,16 +134,52 @@ namespace MenuHelper
 	template <typename T>
 	LinearMenu MakeVerticalMenu(
 		T enumCount,
-		int32 buttonFlags = kArrow,
+		int32 buttonFlags = ButtonFlags::kArrow,
 		IsCyclicMenu cyclic = IsCyclicMenu::No,
 		double intervalSec = 0.0,
 		int32 defaultCursor = 0,
 		int32 cursorStep = 1)
 	{
 		return MakeVerticalMenuWithMinMax(
-			static_cast<T>(0),
-			static_cast<T>(enumCount - 1),
+			0,
+			std::max(static_cast<int32>(enumCount) - 1, 0),
 			buttonFlags,
+			cyclic,
+			intervalSec,
+			defaultCursor,
+			cursorStep);
+	}
+
+	template <typename T>
+	ArrayWithLinearMenu<T> MakeArrayBindedVerticalMenu(
+		int32 buttonFlags = ButtonFlags::kArrow,
+		IsCyclicMenu cyclic = IsCyclicMenu::No,
+		double intervalSec = 0.0,
+		int32 defaultCursor = 0,
+		int32 cursorStep = 1)
+	{
+		return ArrayWithLinearMenu<T>(
+			IncrementButtonsForVerticalMenu(buttonFlags),
+			DecrementButtonsForVerticalMenu(buttonFlags),
+			cyclic,
+			intervalSec,
+			defaultCursor,
+			cursorStep);
+	}
+
+	template <typename T>
+	ArrayWithLinearMenu<T> MakeArrayBindedVerticalMenu(
+		const Array<T>& array,
+		int32 buttonFlags = ButtonFlags::kArrow,
+		IsCyclicMenu cyclic = IsCyclicMenu::No,
+		double intervalSec = 0.0,
+		int32 defaultCursor = 0,
+		int32 cursorStep = 1)
+	{
+		return ArrayWithLinearMenu<T>(
+			array,
+			IncrementButtonsForVerticalMenu(buttonFlags),
+			DecrementButtonsForVerticalMenu(buttonFlags),
 			cyclic,
 			intervalSec,
 			defaultCursor,

@@ -132,6 +132,7 @@
     <ClCompile Include="scene\title\title_scene.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="ui\linear_menu.cpp" />
+    <ClCompile Include="ui\menu_helper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -351,6 +352,7 @@
     <ClInclude Include="scene\title\title_scene.hpp" />
     <ClInclude Include="scoring\high_score_info.hpp" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="ui\array_binded_linear_menu.hpp" />
     <ClInclude Include="ui\linear_menu.hpp" />
     <ClInclude Include="ui\menu_helper.hpp" />
   </ItemGroup>
