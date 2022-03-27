@@ -111,7 +111,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 				chartInfos[difficultyIdx] = SelectMenuSongItemChartInfo{
 					.title = Widen(chartData.meta.title),
 					.artist = Widen(chartData.meta.artist),
-					.jacketFilePath = Widen(chartData.meta.jacketFilename),
+					.jacketFilePath = FileSystem::FullPath(FileSystem::ParentPath(chartFile) + Widen(chartData.meta.jacketFilename)),
 					.jacketAuthor = Widen(chartData.meta.jacketAuthor),
 					.chartFilePath = FileSystem::FullPath(chartFile),
 					.chartAuthor = Widen(chartData.meta.chartAuthor),
@@ -197,16 +197,16 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 		}
 	}
 
-	refreshGraphics();
+	refreshGraphics(SelectMenuGraphics::kAll);
 
 	return true;
 }
 
-void SelectMenu::refreshGraphics()
+void SelectMenu::refreshGraphics(SelectMenuGraphics::RefreshType type)
 {
 	const int32 difficultyCursor = m_difficultyMenu.cursor(); // could be -1
 	const int32 difficultyIdx = (difficultyCursor >= 0) ? difficultyCursor : m_difficultyMenu.rawCursor();
-	m_graphics.refresh(m_menu, difficultyIdx);
+	m_graphics.refresh(m_menu, difficultyIdx, type);
 }
 
 SelectMenu::SelectMenu()
@@ -220,7 +220,7 @@ SelectMenu::SelectMenu()
 	}
 
 	// TODO: Delete this debug code
-	Print << openDirectory(U"songs/K-Shoot MANIA");
+	openDirectory(U"songs/K-Shoot MANIA");
 }
 
 void SelectMenu::update()
@@ -228,7 +228,7 @@ void SelectMenu::update()
 	m_menu.update();
 	if (m_menu.isCursorChanged())
 	{
-		refreshGraphics();
+		refreshGraphics(m_menu.isCursorIncremented() ? SelectMenuGraphics::kCursorDown : SelectMenuGraphics::kCursorUp);
 	}
 
 	m_difficultyMenu.update();
@@ -281,7 +281,7 @@ void SelectMenu::draw() const
 	m_graphics.draw();
 
 	// TODO: Delete this debug code
-	m_debugFont(m_debugStr).draw(Vec2{ 100, 100 });
+	//m_debugFont(m_debugStr).draw(Vec2{ 100, 100 });
 }
 
 void SelectMenu::decide()

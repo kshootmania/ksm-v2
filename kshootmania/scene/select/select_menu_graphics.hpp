@@ -22,16 +22,28 @@ private:
 	Array<RenderTexture> m_upperHalfItems;
 	Array<RenderTexture> m_lowerHalfItems;
 
+	// TODO: Use FontAsset class instead
+	const Font m_fontLL;
 	const Font m_fontL;
+	const Font m_fontMBold;
 	const Font m_fontM;
 	const Font m_fontS;
 
-	void drawUpperLowerMenuItem(const RenderTexture& target, const SelectMenuItem& item, int32 difficultyIdx, bool isUpperHalf) const;
+	void refreshCenterMenuItem(const SelectMenuItem& item, int32 difficultyIdx) const;
+
+	void refreshUpperLowerMenuItem(const RenderTexture& target, const SelectMenuItem& item, int32 difficultyIdx, bool isUpperHalf) const;
 
 public:
+	enum RefreshType
+	{
+		kAll,
+		kCursorUp,
+		kCursorDown,
+	};
+
 	SelectMenuGraphics();
 
-	void refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu, int32 difficultyIdx) const;
+	void refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu, int32 difficultyIdx, RefreshType type);
 
 	void draw() const;
 };

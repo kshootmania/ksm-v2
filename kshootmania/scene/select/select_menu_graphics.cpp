@@ -20,9 +20,101 @@ namespace
 		}
 		return array;
 	}
+
+	String FolderItemDisplayName(const SelectMenuItem& item, bool isCenter)
+	{
+		StringView format;
+		if (isCenter)
+		{
+			if (item.itemType == SelectMenuItem::kCurrentFolder)
+			{
+				format = U"<<   {}   <<";
+			}
+			else
+			{
+				format = U">>   {}   >>";
+			}
+		}
+		else
+		{
+			if (item.itemType == SelectMenuItem::kCurrentFolder)
+			{
+				format = U"<<   {}     ";
+			}
+			else
+			{
+				format = U"     {}   >>";
+			}
+		}
+
+		StringView displayName = U"?";
+		if (item.itemType == SelectMenuItem::kAllFolder)
+		{
+			displayName = U"All";
+		}
+		else if (auto pInfo = dynamic_cast<SelectMenuFolderItemInfo*>(item.info.get()))
+		{
+			displayName = pInfo->displayName;
+		}
+
+		return Fmt(format)(displayName);
+	}
 }
 
-void SelectMenuGraphics::drawUpperLowerMenuItem(const RenderTexture& target, const SelectMenuItem& item, int32 difficultyIdx, bool isUpperHalf) const
+void SelectMenuGraphics::refreshCenterMenuItem(const SelectMenuItem& item, int32 difficultyIdx) const
+{
+	const ScopedRenderTarget2D scopedRenderTarget(m_centerItem);
+
+	switch (item.itemType)
+	{
+	case SelectMenuItem::kSong:
+		Shader::Copy(m_songItemTextures.center, m_centerItem);
+		if (auto pInfo = dynamic_cast<SelectMenuSongItemInfo*>(item.info.get())) [[likely]]
+		{
+			if (pInfo->chartInfos[difficultyIdx].has_value())
+			{
+				const auto& chartInfo = *(pInfo->chartInfos[difficultyIdx]);
+				for (int32 i = 0; i < 2; ++i)
+				{
+					// Draw twice to make the font slightly bold
+					// (Using a bold typeface makes the font too bold compared to HSP's artlet2D)
+					// TODO: Maybe fonts with bold glyphs (e.g. Arial) do not have this problem (unconfirmed), so simply use bold for them.
+					m_fontM(chartInfo.title).drawAt(Vec2{ 16 + i + 462 / 2, 11 + 38 / 2 });
+				}
+				m_fontS(chartInfo.artist).drawAt(Vec2{ 16 + 462 / 2, 50 + 36 / 2 });
+
+				// TODO: Cache jacket image texture
+				const Texture jacketTexture(chartInfo.jacketFilePath);
+				SizeF size{ 254, 254 };
+				if (jacketTexture.width() < jacketTexture.height())
+				{
+					size.x *= static_cast<double>(jacketTexture.width()) / jacketTexture.height();
+				}
+				else if (jacketTexture.height() < jacketTexture.width())
+				{
+					size.y *= static_cast<double>(jacketTexture.height()) / jacketTexture.width();
+				}
+				jacketTexture.resized(size).draw(Vec2{ 492, 22 });
+			}
+		}
+		break;
+
+	case SelectMenuItem::kAllFolder:
+	case SelectMenuItem::kCurrentFolder:
+	case SelectMenuItem::kDirectoryFolder:
+		Shader::Copy(m_dirItemTextures.center, m_centerItem);
+		m_fontLL(FolderItemDisplayName(item, true)).drawAt(Vec2{ 16 + 740 / 2, 135 + 102 / 2 });
+		break;
+
+		// TODO: Other types
+
+	default:
+		m_centerItem.clear(Color::Zero());
+		break;
+	}
+}
+
+void SelectMenuGraphics::refreshUpperLowerMenuItem(const RenderTexture& target, const SelectMenuItem& item, int32 difficultyIdx, bool isUpperHalf) const
 {
 	const ScopedRenderTarget2D scopedRenderTarget(target);
 
@@ -30,11 +122,31 @@ void SelectMenuGraphics::drawUpperLowerMenuItem(const RenderTexture& target, con
 	{
 	case SelectMenuItem::kSong:
 		Shader::Copy(isUpperHalf ? m_songItemTextures.upperHalf : m_songItemTextures.lowerHalf, target);
-		if (auto pInfo = dynamic_cast<SelectMenuSongItemInfo*>(item.info.get()))
+		if (auto pInfo = dynamic_cast<SelectMenuSongItemInfo*>(item.info.get())) [[likely]]
 		{
 			if (pInfo->chartInfos[difficultyIdx].has_value())
 			{
-				m_fontM(pInfo->chartInfos[difficultyIdx]->title).drawAt(isUpperHalf ? Vec2{ 12 + 576 / 2, 10 + 40 / 2 } : Vec2{ 12 + 576 / 2, 118 + 40 / 2 });
+				const auto& chartInfo = *(pInfo->chartInfos[difficultyIdx]);
+				for (int32 i = 0; i < 2; ++i)
+				{
+					// Draw twice to make the font slightly bold
+					// (Using a bold typeface makes the font too bold compared to HSP's artlet2D)
+					m_fontM(chartInfo.title).drawAt(isUpperHalf ? Vec2{ 12 + i + 576 / 2, 8 + 40 / 2 } : Vec2{ 12 + i + 576 / 2, 116 + 40 / 2 });
+				}
+				m_fontS(chartInfo.artist).drawAt(isUpperHalf ? Vec2{ 230 + 354 / 2, 67 + 40 / 2 } : Vec2{ 230 + 354 / 2, 171 + 40 / 2 });
+
+				// TODO: Cache jacket image texture
+				const Texture jacketTexture(chartInfo.jacketFilePath);
+				SizeF size{ 208, 208 };
+				if (jacketTexture.width() < jacketTexture.height())
+				{
+					size.x *= static_cast<double>(jacketTexture.width()) / jacketTexture.height();
+				}
+				else if (jacketTexture.height() < jacketTexture.width())
+				{
+					size.y *= static_cast<double>(jacketTexture.height()) / jacketTexture.width();
+				}
+				jacketTexture.resized(size).draw(Vec2{ 600, 10 });
 			}
 		}
 		break;
@@ -43,19 +155,10 @@ void SelectMenuGraphics::drawUpperLowerMenuItem(const RenderTexture& target, con
 	case SelectMenuItem::kCurrentFolder:
 	case SelectMenuItem::kDirectoryFolder:
 		Shader::Copy(isUpperHalf ? m_dirItemTextures.upperHalf : m_dirItemTextures.lowerHalf, target);
-		{
-			String displayName = U"?";
-			if (item.itemType == SelectMenuItem::kAllFolder)
-			{
-				displayName = U"     All   >>";
-			}
-			else if (auto pInfo = dynamic_cast<SelectMenuFolderItemInfo*>(item.info.get()))
-			{
-				displayName = U"     {}   >>"_fmt(pInfo->displayName);
-			}
-			m_fontL(displayName).drawAt(isUpperHalf ? Vec2{ 16 + 770 / 2, 12 + 86 / 2 } : Vec2{ 16 + 770 / 2, 126 + 86 / 2 });
-		}
+		m_fontL(FolderItemDisplayName(item, false)).drawAt(isUpperHalf ? Vec2{ 16 + 770 / 2, 12 + 86 / 2 } : Vec2{ 16 + 770 / 2, 126 + 86 / 2 });
 		break;
+
+		// TODO: Other types
 
 	default:
 		target.clear(Color::Zero());
@@ -75,28 +178,64 @@ SelectMenuGraphics::SelectMenuGraphics()
 	, m_centerItem({ 766, 378 }, Color::Zero())
 	, m_upperHalfItems(MakeRenderTextureArray(kNumUpperHalfItems, { 816, 228 }))
 	, m_lowerHalfItems(MakeRenderTextureArray(kNumLowerHalfItems, { 816, 228 }))
-	, m_fontL(40, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
+	, m_fontLL(44, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
+	, m_fontL(38, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
 	, m_fontM(30, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
-	, m_fontS(20, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
+	, m_fontS(24, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
 {
 }
 
-void SelectMenuGraphics::refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu, int32 difficultyIdx) const
+void SelectMenuGraphics::refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu, int32 difficultyIdx, RefreshType type)
 {
 	const ScopedRenderStates2D state(kBlendState);
 
-	// Draw upper half items
-	for (int i = 0; i < kNumUpperHalfItems; ++i)
+	// Refresh upper/lower half item textures
+	// Note: Here, swap is used because it is much faster than Shader::Copy()
+	if (type == kCursorUp)
 	{
-		const SelectMenuItem& item = menu.atCyclic(menu.cursor() - kNumUpperHalfItems + i);
-		drawUpperLowerMenuItem(m_upperHalfItems[i], item, difficultyIdx, true);
+		for (int32 i = kNumUpperHalfItems - 1; i > 0; --i)
+		{
+			m_upperHalfItems[i].swap(m_upperHalfItems[i - 1]);
+		}
+		for (int32 i = kNumLowerHalfItems - 1; i > 0; --i)
+		{
+			m_lowerHalfItems[i].swap(m_lowerHalfItems[i - 1]);
+		}
+		refreshUpperLowerMenuItem(m_upperHalfItems[0], menu.atCyclic(menu.cursor() - kNumUpperHalfItems), difficultyIdx, true);
+		refreshUpperLowerMenuItem(m_lowerHalfItems[0], menu.atCyclic(menu.cursor() + 1), difficultyIdx, false);
+	}
+	else if (type == kCursorDown)
+	{
+		for (int32 i = 0; i < kNumUpperHalfItems - 1; ++i)
+		{
+			m_upperHalfItems[i].swap(m_upperHalfItems[i + 1]);
+		}
+		for (int32 i = 0; i < kNumLowerHalfItems - 1; ++i)
+		{
+			m_lowerHalfItems[i].swap(m_lowerHalfItems[i + 1]);
+		}
+		refreshUpperLowerMenuItem(m_upperHalfItems[kNumUpperHalfItems - 1], menu.atCyclic(menu.cursor() - 1), difficultyIdx, true);
+		refreshUpperLowerMenuItem(m_lowerHalfItems[kNumLowerHalfItems - 1], menu.atCyclic(menu.cursor() + kNumLowerHalfItems), difficultyIdx, false);
+	}
+	else
+	{
+		// Refresh all upper/lower half items
+		for (int32 i = 0; i < kNumUpperHalfItems; ++i)
+		{
+			const SelectMenuItem& item = menu.atCyclic(menu.cursor() - kNumUpperHalfItems + i);
+			refreshUpperLowerMenuItem(m_upperHalfItems[i], item, difficultyIdx, true);
+		}
+		for (int i = 0; i < kNumLowerHalfItems; ++i)
+		{
+			const SelectMenuItem& item = menu.atCyclic(menu.cursor() + 1 + i);
+			refreshUpperLowerMenuItem(m_lowerHalfItems[i], item, difficultyIdx, false);
+		}
 	}
 
-	// Draw lower half items
-	for (int i = 0; i < kNumLowerHalfItems; ++i)
+	// Refresh center item texture
 	{
-		const SelectMenuItem& item = menu.atCyclic(menu.cursor() + 1 + i);
-		drawUpperLowerMenuItem(m_lowerHalfItems[i], item, difficultyIdx, false);
+		const SelectMenuItem& item = menu.at(menu.cursor());
+		refreshCenterMenuItem(item, difficultyIdx);
 	}
 }
 
@@ -120,5 +259,5 @@ void SelectMenuGraphics::draw() const
 	}
 
 	// Draw center item
-	ScaledL(m_centerItem).draw();
+	m_centerItem.resized(Scaled(450, 222)).draw(Scaled(65, 128) + LeftMarginVec());
 }

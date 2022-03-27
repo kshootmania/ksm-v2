@@ -27,7 +27,7 @@ private:
 	// Note: Set directoryPath to empty to close folder
 	bool openDirectory(FilePathView directoryPath);
 
-	void refreshGraphics();
+	void refreshGraphics(SelectMenuGraphics::RefreshType type);
 
 public:
 	SelectMenu(); // TODO: Restore previous selection
