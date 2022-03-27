@@ -59,6 +59,21 @@ namespace
 
 		return Fmt(format)(displayName);
 	}
+
+	void DrawJacketImage(FilePathView filePath, const Vec2& pos, SizeF size)
+	{
+		// TODO: Cache jacket image texture
+		const Texture jacketTexture(filePath);
+		if (jacketTexture.width() < jacketTexture.height())
+		{
+			size.x *= static_cast<double>(jacketTexture.width()) / jacketTexture.height();
+		}
+		else if (jacketTexture.height() < jacketTexture.width())
+		{
+			size.y *= static_cast<double>(jacketTexture.height()) / jacketTexture.width();
+		}
+		jacketTexture.resized(size).draw(pos);
+	}
 }
 
 void SelectMenuGraphics::refreshCenterMenuItem(const SelectMenuItem& item, int32 difficultyIdx) const
@@ -74,27 +89,21 @@ void SelectMenuGraphics::refreshCenterMenuItem(const SelectMenuItem& item, int32
 			if (pInfo->chartInfos[difficultyIdx].has_value())
 			{
 				const auto& chartInfo = *(pInfo->chartInfos[difficultyIdx]);
+
+				// Title
 				for (int32 i = 0; i < 2; ++i)
 				{
 					// Draw twice to make the font slightly bold
-					// (Using a bold typeface makes the font too bold compared to HSP's artlet2D)
+					// (Using a bold typeface makes the font too bold compared to HSP's Artlet2D)
 					// TODO: Maybe fonts with bold glyphs (e.g. Arial) do not have this problem (unconfirmed), so simply use bold for them.
 					m_fontM(chartInfo.title).drawAt(Vec2{ 16 + i + 462 / 2, 11 + 38 / 2 });
 				}
+
+				// Artist
 				m_fontS(chartInfo.artist).drawAt(Vec2{ 16 + 462 / 2, 50 + 36 / 2 });
 
-				// TODO: Cache jacket image texture
-				const Texture jacketTexture(chartInfo.jacketFilePath);
-				SizeF size{ 254, 254 };
-				if (jacketTexture.width() < jacketTexture.height())
-				{
-					size.x *= static_cast<double>(jacketTexture.width()) / jacketTexture.height();
-				}
-				else if (jacketTexture.height() < jacketTexture.width())
-				{
-					size.y *= static_cast<double>(jacketTexture.height()) / jacketTexture.width();
-				}
-				jacketTexture.resized(size).draw(Vec2{ 492, 22 });
+				// Jacket
+				DrawJacketImage(chartInfo.jacketFilePath, { 492, 22 }, { 254, 254 });
 			}
 		}
 		break;
@@ -127,26 +136,20 @@ void SelectMenuGraphics::refreshUpperLowerMenuItem(const RenderTexture& target, 
 			if (pInfo->chartInfos[difficultyIdx].has_value())
 			{
 				const auto& chartInfo = *(pInfo->chartInfos[difficultyIdx]);
+
+				// Title
 				for (int32 i = 0; i < 2; ++i)
 				{
 					// Draw twice to make the font slightly bold
-					// (Using a bold typeface makes the font too bold compared to HSP's artlet2D)
+					// (Using a bold typeface makes the font too bold compared to HSP's Artlet2D)
 					m_fontM(chartInfo.title).drawAt(isUpperHalf ? Vec2{ 12 + i + 576 / 2, 8 + 40 / 2 } : Vec2{ 12 + i + 576 / 2, 116 + 40 / 2 });
 				}
+
+				// Artist
 				m_fontS(chartInfo.artist).drawAt(isUpperHalf ? Vec2{ 230 + 354 / 2, 67 + 40 / 2 } : Vec2{ 230 + 354 / 2, 171 + 40 / 2 });
 
-				// TODO: Cache jacket image texture
-				const Texture jacketTexture(chartInfo.jacketFilePath);
-				SizeF size{ 208, 208 };
-				if (jacketTexture.width() < jacketTexture.height())
-				{
-					size.x *= static_cast<double>(jacketTexture.width()) / jacketTexture.height();
-				}
-				else if (jacketTexture.height() < jacketTexture.width())
-				{
-					size.y *= static_cast<double>(jacketTexture.height()) / jacketTexture.width();
-				}
-				jacketTexture.resized(size).draw(Vec2{ 600, 10 });
+				// Jacket
+				DrawJacketImage(chartInfo.jacketFilePath, { 600, 10 }, { 208, 208 });
 			}
 		}
 		break;
