@@ -8,6 +8,13 @@ struct SelectMenuItemTextures
 	Texture lowerHalf;
 };
 
+enum class SelectMenuShakeDrection
+{
+	kUnspecified,
+	kUp,
+	kDown,
+};
+
 class SelectMenuGraphics
 {
 private:
@@ -21,6 +28,9 @@ private:
 	RenderTexture m_centerItem;
 	Array<RenderTexture> m_upperHalfItems;
 	Array<RenderTexture> m_lowerHalfItems;
+
+	SelectMenuShakeDrection m_shakeDirection = SelectMenuShakeDrection::kUnspecified;
+	Stopwatch m_shakeStopwatch;
 
 	// TODO: Use FontAsset class instead
 	const Font m_fontLL;
