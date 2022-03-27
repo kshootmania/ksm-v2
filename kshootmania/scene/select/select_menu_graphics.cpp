@@ -63,6 +63,12 @@ namespace
 	void DrawJacketImage(FilePathView filePath, const Vec2& pos, SizeF size)
 	{
 		// TODO: Cache jacket image texture
+
+		if (!FileSystem::IsFile(filePath))
+		{
+			return;
+		}
+
 		const Texture jacketTexture(filePath);
 		if (jacketTexture.width() < jacketTexture.height())
 		{
@@ -133,9 +139,15 @@ void SelectMenuGraphics::refreshUpperLowerMenuItem(const RenderTexture& target, 
 		Shader::Copy(isUpperHalf ? m_songItemTextures.upperHalf : m_songItemTextures.lowerHalf, target);
 		if (auto pInfo = dynamic_cast<SelectMenuSongItemInfo*>(item.info.get())) [[likely]]
 		{
-			if (pInfo->chartInfos[difficultyIdx].has_value())
+			const int32 altDifficultyIdx = SelectDifficultyMenu::GetAlternativeCursor(difficultyIdx,
+				[pInfo](int32 idx)
+				{
+					return 0 <= idx && std::cmp_less(idx, pInfo->chartInfos.size()) && pInfo->chartInfos[idx].has_value();
+				});
+
+			if (altDifficultyIdx >= 0) [[likely]]
 			{
-				const auto& chartInfo = *(pInfo->chartInfos[difficultyIdx]);
+				const auto& chartInfo = *(pInfo->chartInfos[altDifficultyIdx]);
 
 				// Title
 				for (int32 i = 0; i < 2; ++i)

@@ -232,6 +232,10 @@ void SelectMenu::update()
 	}
 
 	m_difficultyMenu.update();
+	if (m_difficultyMenu.isCursorChanged())
+	{
+		refreshGraphics(SelectMenuGraphics::kAll);
+	}
 
 	// TODO: Delete this debug code
 	m_debugStr.clear();

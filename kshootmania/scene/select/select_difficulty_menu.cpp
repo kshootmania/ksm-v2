@@ -76,11 +76,32 @@ int32 SelectDifficultyMenu::cursor() const
 
 	const int32 cursor = m_menu.cursor();
 	assert(0 <= cursor && cursor < pMenuItem->chartInfos.size());
-	
+
+	const int32 altCursor = GetAlternativeCursor(cursor,
+		[pMenuItem](int32 idx)
+		{
+			return 0 <= idx && std::cmp_less(idx, pMenuItem->chartInfos.size()) && pMenuItem->chartInfos[idx].has_value();
+		});
+
+	return altCursor;
+}
+
+int32 SelectDifficultyMenu::rawCursor() const
+{
+	return m_menu.cursor();
+}
+
+bool SelectDifficultyMenu::isCursorChanged() const
+{
+	return m_menu.isCursorChanged();
+}
+
+int32 SelectDifficultyMenu::GetAlternativeCursor(int32 rawCursor, std::function<bool(int32)> difficultyExistsFunc)
+{
 	// If the cursor difficulty exists, return it as is
-	if (pMenuItem->chartInfos[cursor].has_value())
+	if (difficultyExistsFunc(rawCursor))
 	{
-		return cursor;
+		return rawCursor;
 	}
 
 	// Alternative cursor value
@@ -88,9 +109,9 @@ int32 SelectDifficultyMenu::cursor() const
 
 	// First try to change the cursor to a lower difficulty
 	bool found = false;
-	for (int idx = cursor - 1; idx >= 0; --idx)
+	for (int idx = rawCursor - 1; idx >= 0; --idx)
 	{
-		if (pMenuItem->chartInfos[idx].has_value())
+		if (difficultyExistsFunc(idx))
 		{
 			altCursor = idx;
 			found = true;
@@ -101,9 +122,9 @@ int32 SelectDifficultyMenu::cursor() const
 	// If no difficulty is found, try to change the cursor to a higher difficulty
 	if (!found)
 	{
-		for (int idx = cursor + 1; idx < kNumDifficulties; ++idx)
+		for (int idx = rawCursor + 1; idx < kNumDifficulties; ++idx)
 		{
-			if (pMenuItem->chartInfos[idx].has_value())
+			if (difficultyExistsFunc(idx))
 			{
 				altCursor = idx;
 				break;
@@ -112,9 +133,4 @@ int32 SelectDifficultyMenu::cursor() const
 	}
 
 	return altCursor;
-}
-
-int32 SelectDifficultyMenu::rawCursor() const
-{
-	return m_menu.cursor();
 }
