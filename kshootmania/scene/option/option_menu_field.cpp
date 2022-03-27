@@ -34,12 +34,12 @@ namespace
 
 	LinearMenu MakeMenuInt(int32 valueMin, int32 valueMax, int32 valueDefault, int32 valueStep)
 	{
-		return MenuHelper::MakeHorizontalMenuWithMinMax(valueMin, valueMax, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser, IsCyclicMenu::No, 0.0, valueDefault, valueStep);
+		return MenuHelper::MakeHorizontalMenuWithMinMax(valueMin, valueMax, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser, IsCyclicMenu::No, 0.0, 0.0, valueDefault, valueStep);
 	}
 
 	LinearMenu MakeMenuEnum(int32 enumCount, int32 valueDefault)
 	{
-		return MenuHelper::MakeHorizontalMenu(enumCount, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser, IsCyclicMenu::No, 0.0, valueDefault);
+		return MenuHelper::MakeHorizontalMenu(enumCount, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser, IsCyclicMenu::No, 0.0, 0.0, valueDefault);
 	}
 
 	OptionMenuField::ArrowType GetMenuFieldValueArrowType(const LinearMenu& menu)
