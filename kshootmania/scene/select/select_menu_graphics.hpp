@@ -33,11 +33,13 @@ private:
 	Stopwatch m_shakeStopwatch;
 
 	// TODO: Use FontAsset class instead
+	// TODO: Use transform instead of using font size directly
 	const Font m_fontLL;
 	const Font m_fontL;
-	const Font m_fontMBold;
 	const Font m_fontM;
 	const Font m_fontS;
+	const Font m_fontSS;
+	const Font m_fontSSS;
 
 	void refreshCenterMenuItem(const SelectMenuItem& item, int32 difficultyIdx) const;
 

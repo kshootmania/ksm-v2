@@ -114,14 +114,20 @@ void SelectMenuGraphics::refreshCenterMenuItem(const SelectMenuItem& item, int32
 					// Draw twice to make the font slightly bold
 					// (Using a bold typeface makes the font too bold compared to HSP's Artlet2D)
 					// TODO: Maybe fonts with bold glyphs (e.g. Arial) do not have this problem (unconfirmed), so simply use bold for them.
-					m_fontM(chartInfo.title).drawAt(Vec2{ 16 + i + 462 / 2, 11 + 38 / 2 });
+					m_fontM(chartInfo.title).drawAt(Vec2{ 16 + i + 462 / 2, 11 + 36 / 2 });
 				}
 
 				// Artist
-				m_fontS(chartInfo.artist).drawAt(Vec2{ 16 + 462 / 2, 50 + 36 / 2 });
+				m_fontS(chartInfo.artist).drawAt(Vec2{ 16 + 462 / 2, 48 + 36 / 2 });
 
 				// Jacket
 				DrawJacketImage(chartInfo.jacketFilePath, { 492, 22 }, { 254, 254 });
+
+				// Jacket author (Illustrated by)
+				m_fontSSS(chartInfo.jacketAuthor).draw(Arg::leftCenter = Vec2{ 630, 290 + 18 / 2 }, Palette::Black);
+
+				// Chart author (Effected by)
+				m_fontSS(chartInfo.chartAuthor).draw(Arg::leftCenter = Vec2{ 154, 293 + 22 / 2 });
 			}
 		}
 		break;
@@ -210,6 +216,8 @@ SelectMenuGraphics::SelectMenuGraphics()
 	, m_fontL(38, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
 	, m_fontM(30, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
 	, m_fontS(24, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
+	, m_fontSS(19, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
+	, m_fontSSS(17, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
 {
 }
 
