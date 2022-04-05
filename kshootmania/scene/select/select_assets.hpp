@@ -12,6 +12,8 @@ namespace SelectTexture
 	constexpr StringView kSongDifficulty = U"msel_0_difficulty.png";
 	constexpr StringView kSongDifficultyCursor = U"msel_0_cur.png";
 
+	constexpr StringView kSongLevelNumber = U"msel_level.png";
+
 	constexpr StringView kDirCenter = U"msel_dir0.png";
 	constexpr StringView kDirUpperHalf = U"msel_dir1.png";
 	constexpr StringView kDirLowerHalf = U"msel_dir2.png";

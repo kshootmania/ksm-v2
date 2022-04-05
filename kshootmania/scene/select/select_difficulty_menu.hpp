@@ -12,10 +12,18 @@ private:
 
 	const SelectMenu* const m_pSelectMenu;
 
+	const TiledTexture m_difficultyTexture;
+
+	const TiledTexture m_levelNumberTexture;
+
+	const Texture m_cursorTexture;
+
 public:
 	explicit SelectDifficultyMenu(const SelectMenu* pSelectMenu);
 
 	void update();
+
+	void draw() const;
 
 	int32 cursor() const;
 

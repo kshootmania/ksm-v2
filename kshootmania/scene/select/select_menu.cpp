@@ -283,6 +283,7 @@ void SelectMenu::update()
 void SelectMenu::draw() const
 {
 	m_graphics.draw();
+	m_difficultyMenu.draw();
 
 	// TODO: Delete this debug code
 	//m_debugFont(m_debugStr).draw(Vec2{ 100, 100 });

@@ -3,6 +3,20 @@
 SelectDifficultyMenu::SelectDifficultyMenu(const SelectMenu* pSelectMenu)
 	: m_menu(MenuHelper::MakeHorizontalMenu(kNumDifficulties, MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::No, 0.12, 0.12, kDifficultyIdxLight))
 	, m_pSelectMenu(pSelectMenu)
+	, m_difficultyTexture(SelectTexture::kSongDifficulty,
+		{
+			.row = 2,
+			.column = kNumDifficulties,
+			.sourceScale = ScreenUtils::SourceScale::k1x,
+			.sourceSize = { 115, 110 },
+		})
+	, m_levelNumberTexture(SelectTexture::kSongLevelNumber,
+		{
+			.row = kLevelMax,
+			.sourceScale = ScreenUtils::SourceScale::kL,
+			.sourceSize = { 150, 120 },
+		})
+	, m_cursorTexture(TextureAsset(SelectTexture::kSongDifficultyCursor))
 {
 }
 
@@ -29,7 +43,7 @@ void SelectDifficultyMenu::update()
 	assert(0 <= cursor && cursor < pMenuItem->chartInfos.size());
 	if (pMenuItem->chartInfos[cursor].has_value())
 	{
-		// If the cursor difficulty exists, okay
+		// If the cursor difficulty exists, it is okay
 		return;
 	}
 
@@ -58,6 +72,36 @@ void SelectDifficultyMenu::update()
 		}
 	}
 	m_menu.setCursor(newCursor);
+}
+
+// TODO: shake this
+void SelectDifficultyMenu::draw() const
+{
+	using namespace ScreenUtils;
+
+	const SelectMenuSongItemInfo* pMenuItem = dynamic_cast<SelectMenuSongItemInfo*>(m_pSelectMenu->cursorMenuItem().info.get());
+
+	if (pMenuItem == nullptr)
+	{
+		return;
+	}
+
+	const Vec2 baseVec = Scaled(65, 128) + LeftMarginVec();
+
+	for (int32 i = 0; i < kNumDifficulties; ++i)
+	{
+		const bool difficultyExists = std::cmp_less(i, pMenuItem->chartInfos.size()) && pMenuItem->chartInfos[i].has_value();
+
+		// Draw difficulty item BG
+		// Note: Here, the incorrect texture aspect ratio in KSMv1 is simulated
+		m_difficultyTexture(difficultyExists ? 1 : 0, i).resized(ScaledL(220, 220)).draw(baseVec + ScaledL(50 + 236 * i, 324));
+
+		// Draw level number
+		if (difficultyExists)
+		{
+			m_levelNumberTexture(Clamp(pMenuItem->chartInfos[i]->level, 0, kLevelMax - 1)).draw(baseVec + ScaledL(86 + 236 * i, 358));
+		}
+	}
 }
 
 int32 SelectDifficultyMenu::cursor() const

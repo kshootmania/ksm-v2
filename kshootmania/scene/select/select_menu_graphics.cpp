@@ -155,7 +155,7 @@ void SelectMenuGraphics::refreshUpperLowerMenuItem(const RenderTexture& target, 
 	{
 	case SelectMenuItem::kSong:
 		Shader::Copy(isUpperHalf ? m_songItemTextures.upperHalf : m_songItemTextures.lowerHalf, target);
-		if (auto pInfo = dynamic_cast<SelectMenuSongItemInfo*>(item.info.get())) [[likely]]
+		if (const auto pInfo = dynamic_cast<SelectMenuSongItemInfo*>(item.info.get())) [[likely]]
 		{
 			const int32 altDifficultyIdx = SelectDifficultyMenu::GetAlternativeCursor(difficultyIdx,
 				[pInfo](int32 idx)
