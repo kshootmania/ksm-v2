@@ -74,8 +74,7 @@ void SelectDifficultyMenu::update()
 	m_menu.setCursor(newCursor);
 }
 
-// TODO: shake this
-void SelectDifficultyMenu::draw() const
+void SelectDifficultyMenu::draw(const Vec2& shakeVec) const
 {
 	using namespace ScreenUtils;
 
@@ -86,7 +85,7 @@ void SelectDifficultyMenu::draw() const
 		return;
 	}
 
-	const Vec2 baseVec = Scaled(65, 128) + LeftMarginVec();
+	const Vec2 baseVec = Scaled(65, 128) + LeftMarginVec() + shakeVec;
 
 	for (int32 i = 0; i < kNumDifficulties; ++i)
 	{

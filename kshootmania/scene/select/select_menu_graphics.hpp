@@ -8,7 +8,7 @@ struct SelectMenuItemTextures
 	Texture lowerHalf;
 };
 
-enum class SelectMenuShakeDrection
+enum class SelectMenuShakeDirection
 {
 	kUnspecified,
 	kUp,
@@ -28,9 +28,6 @@ private:
 	RenderTexture m_centerItem;
 	Array<RenderTexture> m_upperHalfItems;
 	Array<RenderTexture> m_lowerHalfItems;
-
-	SelectMenuShakeDrection m_shakeDirection = SelectMenuShakeDrection::kUnspecified;
-	Stopwatch m_shakeStopwatch;
 
 	// TODO: Use FontAsset class instead
 	// TODO: Use transform instead of using font size directly
@@ -57,5 +54,5 @@ public:
 
 	void refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu, int32 difficultyIdx, RefreshType type);
 
-	void draw() const;
+	void draw(const Vec2& shakeVec) const;
 };

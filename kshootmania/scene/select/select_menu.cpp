@@ -21,6 +21,18 @@ namespace
 						return FileSystem::IsDirectory(p);
 					});
 	}
+
+	Vec2 ShakeVec(SelectMenuShakeDirection direction, double timeSec)
+	{
+		constexpr double kShakeHeight = 2.0;
+		constexpr double kShakeDurationSec = 0.04;
+		using enum SelectMenuShakeDirection;
+		if ((direction != kUp && direction != kDown) || timeSec < 0.0 || kShakeDurationSec < timeSec)
+		{
+			return Vec2::Zero();
+		}
+		return ScreenUtils::Scaled(Vec2{ 0.0, Cos(Math::HalfPi * timeSec / kShakeDurationSec) * kShakeHeight * (direction == kUp ? -1 : 1) });
+	}
 }
 
 void SelectMenu::decideSongItem()
@@ -207,11 +219,27 @@ void SelectMenu::refreshGraphics(SelectMenuGraphics::RefreshType type)
 	const int32 difficultyCursor = m_difficultyMenu.cursor(); // could be -1
 	const int32 difficultyIdx = (difficultyCursor >= 0) ? difficultyCursor : m_difficultyMenu.rawCursor();
 	m_graphics.refresh(m_menu, difficultyIdx, type);
+	switch (type)
+	{
+	case SelectMenuGraphics::kCursorUp:
+		m_shakeDirection = SelectMenuShakeDirection::kUp;
+		break;
+
+	case SelectMenuGraphics::kCursorDown:
+		m_shakeDirection = SelectMenuShakeDirection::kDown;
+		break;
+
+	default:
+		m_shakeDirection = SelectMenuShakeDirection::kUnspecified;
+		break;
+	};
+	m_shakeStopwatch.restart();
 }
 
 SelectMenu::SelectMenu()
 	: m_menu(MenuHelper::MakeArrayWithVerticalMenu<SelectMenuItem>(MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::Yes, 0.05, 0.3))
 	, m_difficultyMenu(this)
+	, m_shakeStopwatch(StartImmediately::No)
 	, m_debugFont(12)
 {
 	if (!openDirectory(ConfigIni::GetString(ConfigIni::Key::kSelectDirectory)))
@@ -282,8 +310,10 @@ void SelectMenu::update()
 
 void SelectMenu::draw() const
 {
-	m_graphics.draw();
-	m_difficultyMenu.draw();
+	const Vec2 shakeVec = ShakeVec(m_shakeDirection, m_shakeStopwatch.sF());
+
+	m_graphics.draw(shakeVec);
+	m_difficultyMenu.draw(shakeVec);
 
 	// TODO: Delete this debug code
 	//m_debugFont(m_debugStr).draw(Vec2{ 100, 100 });

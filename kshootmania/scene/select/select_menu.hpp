@@ -16,6 +16,9 @@ private:
 
 	SelectMenuGraphics m_graphics;
 
+	SelectMenuShakeDirection m_shakeDirection = SelectMenuShakeDirection::kUnspecified;
+	Stopwatch m_shakeStopwatch;
+
 	// TODO: Delete this
 	Font m_debugFont;
 	String m_debugStr;

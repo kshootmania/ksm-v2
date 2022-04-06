@@ -80,18 +80,6 @@ namespace
 		}
 		jacketTexture.resized(size).draw(pos);
 	}
-
-	Vec2 ShakeVec(SelectMenuShakeDrection direction, double timeSec)
-	{
-		constexpr double kShakeHeight = 2.0;
-		constexpr double kShakeDurationSec = 0.04;
-		using enum SelectMenuShakeDrection;
-		if ((direction != kUp && direction != kDown) || timeSec < 0.0 || kShakeDurationSec < timeSec)
-		{
-			return Vec2::Zero();
-		}
-		return ScreenUtils::Scaled(Vec2{ 0.0, Cos(Math::HalfPi * timeSec / kShakeDurationSec) * kShakeHeight * (direction == kUp ? -1 : 1) });
-	}
 }
 
 void SelectMenuGraphics::refreshCenterMenuItem(const SelectMenuItem& item, int32 difficultyIdx) const
@@ -211,7 +199,6 @@ SelectMenuGraphics::SelectMenuGraphics()
 	, m_centerItem({ 766, 378 }, Color::Zero())
 	, m_upperHalfItems(MakeRenderTextureArray(kNumUpperHalfItems, { 816, 228 }))
 	, m_lowerHalfItems(MakeRenderTextureArray(kNumLowerHalfItems, { 816, 228 }))
-	, m_shakeStopwatch(StartImmediately::No)
 	, m_fontLL(44, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
 	, m_fontL(38, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
 	, m_fontM(30, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
@@ -239,9 +226,6 @@ void SelectMenuGraphics::refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu
 		}
 		refreshUpperLowerMenuItem(m_upperHalfItems[0], menu.atCyclic(menu.cursor() - kNumUpperHalfItems), difficultyIdx, true);
 		refreshUpperLowerMenuItem(m_lowerHalfItems[0], menu.atCyclic(menu.cursor() + 1), difficultyIdx, false);
-
-		m_shakeDirection = SelectMenuShakeDrection::kUp;
-		m_shakeStopwatch.restart();
 	}
 	else if (type == kCursorDown)
 	{
@@ -255,9 +239,6 @@ void SelectMenuGraphics::refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu
 		}
 		refreshUpperLowerMenuItem(m_upperHalfItems[kNumUpperHalfItems - 1], menu.atCyclic(menu.cursor() - 1), difficultyIdx, true);
 		refreshUpperLowerMenuItem(m_lowerHalfItems[kNumLowerHalfItems - 1], menu.atCyclic(menu.cursor() + kNumLowerHalfItems), difficultyIdx, false);
-
-		m_shakeDirection = SelectMenuShakeDrection::kDown;
-		m_shakeStopwatch.restart();
 	}
 	else
 	{
@@ -281,7 +262,7 @@ void SelectMenuGraphics::refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu
 	}
 }
 
-void SelectMenuGraphics::draw() const
+void SelectMenuGraphics::draw(const Vec2& shakeVec) const
 {
 	using namespace ScreenUtils;
 
@@ -301,5 +282,5 @@ void SelectMenuGraphics::draw() const
 	}
 
 	// Draw center item
-	m_centerItem.resized(Scaled(450, 222)).draw(Scaled(65, 128) + LeftMarginVec() + ShakeVec(m_shakeDirection, m_shakeStopwatch.sF()));
+	m_centerItem.resized(Scaled(450, 222)).draw(Scaled(65, 128) + LeftMarginVec() + shakeVec);
 }

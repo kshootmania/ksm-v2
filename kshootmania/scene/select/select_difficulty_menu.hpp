@@ -23,7 +23,7 @@ public:
 
 	void update();
 
-	void draw() const;
+	void draw(const Vec2& shakeVec) const;
 
 	int32 cursor() const;
 
