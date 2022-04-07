@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "select_assets.hpp"
+#include "select_menu_item.hpp"
 
 struct SelectMenuItemTextures
 {

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "title_menu.hpp"
 
-class TitleScene : public SceneManager<StringView>::Scene
+class TitleScene : public MyScene
 {
 private:
 	const Texture m_bgTexture;

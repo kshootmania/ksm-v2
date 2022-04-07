@@ -178,7 +178,7 @@ namespace
 }
 
 OptionScene::OptionScene(const InitData& initData)
-	: SceneManager<StringView>::Scene(initData)
+	: MyScene(initData)
 	, m_bgTexture(TextureAsset(OptionTexture::kBG))
 	, m_headerTiledTexture(OptionTexture::kMenuHeader,
 		{

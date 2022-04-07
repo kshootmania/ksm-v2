@@ -19,6 +19,8 @@ private:
 	SelectMenuShakeDirection m_shakeDirection = SelectMenuShakeDirection::kUnspecified;
 	Stopwatch m_shakeStopwatch;
 
+	std::function<void(FilePathView)> m_moveToPlaySceneFunc;
+
 	// TODO: Delete this
 	Font m_debugFont;
 	String m_debugStr;
@@ -33,7 +35,7 @@ private:
 	void refreshGraphics(SelectMenuGraphics::RefreshType type);
 
 public:
-	SelectMenu(); // TODO: Restore previous selection
+	SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc); // TODO: Restore previous selection
 
 	void update();
 

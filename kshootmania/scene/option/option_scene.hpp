@@ -2,7 +2,7 @@
 #include "option_top_menu.hpp"
 #include "option_menu.hpp"
 
-class OptionScene : public SceneManager<StringView>::Scene
+class OptionScene : public MyScene
 {
 public:
 	enum OptionMenuType : int32

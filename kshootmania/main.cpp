@@ -1,4 +1,8 @@
 ﻿#include <Siv3D.hpp> // OpenSiv3D v0.6.3
+#include "scene/title/title_scene.hpp"
+#include "scene/option/option_scene.hpp"
+#include "scene/select/select_scene.hpp"
+#include "scene/play/play_scene.hpp"
 
 void RegisterAssets()
 {
@@ -36,10 +40,11 @@ void Main()
 	RegisterAssets();
 
 	// Create scene manager
-	SceneManager<StringView> sceneManager;
+	MySceneManager sceneManager;
 	sceneManager.add<TitleScene>(SceneName::kTitle);
 	sceneManager.add<OptionScene>(SceneName::kOption);
 	sceneManager.add<SelectScene>(SceneName::kSelect);
+	sceneManager.add<PlayScene>(SceneName::kPlay);
 	sceneManager.changeScene(SceneName::kTitle, kDefaultTransitionMs);
 
 	// Main loop

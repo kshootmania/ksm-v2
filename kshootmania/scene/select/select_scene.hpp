@@ -3,7 +3,7 @@
 #include "select_menu.hpp"
 #include "select_folder_state.hpp"
 
-class SelectScene : public SceneManager<StringView>::Scene
+class SelectScene : public MyScene
 {
 private:
 	const Texture m_bgTexture;
@@ -11,6 +11,8 @@ private:
 	const KeyConfig::Button m_folderCloseButton;
 
 	SelectMenu m_menu;
+
+	void moveToPlayScene(FilePathView chartFilePath);
 
 public:
 	explicit SelectScene(const InitData& initData);

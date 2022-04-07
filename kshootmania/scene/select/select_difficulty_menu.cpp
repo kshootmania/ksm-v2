@@ -1,4 +1,5 @@
 ﻿#include "select_difficulty_menu.hpp"
+#include "select_menu.hpp"
 
 SelectDifficultyMenu::SelectDifficultyMenu(const SelectMenu* pSelectMenu)
 	: m_menu(MenuHelper::MakeHorizontalMenu(kNumDifficulties, MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::No, 0.12, 0.12, kDifficultyIdxLight))

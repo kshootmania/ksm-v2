@@ -49,6 +49,8 @@ void SelectMenu::decideSongItem()
 
 	// TODO: Start playing
 	Print << pChartInfo->chartFilePath;
+
+	m_moveToPlaySceneFunc(pChartInfo->chartFilePath);
 }
 
 void SelectMenu::decideDirectoryFolderItem()
@@ -236,10 +238,11 @@ void SelectMenu::refreshGraphics(SelectMenuGraphics::RefreshType type)
 	m_shakeStopwatch.restart();
 }
 
-SelectMenu::SelectMenu()
+SelectMenu::SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc)
 	: m_menu(MenuHelper::MakeArrayWithVerticalMenu<SelectMenuItem>(MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::Yes, 0.05, 0.3))
 	, m_difficultyMenu(this)
 	, m_shakeStopwatch(StartImmediately::No)
+	, m_moveToPlaySceneFunc(std::move(moveToPlaySceneFunc))
 	, m_debugFont(12)
 {
 	if (!openDirectory(ConfigIni::GetString(ConfigIni::Key::kSelectDirectory)))

@@ -7,7 +7,7 @@ namespace
 }
 
 TitleScene::TitleScene(const InitData& initData)
-	: SceneManager<StringView>::Scene(initData)
+	: MyScene(initData)
 	, m_menu(this)
 	, m_bgTexture(TextureAsset(TitleTexture::kBG))
 	, m_exitStopwatch(StartImmediately::No)

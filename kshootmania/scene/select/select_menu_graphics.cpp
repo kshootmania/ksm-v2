@@ -1,5 +1,6 @@
 ﻿#include "select_menu_graphics.hpp"
 #include "select_menu_item.hpp"
+#include "select_difficulty_menu.hpp"
 
 namespace
 {

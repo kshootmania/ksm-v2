@@ -196,6 +196,12 @@
     <Filter Include="Header Files\common">
       <UniqueIdentifier>{0297cf3a-d302-46cd-9caa-159ab033c77c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\scene\play">
+      <UniqueIdentifier>{30c59926-793f-43f4-abe0-a718a20b2a4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scene\play">
+      <UniqueIdentifier>{d59f2a32-1a45-4896-8e3e-16ab4fbcb9d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\title\title_scene.cpp">
@@ -260,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="scene\select\select_menu_graphics.cpp">
       <Filter>Source Files\scene\select</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\play\play_scene.cpp">
+      <Filter>Source Files\scene\play</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -978,6 +987,12 @@
     </ClInclude>
     <ClInclude Include="scene\select\select_menu_graphics.hpp">
       <Filter>Header Files\scene\select</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\play\play_scene.hpp">
+      <Filter>Header Files\scene\play</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\play\play_scene_args.hpp">
+      <Filter>Header Files\scene\play</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
