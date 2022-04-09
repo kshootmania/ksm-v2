@@ -13,14 +13,11 @@ namespace MusicGame
 		MeshData m_meshData;
 		DynamicMesh m_mesh;
 
-		BasicCamera3D m_camera;
-		MSRenderTexture m_3dViewTexture;
-
 	public:
 		Highway3DGraphics();
 
 		void update(const CameraState& cameraState);
 
-		void draw() const;
+		void draw(const RenderTexture& target) const;
 	};
 }

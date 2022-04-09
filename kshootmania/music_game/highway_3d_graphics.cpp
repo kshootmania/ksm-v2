@@ -18,13 +18,6 @@ namespace
 	// Shrink UV to remove white edge pixels
 	constexpr float kUVShrinkX = 0.015f;
 	constexpr float kUVShrinkY = 0.005f;
-
-	constexpr double kCameraVerticalFOV = 45_deg;
-	constexpr Vec3 kCameraPosition = { 0.0, 45.0, -366.0 };
-
-	constexpr double kSin15Deg = 0.2588190451;
-	constexpr double kCos15Deg = 0.9659258263;
-	constexpr Vec3 kCameraLookAt = kCameraPosition + Vec3{ 0.0, -100.0 * kSin15Deg, 100.0 * kCos15Deg };
 }
 
 MusicGame::Highway3DGraphics::Highway3DGraphics()
@@ -33,8 +26,6 @@ MusicGame::Highway3DGraphics::Highway3DGraphics()
 	, m_subtractiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
 	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
 	, m_mesh(m_meshData) // <- this initialization is needed because DynamicMesh::fill() doesn't change the size of the vertex array dynamically
-	, m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
-	, m_3dViewTexture(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
 {
 }
 
@@ -43,19 +34,15 @@ void MusicGame::Highway3DGraphics::update(const CameraState& cameraState)
 	// TODO: Calculate vertex position from cameraState
 }
 
-void MusicGame::Highway3DGraphics::draw() const
+void MusicGame::Highway3DGraphics::draw(const RenderTexture& target) const
 {
-	Graphics3D::SetCameraTransform(m_camera);
-	Graphics3D::SetGlobalAmbientColor(Palette::White);
-
 	Shader::Copy(m_bgTexture(0, 0, kTextureSize), m_additiveRenderTexture);
 	Shader::Copy(m_bgTexture(kTextureSize.x, 0, kTextureSize), m_subtractiveRenderTexture);
 
 	// TODO: draw notes here
 
-	const ColorF backgroundColor = Palette::Blue.removeSRGBCurve();
 	{
-		const ScopedRenderTarget3D renderTarget(m_3dViewTexture.clear(backgroundColor));
+		const ScopedRenderTarget3D renderTarget(target.clear(Palette::Black));
 
 		{
 			const ScopedRenderStates3D renderState(BlendState::Subtractive);
@@ -66,12 +53,5 @@ void MusicGame::Highway3DGraphics::draw() const
 			const ScopedRenderStates3D renderState(BlendState::Additive);
 			m_mesh.draw(m_additiveRenderTexture);
 		}
-	}
-	
-	// Draw 3D scene to 2D scene
-	{
-		Graphics3D::Flush();
-		m_3dViewTexture.resolve();
-		Shader::LinearToScreen(m_3dViewTexture);
 	}
 }

@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "music_game/highway_3d_graphics.hpp"
+#include "music_game/music_game_graphics.hpp"
 
 class PlayScene : public MyScene
 {
 private:
-	MusicGame::Highway3DGraphics m_highway3DGraphics;
+	MusicGame::MusicGameGraphics m_musicGameGraphics;
 
 public:
 	explicit PlayScene(const InitData& initData);

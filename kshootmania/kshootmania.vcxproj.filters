@@ -279,6 +279,9 @@
     <ClCompile Include="music_game\highway_3d_graphics.cpp">
       <Filter>Source Files\music_game</Filter>
     </ClCompile>
+    <ClCompile Include="music_game\music_game_graphics.cpp">
+      <Filter>Source Files\music_game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1010,6 +1013,9 @@
       <Filter>Header Files\music_game</Filter>
     </ClInclude>
     <ClInclude Include="music_game\music_game_assets.hpp">
+      <Filter>Header Files\music_game</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\music_game_graphics.hpp">
       <Filter>Header Files\music_game</Filter>
     </ClInclude>
   </ItemGroup>
