@@ -19,7 +19,7 @@ private:
 	SelectMenuShakeDirection m_shakeDirection = SelectMenuShakeDirection::kUnspecified;
 	Stopwatch m_shakeStopwatch;
 
-	std::function<void(FilePathView)> m_moveToPlaySceneFunc;
+	const std::function<void(FilePathView)> m_moveToPlaySceneFunc;
 
 	// TODO: Delete this
 	Font m_debugFont;

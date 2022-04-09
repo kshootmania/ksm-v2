@@ -202,6 +202,12 @@
     <Filter Include="Source Files\scene\play">
       <UniqueIdentifier>{d59f2a32-1a45-4896-8e3e-16ab4fbcb9d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\music_game">
+      <UniqueIdentifier>{dbb4f7bb-8d47-488a-ba11-63b055dd32cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\music_game">
+      <UniqueIdentifier>{01d7acbb-b815-488e-a952-f11d48b73cf2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\title\title_scene.cpp">
@@ -269,6 +275,9 @@
     </ClCompile>
     <ClCompile Include="scene\play\play_scene.cpp">
       <Filter>Source Files\scene\play</Filter>
+    </ClCompile>
+    <ClCompile Include="music_game\highway_3d_graphics.cpp">
+      <Filter>Source Files\music_game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -993,6 +1002,15 @@
     </ClInclude>
     <ClInclude Include="scene\play\play_scene_args.hpp">
       <Filter>Header Files\scene\play</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\camera_state.hpp">
+      <Filter>Header Files\music_game</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\highway_3d_graphics.hpp">
+      <Filter>Header Files\music_game</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\music_game_assets.hpp">
+      <Filter>Header Files\music_game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

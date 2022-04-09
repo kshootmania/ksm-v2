@@ -8,8 +8,11 @@ PlayScene::PlayScene(const InitData& initData)
 
 void PlayScene::update()
 {
+	m_highway3DGraphics.update(MusicGame::CameraState{});
 }
 
 void PlayScene::draw() const
 {
+	// TODO: Calculate camera state
+	m_highway3DGraphics.draw();
 }

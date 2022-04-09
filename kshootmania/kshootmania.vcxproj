@@ -121,6 +121,7 @@
     <ClCompile Include="ini\ksm_ini_data.cpp" />
     <ClCompile Include="input\key_config.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="music_game\highway_3d_graphics.cpp" />
     <ClCompile Include="scene\option\option_menu.cpp" />
     <ClCompile Include="scene\option\option_menu_field.cpp" />
     <ClCompile Include="scene\option\option_top_menu.cpp" />
@@ -338,6 +339,9 @@
     <ClInclude Include="ini\config_ini.hpp" />
     <ClInclude Include="ini\ksm_ini_data.hpp" />
     <ClInclude Include="input\key_config.hpp" />
+    <ClInclude Include="music_game\camera_state.hpp" />
+    <ClInclude Include="music_game\highway_3d_graphics.hpp" />
+    <ClInclude Include="music_game\music_game_assets.hpp" />
     <ClInclude Include="scene\option\option_assets.hpp" />
     <ClInclude Include="scene\option\option_menu.hpp" />
     <ClInclude Include="scene\option\option_menu_field.hpp" />
