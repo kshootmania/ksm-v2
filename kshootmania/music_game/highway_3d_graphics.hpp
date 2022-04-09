@@ -6,17 +6,15 @@ namespace MusicGame
 	class Highway3DGraphics
 	{
 	private:
-		MSRenderTexture m_3dViewTexture;
-
 		const Texture m_bgTexture;
+		RenderTexture m_additiveRenderTexture;
+		RenderTexture m_subtractiveRenderTexture;
 
-		MeshData m_additiveMeshData;
-		DynamicMesh m_additiveMesh;
+		MeshData m_meshData;
+		DynamicMesh m_mesh;
 
-		MeshData m_subtractiveMeshData;
-		DynamicMesh m_subtractiveMesh;
-
-		DebugCamera3D m_debugCamera;
+		BasicCamera3D m_camera;
+		MSRenderTexture m_3dViewTexture;
 
 	public:
 		Highway3DGraphics();

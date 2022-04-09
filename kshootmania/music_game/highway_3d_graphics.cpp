@@ -18,30 +18,40 @@ namespace
 	// Shrink UV to remove white edge pixels
 	constexpr float kUVShrinkX = 0.015f;
 	constexpr float kUVShrinkY = 0.005f;
+
+	constexpr double kCameraVerticalFOV = 45_deg;
+	constexpr Vec3 kCameraPosition = { 0.0, 45.0, -366.0 };
+
+	constexpr double kSin15Deg = 0.2588190451;
+	constexpr double kCos15Deg = 0.9659258263;
+	constexpr Vec3 kCameraLookAt = kCameraPosition + Vec3{ 0.0, -100.0 * kSin15Deg, 100.0 * kCos15Deg };
 }
 
 MusicGame::Highway3DGraphics::Highway3DGraphics()
 	: m_bgTexture(U"imgs/" + MusicGameTexture::kHighwayBG, TextureDesc::UnmippedSRGB)
+	, m_additiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
+	, m_subtractiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
+	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
+	, m_mesh(m_meshData) // <- this initialization is needed because DynamicMesh::fill() doesn't change the size of the vertex array dynamically
+	, m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 	, m_3dViewTexture(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
-	, m_additiveMeshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { (1.0f - kUVShrinkX) / 2, 1.0f - kUVShrinkY }, { (kUVShrinkX / 2) / 2, kUVShrinkY / 2 }))
-	, m_additiveMesh(m_additiveMeshData) // <- this initialization is needed because DynamicMesh::fill() doesn't change the size of the vertex array dynamically
-	, m_subtractiveMeshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { (1.0f - kUVShrinkX) / 2, 1.0f - kUVShrinkY }, { (1.0f + kUVShrinkX / 2) / 2, kUVShrinkY / 2 }))
-	, m_subtractiveMesh(m_subtractiveMeshData) // <- this initialization is needed because DynamicMesh::fill() doesn't change the size of the vertex array dynamically
-	, m_debugCamera(m_3dViewTexture.size(), 45_deg, { 0.0, 45.0, -366.0 }, { 0.0, 45.0 - 100.0 * Sin(ToRadians(15)), -366.0 + 100.0 * Cos(ToRadians(15)) })
 {
 }
 
 void MusicGame::Highway3DGraphics::update(const CameraState& cameraState)
 {
-	//m_debugCamera.update(2.0);
-
 	// TODO: Calculate vertex position from cameraState
 }
 
 void MusicGame::Highway3DGraphics::draw() const
 {
-	Graphics3D::SetCameraTransform(m_debugCamera);
+	Graphics3D::SetCameraTransform(m_camera);
 	Graphics3D::SetGlobalAmbientColor(Palette::White);
+
+	Shader::Copy(m_bgTexture(0, 0, kTextureSize), m_additiveRenderTexture);
+	Shader::Copy(m_bgTexture(kTextureSize.x, 0, kTextureSize), m_subtractiveRenderTexture);
+
+	// TODO: draw notes here
 
 	const ColorF backgroundColor = Palette::Blue.removeSRGBCurve();
 	{
@@ -49,12 +59,12 @@ void MusicGame::Highway3DGraphics::draw() const
 
 		{
 			const ScopedRenderStates3D renderState(BlendState::Subtractive);
-			m_subtractiveMesh.draw(m_bgTexture);
+			m_mesh.draw(m_subtractiveRenderTexture);
 		}
 
 		{
 			const ScopedRenderStates3D renderState(BlendState::Additive);
-			m_additiveMesh.draw(m_bgTexture);
+			m_mesh.draw(m_additiveRenderTexture);
 		}
 	}
 	
