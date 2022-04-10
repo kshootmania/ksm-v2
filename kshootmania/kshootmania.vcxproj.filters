@@ -220,6 +220,9 @@
     <Filter Include="Header Files\music_game\judgment">
       <UniqueIdentifier>{0b50680d-07a7-4203-9d2d-4c2997e9d5b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\common">
+      <UniqueIdentifier>{1bea3048-5f5a-470c-a58f-1ff1d613f3cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\title\title_scene.cpp">
@@ -293,6 +296,9 @@
     </ClCompile>
     <ClCompile Include="music_game\graphics\highway_3d_graphics.cpp">
       <Filter>Source Files\music_game\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="common\math_utils.cpp">
+      <Filter>Source Files\common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

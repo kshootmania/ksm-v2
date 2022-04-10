@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "music_game/judgment/judgment_defines.hpp"
 #include "ksh/common/common.hpp"
+#include "ksh/chart_data.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -41,6 +42,9 @@ namespace MusicGame::Graphics
 	struct UpdateInfo
 	{
 		double currentTimeSec = 0.0;
+		ksh::Pulse currentPulse = 0;
+
+		const ksh::ChartData* pChartData = nullptr;
 		
 		std::array<LaneState, ksh::kNumBTLanes> btLaneState;
 		std::array<LaneState, ksh::kNumFXLanes> fxLaneState;

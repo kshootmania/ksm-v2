@@ -1,4 +1,7 @@
 ﻿#include "play_scene.hpp"
+#include "ksh/io/ksh_io.hpp"
+#include "ksh/io/kson_io.hpp"
+#include <fstream>
 
 namespace
 {
@@ -17,9 +20,12 @@ namespace
 
 PlayScene::PlayScene(const InitData& initData)
 	: MyScene(initData)
+	, m_chartData(ksh::LoadKSHChartData(getData().playSceneArgs.chartFilePath.narrow()))
+	, m_timingCache(ksh::TimingUtils::CreateTimingCache(m_chartData.beat))
 	, m_stopwatch(StartImmediately::Yes)
+	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
 {
-	Print << U"Received: {}"_fmt(getData().playSceneArgs.chartFilePath);
+	Print << U"Title: {}"_fmt(Unicode::Widen(ksh::UnU8(m_chartData.meta.title)));
 }
 
 void PlayScene::update()
@@ -27,6 +33,7 @@ void PlayScene::update()
 	const double currentTimeSec = m_stopwatch.sF(); // TODO: use music play time position
 
 	m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
+	m_graphicsUpdateInfo.currentPulse = ksh::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
 
 	for (int i = 0; i < ksh::kNumBTLanes; ++i)
 	{

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "ksh/common/common.hpp"
 
 namespace MathUtils
 {
@@ -16,4 +17,6 @@ namespace MathUtils
 			return mod;
 		}
 	}
+
+	ksh::Ms SecToMs(double sec);
 }

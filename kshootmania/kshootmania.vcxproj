@@ -114,6 +114,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="common\math_utils.cpp" />
     <ClCompile Include="graphics\screen_utils.cpp" />
     <ClCompile Include="graphics\tiled_texture.cpp" />
     <ClCompile Include="i18n\i18n.cpp" />

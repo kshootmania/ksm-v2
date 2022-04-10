@@ -5,6 +5,7 @@ namespace
 	constexpr FilePathView kHighwayBGTexturePath = U"imgs/base.gif";
 	constexpr FilePathView kShineEffectTexturePath = U"imgs/lanelight.gif";
 	constexpr FilePathView kKeyBeamTexturePath = U"imgs/judge.gif";
+	constexpr FilePathView kChipBTNoteTexturePath = U"imgs/bt_chip.gif";
 
 	// Angle of the line connecting the camera position and the judgment line from the horizontal
 	// (Unconfirmed, but KSMv1 uses this value anyway)
@@ -41,6 +42,11 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 	: m_bgTexture(kHighwayBGTexturePath, TextureDesc::UnmippedSRGB)
 	, m_shineEffectTexture(kShineEffectTexturePath, TextureDesc::UnmippedSRGB)
 	, m_beamTexture(kKeyBeamTexturePath, TextureDesc::UnmippedSRGB)
+	, m_chipBTNoteTexture(Texture(kChipBTNoteTexturePath, TextureDesc::UnmippedSRGB),
+		{
+			.column = 9 * 2,
+			.sourceSize = { 40, 14 },
+		})
 	, m_additiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
 	, m_subtractiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
 	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
@@ -53,6 +59,8 @@ void MusicGame::Graphics::Highway3DGraphics::update(const UpdateInfo& updateInfo
 	// TODO: Calculate vertex position from cameraState
 
 	m_updateInfo = updateInfo;
+
+	assert(m_updateInfo.pChartData != nullptr);
 }
 
 void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& target) const
@@ -69,6 +77,27 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& target) c
 		for (int32 i = 0; i < kNumShineEffects; ++i)
 		{
 			m_shineEffectTexture.draw(kShineEffectPositionOffset + kShineEffectPositionDiff * i + kShineEffectPositionDiff * MathUtils::WrappedFmod(m_updateInfo.currentTimeSec, 0.2) / 0.2);
+		}
+	}
+
+	// Draw notes
+	if (m_updateInfo.pChartData != nullptr)
+	{
+		const ScopedRenderTarget2D renderTarget(m_additiveRenderTexture);
+		const ScopedRenderStates2D renderState(BlendState::Additive);
+
+		const ksh::ChartData& chartData = *m_updateInfo.pChartData;
+
+		for (std::size_t laneIdx = 0; laneIdx < ksh::kNumBTLanes; ++laneIdx)
+		{
+			const auto& lane = chartData.note.btLanes[laneIdx];
+			for (auto itr = lane.begin()/*upper_bound(m_updateInfo.currentPulse)*/; itr != lane.end(); ++itr)
+			{
+				const auto& [y, l] = *itr;
+				m_chipBTNoteTexture().draw(
+					kLanePositionOffset + kBTLanePositionDiff * laneIdx
+						+ Vec2::Down(static_cast<double>(kTextureSize.y) - static_cast<double>(y - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution));
+			}
 		}
 	}
 
@@ -119,8 +148,6 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& target) c
 			}
 		}
 	}
-
-	// TODO: draw notes here
 
 	{
 		const ScopedRenderTarget3D renderTarget(target.clear(Palette::Black));

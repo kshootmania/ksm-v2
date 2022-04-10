@@ -1231,7 +1231,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 		else if (IsBarLine(line))
 		{
 			const std::size_t bufLineCount = chartLines.size();
-			const Pulse oneLinePulse = chartData.beat.resolution * currentTimeSig.numerator / currentTimeSig.denominator / bufLineCount;
+			const Pulse oneLinePulse = chartData.beat.resolution * 4 * currentTimeSig.numerator / currentTimeSig.denominator / bufLineCount;
 
 			// Add options that require their position
 			for (const auto& [lineIdx, key, value] : optionLines)

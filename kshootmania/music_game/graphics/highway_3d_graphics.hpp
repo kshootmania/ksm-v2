@@ -9,6 +9,7 @@ namespace MusicGame::Graphics
 		const Texture m_bgTexture;
 		const Texture m_shineEffectTexture;
 		const Texture m_beamTexture;
+		const TiledTexture m_chipBTNoteTexture;
 
 		RenderTexture m_additiveRenderTexture;
 		RenderTexture m_subtractiveRenderTexture;

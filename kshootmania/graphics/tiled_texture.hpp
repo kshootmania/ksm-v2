@@ -10,7 +10,7 @@ struct TiledTextureSizeInfo
 	int32 column = 1;
 
 	Point offset = { 0, 0 };
-	ScreenUtils::SourceScale sourceScale = ScreenUtils::SourceScale::kUnspecified;
+	ScreenUtils::SourceScale sourceScale = ScreenUtils::SourceScale::kNoScaling;
 
 	// Set to kAutoDetectSize to automatically set based on row/column
 	Size sourceSize = kAutoDetectSize;
@@ -24,6 +24,8 @@ private:
 	const Size m_scaledSize;
 
 public:
+	TiledTexture(Texture&& texture, const TiledTextureSizeInfo& sizeInfo);
+	TiledTexture(const Texture& texture, const TiledTextureSizeInfo& sizeInfo);
 	TiledTexture(StringView textureAssetKey, const TiledTextureSizeInfo& sizeInfo);
 	TiledTexture(StringView textureAssetKey, ScreenUtils::SourceScale scale);
 

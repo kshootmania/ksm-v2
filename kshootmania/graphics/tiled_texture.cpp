@@ -37,6 +37,20 @@ namespace
 	}
 }
 
+TiledTexture::TiledTexture(Texture&& texture, const TiledTextureSizeInfo& sizeInfo)
+	: m_texture(std::move(texture))
+	, m_sizeInfo(AutoDetectSizeIfZero(sizeInfo, m_texture.size()))
+	, m_scaledSize(ScreenUtils::Scaled(m_sizeInfo.sourceScale, m_sizeInfo.sourceSize))
+{
+}
+
+TiledTexture::TiledTexture(const Texture& texture, const TiledTextureSizeInfo& sizeInfo)
+	: m_texture(texture)
+	, m_sizeInfo(AutoDetectSizeIfZero(sizeInfo, m_texture.size()))
+	, m_scaledSize(ScreenUtils::Scaled(m_sizeInfo.sourceScale, m_sizeInfo.sourceSize))
+{
+}
+
 TiledTexture::TiledTexture(StringView textureAssetKey, const TiledTextureSizeInfo& sizeInfo)
 	: m_texture(TextureAsset(textureAssetKey))
 	, m_sizeInfo(AutoDetectSizeIfZero(sizeInfo, m_texture.size()))

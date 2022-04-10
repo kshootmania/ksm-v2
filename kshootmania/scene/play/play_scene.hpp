@@ -1,9 +1,13 @@
 ﻿#pragma once
 #include "music_game/graphics/graphics_main.hpp"
+#include "ksh/util/timing_utils.hpp"
 
 class PlayScene : public MyScene
 {
 private:
+	const ksh::ChartData m_chartData;
+	const ksh::TimingCache m_timingCache;
+
 	MusicGame::Graphics::GraphicsMain m_musicGameGraphics;
 
 	Stopwatch m_stopwatch;

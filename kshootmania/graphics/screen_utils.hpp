@@ -192,7 +192,7 @@ namespace ScreenUtils
 
 	enum class SourceScale
 	{
-		kUnspecified,
+		kNoScaling,
 		k1x,
 		k2x, // Texture resolution is 2x larger
 		k3x, // Texture resolution is 3x larger
