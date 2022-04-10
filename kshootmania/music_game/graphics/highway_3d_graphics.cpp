@@ -6,6 +6,9 @@ namespace
 	constexpr FilePathView kShineEffectTexturePath = U"imgs/lanelight.gif";
 	constexpr FilePathView kKeyBeamTexturePath = U"imgs/judge.gif";
 	constexpr FilePathView kChipBTNoteTexturePath = U"imgs/bt_chip.gif";
+	constexpr FilePathView kLongBTNoteTexturePath = U"imgs/bt_long.gif";
+	constexpr FilePathView kChipFXNoteTexturePath = U"imgs/fx_chip.gif";
+	constexpr FilePathView kLongFXNoteTexturePath = U"imgs/fx_long.gif";
 
 	// Angle of the line connecting the camera position and the judgment line from the horizontal
 	// (Unconfirmed, but KSMv1 uses this value anyway)
@@ -47,6 +50,13 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 			.column = 9 * 2,
 			.sourceSize = { 40, 14 },
 		})
+	, m_longBTNoteTexture(kLongBTNoteTexturePath, TextureDesc::UnmippedSRGB)
+	, m_chipFXNoteTexture(Texture(kChipFXNoteTexturePath, TextureDesc::UnmippedSRGB),
+		{
+			.column = 2,
+			.sourceSize = { 82, 14 },
+		})
+	, m_longFXNoteTexture(kLongFXNoteTexturePath, TextureDesc::UnmippedSRGB)
 	, m_additiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
 	, m_subtractiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
 	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
@@ -88,15 +98,69 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& target) c
 
 		const ksh::ChartData& chartData = *m_updateInfo.pChartData;
 
+		// BT notes
 		for (std::size_t laneIdx = 0; laneIdx < ksh::kNumBTLanes; ++laneIdx)
 		{
 			const auto& lane = chartData.note.btLanes[laneIdx];
-			for (auto itr = lane.begin()/*upper_bound(m_updateInfo.currentPulse)*/; itr != lane.end(); ++itr)
+			for (const auto& [y, note] : lane)
 			{
-				const auto& [y, l] = *itr;
-				m_chipBTNoteTexture().draw(
-					kLanePositionOffset + kBTLanePositionDiff * laneIdx
-						+ Vec2::Down(static_cast<double>(kTextureSize.y) - static_cast<double>(y - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution));
+				if (y + note.length < m_updateInfo.currentPulse - chartData.beat.resolution)
+				{
+					continue;
+				}
+
+				const double positionStartY = static_cast<double>(kTextureSize.y) - static_cast<double>(y - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+				if (positionStartY < 0)
+				{
+					break;
+				}
+
+				if (note.length == 0)
+				{
+					// Chip BT notes
+					m_chipBTNoteTexture().draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionStartY));
+				}
+				else
+				{
+					// Long BT notes
+					const double positionEndY = static_cast<double>(kTextureSize.y) - static_cast<double>(y + note.length - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+					m_longBTNoteTexture(0, 0, 40, 1)
+						.resized(40, note.length * 480 / chartData.beat.resolution)
+						.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionEndY));
+				}
+			}
+		}
+
+		// FX notes
+		for (std::size_t laneIdx = 0; laneIdx < ksh::kNumFXLanes; ++laneIdx)
+		{
+			const auto& lane = chartData.note.fxLanes[laneIdx];
+			for (const auto& [y, note] : lane)
+			{
+				if (y + note.length < m_updateInfo.currentPulse - chartData.beat.resolution)
+				{
+					continue;
+				}
+
+				const double positionStartY = static_cast<double>(kTextureSize.y) - static_cast<double>(y - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+				if (positionStartY < 0)
+				{
+					break;
+				}
+
+				if (note.length == 0)
+				{
+					// Chip FX notes
+					m_chipFXNoteTexture().draw(kLanePositionOffset + kFXLanePositionDiff * laneIdx + Vec2::Down(positionStartY));
+				}
+				else
+				{
+					// Long FX notes
+					const double positionEndY = static_cast<double>(kTextureSize.y) - static_cast<double>(y + note.length - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+					m_longFXNoteTexture(0, 0, 82, 1)
+						.resized(82, note.length * 480 / chartData.beat.resolution)
+						.draw(kLanePositionOffset + kFXLanePositionDiff * laneIdx + Vec2::Down(positionEndY));
+				}
 			}
 		}
 	}
