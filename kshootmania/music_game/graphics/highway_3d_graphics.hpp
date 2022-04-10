@@ -7,6 +7,7 @@ namespace MusicGame::Graphics
 	{
 	private:
 		const Texture m_bgTexture;
+		const Texture m_shineEffectTexture;
 		const Texture m_beamTexture;
 
 		RenderTexture m_additiveRenderTexture;

@@ -334,6 +334,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\common_defines.hpp" />
+    <ClInclude Include="common\math_utils.hpp" />
     <ClInclude Include="graphics\screen_utils.hpp" />
     <ClInclude Include="graphics\tiled_texture.hpp" />
     <ClInclude Include="i18n\i18n.hpp" />

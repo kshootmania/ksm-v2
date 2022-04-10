@@ -2,6 +2,7 @@
 //# define NO_S3D_USING
 #include <Siv3D.hpp>
 #include "common/common_defines.hpp"
+#include "common/math_utils.hpp"
 #include "graphics/screen_utils.hpp"
 #include "graphics/tiled_texture.hpp"
 #include "ui/linear_menu.hpp"

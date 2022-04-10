@@ -1030,5 +1030,8 @@
     <ClInclude Include="music_game\judgment\judgment_defines.hpp">
       <Filter>Header Files\music_game\judgment</Filter>
     </ClInclude>
+    <ClInclude Include="common\math_utils.hpp">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

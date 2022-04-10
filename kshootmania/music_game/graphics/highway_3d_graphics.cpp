@@ -3,6 +3,7 @@
 namespace
 {
 	constexpr FilePathView kHighwayBGTexturePath = U"imgs/base.gif";
+	constexpr FilePathView kShineEffectTexturePath = U"imgs/lanelight.gif";
 	constexpr FilePathView kKeyBeamTexturePath = U"imgs/judge.gif";
 
 	// Angle of the line connecting the camera position and the judgment line from the horizontal
@@ -27,6 +28,10 @@ namespace
 	constexpr Size kBTKeyBeamTextureSize = { 40, 300 };
 	constexpr Size kFXKeyBeamTextureSize = { 82, 300 };
 
+	constexpr int32 kNumShineEffects = 4;
+	constexpr Vec2 kShineEffectPositionOffset = { 40.0, 0.0 };
+	constexpr Vec2 kShineEffectPositionDiff = { 0.0, 300.0 };
+
 	constexpr double kKeyBeamFullWidthSec = 0.075;
 	constexpr double kKeyBeamEndSec = 0.155;
 	constexpr Vec2 kKeyBeamPositionOffset = kLanePositionOffset + Vec2{ 0.0, kTextureSize.y - 300.0 };
@@ -34,11 +39,12 @@ namespace
 
 MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 	: m_bgTexture(kHighwayBGTexturePath, TextureDesc::UnmippedSRGB)
+	, m_shineEffectTexture(kShineEffectTexturePath, TextureDesc::UnmippedSRGB)
 	, m_beamTexture(kKeyBeamTexturePath, TextureDesc::UnmippedSRGB)
 	, m_additiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
 	, m_subtractiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
 	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
-	, m_mesh(m_meshData) // <- this initialization is needed because DynamicMesh::fill() doesn't change the size of the vertex array dynamically
+	, m_mesh(m_meshData) // <- this initialization is important because DynamicMesh::fill() does not dynamically resize the vertex array
 {
 }
 
@@ -54,6 +60,17 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& target) c
 	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 	Shader::Copy(m_bgTexture(0, 0, kTextureSize), m_additiveRenderTexture);
 	Shader::Copy(m_bgTexture(kTextureSize.x, 0, kTextureSize), m_subtractiveRenderTexture);
+
+	// Draw shine effect
+	{
+		const ScopedRenderTarget2D renderTarget(m_additiveRenderTexture);
+		const ScopedRenderStates2D renderState(BlendState::Additive);
+
+		for (int32 i = 0; i < kNumShineEffects; ++i)
+		{
+			m_shineEffectTexture.draw(kShineEffectPositionOffset + kShineEffectPositionDiff * i + kShineEffectPositionDiff * MathUtils::WrappedFmod(m_updateInfo.currentTimeSec, 0.2) / 0.2);
+		}
+	}
 
 	// Draw key beam
 	{
