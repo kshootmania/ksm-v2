@@ -1,4 +1,4 @@
-﻿#include "music_game_graphics.hpp"
+﻿#include "graphics_main.hpp"
 
 namespace
 {
@@ -10,18 +10,18 @@ namespace
 	constexpr Vec3 kCameraLookAt = kCameraPosition + Vec3{ 0.0, -100.0 * kSin15Deg, 100.0 * kCos15Deg };
 }
 
-MusicGame::MusicGameGraphics::MusicGameGraphics()
+MusicGame::Graphics::GraphicsMain::GraphicsMain()
 	: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 	, m_3dViewTexture(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
 {
 }
 
-void MusicGame::MusicGameGraphics::update(const CameraState& cameraState)
+void MusicGame::Graphics::GraphicsMain::update(const UpdateInfo& updateInfo)
 {
-	m_highway3DGraphics.update(cameraState);
+	m_highway3DGraphics.update(updateInfo);
 }
 
-void MusicGame::MusicGameGraphics::draw() const
+void MusicGame::Graphics::GraphicsMain::draw() const
 {
 	Graphics3D::SetCameraTransform(m_camera);
 	Graphics3D::SetGlobalAmbientColor(Palette::White);
@@ -29,9 +29,7 @@ void MusicGame::MusicGameGraphics::draw() const
 	m_highway3DGraphics.draw(m_3dViewTexture);
 
 	// Draw 3D scene to 2D scene
-	{
-		Graphics3D::Flush();
-		m_3dViewTexture.resolve();
-		Shader::LinearToScreen(m_3dViewTexture);
-	}
+	Graphics3D::Flush();
+	m_3dViewTexture.resolve();
+	Shader::LinearToScreen(m_3dViewTexture);
 }

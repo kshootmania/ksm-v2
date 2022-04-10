@@ -1,10 +1,14 @@
 ﻿#pragma once
-#include "music_game/music_game_graphics.hpp"
+#include "music_game/graphics/graphics_main.hpp"
 
 class PlayScene : public MyScene
 {
 private:
-	MusicGame::MusicGameGraphics m_musicGameGraphics;
+	MusicGame::Graphics::GraphicsMain m_musicGameGraphics;
+
+	Stopwatch m_stopwatch;
+
+	MusicGame::Graphics::UpdateInfo m_graphicsUpdateInfo;
 
 public:
 	explicit PlayScene(const InitData& initData);

@@ -208,6 +208,18 @@
     <Filter Include="Source Files\music_game">
       <UniqueIdentifier>{01d7acbb-b815-488e-a952-f11d48b73cf2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\music_game\graphics">
+      <UniqueIdentifier>{433f0012-0dda-40cd-85ae-5402196560f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\music_game\graphics">
+      <UniqueIdentifier>{59b15c02-5d12-4b17-b5d7-3ef8fbcaacbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\music_game\graphics\update_info">
+      <UniqueIdentifier>{5f867bd2-48e1-4d11-85c9-bb1c964cba0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\music_game\judgment">
+      <UniqueIdentifier>{0b50680d-07a7-4203-9d2d-4c2997e9d5b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\title\title_scene.cpp">
@@ -276,11 +288,11 @@
     <ClCompile Include="scene\play\play_scene.cpp">
       <Filter>Source Files\scene\play</Filter>
     </ClCompile>
-    <ClCompile Include="music_game\highway_3d_graphics.cpp">
-      <Filter>Source Files\music_game</Filter>
+    <ClCompile Include="music_game\graphics\graphics_main.cpp">
+      <Filter>Source Files\music_game\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="music_game\music_game_graphics.cpp">
-      <Filter>Source Files\music_game</Filter>
+    <ClCompile Include="music_game\graphics\highway_3d_graphics.cpp">
+      <Filter>Source Files\music_game\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1006,17 +1018,17 @@
     <ClInclude Include="scene\play\play_scene_args.hpp">
       <Filter>Header Files\scene\play</Filter>
     </ClInclude>
-    <ClInclude Include="music_game\camera_state.hpp">
-      <Filter>Header Files\music_game</Filter>
+    <ClInclude Include="music_game\graphics\highway_3d_graphics.hpp">
+      <Filter>Header Files\music_game\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="music_game\highway_3d_graphics.hpp">
-      <Filter>Header Files\music_game</Filter>
+    <ClInclude Include="music_game\graphics\graphics_main.hpp">
+      <Filter>Header Files\music_game\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="music_game\music_game_assets.hpp">
-      <Filter>Header Files\music_game</Filter>
+    <ClInclude Include="music_game\graphics\update_info\update_info.hpp">
+      <Filter>Header Files\music_game\graphics\update_info</Filter>
     </ClInclude>
-    <ClInclude Include="music_game\music_game_graphics.hpp">
-      <Filter>Header Files\music_game</Filter>
+    <ClInclude Include="music_game\judgment\judgment_defines.hpp">
+      <Filter>Header Files\music_game\judgment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
