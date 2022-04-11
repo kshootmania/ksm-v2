@@ -30,6 +30,11 @@ void Main()
 	// Disable application termination by Esc key
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 
+	// Set default colors
+	Scene::SetBackground(Palette::Black);
+	Graphics3D::SetGlobalAmbientColor(Palette::White);
+	Graphics3D::SetSunColor(Palette::Black);
+
 	// Load language text file
 	I18n::LoadLanguage(U"Japanese");
 

@@ -2,13 +2,13 @@
 
 namespace
 {
-	constexpr FilePathView kHighwayBGTexturePath = U"imgs/base.gif";
-	constexpr FilePathView kShineEffectTexturePath = U"imgs/lanelight.gif";
-	constexpr FilePathView kKeyBeamTexturePath = U"imgs/judge.gif";
-	constexpr FilePathView kChipBTNoteTexturePath = U"imgs/bt_chip.gif";
-	constexpr FilePathView kLongBTNoteTexturePath = U"imgs/bt_long.gif";
-	constexpr FilePathView kChipFXNoteTexturePath = U"imgs/fx_chip.gif";
-	constexpr FilePathView kLongFXNoteTexturePath = U"imgs/fx_long.gif";
+	constexpr FilePathView kHighwayBGTextureFilename = U"base.gif";
+	constexpr FilePathView kShineEffectTextureFilename = U"lanelight.gif";
+	constexpr FilePathView kKeyBeamTextureFilename = U"judge.gif";
+	constexpr FilePathView kChipBTNoteTextureFilename = U"bt_chip.gif";
+	constexpr FilePathView kLongBTNoteTextureFilename = U"bt_long.gif";
+	constexpr FilePathView kChipFXNoteTextureFilename = U"fx_chip.gif";
+	constexpr FilePathView kLongFXNoteTextureFilename = U"fx_long.gif";
 
 	// Angle of the line connecting the camera position and the judgment line from the horizontal
 	// (Unconfirmed, but KSMv1 uses this value anyway)
@@ -39,26 +39,82 @@ namespace
 	constexpr double kKeyBeamFullWidthSec = 0.075;
 	constexpr double kKeyBeamEndSec = 0.155;
 	constexpr Vec2 kKeyBeamPositionOffset = kLanePositionOffset + Vec2{ 0.0, kTextureSize.y - 300.0 };
+
+	TiledTexture ApplyAlphaToNoteTexture(const Texture& texture, const TiledTextureSizeInfo& sizeInfo)
+	{
+
+		const PixelShader ps = HLSL{ U"shaders/multi_texture_mask.hlsl", U"PS" } | GLSL{ U"shaders/multi_texture_mask.frag", {{U"PSConstants2D", 0}} };
+		if (!ps)
+		{
+			throw Error(U"Failed to load shader file 'shaders/multi_texture_mask.hlsl' or 'shaders/multi_texture_mask.frag'");
+		}
+
+		const Size textureSize = { sizeInfo.sourceSize.x * sizeInfo.column / 2, sizeInfo.sourceSize.y * sizeInfo.row };
+
+		RenderTexture renderTextureRGB(textureSize);
+		{
+			const ScopedRenderTarget2D renderTarget(renderTextureRGB.clear(Palette::Black));
+			for (int32 row = 0; row < sizeInfo.row; ++row)
+			{
+				for (int32 column = 0; column < sizeInfo.column / 2; ++column)
+				{
+					texture(sizeInfo.sourceSize.x * (column * 2), sizeInfo.sourceSize.y * row, sizeInfo.sourceSize)
+						.draw(sizeInfo.sourceSize.x * column, sizeInfo.sourceSize.y * row);
+				}
+			}
+		}
+
+		RenderTexture renderTextureA(textureSize);
+		{
+			const ScopedRenderTarget2D renderTarget(renderTextureA.clear(Palette::Black));
+			for (int32 row = 0; row < sizeInfo.row; ++row)
+			{
+				for (int32 column = 0; column < sizeInfo.column / 2; ++column)
+				{
+					texture(sizeInfo.sourceSize.x * (column * 2 + 1), sizeInfo.sourceSize.y * row, sizeInfo.sourceSize)
+						.draw(sizeInfo.sourceSize.x * column, sizeInfo.sourceSize.y * row);
+				}
+			}
+		}
+
+		RenderTexture renderTextureMerged(textureSize);
+		{
+			Graphics2D::SetPSTexture(1, renderTextureA);
+			const ScopedCustomShader2D customShader(ps);
+			const ScopedRenderTarget2D renderTarget(renderTextureMerged.clear(ColorF{ 0.0, 0.0 }));
+			const ScopedRenderStates2D renderState(BlendState(
+				true,
+				Blend::SrcAlpha,
+				Blend::InvSrcAlpha,
+				BlendOp::Add,
+				Blend::One));
+			renderTextureRGB.draw();
+		}
+
+		TiledTextureSizeInfo sizeInfoHalfColumn = sizeInfo;
+		sizeInfoHalfColumn.column /= 2;
+		return TiledTexture(renderTextureMerged, sizeInfoHalfColumn);
+	}
 }
 
 MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
-	: m_bgTexture(kHighwayBGTexturePath, TextureDesc::UnmippedSRGB)
-	, m_shineEffectTexture(kShineEffectTexturePath, TextureDesc::UnmippedSRGB)
-	, m_beamTexture(kKeyBeamTexturePath, TextureDesc::UnmippedSRGB)
-	, m_chipBTNoteTexture(Texture(kChipBTNoteTexturePath, TextureDesc::UnmippedSRGB),
+	: m_bgTexture(TextureAsset(kHighwayBGTextureFilename))
+	, m_shineEffectTexture(TextureAsset(kShineEffectTextureFilename))
+	, m_beamTexture(TextureAsset(kKeyBeamTextureFilename))
+	, m_chipBTNoteTexture(ApplyAlphaToNoteTexture(TextureAsset(kChipBTNoteTextureFilename),
 		{
 			.column = 9 * 2,
 			.sourceSize = { 40, 14 },
-		})
-	, m_longBTNoteTexture(kLongBTNoteTexturePath, TextureDesc::UnmippedSRGB)
-	, m_chipFXNoteTexture(Texture(kChipFXNoteTexturePath, TextureDesc::UnmippedSRGB),
+		}))
+	, m_longBTNoteTexture(TextureAsset(kLongBTNoteTextureFilename))
+	, m_chipFXNoteTexture(ApplyAlphaToNoteTexture(TextureAsset(kChipFXNoteTextureFilename),
 		{
 			.column = 2,
 			.sourceSize = { 82, 14 },
-		})
-	, m_longFXNoteTexture(kLongFXNoteTexturePath, TextureDesc::UnmippedSRGB)
-	, m_additiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
-	, m_subtractiveRenderTexture(kTextureSize, TextureFormat::R8G8B8A8_Unorm_SRGB)
+		}))
+	, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
+	, m_additiveRenderTexture(kTextureSize)
+	, m_invMultiplyRenderTexture(kTextureSize)
 	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
 	, m_mesh(m_meshData) // <- this initialization is important because DynamicMesh::fill() does not dynamically resize the vertex array
 {
@@ -73,11 +129,11 @@ void MusicGame::Graphics::Highway3DGraphics::update(const UpdateInfo& updateInfo
 	assert(m_updateInfo.pChartData != nullptr);
 }
 
-void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& target) const
+void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
 {
 	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 	Shader::Copy(m_bgTexture(0, 0, kTextureSize), m_additiveRenderTexture);
-	Shader::Copy(m_bgTexture(kTextureSize.x, 0, kTextureSize), m_subtractiveRenderTexture);
+	Shader::Copy(m_bgTexture(kTextureSize.x, 0, kTextureSize), m_invMultiplyRenderTexture);
 
 	// Draw shine effect
 	{
@@ -94,7 +150,6 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& target) c
 	if (m_updateInfo.pChartData != nullptr)
 	{
 		const ScopedRenderTarget2D renderTarget(m_additiveRenderTexture);
-		const ScopedRenderStates2D renderState(BlendState::Additive);
 
 		const ksh::ChartData& chartData = *m_updateInfo.pChartData;
 
@@ -214,16 +269,12 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& target) c
 	}
 
 	{
-		const ScopedRenderTarget3D renderTarget(target.clear(Palette::Black));
+		const ScopedRenderTarget3D renderTarget(invMultiplyTarget);
+		m_mesh.draw(m_invMultiplyRenderTexture);
+	}
 
-		{
-			const ScopedRenderStates3D renderState(BlendState::Subtractive);
-			m_mesh.draw(m_subtractiveRenderTexture);
-		}
-
-		{
-			const ScopedRenderStates3D renderState(BlendState::Additive);
-			m_mesh.draw(m_additiveRenderTexture);
-		}
+	{
+		const ScopedRenderTarget3D renderTarget(additiveTarget);
+		m_mesh.draw(m_additiveRenderTexture);
 	}
 }

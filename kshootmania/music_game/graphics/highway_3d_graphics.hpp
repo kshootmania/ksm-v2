@@ -15,7 +15,7 @@ namespace MusicGame::Graphics
 		const Texture m_longFXNoteTexture;
 
 		RenderTexture m_additiveRenderTexture;
-		RenderTexture m_subtractiveRenderTexture;
+		RenderTexture m_invMultiplyRenderTexture;
 
 		MeshData m_meshData;
 		DynamicMesh m_mesh;
@@ -27,6 +27,6 @@ namespace MusicGame::Graphics
 
 		void update(const UpdateInfo& updateInfo);
 
-		void draw(const RenderTexture& target) const;
+		void draw(const RenderTexture& additiveTarget, const RenderTexture& subtractiveTarget) const;
 	};
 }
