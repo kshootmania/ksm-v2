@@ -95,6 +95,16 @@ namespace
 		sizeInfoHalfColumn.column /= 2;
 		return TiledTexture(renderTextureMerged, sizeInfoHalfColumn);
 	}
+
+	double ChipNoteHeight(double yRate)
+	{
+		constexpr int32 kTableSize = 8;
+		constexpr std::array<double, kTableSize> kHeightTable{
+			14, 19, 23, 26, 28, 30, 32, 35
+		};
+
+		return kHeightTable[Clamp(static_cast<int32>(yRate * kTableSize), 0, kTableSize - 1)];
+	}
 }
 
 MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
@@ -173,7 +183,10 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 				if (note.length == 0)
 				{
 					// Chip BT notes
-					m_chipBTNoteTexture().draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionStartY));
+					const double yRate = (static_cast<double>(kTextureSize.y) - positionStartY) / static_cast<double>(kTextureSize.y);
+					m_chipBTNoteTexture()
+						.resized(40, ChipNoteHeight(yRate))
+						.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionStartY));
 				}
 				else
 				{
@@ -206,7 +219,10 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 				if (note.length == 0)
 				{
 					// Chip FX notes
-					m_chipFXNoteTexture().draw(kLanePositionOffset + kFXLanePositionDiff * laneIdx + Vec2::Down(positionStartY));
+					const double yRate = (static_cast<double>(kTextureSize.y) - positionStartY) / static_cast<double>(kTextureSize.y);
+					m_chipFXNoteTexture()
+						.resized(82, ChipNoteHeight(yRate))
+						.draw(kLanePositionOffset + kFXLanePositionDiff * laneIdx + Vec2::Down(positionStartY));
 				}
 				else
 				{
