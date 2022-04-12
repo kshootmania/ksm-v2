@@ -163,42 +163,6 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 
 		const ksh::ChartData& chartData = *m_updateInfo.pChartData;
 
-		// BT notes
-		for (std::size_t laneIdx = 0; laneIdx < ksh::kNumBTLanes; ++laneIdx)
-		{
-			const auto& lane = chartData.note.btLanes[laneIdx];
-			for (const auto& [y, note] : lane)
-			{
-				if (y + note.length < m_updateInfo.currentPulse - chartData.beat.resolution)
-				{
-					continue;
-				}
-
-				const double positionStartY = static_cast<double>(kTextureSize.y) - static_cast<double>(y - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-				if (positionStartY < 0)
-				{
-					break;
-				}
-
-				if (note.length == 0)
-				{
-					// Chip BT notes
-					const double yRate = (static_cast<double>(kTextureSize.y) - positionStartY) / static_cast<double>(kTextureSize.y);
-					m_chipBTNoteTexture()
-						.resized(40, ChipNoteHeight(yRate))
-						.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionStartY));
-				}
-				else
-				{
-					// Long BT notes
-					const double positionEndY = static_cast<double>(kTextureSize.y) - static_cast<double>(y + note.length - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-					m_longBTNoteTexture(0, 0, 40, 1)
-						.resized(40, note.length * 480 / chartData.beat.resolution)
-						.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionEndY));
-				}
-			}
-		}
-
 		// FX notes
 		for (std::size_t laneIdx = 0; laneIdx < ksh::kNumFXLanes; ++laneIdx)
 		{
@@ -231,6 +195,42 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 					m_longFXNoteTexture(0, 0, 82, 1)
 						.resized(82, note.length * 480 / chartData.beat.resolution)
 						.draw(kLanePositionOffset + kFXLanePositionDiff * laneIdx + Vec2::Down(positionEndY));
+				}
+			}
+		}
+
+		// BT notes
+		for (std::size_t laneIdx = 0; laneIdx < ksh::kNumBTLanes; ++laneIdx)
+		{
+			const auto& lane = chartData.note.btLanes[laneIdx];
+			for (const auto& [y, note] : lane)
+			{
+				if (y + note.length < m_updateInfo.currentPulse - chartData.beat.resolution)
+				{
+					continue;
+				}
+
+				const double positionStartY = static_cast<double>(kTextureSize.y) - static_cast<double>(y - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+				if (positionStartY < 0)
+				{
+					break;
+				}
+
+				if (note.length == 0)
+				{
+					// Chip BT notes
+					const double yRate = (static_cast<double>(kTextureSize.y) - positionStartY) / static_cast<double>(kTextureSize.y);
+					m_chipBTNoteTexture()
+						.resized(40, ChipNoteHeight(yRate))
+						.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionStartY));
+				}
+				else
+				{
+					// Long BT notes
+					const double positionEndY = static_cast<double>(kTextureSize.y) - static_cast<double>(y + note.length - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+					m_longBTNoteTexture(0, 0, 40, 1)
+						.resized(40, note.length * 480 / chartData.beat.resolution)
+						.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionEndY));
 				}
 			}
 		}
