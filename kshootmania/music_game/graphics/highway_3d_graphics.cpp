@@ -402,10 +402,27 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 						}
 					}
 
+					// Last laser point does not create laser line
 					const auto nextItr = std::next(itr);
 					if (nextItr == laserSection.points.end())
 					{
-						// Last laser point does not create laser line
+						// If the final note is a laser slam, draw its extension
+						if (point.v != point.vf)
+						{
+							const Vec2 positionStart = {
+								point.vf * (kTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
+								static_cast<double>(kTextureSize.y) - static_cast<double>(y + ry - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution
+							};
+							const Quad quad = LaserLineQuad(positionStart + Vec2{ 0.0, -kLaserTextureSize.y }, positionStart + Vec2{ 0.0, -kLaserTextureSize.y - 80.0 });
+
+							for (int32 i = 0; i < 2; ++i)
+							{
+								const ScopedRenderTarget2D renderTarget((i == 0) ? m_additiveRenderTexture : m_invMultiplyRenderTexture);
+								const Texture& texture = (i == 0) ? m_laserNoteTexture : m_laserNoteMaskTexture;
+								quad(texture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
+							}
+						}
+
 						break;
 					}
 
