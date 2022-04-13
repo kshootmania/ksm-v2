@@ -765,21 +765,23 @@ namespace
 			assert(m_values.size() >= 2);
 
 			// Convert a 32th or shorter laser segment to a laser slam
-			const Pulse laserSlamThreshold = m_pTargetChartData->beat.resolution / 32;
+			const Pulse laserSlamThreshold = m_pTargetChartData->beat.resolution * 4 / 32;
 			ByRelPulse<GraphValue> convertedGraphSection;
-			for (auto itr = m_values.cbegin(); itr != m_values.cend() && std::next(itr) != m_values.cend(); ++itr)
+			for (auto itr = m_values.cbegin(); itr != m_values.cend(); ++itr)
 			{
 				const auto& [ry, value] = *itr;
-				const auto& [nextRy, nextValue] = *std::next(itr);
-				if (0 <= nextRy - ry && nextRy - ry <= laserSlamThreshold)
+				if (std::next(itr) != m_values.cend())
 				{
-					convertedGraphSection.emplace(ry, GraphValue(value.v, nextValue.v));
-					++itr;
+					const auto& [nextRy, nextValue] = *std::next(itr);
+					if (0 <= nextRy - ry && nextRy - ry <= laserSlamThreshold)
+					{
+						convertedGraphSection.emplace(ry, GraphValue{ value.v, nextValue.v });
+						++itr;
+						continue;
+					}
 				}
-				else
-				{
-					convertedGraphSection.emplace(ry, value);
-				}
+
+				convertedGraphSection.emplace(ry, value);
 			}
 
 			// Publish prepared laser section
