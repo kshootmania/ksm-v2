@@ -10,6 +10,7 @@ namespace
 	constexpr StringView kChipFXNoteTextureFilename = U"fx_chip.gif";
 	constexpr StringView kLongFXNoteTextureFilename = U"fx_long.gif";
 	constexpr StringView kLaserNoteTextureFilename = U"laser.gif";
+	constexpr StringView kLaserNoteMaskTextureFilename = U"laser_mask.gif";
 
 	// Angle of the line connecting the camera position and the judgment line from the horizontal
 	// (Unconfirmed, but KSMv1 uses this value anyway)
@@ -155,6 +156,7 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 		}))
 	, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
 	, m_laserNoteTexture(TextureAsset(kLaserNoteTextureFilename))
+	, m_laserNoteMaskTexture(TextureAsset(kLaserNoteMaskTextureFilename))
 	, m_additiveRenderTexture(kTextureSize)
 	, m_invMultiplyRenderTexture(kTextureSize)
 	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
@@ -319,7 +321,6 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 	// Draw laser notes
 	if (m_updateInfo.pChartData != nullptr)
 	{
-		const ScopedRenderTarget2D renderTarget(m_additiveRenderTexture);
 		const ScopedRenderStates2D renderState(BlendState::Additive);
 
 		const ksh::ChartData& chartData = *m_updateInfo.pChartData;
@@ -361,11 +362,16 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 						};
 
 						const bool isLeftToRight = (point.v < point.vf);
-						m_laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(isLeftToRight).drawAt(positionStart + Vec2{ 0.0, -kLaserLineWidth / 2 });
-						m_laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(!isLeftToRight).flipped().drawAt(positionEnd + Vec2{ 0.0, -kLaserLineWidth / 2 });
-
 						const Quad quad = LaserSlamLineQuad(positionStart, positionEnd);
-						quad(m_laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, 1, kLaserTextureSize.y)).draw();
+
+						for (int32 i = 0; i < 2; ++i)
+						{
+							const ScopedRenderTarget2D renderTarget((i == 0) ? m_additiveRenderTexture : m_invMultiplyRenderTexture);
+							const Texture& texture = (i == 0) ? m_laserNoteTexture : m_laserNoteMaskTexture;
+							texture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(isLeftToRight).drawAt(positionStart + Vec2{ 0.0, -kLaserLineWidth / 2 });
+							texture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(!isLeftToRight).flipped().drawAt(positionEnd + Vec2{ 0.0, -kLaserLineWidth / 2 });
+							quad(texture(kLaserTextureSize.x * laneIdx, 0, 1, kLaserTextureSize.y)).draw();
+						}
 					}
 
 					const auto nextItr = std::next(itr);
@@ -394,7 +400,13 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 						};
 
 						const Quad quad = LaserLineQuad(positionStart, positionEnd);
-						quad(m_laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
+
+						for (int32 i = 0; i < 2; ++i)
+						{
+							const ScopedRenderTarget2D renderTarget((i == 0) ? m_additiveRenderTexture : m_invMultiplyRenderTexture);
+							const Texture& texture = (i == 0) ? m_laserNoteTexture : m_laserNoteMaskTexture;
+							quad(texture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
+						}
 					}
 				}
 			}

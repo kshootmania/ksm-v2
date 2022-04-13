@@ -14,6 +14,7 @@ namespace MusicGame::Graphics
 		const TiledTexture m_chipFXNoteTexture;
 		const Texture m_longFXNoteTexture;
 		const Texture m_laserNoteTexture;
+		const Texture m_laserNoteMaskTexture;
 
 		RenderTexture m_additiveRenderTexture;
 		RenderTexture m_invMultiplyRenderTexture;
