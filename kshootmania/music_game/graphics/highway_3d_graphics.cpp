@@ -274,10 +274,15 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 				else
 				{
 					// Long BT notes
+					const ScopedRenderStates2D renderState(BlendState::Additive);
 					const double positionEndY = static_cast<double>(kTextureSize.y) - static_cast<double>(y + note.length - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-					m_longBTNoteTexture(0, 0, 40, 1)
-						.resized(40, note.length * 480 / chartData.beat.resolution)
-						.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionEndY));
+					for (int32 i = 0; i < 2; ++i)
+					{
+						const ScopedRenderTarget2D renderTarget((i == 0) ? m_additiveRenderTexture : m_invMultiplyRenderTexture);
+						m_longBTNoteTexture(40 * i, 0, 40, 1)
+							.resized(40, note.length * 480 / chartData.beat.resolution)
+							.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionEndY));
+					}
 				}
 			}
 		}
