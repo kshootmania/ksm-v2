@@ -1387,6 +1387,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 							const std::u8string audioEffectStr((buf[j] == '1') ? currentFXAudioEffectStrs[laneIdx] : KSHLegacyFXCharToKSHAudioEffectStr(buf[j]));
 							preparedLongNoteRef.prepare(time, audioEffectStr, currentFXAudioEffectParamStrs[laneIdx]);
 							preparedLongNoteRef.extendLength(oneLinePulse);
+							break;
 						}
 					}
 					else if (currentBlock == kBlockIdxLaser && laneIdx < kNumLaserLanes) // Laser notes
@@ -1411,6 +1412,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 									preparedLaserSectionRef.addGraphPoint(time, dLaserX);
 								}
 							}
+							break;
 						}
 					}
 					else if (currentBlock == kBlockIdxLaser && laneIdx == kNumLaserLanes) // Lane spin

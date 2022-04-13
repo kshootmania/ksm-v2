@@ -18,7 +18,7 @@ namespace ksh
 		{
 			nlohmann::json sectionJSON = {
 				{ "y", y },
-				{ "v", section.points },
+				{ "v", ByRelPulseToJSON(section.points) },
 			};
 
 			if (section.xScale != 1)
