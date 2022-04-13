@@ -2,13 +2,14 @@
 
 namespace
 {
-	constexpr FilePathView kHighwayBGTextureFilename = U"base.gif";
-	constexpr FilePathView kShineEffectTextureFilename = U"lanelight.gif";
-	constexpr FilePathView kKeyBeamTextureFilename = U"judge.gif";
-	constexpr FilePathView kChipBTNoteTextureFilename = U"bt_chip.gif";
-	constexpr FilePathView kLongBTNoteTextureFilename = U"bt_long.gif";
-	constexpr FilePathView kChipFXNoteTextureFilename = U"fx_chip.gif";
-	constexpr FilePathView kLongFXNoteTextureFilename = U"fx_long.gif";
+	constexpr StringView kHighwayBGTextureFilename = U"base.gif";
+	constexpr StringView kShineEffectTextureFilename = U"lanelight.gif";
+	constexpr StringView kKeyBeamTextureFilename = U"judge.gif";
+	constexpr StringView kChipBTNoteTextureFilename = U"bt_chip.gif";
+	constexpr StringView kLongBTNoteTextureFilename = U"bt_long.gif";
+	constexpr StringView kChipFXNoteTextureFilename = U"fx_chip.gif";
+	constexpr StringView kLongFXNoteTextureFilename = U"fx_long.gif";
+	constexpr StringView kLaserNoteTextureFilename = U"laser.gif";
 
 	// Angle of the line connecting the camera position and the judgment line from the horizontal
 	// (Unconfirmed, but KSMv1 uses this value anyway)
@@ -31,6 +32,9 @@ namespace
 	constexpr Vec2 kFXLanePositionDiff = { 84.0, 0.0 };
 	constexpr Size kBTKeyBeamTextureSize = { 40, 300 };
 	constexpr Size kFXKeyBeamTextureSize = { 82, 300 };
+
+	constexpr Size kLaserTextureSize = { 48, 48 };
+	constexpr double kLaserLineWidth = static_cast<double>(kLaserTextureSize.x);
 
 	constexpr int32 kNumShineEffects = 4;
 	constexpr Vec2 kShineEffectPositionOffset = { 40.0, 0.0 };
@@ -99,11 +103,21 @@ namespace
 	double ChipNoteHeight(double yRate)
 	{
 		constexpr int32 kTableSize = 8;
-		constexpr std::array<double, kTableSize> kHeightTable{
+		constexpr std::array<double, kTableSize> kHeightTable = {
 			14, 19, 23, 26, 28, 30, 32, 35
 		};
 
 		return kHeightTable[Clamp(static_cast<int32>(yRate * kTableSize), 0, kTableSize - 1)];
+	}
+
+	Quad LaserLineQuad(const Vec2& positionStart, const Vec2& positionEnd)
+	{
+		return Quad{
+			positionStart + Vec2{ kLaserLineWidth / 2, 0.0 },
+			positionStart - Vec2{ kLaserLineWidth / 2, 0.0 },
+			positionEnd - Vec2{ kLaserLineWidth / 2, 0.0 },
+			positionEnd + Vec2{ kLaserLineWidth / 2, 0.0 }
+		};
 	}
 }
 
@@ -123,6 +137,7 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 			.sourceSize = { 82, 14 },
 		}))
 	, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
+	, m_laserNoteTexture(TextureAsset(kLaserNoteTextureFilename))
 	, m_additiveRenderTexture(kTextureSize)
 	, m_invMultiplyRenderTexture(kTextureSize)
 	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
@@ -156,7 +171,7 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 		}
 	}
 
-	// Draw notes
+	// Draw BT/FX notes
 	if (m_updateInfo.pChartData != nullptr)
 	{
 		const ScopedRenderTarget2D renderTarget(m_additiveRenderTexture);
@@ -280,6 +295,73 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 				beamTextureRegion
 					.resized(kFXKeyBeamTextureSize.x * widthRate, kFXKeyBeamTextureSize.y)
 					.draw(kKeyBeamPositionOffset + kFXLanePositionDiff * laneIdx + kFXKeyBeamTextureSize * (0.5 - widthRate / 2), ColorF{ 1.0, alpha });
+			}
+		}
+	}
+
+	// Draw laser notes
+	if (m_updateInfo.pChartData != nullptr)
+	{
+		const ScopedRenderTarget2D renderTarget(m_additiveRenderTexture);
+		const ScopedRenderStates2D renderState(BlendState::Additive);
+
+		const ksh::ChartData& chartData = *m_updateInfo.pChartData;
+
+		for (std::size_t laneIdx = 0; laneIdx < ksh::kNumLaserLanes; ++laneIdx)
+		{
+			const auto& lane = chartData.note.laserLanes[laneIdx];
+			for (const auto& [y, laserSection] : lane)
+			{
+				const double positionSectionStartY = static_cast<double>(kTextureSize.y) - static_cast<double>(y - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+				if (positionSectionStartY < 0)
+				{
+					// Laser section is above the drawing area
+					break;
+				}
+
+				for (auto itr = laserSection.points.begin(); itr != laserSection.points.end(); ++itr)
+				{
+					const auto [ry, point] = *itr;
+
+					const double positionStartY = static_cast<double>(kTextureSize.y) - static_cast<double>(y + ry - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+					if (positionStartY < 0)
+					{
+						// Laser point is above the drawing area
+						break;
+					}
+
+					if (point.v != point.vf)
+					{
+						// TODO: Draw laser slam
+					}
+
+					const auto nextItr = std::next(itr);
+					if (nextItr == laserSection.points.end())
+					{
+						// Last laser point does not create laser line
+						break;
+					}
+
+					// Draw laser line by two laser points
+					const auto [nextRy, nextPoint] = *nextItr;
+					if (y + nextRy < m_updateInfo.currentPulse - chartData.beat.resolution)
+					{
+						continue;
+					}
+
+					const Vec2 positionStart = {
+						point.v * (kTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
+						static_cast<double>(kTextureSize.y) - static_cast<double>(y + ry - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution
+					};
+
+					const Vec2 positionEnd = {
+						nextPoint.v * (kTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
+						static_cast<double>(kTextureSize.y) - static_cast<double>(y + nextRy - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution
+					};
+
+					const Quad quad = LaserLineQuad(positionStart, positionEnd);
+					quad(m_laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
+				}
 			}
 		}
 	}
