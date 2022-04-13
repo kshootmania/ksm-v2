@@ -114,9 +114,26 @@ namespace
 	{
 		return Quad{
 			positionStart + Vec2{ kLaserLineWidth / 2, 0.0 },
-			positionStart - Vec2{ kLaserLineWidth / 2, 0.0 },
-			positionEnd - Vec2{ kLaserLineWidth / 2, 0.0 },
+			positionStart + Vec2{ -kLaserLineWidth / 2, 0.0 },
+			positionEnd + Vec2{ -kLaserLineWidth / 2, 0.0 },
 			positionEnd + Vec2{ kLaserLineWidth / 2, 0.0 }
+		};
+	}
+
+	Quad LaserSlamLineQuad(const Vec2& positionStart, const Vec2& positionEnd)
+	{
+		if (Abs(positionEnd.x - positionStart.x) <= kLaserLineWidth)
+		{
+			// Too short to draw line
+			return Quad{ Vec2::Zero(), Vec2::Zero(), Vec2::Zero(), Vec2::Zero() };
+		}
+
+		const int diffXSign = Sign(positionEnd.x - positionStart.x);
+		return Quad{
+			positionStart + Vec2{ diffXSign * kLaserLineWidth / 2, -kLaserLineWidth },
+			positionEnd + Vec2{ -diffXSign * kLaserLineWidth / 2, -kLaserLineWidth },
+			positionEnd + Vec2{ -diffXSign * kLaserLineWidth / 2, 0.0 },
+			positionStart + Vec2{ diffXSign * kLaserLineWidth / 2, 0.0 }
 		};
 	}
 }
@@ -330,9 +347,25 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 						break;
 					}
 
+					// Draw laser slam
 					if (point.v != point.vf)
 					{
-						// TODO: Draw laser slam
+						const Vec2 positionStart = {
+							point.v * (kTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
+							static_cast<double>(kTextureSize.y) - static_cast<double>(y + ry - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution
+						};
+
+						const Vec2 positionEnd = {
+							point.vf * (kTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
+							static_cast<double>(kTextureSize.y) - static_cast<double>(y + ry - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution
+						};
+
+						const bool isLeftToRight = (point.v < point.vf);
+						m_laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(isLeftToRight).drawAt(positionStart + Vec2{ 0.0, -kLaserLineWidth / 2 });
+						m_laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(!isLeftToRight).flipped().drawAt(positionEnd + Vec2{ 0.0, -kLaserLineWidth / 2 });
+
+						const Quad quad = LaserSlamLineQuad(positionStart, positionEnd);
+						quad(m_laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, 1, kLaserTextureSize.y)).draw();
 					}
 
 					const auto nextItr = std::next(itr);
@@ -343,24 +376,26 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const RenderTexture& additiveT
 					}
 
 					// Draw laser line by two laser points
-					const auto [nextRy, nextPoint] = *nextItr;
-					if (y + nextRy < m_updateInfo.currentPulse - chartData.beat.resolution)
 					{
-						continue;
+						const auto [nextRy, nextPoint] = *nextItr;
+						if (y + nextRy < m_updateInfo.currentPulse - chartData.beat.resolution)
+						{
+							continue;
+						}
+
+						const Vec2 positionStart = {
+							point.vf * (kTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
+							static_cast<double>(kTextureSize.y) - static_cast<double>(y + ry - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution + ((point.v != point.vf) ? -kLaserTextureSize.y : 0.0)
+						};
+
+						const Vec2 positionEnd = {
+							nextPoint.v * (kTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
+							static_cast<double>(kTextureSize.y) - static_cast<double>(y + nextRy - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution
+						};
+
+						const Quad quad = LaserLineQuad(positionStart, positionEnd);
+						quad(m_laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
 					}
-
-					const Vec2 positionStart = {
-						point.v * (kTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-						static_cast<double>(kTextureSize.y) - static_cast<double>(y + ry - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution
-					};
-
-					const Vec2 positionEnd = {
-						nextPoint.v * (kTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-						static_cast<double>(kTextureSize.y) - static_cast<double>(y + nextRy - m_updateInfo.currentPulse) * 480 / chartData.beat.resolution
-					};
-
-					const Quad quad = LaserLineQuad(positionStart, positionEnd);
-					quad(m_laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
 				}
 			}
 		}
