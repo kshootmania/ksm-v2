@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <unordered_map>
+#include <cassert>
 #include <cstdint>
 #include "ksh/encoding/encoding.hpp"
 #include "ksh/third_party/nlohmann/json.hpp"
@@ -19,6 +20,9 @@ namespace ksh
 	using Ms = double;
 	using Pulse = std::int64_t;
 	using RelPulse = std::int64_t;
+
+	// The difference between Pulse and RelPulse is only for annotation
+	static_assert(std::is_same_v<Pulse, RelPulse>);
 
 	template <typename T>
 	using ByPulse = std::map<Pulse, T>;
@@ -366,4 +370,10 @@ namespace ksh
 
 	template <typename T>
 	using InvokeList = std::unordered_map<std::u8string, T>;
+
+	template <typename T>
+	T Lerp(T value1, T value2, double rate)
+	{
+		return value1 + static_cast<T>((value2 - value1) * rate);
+	}
 }

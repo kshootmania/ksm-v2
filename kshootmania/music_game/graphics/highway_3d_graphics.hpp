@@ -24,8 +24,6 @@ namespace MusicGame::Graphics
 		MeshData m_meshData;
 		DynamicMesh m_mesh;
 
-		const UpdateInfo* m_pUpdateInfo;
-
 	public:
 		Highway3DGraphics();
 

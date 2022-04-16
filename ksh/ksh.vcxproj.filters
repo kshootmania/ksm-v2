@@ -129,6 +129,9 @@
     <ClInclude Include="include\ksh\io\kson_io.hpp">
       <Filter>Header Files\io</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksh\util\graph_utils.hpp">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\timing_utils.cpp">

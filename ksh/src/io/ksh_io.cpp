@@ -7,7 +7,6 @@
 #include <optional>
 #include <charconv>
 #include <cmath>
-#include <cassert>
 
 namespace
 {

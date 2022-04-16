@@ -39,6 +39,7 @@
     <ClInclude Include="include\ksh\io\kson_io.hpp" />
     <ClInclude Include="include\ksh\meta\meta.hpp" />
     <ClInclude Include="include\ksh\note\note.hpp" />
+    <ClInclude Include="include\ksh\util\graph_utils.hpp" />
     <ClInclude Include="include\ksh\util\timing_utils.hpp" />
   </ItemGroup>
   <ItemGroup>

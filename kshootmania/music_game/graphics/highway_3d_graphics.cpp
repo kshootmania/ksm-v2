@@ -1,4 +1,5 @@
 ﻿#include "highway_3d_graphics.hpp"
+#include "ksh/util/graph_utils.hpp"
 
 namespace
 {
@@ -350,7 +351,7 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 
 				for (auto itr = laserSection.points.begin(); itr != laserSection.points.end(); ++itr)
 				{
-					const auto [ry, point] = *itr;
+					const auto& [ry, point] = *itr;
 
 					// Draw laser start texture
 					if (itr == laserSection.points.begin())
@@ -426,7 +427,7 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 
 					// Draw laser line by two laser points
 					{
-						const auto [nextRy, nextPoint] = *nextItr;
+						const auto& [nextRy, nextPoint] = *nextItr;
 						if (y + nextRy < updateInfo.currentPulse - chartData.beat.resolution)
 						{
 							continue;
@@ -456,13 +457,27 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 		}
 	}
 
+	double tilt = 0.0;
+	if (updateInfo.pChartData != nullptr)
 	{
-		const ScopedRenderTarget3D renderTarget(invMultiplyTarget);
-		m_mesh.draw(m_invMultiplyRenderTexture);
+		const ksh::ChartData& chartData = *updateInfo.pChartData;
+		const double leftLaserValue = ksh::GraphSectionValueAtWithDefault(chartData.note.laserLanes[0], updateInfo.currentPulse, 0.0); // range: [0, +1]
+		const double rightLaserValue = ksh::GraphSectionValueAtWithDefault(chartData.note.laserLanes[1], updateInfo.currentPulse, 1.0) - 1.0; // range: [-1, 0]
+		const double tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
+		tilt = -10_deg * tiltFactor;
 	}
 
 	{
-		const ScopedRenderTarget3D renderTarget(additiveTarget);
-		m_mesh.draw(m_additiveRenderTexture);
+		Mat4x4 m = Mat4x4::Rotate(Vec3::Forward(), tilt, Vec3{ 0.0, 42.0, 0.0 });
+		Transformer3D transform{ m };
+		{
+			const ScopedRenderTarget3D renderTarget(invMultiplyTarget);
+			m_mesh.draw(m_invMultiplyRenderTexture);
+		}
+
+		{
+			const ScopedRenderTarget3D renderTarget(additiveTarget);
+			m_mesh.draw(m_additiveRenderTexture);
+		}
 	}
 }
