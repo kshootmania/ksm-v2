@@ -1,7 +1,7 @@
 ﻿#include "play_scene.hpp"
+#include "music_game/music_game_defines.hpp"
 #include "ksh/io/ksh_io.hpp"
 #include "ksh/io/kson_io.hpp"
-#include <fstream>
 
 namespace
 {
@@ -31,7 +31,7 @@ PlayScene::PlayScene(const InitData& initData)
 
 void PlayScene::update()
 {
-	const double currentTimeSec = m_stopwatch.sF(); // TODO: use music play time position
+	const double currentTimeSec = m_stopwatch.sF() - MusicGame::TimeSecBeforeStart(false); // TODO: use music play time position
 
 	m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
 	m_graphicsUpdateInfo.currentPulse = ksh::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);

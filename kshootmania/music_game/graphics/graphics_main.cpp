@@ -76,7 +76,7 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 
 			// TODO: Layer speed specified by KSH
 			const ksh::Pulse resolution = m_updateInfo.pChartData->beat.resolution;
-			const int32 layerFrame = (m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)) % m_layerTexture.column();
+			const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)),  m_layerTexture.column());
 			m_layerTexture(0, layerFrame).resized(ScreenUtils::Scaled(880, 704)).drawAt(Scene::Center() + ScreenUtils::Scaled(kLayerPosition));
 		}
 	}
