@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "update_info/update_info.hpp"
+#include "highway_tilt.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -24,8 +25,12 @@ namespace MusicGame::Graphics
 		MeshData m_meshData;
 		DynamicMesh m_mesh;
 
+		HighwayTilt m_highwayTilt;
+
 	public:
 		Highway3DGraphics();
+
+		void update(const UpdateInfo& updateInfo);
 
 		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& subtractiveTarget) const;
 	};

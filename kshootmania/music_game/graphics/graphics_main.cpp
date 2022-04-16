@@ -57,6 +57,8 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData,
 void MusicGame::Graphics::GraphicsMain::update(const UpdateInfo& updateInfo)
 {
 	m_updateInfo = updateInfo;
+
+	m_highway3DGraphics.update(m_updateInfo);
 }
 
 void MusicGame::Graphics::GraphicsMain::draw() const
