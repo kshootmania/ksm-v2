@@ -40,4 +40,14 @@ public:
 	}
 
 	TextureRegion operator()(int32 row = 0, int32 column = 0) const;
+
+	int32 row() const
+	{
+		return m_sizeInfo.row;
+	}
+
+	int32 column() const
+	{
+		return m_sizeInfo.column;
+	}
 };

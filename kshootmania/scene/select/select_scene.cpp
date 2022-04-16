@@ -4,7 +4,7 @@
 void SelectScene::moveToPlayScene(FilePathView chartFilePath)
 {
 	getData().playSceneArgs.chartFilePath = chartFilePath;
-	changeScene(SceneName::kPlay);
+	changeScene(SceneName::kPlay, 0);
 }
 
 SelectScene::SelectScene(const InitData& initData)

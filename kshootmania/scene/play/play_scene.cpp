@@ -22,7 +22,7 @@ PlayScene::PlayScene(const InitData& initData)
 	: MyScene(initData)
 	, m_chartData(ksh::LoadKSHChartData(getData().playSceneArgs.chartFilePath.narrow()))
 	, m_timingCache(ksh::TimingUtils::CreateTimingCache(m_chartData.beat))
-	, m_musicGameGraphics(m_chartData)
+	, m_musicGameGraphics(m_chartData, m_timingCache)
 	, m_stopwatch(StartImmediately::Yes)
 	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
 {

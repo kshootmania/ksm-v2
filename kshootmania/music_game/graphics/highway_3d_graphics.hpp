@@ -24,13 +24,11 @@ namespace MusicGame::Graphics
 		MeshData m_meshData;
 		DynamicMesh m_mesh;
 
-		UpdateInfo m_updateInfo;
+		const UpdateInfo* m_pUpdateInfo;
 
 	public:
 		Highway3DGraphics();
 
-		void update(const UpdateInfo& updateInfo);
-
-		void draw(const RenderTexture& additiveTarget, const RenderTexture& subtractiveTarget) const;
+		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& subtractiveTarget) const;
 	};
 }

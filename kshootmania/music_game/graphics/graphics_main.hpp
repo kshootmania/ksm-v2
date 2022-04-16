@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "highway_3d_graphics.hpp"
 #include "update_info/update_info.hpp"
+#include "ksh/util/timing_utils.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -13,11 +14,16 @@ namespace MusicGame::Graphics
 		MSRenderTexture m_invMultiply3dViewTexture;
 
 		Texture m_bgTexture;
+		TiledTexture m_layerTexture;
+
+		ksh::Pulse m_initialPulse;
+
+		UpdateInfo m_updateInfo;
 
 		Highway3DGraphics m_highway3DGraphics;
 
 	public:
-		explicit GraphicsMain(const ksh::ChartData& chartData);
+		explicit GraphicsMain(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache);
 
 		void update(const UpdateInfo& updateInfo);
 

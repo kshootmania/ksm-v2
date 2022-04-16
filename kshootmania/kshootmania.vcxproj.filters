@@ -1039,5 +1039,8 @@
     <ClInclude Include="common\math_utils.hpp">
       <Filter>Header Files\common</Filter>
     </ClInclude>
+    <ClInclude Include="music_game\music_game_defines.hpp">
+      <Filter>Header Files\music_game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
