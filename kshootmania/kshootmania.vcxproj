@@ -122,6 +122,7 @@
     <ClCompile Include="ini\ksm_ini_data.cpp" />
     <ClCompile Include="input\key_config.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="music_game\audio\assist_tick.cpp" />
     <ClCompile Include="music_game\audio\bgm.cpp" />
     <ClCompile Include="music_game\game_main.cpp" />
     <ClCompile Include="music_game\graphics\highway_3d_graphics.cpp" />
@@ -345,6 +346,7 @@
     <ClInclude Include="ini\config_ini.hpp" />
     <ClInclude Include="ini\ksm_ini_data.hpp" />
     <ClInclude Include="input\key_config.hpp" />
+    <ClInclude Include="music_game\audio\assist_tick.hpp" />
     <ClInclude Include="music_game\audio\bgm.hpp" />
     <ClInclude Include="music_game\graphics\highway_3d_graphics.hpp" />
     <ClInclude Include="music_game\graphics\graphics_main.hpp" />

@@ -6,6 +6,7 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	: m_chartData(ksh::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
 	, m_timingCache(ksh::TimingUtils::CreateTimingCache(m_chartData.beat))
 	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::Widen(ksh::UnU8(m_chartData.audio.bgmInfo.filename)))
+	, m_assistTick(gameCreateInfo.enableAssistTick)
 	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
 	, m_musicGameGraphics(m_chartData, m_timingCache)
 {
@@ -18,9 +19,12 @@ void MusicGame::GameMain::update()
 	m_bgm.update();
 
 	const double currentTimeSec = m_bgm.posSec();
+	m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
+
+	const ksh::Pulse currentPulse = ksh::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
 
 	m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
-	m_graphicsUpdateInfo.currentPulse = ksh::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
+	m_graphicsUpdateInfo.currentPulse = currentPulse;
 
 	for (int i = 0; i < ksh::kNumBTLanes; ++i)
 	{

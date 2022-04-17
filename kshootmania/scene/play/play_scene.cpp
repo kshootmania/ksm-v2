@@ -6,6 +6,7 @@ namespace
 	{
 		return {
 			.chartFilePath = args.chartFilePath,
+			.enableAssistTick = ConfigIni::GetBool(ConfigIni::Key::kAssistTick),
 		};
 	}
 }

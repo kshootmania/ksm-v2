@@ -315,6 +315,9 @@
     <ClCompile Include="music_game\game_main.cpp">
       <Filter>Source Files\music_game</Filter>
     </ClCompile>
+    <ClCompile Include="music_game\audio\assist_tick.cpp">
+      <Filter>Source Files\music_game\audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1065,6 +1068,9 @@
     </ClInclude>
     <ClInclude Include="music_game\game_main.hpp">
       <Filter>Header Files\music_game</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\audio\assist_tick.hpp">
+      <Filter>Header Files\music_game\audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

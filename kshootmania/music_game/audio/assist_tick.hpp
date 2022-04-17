@@ -1,0 +1,23 @@
+﻿#pragma once
+#include "music_game/game_defines.hpp"
+#include "ksh/chart_data.hpp"
+#include "ksh/util/timing_utils.hpp"
+
+namespace MusicGame::Audio
+{
+	class AssistTick
+	{
+	private:
+		bool m_enabled;
+		s3d::Audio m_btTickSound;
+		s3d::Audio m_fxTickSound;
+
+		std::array<ksh::Pulse, ksh::kNumBTLanes> m_btPlayedPulses = { kPastPulse, kPastPulse, kPastPulse, kPastPulse };
+		std::array<ksh::Pulse, ksh::kNumFXLanes> m_fxPlayedPulses = { kPastPulse, kPastPulse };
+
+	public:
+		explicit AssistTick(bool enabled);
+
+		void update(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache, double currentTimeSec);
+	};
+}

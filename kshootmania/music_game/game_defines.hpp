@@ -21,4 +21,6 @@ namespace MusicGame
 		KeyConfig::kFX_L,
 		KeyConfig::kFX_R,
 	};
+
+	constexpr ksh::Pulse kPastPulse = -100000000;
 }

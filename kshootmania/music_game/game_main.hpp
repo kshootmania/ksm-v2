@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "music_game/graphics/graphics_main.hpp"
 #include "music_game/audio/bgm.hpp"
+#include "music_game/audio/assist_tick.hpp"
 #include "ksh/util/timing_utils.hpp"
 
 namespace MusicGame
@@ -8,6 +9,8 @@ namespace MusicGame
 	struct GameCreateInfo
 	{
 		FilePath chartFilePath;
+
+		bool enableAssistTick = false;
 	};
 
 	class GameMain
@@ -19,13 +22,14 @@ namespace MusicGame
 
 		// Audio
 		Audio::BGM m_bgm;
+		Audio::AssistTick m_assistTick;
 
 		// Graphics
 		Graphics::UpdateInfo m_graphicsUpdateInfo;
 		Graphics::GraphicsMain m_musicGameGraphics;
 
 	public:
-		GameMain(const GameCreateInfo& gameCreateInfo);
+		explicit GameMain(const GameCreateInfo& gameCreateInfo);
 
 		void update();
 
