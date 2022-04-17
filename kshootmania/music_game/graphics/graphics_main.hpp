@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "highway_3d_graphics.hpp"
-#include "update_info/update_info.hpp"
+#include "highway/highway_3d_graphics.hpp"
+#include "update_info.hpp"
 #include "ksh/util/timing_utils.hpp"
 
 namespace MusicGame::Graphics

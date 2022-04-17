@@ -1,5 +1,5 @@
 ﻿#include "highway_3d_graphics.hpp"
-#include "graphics_defines.hpp"
+#include "music_game/graphics/graphics_defines.hpp"
 #include "note/note_graphics_utils.hpp"
 #include "ksh/util/graph_utils.hpp"
 

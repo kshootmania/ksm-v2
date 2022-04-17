@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "music_game/graphics/update_info/update_info.hpp"
+#include "music_game/graphics/update_info.hpp"
 
 namespace MusicGame::Graphics
 {

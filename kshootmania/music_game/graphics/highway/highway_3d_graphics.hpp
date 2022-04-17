@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "update_info/update_info.hpp"
+#include "music_game/graphics/update_info.hpp"
 #include "note/bt_note_graphics.hpp"
 #include "note/fx_note_graphics.hpp"
 #include "note/laser_note_graphics.hpp"
