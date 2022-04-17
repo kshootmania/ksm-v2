@@ -229,6 +229,12 @@
     <Filter Include="Source Files\music_game\audio">
       <UniqueIdentifier>{b9eec638-c042-4414-b6be-69da50b0649b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\music_game\graphics\note">
+      <UniqueIdentifier>{5d39e8c1-1f30-46a5-a7ad-199323e072b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\music_game\graphics\note">
+      <UniqueIdentifier>{592a8c3a-5580-42fe-9f8a-4742dcdfef2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\title\title_scene.cpp">
@@ -317,6 +323,12 @@
     </ClCompile>
     <ClCompile Include="music_game\audio\assist_tick.cpp">
       <Filter>Source Files\music_game\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="music_game\graphics\note\bt_note_graphics.cpp">
+      <Filter>Source Files\music_game\graphics\note</Filter>
+    </ClCompile>
+    <ClCompile Include="music_game\graphics\note\note_graphics_utils.cpp">
+      <Filter>Source Files\music_game\graphics\note</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1071,6 +1083,15 @@
     </ClInclude>
     <ClInclude Include="music_game\audio\assist_tick.hpp">
       <Filter>Header Files\music_game\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\graphics\note\bt_note_graphics.hpp">
+      <Filter>Header Files\music_game\graphics\note</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\graphics\note\note_graphics_utils.hpp">
+      <Filter>Header Files\music_game\graphics\note</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\graphics\graphics_defines.hpp">
+      <Filter>Header Files\music_game\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
