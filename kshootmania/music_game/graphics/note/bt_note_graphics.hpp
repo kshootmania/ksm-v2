@@ -12,6 +12,6 @@ namespace MusicGame::Graphics
 	public:
 		BTNoteGraphics();
 
-		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& subtractiveTarget) const;
+		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
 	};
 }

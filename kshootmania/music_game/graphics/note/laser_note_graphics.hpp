@@ -3,14 +3,16 @@
 
 namespace MusicGame::Graphics
 {
-	class FXNoteGraphics
+	class LaserNoteGraphics
 	{
 	private:
-		const TiledTexture m_chipFXNoteTexture;
-		const Texture m_longFXNoteTexture;
+		const Texture m_laserNoteTexture;
+		const Texture m_laserNoteMaskTexture;
+		const TiledTexture m_laserNoteLeftStartTexture;
+		const TiledTexture m_laserNoteRightStartTexture;
 
 	public:
-		FXNoteGraphics();
+		LaserNoteGraphics();
 
 		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
 	};

@@ -18,7 +18,7 @@ MusicGame::Graphics::BTNoteGraphics::BTNoteGraphics()
 {
 }
 
-void MusicGame::Graphics::BTNoteGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& subtractiveTarget) const
+void MusicGame::Graphics::BTNoteGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
 {
 	if (updateInfo.pChartData == nullptr)
 	{
@@ -61,7 +61,7 @@ void MusicGame::Graphics::BTNoteGraphics::draw(const UpdateInfo& updateInfo, con
 				const double positionEndY = textureHeight - static_cast<double>(y + note.length - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
 				for (int32 i = 0; i < 2; ++i)
 				{
-					const ScopedRenderTarget2D renderTarget((i == 0) ? additiveTarget : subtractiveTarget);
+					const ScopedRenderTarget2D renderTarget((i == 0) ? additiveTarget : invMultiplyTarget);
 					m_longBTNoteTexture(40 * i, 0, 40, 1)
 						.resized(40, note.length * 480 / chartData.beat.resolution)
 						.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionEndY));

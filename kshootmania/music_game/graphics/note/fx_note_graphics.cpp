@@ -18,7 +18,7 @@ MusicGame::Graphics::FXNoteGraphics::FXNoteGraphics()
 {
 }
 
-void MusicGame::Graphics::FXNoteGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& subtractiveTarget) const
+void MusicGame::Graphics::FXNoteGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
 {
 	if (updateInfo.pChartData == nullptr)
 	{

@@ -333,6 +333,9 @@
     <ClCompile Include="music_game\graphics\note\fx_note_graphics.cpp">
       <Filter>Source Files\music_game\graphics\note</Filter>
     </ClCompile>
+    <ClCompile Include="music_game\graphics\note\laser_note_graphics.cpp">
+      <Filter>Source Files\music_game\graphics\note</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1097,6 +1100,9 @@
       <Filter>Header Files\music_game\graphics</Filter>
     </ClInclude>
     <ClInclude Include="music_game\graphics\note\fx_note_graphics.hpp">
+      <Filter>Header Files\music_game\graphics\note</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\graphics\note\laser_note_graphics.hpp">
       <Filter>Header Files\music_game\graphics\note</Filter>
     </ClInclude>
   </ItemGroup>
