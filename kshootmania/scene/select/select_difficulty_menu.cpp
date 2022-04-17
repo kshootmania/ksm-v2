@@ -17,7 +17,13 @@ SelectDifficultyMenu::SelectDifficultyMenu(const SelectMenu* pSelectMenu)
 			.sourceScale = ScreenUtils::SourceScale::kL,
 			.sourceSize = { 150, 120 },
 		})
-	, m_cursorTexture(TextureAsset(SelectTexture::kSongDifficultyCursor))
+	, m_cursorTexture(SelectTexture::kSongDifficultyCursor,
+		{
+			.row = 12,
+			.sourceScale = ScreenUtils::SourceScale::kL,
+			.sourceSize = { 200, 200 },
+		})
+	, m_stopwatch(StartImmediately::Yes)
 {
 }
 
@@ -101,6 +107,13 @@ void SelectDifficultyMenu::draw(const Vec2& shakeVec) const
 		{
 			m_levelNumberTexture(Clamp(pMenuItem->chartInfos[i]->level, 0, kLevelMax - 1)).draw(baseVec + ScaledL(86 + 236 * i, 358));
 		}
+	}
+
+	// Draw cursor animation
+	{
+		const ScopedRenderStates2D renderState(BlendState::Additive);
+		const Vec2 position = Scaled(65 - 13, 125) + ScaledL(236 * cursor(), 246) + LeftMarginVec() + shakeVec;
+		m_cursorTexture(static_cast<int32>(m_stopwatch.sF() / 0.07) % 12).scaled(2.0).draw(position);
 	}
 }
 

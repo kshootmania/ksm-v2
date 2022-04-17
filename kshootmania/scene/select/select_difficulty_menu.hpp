@@ -16,7 +16,9 @@ private:
 
 	const TiledTexture m_levelNumberTexture;
 
-	const Texture m_cursorTexture;
+	const TiledTexture m_cursorTexture;
+
+	Stopwatch m_stopwatch;
 
 public:
 	explicit SelectDifficultyMenu(const SelectMenu* pSelectMenu);

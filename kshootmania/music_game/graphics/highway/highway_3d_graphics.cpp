@@ -82,6 +82,7 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 	// Draw laser notes
 	m_laserNoteGraphics.draw(updateInfo, m_additiveRenderTexture, m_invMultiplyRenderTexture);
 
+	// Draw highway into 3D space
 	{
 		const double highwayTiltRadians = m_highwayTilt.radians();
 		Mat4x4 m = Mat4x4::Rotate(Vec3::Forward(), highwayTiltRadians, Vec3{ 0.0, 42.0, 0.0 });
