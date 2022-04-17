@@ -330,6 +330,9 @@
     <ClCompile Include="music_game\graphics\note\note_graphics_utils.cpp">
       <Filter>Source Files\music_game\graphics\note</Filter>
     </ClCompile>
+    <ClCompile Include="music_game\graphics\note\fx_note_graphics.cpp">
+      <Filter>Source Files\music_game\graphics\note</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1092,6 +1095,9 @@
     </ClInclude>
     <ClInclude Include="music_game\graphics\graphics_defines.hpp">
       <Filter>Header Files\music_game\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\graphics\note\fx_note_graphics.hpp">
+      <Filter>Header Files\music_game\graphics\note</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

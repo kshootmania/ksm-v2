@@ -10,8 +10,6 @@ namespace
 	constexpr StringView kHighwayBGTextureFilename = U"base.gif";
 	constexpr StringView kShineEffectTextureFilename = U"lanelight.gif";
 	constexpr StringView kKeyBeamTextureFilename = U"judge.gif";
-	constexpr StringView kChipFXNoteTextureFilename = U"fx_chip.gif";
-	constexpr StringView kLongFXNoteTextureFilename = U"fx_long.gif";
 	constexpr StringView kLaserNoteTextureFilename = U"laser.gif";
 	constexpr StringView kLaserNoteMaskTextureFilename = U"laser_mask.gif";
 	constexpr StringView kLaserNoteLeftStartTextureFilename = U"laserl_0.gif";
@@ -79,12 +77,6 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 	: m_bgTexture(TextureAsset(kHighwayBGTextureFilename))
 	, m_shineEffectTexture(TextureAsset(kShineEffectTextureFilename))
 	, m_beamTexture(TextureAsset(kKeyBeamTextureFilename))
-	, m_chipFXNoteTexture(NoteGraphicsUtils::ApplyAlphaToNoteTexture(TextureAsset(kChipFXNoteTextureFilename),
-		{
-			.column = 2,
-			.sourceSize = { 82, 14 },
-		}))
-	, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
 	, m_laserNoteTexture(TextureAsset(kLaserNoteTextureFilename))
 	, m_laserNoteMaskTexture(TextureAsset(kLaserNoteMaskTextureFilename))
 	, m_laserNoteLeftStartTexture(kLaserNoteLeftStartTextureFilename,
@@ -136,50 +128,6 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 		for (int32 i = 0; i < kNumShineEffects; ++i)
 		{
 			m_shineEffectTexture.draw(kShineEffectPositionOffset + kShineEffectPositionDiff * i + kShineEffectPositionDiff * MathUtils::WrappedFmod(updateInfo.currentTimeSec, 0.2) / 0.2);
-		}
-	}
-
-	// Draw BT/FX notes
-	if (updateInfo.pChartData != nullptr)
-	{
-		const ScopedRenderTarget2D renderTarget(m_additiveRenderTexture);
-
-		const ksh::ChartData& chartData = *updateInfo.pChartData;
-
-		// FX notes
-		for (std::size_t laneIdx = 0; laneIdx < ksh::kNumFXLanes; ++laneIdx)
-		{
-			const auto& lane = chartData.note.fxLanes[laneIdx];
-			for (const auto& [y, note] : lane)
-			{
-				if (y + note.length < updateInfo.currentPulse - chartData.beat.resolution)
-				{
-					continue;
-				}
-
-				const double positionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-				if (positionStartY < 0)
-				{
-					break;
-				}
-
-				if (note.length == 0)
-				{
-					// Chip FX notes
-					const double yRate = (static_cast<double>(kHighwayTextureSize.y) - positionStartY) / static_cast<double>(kHighwayTextureSize.y);
-					m_chipFXNoteTexture()
-						.resized(82, NoteGraphicsUtils::ChipNoteHeight(yRate))
-						.draw(kLanePositionOffset + kFXLanePositionDiff * laneIdx + Vec2::Down(positionStartY));
-				}
-				else
-				{
-					// Long FX notes
-					const double positionEndY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + note.length - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-					m_longFXNoteTexture(0, 0, 82, 1)
-						.resized(82, note.length * 480 / chartData.beat.resolution)
-						.draw(kLanePositionOffset + kFXLanePositionDiff * laneIdx + Vec2::Down(positionEndY));
-				}
-			}
 		}
 	}
 

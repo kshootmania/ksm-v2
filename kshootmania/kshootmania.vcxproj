@@ -129,6 +129,7 @@
     <ClCompile Include="music_game\graphics\graphics_main.cpp" />
     <ClCompile Include="music_game\graphics\highway_tilt.cpp" />
     <ClCompile Include="music_game\graphics\note\bt_note_graphics.cpp" />
+    <ClCompile Include="music_game\graphics\note\fx_note_graphics.cpp" />
     <ClCompile Include="music_game\graphics\note\note_graphics_utils.cpp" />
     <ClCompile Include="scene\option\option_menu.cpp" />
     <ClCompile Include="scene\option\option_menu_field.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="music_game\graphics\graphics_main.hpp" />
     <ClInclude Include="music_game\graphics\highway_tilt.hpp" />
     <ClInclude Include="music_game\graphics\note\bt_note_graphics.hpp" />
+    <ClInclude Include="music_game\graphics\note\fx_note_graphics.hpp" />
     <ClInclude Include="music_game\graphics\note\note_graphics_utils.hpp" />
     <ClInclude Include="music_game\graphics\update_info\update_info.hpp" />
     <ClInclude Include="music_game\judgment\judgment_defines.hpp" />

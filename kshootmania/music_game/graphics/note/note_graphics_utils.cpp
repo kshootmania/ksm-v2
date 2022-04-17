@@ -2,7 +2,6 @@
 
 TiledTexture MusicGame::Graphics::NoteGraphicsUtils::ApplyAlphaToNoteTexture(const Texture& texture, const TiledTextureSizeInfo& sizeInfo)
 {
-
 	const PixelShader ps = HLSL{ U"shaders/multi_texture_mask.hlsl", U"PS" } | GLSL{ U"shaders/multi_texture_mask.frag",{ { U"PSConstants2D", 0 } } };
 	if (!ps)
 	{

@@ -10,8 +10,6 @@ namespace MusicGame::Graphics
 		const Texture m_bgTexture;
 		const Texture m_shineEffectTexture;
 		const Texture m_beamTexture;
-		const TiledTexture m_chipFXNoteTexture;
-		const Texture m_longFXNoteTexture;
 		const Texture m_laserNoteTexture;
 		const Texture m_laserNoteMaskTexture;
 		const TiledTexture m_laserNoteLeftStartTexture;
