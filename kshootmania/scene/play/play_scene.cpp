@@ -20,6 +20,12 @@ PlayScene::PlayScene(const InitData& initData)
 void PlayScene::update()
 {
 	m_gameMain.update();
+
+	// Back to song selection by Esc key
+	if (KeyConfig::Down(KeyConfig::kBack))
+	{
+		changeScene(U"Select", kDefaultTransitionMs);
+	}
 }
 
 void PlayScene::draw() const
