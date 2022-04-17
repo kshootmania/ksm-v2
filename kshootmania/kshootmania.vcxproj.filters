@@ -312,6 +312,9 @@
     <ClCompile Include="music_game\audio\bgm.cpp">
       <Filter>Source Files\music_game\audio</Filter>
     </ClCompile>
+    <ClCompile Include="music_game\game_main.cpp">
+      <Filter>Source Files\music_game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1051,7 +1054,7 @@
     <ClInclude Include="common\math_utils.hpp">
       <Filter>Header Files\common</Filter>
     </ClInclude>
-    <ClInclude Include="music_game\music_game_defines.hpp">
+    <ClInclude Include="music_game\game_defines.hpp">
       <Filter>Header Files\music_game</Filter>
     </ClInclude>
     <ClInclude Include="music_game\graphics\highway_tilt.hpp">
@@ -1059,6 +1062,9 @@
     </ClInclude>
     <ClInclude Include="music_game\audio\bgm.hpp">
       <Filter>Header Files\music_game\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\game_main.hpp">
+      <Filter>Header Files\music_game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
