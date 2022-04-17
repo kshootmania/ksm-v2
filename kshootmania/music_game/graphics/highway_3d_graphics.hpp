@@ -22,6 +22,8 @@ namespace MusicGame::Graphics
 		RenderTexture m_additiveRenderTexture;
 		RenderTexture m_invMultiplyRenderTexture;
 
+		const std::array<std::pair<std::reference_wrapper<const RenderTexture>, std::reference_wrapper<const Texture>>, 2> m_drawTexturePairs;
+
 		MeshData m_meshData;
 		DynamicMesh m_mesh;
 

@@ -1,5 +1,5 @@
 ﻿#include "graphics_main.hpp"
-#include "music_game/music_game_defines.hpp"
+#include "music_game/game_defines.hpp"
 
 namespace
 {

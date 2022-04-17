@@ -13,6 +13,7 @@ namespace MusicGame
 	class GameMain
 	{
 	private:
+		// Chart
 		const ksh::ChartData m_chartData;
 		const ksh::TimingCache m_timingCache;
 

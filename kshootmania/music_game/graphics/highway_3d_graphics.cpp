@@ -173,6 +173,9 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 		})
 	, m_additiveRenderTexture(kTextureSize)
 	, m_invMultiplyRenderTexture(kTextureSize)
+	, m_drawTexturePairs{
+		std::make_pair(std::ref(m_additiveRenderTexture), std::ref(m_laserNoteTexture)),
+		std::make_pair(std::ref(m_invMultiplyRenderTexture), std::ref(m_laserNoteMaskTexture)) }
 	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
 	, m_mesh(m_meshData) // <- this initialization is important because DynamicMesh::fill() does not dynamically resize the vertex array
 {
@@ -404,13 +407,12 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 						const bool isLeftToRight = (point.v < point.vf);
 						const Quad quad = LaserSlamLineQuad(positionStart, positionEnd);
 
-						for (int32 i = 0; i < 2; ++i)
+						for (const auto& [renderTargetTexture, laserNoteTexture] : m_drawTexturePairs)
 						{
-							const ScopedRenderTarget2D renderTarget((i == 0) ? m_additiveRenderTexture : m_invMultiplyRenderTexture);
-							const Texture& texture = (i == 0) ? m_laserNoteTexture : m_laserNoteMaskTexture;
-							texture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(isLeftToRight).drawAt(positionStart + Vec2{ 0.0, -kLaserLineWidth / 2 });
-							texture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(!isLeftToRight).flipped().drawAt(positionEnd + Vec2{ 0.0, -kLaserLineWidth / 2 });
-							quad(texture(kLaserTextureSize.x * laneIdx, 0, 1, kLaserTextureSize.y)).draw();
+							const ScopedRenderTarget2D renderTarget(renderTargetTexture);
+							laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(isLeftToRight).drawAt(positionStart + Vec2{ 0.0, -kLaserLineWidth / 2 });
+							laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(!isLeftToRight).flipped().drawAt(positionEnd + Vec2{ 0.0, -kLaserLineWidth / 2 });
+							quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, 1, kLaserTextureSize.y)).draw();
 						}
 					}
 
@@ -427,11 +429,10 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 							};
 							const Quad quad = LaserLineQuad(positionStart + Vec2{ 0.0, -kLaserTextureSize.y }, positionStart + Vec2{ 0.0, -kLaserTextureSize.y - 80.0 });
 
-							for (int32 i = 0; i < 2; ++i)
+							for (const auto& [renderTargetTexture, laserNoteTexture] : m_drawTexturePairs)
 							{
-								const ScopedRenderTarget2D renderTarget((i == 0) ? m_additiveRenderTexture : m_invMultiplyRenderTexture);
-								const Texture& texture = (i == 0) ? m_laserNoteTexture : m_laserNoteMaskTexture;
-								quad(texture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
+								const ScopedRenderTarget2D renderTarget(renderTargetTexture);
+								quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
 							}
 						}
 
@@ -458,11 +459,10 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 
 						const Quad quad = LaserLineQuad(positionStart + ((point.v != point.vf) ? Vec2{ 0.0, -kLaserTextureSize.y } : Vec2::Zero()), positionEnd);
 
-						for (int32 i = 0; i < 2; ++i)
+						for (const auto& [renderTargetTexture, laserNoteTexture] : m_drawTexturePairs)
 						{
-							const ScopedRenderTarget2D renderTarget((i == 0) ? m_additiveRenderTexture : m_invMultiplyRenderTexture);
-							const Texture& texture = (i == 0) ? m_laserNoteTexture : m_laserNoteMaskTexture;
-							quad(texture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
+							const ScopedRenderTarget2D renderTarget(renderTargetTexture);
+							quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
 						}
 					}
 				}
