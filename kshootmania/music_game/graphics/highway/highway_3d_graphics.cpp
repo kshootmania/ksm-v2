@@ -1,7 +1,6 @@
 ﻿#include "highway_3d_graphics.hpp"
 #include "music_game/graphics/graphics_defines.hpp"
 #include "note/note_graphics_utils.hpp"
-#include "ksh/util/graph_utils.hpp"
 
 namespace
 {
@@ -40,20 +39,7 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 {
 }
 
-void MusicGame::Graphics::Highway3DGraphics::update(const UpdateInfo& updateInfo)
-{
-	double tiltFactor = 0.0;
-	if (updateInfo.pChartData != nullptr)
-	{
-		const ksh::ChartData& chartData = *updateInfo.pChartData;
-		const double leftLaserValue = ksh::GraphSectionValueAtWithDefault(chartData.note.laserLanes[0], updateInfo.currentPulse, 0.0); // range: [0, +1]
-		const double rightLaserValue = ksh::GraphSectionValueAtWithDefault(chartData.note.laserLanes[1], updateInfo.currentPulse, 1.0) - 1.0; // range: [-1, 0]
-		tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
-	}
-	m_highwayTilt.update(tiltFactor);
-}
-
-void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, double tiltRadians) const
 {
 	assert(updateInfo.pChartData != nullptr);
 
@@ -84,8 +70,7 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 
 	// Draw highway into 3D space
 	{
-		const double highwayTiltRadians = m_highwayTilt.radians();
-		Mat4x4 m = Mat4x4::Rotate(Vec3::Forward(), highwayTiltRadians, Vec3{ 0.0, 42.0, 0.0 });
+		Mat4x4 m = Mat4x4::Rotate(Vec3::Forward(), -tiltRadians, Vec3{ 0.0, 42.0, 0.0 });
 		Transformer3D transform{ m };
 
 		{

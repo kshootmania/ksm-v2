@@ -1,5 +1,6 @@
 ﻿#include "graphics_main.hpp"
 #include "music_game/game_defines.hpp"
+#include "ksh/util/graph_utils.hpp"
 
 namespace
 {
@@ -58,7 +59,15 @@ void MusicGame::Graphics::GraphicsMain::update(const UpdateInfo& updateInfo)
 {
 	m_updateInfo = updateInfo;
 
-	m_highway3DGraphics.update(m_updateInfo);
+	double tiltFactor = 0.0;
+	if (updateInfo.pChartData != nullptr)
+	{
+		const ksh::ChartData& chartData = *updateInfo.pChartData;
+		const double leftLaserValue = ksh::GraphSectionValueAtWithDefault(chartData.note.laserLanes[0], updateInfo.currentPulse, 0.0); // range: [0, +1]
+		const double rightLaserValue = ksh::GraphSectionValueAtWithDefault(chartData.note.laserLanes[1], updateInfo.currentPulse, 1.0) - 1.0; // range: [-1, 0]
+		tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
+	}
+	m_highwayTilt.update(tiltFactor);
 }
 
 void MusicGame::Graphics::GraphicsMain::draw() const
@@ -72,18 +81,42 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 
 	{
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
-		m_bgTexture.resized(ScreenUtils::Scaled(900, 800)).drawAt(Scene::Center());
+
+		// Draw BG texture
+		{
+			double bgTiltRadians = 0.0;
+			if (m_updateInfo.pChartData->bg.legacy.bgInfos[0].rotationFlags.tiltAffected)
+			{
+				bgTiltRadians += m_highwayTilt.radians() / 3;
+			}
+
+			m_bgTexture
+				.resized(ScreenUtils::Scaled(900, 800))
+				.rotated(bgTiltRadians)
+				.drawAt(Scene::Center());
+		}
+
+		// Draw layer animation
 		{
 			const ScopedRenderStates2D renderState(BlendState::Additive);
+
+			double layerTiltRadians = 0.0;
+			if (m_updateInfo.pChartData->bg.legacy.layerInfos[0].rotationFlags.tiltAffected)
+			{
+				layerTiltRadians += m_highwayTilt.radians() * 0.8;
+			}
 
 			// TODO: Layer speed specified by KSH
 			const ksh::Pulse resolution = m_updateInfo.pChartData->beat.resolution;
 			const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)),  m_layerTexture.column());
-			m_layerTexture(0, layerFrame).resized(ScreenUtils::Scaled(880, 704)).drawAt(Scene::Center() + ScreenUtils::Scaled(kLayerPosition));
+			m_layerTexture(0, layerFrame)
+				.resized(ScreenUtils::Scaled(880, 704))
+				.rotated(layerTiltRadians)
+				.drawAt(Scene::Center() + ScreenUtils::Scaled(kLayerPosition));
 		}
 	}
 
-	m_highway3DGraphics.draw(m_updateInfo, m_additive3dViewTexture, m_invMultiply3dViewTexture);
+	m_highway3DGraphics.draw(m_updateInfo, m_additive3dViewTexture, m_invMultiply3dViewTexture, m_highwayTilt.radians());
 
 	// Draw 3D scene to 2D scene
 	Graphics3D::Flush();

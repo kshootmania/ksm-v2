@@ -47,5 +47,5 @@ void MusicGame::Graphics::HighwayTilt::update(double tiltFactor)
 
 double MusicGame::Graphics::HighwayTilt::radians() const
 {
-	return -10_deg * m_smoothedTiltFactor;
+	return 10_deg * m_smoothedTiltFactor;
 }

@@ -20,6 +20,8 @@ namespace MusicGame::Graphics
 
 		UpdateInfo m_updateInfo;
 
+		HighwayTilt m_highwayTilt;
+
 		Highway3DGraphics m_highway3DGraphics;
 
 	public:

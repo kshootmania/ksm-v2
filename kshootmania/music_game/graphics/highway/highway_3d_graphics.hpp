@@ -26,13 +26,9 @@ namespace MusicGame::Graphics
 		MeshData m_meshData;
 		DynamicMesh m_mesh;
 
-		HighwayTilt m_highwayTilt;
-
 	public:
 		Highway3DGraphics();
 
-		void update(const UpdateInfo& updateInfo);
-
-		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
+		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, double tiltRadians) const;
 	};
 }
