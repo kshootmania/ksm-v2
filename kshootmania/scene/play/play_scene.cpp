@@ -22,16 +22,21 @@ PlayScene::PlayScene(const InitData& initData)
 	: MyScene(initData)
 	, m_chartData(ksh::LoadKSHChartData(getData().playSceneArgs.chartFilePath.narrow()))
 	, m_timingCache(ksh::TimingUtils::CreateTimingCache(m_chartData.beat))
+	, m_bgm(FileSystem::ParentPath(getData().playSceneArgs.chartFilePath) + U"/" + Unicode::Widen(ksh::UnU8(m_chartData.audio.bgmInfo.filename)))
 	, m_musicGameGraphics(m_chartData, m_timingCache)
 	, m_stopwatch(StartImmediately::Yes)
 	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
 {
 	Print << U"Title: {}"_fmt(Unicode::Widen(ksh::UnU8(m_chartData.meta.title)));
+	m_bgm.seekTime(-MusicGame::TimeSecBeforeStart(false/* TODO: movie */));
+	m_bgm.play();
 }
 
 void PlayScene::update()
 {
-	const double currentTimeSec = m_stopwatch.sF() - MusicGame::TimeSecBeforeStart(false); // TODO: use music play time position
+	m_bgm.update();
+
+	const double currentTimeSec = m_bgm.posSec();
 
 	m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
 	m_graphicsUpdateInfo.currentPulse = ksh::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);

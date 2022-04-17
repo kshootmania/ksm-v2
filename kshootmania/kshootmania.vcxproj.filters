@@ -223,6 +223,12 @@
     <Filter Include="Source Files\common">
       <UniqueIdentifier>{1bea3048-5f5a-470c-a58f-1ff1d613f3cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\music_game\audio">
+      <UniqueIdentifier>{4f9aa030-4ab6-4edc-9be8-dbc69be815bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\music_game\audio">
+      <UniqueIdentifier>{b9eec638-c042-4414-b6be-69da50b0649b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\title\title_scene.cpp">
@@ -302,6 +308,9 @@
     </ClCompile>
     <ClCompile Include="music_game\graphics\highway_tilt.cpp">
       <Filter>Source Files\music_game\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="music_game\audio\bgm.cpp">
+      <Filter>Source Files\music_game\audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1047,6 +1056,9 @@
     </ClInclude>
     <ClInclude Include="music_game\graphics\highway_tilt.hpp">
       <Filter>Header Files\music_game\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\audio\bgm.hpp">
+      <Filter>Header Files\music_game\audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

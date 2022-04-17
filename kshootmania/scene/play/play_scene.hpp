@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "music_game/graphics/graphics_main.hpp"
+#include "music_game/audio/bgm.hpp"
 #include "ksh/util/timing_utils.hpp"
 
 class PlayScene : public MyScene
@@ -7,6 +8,8 @@ class PlayScene : public MyScene
 private:
 	const ksh::ChartData m_chartData;
 	const ksh::TimingCache m_timingCache;
+
+	MusicGame::Audio::BGM m_bgm;
 
 	MusicGame::Graphics::GraphicsMain m_musicGameGraphics;
 
