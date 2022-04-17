@@ -105,7 +105,7 @@ void SelectDifficultyMenu::draw(const Vec2& shakeVec) const
 		// Draw level number
 		if (difficultyExists)
 		{
-			m_levelNumberTexture(Clamp(pMenuItem->chartInfos[i]->level, 0, kLevelMax - 1)).draw(baseVec + ScaledL(86 + 236 * i, 358));
+			m_levelNumberTexture(Clamp(pMenuItem->chartInfos[i]->level - 1, 0, kLevelMax - 1)).draw(baseVec + ScaledL(86 + 236 * i, 358));
 		}
 	}
 
