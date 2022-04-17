@@ -18,7 +18,7 @@ namespace MusicGame::Audio
 		Stopwatch m_stopwatch;
 
 	public:
-		BGM(FilePathView filePath);
+		explicit BGM(FilePathView filePath);
 
 		void update();
 

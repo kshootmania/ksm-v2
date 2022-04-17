@@ -32,9 +32,9 @@ namespace ksh
 
 	struct NoteRoot
 	{
-		std::array<Lane<Interval>, 4> btLanes;
-		std::array<Lane<Interval>, 2> fxLanes;
-		std::array<Lane<LaserSection>, 2> laserLanes;
+		std::array<Lane<Interval>, kNumBTLanes> btLanes;
+		std::array<Lane<Interval>, kNumFXLanes> fxLanes;
+		std::array<Lane<LaserSection>, kNumLaserLanes> laserLanes;
 	};
 
 	inline void to_json(nlohmann::json& j, const NoteRoot& noteRoot)
