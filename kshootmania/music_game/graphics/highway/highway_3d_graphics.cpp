@@ -11,14 +11,12 @@ namespace
 
 	// Angle of the line connecting the camera position and the judgment line from the horizontal
 	// (Unconfirmed, but KSMv1 uses this value anyway)
-	constexpr double kCameraToJudgmentLineRadians = -0.6125;
+	constexpr double kCameraToJdglineRadians = -0.6125;
 
-	constexpr double kJudgmentLineYFromBottom = 14;
+	constexpr double kJdglineYFromBottom = 14;
 
-	constexpr double kPlaneWidth = 304.0 * 2 / 13;
-	constexpr double kPlaneHeight = 936.0 * 13 / 20;
-	constexpr double kPlaneHeightBelowJudgmentLine = kPlaneHeight * kJudgmentLineYFromBottom / kHighwayTextureSize.y;
-	constexpr double kPlaneHeightAboveJudgmentLine = kPlaneHeight - kPlaneHeightBelowJudgmentLine;
+	constexpr double kPlaneHeightBelowJdgline = kHighwayPlaneSize.y * kJdglineYFromBottom / kHighwayTextureSize.y;
+	constexpr double kPlaneHeightAboveJdgline = kHighwayPlaneSize.y - kPlaneHeightBelowJdgline;
 
 	// Shrink UV to remove edge pixels
 	constexpr float kUVShrinkX = 0.0075f;
@@ -34,7 +32,7 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 	, m_shineEffectTexture(TextureAsset(kShineEffectTextureFilename))
 	, m_additiveRenderTexture(kHighwayTextureSize)
 	, m_invMultiplyRenderTexture(kHighwayTextureSize)
-	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, { kPlaneWidth, kPlaneHeight }, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
+	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, kHighwayPlaneSize, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
 	, m_mesh(m_meshData) // <- this initialization is important because DynamicMesh::fill() does not dynamically resize the vertex array
 {
 }
@@ -70,8 +68,8 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 
 	// Draw highway into 3D space
 	{
-		Mat4x4 m = Mat4x4::Rotate(Vec3::Forward(), -tiltRadians, Vec3{ 0.0, 42.0, 0.0 });
-		Transformer3D transform{ m };
+		const Mat4x4 m = Mat4x4::Rotate(Float3::Forward(), -tiltRadians, Float3{ 0.0f, 42.0f, 0.0f });
+		const Transformer3D transform{ m };
 
 		{
 			const ScopedRenderTarget3D renderTarget(invMultiplyTarget);

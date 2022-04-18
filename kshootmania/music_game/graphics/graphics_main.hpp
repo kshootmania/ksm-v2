@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "highway/highway_3d_graphics.hpp"
+#include "highway/highway_tilt.hpp"
+#include "jdgline/jdgline_3d_graphics.hpp"
 #include "update_info.hpp"
 #include "ksh/util/timing_utils.hpp"
 
@@ -10,19 +12,20 @@ namespace MusicGame::Graphics
 	private:
 		BasicCamera3D m_camera;
 
-		MSRenderTexture m_additive3dViewTexture;
-		MSRenderTexture m_invMultiply3dViewTexture;
-
 		Texture m_bgTexture;
 		TiledTexture m_layerTexture;
+
+		MSRenderTexture m_highwayRenderTextureAdditive;
+		MSRenderTexture m_highwayRenderTextureInvMultiply;
+		HighwayTilt m_highwayTilt;
+		Highway3DGraphics m_highway3DGraphics;
+
+		MSRenderTexture m_jdglineRenderTexture;
+		Jdgline3DGraphics m_jdgline3DGraphics;
 
 		ksh::Pulse m_initialPulse;
 
 		UpdateInfo m_updateInfo;
-
-		HighwayTilt m_highwayTilt;
-
-		Highway3DGraphics m_highway3DGraphics;
 
 	public:
 		explicit GraphicsMain(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache);

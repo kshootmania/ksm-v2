@@ -4,7 +4,6 @@
 #include "note/fx_note_graphics.hpp"
 #include "note/laser_note_graphics.hpp"
 #include "key_beam_graphics.hpp"
-#include "highway_tilt.hpp"
 
 namespace MusicGame::Graphics
 {

@@ -238,6 +238,12 @@
     <Filter Include="Header Files\music_game\graphics\highway\note">
       <UniqueIdentifier>{f9bb5a11-090d-4dcf-be3b-822b88687a13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\music_game\graphics\jdgline">
+      <UniqueIdentifier>{2cacf311-31fe-4a08-9ad6-00689947070b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\music_game\graphics\jdgline">
+      <UniqueIdentifier>{1d9b3ce6-0db4-43ff-9408-4468b5dbdc08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\title\title_scene.cpp">
@@ -341,6 +347,9 @@
     </ClCompile>
     <ClCompile Include="music_game\graphics\highway\key_beam_graphics.cpp">
       <Filter>Source Files\music_game\graphics\highway</Filter>
+    </ClCompile>
+    <ClCompile Include="music_game\graphics\jdgline\jdgline_3d_graphics.cpp">
+      <Filter>Source Files\music_game\graphics\jdgline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1113,6 +1122,9 @@
     </ClInclude>
     <ClInclude Include="music_game\graphics\highway\key_beam_graphics.hpp">
       <Filter>Header Files\music_game\graphics\highway</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\graphics\jdgline\jdgline_3d_graphics.hpp">
+      <Filter>Header Files\music_game\graphics\jdgline</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

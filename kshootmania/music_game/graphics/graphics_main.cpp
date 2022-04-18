@@ -1,4 +1,5 @@
 ﻿#include "graphics_main.hpp"
+#include "graphics_defines.hpp"
 #include "music_game/game_defines.hpp"
 #include "ksh/util/graph_utils.hpp"
 
@@ -42,8 +43,6 @@ namespace
 
 MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache)
 	: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
-	, m_additive3dViewTexture(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
-	, m_invMultiply3dViewTexture(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
 	, m_bgTexture(BGFilePath(chartData))
 	, m_layerTexture(Texture(LayerFilePath(chartData)),
 		{
@@ -51,6 +50,9 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData,
 			.column = TiledTextureSizeInfo::kAutoDetect,
 			.sourceSize = { 600, 480 },
 		})
+	, m_highwayRenderTextureAdditive(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
+	, m_highwayRenderTextureInvMultiply(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
+	, m_jdglineRenderTexture(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
 	, m_initialPulse(ksh::TimingUtils::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
 {
 }
@@ -76,8 +78,11 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 
 	Graphics3D::SetCameraTransform(m_camera);
 
-	m_additive3dViewTexture.clear(Palette::Black);
-	m_invMultiply3dViewTexture.clear(Palette::Black);
+	m_highwayRenderTextureAdditive.clear(Palette::Black);
+	m_highwayRenderTextureInvMultiply.clear(Palette::Black);
+	m_jdglineRenderTexture.clear(kTransparent);
+
+	const double tiltRadians = m_highwayTilt.radians();
 
 	{
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
@@ -87,7 +92,7 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 			double bgTiltRadians = 0.0;
 			if (m_updateInfo.pChartData->bg.legacy.bgInfos[0].rotationFlags.tiltAffected)
 			{
-				bgTiltRadians += m_highwayTilt.radians() / 3;
+				bgTiltRadians += tiltRadians / 3;
 			}
 
 			m_bgTexture
@@ -103,7 +108,7 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 			double layerTiltRadians = 0.0;
 			if (m_updateInfo.pChartData->bg.legacy.layerInfos[0].rotationFlags.tiltAffected)
 			{
-				layerTiltRadians += m_highwayTilt.radians() * 0.8;
+				layerTiltRadians += tiltRadians * 0.8;
 			}
 
 			// TODO: Layer speed specified by KSH
@@ -116,18 +121,24 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 		}
 	}
 
-	m_highway3DGraphics.draw(m_updateInfo, m_additive3dViewTexture, m_invMultiply3dViewTexture, m_highwayTilt.radians());
+	m_highway3DGraphics.draw(m_updateInfo, m_highwayRenderTextureAdditive, m_highwayRenderTextureInvMultiply, tiltRadians);
+
+	m_jdgline3DGraphics.draw(m_updateInfo, m_jdglineRenderTexture, tiltRadians);
 
 	// Draw 3D scene to 2D scene
 	Graphics3D::Flush();
-	m_invMultiply3dViewTexture.resolve();
+	m_highwayRenderTextureInvMultiply.resolve();
 	{
 		const ScopedRenderStates2D renderState(BlendState{ true, Blend::Zero, Blend::InvSrcColor, BlendOp::Add, Blend::Zero, Blend::One, BlendOp::Add });
-		m_invMultiply3dViewTexture.draw();
+		m_highwayRenderTextureInvMultiply.draw();
 	}
-	m_additive3dViewTexture.resolve();
+	m_highwayRenderTextureAdditive.resolve();
 	{
 		const ScopedRenderStates2D renderState(BlendState::Additive);
-		m_additive3dViewTexture.draw();
+		m_highwayRenderTextureAdditive.draw();
+	}
+	m_jdglineRenderTexture.resolve();
+	{
+		m_jdglineRenderTexture.draw();
 	}
 }
