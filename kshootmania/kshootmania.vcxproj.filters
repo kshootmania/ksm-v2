@@ -244,6 +244,12 @@
     <Filter Include="Source Files\music_game\graphics\jdgline">
       <UniqueIdentifier>{1d9b3ce6-0db4-43ff-9408-4468b5dbdc08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\music_game\graphics\hud">
+      <UniqueIdentifier>{dc5fa313-df9d-4672-8320-d51ab5561013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\music_game\graphics\hud">
+      <UniqueIdentifier>{47fb5e45-1901-4a62-a380-9e5858586af5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\title\title_scene.cpp">
@@ -350,6 +356,12 @@
     </ClCompile>
     <ClCompile Include="music_game\graphics\jdgline\jdgline_3d_graphics.cpp">
       <Filter>Source Files\music_game\graphics\jdgline</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\number_font_texture.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="music_game\graphics\hud\frame_rate_monitor.cpp">
+      <Filter>Source Files\music_game\graphics\hud</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1125,6 +1137,12 @@
     </ClInclude>
     <ClInclude Include="music_game\graphics\jdgline\jdgline_3d_graphics.hpp">
       <Filter>Header Files\music_game\graphics\jdgline</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\number_font_texture.hpp">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\graphics\hud\frame_rate_monitor.hpp">
+      <Filter>Header Files\music_game\graphics\hud</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

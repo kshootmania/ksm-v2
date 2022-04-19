@@ -47,9 +47,7 @@ void SelectMenu::decideSongItem()
 		return;
 	}
 
-	// TODO: Start playing
-	Print << pChartInfo->chartFilePath;
-
+	// Start playing
 	m_moveToPlaySceneFunc(pChartInfo->chartFilePath);
 }
 

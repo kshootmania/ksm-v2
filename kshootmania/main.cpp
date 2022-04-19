@@ -44,6 +44,8 @@ void Main()
 	// Register asset list
 	RegisterAssets();
 
+	//Graphics::SetVSyncEnabled(false);
+
 	// Create scene manager
 	MySceneManager sceneManager;
 	sceneManager.add<TitleScene>(SceneName::kTitle);

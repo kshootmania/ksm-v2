@@ -115,6 +115,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="common\math_utils.cpp" />
+    <ClCompile Include="graphics\number_font_texture.cpp" />
     <ClCompile Include="graphics\screen_utils.cpp" />
     <ClCompile Include="graphics\tiled_texture.cpp" />
     <ClCompile Include="i18n\i18n.cpp" />
@@ -133,6 +134,7 @@
     <ClCompile Include="music_game\graphics\highway\note\fx_note_graphics.cpp" />
     <ClCompile Include="music_game\graphics\highway\note\laser_note_graphics.cpp" />
     <ClCompile Include="music_game\graphics\highway\note\note_graphics_utils.cpp" />
+    <ClCompile Include="music_game\graphics\hud\frame_rate_monitor.cpp" />
     <ClCompile Include="music_game\graphics\jdgline\jdgline_3d_graphics.cpp" />
     <ClCompile Include="scene\option\option_menu.cpp" />
     <ClCompile Include="scene\option\option_menu_field.cpp" />
@@ -346,6 +348,7 @@
   <ItemGroup>
     <ClInclude Include="common\common_defines.hpp" />
     <ClInclude Include="common\math_utils.hpp" />
+    <ClInclude Include="graphics\number_font_texture.hpp" />
     <ClInclude Include="graphics\screen_utils.hpp" />
     <ClInclude Include="graphics\tiled_texture.hpp" />
     <ClInclude Include="i18n\i18n.hpp" />
@@ -363,6 +366,7 @@
     <ClInclude Include="music_game\graphics\highway\note\fx_note_graphics.hpp" />
     <ClInclude Include="music_game\graphics\highway\note\laser_note_graphics.hpp" />
     <ClInclude Include="music_game\graphics\highway\note\note_graphics_utils.hpp" />
+    <ClInclude Include="music_game\graphics\hud\frame_rate_monitor.hpp" />
     <ClInclude Include="music_game\graphics\jdgline\jdgline_3d_graphics.hpp" />
     <ClInclude Include="music_game\graphics\update_info.hpp" />
     <ClInclude Include="music_game\judgment\judgment_defines.hpp" />

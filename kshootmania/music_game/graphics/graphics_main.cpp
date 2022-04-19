@@ -141,4 +141,6 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 	{
 		m_jdglineRenderTexture.draw();
 	}
+
+	m_frameRateMonitor.draw();
 }

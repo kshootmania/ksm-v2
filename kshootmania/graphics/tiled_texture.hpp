@@ -29,11 +29,6 @@ public:
 	TiledTexture(StringView textureAssetKey, const TiledTextureSizeInfo& sizeInfo);
 	TiledTexture(StringView textureAssetKey, ScreenUtils::SourceScale scale);
 
-	const Texture& texture() const
-	{
-		return m_texture;
-	}
-
 	const Size& scaledSize() const
 	{
 		return m_scaledSize;
