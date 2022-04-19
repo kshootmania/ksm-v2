@@ -50,7 +50,7 @@ void MusicGame::Audio::BGM::update()
 		}
 		m_delaySec = 0.0;
 
-		if (m_timeSec >= 0.0)
+		if (m_timeSec >= 0.0 && m_timeSec < m_audio.lengthSec())
 		{
 			m_audio.seekTime(m_timeSec);
 			m_audio.play();
@@ -58,16 +58,29 @@ void MusicGame::Audio::BGM::update()
 
 		m_isPlayingPrev = false;
 	}
+
+	Print << m_timeSec;
 }
 
 void MusicGame::Audio::BGM::play()
 {
 	m_isPaused = false;
+	m_isPlayingPrev = false;
+
+	if (m_audio.isPaused())
+	{
+		m_audio.play();
+	}
 }
 
 void MusicGame::Audio::BGM::pause()
 {
 	m_isPaused = true;
+
+	if (m_audio.isPlaying())
+	{
+		m_audio.pause();
+	}
 }
 
 void MusicGame::Audio::BGM::seekTime(double posSec)
