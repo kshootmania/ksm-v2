@@ -23,4 +23,13 @@ namespace MusicGame
 	};
 
 	constexpr ksh::Pulse kPastPulse = -100000000;
+
+	enum GaugeType : int32
+	{
+		kEasyGauge = 0,
+		kNormalGauge,
+		kHardGauge,
+
+		kNumGaugeTypes,
+	};
 }

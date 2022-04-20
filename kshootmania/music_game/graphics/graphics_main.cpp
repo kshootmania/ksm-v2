@@ -53,6 +53,7 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData,
 	, m_highwayRenderTextureAdditive(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
 	, m_highwayRenderTextureInvMultiply(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
 	, m_jdglineRenderTexture(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
+	, m_gaugePanel(kNormalGauge/* TODO: gauge type */, chartData.beat.resolution)
 	, m_initialPulse(ksh::TimingUtils::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
 {
 }
@@ -143,5 +144,6 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 	}
 
 	m_scorePanel.draw(0/* TODO: Score */);
+	m_gaugePanel.draw(100.0/* TODO: Percentage */, m_updateInfo.currentPulse);
 	m_frameRateMonitor.draw();
 }

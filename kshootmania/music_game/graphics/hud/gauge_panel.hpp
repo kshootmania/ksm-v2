@@ -1,0 +1,23 @@
+﻿#pragma once
+#include "music_game/game_defines.hpp"
+#include "graphics/number_font_texture.hpp"
+
+namespace MusicGame::Graphics
+{
+	class GaugePanel
+	{
+	private:
+		const GaugeType m_gaugeType;
+		const ksh::Pulse m_intervalPulse;
+		const TiledTexture m_baseTexture;
+		const TiledTexture m_barTexture;
+		const TiledTexture m_barAnimTexture;
+		const Texture m_percentBaseTexture;
+		const NumberFontTexture m_percentNumberFontTexture;
+
+	public:
+		GaugePanel(GaugeType gaugeType, ksh::Pulse pulseResolution);
+
+		void draw(double percent, ksh::Pulse currentPulse) const;
+	};
+}
