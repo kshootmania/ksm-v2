@@ -58,8 +58,6 @@ void MusicGame::Audio::BGM::update()
 
 		m_isPlayingPrev = false;
 	}
-
-	Print << m_timeSec;
 }
 
 void MusicGame::Audio::BGM::play()

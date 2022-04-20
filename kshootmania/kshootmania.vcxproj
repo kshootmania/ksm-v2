@@ -135,6 +135,7 @@
     <ClCompile Include="music_game\graphics\highway\note\laser_note_graphics.cpp" />
     <ClCompile Include="music_game\graphics\highway\note\note_graphics_utils.cpp" />
     <ClCompile Include="music_game\graphics\hud\frame_rate_monitor.cpp" />
+    <ClCompile Include="music_game\graphics\hud\score_panel.cpp" />
     <ClCompile Include="music_game\graphics\jdgline\jdgline_3d_graphics.cpp" />
     <ClCompile Include="scene\option\option_menu.cpp" />
     <ClCompile Include="scene\option\option_menu_field.cpp" />
@@ -367,6 +368,7 @@
     <ClInclude Include="music_game\graphics\highway\note\laser_note_graphics.hpp" />
     <ClInclude Include="music_game\graphics\highway\note\note_graphics_utils.hpp" />
     <ClInclude Include="music_game\graphics\hud\frame_rate_monitor.hpp" />
+    <ClInclude Include="music_game\graphics\hud\score_panel.hpp" />
     <ClInclude Include="music_game\graphics\jdgline\jdgline_3d_graphics.hpp" />
     <ClInclude Include="music_game\graphics\update_info.hpp" />
     <ClInclude Include="music_game\judgment\judgment_defines.hpp" />

@@ -363,6 +363,9 @@
     <ClCompile Include="music_game\graphics\hud\frame_rate_monitor.cpp">
       <Filter>Source Files\music_game\graphics\hud</Filter>
     </ClCompile>
+    <ClCompile Include="music_game\graphics\hud\score_panel.cpp">
+      <Filter>Source Files\music_game\graphics\hud</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1142,6 +1145,9 @@
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
     <ClInclude Include="music_game\graphics\hud\frame_rate_monitor.hpp">
+      <Filter>Header Files\music_game\graphics\hud</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\graphics\hud\score_panel.hpp">
       <Filter>Header Files\music_game\graphics\hud</Filter>
     </ClInclude>
   </ItemGroup>

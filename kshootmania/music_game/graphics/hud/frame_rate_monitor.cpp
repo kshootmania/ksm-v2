@@ -6,13 +6,13 @@ namespace
 	constexpr StringView kFPSTextureFilename = U"fps.png";
 }
 
-FrameRateMonitor::FrameRateMonitor()
+MusicGame::Graphics::FrameRateMonitor::FrameRateMonitor()
 	: m_numberFontTexture(kNumberFontTextureFilename, ScreenUtils::Scaled(10, 9), { 20, 18 })
 	, m_fpsTexture(TextureAsset(kFPSTextureFilename))
 {
 }
 
-void FrameRateMonitor::draw() const
+void MusicGame::Graphics::FrameRateMonitor::draw() const
 {
 	using namespace ScreenUtils;
 

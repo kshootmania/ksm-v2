@@ -142,5 +142,6 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 		m_jdglineRenderTexture.draw();
 	}
 
+	m_scorePanel.draw(0/* TODO: Score */);
 	m_frameRateMonitor.draw();
 }

@@ -3,15 +3,15 @@
 
 namespace MusicGame::Graphics
 {
-	class FrameRateMonitor
+	class ScorePanel
 	{
 	private:
+		const Texture m_captionTexture;
 		const NumberFontTexture m_numberFontTexture;
-		const Texture m_fpsTexture;
 
 	public:
-		FrameRateMonitor();
+		ScorePanel();
 
-		void draw() const;
+		void draw(int32 score) const;
 	};
 }

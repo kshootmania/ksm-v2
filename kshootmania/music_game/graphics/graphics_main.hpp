@@ -2,6 +2,7 @@
 #include "highway/highway_3d_graphics.hpp"
 #include "highway/highway_tilt.hpp"
 #include "jdgline/jdgline_3d_graphics.hpp"
+#include "hud/score_panel.hpp"
 #include "hud/frame_rate_monitor.hpp"
 #include "update_info.hpp"
 #include "ksh/util/timing_utils.hpp"
@@ -24,6 +25,7 @@ namespace MusicGame::Graphics
 		MSRenderTexture m_jdglineRenderTexture;
 		Jdgline3DGraphics m_jdgline3DGraphics;
 
+		ScorePanel m_scorePanel;
 		FrameRateMonitor m_frameRateMonitor;
 
 		ksh::Pulse m_initialPulse;
