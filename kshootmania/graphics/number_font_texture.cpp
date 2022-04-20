@@ -10,27 +10,28 @@ NumberFontTexture::NumberFontTexture(StringView textureAssetKey, const SizeF& sc
 {
 }
 
-void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numDigits, bool zeroPadding) const
+void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numPaddingDigits, bool zeroPadding) const
 {
-	draw(position, number, numDigits, m_scaledSize.x, zeroPadding);
+	draw(position, number, numPaddingDigits, m_scaledSize.x, zeroPadding);
 }
 
-void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numDigits, double diffX, bool zeroPadding) const
+void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numPaddingDigits, double diffX, bool zeroPadding) const
 {
 	// Note: If the number of digits exceeds numDigits, draw to the left of position
 	int32 digitCount = 0;
 	do
 	{
-		m_tiledTexture(number % 10).resized(m_scaledSize).draw(position + Vec2::Right(diffX * (numDigits - digitCount - 1)));
+		m_tiledTexture(number % 10).resized(m_scaledSize).draw(position + Vec2::Right(diffX * (numPaddingDigits - digitCount - 1)));
 		++digitCount;
 		number /= 10;
 	} while (number > 0);
 
 	if (zeroPadding)
 	{
-		for (int32 i = 0; i < numDigits - digitCount; ++i)
+		const int32 n = numPaddingDigits - digitCount;
+		for (int32 i = 0; i < n; ++i)
 		{
-			m_tiledTexture(0).resized(m_scaledSize).draw(position + Vec2::Right(diffX * (numDigits - digitCount - 1)));
+			m_tiledTexture(0).resized(m_scaledSize).draw(position + Vec2::Right(diffX * (numPaddingDigits - digitCount - 1)));
 			++digitCount;
 		}
 	}
