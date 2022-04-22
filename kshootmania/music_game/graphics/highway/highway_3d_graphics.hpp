@@ -28,6 +28,6 @@ namespace MusicGame::Graphics
 	public:
 		Highway3DGraphics();
 
-		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, double tiltRadians) const;
+		void draw(const UpdateInfo& updateInfo, double tiltRadians) const;
 	};
 }

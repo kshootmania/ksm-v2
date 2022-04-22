@@ -15,15 +15,17 @@ namespace MusicGame::Graphics
 	private:
 		BasicCamera3D m_camera;
 
-		Texture m_bgTexture;
-		TiledTexture m_layerTexture;
+		const Mesh m_billboardMesh;
 
-		MSRenderTexture m_highwayAdditiveLayer;
-		MSRenderTexture m_highwayInvMultiplyLayer;
+		MSRenderTexture m_3dViewTexture;
+		Texture m_bgTexture;
+		const Mat4x4 m_bgTransform;
+		std::array<Array<RenderTexture>, 2> m_layerFrameTextures;
+		const Mat4x4 m_layerTransform;
+
 		HighwayTilt m_highwayTilt;
 		Highway3DGraphics m_highway3DGraphics;
 
-		MSRenderTexture m_jdglineLayer;
 		Jdgline3DGraphics m_jdgline3DGraphics;
 
 		ScorePanel m_scorePanel;

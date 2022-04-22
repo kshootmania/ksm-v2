@@ -16,17 +16,11 @@ MusicGame::Graphics::Jdgline3DGraphics::Jdgline3DGraphics()
 {
 }
 
-void MusicGame::Graphics::Jdgline3DGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& targetRenderTexture, double tiltRadians) const
+void MusicGame::Graphics::Jdgline3DGraphics::draw(const UpdateInfo& updateInfo, double tiltRadians) const
 {
-	const ScopedRenderStates2D blendState(kEnableAlphaBlend);
-	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
-
 	// Draw judgment line into 3D space
-	{
-		const ScopedRenderTarget3D renderTarget(targetRenderTexture);
-		const Mat4x4 m = Mat4x4::Rotate(Float3::Right(), -60_deg, kPlaneCenter) * Mat4x4::Rotate(Float3::Forward(), -tiltRadians, Vec3{ 0.0, 42.0, 0.0 });
-		const Transformer3D transform{ m };
-
-		m_mesh.draw(m_jdglineTexture);
-	}
+	const ScopedRenderStates3D blendState(BlendState::NonPremultiplied);
+	const Mat4x4 m = Mat4x4::Rotate(Float3::Right(), -60_deg, kPlaneCenter) * Mat4x4::Rotate(Float3::Backward(), tiltRadians, Vec3{ 0.0, 42.0, 0.0 });
+	const Transformer3D transform{ m };
+	m_mesh.draw(m_jdglineTexture);
 }

@@ -16,5 +16,14 @@ namespace MusicGame::Graphics
 		BlendOp::Add,
 		Blend::One);
 
+	constexpr BlendState kInvMultiply = BlendState(
+		true,
+		Blend::Zero,
+		Blend::InvSrcColor,
+		BlendOp::Add,
+		Blend::Zero,
+		Blend::One,
+		BlendOp::Add);
+
 	constexpr ColorF kTransparent = ColorF{ 0.0, 0.0 };
 }

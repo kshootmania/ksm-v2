@@ -37,7 +37,7 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 {
 }
 
-void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, double tiltRadians) const
+void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, double tiltRadians) const
 {
 	assert(updateInfo.pChartData != nullptr);
 
@@ -72,12 +72,12 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 		const Transformer3D transform{ m };
 
 		{
-			const ScopedRenderTarget3D renderTarget(invMultiplyTarget);
+			const ScopedRenderStates3D renderState(kInvMultiply);
 			m_mesh.draw(m_invMultiplyRenderTexture);
 		}
 
 		{
-			const ScopedRenderTarget3D renderTarget(additiveTarget);
+			const ScopedRenderStates3D renderState(BlendState::Additive);
 			m_mesh.draw(m_additiveRenderTexture);
 		}
 	}

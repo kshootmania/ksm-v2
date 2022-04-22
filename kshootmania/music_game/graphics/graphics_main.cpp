@@ -12,7 +12,12 @@ namespace
 	constexpr double kCos15Deg = 0.9659258263;
 	constexpr Vec3 kCameraLookAt = kCameraPosition + Vec3{ 0.0, -100.0 * kSin15Deg, 100.0 * kCos15Deg };
 
-	constexpr Vec2 kLayerPosition = { 0.0, -35.0 };
+	constexpr Float3 kBGBillboardPosition = Float3{ 0, -53.0f, 0 };
+	constexpr Float2 kBGBillboardSize = Float2{ 900.0f, 800.0f } * 0.655f;
+
+	constexpr Size kLayerFrameSize = { 600, 480 };
+	constexpr Float3 kLayerBillboardPosition = Float3{ 0, -31.0f, 0 };
+	constexpr Float2 kLayerBillboardSize = Float2{ 880.0f, 704.0f } * 0.655f;
 
 	FilePath BGFilePath(const ksh::ChartData& chartData)
 	{
@@ -39,20 +44,46 @@ namespace
 		// TODO: Convert to absolute path using chart file path parent directory
 		return layerFilename;
 	}
+
+	std::array<Array<RenderTexture>, 2> SplitLayerTexture(FilePathView layerFilePath)
+	{
+		const TiledTexture tiledTexture(Texture(layerFilePath),
+			{
+				.row = TiledTextureSizeInfo::kAutoDetect,
+				.column = TiledTextureSizeInfo::kAutoDetect,
+				.sourceSize = kLayerFrameSize,
+			});
+
+		std::array<Array<RenderTexture>, 2> renderTextures;
+		for (int32 i = 0; i < 2; ++i)
+		{
+			renderTextures[i].reserve(tiledTexture.column());
+			for (int32 j = 0; j < tiledTexture.column(); ++j)
+			{
+				const RenderTexture renderTexture(kLayerFrameSize, Palette::Black);
+				const ScopedRenderTarget2D renderTarget(renderTexture);
+				tiledTexture(i, j).draw();
+				renderTextures[i].push_back(std::move(renderTexture));
+			}
+		}
+
+		return renderTextures;
+	}
+
+	Mat4x4 TiltMatrix(double radians, const Float3& center)
+	{
+		return Mat4x4::Rotate(Float3::Backward(), radians, center);
+	}
 }
 
 MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache)
 	: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
+	, m_billboardMesh(MeshData::Billboard())
+	, m_3dViewTexture(Scene::Size(), TextureFormat::R8G8B8A8_Unorm, HasDepth::No)
 	, m_bgTexture(BGFilePath(chartData))
-	, m_layerTexture(Texture(LayerFilePath(chartData)),
-		{
-			.row = TiledTextureSizeInfo::kAutoDetect,
-			.column = TiledTextureSizeInfo::kAutoDetect,
-			.sourceSize = { 600, 480 },
-		})
-	, m_highwayAdditiveLayer(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
-	, m_highwayInvMultiplyLayer(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
-	, m_jdglineLayer(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
+	, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
+	, m_layerFrameTextures(SplitLayerTexture(LayerFilePath(chartData)))
+	, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
 	, m_gaugePanel(kNormalGauge/* TODO: gauge type */, chartData.beat.resolution)
 	, m_initialPulse(ksh::TimingUtils::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
 {
@@ -77,71 +108,49 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 {
 	assert(m_updateInfo.pChartData != nullptr);
 
-	Graphics3D::SetCameraTransform(m_camera);
+	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
-	m_highwayAdditiveLayer.clear(Palette::Black);
-	m_highwayInvMultiplyLayer.clear(Palette::Black);
-	m_jdglineLayer.clear(kTransparent);
+	Graphics3D::SetCameraTransform(m_camera);
 
 	const double tiltRadians = m_highwayTilt.radians();
 
+	// Draw BG texture
 	{
-		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
-
-		// Draw BG texture
+		const ScopedRenderStates3D samplerState(SamplerState::ClampNearest);
+		double bgTiltRadians = 0.0;
+		if (m_updateInfo.pChartData->bg.legacy.bgInfos[0].rotationFlags.tiltAffected)
 		{
-			double bgTiltRadians = 0.0;
-			if (m_updateInfo.pChartData->bg.legacy.bgInfos[0].rotationFlags.tiltAffected)
-			{
-				bgTiltRadians += tiltRadians / 3;
-			}
-
-			m_bgTexture
-				.resized(ScreenUtils::Scaled(900, 800))
-				.rotated(bgTiltRadians)
-				.drawAt(Scene::Center());
+			bgTiltRadians += tiltRadians / 3;
 		}
 
-		// Draw layer animation
-		{
-			const ScopedRenderStates2D renderState(BlendState::Additive);
-
-			double layerTiltRadians = 0.0;
-			if (m_updateInfo.pChartData->bg.legacy.layerInfos[0].rotationFlags.tiltAffected)
-			{
-				layerTiltRadians += tiltRadians * 0.8;
-			}
-
-			// TODO: Layer speed specified by KSH
-			const ksh::Pulse resolution = m_updateInfo.pChartData->beat.resolution;
-			const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)),  m_layerTexture.column());
-			m_layerTexture(0, layerFrame)
-				.resized(ScreenUtils::Scaled(880, 704))
-				.rotated(layerTiltRadians)
-				.drawAt(Scene::Center() + ScreenUtils::Scaled(kLayerPosition));
-		}
+		m_billboardMesh.draw(m_bgTransform * TiltMatrix(bgTiltRadians, kBGBillboardPosition), m_bgTexture);
 	}
 
-	m_highway3DGraphics.draw(m_updateInfo, m_highwayAdditiveLayer, m_highwayInvMultiplyLayer, tiltRadians);
+	// Draw layer animation
+	{
+		const ScopedRenderStates3D samplerState(SamplerState::ClampNearest);
+		const ScopedRenderStates3D renderState(BlendState::Additive);
 
-	m_jdgline3DGraphics.draw(m_updateInfo, m_jdglineLayer, tiltRadians);
+		double layerTiltRadians = 0.0;
+		if (m_updateInfo.pChartData->bg.legacy.layerInfos[0].rotationFlags.tiltAffected)
+		{
+			layerTiltRadians += tiltRadians * 0.8;
+		}
+
+		// TODO: Layer speed specified by KSH
+		const ksh::Pulse resolution = m_updateInfo.pChartData->beat.resolution;
+		const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)), static_cast<int32>(m_layerFrameTextures[0].size()));
+		m_billboardMesh.draw(m_layerTransform * TiltMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
+	}
+
+	m_highway3DGraphics.draw(m_updateInfo, tiltRadians);
+
+	m_jdgline3DGraphics.draw(m_updateInfo, tiltRadians);
 
 	// Draw 3D scene to 2D scene
 	Graphics3D::Flush();
-	m_highwayInvMultiplyLayer.resolve();
-	{
-		const ScopedRenderStates2D renderState(BlendState{ true, Blend::Zero, Blend::InvSrcColor, BlendOp::Add, Blend::Zero, Blend::One, BlendOp::Add });
-		m_highwayInvMultiplyLayer.draw();
-	}
-	m_highwayAdditiveLayer.resolve();
-	{
-		const ScopedRenderStates2D renderState(BlendState::Additive);
-		m_highwayAdditiveLayer.draw();
-	}
-	m_jdglineLayer.resolve();
-	{
-		m_jdglineLayer.draw();
-	}
+	m_3dViewTexture.resolve();
+	m_3dViewTexture.draw();
 
 	m_scorePanel.draw(0/* TODO: Score */);
 	m_gaugePanel.draw(100.0/* TODO: Percentage */, m_updateInfo.currentPulse);
