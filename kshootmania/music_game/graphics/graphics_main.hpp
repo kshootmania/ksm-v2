@@ -18,12 +18,12 @@ namespace MusicGame::Graphics
 		Texture m_bgTexture;
 		TiledTexture m_layerTexture;
 
-		MSRenderTexture m_highwayRenderTextureAdditive;
-		MSRenderTexture m_highwayRenderTextureInvMultiply;
+		MSRenderTexture m_highwayAdditiveLayer;
+		MSRenderTexture m_highwayInvMultiplyLayer;
 		HighwayTilt m_highwayTilt;
 		Highway3DGraphics m_highway3DGraphics;
 
-		MSRenderTexture m_jdglineRenderTexture;
+		MSRenderTexture m_jdglineLayer;
 		Jdgline3DGraphics m_jdgline3DGraphics;
 
 		ScorePanel m_scorePanel;

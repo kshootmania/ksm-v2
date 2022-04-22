@@ -50,9 +50,9 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData,
 			.column = TiledTextureSizeInfo::kAutoDetect,
 			.sourceSize = { 600, 480 },
 		})
-	, m_highwayRenderTextureAdditive(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
-	, m_highwayRenderTextureInvMultiply(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
-	, m_jdglineRenderTexture(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
+	, m_highwayAdditiveLayer(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
+	, m_highwayInvMultiplyLayer(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
+	, m_jdglineLayer(Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes)
 	, m_gaugePanel(kNormalGauge/* TODO: gauge type */, chartData.beat.resolution)
 	, m_initialPulse(ksh::TimingUtils::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
 {
@@ -79,9 +79,9 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 
 	Graphics3D::SetCameraTransform(m_camera);
 
-	m_highwayRenderTextureAdditive.clear(Palette::Black);
-	m_highwayRenderTextureInvMultiply.clear(Palette::Black);
-	m_jdglineRenderTexture.clear(kTransparent);
+	m_highwayAdditiveLayer.clear(Palette::Black);
+	m_highwayInvMultiplyLayer.clear(Palette::Black);
+	m_jdglineLayer.clear(kTransparent);
 
 	const double tiltRadians = m_highwayTilt.radians();
 
@@ -122,25 +122,25 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 		}
 	}
 
-	m_highway3DGraphics.draw(m_updateInfo, m_highwayRenderTextureAdditive, m_highwayRenderTextureInvMultiply, tiltRadians);
+	m_highway3DGraphics.draw(m_updateInfo, m_highwayAdditiveLayer, m_highwayInvMultiplyLayer, tiltRadians);
 
-	m_jdgline3DGraphics.draw(m_updateInfo, m_jdglineRenderTexture, tiltRadians);
+	m_jdgline3DGraphics.draw(m_updateInfo, m_jdglineLayer, tiltRadians);
 
 	// Draw 3D scene to 2D scene
 	Graphics3D::Flush();
-	m_highwayRenderTextureInvMultiply.resolve();
+	m_highwayInvMultiplyLayer.resolve();
 	{
 		const ScopedRenderStates2D renderState(BlendState{ true, Blend::Zero, Blend::InvSrcColor, BlendOp::Add, Blend::Zero, Blend::One, BlendOp::Add });
-		m_highwayRenderTextureInvMultiply.draw();
+		m_highwayInvMultiplyLayer.draw();
 	}
-	m_highwayRenderTextureAdditive.resolve();
+	m_highwayAdditiveLayer.resolve();
 	{
 		const ScopedRenderStates2D renderState(BlendState::Additive);
-		m_highwayRenderTextureAdditive.draw();
+		m_highwayAdditiveLayer.draw();
 	}
-	m_jdglineRenderTexture.resolve();
+	m_jdglineLayer.resolve();
 	{
-		m_jdglineRenderTexture.draw();
+		m_jdglineLayer.draw();
 	}
 
 	m_scorePanel.draw(0/* TODO: Score */);
