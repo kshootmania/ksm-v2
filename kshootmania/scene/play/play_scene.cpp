@@ -32,3 +32,13 @@ void PlayScene::draw() const
 {
 	m_gameMain.draw();
 }
+
+void PlayScene::updateFadeIn([[maybe_unused]] double t)
+{
+	update();
+}
+
+void PlayScene::updateFadeOut([[maybe_unused]] double t)
+{
+	update();
+}

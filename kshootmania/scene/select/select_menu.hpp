@@ -35,7 +35,7 @@ private:
 	void refreshGraphics(SelectMenuGraphics::RefreshType type);
 
 public:
-	SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc); // TODO: Restore previous selection
+	explicit SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc); // TODO: Restore previous selection
 
 	void update();
 
