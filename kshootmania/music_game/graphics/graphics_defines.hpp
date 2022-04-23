@@ -26,4 +26,6 @@ namespace MusicGame::Graphics
 		BlendOp::Add);
 
 	constexpr ColorF kTransparent = ColorF{ 0.0, 0.0 };
+
+	constexpr ColorF kSongInfoFontColor = Color{ 0, 32, 8 };
 }
