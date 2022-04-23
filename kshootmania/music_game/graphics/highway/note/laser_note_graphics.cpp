@@ -12,6 +12,7 @@ namespace
 	constexpr Size kLaserTextureSize = { 48, 48 };
 	constexpr double kLaserLineWidth = static_cast<double>(kLaserTextureSize.x);
 	constexpr Size kLaserStartTextureSize = { 44, 200 };
+	constexpr int32 kLaserShiftY = -10;
 
 	Quad LaserLineQuad(const Vec2& positionStart, const Vec2& positionEnd)
 	{
@@ -82,7 +83,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 			const auto& lane = chartData.note.laserLanes[laneIdx];
 			for (const auto& [y, laserSection] : lane)
 			{
-				const double positionSectionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+				const double positionSectionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY;
 				if (positionSectionStartY + kLaserStartTextureSize.y < 0)
 				{
 					// Laser section is above the drawing area
@@ -108,7 +109,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 						}
 					}
 
-					const double positionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+					const double positionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY;
 					if (positionStartY < 0)
 					{
 						// Laser point is above the drawing area
@@ -120,12 +121,12 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 					{
 						const Vec2 positionStart = {
 							point.v * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution
+							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
 						};
 
 						const Vec2 positionEnd = {
 							point.vf * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution
+							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
 						};
 
 						const bool isLeftToRight = (point.v < point.vf);
@@ -149,7 +150,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 						{
 							const Vec2 positionStart = {
 								point.vf * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-								static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution
+								static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
 							};
 							const Quad quad = LaserLineQuad(positionStart + Vec2{ 0.0, -kLaserTextureSize.y }, positionStart + Vec2{ 0.0, -kLaserTextureSize.y - 80.0 });
 
@@ -173,12 +174,12 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 
 						const Vec2 positionStart = {
 							point.vf * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution
+							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
 						};
 
 						const Vec2 positionEnd = {
 							nextPoint.v * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + nextRy - updateInfo.currentPulse) * 480 / chartData.beat.resolution
+							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + nextRy - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
 						};
 
 						const Quad quad = LaserLineQuad(positionStart + ((point.v != point.vf) ? Vec2{ 0.0, -kLaserTextureSize.y } : Vec2::Zero()), positionEnd);

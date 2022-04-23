@@ -57,8 +57,7 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 	}
 
 	// Draw BT/FX notes
-	m_fxNoteGraphics.draw(updateInfo, m_additiveRenderTexture);
-	m_btNoteGraphics.draw(updateInfo, m_additiveRenderTexture, m_invMultiplyRenderTexture);
+	m_buttonNoteGraphics.draw(updateInfo, m_additiveRenderTexture, m_invMultiplyRenderTexture);
 
 	// Draw key beams
 	m_keyBeamGraphics.draw(updateInfo, m_additiveRenderTexture);

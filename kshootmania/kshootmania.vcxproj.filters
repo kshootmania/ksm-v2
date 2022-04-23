@@ -342,10 +342,7 @@
     <ClCompile Include="music_game\graphics\highway\note\note_graphics_utils.cpp">
       <Filter>Source Files\music_game\graphics\highway\note</Filter>
     </ClCompile>
-    <ClCompile Include="music_game\graphics\highway\note\bt_note_graphics.cpp">
-      <Filter>Source Files\music_game\graphics\highway\note</Filter>
-    </ClCompile>
-    <ClCompile Include="music_game\graphics\highway\note\fx_note_graphics.cpp">
+    <ClCompile Include="music_game\graphics\highway\note\button_note_graphics.cpp">
       <Filter>Source Files\music_game\graphics\highway\note</Filter>
     </ClCompile>
     <ClCompile Include="music_game\graphics\highway\note\laser_note_graphics.cpp">
@@ -1133,10 +1130,7 @@
     <ClInclude Include="music_game\graphics\highway\note\note_graphics_utils.hpp">
       <Filter>Header Files\music_game\graphics\highway\note</Filter>
     </ClInclude>
-    <ClInclude Include="music_game\graphics\highway\note\bt_note_graphics.hpp">
-      <Filter>Header Files\music_game\graphics\highway\note</Filter>
-    </ClInclude>
-    <ClInclude Include="music_game\graphics\highway\note\fx_note_graphics.hpp">
+    <ClInclude Include="music_game\graphics\highway\note\button_note_graphics.hpp">
       <Filter>Header Files\music_game\graphics\highway\note</Filter>
     </ClInclude>
     <ClInclude Include="music_game\graphics\highway\note\laser_note_graphics.hpp">

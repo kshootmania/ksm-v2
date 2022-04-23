@@ -3,14 +3,17 @@
 
 namespace MusicGame::Graphics
 {
-	class BTNoteGraphics
+	class ButtonNoteGraphics
 	{
 	private:
 		const TiledTexture m_chipBTNoteTexture;
 		const Texture m_longBTNoteTexture;
 
+		const TiledTexture m_chipFXNoteTexture;
+		const Texture m_longFXNoteTexture;
+
 	public:
-		BTNoteGraphics();
+		ButtonNoteGraphics();
 
 		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
 	};
