@@ -5,7 +5,7 @@
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	: m_chartData(ksh::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
 	, m_timingCache(ksh::TimingUtils::CreateTimingCache(m_chartData.beat))
-	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::Widen(m_chartData.audio.bgmInfo.filename))
+	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::FromUTF8(m_chartData.audio.bgmInfo.filename))
 	, m_assistTick(gameCreateInfo.enableAssistTick)
 	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
 	, m_musicGameGraphics(m_chartData, m_timingCache)

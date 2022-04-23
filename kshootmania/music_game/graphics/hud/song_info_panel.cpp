@@ -32,7 +32,7 @@ namespace
 }
 
 MusicGame::Graphics::SongInfoPanel::SongInfoPanel(const ksh::ChartData& chartData)
-	: m_jacketTexture(FileSystem::ParentPath(Unicode::Widen(chartData.filePath)) + Unicode::Widen(chartData.meta.jacketFilename))
+	: m_jacketTexture(FileSystem::ParentPath(Unicode::Widen(chartData.filePath)) + Unicode::FromUTF8(chartData.meta.jacketFilename))
 	, m_scaledJacketSize(ScaledJacketSize(m_jacketTexture.size()))
 	, m_titlePanelBaseTexture(ScreenUtils::Scaled(kTitlePanelSize), kTransparent)
 	, m_detailPanelBaseTexture(ScreenUtils::Scaled(kDetailPanelSize), kTransparent)

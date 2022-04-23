@@ -25,7 +25,7 @@ namespace ksh
 		MetaRoot meta;
 		MetaAudioRoot audio;
 
-		std::string filePath;
+		std::string filePath; // Note: OS native encoding (Not UTF-8 in Windows)
 		Error error = Error::kNone;
 	};
 
@@ -40,7 +40,7 @@ namespace ksh
 		BGRoot bg;
 		ImplRoot impl;
 
-		std::string filePath;
+		std::string filePath; // Note: OS native encoding (Not UTF-8 in Windows)
 		Error error = Error::kNone;
 	};
 

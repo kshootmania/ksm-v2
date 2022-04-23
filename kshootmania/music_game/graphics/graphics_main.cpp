@@ -21,7 +21,7 @@ namespace
 
 	FilePath BGFilePath(const ksh::ChartData& chartData)
 	{
-		const String bgFilename = Unicode::Widen(chartData.bg.legacy.bgInfos.at(0).filename);
+		const String bgFilename = Unicode::FromUTF8(chartData.bg.legacy.bgInfos.at(0).filename);
 		if (FileSystem::Extension(bgFilename).empty())
 		{
 			// Built-in BG textures
@@ -34,7 +34,7 @@ namespace
 
 	FilePath LayerFilePath(const ksh::ChartData& chartData)
 	{
-		const String layerFilename = Unicode::Widen(chartData.bg.legacy.layerInfos.at(0).filename);
+		const String layerFilename = Unicode::FromUTF8(chartData.bg.legacy.layerInfos.at(0).filename);
 		if (FileSystem::Extension(layerFilename).empty())
 		{
 			// Built-in BG textures

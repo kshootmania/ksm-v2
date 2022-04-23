@@ -15,8 +15,8 @@ namespace ksh
 
 	struct LegacyMetaInfo
 	{
-		std::string titleImageFilename;
-		std::string artistImageFilename;
+		std::string titleImageFilename; // UTF-8 guaranteed
+		std::string artistImageFilename; // UTF-8 guaranteed
 
 		bool empty() const
 		{
@@ -51,7 +51,7 @@ namespace ksh
 		std::int8_t level = 1;
 		std::string dispBPM;
 		double standardBPM = 0.0;
-		std::string jacketFilename;
+		std::string jacketFilename; // UTF-8 guaranteed
 		std::string jacketAuthor;
 		std::string information;
 		LegacyMetaInfo legacy;

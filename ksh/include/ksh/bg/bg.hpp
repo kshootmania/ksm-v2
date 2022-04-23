@@ -30,7 +30,7 @@ namespace ksh
 
 	struct KSHBGInfo
 	{
-		std::string filename;
+		std::string filename; // UTF-8 guaranteed
 		KSHRotationFlags rotationFlags = { true, false };
 
 		bool operator==(const KSHBGInfo& rhs) const
@@ -53,7 +53,7 @@ namespace ksh
 
 	struct KSHLayerInfo
 	{
-		std::string filename;
+		std::string filename; // UTF-8 guaranteed
 		std::int64_t durationMs = 0;
 		KSHRotationFlags rotationFlags = { true, true };
 
@@ -82,7 +82,7 @@ namespace ksh
 
 	struct KSHMovieInfo
 	{
-		std::string filename;
+		std::string filename; // UTF-8 guaranteed
 		std::int64_t offsetMs = 0;
 
 		bool empty() const

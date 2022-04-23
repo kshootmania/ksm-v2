@@ -5,7 +5,7 @@ namespace ksh
 {
 	struct BGMInfo
 	{
-		std::string filename;
+		std::string filename; // UTF-8 guaranteed
 
 		double volume = 1.0;
 
@@ -48,7 +48,7 @@ namespace ksh
 	{
 		double volume = 1.0;
 
-		std::string previewFilename;
+		std::string previewFilename; // UTF-8 guaranteed
 
 		int64_t previewOffsetMs = 0;
 

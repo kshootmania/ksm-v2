@@ -20,7 +20,7 @@ namespace ksh
 
 	struct KeySoundDef
 	{
-		std::string filename;
+		std::string filename; // UTF-8 guaranteed
 
 		KeySoundParams defaultParams;
 	};
