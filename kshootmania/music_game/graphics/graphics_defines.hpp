@@ -9,6 +9,8 @@ namespace MusicGame::Graphics
 	constexpr Vec2 kBTLanePositionDiff = { 42.0, 0.0 };
 	constexpr Vec2 kFXLanePositionDiff = { 84.0, 0.0 };
 
+	// Note: If you use this blend state, make sure the destination texture is opaque.
+	//       Otherwise, both alpha and color blending will take effect and the drawn image will be dark.
 	constexpr BlendState kEnableAlphaBlend = BlendState(
 		true,
 		Blend::SrcAlpha,
