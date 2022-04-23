@@ -201,7 +201,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 			m_menu.push_back({
 				.itemType = SelectMenuItem::kDirectoryFolder,
 				.fullPath = FileSystem::FullPath(directory),
-				.info = std::make_unique<SelectMenuFolderItemInfo>(FileSystem::BaseName(directory)),
+				.info = std::make_unique<SelectMenuFolderItemInfo>(FileSystem::FileName(directory)),
 			});
 		}
 	}
