@@ -120,7 +120,7 @@ LinearMenu::LinearMenu(
 	, m_cursorStep(cursorStep)
 	, m_cursor(Clamp(defaultCursor, static_cast<int32>(cursorMin), static_cast<int32>(cursorMax)))
 	, m_cyclic(cyclic)
-	, m_pressedTimeStopwatch(m_intervalSec == 0.0 ? none : MakeOptional<Stopwatch>(StartImmediately::No))
+	, m_pressedTimeStopwatch(intervalSec == 0.0 ? none : MakeOptional<Stopwatch>(StartImmediately::No))
 	, m_intervalSec(intervalSec)
 	, m_intervalSecFirst(intervalSecFirst == 0.0 ? intervalSec : intervalSecFirst)
 {

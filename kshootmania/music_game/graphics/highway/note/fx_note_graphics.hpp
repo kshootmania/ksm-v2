@@ -12,6 +12,6 @@ namespace MusicGame::Graphics
 	public:
 		FXNoteGraphics();
 
-		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
+		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget) const;
 	};
 }

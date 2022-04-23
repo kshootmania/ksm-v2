@@ -25,7 +25,7 @@ void MusicGame::Graphics::BTNoteGraphics::draw(const UpdateInfo& updateInfo, con
 		return;
 	}
 
-	const ScopedRenderTarget2D renderTarget(additiveTarget);
+	const ScopedRenderTarget2D defaultRenderTarget(additiveTarget);
 	const ksh::ChartData& chartData = *updateInfo.pChartData;
 
 	const double textureHeight = static_cast<double>(kHighwayTextureSize.y);
@@ -46,13 +46,15 @@ void MusicGame::Graphics::BTNoteGraphics::draw(const UpdateInfo& updateInfo, con
 				break;
 			}
 
+			const double dLaneIdx = static_cast<double>(laneIdx);
+
 			if (note.length == 0)
 			{
 				// Chip BT notes
 				const double yRate = (textureHeight - positionStartY) / textureHeight;
 				m_chipBTNoteTexture()
 					.resized(40, NoteGraphicsUtils::ChipNoteHeight(yRate))
-					.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionStartY));
+					.draw(kLanePositionOffset + kBTLanePositionDiff * dLaneIdx + Vec2::Down(positionStartY));
 			}
 			else
 			{
@@ -63,8 +65,8 @@ void MusicGame::Graphics::BTNoteGraphics::draw(const UpdateInfo& updateInfo, con
 				{
 					const ScopedRenderTarget2D renderTarget((i == 0) ? additiveTarget : invMultiplyTarget);
 					m_longBTNoteTexture(40 * i, 0, 40, 1)
-						.resized(40, note.length * 480 / chartData.beat.resolution)
-						.draw(kLanePositionOffset + kBTLanePositionDiff * laneIdx + Vec2::Down(positionEndY));
+						.resized(40, static_cast<double>(note.length) * 480 / chartData.beat.resolution)
+						.draw(kLanePositionOffset + kBTLanePositionDiff * dLaneIdx + Vec2::Down(positionEndY));
 				}
 			}
 		}

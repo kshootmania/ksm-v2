@@ -65,7 +65,6 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 	}
 
 	const ScopedRenderTarget2D defaultRenderTarget(additiveTarget);
-	const ksh::ChartData& chartData = *updateInfo.pChartData;
 	const std::array<std::pair<std::reference_wrapper<const RenderTexture>, std::reference_wrapper<const Texture>>, 2> drawTexturePairs = {
 		std::make_pair(std::ref(additiveTarget), std::ref(m_laserNoteTexture)),
 		std::make_pair(std::ref(invMultiplyTarget), std::ref(m_laserNoteMaskTexture)),

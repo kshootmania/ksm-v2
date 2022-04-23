@@ -64,7 +64,14 @@ void LinearMenu::update()
 
 		if (decrementKeyDown || incrementKeyDown)
 		{
-			m_pressedTimeStopwatch->restart();
+			if (!m_pressedTimeStopwatch->isStarted())
+			{
+				m_pressedTimeStopwatch->start();
+			}
+			else
+			{
+				m_pressedTimeStopwatch->restart();
+			}
 			moveCursor = true;
 		}
 

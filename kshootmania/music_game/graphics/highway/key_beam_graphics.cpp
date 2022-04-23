@@ -49,21 +49,23 @@ void MusicGame::Graphics::KeyBeamGraphics::draw(const UpdateInfo& updateInfo, co
 		}
 
 		const TextureRegion beamTextureRegion = m_beamTexture(
-			kBTKeyBeamTextureSize.x * (laneState.keyBeamType + 0.5 - widthRate / 2),
+			kBTKeyBeamTextureSize.x * (static_cast<double>(laneState.keyBeamType) + 0.5 - widthRate / 2),
 			0,
 			kBTKeyBeamTextureSize.x * widthRate,
 			kBTKeyBeamTextureSize.y);
 
+		const double dLaneIdx = static_cast<double>(laneIdx);
+		
 		if (isBT)
 		{
 			beamTextureRegion
-				.draw(kKeyBeamPositionOffset + kBTLanePositionDiff * (laneIdx + 0.5 - widthRate / 2), ColorF{ 1.0, alpha });
+				.draw(kKeyBeamPositionOffset + kBTLanePositionDiff * (dLaneIdx + 0.5 - widthRate / 2), ColorF{ 1.0, alpha });
 		}
 		else
 		{
 			beamTextureRegion
 				.resized(kFXKeyBeamTextureSize.x * widthRate, kFXKeyBeamTextureSize.y)
-				.draw(kKeyBeamPositionOffset + kFXLanePositionDiff * laneIdx + kFXKeyBeamTextureSize * (0.5 - widthRate / 2), ColorF{ 1.0, alpha });
+				.draw(kKeyBeamPositionOffset + kFXLanePositionDiff * dLaneIdx + kFXKeyBeamTextureSize * (0.5 - widthRate / 2), ColorF{ 1.0, alpha });
 		}
 	}
 }
