@@ -1084,7 +1084,10 @@ MetaChartData ksh::LoadKSHMetaChartData(const std::string& filePath)
 		};
 	}
 
-	return LoadKSHMetaChartData(ifs);
+	MetaChartData chartData = LoadKSHMetaChartData(ifs);
+	chartData.filePath = filePath;
+
+	return chartData;
 }
 
 ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
@@ -1556,5 +1559,8 @@ ChartData ksh::LoadKSHChartData(const std::string& filePath)
 		};
 	}
 
-	return LoadKSHChartData(ifs);
+	ChartData chartData = LoadKSHChartData(ifs);
+	chartData.filePath = filePath;
+
+	return chartData;
 }

@@ -357,9 +357,6 @@
     <ClCompile Include="music_game\graphics\jdgline\jdgline_3d_graphics.cpp">
       <Filter>Source Files\music_game\graphics\jdgline</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\number_font_texture.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="music_game\graphics\hud\frame_rate_monitor.cpp">
       <Filter>Source Files\music_game\graphics\hud</Filter>
     </ClCompile>
@@ -368,6 +365,12 @@
     </ClCompile>
     <ClCompile Include="music_game\graphics\hud\gauge_panel.cpp">
       <Filter>Source Files\music_game\graphics\hud</Filter>
+    </ClCompile>
+    <ClCompile Include="music_game\graphics\hud\song_info_panel.cpp">
+      <Filter>Source Files\music_game\graphics\hud</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics\number_font_texture.cpp">
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -959,6 +962,7 @@
     <None Include=".editorconfig">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="App\example\test.mp3">
@@ -1154,6 +1158,9 @@
       <Filter>Header Files\music_game\graphics\hud</Filter>
     </ClInclude>
     <ClInclude Include="music_game\graphics\hud\gauge_panel.hpp">
+      <Filter>Header Files\music_game\graphics\hud</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\graphics\hud\song_info_panel.hpp">
       <Filter>Header Files\music_game\graphics\hud</Filter>
     </ClInclude>
   </ItemGroup>

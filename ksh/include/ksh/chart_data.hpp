@@ -25,6 +25,7 @@ namespace ksh
 		MetaRoot meta;
 		MetaAudioRoot audio;
 
+		std::string filePath;
 		Error error = Error::kNone;
 	};
 
@@ -39,6 +40,7 @@ namespace ksh
 		BGRoot bg;
 		ImplRoot impl;
 
+		std::string filePath;
 		Error error = Error::kNone;
 	};
 

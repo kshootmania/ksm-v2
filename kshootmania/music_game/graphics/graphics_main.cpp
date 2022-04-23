@@ -84,6 +84,7 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData,
 	, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
 	, m_layerFrameTextures(SplitLayerTexture(LayerFilePath(chartData)))
 	, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
+	, m_songInfoPanel(chartData)
 	, m_gaugePanel(kNormalGauge/* TODO: gauge type */, chartData.beat.resolution)
 	, m_initialPulse(ksh::TimingUtils::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
 {
@@ -107,8 +108,6 @@ void MusicGame::Graphics::GraphicsMain::update(const UpdateInfo& updateInfo)
 void MusicGame::Graphics::GraphicsMain::draw() const
 {
 	assert(m_updateInfo.pChartData != nullptr);
-
-	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
 	Graphics3D::SetCameraTransform(m_camera);
 
@@ -152,6 +151,7 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 	m_3dViewTexture.resolve();
 	m_3dViewTexture.draw();
 
+	m_songInfoPanel.draw();
 	m_scorePanel.draw(0/* TODO: Score */);
 	m_gaugePanel.draw(100.0/* TODO: Percentage */, m_updateInfo.currentPulse);
 	m_frameRateMonitor.draw();

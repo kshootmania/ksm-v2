@@ -2,6 +2,7 @@
 #include "highway/highway_3d_graphics.hpp"
 #include "highway/highway_tilt.hpp"
 #include "jdgline/jdgline_3d_graphics.hpp"
+#include "hud/song_info_panel.hpp"
 #include "hud/score_panel.hpp"
 #include "hud/gauge_panel.hpp"
 #include "hud/frame_rate_monitor.hpp"
@@ -18,6 +19,8 @@ namespace MusicGame::Graphics
 		const Mesh m_billboardMesh;
 
 		MSRenderTexture m_3dViewTexture;
+
+		// TODO: separate into single class
 		Texture m_bgTexture;
 		const Mat4x4 m_bgTransform;
 		std::array<Array<RenderTexture>, 2> m_layerFrameTextures;
@@ -28,6 +31,7 @@ namespace MusicGame::Graphics
 
 		Jdgline3DGraphics m_jdgline3DGraphics;
 
+		SongInfoPanel m_songInfoPanel;
 		ScorePanel m_scorePanel;
 		GaugePanel m_gaugePanel;
 		FrameRateMonitor m_frameRateMonitor;
