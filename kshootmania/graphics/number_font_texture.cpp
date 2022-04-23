@@ -18,11 +18,11 @@ void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numPaddin
 void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numPaddingDigits, double diffX, bool zeroPadding, Align align) const
 {
 	// Note: If align is kRightAlign and the number of digits exceeds numDigits, the exceeded digits are drawn to the left of the position.
-	const int32 numDigits = (align == kLeftAlign) ? Max(static_cast<int32>(Log10(number) + 1.0), numPaddingDigits) : numPaddingDigits;
+	const int32 numDigits = (align == kLeftAlign) ? Max(MathUtils::NumDigits(number), numPaddingDigits) : numPaddingDigits;
 	int32 digitCount = 0;
 	do
 	{
-		const int32 x = diffX * (numDigits - digitCount - 1);
+		const double x = diffX * (numDigits - digitCount - 1);
 		m_tiledTexture(number % 10).resized(m_scaledSize).draw(position + Vec2::Right(x));
 		++digitCount;
 		number /= 10;
@@ -33,7 +33,7 @@ void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numPaddin
 		const int32 n = numPaddingDigits - digitCount;
 		for (int32 i = 0; i < n; ++i)
 		{
-			const int32 x = diffX * (numDigits - digitCount - 1);
+			const double x = diffX * (numDigits - digitCount - 1);
 			m_tiledTexture(0).resized(m_scaledSize).draw(position + Vec2::Right(x));
 			++digitCount;
 		}

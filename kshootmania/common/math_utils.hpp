@@ -34,4 +34,6 @@ namespace MathUtils
 	}
 
 	ksh::Ms SecToMs(double sec);
+
+	int32 NumDigits(int32 number);
 }
