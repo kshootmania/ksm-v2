@@ -43,6 +43,7 @@ namespace MusicGame::Graphics
 	{
 		double currentTimeSec = 0.0;
 		ksh::Pulse currentPulse = 0;
+		double currentBPM = 120.0;
 
 		const ksh::ChartData* pChartData = nullptr;
 		

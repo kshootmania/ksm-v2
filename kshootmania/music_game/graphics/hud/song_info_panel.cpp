@@ -41,7 +41,6 @@ MusicGame::Graphics::SongInfoPanel::SongInfoPanel(const ksh::ChartData& chartDat
 	, m_titlePanelPosition(Scene::Width() / 2 + ScreenUtils::Scaled(kTitlePanelBasePosition.x), ScreenUtils::Scaled(kTitlePanelBasePosition.y))
 	, m_detailPanelBaseTexture(TextureAsset(kDetailPanelBaseTextureFilename))
 	, m_detailPanelPosition(Scene::Width() / 2 + ScreenUtils::Scaled(kDetailPanelBasePosition.x), ScreenUtils::Scaled(kDetailPanelBasePosition.y))
-	, m_numberFontTexture(kNumberFontTextureFilename, ScreenUtils::Scaled(10, 9), { 20, 18 })
 	, m_difficultyTexture(kDifficultyTextureFilename,
 		{
 			.row = kNumDifficulties,
@@ -49,6 +48,8 @@ MusicGame::Graphics::SongInfoPanel::SongInfoPanel(const ksh::ChartData& chartDat
 			.sourceSize = { 84, 24 },
 		})
 	, m_difficultyTextureRegion(m_difficultyTexture(chartData.meta.difficulty.idx))
+	, m_numberFontTexture(kNumberFontTextureFilename, ScreenUtils::Scaled(10, 9), { 20, 18 })
+	, m_level(chartData.meta.level)
 {
 	using namespace ScreenUtils;
 
@@ -76,7 +77,7 @@ MusicGame::Graphics::SongInfoPanel::SongInfoPanel(const ksh::ChartData& chartDat
 	}
 }
 
-void MusicGame::Graphics::SongInfoPanel::draw() const
+void MusicGame::Graphics::SongInfoPanel::draw(double currentBPM) const
 {
 	using namespace ScreenUtils;
 
@@ -84,4 +85,11 @@ void MusicGame::Graphics::SongInfoPanel::draw() const
 	m_titlePanelBaseTexture.resized(Scaled(kTitlePanelSize)).drawAt(m_titlePanelPosition);
 	m_detailPanelBaseTexture.resized(Scaled(kDetailPanelSize)).draw(m_detailPanelPosition);
 	m_difficultyTextureRegion.draw(m_detailPanelPosition + Scaled(13, 3));
+
+	// Level
+	m_numberFontTexture.draw(m_detailPanelPosition + Scaled(79, 4), m_level, 0, false, NumberFontTexture::kLeftAlign);
+
+	// BPM
+	// TODO: show floating-point BPM
+	m_numberFontTexture.draw(m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(currentBPM), 0, false, NumberFontTexture::kLeftAlign);
 }

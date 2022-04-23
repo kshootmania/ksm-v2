@@ -108,6 +108,7 @@ void MusicGame::Graphics::GraphicsMain::update(const UpdateInfo& updateInfo)
 void MusicGame::Graphics::GraphicsMain::draw() const
 {
 	assert(m_updateInfo.pChartData != nullptr);
+	const ksh::ChartData& chartData = *m_updateInfo.pChartData;
 
 	Graphics3D::SetCameraTransform(m_camera);
 
@@ -117,7 +118,7 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 	{
 		const ScopedRenderStates3D samplerState(SamplerState::ClampNearest);
 		double bgTiltRadians = 0.0;
-		if (m_updateInfo.pChartData->bg.legacy.bgInfos[0].rotationFlags.tiltAffected)
+		if (chartData.bg.legacy.bgInfos[0].rotationFlags.tiltAffected)
 		{
 			bgTiltRadians += tiltRadians / 3;
 		}
@@ -131,13 +132,13 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 		const ScopedRenderStates3D renderState(BlendState::Additive);
 
 		double layerTiltRadians = 0.0;
-		if (m_updateInfo.pChartData->bg.legacy.layerInfos[0].rotationFlags.tiltAffected)
+		if (chartData.bg.legacy.layerInfos[0].rotationFlags.tiltAffected)
 		{
 			layerTiltRadians += tiltRadians * 0.8;
 		}
 
 		// TODO: Layer speed specified by KSH
-		const ksh::Pulse resolution = m_updateInfo.pChartData->beat.resolution;
+		const ksh::Pulse resolution = chartData.beat.resolution;
 		const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)), static_cast<int32>(m_layerFrameTextures[0].size()));
 		m_billboardMesh.draw(m_layerTransform * TiltMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
 	}
@@ -151,7 +152,7 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 	m_3dViewTexture.resolve();
 	m_3dViewTexture.draw();
 
-	m_songInfoPanel.draw();
+	m_songInfoPanel.draw(m_updateInfo.currentBPM);
 	m_scorePanel.draw(0/* TODO: Score */);
 	m_gaugePanel.draw(100.0/* TODO: Percentage */, m_updateInfo.currentPulse);
 	m_frameRateMonitor.draw();

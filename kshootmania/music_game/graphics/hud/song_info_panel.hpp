@@ -17,14 +17,15 @@ namespace MusicGame::Graphics
 		const Texture m_detailPanelBaseTexture;
 		const Vec2 m_detailPanelPosition;
 
-		const NumberFontTexture m_numberFontTexture;
-
 		const TiledTexture m_difficultyTexture;
 		const TextureRegion m_difficultyTextureRegion;
+
+		const NumberFontTexture m_numberFontTexture;
+		const int32 m_level;
 
 	public:
 		explicit SongInfoPanel(const ksh::ChartData& chartData);
 
-		void draw() const;
+		void draw(double currentBPM) const;
 	};
 }

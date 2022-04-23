@@ -25,6 +25,7 @@ void MusicGame::GameMain::update()
 
 	m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
 	m_graphicsUpdateInfo.currentPulse = currentPulse;
+	m_graphicsUpdateInfo.currentBPM = ksh::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
 
 	for (int i = 0; i < ksh::kNumBTLanes; ++i)
 	{
