@@ -366,10 +366,10 @@ namespace ksh
 	using Lane = ByPulse<T>; // TODO: For editor, ByPulseMulti would be used instead of ByPulse?
 
 	template <typename T>
-	using DefList = std::unordered_map<std::u8string, T>;
+	using DefList = std::unordered_map<std::string, T>;
 
 	template <typename T>
-	using InvokeList = std::unordered_map<std::u8string, T>;
+	using InvokeList = std::unordered_map<std::string, T>;
 
 	template <typename T>
 	T Lerp(T value1, T value2, double rate)

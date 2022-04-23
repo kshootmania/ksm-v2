@@ -22,7 +22,7 @@ namespace ksh
 		kPeakingFilter,
 	};
 
-	AudioEffectType StrToAudioEffectType(std::u8string_view str);
+	AudioEffectType StrToAudioEffectType(std::string_view str);
 
 	NLOHMANN_JSON_SERIALIZE_ENUM(AudioEffectType, {
 		{ AudioEffectType::kUnspecified, nullptr },
@@ -73,7 +73,7 @@ namespace ksh
 		}
 	};
 
-	using AudioEffectParams = std::unordered_map<std::u8string, AudioEffectParam>;
+	using AudioEffectParams = std::unordered_map<std::string, AudioEffectParam>;
 
 	inline void to_json(nlohmann::json& j, const AudioEffectParams& params)
 	{
@@ -85,13 +85,13 @@ namespace ksh
 				if (value.valueOnMin == value.valueOnMax)
 				{
 					// "xxx"
-					j[UnU8(name)] = value.valueOff;
+					j[name] = value.valueOff;
 				}
 				else
 				{
 					// "xxx-yyy"
-					j[UnU8(name)] = value.valueOff;
-					j[UnU8(name) + ".on.max"] = value.valueOnMax;
+					j[name] = value.valueOff;
+					j[name + ".on.max"] = value.valueOnMax;
 				}
 			}
 			else
@@ -99,15 +99,15 @@ namespace ksh
 				if (value.valueOnMin == value.valueOnMax)
 				{
 					// "xxx>yyy"
-					j[UnU8(name)] = value.valueOff;
-					j[UnU8(name) + ".on"] = value.valueOnMin;
+					j[name] = value.valueOff;
+					j[name + ".on"] = value.valueOnMin;
 				}
 				else
 				{
 					// "xxx>yyy-zzz"
-					j[UnU8(name)] = value.valueOff;
-					j[UnU8(name) + ".on.min"] = value.valueOnMin;
-					j[UnU8(name) + ".on.max"] = value.valueOnMax;
+					j[name] = value.valueOff;
+					j[name + ".on.min"] = value.valueOnMin;
+					j[name + ".on.max"] = value.valueOnMax;
 				}
 			}
 		}
@@ -152,12 +152,12 @@ namespace ksh
 
 		if (!audioEffect.pulseEventList.empty())
 		{
-			j["pulse_event"] = UnU8(audioEffect.pulseEventList);
+			j["pulse_event"] = audioEffect.pulseEventList;
 		}
 
 		if (!audioEffect.noteEventList.empty())
 		{
-			j["note_event"] = UnU8(audioEffect.noteEventList);
+			j["note_event"] = audioEffect.noteEventList;
 		}
 	}
 }

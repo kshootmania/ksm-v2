@@ -30,7 +30,7 @@ namespace ksh
 
 	struct KSHBGInfo
 	{
-		std::u8string filename;
+		std::string filename;
 		KSHRotationFlags rotationFlags = { true, false };
 
 		bool operator==(const KSHBGInfo& rhs) const
@@ -42,7 +42,7 @@ namespace ksh
 	inline void to_json(nlohmann::json& j, const KSHBGInfo& bg)
 	{
 		j = {
-			{ "filename", UnU8(bg.filename) },
+			{ "filename", bg.filename },
 		};
 
 		if (bg.rotationFlags != KSHRotationFlags{ true, false })
@@ -53,8 +53,8 @@ namespace ksh
 
 	struct KSHLayerInfo
 	{
-		std::u8string filename;
-		int64_t durationMs = 0;
+		std::string filename;
+		std::int64_t durationMs = 0;
 		KSHRotationFlags rotationFlags = { true, true };
 
 		bool operator==(const KSHLayerInfo& rhs) const
@@ -66,7 +66,7 @@ namespace ksh
 	inline void to_json(nlohmann::json& j, const KSHLayerInfo& layer)
 	{
 		j = {
-			{ "filename", UnU8(layer.filename) },
+			{ "filename", layer.filename },
 		};
 
 		if (layer.durationMs > 0)
@@ -82,7 +82,7 @@ namespace ksh
 
 	struct KSHMovieInfo
 	{
-		std::u8string filename;
+		std::string filename;
 		std::int64_t offsetMs = 0;
 
 		bool empty() const
@@ -94,7 +94,7 @@ namespace ksh
 	inline void to_json(nlohmann::json& j, const KSHMovieInfo& movie)
 	{
 		j = {
-			{ "filename", UnU8(movie.filename) },
+			{ "filename", movie.filename },
 			{ "offset", movie.offsetMs },
 		};
 	}

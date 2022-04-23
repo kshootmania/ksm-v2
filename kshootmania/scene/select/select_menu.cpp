@@ -6,11 +6,6 @@
 
 namespace
 {
-	String Widen(std::u8string_view str)
-	{
-		return Unicode::FromUTF8(ksh::UnU8(str));
-	}
-
 	Array<FilePath> GetSubDirectories(FilePathView path)
 	{
 		return
@@ -64,6 +59,8 @@ void SelectMenu::decideDirectoryFolderItem()
 
 bool SelectMenu::openDirectory(FilePathView directoryPath)
 {
+	using Unicode::FromUTF8;
+
 	if (!directoryPath.empty())
 	{
 		if (!FileSystem::IsDirectory(directoryPath)) // Note: FileSystem::IsDirectory() checks if the directory exists.
@@ -121,18 +118,18 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 				}
 
 				chartInfos[difficultyIdx] = SelectMenuSongItemChartInfo{
-					.title = Widen(chartData.meta.title),
-					.artist = Widen(chartData.meta.artist),
-					.jacketFilePath = FileSystem::FullPath(FileSystem::ParentPath(chartFile) + Widen(chartData.meta.jacketFilename)),
-					.jacketAuthor = Widen(chartData.meta.jacketAuthor),
+					.title = FromUTF8(chartData.meta.title),
+					.artist = FromUTF8(chartData.meta.artist),
+					.jacketFilePath = FileSystem::FullPath(FileSystem::ParentPath(chartFile) + FromUTF8(chartData.meta.jacketFilename)),
+					.jacketAuthor = FromUTF8(chartData.meta.jacketAuthor),
 					.chartFilePath = FileSystem::FullPath(chartFile),
-					.chartAuthor = Widen(chartData.meta.chartAuthor),
+					.chartAuthor = FromUTF8(chartData.meta.chartAuthor),
 					.level = chartData.meta.level,
-					.previewBGMFilePath = Widen(chartData.audio.bgmInfo.previewFilename),
+					.previewBGMFilePath = FromUTF8(chartData.audio.bgmInfo.previewFilename),
 					.previewBGMOffsetSec = chartData.audio.bgmInfo.previewOffsetMs / 1000.0,
 					.previewBGMDurationSec = chartData.audio.bgmInfo.previewDurationMs / 1000.0,
 					.iconFilePath = U""/*TODO*/,
-					.information = Widen(chartData.meta.information),
+					.information = FromUTF8(chartData.meta.information),
 					.highScoreInfo = HighScoreInfo{}/*TODO*/,
 				};
 			}

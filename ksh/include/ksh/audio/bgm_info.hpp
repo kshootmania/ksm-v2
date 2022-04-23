@@ -5,13 +5,13 @@ namespace ksh
 {
 	struct BGMInfo
 	{
-		std::u8string filename;
+		std::string filename;
 
 		double volume = 1.0;
 
 		int64_t offsetMs = 0;
 
-		std::u8string previewFilename;
+		std::string previewFilename;
 
 		int64_t previewOffsetMs = 0;
 
@@ -21,7 +21,7 @@ namespace ksh
 	inline void to_json(nlohmann::json& j, const BGMInfo& bgm)
 	{
 		j = {
-			{ "filename", UnU8(bgm.filename) },
+			{ "filename", bgm.filename },
 			{ "volume", bgm.volume },
 			{ "offset", bgm.offsetMs },
 			{ "preview_offset", bgm.previewOffsetMs },
@@ -30,7 +30,7 @@ namespace ksh
 
 		if (bgm.filename != bgm.previewFilename)
 		{
-			j["preview_filename"] = UnU8(bgm.previewFilename);
+			j["preview_filename"] = bgm.previewFilename;
 		}
 	}
 	/*
@@ -48,7 +48,7 @@ namespace ksh
 	{
 		double volume = 1.0;
 
-		std::u8string previewFilename;
+		std::string previewFilename;
 
 		int64_t previewOffsetMs = 0;
 

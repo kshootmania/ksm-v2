@@ -3,7 +3,7 @@
 
 namespace ksh
 {
-	std::unordered_map<std::u8string, std::u8string> LoadKSHMetaDataHashMap(std::istream& stream, bool* pIsUTF8 = nullptr);
+	std::unordered_map<std::string, std::string> LoadKSHMetaDataHashMap(std::istream& stream, bool* pIsUTF8 = nullptr);
 
 	MetaChartData LoadKSHMetaChartData(std::istream& stream);
 

@@ -6,9 +6,9 @@ namespace ksh
 	struct LegacyAudioBGMInfo
 	{
 		// Filenames of pre-rendered BGM with audio effects from legacy KSH charts
-		std::u8string filenameF; // "xxx_f.ogg"
-		std::u8string filenameP; // "xxx_p.ogg"
-		std::u8string filenameFP; // "xxx_fp.ogg"
+		std::string filenameF; // "xxx_f.ogg"
+		std::string filenameP; // "xxx_p.ogg"
+		std::string filenameFP; // "xxx_fp.ogg"
 
 		bool empty() const
 		{
@@ -20,22 +20,22 @@ namespace ksh
 			if (!filenameFP.empty())
 			{
 				return {
-					UnU8(filenameF),
-					UnU8(filenameP),
-					UnU8(filenameFP),
+					filenameF,
+					filenameP,
+					filenameFP,
 				};
 			}
 			else if (!filenameP.empty())
 			{
 				return {
-					UnU8(filenameF),
-					UnU8(filenameP),
+					filenameF,
+					filenameP,
 				};
 			}
 			else if (!filenameF.empty())
 			{
 				return {
-					UnU8(filenameF),
+					filenameF,
 				};
 			}
 			else

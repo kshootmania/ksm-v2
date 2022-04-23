@@ -5,8 +5,8 @@ namespace ksh
 {
 	struct KSHUnknownOptionLine
 	{
-		std::u8string key;
-		std::u8string value;
+		std::string key;
+		std::string value;
 	};
 
 	struct ImplRoot
@@ -14,6 +14,6 @@ namespace ksh
 		ByPulseMulti<KSHUnknownOptionLine> kshUnknownOptionLines;
 
 		// Note: "//" or ";" is not removed from the string.
-		ByPulseMulti<std::u8string> kshComments;
+		ByPulseMulti<std::string> kshComments;
 	};
 }
