@@ -12,12 +12,12 @@ namespace
 	constexpr double kCos15Deg = 0.9659258263;
 	constexpr Vec3 kCameraLookAt = kCameraPosition + Vec3{ 0.0, -100.0 * kSin15Deg, 100.0 * kCos15Deg };
 
-	constexpr Float3 kBGBillboardPosition = Float3{ 0, -53.0f, 0 };
-	constexpr Float2 kBGBillboardSize = Float2{ 900.0f, 800.0f } * 0.655f;
+	constexpr Float3 kBGBillboardPosition = Float3{ 0, -52.5f, 0 };
+	constexpr Float2 kBGBillboardSize = Float2{ 900.0f, 800.0f } * 0.65f;
 
 	constexpr Size kLayerFrameSize = { 600, 480 };
-	constexpr Float3 kLayerBillboardPosition = Float3{ 0, -31.0f, 0 };
-	constexpr Float2 kLayerBillboardSize = Float2{ 880.0f, 704.0f } * 0.655f;
+	constexpr Float3 kLayerBillboardPosition = Float3{ 0, -41.0f, 0 };
+	constexpr Float2 kLayerBillboardSize = Float2{ 880.0f, 704.0f } * 0.65f;
 
 	FilePath BGFilePath(const ksh::ChartData& chartData)
 	{
