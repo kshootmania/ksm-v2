@@ -376,4 +376,15 @@ namespace ksh
 	{
 		return value1 + static_cast<T>((value2 - value1) * rate);
 	}
+
+	template <typename T, typename U>
+	auto CurrentAt(const std::map<T, U>& map, T key)
+	{
+		auto itr = map.upper_bound(key);
+		if (itr != map.begin())
+		{
+			--itr;
+		}
+		return itr;
+	}
 }
