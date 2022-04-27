@@ -5,25 +5,10 @@
 
 namespace MusicGame::Graphics
 {
-	namespace KeyBeamType
-	{
-		enum KeyBeamType : int32
-		{
-			kDefault = 0,
-			kNear,
-			kCritical,
-			kNearSlow,
-			kNearFast,
-			kErrorFast,
-
-			kNumBeamTypes,
-		};
-	}
-
 	struct LaneState
 	{
 		double keyBeamTimeSec = kPastTimeSec;
-		KeyBeamType::KeyBeamType keyBeamType = KeyBeamType::kDefault;
+		Judgment::KeyBeamType keyBeamType = Judgment::KeyBeamType::kDefault;
 
 		double animationStartTimeSec = kPastTimeSec;
 		Judgment::JudgmentResult animationJudgmentResult = Judgment::JudgmentResult::kUnspecified;

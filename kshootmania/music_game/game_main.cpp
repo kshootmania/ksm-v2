@@ -5,6 +5,16 @@
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	: m_chartData(ksh::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
 	, m_timingCache(ksh::TimingUtils::CreateTimingCache(m_chartData.beat))
+	, m_btLaneJudgments{
+			Judgment::ButtonLaneJudgment(m_chartData.note.btLanes[0], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(m_chartData.note.btLanes[1], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(m_chartData.note.btLanes[2], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(m_chartData.note.btLanes[3], m_chartData.beat, m_timingCache),
+		}
+	, m_fxLaneJudgments{
+			Judgment::ButtonLaneJudgment(m_chartData.note.fxLanes[0], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(m_chartData.note.fxLanes[1], m_chartData.beat, m_timingCache),
+		}
 	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::FromUTF8(m_chartData.audio.bgmInfo.filename))
 	, m_assistTick(gameCreateInfo.enableAssistTick)
 	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
@@ -31,7 +41,12 @@ void MusicGame::GameMain::update()
 	{
 		if (KeyConfig::Down(kBTButtons[i]))
 		{
-			m_graphicsUpdateInfo.btLaneState[i].keyBeamTimeSec = currentTimeSec;
+			const Optional<Judgment::KeyBeamType> keyBeamType = m_btLaneJudgments[i].processKeyDown(m_chartData.note.btLanes[i], currentPulse, currentTimeSec);
+			if (keyBeamType.has_value())
+			{
+				m_graphicsUpdateInfo.btLaneState[i].keyBeamTimeSec = currentTimeSec;
+				m_graphicsUpdateInfo.btLaneState[i].keyBeamType = *keyBeamType;
+			}
 		}
 	}
 
@@ -39,7 +54,12 @@ void MusicGame::GameMain::update()
 	{
 		if (KeyConfig::Down(kFXButtons[i]))
 		{
-			m_graphicsUpdateInfo.fxLaneState[i].keyBeamTimeSec = currentTimeSec;
+			const Optional<Judgment::KeyBeamType> keyBeamType = m_fxLaneJudgments[i].processKeyDown(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec);
+			if (keyBeamType.has_value())
+			{
+				m_graphicsUpdateInfo.fxLaneState[i].keyBeamTimeSec = currentTimeSec;
+				m_graphicsUpdateInfo.fxLaneState[i].keyBeamType = *keyBeamType;
+			}
 		}
 	}
 

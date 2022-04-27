@@ -250,6 +250,9 @@
     <Filter Include="Header Files\music_game\graphics\hud">
       <UniqueIdentifier>{47fb5e45-1901-4a62-a380-9e5858586af5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\music_game\judgment">
+      <UniqueIdentifier>{42900bc0-ffe3-4d14-85b1-9ce5c2f0b3a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\title\title_scene.cpp">
@@ -368,6 +371,9 @@
     </ClCompile>
     <ClCompile Include="graphics\number_font_texture.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="music_game\judgment\button_lane_judgment.cpp">
+      <Filter>Source Files\music_game\judgment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1156,6 +1162,9 @@
     </ClInclude>
     <ClInclude Include="music_game\graphics\hud\song_info_panel.hpp">
       <Filter>Header Files\music_game\graphics\hud</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\judgment\button_lane_judgment.hpp">
+      <Filter>Header Files\music_game\judgment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

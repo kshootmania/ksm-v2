@@ -35,5 +35,7 @@ namespace MathUtils
 
 	ksh::Ms SecToMs(double sec);
 
+	double MsToSec(ksh::Ms sec);
+
 	int32 NumDigits(int32 number);
 }

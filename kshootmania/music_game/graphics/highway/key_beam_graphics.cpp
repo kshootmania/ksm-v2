@@ -49,7 +49,7 @@ void MusicGame::Graphics::KeyBeamGraphics::draw(const UpdateInfo& updateInfo, co
 		}
 
 		const TextureRegion beamTextureRegion = m_beamTexture(
-			kBTKeyBeamTextureSize.x * (static_cast<double>(laneState.keyBeamType) + 0.5 - widthRate / 2),
+			kBTKeyBeamTextureSize.x * (static_cast<double>(static_cast<int32>(laneState.keyBeamType)) + 0.5 - widthRate / 2),
 			0,
 			kBTKeyBeamTextureSize.x * widthRate,
 			kBTKeyBeamTextureSize.y);
