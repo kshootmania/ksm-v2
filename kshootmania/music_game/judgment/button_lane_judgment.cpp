@@ -79,15 +79,7 @@ namespace
 	}
 }
 
-ButtonLaneJudgment::ButtonLaneJudgment(const ksh::ByPulse<ksh::Interval>& lane, const ksh::BeatMap& beatMap, const ksh::TimingCache& timingCache)
-	: m_pulseToSec(CreatePulseToSec(lane, beatMap, timingCache))
-	, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane))
-	, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatMap))
-	, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size()) * 2)
-{
-}
-
-Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec)
+Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentTimeSec)
 {
 	using namespace TimingWindow;
 
@@ -100,12 +92,12 @@ Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh:
 		const auto& [y, note] = *itr;
 		const double sec = m_pulseToSec.at(y);
 		const double endSec = (note.length == 0) ? sec : m_pulseToSec.at(y + note.length);
-		if (currentSec - endSec >= ChipNote::kWindowSecError)
+		if (currentTimeSec - endSec >= ChipNote::kWindowSecError)
 		{
 			m_passedNotePulse = y;
 			continue;
 		}
-		
+
 		if (note.length == 0) // Chip note
 		{
 			if (m_chipJudgmentArray.at(y) != JudgmentResult::kUnspecified)
@@ -113,25 +105,25 @@ Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh:
 				continue;
 			}
 
-			if (!found || Abs(sec - currentSec) < minDistance)
+			if (!found || Abs(sec - currentTimeSec) < minDistance)
 			{
 				nearestNotePulse = y;
-				minDistance = Abs(sec - currentSec);
+				minDistance = Abs(sec - currentTimeSec);
 				found = true;
 			}
-			else if (found && Abs(sec - currentSec) >= minDistance && y > currentPulse)
+			else if (found && Abs(sec - currentTimeSec) >= minDistance && y > currentPulse)
 			{
 				break;
 			}
 		}
 		else // Long note
 		{
-			if ((!found || Abs(sec - currentSec) < minDistance) && sec - currentSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
+			if ((!found || Abs(sec - currentTimeSec) < minDistance) && sec - currentTimeSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
 			{
 				m_currentHoldingLongNotePulse = y;
 				return none;
 			}
-			else if (found && sec - currentSec > LongNote::kWindowSecPreHold && y > currentPulse)
+			else if (found && sec - currentTimeSec > LongNote::kWindowSecPreHold && y > currentPulse)
 			{
 				break;
 			}
@@ -160,6 +152,28 @@ Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh:
 	}
 
 	return KeyBeamType::kDefault;
+}
+
+ButtonLaneJudgment::ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const ksh::ByPulse<ksh::Interval>& lane, const ksh::BeatMap& beatMap, const ksh::TimingCache& timingCache)
+	: m_keyConfigButton(keyConfigButton)
+	, m_pulseToSec(CreatePulseToSec(lane, beatMap, timingCache))
+	, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane))
+	, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatMap))
+	, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size()) * 2)
+{
+}
+
+void MusicGame::Judgment::ButtonLaneJudgment::update(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentTimeSec, Graphics::LaneState& laneStateRef)
+{
+	if (KeyConfig::Down(m_keyConfigButton))
+	{
+		const Optional<Judgment::KeyBeamType> keyBeamType = processKeyDown(lane, currentPulse, currentTimeSec);
+		if (keyBeamType.has_value())
+		{
+			laneStateRef.keyBeamTimeSec = currentTimeSec;
+			laneStateRef.keyBeamType = *keyBeamType;
+		}
+	}
 }
 
 int32 MusicGame::Judgment::ButtonLaneJudgment::scoreValue() const

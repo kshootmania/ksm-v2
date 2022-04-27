@@ -33,14 +33,14 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	: m_chartData(ksh::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
 	, m_timingCache(ksh::TimingUtils::CreateTimingCache(m_chartData.beat))
 	, m_btLaneJudgments{
-			Judgment::ButtonLaneJudgment(m_chartData.note.btLanes[0], m_chartData.beat, m_timingCache),
-			Judgment::ButtonLaneJudgment(m_chartData.note.btLanes[1], m_chartData.beat, m_timingCache),
-			Judgment::ButtonLaneJudgment(m_chartData.note.btLanes[2], m_chartData.beat, m_timingCache),
-			Judgment::ButtonLaneJudgment(m_chartData.note.btLanes[3], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(kBTButtons[0], m_chartData.note.btLanes[0], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(kBTButtons[1], m_chartData.note.btLanes[1], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(kBTButtons[2], m_chartData.note.btLanes[2], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(kBTButtons[3], m_chartData.note.btLanes[3], m_chartData.beat, m_timingCache),
 		}
 	, m_fxLaneJudgments{
-			Judgment::ButtonLaneJudgment(m_chartData.note.fxLanes[0], m_chartData.beat, m_timingCache),
-			Judgment::ButtonLaneJudgment(m_chartData.note.fxLanes[1], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(kFXButtons[0], m_chartData.note.fxLanes[0], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(kFXButtons[1], m_chartData.note.fxLanes[1], m_chartData.beat, m_timingCache),
 		}
 	, m_scoreValueMax(SumScoreValueMax(m_btLaneJudgments) + SumScoreValueMax(m_fxLaneJudgments)) // TODO: add laser
 	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::FromUTF8(m_chartData.audio.bgmInfo.filename))
@@ -67,28 +67,12 @@ void MusicGame::GameMain::update()
 
 	for (int i = 0; i < ksh::kNumBTLanes; ++i)
 	{
-		if (KeyConfig::Down(kBTButtons[i]))
-		{
-			const Optional<Judgment::KeyBeamType> keyBeamType = m_btLaneJudgments[i].processKeyDown(m_chartData.note.btLanes[i], currentPulse, currentTimeSec);
-			if (keyBeamType.has_value())
-			{
-				m_graphicsUpdateInfo.btLaneState[i].keyBeamTimeSec = currentTimeSec;
-				m_graphicsUpdateInfo.btLaneState[i].keyBeamType = *keyBeamType;
-			}
-		}
+		m_btLaneJudgments[i].update(m_chartData.note.btLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.btLaneState[i]);
 	}
 
 	for (int i = 0; i < ksh::kNumFXLanes; ++i)
 	{
-		if (KeyConfig::Down(kFXButtons[i]))
-		{
-			const Optional<Judgment::KeyBeamType> keyBeamType = m_fxLaneJudgments[i].processKeyDown(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec);
-			if (keyBeamType.has_value())
-			{
-				m_graphicsUpdateInfo.fxLaneState[i].keyBeamTimeSec = currentTimeSec;
-				m_graphicsUpdateInfo.fxLaneState[i].keyBeamType = *keyBeamType;
-			}
-		}
+		m_fxLaneJudgments[i].update(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.fxLaneState[i]);
 	}
 
 	m_graphicsUpdateInfo.score = kScoreMax * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax; // TODO: add laser
