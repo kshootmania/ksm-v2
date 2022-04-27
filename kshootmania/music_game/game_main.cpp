@@ -2,6 +2,33 @@
 #include "game_defines.hpp"
 #include "ksh/io/ksh_io.hpp"
 
+namespace
+{
+	using namespace MusicGame;
+
+	template <std::size_t N>
+	int32 SumScoreValue(const std::array<Judgment::ButtonLaneJudgment, N>& laneJudgements)
+	{
+		int32 sum = 0;
+		for (const auto& laneJudgment : laneJudgements)
+		{
+			sum += laneJudgment.scoreValue();
+		}
+		return sum;
+	}
+
+	template <std::size_t N>
+	int32 SumScoreValueMax(const std::array<Judgment::ButtonLaneJudgment, N>& laneJudgements)
+	{
+		int32 sum = 0;
+		for (const auto& laneJudgment : laneJudgements)
+		{
+			sum += laneJudgment.scoreValueMax();
+		}
+		return sum;
+	}
+}
+
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	: m_chartData(ksh::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
 	, m_timingCache(ksh::TimingUtils::CreateTimingCache(m_chartData.beat))
@@ -15,6 +42,7 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 			Judgment::ButtonLaneJudgment(m_chartData.note.fxLanes[0], m_chartData.beat, m_timingCache),
 			Judgment::ButtonLaneJudgment(m_chartData.note.fxLanes[1], m_chartData.beat, m_timingCache),
 		}
+	, m_scoreValueMax(SumScoreValueMax(m_btLaneJudgments) + SumScoreValueMax(m_fxLaneJudgments)) // TODO: add laser
 	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::FromUTF8(m_chartData.audio.bgmInfo.filename))
 	, m_assistTick(gameCreateInfo.enableAssistTick)
 	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
@@ -62,6 +90,8 @@ void MusicGame::GameMain::update()
 			}
 		}
 	}
+
+	m_graphicsUpdateInfo.score = kScoreMax * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax; // TODO: add laser
 
 	m_musicGameGraphics.update(m_graphicsUpdateInfo);
 }

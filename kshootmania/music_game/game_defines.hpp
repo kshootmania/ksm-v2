@@ -32,4 +32,6 @@ namespace MusicGame
 
 		kNumGaugeTypes,
 	};
+
+	constexpr int32 kScoreMax = 10000000;
 }

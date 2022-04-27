@@ -153,7 +153,7 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 	m_3dViewTexture.draw();
 
 	m_songInfoPanel.draw(m_updateInfo.currentBPM);
-	m_scorePanel.draw(0/* TODO: Score */);
+	m_scorePanel.draw(m_updateInfo.score);
 	m_gaugePanel.draw(100.0/* TODO: Percentage */, m_updateInfo.currentPulse);
 	m_frameRateMonitor.draw();
 }

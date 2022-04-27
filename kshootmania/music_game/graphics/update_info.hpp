@@ -36,5 +36,7 @@ namespace MusicGame::Graphics
 		std::array<LaneState, ksh::kNumFXLanes> fxLaneState;
 
 		CamValues camValues;
+
+		int32 score = 0;
 	};
 }

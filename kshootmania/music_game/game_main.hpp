@@ -24,6 +24,7 @@ namespace MusicGame
 		// Judgment
 		std::array<Judgment::ButtonLaneJudgment, ksh::kNumBTLanes> m_btLaneJudgments;
 		std::array<Judgment::ButtonLaneJudgment, ksh::kNumFXLanes> m_fxLaneJudgments;
+		const int32 m_scoreValueMax;
 
 		// Audio
 		Audio::BGM m_bgm;

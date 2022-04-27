@@ -83,6 +83,7 @@ ButtonLaneJudgment::ButtonLaneJudgment(const ksh::ByPulse<ksh::Interval>& lane, 
 	: m_pulseToSec(CreatePulseToSec(lane, beatMap, timingCache))
 	, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane))
 	, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatMap))
+	, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size()) * 2)
 {
 }
 
@@ -142,11 +143,13 @@ Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh:
 		if (minDistance < ChipNote::kWindowSecCritical)
 		{
 			m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kCritical;
+			m_scoreValue += 2;
 			return KeyBeamType::kCritical;
 		}
 		else if (minDistance < ChipNote::kWindowSecNear)
 		{
 			m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kNear;
+			m_scoreValue += 1;
 			return KeyBeamType::kNear;
 		}
 		else if (minDistance < ChipNote::kWindowSecError) // TODO: easy gauge, fast/slow
@@ -157,4 +160,14 @@ Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh:
 	}
 
 	return KeyBeamType::kDefault;
+}
+
+int32 MusicGame::Judgment::ButtonLaneJudgment::scoreValue() const
+{
+	return m_scoreValue;
+}
+
+int32 MusicGame::Judgment::ButtonLaneJudgment::scoreValueMax() const
+{
+	return m_scoreValueMax;
 }

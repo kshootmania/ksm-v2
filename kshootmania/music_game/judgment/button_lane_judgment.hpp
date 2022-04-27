@@ -18,9 +18,17 @@ namespace MusicGame::Judgment
 
 		Optional<ksh::Pulse> m_currentHoldingLongNotePulse = none;
 
+		int32 m_scoreValue = 0;
+
+		const int32 m_scoreValueMax;
+
 	public:
 		ButtonLaneJudgment(const ksh::ByPulse<ksh::Interval>& lane, const ksh::BeatMap& beatMap, const ksh::TimingCache& timingCache);
 
 		Optional<KeyBeamType> processKeyDown(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec);
+
+		int32 scoreValue() const;
+
+		int32 scoreValueMax() const;
 	};
 }
