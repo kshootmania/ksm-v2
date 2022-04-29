@@ -278,7 +278,7 @@ namespace
 	}
 
 	// TODO: refactor
-	class PreparedLongNote
+	class AbstractPreparedLongNote
 	{
 	protected:
 		bool m_prepared = false;
@@ -292,15 +292,15 @@ namespace
 		std::size_t m_targetLaneIdx = 0;
 
 	public:
-		PreparedLongNote() = default;
+		AbstractPreparedLongNote() = default;
 
-		PreparedLongNote(ChartData* pTargetChartData, std::size_t targetLaneIdx)
+		AbstractPreparedLongNote(ChartData* pTargetChartData, std::size_t targetLaneIdx)
 			: m_pTargetChartData(pTargetChartData)
 			, m_targetLaneIdx(targetLaneIdx)
 		{
 		}
 
-		virtual ~PreparedLongNote() = default;
+		virtual ~AbstractPreparedLongNote() = 0;
 
 		void prepare(Pulse time)
 		{
@@ -330,13 +330,15 @@ namespace
 		}
 	};
 
-	class PreparedLongBTNote : public PreparedLongNote
+	AbstractPreparedLongNote::~AbstractPreparedLongNote() = default;
+
+	class PreparedLongBTNote : public AbstractPreparedLongNote
 	{
 	public:
 		PreparedLongBTNote() = default;
 
 		PreparedLongBTNote(ChartData* pTargetChartData, std::size_t targetLaneIdx)
-			: PreparedLongNote(pTargetChartData, targetLaneIdx)
+			: AbstractPreparedLongNote(pTargetChartData, targetLaneIdx)
 		{
 		}
 
@@ -357,7 +359,7 @@ namespace
 		}
 	};
 
-	class PreparedLongFXNote : public PreparedLongNote
+	class PreparedLongFXNote : public AbstractPreparedLongNote
 	{
 	protected:
 		// FX audio effect string ("fx-l=" or "fx-r=" in .ksh)
@@ -370,7 +372,7 @@ namespace
 		PreparedLongFXNote() = default;
 
 		PreparedLongFXNote(ChartData* pTargetChartData, std::size_t targetLaneIdx)
-			: PreparedLongNote(pTargetChartData, targetLaneIdx)
+			: AbstractPreparedLongNote(pTargetChartData, targetLaneIdx)
 		{
 		}
 
@@ -386,7 +388,7 @@ namespace
 			}
 			if (!m_prepared)
 			{
-				PreparedLongNote::prepare(time);
+				AbstractPreparedLongNote::prepare(time);
 				m_audioEffectStr = audioEffectStr;
 				m_audioEffectParamStr = audioEffectParamStr;
 			}
@@ -436,7 +438,7 @@ namespace
 
 		virtual void clear() override
 		{
-			PreparedLongNote::clear();
+			AbstractPreparedLongNote::clear();
 			m_audioEffectStr.clear();
 			m_audioEffectParamStr.clear();
 		}
@@ -871,7 +873,7 @@ namespace
 
 	std::string_view Get(const std::unordered_map<std::string, std::string>& meta, const std::string& key, std::string_view defaultValue = "")
 	{
-		if (meta.contains(key)) // Note: unordered_map<string, string> does not support string_view as key
+		if (meta.contains(key)) // Note: key is const string& instead of string_view because unordered_map<string, string>::contains() and at() do not support string_view as key
 		{
 			return meta.at(key);
 		}
@@ -949,7 +951,7 @@ namespace
 
 		std::int32_t volumeInt = GetInt<std::int32_t>(meta, "mvol", 50);
 		chartData.audio.bgmInfo.volume = volumeInt / 100.0;
-		if (chartData.meta.kshVersion.empty())
+		if (chartData.meta.kshVersion.empty()) [[unlikely]]
 		{
 			// For historical reasons, the value is multiplied by 0.6 if the value of "ver" is not specified.
 			chartData.audio.bgmInfo.volume *= 0.6;
@@ -1034,13 +1036,13 @@ std::unordered_map<std::string, std::string> ksh::LoadKSHMetaDataHashMap(std::is
 
 		// Skip comments
 		// TODO: Store comments if editor
-		if (IsCommentLine(line))
+		if (IsCommentLine(line)) [[unlikely]]
 		{
 			continue;
 		}
 
 		// Skip unexpected header lines
-		if (!IsOptionLine(line))
+		if (!IsOptionLine(line)) [[unlikely]]
 		{
 			continue;
 		}
@@ -1093,7 +1095,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 
 	// Insert the first tempo change
 	double currentTempo = 120.0;
-	if (meta.count("t"))
+	if (meta.contains("t")) [[likely]]
 	{
 		if (InsertBPMChange(chartData.beat.bpmChanges, 0, meta.at("t")))
 		{
@@ -1103,7 +1105,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 
 	// Insert the first time signature change
 	TimeSig currentTimeSig{ 4, 4 };
-	if (meta.count("beat"))
+	if (meta.contains("beat")) [[unlikely]] // unlikely because "beat=" is usually after the first bar line
 	{
 		currentTimeSig = ParseTimeSig(meta.at("beat"));
 	}
@@ -1237,7 +1239,7 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 				const Pulse time = currentPulse + lineIdx * oneLinePulse;
 				if (key == "t")
 				{
-					if (chartData.beat.bpmChanges.empty())
+					if (chartData.beat.bpmChanges.empty()) [[unlikely]]
 					{
 						// In rare cases where BPM is not specified on the chart metadata
 						InsertBPMChange(chartData.beat.bpmChanges, 0, value);
