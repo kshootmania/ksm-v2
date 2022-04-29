@@ -113,3 +113,26 @@ bool KeyConfig::Down(Button button)
 	}
 	return false;
 }
+
+bool KeyConfig::Up(Button button)
+{
+	if (button == KeyConfig::kUnspecifiedButton)
+	{
+		return false;
+	}
+
+	// All keys need to be released for key up
+	if (Pressed(button))
+	{
+		return false;
+	}
+
+	for (const auto& configSet : s_configSetArray)
+	{
+		if (configSet[button].up())
+		{
+			return true;
+		}
+	}
+	return false;
+}

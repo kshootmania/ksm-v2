@@ -63,6 +63,8 @@ namespace KeyConfig
 
 	bool Down(Button button);
 
+	bool Up(Button button);
+
 	template <class C>
 	bool AnyButtonPressed(const C& buttons)
 	{
@@ -82,6 +84,19 @@ namespace KeyConfig
 		for (const auto& button : buttons)
 		{
 			if (KeyConfig::Down(button))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	template <class C>
+	bool AnyButtonUp(const C& buttons)
+	{
+		for (const auto& button : buttons)
+		{
+			if (KeyConfig::Up(button))
 			{
 				return true;
 			}
