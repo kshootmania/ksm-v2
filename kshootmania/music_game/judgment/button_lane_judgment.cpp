@@ -158,13 +158,14 @@ void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const ksh::ByPul
 {
 	if (m_currentLongNotePulse.has_value())
 	{
-		const ksh::Pulse startPulse = *m_currentLongNotePulse;
-		const ksh::Pulse endPulse = *m_currentLongNotePulse + lane.at(*m_currentLongNotePulse).length;
+		const ksh::Pulse noteStartPulse = *m_currentLongNotePulse;
+		const ksh::Pulse noteEndPulse = *m_currentLongNotePulse + lane.at(*m_currentLongNotePulse).length;
+		const ksh::Pulse limitPulse = Min(currentPulse, noteEndPulse);
 
-		for (auto itr = m_longJudgmentArray.upper_bound(Max(startPulse - 1, m_prevPulse)); itr != m_longJudgmentArray.end(); ++itr)
+		for (auto itr = m_longJudgmentArray.upper_bound(Max(noteStartPulse, m_prevPulse) - 1); itr != m_longJudgmentArray.end(); ++itr)
 		{
 			auto& [y, result] = *itr;
-			if (y >= endPulse || y >= currentPulse)
+			if (y >= limitPulse)
 			{
 				break;
 			}
@@ -189,6 +190,7 @@ ButtonLaneJudgment::ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const 
 
 void MusicGame::Judgment::ButtonLaneJudgment::update(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentTimeSec, Graphics::LaneState& laneStateRef)
 {
+	// Chip note & long note start
 	if (KeyConfig::Down(m_keyConfigButton))
 	{
 		const Optional<Judgment::KeyBeamType> keyBeamType = processKeyDown(lane, currentPulse, currentTimeSec);
@@ -199,17 +201,20 @@ void MusicGame::Judgment::ButtonLaneJudgment::update(const ksh::ByPulse<ksh::Int
 		}
 	}
 
+	// Long note hold
 	if (KeyConfig::Pressed(m_keyConfigButton))
 	{
 		processKeyPressed(lane, currentPulse, currentTimeSec);
 	}
 
+	// Long note release
 	if (m_currentLongNotePulse.has_value() && 
 		(KeyConfig::Up(m_keyConfigButton) || (*m_currentLongNotePulse + lane.at(*m_currentLongNotePulse).length < currentPulse)))
 	{
 		m_currentLongNotePulse = none;
 	}
 
+	laneStateRef.currentLongNotePulse = m_currentLongNotePulse;
 	m_prevPulse = currentPulse;
 }
 

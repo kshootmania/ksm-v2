@@ -9,6 +9,16 @@ namespace
 
 	constexpr StringView kChipFXNoteTextureFilename = U"fx_chip.gif";
 	constexpr StringView kLongFXNoteTextureFilename = U"fx_long.gif";
+
+	constexpr int32 kLongNoteTextureYDefault = 0;
+	constexpr int32 kLongNoteTextureYPressed1 = 8;
+	constexpr int32 kLongNoteTextureYPressed2 = 9;
+	constexpr int32 kLongNoteTextureYNotPressed = 10;
+
+	int32 PressedLongNoteTextureY(double currentTimeSec)
+	{
+		return (MathUtils::WrappedFmod(currentTimeSec, 0.1) < 0.05) ? kLongNoteTextureYPressed1 : kLongNoteTextureYPressed2;
+	}
 }
 
 MusicGame::Graphics::ButtonNoteGraphics::ButtonNoteGraphics()
@@ -61,7 +71,23 @@ void MusicGame::Graphics::ButtonNoteGraphics::draw(const UpdateInfo& updateInfo,
 			if (note.length > 0)
 			{
 				const double positionEndY = textureHeight - static_cast<double>(y + note.length - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-				m_longFXNoteTexture(0, 0, 82, 1)
+				int32 textureY;
+				if (updateInfo.fxLaneState[laneIdx].currentLongNotePulse == y)
+				{
+					// Pressed
+					textureY = PressedLongNoteTextureY(updateInfo.currentTimeSec);
+				}
+				else if (y <= updateInfo.currentPulse && updateInfo.currentPulse < y + note.length)
+				{
+					// Not pressed
+					textureY = kLongNoteTextureYNotPressed;
+				}
+				else
+				{
+					// Not current note
+					textureY = kLongNoteTextureYDefault;
+				}
+				m_longFXNoteTexture(0, textureY, 82, 1)
 					.resized(82, static_cast<double>(note.length) * 480 / chartData.beat.resolution)
 					.draw(kLanePositionOffset + kFXLanePositionDiff * dLaneIdx + Vec2::Down(positionEndY));
 			}
@@ -94,7 +120,23 @@ void MusicGame::Graphics::ButtonNoteGraphics::draw(const UpdateInfo& updateInfo,
 				for (int32 i = 0; i < 2; ++i)
 				{
 					const ScopedRenderTarget2D renderTarget((i == 0) ? additiveTarget : invMultiplyTarget);
-					m_longBTNoteTexture(40 * i, 0, 40, 1)
+					int32 textureY;
+					if (updateInfo.btLaneState[laneIdx].currentLongNotePulse == y)
+					{
+						// Pressed
+						textureY = PressedLongNoteTextureY(updateInfo.currentTimeSec);
+					}
+					else if (y <= updateInfo.currentPulse && updateInfo.currentPulse < y + note.length)
+					{
+						// Not pressed
+						textureY = kLongNoteTextureYNotPressed;
+					}
+					else
+					{
+						// Not current note
+						textureY = kLongNoteTextureYDefault;
+					}
+					m_longBTNoteTexture(40 * i, textureY, 40, 1)
 						.resized(40, static_cast<double>(note.length) * 480 / chartData.beat.resolution)
 						.draw(kLanePositionOffset + kBTLanePositionDiff * dLaneIdx + Vec2::Down(positionEndY));
 				}

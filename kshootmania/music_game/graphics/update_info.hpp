@@ -12,6 +12,8 @@ namespace MusicGame::Graphics
 
 		double animationStartTimeSec = kPastTimeSec;
 		Judgment::JudgmentResult animationJudgmentResult = Judgment::JudgmentResult::kUnspecified;
+
+		Optional<ksh::Pulse> currentLongNotePulse = none;
 	};
 
 	struct CamValues
