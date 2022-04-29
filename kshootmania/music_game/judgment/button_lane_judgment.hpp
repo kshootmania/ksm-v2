@@ -16,15 +16,19 @@ namespace MusicGame::Judgment
 		ksh::ByPulse<JudgmentResult> m_chipJudgmentArray;
 		ksh::ByPulse<JudgmentResult> m_longJudgmentArray;
 
+		ksh::Pulse m_prevPulse = kPastPulse;
+
 		ksh::Pulse m_passedNotePulse = kPastPulse;
 
-		Optional<ksh::Pulse> m_currentHoldingLongNotePulse = none;
+		Optional<ksh::Pulse> m_currentLongNotePulse = none;
 
 		int32 m_scoreValue = 0;
 
 		const int32 m_scoreValueMax;
 
 		Optional<KeyBeamType> processKeyDown(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec);
+
+		void processKeyPressed(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec);
 
 	public:
 		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const ksh::ByPulse<ksh::Interval>& lane, const ksh::BeatMap& beatMap, const ksh::TimingCache& timingCache);

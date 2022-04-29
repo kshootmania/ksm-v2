@@ -120,7 +120,7 @@ Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh:
 		{
 			if ((!found || Abs(sec - currentTimeSec) < minDistance) && sec - currentTimeSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
 			{
-				m_currentHoldingLongNotePulse = y;
+				m_currentLongNotePulse = y;
 				return none;
 			}
 			else if (found && sec - currentTimeSec > LongNote::kWindowSecPreHold && y > currentPulse)
@@ -135,13 +135,13 @@ Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh:
 		if (minDistance < ChipNote::kWindowSecCritical)
 		{
 			m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kCritical;
-			m_scoreValue += 2;
+			m_scoreValue += kScoreValueCritical;
 			return KeyBeamType::kCritical;
 		}
 		else if (minDistance < ChipNote::kWindowSecNear)
 		{
 			m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kNear;
-			m_scoreValue += 1;
+			m_scoreValue += kScoreValueNear;
 			return KeyBeamType::kNear;
 		}
 		else if (minDistance < ChipNote::kWindowSecError) // TODO: easy gauge, fast/slow
@@ -154,12 +154,36 @@ Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh:
 	return KeyBeamType::kDefault;
 }
 
+void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec)
+{
+	if (m_currentLongNotePulse.has_value())
+	{
+		const ksh::Pulse startPulse = *m_currentLongNotePulse;
+		const ksh::Pulse endPulse = *m_currentLongNotePulse + lane.at(*m_currentLongNotePulse).length;
+
+		for (auto itr = m_longJudgmentArray.upper_bound(Max(startPulse - 1, m_prevPulse)); itr != m_longJudgmentArray.end(); ++itr)
+		{
+			auto& [y, result] = *itr;
+			if (y >= endPulse || y >= currentPulse)
+			{
+				break;
+			}
+
+			if (result == JudgmentResult::kUnspecified)
+			{
+				result = JudgmentResult::kCritical;
+				m_scoreValue += kScoreValueCritical;
+			}
+		}
+	}
+}
+
 ButtonLaneJudgment::ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const ksh::ByPulse<ksh::Interval>& lane, const ksh::BeatMap& beatMap, const ksh::TimingCache& timingCache)
 	: m_keyConfigButton(keyConfigButton)
 	, m_pulseToSec(CreatePulseToSec(lane, beatMap, timingCache))
 	, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane))
 	, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatMap))
-	, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size()) * 2)
+	, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size()) * kScoreValueCritical)
 {
 }
 
@@ -174,6 +198,19 @@ void MusicGame::Judgment::ButtonLaneJudgment::update(const ksh::ByPulse<ksh::Int
 			laneStateRef.keyBeamType = *keyBeamType;
 		}
 	}
+
+	if (KeyConfig::Pressed(m_keyConfigButton))
+	{
+		processKeyPressed(lane, currentPulse, currentTimeSec);
+	}
+
+	if (m_currentLongNotePulse.has_value() && 
+		(KeyConfig::Up(m_keyConfigButton) || (*m_currentLongNotePulse + lane.at(*m_currentLongNotePulse).length < currentPulse)))
+	{
+		m_currentLongNotePulse = none;
+	}
+
+	m_prevPulse = currentPulse;
 }
 
 int32 MusicGame::Judgment::ButtonLaneJudgment::scoreValue() const

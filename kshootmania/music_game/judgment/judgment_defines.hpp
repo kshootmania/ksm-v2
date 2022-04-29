@@ -57,4 +57,7 @@ namespace MusicGame::Judgment
 			constexpr double kWindowSecPreHold = 0.15;
 		}
 	}
+
+	constexpr int32 kScoreValueNear = 1;
+	constexpr int32 kScoreValueCritical = 2;
 }
