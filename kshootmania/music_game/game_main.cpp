@@ -75,7 +75,7 @@ void MusicGame::GameMain::update()
 		m_fxLaneJudgments[i].update(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.fxLaneState[i]);
 	}
 
-	m_graphicsUpdateInfo.score = kScoreMax * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax; // TODO: add laser
+	m_graphicsUpdateInfo.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax); // TODO: add laser
 
 	m_musicGameGraphics.update(m_graphicsUpdateInfo);
 }
