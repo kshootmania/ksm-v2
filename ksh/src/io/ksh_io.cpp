@@ -382,10 +382,12 @@ namespace
 
 		void prepare(Pulse time, std::string_view audioEffectStr, std::string_view audioEffectParamStr)
 		{
+#ifdef KSM_EDITOR
 			if (m_prepared && (audioEffectStr != m_audioEffectStr || audioEffectParamStr != m_audioEffectParamStr))
 			{
 				publishLongFXNote();
 			}
+#endif
 			if (!m_prepared)
 			{
 				AbstractPreparedLongNote::prepare(time);
@@ -1123,17 +1125,13 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 	std::vector<BufOptionLine> optionLines;
 	PreparedLongNoteArray preparedLongNoteArray(&chartData);
 
-	// FX audio effect string ("fx-l=" or "fx-r=" in .ksh)
-	std::array<std::string, kNumFXLanes> currentFXAudioEffectStrs;
-
-	// FX audio effect parameters ("fx-l_param1=" or "fx-r_param1=" in .ksh; currently no "param2")
-	std::array<std::string, kNumFXLanes> currentFXAudioEffectParamStrs;
-
-	// Laser X scale (normal=1, wide=2)
-	std::array<std::int8_t, kNumLaserLanes> currentLaserXScales;
-
 	// GraphSections buffers
 	PreparedGraphSection preparedManualTilt(&chartData);
+
+	// Note option buffers (key: chart line index)
+	std::array<std::unordered_set<std::size_t>, kNumLaserLanes> currentMeasureLaserXScale2x;
+	std::array<std::unordered_map<std::size_t, std::string>, kNumFXLanes> currentMeasureFXAudioEffectStrs; // "fx-l=" or "fx-r=" in KSH
+	std::array<std::unordered_map<std::size_t, std::string>, kNumFXLanes> currentMeasureFXAudioEffectParamStrs; // "fx-l_param1=" or "fx-r_param1=" in KSH
 
 	Pulse currentPulse = 0;
 	std::int64_t currentMeasureIdx = 0;
@@ -1186,38 +1184,6 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 			{
 				currentTimeSig = ParseTimeSig(value);
 				chartData.beat.timeSigChanges.emplace(currentMeasureIdx, currentTimeSig);
-			}
-			else if (key == "fx-l")
-			{
-				currentFXAudioEffectStrs[0] = value;
-			}
-			else if (key == "fx-r")
-			{
-				currentFXAudioEffectStrs[1] = value;
-			}
-			// Note: "fx-l_param2"/"fx-r_param2" need not be processed because "fx-l_param1"/"fx-r_param1" is legacy (< v1.60) and 
-			//       Echo, the only audio effect that uses a second parameter, was added in v1.60.
-			else if (key == "fx-l_param1")
-			{
-				currentFXAudioEffectParamStrs[0] = value;
-			}
-			else if (key == "fx-r_param1")
-			{
-				currentFXAudioEffectParamStrs[1] = value;
-			}
-			else if (key == "laserrange_l")
-			{
-				if (value == "2x")
-				{
-					currentLaserXScales[0] = 2;
-				}
-			}
-			else if (key == "laserrange_r")
-			{
-				if (value == "2x")
-				{
-					currentLaserXScales[1] = 2;
-				}
 			}
 			else
 			{
@@ -1324,6 +1290,38 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 						}
 					}
 				}
+				else if (key == "fx-l")
+				{
+					currentMeasureFXAudioEffectStrs[0].insert_or_assign(lineIdx, value);
+				}
+				else if (key == "fx-r")
+				{
+					currentMeasureFXAudioEffectStrs[1].insert_or_assign(lineIdx, value);
+				}
+				// Note: "fx-l_param2"/"fx-r_param2" need not be processed because "fx-l_param1"/"fx-r_param1" is legacy (< v1.60) and 
+				//       Echo, the only audio effect that uses a second parameter, was added in v1.60.
+				else if (key == "fx-l_param1")
+				{
+					currentMeasureFXAudioEffectParamStrs[0].insert_or_assign(lineIdx, value);
+				}
+				else if (key == "fx-r_param1")
+				{
+					currentMeasureFXAudioEffectParamStrs[1].insert_or_assign(lineIdx, value);
+				}
+				else if (key == "laserrange_l")
+				{
+					if (value == "2x")
+					{
+						currentMeasureLaserXScale2x[0].emplace(lineIdx);
+					}
+				}
+				else if (key == "laserrange_r")
+				{
+					if (value == "2x")
+					{
+						currentMeasureLaserXScale2x[1].emplace(lineIdx);
+					}
+				}
 				else
 				{
 					chartData.impl.kshUnknownOptionLines.emplace(time, KSHUnknownOptionLine{
@@ -1384,8 +1382,22 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 							preparedLongNoteRef.publishLongFXNote();
 							break;
 						default:  // Long FX note
-							const std::string audioEffectStr((buf[j] == '1') ? currentFXAudioEffectStrs[laneIdx] : KSHLegacyFXCharToKSHAudioEffectStr(buf[j]));
-							preparedLongNoteRef.prepare(time, audioEffectStr, currentFXAudioEffectParamStrs[laneIdx]);
+							if (!preparedLongNoteRef.prepared())
+							{
+								if (buf[j] == '1')
+								{
+									const std::string audioEffectStr = currentMeasureFXAudioEffectStrs[laneIdx].contains(i) ? currentMeasureFXAudioEffectStrs[laneIdx].at(i) : "";
+									const std::string audioEffectParamStr = currentMeasureFXAudioEffectParamStrs[laneIdx].contains(i) ? currentMeasureFXAudioEffectParamStrs[laneIdx].at(i) : ""; // Note: Normally this is not used here because it's for legacy long FX chars
+									preparedLongNoteRef.prepare(time, audioEffectStr, audioEffectParamStr);
+								}
+								else
+								{
+									// Legacy long FX chars
+									const std::string audioEffectStr(KSHLegacyFXCharToKSHAudioEffectStr(buf[j]));
+									const std::string audioEffectParamStr = currentMeasureFXAudioEffectParamStrs[laneIdx].contains(i) ? currentMeasureFXAudioEffectParamStrs[laneIdx].at(i) : "";
+									preparedLongNoteRef.prepare(time, audioEffectStr, audioEffectParamStr);
+								}
+							}
 							preparedLongNoteRef.extendLength(oneLinePulse);
 							break;
 						}
@@ -1406,7 +1418,11 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 								const std::int32_t laserX = CharToLaserX(buf[j]);
 								if (laserX >= 0)
 								{
-									preparedLaserSectionRef.prepare(time, currentLaserXScales[laneIdx]);
+									if (!preparedLaserSectionRef.prepared())
+									{
+										const std::int8_t scaleX = currentMeasureLaserXScale2x[laneIdx].contains(i) ? 2 : 1;
+										preparedLaserSectionRef.prepare(time, scaleX);
+									}
 
 									const double dLaserX = static_cast<double>(laserX) / kLaserXMax;
 									preparedLaserSectionRef.addGraphPoint(time, dLaserX);
@@ -1433,17 +1449,17 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 			}
 			chartLines.clear();
 			optionLines.clear();
-			for (auto& str : currentFXAudioEffectStrs)
+			for (auto& set : currentMeasureLaserXScale2x)
 			{
-				str.clear();
+				set.clear();
 			}
-			for (auto& str : currentFXAudioEffectParamStrs)
+			for (auto& map : currentMeasureFXAudioEffectStrs)
 			{
-				str.clear();
+				map.clear();
 			}
-			for (auto& xScale : currentLaserXScales)
+			for (auto& map : currentMeasureFXAudioEffectParamStrs)
 			{
-				xScale = 1;
+				map.clear();
 			}
 			currentPulse += chartData.beat.resolution * 4 * currentTimeSig.numerator / currentTimeSig.denominator;
 			++currentMeasureIdx;
