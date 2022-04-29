@@ -2,6 +2,7 @@
 #include "highway/highway_3d_graphics.hpp"
 #include "highway/highway_tilt.hpp"
 #include "jdgline/jdgline_3d_graphics.hpp"
+#include "jdgoverlay/jdgoverlay_3d_graphics.hpp"
 #include "hud/song_info_panel.hpp"
 #include "hud/score_panel.hpp"
 #include "hud/gauge_panel.hpp"
@@ -30,6 +31,8 @@ namespace MusicGame::Graphics
 		Highway3DGraphics m_highway3DGraphics;
 
 		Jdgline3DGraphics m_jdgline3DGraphics;
+
+		Jdgoverlay3DGraphics m_jdgoverlay3DGraphics;
 
 		SongInfoPanel m_songInfoPanel;
 		ScorePanel m_scorePanel;

@@ -79,7 +79,7 @@ namespace
 	}
 }
 
-Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentTimeSec)
+void ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentTimeSec, Graphics::LaneState& laneStateRef)
 {
 	using namespace TimingWindow;
 
@@ -121,7 +121,7 @@ Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh:
 			if ((!found || Abs(sec - currentTimeSec) < minDistance) && sec - currentTimeSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
 			{
 				m_currentLongNotePulse = y;
-				return none;
+				return;
 			}
 			else if (found && sec - currentTimeSec > LongNote::kWindowSecPreHold && y > currentPulse)
 			{
@@ -130,28 +130,43 @@ Optional<KeyBeamType> ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh:
 		}
 	}
 
+	laneStateRef.keyBeamTimeSec = currentTimeSec;
+	laneStateRef.keyBeamType = KeyBeamType::kDefault;
+
 	if (found)
 	{
+		Optional<JudgmentResult> chipAnimType = none;
 		if (minDistance < ChipNote::kWindowSecCritical)
 		{
 			m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kCritical;
 			m_scoreValue += kScoreValueCritical;
-			return KeyBeamType::kCritical;
+			laneStateRef.keyBeamType = KeyBeamType::kCritical;
+			chipAnimType = JudgmentResult::kCritical;
 		}
 		else if (minDistance < ChipNote::kWindowSecNear)
 		{
 			m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kNear;
 			m_scoreValue += kScoreValueNear;
-			return KeyBeamType::kNear;
+			laneStateRef.keyBeamType = KeyBeamType::kNear; // TODO: fast/slow
+			chipAnimType = JudgmentResult::kNear; // TODO: fast/slow
 		}
 		else if (minDistance < ChipNote::kWindowSecError) // TODO: easy gauge, fast/slow
 		{
 			m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kError;
-			return KeyBeamType::kDefault;
+			laneStateRef.keyBeamType = KeyBeamType::kDefault;
+			chipAnimType = JudgmentResult::kError;
+		}
+
+		if (chipAnimType.has_value())
+		{
+			assert(0 <= laneStateRef.chipAnimStateRingBufferCursor && laneStateRef.chipAnimStateRingBufferCursor < Graphics::kChipAnimMax);
+			laneStateRef.chipAnimStateRingBuffer[laneStateRef.chipAnimStateRingBufferCursor] = {
+				.startTimeSec = currentTimeSec,
+				.type = *chipAnimType,
+			};
+			laneStateRef.chipAnimStateRingBufferCursor = (laneStateRef.chipAnimStateRingBufferCursor + 1) % Graphics::kChipAnimMax;
 		}
 	}
-
-	return KeyBeamType::kDefault;
 }
 
 void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec)
@@ -193,12 +208,7 @@ void MusicGame::Judgment::ButtonLaneJudgment::update(const ksh::ByPulse<ksh::Int
 	// Chip note & long note start
 	if (KeyConfig::Down(m_keyConfigButton))
 	{
-		const Optional<Judgment::KeyBeamType> keyBeamType = processKeyDown(lane, currentPulse, currentTimeSec);
-		if (keyBeamType.has_value())
-		{
-			laneStateRef.keyBeamTimeSec = currentTimeSec;
-			laneStateRef.keyBeamType = *keyBeamType;
-		}
+		processKeyDown(lane, currentPulse, currentTimeSec, laneStateRef);
 	}
 
 	// Long note hold

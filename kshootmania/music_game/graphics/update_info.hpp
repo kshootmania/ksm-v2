@@ -5,13 +5,21 @@
 
 namespace MusicGame::Graphics
 {
+	constexpr int32 kChipAnimMax = 5;
+
+	struct ChipAnimState
+	{
+		double startTimeSec = kPastTimeSec;
+		Judgment::JudgmentResult type = Judgment::JudgmentResult::kUnspecified;
+	};
+	
 	struct LaneState
 	{
 		double keyBeamTimeSec = kPastTimeSec;
 		Judgment::KeyBeamType keyBeamType = Judgment::KeyBeamType::kDefault;
 
-		double animationStartTimeSec = kPastTimeSec;
-		Judgment::JudgmentResult animationJudgmentResult = Judgment::JudgmentResult::kUnspecified;
+		std::array<ChipAnimState, kChipAnimMax> chipAnimStateRingBuffer;
+		int32 chipAnimStateRingBufferCursor = 0;
 
 		Optional<ksh::Pulse> currentLongNotePulse = none;
 	};

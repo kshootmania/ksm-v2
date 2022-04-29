@@ -147,6 +147,8 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 
 	m_jdgline3DGraphics.draw(m_updateInfo, tiltRadians);
 
+	m_jdgoverlay3DGraphics.draw(m_updateInfo, tiltRadians);
+
 	// Draw 3D scene to 2D scene
 	Graphics3D::Flush();
 	m_3dViewTexture.resolve();

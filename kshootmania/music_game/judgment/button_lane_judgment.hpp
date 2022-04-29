@@ -26,7 +26,7 @@ namespace MusicGame::Judgment
 
 		const int32 m_scoreValueMax;
 
-		Optional<KeyBeamType> processKeyDown(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec);
+		void processKeyDown(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec, Graphics::LaneState& laneStateRef);
 
 		void processKeyPressed(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec);
 
