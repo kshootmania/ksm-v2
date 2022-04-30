@@ -7,7 +7,6 @@ namespace MusicGame::Graphics
 	{
 	private:
 		const RenderTexture m_renderTexture;
-		const RenderTexture m_renderTexture2;
 
 		const TiledTexture m_chipCriticalTexture;
 		const TiledTexture m_chipNearTexture;
@@ -20,6 +19,8 @@ namespace MusicGame::Graphics
 	public:
 		Jdgoverlay3DGraphics();
 
-		void draw(const UpdateInfo& updateInfo, double tiltRadians) const;
+		void draw2D(const UpdateInfo& updateInfo) const;
+
+		void draw3D(double tiltRadians) const;
 	};
 }

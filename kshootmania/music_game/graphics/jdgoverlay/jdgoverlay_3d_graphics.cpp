@@ -40,7 +40,6 @@ const TiledTexture& MusicGame::Graphics::Jdgoverlay3DGraphics::chipTexture(Judgm
 
 MusicGame::Graphics::Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
 	: m_renderTexture(ScreenUtils::Scaled(kTextureSize.x), ScreenUtils::Scaled(kTextureSize.y))
-	, m_renderTexture2(ScreenUtils::Scaled(kTextureSize.x), ScreenUtils::Scaled(kTextureSize.y))
 	, m_mesh(MeshData::Grid(kPlaneCenter, kPlaneSize, 2, 2))
 	, m_chipCriticalTexture(kChipCriticalTextureFilename,
 		{
@@ -64,27 +63,27 @@ MusicGame::Graphics::Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
 {
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::draw(const UpdateInfo& updateInfo, double tiltRadians) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::draw2D(const UpdateInfo& updateInfo) const
 {
+	const ScopedRenderTarget2D renderTarget(m_renderTexture.clear(Palette::Black));
+	const ScopedRenderStates2D blendState(BlendState::Additive);
+	for (std::size_t i = 0; i < ksh::kNumBTLanes; ++i)
 	{
-		Shader::Copy(m_renderTexture2, m_renderTexture); // FIXME: For some reason, RenderTexture::clear() hides the animation, so for now using Shader::Copy() instead.
-		const ScopedRenderTarget2D renderTarget(m_renderTexture/*.clear(Palette::Blue)*/);
-		const ScopedRenderStates2D blendState(BlendState::Additive);
-		for (std::size_t i = 0; i < ksh::kNumBTLanes; ++i)
+		const auto& laneState = updateInfo.btLaneState[i];
+		for (const auto& chipAnimState : laneState.chipAnimStateRingBuffer)
 		{
-			const auto& laneState = updateInfo.btLaneState[i];
-			for (const auto& chipAnimState : laneState.chipAnimStateRingBuffer)
+			const double sec = updateInfo.currentTimeSec - chipAnimState.startTimeSec;
+			if (0.0 <= sec && sec < kChipAnimDurationSec && chipAnimState.type != Judgment::JudgmentResult::kUnspecified)
 			{
-				const double sec = updateInfo.currentTimeSec - chipAnimState.startTimeSec;
-				if (0.0 <= sec && sec < kChipAnimDurationSec && chipAnimState.type != Judgment::JudgmentResult::kUnspecified)
-				{
-					const int32 frameIdx = static_cast<int32>(sec / kChipAnimDurationSec * kChipAnimFrames);
-					chipTexture(chipAnimState.type)(frameIdx).resized(ScreenUtils::Scaled(kChipAnimSize)).draw(ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + 60 * i, 17));
-				}
+				const int32 frameIdx = static_cast<int32>(sec / kChipAnimDurationSec * kChipAnimFrames);
+				chipTexture(chipAnimState.type)(frameIdx).resized(ScreenUtils::Scaled(kChipAnimSize)).draw(ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + 60 * i, 17));
 			}
 		}
 	}
+}
 
+void MusicGame::Graphics::Jdgoverlay3DGraphics::draw3D(double tiltRadians) const
+{
 	const ScopedRenderStates3D blendState(BlendState::Additive);
 	const Mat4x4 m = Mat4x4::Rotate(Float3::Right(), -60_deg, kPlaneCenter) * Mat4x4::Rotate(Float3::Backward(), tiltRadians, Vec3{ 0.0, 42.0, 0.0 });
 	const Transformer3D transform{ m };

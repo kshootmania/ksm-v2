@@ -110,6 +110,12 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 	assert(m_updateInfo.pChartData != nullptr);
 	const ksh::ChartData& chartData = *m_updateInfo.pChartData;
 
+	m_jdgoverlay3DGraphics.draw2D(m_updateInfo);
+
+	// FIXME: Move all 2D drawing here
+
+	Graphics2D::Flush();
+
 	Graphics3D::SetCameraTransform(m_camera);
 
 	const double tiltRadians = m_highwayTilt.radians();
@@ -147,7 +153,7 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 
 	m_jdgline3DGraphics.draw(m_updateInfo, tiltRadians);
 
-	m_jdgoverlay3DGraphics.draw(m_updateInfo, tiltRadians);
+	m_jdgoverlay3DGraphics.draw3D(tiltRadians);
 
 	// Draw 3D scene to 2D scene
 	Graphics3D::Flush();
