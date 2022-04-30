@@ -43,6 +43,10 @@ namespace MusicGame::Graphics
 
 		UpdateInfo m_updateInfo;
 
+		void drawBG() const;
+
+		void drawLayer() const;
+
 	public:
 		explicit GraphicsMain(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache);
 

@@ -16,7 +16,7 @@ MusicGame::Graphics::Jdgline3DGraphics::Jdgline3DGraphics()
 {
 }
 
-void MusicGame::Graphics::Jdgline3DGraphics::draw(const UpdateInfo& updateInfo, double tiltRadians) const
+void MusicGame::Graphics::Jdgline3DGraphics::draw3D(double tiltRadians) const
 {
 	// Draw judgment line into 3D space
 	const ScopedRenderStates3D blendState(BlendState::NonPremultiplied);

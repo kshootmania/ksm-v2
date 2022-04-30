@@ -76,6 +76,34 @@ namespace
 	}
 }
 
+void MusicGame::Graphics::GraphicsMain::drawBG() const
+{
+	const ScopedRenderStates3D samplerState(SamplerState::ClampNearest);
+	double bgTiltRadians = 0.0;
+	if (m_updateInfo.pChartData->bg.legacy.bgInfos[0].rotationFlags.tiltAffected) // TODO: Change BG depending on gauge value
+	{
+		bgTiltRadians += m_highwayTilt.radians() / 3;
+	}
+	m_billboardMesh.draw(m_bgTransform * TiltMatrix(bgTiltRadians, kBGBillboardPosition), m_bgTexture);
+}
+
+void MusicGame::Graphics::GraphicsMain::drawLayer() const
+{
+	const ScopedRenderStates3D samplerState(SamplerState::ClampNearest);
+	const ScopedRenderStates3D renderState(BlendState::Additive);
+
+	double layerTiltRadians = 0.0;
+	if (m_updateInfo.pChartData->bg.legacy.layerInfos[0].rotationFlags.tiltAffected)
+	{
+		layerTiltRadians += m_highwayTilt.radians() * 0.8;
+	}
+
+	// TODO: Layer speed specified by KSH
+	const ksh::Pulse resolution = m_updateInfo.pChartData->beat.resolution;
+	const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)), static_cast<int32>(m_layerFrameTextures[0].size()));
+	m_billboardMesh.draw(m_layerTransform * TiltMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
+}
+
 MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache)
 	: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 	, m_billboardMesh(MeshData::Billboard())
@@ -110,56 +138,27 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 	assert(m_updateInfo.pChartData != nullptr);
 	const ksh::ChartData& chartData = *m_updateInfo.pChartData;
 
+	// Draw 2D render textures
+	m_highway3DGraphics.draw2D(m_updateInfo);
 	m_jdgoverlay3DGraphics.draw2D(m_updateInfo);
-
-	// FIXME: Move all 2D drawing here
-
 	Graphics2D::Flush();
 
 	Graphics3D::SetCameraTransform(m_camera);
 
+	// Draw 3D space
+	drawBG();
+	drawLayer();
 	const double tiltRadians = m_highwayTilt.radians();
-
-	// Draw BG texture
-	{
-		const ScopedRenderStates3D samplerState(SamplerState::ClampNearest);
-		double bgTiltRadians = 0.0;
-		if (chartData.bg.legacy.bgInfos[0].rotationFlags.tiltAffected)
-		{
-			bgTiltRadians += tiltRadians / 3;
-		}
-
-		m_billboardMesh.draw(m_bgTransform * TiltMatrix(bgTiltRadians, kBGBillboardPosition), m_bgTexture);
-	}
-
-	// Draw layer animation
-	{
-		const ScopedRenderStates3D samplerState(SamplerState::ClampNearest);
-		const ScopedRenderStates3D renderState(BlendState::Additive);
-
-		double layerTiltRadians = 0.0;
-		if (chartData.bg.legacy.layerInfos[0].rotationFlags.tiltAffected)
-		{
-			layerTiltRadians += tiltRadians * 0.8;
-		}
-
-		// TODO: Layer speed specified by KSH
-		const ksh::Pulse resolution = chartData.beat.resolution;
-		const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)), static_cast<int32>(m_layerFrameTextures[0].size()));
-		m_billboardMesh.draw(m_layerTransform * TiltMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
-	}
-
-	m_highway3DGraphics.draw(m_updateInfo, tiltRadians);
-
-	m_jdgline3DGraphics.draw(m_updateInfo, tiltRadians);
-
+	m_highway3DGraphics.draw3D(tiltRadians);
+	m_jdgline3DGraphics.draw3D(tiltRadians);
 	m_jdgoverlay3DGraphics.draw3D(tiltRadians);
-
-	// Draw 3D scene to 2D scene
 	Graphics3D::Flush();
+
+	// Draw 3D view to 2D screen
 	m_3dViewTexture.resolve();
 	m_3dViewTexture.draw();
 
+	// Draw 2D HUD
 	m_songInfoPanel.draw(m_updateInfo.currentBPM);
 	m_scorePanel.draw(m_updateInfo.score);
 	m_gaugePanel.draw(100.0/* TODO: Percentage */, m_updateInfo.currentPulse);

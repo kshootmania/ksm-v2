@@ -37,7 +37,7 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 {
 }
 
-void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, double tiltRadians) const
+void MusicGame::Graphics::Highway3DGraphics::draw2D(const UpdateInfo& updateInfo) const
 {
 	assert(updateInfo.pChartData != nullptr);
 
@@ -64,20 +64,21 @@ void MusicGame::Graphics::Highway3DGraphics::draw(const UpdateInfo& updateInfo, 
 
 	// Draw laser notes
 	m_laserNoteGraphics.draw(updateInfo, m_additiveRenderTexture, m_invMultiplyRenderTexture);
+}
 
+void MusicGame::Graphics::Highway3DGraphics::draw3D(double tiltRadians) const
+{
 	// Draw highway into 3D space
+	const Mat4x4 m = Mat4x4::Rotate(Float3::Forward(), -tiltRadians, Float3{ 0.0f, 42.0f, 0.0f });
+	const Transformer3D transform{ m };
+
 	{
-		const Mat4x4 m = Mat4x4::Rotate(Float3::Forward(), -tiltRadians, Float3{ 0.0f, 42.0f, 0.0f });
-		const Transformer3D transform{ m };
+		const ScopedRenderStates3D renderState(kInvMultiply);
+		m_mesh.draw(m_invMultiplyRenderTexture);
+	}
 
-		{
-			const ScopedRenderStates3D renderState(kInvMultiply);
-			m_mesh.draw(m_invMultiplyRenderTexture);
-		}
-
-		{
-			const ScopedRenderStates3D renderState(BlendState::Additive);
-			m_mesh.draw(m_additiveRenderTexture);
-		}
+	{
+		const ScopedRenderStates3D renderState(BlendState::Additive);
+		m_mesh.draw(m_additiveRenderTexture);
 	}
 }

@@ -13,6 +13,6 @@ namespace MusicGame::Graphics
 	public:
 		Jdgline3DGraphics();
 
-		void draw(const UpdateInfo& updateInfo, double tiltRadians) const;
+		void draw3D(double tiltRadians) const;
 	};
 }
