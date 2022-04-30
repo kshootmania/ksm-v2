@@ -11,6 +11,7 @@ namespace I18n
 
 	enum Category : int32
 	{
+		kCategoryUnknown = -1,
 		kGeneral = 0,
 		kSelect = 1,
 		kPlay = 2,
@@ -208,7 +209,7 @@ namespace I18n
 		}
 		else
 		{
-			static_assert(false, "Unknown type!");
+			return kCategoryUnknown;
 		}
 	}
 
