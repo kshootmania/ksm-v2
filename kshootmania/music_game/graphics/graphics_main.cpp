@@ -15,7 +15,7 @@ namespace
 	constexpr Float3 kBGBillboardPosition = Float3{ 0, -52.5f, 0 };
 	constexpr Float2 kBGBillboardSize = Float2{ 900.0f, 800.0f } * 0.65f;
 
-	constexpr Size kLayerFrameSize = { 600, 480 };
+	constexpr Size kLayerFrameTextureSize = { 600, 480 };
 	constexpr Float3 kLayerBillboardPosition = Float3{ 0, -41.0f, 0 };
 	constexpr Float2 kLayerBillboardSize = Float2{ 880.0f, 704.0f } * 0.65f;
 
@@ -51,7 +51,7 @@ namespace
 			{
 				.row = TiledTextureSizeInfo::kAutoDetect,
 				.column = TiledTextureSizeInfo::kAutoDetect,
-				.sourceSize = kLayerFrameSize,
+				.sourceSize = kLayerFrameTextureSize,
 			});
 
 		std::array<Array<RenderTexture>, 2> renderTextures;
@@ -60,9 +60,9 @@ namespace
 			renderTextures[i].reserve(tiledTexture.column());
 			for (int32 j = 0; j < tiledTexture.column(); ++j)
 			{
-				const RenderTexture renderTexture(kLayerFrameSize, Palette::Black);
+				const RenderTexture renderTexture(kLayerFrameTextureSize, Palette::Black);
 				const ScopedRenderTarget2D renderTarget(renderTexture);
-				tiledTexture(i, j).draw();
+				Shader::Copy(tiledTexture(i, j), renderTexture);
 				renderTextures[i].push_back(std::move(renderTexture));
 			}
 		}
@@ -107,7 +107,6 @@ void MusicGame::Graphics::GraphicsMain::drawLayer() const
 MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache)
 	: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 	, m_billboardMesh(MeshData::Billboard())
-	, m_3dViewTexture(Scene::Size(), TextureFormat::R8G8B8A8_Unorm, HasDepth::No)
 	, m_bgTexture(BGFilePath(chartData))
 	, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
 	, m_layerFrameTextures(SplitLayerTexture(LayerFilePath(chartData)))
@@ -152,11 +151,6 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 	m_highway3DGraphics.draw3D(tiltRadians);
 	m_jdgline3DGraphics.draw3D(tiltRadians);
 	m_jdgoverlay3DGraphics.draw3D(tiltRadians);
-	Graphics3D::Flush();
-
-	// Draw 3D view to 2D screen
-	m_3dViewTexture.resolve();
-	m_3dViewTexture.draw();
 
 	// Draw 2D HUD
 	m_songInfoPanel.draw(m_updateInfo.currentBPM);

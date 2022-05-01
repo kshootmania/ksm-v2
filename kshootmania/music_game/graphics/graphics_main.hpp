@@ -19,8 +19,6 @@ namespace MusicGame::Graphics
 
 		const Mesh m_billboardMesh;
 
-		MSRenderTexture m_3dViewTexture;
-
 		// TODO: separate into single class
 		Texture m_bgTexture;
 		const Mat4x4 m_bgTransform;
