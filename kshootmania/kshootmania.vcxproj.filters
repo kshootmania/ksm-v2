@@ -384,6 +384,9 @@
     <ClCompile Include="music_game\graphics\jdgoverlay\jdgoverlay_3d_graphics.cpp">
       <Filter>Source Files\music_game\graphics\jdgoverlay</Filter>
     </ClCompile>
+    <ClCompile Include="common\asset_management.cpp">
+      <Filter>Source Files\common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1176,6 +1179,9 @@
     </ClInclude>
     <ClInclude Include="music_game\graphics\jdgoverlay\jdgoverlay_3d_graphics.hpp">
       <Filter>Header Files\music_game\graphics\jdgoverlay</Filter>
+    </ClInclude>
+    <ClInclude Include="common\asset_management.hpp">
+      <Filter>Header Files\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

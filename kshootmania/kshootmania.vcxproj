@@ -114,6 +114,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="common\asset_management.cpp" />
     <ClCompile Include="common\math_utils.cpp" />
     <ClCompile Include="graphics\number_font_texture.cpp" />
     <ClCompile Include="graphics\screen_utils.cpp" />
@@ -350,6 +351,7 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\asset_management.hpp" />
     <ClInclude Include="common\common_defines.hpp" />
     <ClInclude Include="common\math_utils.hpp" />
     <ClInclude Include="graphics\number_font_texture.hpp" />
