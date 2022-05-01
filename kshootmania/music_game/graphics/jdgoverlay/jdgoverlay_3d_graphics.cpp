@@ -38,6 +38,34 @@ const TiledTexture& MusicGame::Graphics::Jdgoverlay3DGraphics::chipTexture(Judgm
 	}
 }
 
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimCommon(const UpdateInfo& updateInfo, bool isBT) const
+{
+	for (int32 i = 0; std::cmp_less(i, (isBT ? ksh::kNumBTLanes : ksh::kNumFXLanes)); ++i)
+	{
+		const auto& laneState = isBT ? updateInfo.btLaneState[i] : updateInfo.fxLaneState[i];
+		for (const auto& chipAnimState : laneState.chipAnimStateRingBuffer)
+		{
+			const double sec = updateInfo.currentTimeSec - chipAnimState.startTimeSec;
+			if (0.0 <= sec && sec < kChipAnimDurationSec && chipAnimState.type != Judgment::JudgmentResult::kUnspecified)
+			{
+				const int32 frameIdx = static_cast<int32>(sec / kChipAnimDurationSec * kChipAnimFrames);
+				const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + (isBT ? 0 : 30) + 60 * i * (isBT ? 1 : 2), 17);
+				chipTexture(chipAnimState.type)(frameIdx).resized(ScreenUtils::Scaled(kChipAnimSize)).draw(position);
+			}
+		}
+	}
+}
+
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimBT(const UpdateInfo& updateInfo) const
+{
+	drawChipAnimCommon(updateInfo, true);
+}
+
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimFX(const UpdateInfo& updateInfo) const
+{
+	drawChipAnimCommon(updateInfo, false);
+}
+
 MusicGame::Graphics::Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
 	: m_renderTexture(ScreenUtils::Scaled(kTextureSize.x), ScreenUtils::Scaled(kTextureSize.y))
 	, m_mesh(MeshData::Grid(kPlaneCenter, kPlaneSize, 2, 2))
@@ -67,19 +95,8 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::draw2D(const UpdateInfo& updateI
 {
 	const ScopedRenderTarget2D renderTarget(m_renderTexture.clear(Palette::Black));
 	const ScopedRenderStates2D blendState(BlendState::Additive);
-	for (std::size_t i = 0; i < ksh::kNumBTLanes; ++i)
-	{
-		const auto& laneState = updateInfo.btLaneState[i];
-		for (const auto& chipAnimState : laneState.chipAnimStateRingBuffer)
-		{
-			const double sec = updateInfo.currentTimeSec - chipAnimState.startTimeSec;
-			if (0.0 <= sec && sec < kChipAnimDurationSec && chipAnimState.type != Judgment::JudgmentResult::kUnspecified)
-			{
-				const int32 frameIdx = static_cast<int32>(sec / kChipAnimDurationSec * kChipAnimFrames);
-				chipTexture(chipAnimState.type)(frameIdx).resized(ScreenUtils::Scaled(kChipAnimSize)).draw(ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + 60 * i, 17));
-			}
-		}
-	}
+	drawChipAnimBT(updateInfo);
+	drawChipAnimFX(updateInfo);
 }
 
 void MusicGame::Graphics::Jdgoverlay3DGraphics::draw3D(double tiltRadians) const
