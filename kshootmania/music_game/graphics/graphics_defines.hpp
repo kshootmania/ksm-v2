@@ -30,4 +30,8 @@ namespace MusicGame::Graphics
 	constexpr ColorF kTransparent = ColorF{ 0.0, 0.0 };
 
 	constexpr ColorF kSongInfoFontColor = Color{ 0, 32, 8 };
+
+	constexpr double kOnePixelTextureSourceSize = 0.5; // Note: Do not use exactly 1px because it will create a margin pixel
+
+	constexpr double kOnePixelTextureSourceOffset = (1.0 - kOnePixelTextureSourceSize) / 2;
 }

@@ -12,7 +12,7 @@ namespace
 	constexpr Size kLaserTextureSize = { 48, 48 };
 	constexpr double kLaserLineWidth = static_cast<double>(kLaserTextureSize.x);
 	constexpr Size kLaserStartTextureSize = { 44, 200 };
-	constexpr int32 kLaserShiftY = -10;
+	constexpr double kLaserShiftY = -10;
 
 	Quad LaserLineQuad(const Vec2& positionStart, const Vec2& positionEnd)
 	{
@@ -65,6 +65,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 		return;
 	}
 
+	const ScopedRenderStates2D defaultSamplerState(SamplerState::ClampNearest);
 	const ScopedRenderTarget2D defaultRenderTarget(additiveTarget);
 	const std::array<std::pair<std::reference_wrapper<const RenderTexture>, std::reference_wrapper<const Texture>>, 2> drawTexturePairs = {
 		std::make_pair(std::ref(additiveTarget), std::ref(m_laserNoteTexture)),
@@ -102,7 +103,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 							const ScopedRenderTarget2D renderTarget((i == 0) ? additiveTarget : invMultiplyTarget);
 							const Vec2 positionStart = {
 								point.v * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-								static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution
+								static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
 							};
 							const TiledTexture& startTexture = (laneIdx == 0) ? m_laserNoteLeftStartTexture : m_laserNoteRightStartTexture;
 							startTexture(0, i).draw(Arg::topCenter = positionStart);
@@ -137,7 +138,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 							const ScopedRenderTarget2D renderTarget(renderTargetTexture);
 							laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(isLeftToRight).drawAt(positionStart + Vec2{ 0.0, -kLaserLineWidth / 2 });
 							laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(!isLeftToRight).flipped().drawAt(positionEnd + Vec2{ 0.0, -kLaserLineWidth / 2 });
-							quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, 1, kLaserTextureSize.y)).draw();
+							quad(laserNoteTexture(kLaserTextureSize.x * laneIdx + kOnePixelTextureSourceOffset, 0, kOnePixelTextureSourceSize, kLaserTextureSize.y)).draw();
 						}
 					}
 
@@ -157,7 +158,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 							for (const auto& [renderTargetTexture, laserNoteTexture] : drawTexturePairs)
 							{
 								const ScopedRenderTarget2D renderTarget(renderTargetTexture);
-								quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
+								quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1 + kOnePixelTextureSourceOffset, kLaserTextureSize.x, kOnePixelTextureSourceSize)).draw();
 							}
 						}
 
@@ -187,7 +188,8 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 						for (const auto& [renderTargetTexture, laserNoteTexture] : drawTexturePairs)
 						{
 							const ScopedRenderTarget2D renderTarget(renderTargetTexture);
-							quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1, kLaserTextureSize.x, 1)).draw();
+							quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1 + kOnePixelTextureSourceOffset, kLaserTextureSize.x, kOnePixelTextureSourceSize)).draw();
+							//quad.draw(Palette::Yellow);
 						}
 					}
 				}
