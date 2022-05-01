@@ -10,15 +10,82 @@ namespace
 	constexpr StringView kChipFXNoteTextureFilename = U"fx_chip.gif";
 	constexpr StringView kLongFXNoteTextureFilename = U"fx_long.gif";
 
-	constexpr double kLongNoteTextureYDefault = 0.0;
-	constexpr double kLongNoteTextureYPressed1 = 8.0;
-	constexpr double kLongNoteTextureYPressed2 = 9.0;
-	constexpr double kLongNoteTextureYNotPressed = 10.0;
+	constexpr double kLongNoteSourceYDefault = 0.0;
+	constexpr double kLongNoteSourceYPressed1 = 8.0;
+	constexpr double kLongNoteSourceYPressed2 = 9.0;
+	constexpr double kLongNoteSourceYNotPressed = 10.0;
 
-	double PressedLongNoteTextureY(double currentTimeSec)
+	double PressedLongNoteSourceY(double currentTimeSec)
 	{
-		return (MathUtils::WrappedFmod(currentTimeSec, 0.1) < 0.05) ? kLongNoteTextureYPressed1 : kLongNoteTextureYPressed2;
+		return (MathUtils::WrappedFmod(currentTimeSec, 0.1) < 0.05) ? kLongNoteSourceYPressed1 : kLongNoteSourceYPressed2;
 	}
+}
+
+void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, bool isBT) const
+{
+	const ksh::ChartData& chartData = *updateInfo.pChartData;
+	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
+
+	for (std::size_t laneIdx = 0; laneIdx < (isBT ? ksh::kNumBTLanes : ksh::kNumFXLanes); ++laneIdx)
+	{
+		const auto& lane = isBT ? chartData.note.btLanes[laneIdx] : chartData.note.fxLanes[laneIdx];
+		for (const auto& [y, note] : lane)
+		{
+			if (y + note.length < updateInfo.currentPulse - chartData.beat.resolution)
+			{
+				continue;
+			}
+
+			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+			if (positionStartY < 0)
+			{
+				break;
+			}
+
+			if (note.length > 0)
+			{
+				const double positionEndY = highwayTextureHeight - static_cast<double>(y + note.length - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+				for (int32 i = 0; i < (isBT ? 2 : 1); ++i) // Note: Long BT note has additional texture for invMultiplyTarget
+				{
+					const ScopedRenderTarget2D renderTarget((i == 0) ? additiveTarget : invMultiplyTarget);
+					const ScopedRenderStates2D blendState((i == 0) ? (isBT ? BlendState::Additive : BlendState::Default2D) : BlendState::Subtractive);
+					const LaneState& laneState = isBT ? updateInfo.btLaneState[laneIdx] : updateInfo.fxLaneState[laneIdx];
+					double sourceY;
+					if (laneState.currentLongNotePulse == y)
+					{
+						// Current note and pressed
+						sourceY = PressedLongNoteSourceY(updateInfo.currentTimeSec);
+					}
+					else if (y <= updateInfo.currentPulse && updateInfo.currentPulse < y + note.length)
+					{
+						// Current note but not pressed
+						sourceY = kLongNoteSourceYNotPressed;
+					}
+					else
+					{
+						// Not current note
+						sourceY = kLongNoteSourceYDefault;
+					}
+					const Texture& sourceTexture = isBT ? m_longBTNoteTexture : m_longFXNoteTexture;
+					const int32 width = isBT ? 40 : 82;
+					const Vec2 position = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * laneIdx + Vec2::Down(positionEndY);
+					sourceTexture(width * i, sourceY + kOnePixelTextureSourceOffset, width, kOnePixelTextureSourceSize)
+						.resized(width, static_cast<double>(note.length) * 480 / chartData.beat.resolution)
+						.draw(position);
+				}
+			}
+		}
+	}
+}
+
+void MusicGame::Graphics::ButtonNoteGraphics::drawLongBTNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+{
+	drawLongNotesCommon(updateInfo, additiveTarget, invMultiplyTarget, true);
+}
+
+void MusicGame::Graphics::ButtonNoteGraphics::drawLongFXNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+{
+	drawLongNotesCommon(updateInfo, additiveTarget, invMultiplyTarget, false);
 }
 
 MusicGame::Graphics::ButtonNoteGraphics::ButtonNoteGraphics()
@@ -48,102 +115,11 @@ void MusicGame::Graphics::ButtonNoteGraphics::draw(const UpdateInfo& updateInfo,
 	const ScopedRenderTarget2D defaultRenderTarget(additiveTarget);
 	const ksh::ChartData& chartData = *updateInfo.pChartData;
 
-	const double textureHeight = static_cast<double>(kHighwayTextureSize.y);
+	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
 
-	// Long FX notes
-	for (std::size_t laneIdx = 0; laneIdx < ksh::kNumFXLanes; ++laneIdx)
-	{
-		const auto& lane = chartData.note.fxLanes[laneIdx];
-		for (const auto& [y, note] : lane)
-		{
-			if (y + note.length < updateInfo.currentPulse - chartData.beat.resolution)
-			{
-				continue;
-			}
+	drawLongBTNotes(updateInfo, additiveTarget, invMultiplyTarget);
 
-			const double positionStartY = textureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-			if (positionStartY < 0)
-			{
-				break;
-			}
-
-			const double dLaneIdx = static_cast<double>(laneIdx);
-
-			if (note.length > 0)
-			{
-				const double positionEndY = textureHeight - static_cast<double>(y + note.length - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-				double sourceY;
-				if (updateInfo.fxLaneState[laneIdx].currentLongNotePulse == y)
-				{
-					// Current note and pressed
-					sourceY = PressedLongNoteTextureY(updateInfo.currentTimeSec);
-				}
-				else if (y <= updateInfo.currentPulse && updateInfo.currentPulse < y + note.length)
-				{
-					// Current note but not pressed
-					sourceY = kLongNoteTextureYNotPressed;
-				}
-				else
-				{
-					// Not current note
-					sourceY = kLongNoteTextureYDefault;
-				}
-				m_longFXNoteTexture(0, sourceY + kOnePixelTextureSourceOffset, 82, kOnePixelTextureSourceSize)
-					.resized(82, static_cast<double>(note.length) * 480 / chartData.beat.resolution)
-					.draw(kLanePositionOffset + kFXLanePositionDiff * dLaneIdx + Vec2::Down(positionEndY));
-			}
-		}
-	}
-
-	// Long BT notes
-	for (std::size_t laneIdx = 0; laneIdx < ksh::kNumBTLanes; ++laneIdx)
-	{
-		const auto& lane = chartData.note.btLanes[laneIdx];
-		for (const auto& [y, note] : lane)
-		{
-			if (y + note.length < updateInfo.currentPulse - chartData.beat.resolution)
-			{
-				continue;
-			}
-
-			const double positionStartY = textureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-			if (positionStartY < 0)
-			{
-				break;
-			}
-
-			const double dLaneIdx = static_cast<double>(laneIdx);
-
-			if (note.length > 0)
-			{
-				const ScopedRenderStates2D renderState(BlendState::Additive);
-				const double positionEndY = textureHeight - static_cast<double>(y + note.length - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-				for (int32 i = 0; i < 2; ++i)
-				{
-					const ScopedRenderTarget2D renderTarget((i == 0) ? additiveTarget : invMultiplyTarget);
-					double sourceY;
-					if (updateInfo.btLaneState[laneIdx].currentLongNotePulse == y)
-					{
-						// Current note and pressed
-						sourceY = PressedLongNoteTextureY(updateInfo.currentTimeSec);
-					}
-					else if (y <= updateInfo.currentPulse && updateInfo.currentPulse < y + note.length)
-					{
-						// Current note but not pressed
-						sourceY = kLongNoteTextureYNotPressed;
-					}
-					else
-					{
-						// Not current note
-						sourceY = kLongNoteTextureYDefault;
-					}
-					m_longBTNoteTexture(40 * i, sourceY + kOnePixelTextureSourceOffset, 40, kOnePixelTextureSourceSize)
-						.resized(40, static_cast<double>(note.length) * 480 / chartData.beat.resolution)
-						.draw(kLanePositionOffset + kBTLanePositionDiff * dLaneIdx + Vec2::Down(positionEndY));
-				}
-			}
-		}
-	}
+	drawLongFXNotes(updateInfo, additiveTarget, invMultiplyTarget);
 
 	// Chip FX notes
 	for (std::size_t laneIdx = 0; laneIdx < ksh::kNumFXLanes; ++laneIdx)
@@ -156,7 +132,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::draw(const UpdateInfo& updateInfo,
 				continue;
 			}
 
-			const double positionStartY = textureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
 			if (positionStartY < 0)
 			{
 				break;
@@ -166,7 +142,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::draw(const UpdateInfo& updateInfo,
 
 			if (note.length == 0)
 			{
-				const double yRate = (textureHeight - positionStartY) / textureHeight;
+				const double yRate = (highwayTextureHeight - positionStartY) / highwayTextureHeight;
 				const double height = NoteGraphicsUtils::ChipNoteHeight(yRate);
 				m_chipFXNoteTexture()
 					.resized(82, NoteGraphicsUtils::ChipNoteHeight(yRate))
@@ -186,7 +162,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::draw(const UpdateInfo& updateInfo,
 				continue;
 			}
 
-			const double positionStartY = textureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
 			if (positionStartY < 0)
 			{
 				break;
@@ -196,7 +172,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::draw(const UpdateInfo& updateInfo,
 
 			if (note.length == 0)
 			{
-				const double yRate = (textureHeight - positionStartY) / textureHeight;
+				const double yRate = (highwayTextureHeight - positionStartY) / highwayTextureHeight;
 				const double height = NoteGraphicsUtils::ChipNoteHeight(yRate);
 				m_chipBTNoteTexture()
 					.resized(40, height)
