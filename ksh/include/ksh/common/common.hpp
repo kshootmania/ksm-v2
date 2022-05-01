@@ -207,22 +207,7 @@ namespace ksh
 		}
 	};
 
-	inline void to_json(nlohmann::json& j, const GraphValue& graphValue)
-	{
-		if (graphValue.v == graphValue.vf)
-		{
-			j = {
-				{ "v", graphValue.v },
-			};
-		}
-		else
-		{
-			j = {
-				{ "v", graphValue.v },
-				{ "vf", graphValue.vf },
-			};
-		}
-	}
+	void to_json(nlohmann::json& j, const GraphValue& graphValue);
 
 	struct RelGraphValue
 	{
@@ -242,117 +227,22 @@ namespace ksh
 		}
 	};
 
-	inline void to_json(nlohmann::json& j, const RelGraphValue& graphValue)
-	{
-		if (graphValue.rv == graphValue.rvf)
-		{
-			j = {
-				{ "rv", graphValue.rv },
-			};
-		}
-		else
-		{
-			j = {
-				{ "rv", graphValue.rv },
-				{ "rvf", graphValue.rvf },
-			};
-		}
-	}
+	void to_json(nlohmann::json& j, const RelGraphValue& graphValue);
 
 	struct Interval
 	{
 		RelPulse length = 0;
 	};
 
-	inline void to_json(nlohmann::json& j, const ByPulse<Interval>& intervals)
-	{
-		j = nlohmann::json::array();
-
-		for (const auto& [y, interval] : intervals)
-		{
-			if (interval.length == 0)
-			{
-				j.push_back({
-					{ "y", y },
-				});
-			}
-			else
-			{
-				j.push_back({
-					{ "y", y },
-					{ "l", interval.length },
-				});
-			}
-		}
-	}
+	void to_json(nlohmann::json& j, const ByPulse<Interval>& intervals);
 
 	// Note: This function cannot overload to_json() because ByRelPulse<T> is the same type as ByPulse<T>
-	inline void IntervalByRelPulseToJSON(nlohmann::json& j, const ByRelPulse<Interval>& intervals)
-	{
-		j = nlohmann::json::array();
+	void IntervalByRelPulseToJSON(nlohmann::json& j, const ByRelPulse<Interval>& intervals);
 
-		for (const auto& [y, interval] : intervals)
-		{
-			if (interval.length == 0)
-			{
-				j.push_back({
-					{ "ry", y },
-				});
-			}
-			else
-			{
-				j.push_back({
-					{ "ry", y },
-					{ "l", interval.length },
-				});
-			}
-		}
-	}
-
-	inline void to_json(nlohmann::json& j, const ByPulseMulti<Interval>& intervals)
-	{
-		j = nlohmann::json::array();
-
-		for (const auto& [y, interval] : intervals)
-		{
-			if (interval.length == 0)
-			{
-				j.push_back({
-					{ "y", y },
-				});
-			}
-			else
-			{
-				j.push_back({
-					{ "y", y },
-					{ "l", interval.length },
-				});
-			}
-		}
-	}
+	void to_json(nlohmann::json& j, const ByPulseMulti<Interval>& intervals);
 
 	// Note: This function cannot overload to_json() because ByRelPulseMulti<T> is the same type as ByPulseMulti<T>
-	inline void IntervalByRelPulseMultiToJSON(nlohmann::json& j, const ByRelPulseMulti<Interval>& intervals)
-	{
-		j = nlohmann::json::array();
-
-		for (const auto& [y, interval] : intervals)
-		{
-			if (interval.length == 0)
-			{
-				j.push_back({
-					{ "ry", y },
-				});
-			}
-			else
-			{
-				j.push_back({
-					{ "ry", y },
-					{ "l", interval.length },
-				});
-			}
-		}
-	}
+	void IntervalByRelPulseMultiToJSON(nlohmann::json& j, const ByRelPulseMulti<Interval>& intervals);
 
 	using Graph = ByPulse<GraphValue>;
 

@@ -15,45 +15,10 @@ namespace ksh
 			return filenameF.empty() && filenameP.empty() && filenameFP.empty();
 		}
 
-		std::vector<std::string> toStrArray() const
-		{
-			if (!filenameFP.empty())
-			{
-				return {
-					filenameF,
-					filenameP,
-					filenameFP,
-				};
-			}
-			else if (!filenameP.empty())
-			{
-				return {
-					filenameF,
-					filenameP,
-				};
-			}
-			else if (!filenameF.empty())
-			{
-				return {
-					filenameF,
-				};
-			}
-			else
-			{
-				return std::vector<std::string>();
-			}
-		}
+		std::vector<std::string> toStrArray() const;
 	};
 
-	inline void to_json(nlohmann::json& j, const LegacyAudioBGMInfo& legacy)
-	{
-		j = nlohmann::json::object();
-		
-		if (!legacy.empty())
-		{
-			j["fp_filenames"] = legacy.toStrArray();
-		}
-	}
+	void to_json(nlohmann::json& j, const LegacyAudioBGMInfo& legacy);
 
 	struct LegacyAudioInfo
 	{
@@ -65,13 +30,5 @@ namespace ksh
 		}
 	};
 
-	inline void to_json(nlohmann::json& j, const LegacyAudioInfo& legacy)
-	{
-		j = nlohmann::json::object();
-
-		if (!legacy.bgmInfo.empty())
-		{
-			j["bgm"] = legacy.bgmInfo;
-		}
-	}
+	void to_json(nlohmann::json& j, const LegacyAudioInfo& legacy);
 }

@@ -7,19 +7,8 @@ namespace ksh
 	{
 		double total = 0.0;
 
-		bool empty() const
-		{
-			return total == 0.0;
-		}
+		bool empty() const;
 	};
 
-	inline void to_json(nlohmann::json& j, const GaugeRoot& gauge)
-	{
-		j = nlohmann::json::object();
-
-		if (gauge.total != 0.0)
-		{
-			j["total"] = gauge.total;
-		}
-	}
+	void to_json(nlohmann::json& j, const GaugeRoot& gauge);
 }

@@ -28,7 +28,7 @@ namespace ksh
 	};
 
 	template <typename G> // G: Graph or RelGraph
-	inline void to_json(nlohmann::json& j, const CamGraphs<G>& camGraphs)
+	void to_json(nlohmann::json& j, const CamGraphs<G>& camGraphs)
 	{
 		j = nlohmann::json::object();
 
@@ -77,30 +77,7 @@ namespace ksh
 		double decayOrder = 0.0;
 	};
 
-	inline void to_json(nlohmann::json& j, const CamPatternParams& params)
-	{
-		j["l"] = params.length;
-
-		if (params.scale != 1.0)
-		{
-			j["scale"] = params.scale;
-		}
-
-		if (params.repeat != 1)
-		{
-			j["repeat"] = params.repeat;
-		}
-
-		if (params.repeatScale != 1.0)
-		{
-			j["repeat_scale"] = params.repeatScale;
-		}
-
-		if (params.decayOrder != 0.0)
-		{
-			j["decay_order"] = params.decayOrder;
-		}
-	}
+	void to_json(nlohmann::json& j, const CamPatternParams& params);
 
 	struct CamPatternDef
 	{
@@ -108,13 +85,7 @@ namespace ksh
 		CamPatternParams params;
 	};
 
-	inline void to_json(nlohmann::json& j, const CamPatternDef& def)
-	{
-		j = {
-			{ "body", def.body },
-			{ "v", def.params },
-		};
-	}
+	void to_json(nlohmann::json& j, const CamPatternDef& def);
 
 	struct CamPatternInfo
 	{
@@ -122,31 +93,10 @@ namespace ksh
 		InvokeList<ByPulse<CamPatternParams>> pulseEventList;
 		InvokeList<ByNotes<CamPatternParams>> noteEventList;
 
-		bool empty() const
-		{
-			return defList.empty() && pulseEventList.empty() && noteEventList.empty();
-		}
+		bool empty() const;
 	};
 
-	inline void to_json(nlohmann::json& j, const CamPatternInfo& info)
-	{
-		j = nlohmann::json::object();
-
-		if (!info.defList.empty())
-		{
-			j["def"] = info.defList;
-		}
-
-		if (!info.pulseEventList.empty())
-		{
-			j["pulse_event"] = info.pulseEventList;
-		}
-
-		if (!info.noteEventList.empty())
-		{
-			j["note_event"] = info.noteEventList;
-		}
-	}
+	void to_json(nlohmann::json& j, const CamPatternInfo& info);
 
 	struct CamRoot
 	{
@@ -154,29 +104,8 @@ namespace ksh
 		CamGraphs<Graph> tiltAssignScale = { .rotationZ = { { 0, 10.0 } } };
 		CamPatternInfo patternInfo;
 
-		bool empty() const
-		{
-			return body.empty() && tiltAssignScale.empty() && patternInfo.empty();
-		}
+		bool empty() const;
 	};
 
-	inline void to_json(nlohmann::json& j, const CamRoot& cam)
-	{
-		j = nlohmann::json::object();
-
-		if (!cam.body.empty())
-		{
-			j["body"] = cam.body;
-		}
-
-		if (!cam.tiltAssignScale.empty())
-		{
-			j["tilt_assign"] = cam.tiltAssignScale;
-		}
-
-		if (!cam.patternInfo.empty())
-		{
-			j["pattern"] = cam.patternInfo;
-		}
-	}
+	void to_json(nlohmann::json& j, const CamRoot& cam);
 }

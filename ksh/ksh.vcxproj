@@ -43,10 +43,25 @@
     <ClInclude Include="include\ksh\util\timing_utils.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\audio\audio.cpp" />
     <ClCompile Include="src\audio\audio_effect.cpp" />
+    <ClCompile Include="src\audio\bgm_info.cpp" />
+    <ClCompile Include="src\audio\key_sound.cpp" />
+    <ClCompile Include="src\audio\legacy_audio_info.cpp" />
+    <ClCompile Include="src\beat\beat_map.cpp" />
+    <ClCompile Include="src\beat\time_sig.cpp" />
+    <ClCompile Include="src\bg\bg.cpp" />
+    <ClCompile Include="src\camera\cam.cpp" />
+    <ClCompile Include="src\camera\camera.cpp" />
+    <ClCompile Include="src\camera\tilt.cpp" />
+    <ClCompile Include="src\chart_data.cpp" />
+    <ClCompile Include="src\common\common.cpp" />
     <ClCompile Include="src\encoding\encoding_win.cpp" />
+    <ClCompile Include="src\gauge\gauge.cpp" />
     <ClCompile Include="src\io\ksh_io.cpp" />
     <ClCompile Include="src\io\kson_io.cpp" />
+    <ClCompile Include="src\meta\meta.cpp" />
+    <ClCompile Include="src\note\note.cpp" />
     <ClCompile Include="src\util\timing_utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
