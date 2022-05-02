@@ -23,6 +23,10 @@ private:
 	const TiledTextureSizeInfo m_sizeInfo;
 	const Size m_scaledSize;
 
+#ifndef NDEBUG
+	const String m_textureAssetKey;
+#endif
+
 public:
 	TiledTexture(Texture&& texture, const TiledTextureSizeInfo& sizeInfo);
 	TiledTexture(const Texture& texture, const TiledTextureSizeInfo& sizeInfo);
