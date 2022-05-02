@@ -120,7 +120,8 @@ void ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh::Interval>& lane,
 		{
 			if ((!found || Abs(sec - currentTimeSec) < minDistance) && sec - currentTimeSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
 			{
-				m_currentLongNotePulse = y;
+				laneStateRef.currentLongNotePulse = y;
+				laneStateRef.currentLongNoteStateChangedTimeSec = currentTimeSec;
 				return;
 			}
 			else if (found && sec - currentTimeSec > LongNote::kWindowSecPreHold && y > currentPulse)
@@ -169,12 +170,12 @@ void ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh::Interval>& lane,
 	}
 }
 
-void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec)
+void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec, const Graphics::LaneState& laneStateRef)
 {
-	if (m_currentLongNotePulse.has_value())
+	if (laneStateRef.currentLongNotePulse.has_value())
 	{
-		const ksh::Pulse noteStartPulse = *m_currentLongNotePulse;
-		const ksh::Pulse noteEndPulse = *m_currentLongNotePulse + lane.at(*m_currentLongNotePulse).length;
+		const ksh::Pulse noteStartPulse = *laneStateRef.currentLongNotePulse;
+		const ksh::Pulse noteEndPulse = *laneStateRef.currentLongNotePulse + lane.at(*laneStateRef.currentLongNotePulse).length;
 		const ksh::Pulse limitPulse = Min(currentPulse, noteEndPulse);
 
 		for (auto itr = m_longJudgmentArray.upper_bound(Max(noteStartPulse, m_prevPulse) - 1); itr != m_longJudgmentArray.end(); ++itr)
@@ -214,17 +215,17 @@ void MusicGame::Judgment::ButtonLaneJudgment::update(const ksh::ByPulse<ksh::Int
 	// Long note hold
 	if (KeyConfig::Pressed(m_keyConfigButton))
 	{
-		processKeyPressed(lane, currentPulse, currentTimeSec);
+		processKeyPressed(lane, currentPulse, currentTimeSec, laneStateRef);
 	}
 
 	// Long note release
-	if (m_currentLongNotePulse.has_value() && 
-		(KeyConfig::Up(m_keyConfigButton) || (*m_currentLongNotePulse + lane.at(*m_currentLongNotePulse).length < currentPulse)))
+	if (laneStateRef.currentLongNotePulse.has_value() &&
+		(KeyConfig::Up(m_keyConfigButton) || (*laneStateRef.currentLongNotePulse + lane.at(*laneStateRef.currentLongNotePulse).length < currentPulse)))
 	{
-		m_currentLongNotePulse = none;
+		laneStateRef.currentLongNotePulse = none;
+		laneStateRef.currentLongNoteStateChangedTimeSec = currentTimeSec;
 	}
 
-	laneStateRef.currentLongNotePulse = m_currentLongNotePulse;
 	m_prevPulse = currentPulse;
 }
 

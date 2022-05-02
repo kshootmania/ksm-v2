@@ -22,6 +22,7 @@ namespace MusicGame::Graphics
 		int32 chipAnimStateRingBufferCursor = 0;
 
 		Optional<ksh::Pulse> currentLongNotePulse = none;
+		double currentLongNoteStateChangedTimeSec = kPastTimeSec; // Timing of key press or key release
 	};
 
 	struct CamValues

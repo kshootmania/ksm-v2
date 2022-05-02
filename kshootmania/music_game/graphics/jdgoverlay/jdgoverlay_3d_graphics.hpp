@@ -12,15 +12,23 @@ namespace MusicGame::Graphics
 		const TiledTexture m_chipNearTexture;
 		const TiledTexture m_chipErrorTexture;
 
+		const TiledTexture m_longAnimTexture;
+
 		const Mesh m_mesh;
 
-		const TiledTexture& chipTexture(Judgment::JudgmentResult type) const;
+		const TiledTexture& chipAnimTexture(Judgment::JudgmentResult type) const;
 
 		void drawChipAnimCommon(const UpdateInfo& updateInfo, bool isBT) const;
 
 		void drawChipAnimBT(const UpdateInfo& updateInfo) const;
 
 		void drawChipAnimFX(const UpdateInfo& updateInfo) const;
+
+		void drawLongAnimCommon(const UpdateInfo& updateInfo, bool isBT) const;
+
+		void drawLongAnimBT(const UpdateInfo& updateInfo) const;
+
+		void drawLongAnimFX(const UpdateInfo& updateInfo) const;
 
 	public:
 		Jdgoverlay3DGraphics();

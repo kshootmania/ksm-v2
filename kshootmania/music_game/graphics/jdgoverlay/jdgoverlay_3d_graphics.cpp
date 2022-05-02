@@ -18,9 +18,23 @@ namespace
 	constexpr double kChipAnimDurationSec = 0.5;
 	constexpr Size kChipAnimSourceSize = { 150, 150 };
 	constexpr Size kChipAnimSize = { 86, 86 };
+
+	constexpr StringView kLongAnimTextureFilename = U"judgelong.gif";
+	constexpr int32 kLongAnimStartFrames = 8;
+	constexpr double kLongAnimStartDurationSec = 0.5;
+	constexpr int32 kLongAnimLoopFrameOffset = kLongAnimStartFrames;
+	constexpr int32 kLongAnimLoopFrames = 26;
+	constexpr double kLongAnimLoopDurationSec = 1.625;
+	constexpr int32 kLongAnimEndFrameOffset = kLongAnimLoopFrameOffset + kLongAnimLoopFrames;
+	constexpr int32 kLongAnimEndFrames = 8;
+	constexpr double kLongAnimEndDurationSec = 0.5;
+	constexpr int32 kLongAnimTotalFrames = kLongAnimStartFrames + kLongAnimLoopFrames + kLongAnimEndFrames;
+	constexpr Size kLongAnimSourceSize = { 300, 300 };
+	constexpr Size kLongAnimSizeBT = { 120, 120 };
+	constexpr Size kLongAnimSizeFX = { 140, 140 };
 }
 
-const TiledTexture& MusicGame::Graphics::Jdgoverlay3DGraphics::chipTexture(Judgment::JudgmentResult type) const
+const TiledTexture& MusicGame::Graphics::Jdgoverlay3DGraphics::chipAnimTexture(Judgment::JudgmentResult type) const
 {
 	using enum Judgment::JudgmentResult;
 
@@ -52,8 +66,8 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimCommon(const UpdateI
 			if (0.0 <= sec && sec < kChipAnimDurationSec && chipAnimState.type != Judgment::JudgmentResult::kUnspecified)
 			{
 				const int32 frameIdx = static_cast<int32>(sec / kChipAnimDurationSec * kChipAnimFrames);
-				const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + (isBT ? 0 : 30) + 60 * i * (isBT ? 1 : 2), 17);
-				chipTexture(chipAnimState.type)(frameIdx).resized(ScreenUtils::Scaled(kChipAnimSize)).draw(position);
+				const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + (isBT ? 0 : 30) + (isBT ? 60 : 120) * i, 17);
+				chipAnimTexture(chipAnimState.type)(frameIdx).resized(ScreenUtils::Scaled(kChipAnimSize)).draw(position);
 			}
 		}
 	}
@@ -69,9 +83,56 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimFX(const UpdateInfo&
 	drawChipAnimCommon(updateInfo, false);
 }
 
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimCommon(const UpdateInfo& updateInfo, bool isBT) const
+{
+	for (int32 i = 0; std::cmp_less(i, (isBT ? ksh::kNumBTLanes : ksh::kNumFXLanes)); ++i)
+	{
+		const auto& laneState = isBT ? updateInfo.btLaneState[i] : updateInfo.fxLaneState[i];
+		const double sec = updateInfo.currentTimeSec - laneState.currentLongNoteStateChangedTimeSec;
+		const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + (isBT ? 75 : 96) + (isBT ? 60 : 120) * i, isBT ? 10 : 0);
+		const SizeF size = ScreenUtils::Scaled(isBT ? kLongAnimSizeBT : kLongAnimSizeFX);
+
+		int32 frameIdx;
+		if (laneState.currentLongNotePulse.has_value())
+		{
+			if (0.0 <= sec && sec < kChipAnimDurationSec)
+			{
+				// Key press animation
+				frameIdx = static_cast<int32>(sec / kLongAnimStartDurationSec * kLongAnimStartFrames);
+			}
+			else
+			{
+				// Loop animation
+				frameIdx = kLongAnimLoopFrameOffset + static_cast<int32>(MathUtils::WrappedFmod(sec / kLongAnimLoopDurationSec, 1.0) * kLongAnimLoopFrames);
+				m_longAnimTexture(frameIdx).resized(size).draw(position);
+			}
+		}
+		else if (0.0 <= sec && sec < kChipAnimDurationSec)
+		{
+			// Key release animation
+			frameIdx = kLongAnimEndFrameOffset + static_cast<int32>(sec / kLongAnimEndDurationSec * kLongAnimEndFrames);
+		}
+		else
+		{
+			continue;
+		}
+
+		m_longAnimTexture(frameIdx).resized(size).draw(position);
+	}
+}
+
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimBT(const UpdateInfo& updateInfo) const
+{
+	drawLongAnimCommon(updateInfo, true);
+}
+
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimFX(const UpdateInfo& updateInfo) const
+{
+	drawLongAnimCommon(updateInfo, false);
+}
+
 MusicGame::Graphics::Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
 	: m_renderTexture(ScreenUtils::Scaled(kTextureSize.x), ScreenUtils::Scaled(kTextureSize.y))
-	, m_mesh(MeshData::Grid(kPlaneCenter, kPlaneSize, 2, 2))
 	, m_chipCriticalTexture(kChipCriticalTextureFilename,
 		{
 			.row = kChipAnimFrames,
@@ -91,6 +152,13 @@ MusicGame::Graphics::Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
 			.sourceScale = ScreenUtils::SourceScale::kNoScaling,
 			.sourceSize = kChipAnimSourceSize,
 		})
+	, m_longAnimTexture(kLongAnimTextureFilename,
+		{
+			.row = kLongAnimTotalFrames,
+			.sourceScale = ScreenUtils::SourceScale::kNoScaling,
+			.sourceSize = kLongAnimSourceSize,
+		})
+	, m_mesh(MeshData::Grid(kPlaneCenter, kPlaneSize, 2, 2))
 {
 }
 
@@ -101,6 +169,8 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::draw2D(const UpdateInfo& updateI
 	const ScopedRenderStates2D blendState(BlendState::Additive);
 	drawChipAnimBT(updateInfo);
 	drawChipAnimFX(updateInfo);
+	drawLongAnimBT(updateInfo);
+	drawLongAnimFX(updateInfo);
 }
 
 void MusicGame::Graphics::Jdgoverlay3DGraphics::draw3D(double tiltRadians) const
