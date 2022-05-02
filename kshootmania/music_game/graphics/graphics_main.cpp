@@ -69,11 +69,6 @@ namespace
 
 		return renderTextures;
 	}
-
-	Mat4x4 TiltMatrix(double radians, const Float3& center)
-	{
-		return Mat4x4::Rotate(Float3::Backward(), radians, center);
-	}
 }
 
 void MusicGame::Graphics::GraphicsMain::drawBG() const
@@ -84,7 +79,7 @@ void MusicGame::Graphics::GraphicsMain::drawBG() const
 	{
 		bgTiltRadians += m_highwayTilt.radians() / 3;
 	}
-	m_billboardMesh.draw(m_bgTransform * TiltMatrix(bgTiltRadians, kBGBillboardPosition), m_bgTexture);
+	m_bgBillboardMesh.draw(m_bgTransform * TiltTransformMatrix(bgTiltRadians, kBGBillboardPosition), m_bgTexture);
 }
 
 void MusicGame::Graphics::GraphicsMain::drawLayer() const
@@ -101,12 +96,12 @@ void MusicGame::Graphics::GraphicsMain::drawLayer() const
 	// TODO: Layer speed specified by KSH
 	const ksh::Pulse resolution = m_updateInfo.pChartData->beat.resolution;
 	const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)), static_cast<int32>(m_layerFrameTextures[0].size()));
-	m_billboardMesh.draw(m_layerTransform * TiltMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
+	m_bgBillboardMesh.draw(m_layerTransform * TiltTransformMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
 }
 
 MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache)
 	: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
-	, m_billboardMesh(MeshData::Billboard())
+	, m_bgBillboardMesh(MeshData::Billboard())
 	, m_bgTexture(BGFilePath(chartData))
 	, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
 	, m_layerFrameTextures(SplitLayerTexture(LayerFilePath(chartData)))
@@ -142,9 +137,8 @@ void MusicGame::Graphics::GraphicsMain::draw() const
 	m_jdgoverlay3DGraphics.draw2D(m_updateInfo);
 	Graphics2D::Flush();
 
-	Graphics3D::SetCameraTransform(m_camera);
-
 	// Draw 3D space
+	Graphics3D::SetCameraTransform(m_camera);
 	drawBG();
 	drawLayer();
 	const double tiltRadians = m_highwayTilt.radians();

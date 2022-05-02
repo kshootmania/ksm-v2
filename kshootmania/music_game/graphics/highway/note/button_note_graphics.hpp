@@ -12,6 +12,12 @@ namespace MusicGame::Graphics
 		const TiledTexture m_chipFXNoteTexture;
 		const Texture m_longFXNoteTexture;
 
+		void drawChipNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, bool isBT) const;
+
+		void drawChipBTNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget) const;
+
+		void drawChipFXNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget) const;
+
 		void drawLongNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, bool isBT) const;
 
 		void drawLongBTNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;

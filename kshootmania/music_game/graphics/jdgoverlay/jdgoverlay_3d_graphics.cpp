@@ -22,10 +22,10 @@ namespace
 
 const TiledTexture& MusicGame::Graphics::Jdgoverlay3DGraphics::chipTexture(Judgment::JudgmentResult type) const
 {
+	using enum Judgment::JudgmentResult;
+
 	switch (type)
 	{
-		using enum Judgment::JudgmentResult;
-
 	case kCritical:
 		return m_chipCriticalTexture;
 
@@ -33,7 +33,10 @@ const TiledTexture& MusicGame::Graphics::Jdgoverlay3DGraphics::chipTexture(Judgm
 		return m_chipNearTexture; // TODO: Fast near
 
 	case kError:
+		return m_chipErrorTexture;
+
 	default:
+		assert(false);
 		return m_chipErrorTexture;
 	}
 }
@@ -93,6 +96,7 @@ MusicGame::Graphics::Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
 
 void MusicGame::Graphics::Jdgoverlay3DGraphics::draw2D(const UpdateInfo& updateInfo) const
 {
+	// Prepare 2D render texture to draw
 	const ScopedRenderTarget2D renderTarget(m_renderTexture.clear(Palette::Black));
 	const ScopedRenderStates2D blendState(BlendState::Additive);
 	drawChipAnimBT(updateInfo);
@@ -101,8 +105,8 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::draw2D(const UpdateInfo& updateI
 
 void MusicGame::Graphics::Jdgoverlay3DGraphics::draw3D(double tiltRadians) const
 {
+	// Draw 2D render texture into 3D plane
 	const ScopedRenderStates3D blendState(BlendState::Additive);
-	const Mat4x4 m = Mat4x4::Rotate(Float3::Right(), -60_deg, kPlaneCenter) * Mat4x4::Rotate(Float3::Backward(), tiltRadians, Vec3{ 0.0, 42.0, 0.0 });
-	const Transformer3D transform{ m };
+	const Transformer3D transform(JudgmentPlaneTransformMatrix(tiltRadians, kPlaneCenter));
 	m_mesh.draw(m_renderTexture);
 }

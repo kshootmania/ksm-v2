@@ -9,7 +9,7 @@ namespace MusicGame::Graphics
 	class Highway3DGraphics
 	{
 	private:
-		const Texture m_bgTexture;
+		const Texture m_baseTexture;
 		const Texture m_shineEffectTexture;
 
 		RenderTexture m_additiveRenderTexture;

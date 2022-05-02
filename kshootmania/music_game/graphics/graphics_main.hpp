@@ -17,9 +17,8 @@ namespace MusicGame::Graphics
 	private:
 		BasicCamera3D m_camera;
 
-		const Mesh m_billboardMesh;
-
 		// TODO: separate into single class
+		const Mesh m_bgBillboardMesh;
 		Texture m_bgTexture;
 		const Mat4x4 m_bgTransform;
 		std::array<Array<RenderTexture>, 2> m_layerFrameTextures;

@@ -18,9 +18,8 @@ MusicGame::Graphics::Jdgline3DGraphics::Jdgline3DGraphics()
 
 void MusicGame::Graphics::Jdgline3DGraphics::draw3D(double tiltRadians) const
 {
-	// Draw judgment line into 3D space
+	// Draw judgment line texture into 3D plane
 	const ScopedRenderStates3D blendState(BlendState::NonPremultiplied);
-	const Mat4x4 m = Mat4x4::Rotate(Float3::Right(), -60_deg, kPlaneCenter) * Mat4x4::Rotate(Float3::Backward(), tiltRadians, Vec3{ 0.0, 42.0, 0.0 });
-	const Transformer3D transform{ m };
+	const Transformer3D transform(JudgmentPlaneTransformMatrix(tiltRadians, kPlaneCenter));
 	m_mesh.draw(m_jdglineTexture);
 }

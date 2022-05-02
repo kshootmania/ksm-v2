@@ -21,10 +21,60 @@ namespace
 	}
 }
 
+void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, bool isBT) const
+{
+	const ksh::ChartData& chartData = *updateInfo.pChartData;
+	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
+
+	const ScopedRenderTarget2D renderTarget(additiveTarget);
+	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
+
+	for (std::size_t laneIdx = 0; laneIdx < (isBT ? ksh::kNumBTLanes : ksh::kNumFXLanes); ++laneIdx)
+	{
+		const auto& lane = isBT ? chartData.note.btLanes[laneIdx] : chartData.note.fxLanes[laneIdx];
+		for (const auto& [y, note] : lane)
+		{
+			if (y + note.length < updateInfo.currentPulse - chartData.beat.resolution)
+			{
+				continue;
+			}
+
+			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+			if (positionStartY < 0)
+			{
+				break;
+			}
+
+			if (note.length == 0)
+			{
+				const double yRate = (highwayTextureHeight - positionStartY) / highwayTextureHeight;
+				const double height = NoteGraphicsUtils::ChipNoteHeight(yRate);
+				const TiledTexture& sourceTexture = isBT ? m_chipBTNoteTexture : m_chipFXNoteTexture;
+				const Vec2 position = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * laneIdx + Vec2::Down(positionStartY - height / 2);
+				sourceTexture() // TODO: Chip BT color
+					.resized(isBT ? 40 : 82, NoteGraphicsUtils::ChipNoteHeight(yRate))
+					.draw(position);
+			}
+		}
+	}
+}
+
+void MusicGame::Graphics::ButtonNoteGraphics::drawChipBTNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
+{
+	drawChipNotesCommon(updateInfo, additiveTarget, true);
+}
+
+void MusicGame::Graphics::ButtonNoteGraphics::drawChipFXNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
+{
+	drawChipNotesCommon(updateInfo, additiveTarget, false);
+}
+
 void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, bool isBT) const
 {
 	const ksh::ChartData& chartData = *updateInfo.pChartData;
 	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
+
+	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
 	for (std::size_t laneIdx = 0; laneIdx < (isBT ? ksh::kNumBTLanes : ksh::kNumFXLanes); ++laneIdx)
 	{
@@ -111,73 +161,8 @@ void MusicGame::Graphics::ButtonNoteGraphics::draw(const UpdateInfo& updateInfo,
 		return;
 	}
 
-	const ScopedRenderStates2D defaultSamplerState(SamplerState::ClampNearest);
-	const ScopedRenderTarget2D defaultRenderTarget(additiveTarget);
-	const ksh::ChartData& chartData = *updateInfo.pChartData;
-
-	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
-
-	drawLongBTNotes(updateInfo, additiveTarget, invMultiplyTarget);
-
 	drawLongFXNotes(updateInfo, additiveTarget, invMultiplyTarget);
-
-	// Chip FX notes
-	for (std::size_t laneIdx = 0; laneIdx < ksh::kNumFXLanes; ++laneIdx)
-	{
-		const auto& lane = chartData.note.fxLanes[laneIdx];
-		for (const auto& [y, note] : lane)
-		{
-			if (y + note.length < updateInfo.currentPulse - chartData.beat.resolution)
-			{
-				continue;
-			}
-
-			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-			if (positionStartY < 0)
-			{
-				break;
-			}
-
-			const double dLaneIdx = static_cast<double>(laneIdx);
-
-			if (note.length == 0)
-			{
-				const double yRate = (highwayTextureHeight - positionStartY) / highwayTextureHeight;
-				const double height = NoteGraphicsUtils::ChipNoteHeight(yRate);
-				m_chipFXNoteTexture()
-					.resized(82, NoteGraphicsUtils::ChipNoteHeight(yRate))
-					.draw(kLanePositionOffset + kFXLanePositionDiff * dLaneIdx + Vec2::Down(positionStartY - height / 2));
-			}
-		}
-	}
-
-	// Chip BT notes
-	for (std::size_t laneIdx = 0; laneIdx < ksh::kNumBTLanes; ++laneIdx)
-	{
-		const auto& lane = chartData.note.btLanes[laneIdx];
-		for (const auto& [y, note] : lane)
-		{
-			if (y + note.length < updateInfo.currentPulse - chartData.beat.resolution)
-			{
-				continue;
-			}
-
-			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
-			if (positionStartY < 0)
-			{
-				break;
-			}
-
-			const double dLaneIdx = static_cast<double>(laneIdx);
-
-			if (note.length == 0)
-			{
-				const double yRate = (highwayTextureHeight - positionStartY) / highwayTextureHeight;
-				const double height = NoteGraphicsUtils::ChipNoteHeight(yRate);
-				m_chipBTNoteTexture()
-					.resized(40, height)
-					.draw(kLanePositionOffset + kBTLanePositionDiff * dLaneIdx + Vec2::Down(positionStartY - height / 2));
-			}
-		}
-	}
+	drawLongBTNotes(updateInfo, additiveTarget, invMultiplyTarget);
+	drawChipFXNotes(updateInfo, additiveTarget);
+	drawChipBTNotes(updateInfo, additiveTarget);
 }

@@ -6,7 +6,7 @@ namespace
 {
 	using namespace MusicGame::Graphics;
 
-	constexpr StringView kHighwayBGTextureFilename = U"base.gif";
+	constexpr StringView kHighwayBaseTextureFilename = U"base.gif";
 	constexpr StringView kShineEffectTextureFilename = U"lanelight.gif";
 
 	// Angle of the line connecting the camera position and the judgment line from the horizontal
@@ -28,12 +28,12 @@ namespace
 }
 
 MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
-	: m_bgTexture(TextureAsset(kHighwayBGTextureFilename))
+	: m_baseTexture(TextureAsset(kHighwayBaseTextureFilename))
 	, m_shineEffectTexture(TextureAsset(kShineEffectTextureFilename))
 	, m_additiveRenderTexture(kHighwayTextureSize)
 	, m_invMultiplyRenderTexture(kHighwayTextureSize)
 	, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, kHighwayPlaneSize, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
-	, m_mesh(m_meshData) // <- this initialization is important because DynamicMesh::fill() does not dynamically resize the vertex array
+	, m_mesh(m_meshData) // <- this initialization is required because DynamicMesh::fill() does not resize the vertex array dynamically
 {
 }
 
@@ -42,8 +42,8 @@ void MusicGame::Graphics::Highway3DGraphics::draw2D(const UpdateInfo& updateInfo
 	assert(updateInfo.pChartData != nullptr);
 
 	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
-	Shader::Copy(m_bgTexture(0, 0, kHighwayTextureSize), m_additiveRenderTexture);
-	Shader::Copy(m_bgTexture(kHighwayTextureSize.x, 0, kHighwayTextureSize), m_invMultiplyRenderTexture);
+	Shader::Copy(m_baseTexture(0, 0, kHighwayTextureSize), m_additiveRenderTexture);
+	Shader::Copy(m_baseTexture(kHighwayTextureSize.x, 0, kHighwayTextureSize), m_invMultiplyRenderTexture);
 
 	// Draw shine effect
 	{
@@ -68,9 +68,8 @@ void MusicGame::Graphics::Highway3DGraphics::draw2D(const UpdateInfo& updateInfo
 
 void MusicGame::Graphics::Highway3DGraphics::draw3D(double tiltRadians) const
 {
-	// Draw highway into 3D space
-	const Mat4x4 m = Mat4x4::Rotate(Float3::Forward(), -tiltRadians, Float3{ 0.0f, 42.0f, 0.0f });
-	const Transformer3D transform{ m };
+	// Draw 2D render texture into 3D plane
+	const Transformer3D transform(TiltTransformMatrix(tiltRadians));
 
 	{
 		const ScopedRenderStates3D renderState(kInvMultiply);

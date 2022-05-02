@@ -31,7 +31,19 @@ namespace MusicGame::Graphics
 
 	constexpr ColorF kSongInfoFontColor = Color{ 0, 32, 8 };
 
-	constexpr double kOnePixelTextureSourceSize = 0.5; // Note: Do not use exactly 1px because it will create a margin pixel
+	constexpr double kOnePixelTextureSourceSize = 0.5; // Note: Do not use exactly 1px because it will create margin pixels
 
 	constexpr double kOnePixelTextureSourceOffset = (1.0 - kOnePixelTextureSourceSize) / 2;
+
+	constexpr Vec3 kHighwayTiltCenter = { 0.0, 42.0, 0.0 };
+
+	inline Mat4x4 TiltTransformMatrix(double radians, const Vec3& center = kHighwayTiltCenter)
+	{
+		return Mat4x4::Rotate(Float3::Backward(), radians, center);
+	}
+
+	inline Mat4x4 JudgmentPlaneTransformMatrix(double tiltRadians, const Vec3& planeCenter)
+	{
+		return Mat4x4::Rotate(Float3::Right(), -60_deg, planeCenter) * TiltTransformMatrix(tiltRadians);
+	}
 }
