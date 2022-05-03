@@ -11,9 +11,9 @@ namespace
 	constexpr Float3 kPlaneCenter = { 0.0f, 3.6f, -kHighwayPlaneSize.y / 2 - 1.8f };
 	constexpr Float2 kPlaneSize = { kTextureSize.x * 0.95f / 8, kTextureSize.y * 0.95f / 8 };
 
-	constexpr StringView kChipCriticalTextureFilename = U"judge1.gif";
-	constexpr StringView kChipNearTextureFilename = U"judge2.gif";
-	constexpr StringView kChipErrorTextureFilename = U"judge3.gif";
+	constexpr StringView kChipCriticalAnimTextureFilename = U"judge1.gif";
+	constexpr StringView kChipNearAnimTextureFilename = U"judge2.gif";
+	constexpr StringView kChipErrorAnimTextureFilename = U"judge3.gif";
 	constexpr int32 kChipAnimFrames = 12;
 	constexpr double kChipAnimDurationSec = 0.5;
 	constexpr Size kChipAnimSourceSize = { 150, 150 };
@@ -88,7 +88,7 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimCommon(const UpdateI
 	for (int32 i = 0; std::cmp_less(i, (isBT ? ksh::kNumBTLanes : ksh::kNumFXLanes)); ++i)
 	{
 		const auto& laneState = isBT ? updateInfo.btLaneState[i] : updateInfo.fxLaneState[i];
-		const double sec = updateInfo.currentTimeSec - laneState.currentLongNoteStateChangedTimeSec;
+		const double sec = updateInfo.currentTimeSec - laneState.currentLongNoteAnimOffsetTimeSec;
 		const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + (isBT ? 75 : 96) + (isBT ? 60 : 120) * i, isBT ? 10 : 0);
 		const SizeF size = ScreenUtils::Scaled(isBT ? kLongAnimSizeBT : kLongAnimSizeFX);
 
@@ -133,20 +133,20 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimFX(const UpdateInfo&
 
 MusicGame::Graphics::Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
 	: m_renderTexture(ScreenUtils::Scaled(kTextureSize.x), ScreenUtils::Scaled(kTextureSize.y))
-	, m_chipCriticalTexture(kChipCriticalTextureFilename,
+	, m_chipCriticalTexture(kChipCriticalAnimTextureFilename,
 		{
 			.row = kChipAnimFrames,
 			.sourceScale = ScreenUtils::SourceScale::kNoScaling,
 			.sourceSize = kChipAnimSourceSize,
 		})
-	, m_chipNearTexture(kChipNearTextureFilename,
+	, m_chipNearTexture(kChipNearAnimTextureFilename,
 		{
 			.row = kChipAnimFrames,
 			.column = 2, // Column#0: Slow (or Default), Column#1: Fast
 			.sourceScale = ScreenUtils::SourceScale::kNoScaling,
 			.sourceSize = kChipAnimSourceSize,
 		})
-	, m_chipErrorTexture(kChipErrorTextureFilename,
+	, m_chipErrorTexture(kChipErrorAnimTextureFilename,
 		{
 			.row = kChipAnimFrames,
 			.sourceScale = ScreenUtils::SourceScale::kNoScaling,

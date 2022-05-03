@@ -121,7 +121,7 @@ void ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh::Interval>& lane,
 			if ((!found || Abs(sec - currentTimeSec) < minDistance) && sec - currentTimeSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
 			{
 				laneStateRef.currentLongNotePulse = y;
-				laneStateRef.currentLongNoteStateChangedTimeSec = currentTimeSec;
+				laneStateRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
 				return;
 			}
 			else if (found && sec - currentTimeSec > LongNote::kWindowSecPreHold && y > currentPulse)
@@ -223,7 +223,7 @@ void MusicGame::Judgment::ButtonLaneJudgment::update(const ksh::ByPulse<ksh::Int
 		(KeyConfig::Up(m_keyConfigButton) || (*laneStateRef.currentLongNotePulse + lane.at(*laneStateRef.currentLongNotePulse).length < currentPulse)))
 	{
 		laneStateRef.currentLongNotePulse = none;
-		laneStateRef.currentLongNoteStateChangedTimeSec = currentTimeSec;
+		laneStateRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
 	}
 
 	m_prevPulse = currentPulse;

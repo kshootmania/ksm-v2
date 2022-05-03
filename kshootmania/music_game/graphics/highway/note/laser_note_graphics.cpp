@@ -16,7 +16,7 @@ namespace
 
 	Quad LaserLineQuad(const Vec2& positionStart, const Vec2& positionEnd)
 	{
-		return Quad{
+		return {
 			positionStart + Vec2{ kLaserLineWidth / 2, 0.0 },
 			positionStart + Vec2{ -kLaserLineWidth / 2, 0.0 },
 			positionEnd + Vec2{ -kLaserLineWidth / 2, 0.0 },
@@ -29,11 +29,11 @@ namespace
 		if (Abs(positionEnd.x - positionStart.x) <= kLaserLineWidth)
 		{
 			// Too short to draw line
-			return Quad{ Vec2::Zero(), Vec2::Zero(), Vec2::Zero(), Vec2::Zero() };
+			return { Vec2::Zero(), Vec2::Zero(), Vec2::Zero(), Vec2::Zero() };
 		}
 
 		const int diffXSign = Sign(positionEnd.x - positionStart.x);
-		return Quad{
+		return {
 			positionStart + Vec2{ diffXSign * kLaserLineWidth / 2, -kLaserLineWidth },
 			positionEnd + Vec2{ -diffXSign * kLaserLineWidth / 2, -kLaserLineWidth },
 			positionEnd + Vec2{ -diffXSign * kLaserLineWidth / 2, 0.0 },
@@ -189,7 +189,6 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 						{
 							const ScopedRenderTarget2D renderTarget(renderTargetTexture);
 							quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y - 1 + kOnePixelTextureSourceOffset, kLaserTextureSize.x, kOnePixelTextureSourceSize)).draw();
-							//quad.draw(Palette::Yellow);
 						}
 					}
 				}
