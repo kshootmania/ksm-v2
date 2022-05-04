@@ -12,23 +12,38 @@ namespace ksh
 
 	struct KeySoundDef
 	{
-		std::string filename; // UTF-8 guaranteed
-
-		KeySoundParams defaultParams;
+		KeySoundParams v;
 	};
 
 	void to_json(nlohmann::json& j, const KeySoundDef& def);
 
+	struct KeySoundFXInfo
+	{
+		DefList<KeySoundDef> def;
+		InvokeList<std::array<ByPulse<KeySoundParams>, kNumFXLanes>> chipInvoke;
+
+		bool empty() const;
+	};
+
+	void to_json(nlohmann::json& j, const KeySoundFXInfo& fx);
+
+	struct KeySoundLaserInfo
+	{
+		DefList<KeySoundDef> def;
+		InvokeList<ByPulse<KeySoundParams>> slamInvoke;
+
+		bool empty() const;
+	};
+
+	void to_json(nlohmann::json& j, const KeySoundLaserInfo& laser);
+
 	struct KeySoundRoot
 	{
-		DefList<KeySoundDef> defList;
-		InvokeList<ByPulse<KeySoundParams>> pulseEventList;
-		InvokeList<ByNotes<KeySoundParams>> noteEventList;
+		KeySoundFXInfo fx;
 
-		bool empty() const
-		{
-			return defList.empty() && pulseEventList.empty() && noteEventList.empty();
-		}
+		KeySoundLaserInfo laser;
+
+		bool empty() const;
 	};
 
 	void to_json(nlohmann::json& j, const KeySoundRoot& keySound);

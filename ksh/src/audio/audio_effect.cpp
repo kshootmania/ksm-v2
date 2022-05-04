@@ -40,33 +40,33 @@ void ksh::to_json(nlohmann::json& j, const AudioEffectParams& params)
 	j = nlohmann::json::object();
 	for (const auto& [name, value] : params)
 	{
-		if (value.valueOff == value.valueOnMin)
+		if (value.value == value.valueOn)
 		{
-			if (value.valueOnMin == value.valueOnMax)
+			if (value.valueOn == value.valueOnMax)
 			{
 				// "xxx"
-				j[name] = value.valueOff;
+				j[name] = value.value;
 			}
 			else
 			{
 				// "xxx-yyy"
-				j[name] = value.valueOff;
+				j[name] = value.value;
 				j[name + ".on.max"] = value.valueOnMax;
 			}
 		}
 		else
 		{
-			if (value.valueOnMin == value.valueOnMax)
+			if (value.valueOn == value.valueOnMax)
 			{
 				// "xxx>yyy"
-				j[name] = value.valueOff;
-				j[name + ".on"] = value.valueOnMin;
+				j[name] = value.value;
+				j[name + ".on"] = value.valueOn;
 			}
 			else
 			{
 				// "xxx>yyy-zzz"
-				j[name] = value.valueOff;
-				j[name + ".on.min"] = value.valueOnMin;
+				j[name] = value.value;
+				j[name + ".on"] = value.valueOn;
 				j[name + ".on.max"] = value.valueOnMax;
 			}
 		}
@@ -84,48 +84,91 @@ void ksh::to_json(nlohmann::json& j, const AudioEffectDef& def)
 }
 
 ksh::AudioEffectParam::AudioEffectParam(double value)
-	: valueOff(value)
-	, valueOnMin(value)
+	: value(value)
+	, valueOn(value)
 	, valueOnMax(value)
 {
 }
 
-ksh::AudioEffectParam::AudioEffectParam(double valueOff, double valueOn)
-	: valueOff(valueOff)
-	, valueOnMin(valueOn)
+ksh::AudioEffectParam::AudioEffectParam(double value, double valueOn)
+	: value(value)
+	, valueOn(valueOn)
 	, valueOnMax(valueOn)
 {
 }
 
-ksh::AudioEffectParam::AudioEffectParam(double valueOff, double valueOnMin, double valueOnMax)
-	: valueOff(valueOff)
-	, valueOnMin(valueOnMin)
+ksh::AudioEffectParam::AudioEffectParam(double value, double valueOn, double valueOnMax)
+	: value(value)
+	, valueOn(valueOn)
 	, valueOnMax(valueOnMax)
 {
 }
 
-bool ksh::AudioEffectRoot::empty() const
+bool ksh::AudioEffectFXInfo::empty() const
 {
-	return defList.empty() && pulseEventList.empty() && noteEventList.empty();
+	return def.empty() && paramChange.empty() && longInvoke.empty();
 }
 
-
-void ksh::to_json(nlohmann::json& j, const AudioEffectRoot& audioEffect)
+void ksh::to_json(nlohmann::json& j, const AudioEffectFXInfo& fx)
 {
 	j = nlohmann::json::object();
 
-	if (!audioEffect.defList.empty())
+	if (!fx.def.empty())
 	{
-		j["def"] = audioEffect.defList;
+		j["def"] = fx.def;
 	}
 
-	if (!audioEffect.pulseEventList.empty())
+	if (!fx.paramChange.empty())
 	{
-		j["pulse_event"] = audioEffect.pulseEventList;
+		j["param_change"] = fx.paramChange;
 	}
 
-	if (!audioEffect.noteEventList.empty())
+	if (!fx.longInvoke.empty())
 	{
-		j["note_event"] = audioEffect.noteEventList;
+		j["long_invoke"] = fx.longInvoke;
+	}
+}
+
+
+bool ksh::AudioEffectLaserInfo::empty() const
+{
+	return def.empty() && paramChange.empty() && pulseInvoke.empty();
+}
+
+void ksh::to_json(nlohmann::json& j, const AudioEffectLaserInfo& laser)
+{
+	j = nlohmann::json::object();
+
+	if (!laser.def.empty())
+	{
+		j["def"] = laser.def;
+	}
+
+	if (!laser.paramChange.empty())
+	{
+		j["param_change"] = laser.paramChange;
+	}
+
+	if (!laser.pulseInvoke.empty())
+	{
+		j["pulse_invoke"] = laser.pulseInvoke;
+	}
+}
+
+bool ksh::AudioEffectRoot::empty() const
+{
+	return fx.empty() && laser.empty();
+}
+
+void ksh::to_json(nlohmann::json& j, const AudioEffectRoot& audioEffect)
+{
+	if (!audioEffect.fx.empty())
+	{
+		j["fx"] = audioEffect.fx;
+	}
+
+	if (!audioEffect.laser.empty())
+	{
+		j["laser"] = audioEffect.laser;
 	}
 }

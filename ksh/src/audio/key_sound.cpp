@@ -12,28 +12,62 @@ void ksh::to_json(nlohmann::json& j, const KeySoundParams& params)
 
 void ksh::to_json(nlohmann::json& j, const KeySoundDef& def)
 {
-	j["filename"] = def.filename;
-
-	if (!nlohmann::json(def.defaultParams).empty())
+	if (!nlohmann::json(def.v).empty())
 	{
-		j["v"] = def.defaultParams;
+		j["v"] = def.v;
 	}
+}
+
+bool ksh::KeySoundFXInfo::empty() const
+{
+	return def.empty() && chipInvoke.empty();
+}
+
+void ksh::to_json(nlohmann::json& j, const KeySoundFXInfo& fx)
+{
+	if (!fx.def.empty())
+	{
+		j["def"] = fx.def;
+	}
+
+	if (!fx.chipInvoke.empty())
+	{
+		j["chip_invoke"] = fx.chipInvoke;
+	}
+}
+
+bool ksh::KeySoundLaserInfo::empty() const
+{
+	return def.empty() && slamInvoke.empty();
+}
+
+void ksh::to_json(nlohmann::json& j, const KeySoundLaserInfo& laser)
+{
+	if (!laser.def.empty())
+	{
+		j["def"] = laser.def;
+	}
+
+	if (!laser.slamInvoke.empty())
+	{
+		j["slam_invoke"] = laser.slamInvoke;
+	}
+}
+
+bool ksh::KeySoundRoot::empty() const
+{
+	return fx.empty() && laser.empty();
 }
 
 void ksh::to_json(nlohmann::json& j, const KeySoundRoot& keySound)
 {
-	if (!keySound.defList.empty())
+	if (!keySound.fx.empty())
 	{
-		j["def"] = keySound.defList;
+		j["fx"] = keySound.fx;
 	}
 
-	if (!keySound.pulseEventList.empty())
+	if (!keySound.laser.empty())
 	{
-		j["pulse_event"] = keySound.pulseEventList;
-	}
-
-	if (!keySound.noteEventList.empty())
-	{
-		j["note_event"] = keySound.noteEventList;
+		j["laser"] = keySound.laser;
 	}
 }

@@ -87,11 +87,19 @@ namespace ksh
 
 	void to_json(nlohmann::json& j, const CamPatternDef& def);
 
+	struct CamPatternLaserInfo
+	{
+		DefList<CamPatternDef> def;
+		InvokeList<ByPulse<CamPatternParams>> slamInvoke;
+
+		bool empty() const;
+	};
+
+	void to_json(nlohmann::json& j, const CamPatternLaserInfo& info);
+
 	struct CamPatternInfo
 	{
-		DefList<CamPatternDef> defList;
-		InvokeList<ByPulse<CamPatternParams>> pulseEventList;
-		InvokeList<ByNotes<CamPatternParams>> noteEventList;
+		CamPatternLaserInfo laser;
 
 		bool empty() const;
 	};
@@ -101,7 +109,7 @@ namespace ksh
 	struct CamRoot
 	{
 		CamGraphs<Graph> body;
-		CamPatternInfo patternInfo;
+		CamPatternInfo pattern;
 
 		bool empty() const;
 	};

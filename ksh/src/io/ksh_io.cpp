@@ -425,7 +425,7 @@ namespace
 				}
 				if (!audioEffectName.empty())
 				{
-					m_pTargetChartData->audio.audioEffects.noteEventList[audioEffectName].fx[m_targetLaneIdx].emplace(m_time, AudioEffectParams{
+					m_pTargetChartData->audio.audioEffects.fx.longInvoke[audioEffectName][m_targetLaneIdx].emplace(m_time, AudioEffectParams{
 						// Store the value of the parameters in temporary keys
 						// (Since the conversion requires determining the type of audio effect, it is processed
 						//  after reading the "#define_fx"/"#define_filter" lines.)
@@ -616,8 +616,6 @@ namespace
 		{ PreparedLaneSpin::Type::kSwing, "swing" },
 	};
 
-	constexpr double kNormalTiltAssignRotateZ = 10.0;
-
 	const std::unordered_map<std::string_view, double> s_tiltTypeScaleTable
 	{
 		{ "normal", 1.0 },
@@ -706,7 +704,7 @@ namespace
 				return;
 			}
 
-			m_pTargetChartData->camera.tilt.manualTilts.emplace(
+			m_pTargetChartData->camera.tilt.manual.emplace(
 				m_time,
 				m_values);
 
@@ -818,7 +816,7 @@ namespace
 
 						if (!patternKey.empty())
 						{
-							m_pTargetChartData->camera.cam.patternInfo.noteEventList[patternKey].laser[m_targetLaneIdx].emplace(m_time + relPulse, params);
+							m_pTargetChartData->camera.cam.pattern.laser.slamInvoke[patternKey].emplace(m_time + relPulse, params);
 						}
 					}
 				}
@@ -1265,17 +1263,10 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 							preparedManualTilt.publishManualTilt();
 						}
 
-						double tiltAssignRotateZ = kNormalTiltAssignRotateZ;
+						// Insert cam.tilt_assign
 						if (s_tiltTypeScaleTable.contains(value))
 						{
-							tiltAssignRotateZ *= s_tiltTypeScaleTable.at(value);
-						}
-
-						// Insert cam.tilt_assign
-						{
-							auto& target = chartData.camera.cam.tiltAssignScale.rotationZ;
-							const double prevValue = target.empty() ? kNormalTiltAssignRotateZ : target.crbegin()->second.vf;
-							target.insert_or_assign(time, GraphValue(prevValue, tiltAssignRotateZ));
+							chartData.camera.tilt.scale.insert_or_assign(time, s_tiltTypeScaleTable.at(value));
 						}
 
 						// Insert tilt.keep
@@ -1489,13 +1480,13 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 	}
 
 	// Convert FX parameters
-	for (auto& [audioEffectName, noteEvents] : chartData.audio.audioEffects.noteEventList)
+	for (auto& [audioEffectName, lanes] : chartData.audio.audioEffects.fx.longInvoke)
 	{
 		AudioEffectType type = AudioEffectType::kUnspecified;
-		if (chartData.audio.audioEffects.defList.contains(audioEffectName))
+		if (chartData.audio.audioEffects.fx.def.contains(audioEffectName))
 		{
 			// User-defined audio effects
-			type = chartData.audio.audioEffects.defList.at(audioEffectName).type;
+			type = chartData.audio.audioEffects.fx.def.at(audioEffectName).type;
 		}
 		else
 		{
@@ -1505,15 +1496,15 @@ ksh::ChartData ksh::LoadKSHChartData(std::istream& stream)
 
 		assert(type != AudioEffectType::kUnspecified);
 
-		for (auto& lane : noteEvents.fx)
+		for (auto& lane : lanes)
 		{
 			for (auto& [y, params] : lane)
 			{
 				// Convert temporary stored "_param1"/"_param2" values to parameter values for each audio effect type
 				if (params.contains("_param1") && params.contains("_param2"))
 				{
-					const std::int32_t param1 = static_cast<std::int32_t>(std::round(params.at("_param1").valueOff));
-					const std::int32_t param2 = static_cast<std::int32_t>(std::round(params.at("_param2").valueOff));
+					const std::int32_t param1 = static_cast<std::int32_t>(std::round(params.at("_param1").value));
+					const std::int32_t param2 = static_cast<std::int32_t>(std::round(params.at("_param2").value));
 
 					switch (type)
 					{

@@ -44,8 +44,8 @@ namespace ksh
 
 	struct AudioEffectParam
 	{
-		double valueOff = 0.0;
-		double valueOnMin = 0.0;
+		double value = 0.0;
+		double valueOn = 0.0;
 		double valueOnMax = 0.0;
 
 		AudioEffectParam() = default;
@@ -53,9 +53,9 @@ namespace ksh
 		// Note: Implicit conversion from double to AudioEffectParam is allowed
 		AudioEffectParam(double value);
 
-		AudioEffectParam(double valueOff, double valueOn);
+		AudioEffectParam(double value, double valueOn);
 
-		AudioEffectParam(double valueOff, double valueOnMin, double valueOnMax);
+		AudioEffectParam(double value, double valueOn, double valueOnMax);
 	};
 
 	using AudioEffectParams = std::unordered_map<std::string, AudioEffectParam>;
@@ -70,11 +70,32 @@ namespace ksh
 
 	void to_json(nlohmann::json& j, const AudioEffectDef& def);
 
+	struct AudioEffectFXInfo
+	{
+		DefList<AudioEffectDef> def;
+		InvokeList<ByPulse<AudioEffectParams>> paramChange;
+		InvokeList<std::array<ByPulse<AudioEffectParams>, kNumFXLanes>> longInvoke;
+
+		bool empty() const;
+	};
+
+	void to_json(nlohmann::json& j, const AudioEffectFXInfo& audioEffect);
+
+	struct AudioEffectLaserInfo
+	{
+		DefList<AudioEffectDef> def;
+		InvokeList<ByPulse<AudioEffectParams>> paramChange;
+		InvokeList<ByPulse<AudioEffectParams>> pulseInvoke;
+
+		bool empty() const;
+	};
+
+	void to_json(nlohmann::json& j, const AudioEffectLaserInfo& audioEffect);
+
 	struct AudioEffectRoot
 	{
-		DefList<AudioEffectDef> defList;
-		InvokeList<ByPulse<AudioEffectParams>> pulseEventList;
-		InvokeList<ByNotes<AudioEffectParams>> noteEventList;
+		AudioEffectFXInfo fx;
+		AudioEffectLaserInfo laser;
 
 		bool empty() const;
 	};

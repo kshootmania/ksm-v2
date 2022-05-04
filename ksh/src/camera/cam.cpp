@@ -33,34 +33,41 @@ void ksh::to_json(nlohmann::json& j, const CamPatternDef& def)
 	};
 }
 
+bool ksh::CamPatternLaserInfo::empty() const
+{
+	return def.empty() && slamInvoke.empty();
+}
+
+void ksh::to_json(nlohmann::json& j, const CamPatternLaserInfo& info)
+{
+	j = nlohmann::json::object();
+
+	if (!info.def.empty())
+	{
+		j["def"] = info.def;
+	}
+
+	if (!info.slamInvoke.empty())
+	{
+		j["slam_invoke"] = info.slamInvoke;
+	}
+}
+
 bool ksh::CamPatternInfo::empty() const
 {
-	return defList.empty() && pulseEventList.empty() && noteEventList.empty();
+	return laser.empty();
 }
 
 void ksh::to_json(nlohmann::json& j, const CamPatternInfo& info)
 {
-	j = nlohmann::json::object();
-
-	if (!info.defList.empty())
-	{
-		j["def"] = info.defList;
-	}
-
-	if (!info.pulseEventList.empty())
-	{
-		j["pulse_event"] = info.pulseEventList;
-	}
-
-	if (!info.noteEventList.empty())
-	{
-		j["note_event"] = info.noteEventList;
-	}
+	j = {
+		{ "laser", info.laser },
+	};
 }
 
 bool ksh::CamRoot::empty() const
 {
-	return body.empty() && patternInfo.empty();
+	return body.empty() && pattern.empty();
 }
 
 void ksh::to_json(nlohmann::json& j, const CamRoot& cam)
@@ -72,8 +79,8 @@ void ksh::to_json(nlohmann::json& j, const CamRoot& cam)
 		j["body"] = cam.body;
 	}
 
-	if (!cam.patternInfo.empty())
+	if (!cam.pattern.empty())
 	{
-		j["pattern"] = cam.patternInfo;
+		j["pattern"] = cam.pattern;
 	}
 }
