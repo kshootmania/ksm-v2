@@ -60,7 +60,7 @@ void ksh::to_json(nlohmann::json& j, const CamPatternInfo& info)
 
 bool ksh::CamRoot::empty() const
 {
-	return body.empty() && tiltAssignScale.empty() && patternInfo.empty();
+	return body.empty() && patternInfo.empty();
 }
 
 void ksh::to_json(nlohmann::json& j, const CamRoot& cam)
@@ -70,11 +70,6 @@ void ksh::to_json(nlohmann::json& j, const CamRoot& cam)
 	if (!cam.body.empty())
 	{
 		j["body"] = cam.body;
-	}
-
-	if (!cam.tiltAssignScale.empty())
-	{
-		j["tilt_assign"] = cam.tiltAssignScale;
 	}
 
 	if (!cam.patternInfo.empty())

@@ -2,16 +2,21 @@
 
 bool ksh::TiltRoot::empty() const
 {
-	return manualTilts.empty() && keep.empty();
+	return scale.empty() && manual.empty() && keep.empty();
 }
 
 void ksh::to_json(nlohmann::json& j, const TiltRoot& tilt)
 {
 	j = nlohmann::json::object();
 
-	if (!tilt.manualTilts.empty())
+	if (!tilt.scale.empty())
 	{
-		j["manual"] = tilt.manualTilts;
+		j["scale"] = tilt.scale;
+	}
+
+	if (!tilt.manual.empty())
+	{
+		j["manual"] = tilt.manual;
 	}
 
 	if (!tilt.keep.empty())
@@ -31,7 +36,7 @@ void ksh::to_json(nlohmann::json& j, const TiltRoot& tilt)
 			keep.push_back({
 				{ "y", y },
 				{ "v", v },
-				});
+			});
 
 			prevValue = v;
 		}

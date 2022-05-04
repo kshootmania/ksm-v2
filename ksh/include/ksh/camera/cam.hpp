@@ -101,7 +101,6 @@ namespace ksh
 	struct CamRoot
 	{
 		CamGraphs<Graph> body;
-		CamGraphs<Graph> tiltAssignScale = { .rotationZ = { { 0, 10.0 } } };
 		CamPatternInfo patternInfo;
 
 		bool empty() const;

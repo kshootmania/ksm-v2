@@ -5,7 +5,8 @@ namespace ksh
 {
 	struct TiltRoot
 	{
-		GraphSections manualTilts;
+		ByPulse<double> scale;
+		GraphSections manual;
 		ByPulse<bool> keep;
 
 		bool empty() const;
