@@ -3,6 +3,7 @@
 #include "scene/option/option_scene.hpp"
 #include "scene/select/select_scene.hpp"
 #include "scene/play/play_scene.hpp"
+#include "ksmaudio/ksmaudio.hpp"
 
 void Main()
 {
@@ -13,6 +14,9 @@ void Main()
 	Scene::SetBackground(Palette::Black);
 	Graphics3D::SetGlobalAmbientColor(Palette::White);
 	Graphics3D::SetSunColor(Palette::Black);
+
+	// Initialize audio backend
+	ksmaudio::Init();
 
 	// Load language text file
 	I18n::LoadLanguage(U"Japanese");
@@ -44,4 +48,7 @@ void Main()
 
 	// Save config.ini
 	ConfigIni::Save();
+
+	// Terminate audio backend
+	ksmaudio::Terminate();
 }

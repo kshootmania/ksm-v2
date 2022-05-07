@@ -18,68 +18,22 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\ksh\audio\audio.hpp" />
-    <ClInclude Include="include\ksh\audio\audio_effect.hpp" />
-    <ClInclude Include="include\ksh\audio\bgm_info.hpp" />
-    <ClInclude Include="include\ksh\audio\key_sound.hpp" />
-    <ClInclude Include="include\ksh\audio\legacy_audio_info.hpp" />
-    <ClInclude Include="include\ksh\beat\beat_map.hpp" />
-    <ClInclude Include="include\ksh\beat\time_sig.hpp" />
-    <ClInclude Include="include\ksh\bg\bg.hpp" />
-    <ClInclude Include="include\ksh\camera\cam.hpp" />
-    <ClInclude Include="include\ksh\camera\camera.hpp" />
-    <ClInclude Include="include\ksh\camera\tilt.hpp" />
-    <ClInclude Include="include\ksh\common\common.hpp" />
-    <ClInclude Include="include\ksh\chart_data.hpp" />
-    <ClInclude Include="include\ksh\encoding\encoding.hpp" />
-    <ClInclude Include="include\ksh\gauge\gauge.hpp" />
-    <ClInclude Include="include\ksh\impl\impl.hpp" />
-    <ClInclude Include="include\ksh\io\ksh_io.hpp" />
-    <ClInclude Include="include\ksh\io\kson_io.hpp" />
-    <ClInclude Include="include\ksh\meta\meta.hpp" />
-    <ClInclude Include="include\ksh\note\note.hpp" />
-    <ClInclude Include="include\ksh\util\graph_utils.hpp" />
-    <ClInclude Include="include\ksh\util\timing_utils.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\audio\audio.cpp" />
-    <ClCompile Include="src\audio\audio_effect.cpp" />
-    <ClCompile Include="src\audio\bgm_info.cpp" />
-    <ClCompile Include="src\audio\key_sound.cpp" />
-    <ClCompile Include="src\audio\legacy_audio_info.cpp" />
-    <ClCompile Include="src\beat\beat_map.cpp" />
-    <ClCompile Include="src\beat\time_sig.cpp" />
-    <ClCompile Include="src\bg\bg.cpp" />
-    <ClCompile Include="src\camera\cam.cpp" />
-    <ClCompile Include="src\camera\camera.cpp" />
-    <ClCompile Include="src\camera\tilt.cpp" />
-    <ClCompile Include="src\chart_data.cpp" />
-    <ClCompile Include="src\common\common.cpp" />
-    <ClCompile Include="src\encoding\encoding_win.cpp" />
-    <ClCompile Include="src\gauge\gauge.cpp" />
-    <ClCompile Include="src\io\ksh_io.cpp" />
-    <ClCompile Include="src\io\kson_io.cpp" />
-    <ClCompile Include="src\meta\meta.cpp" />
-    <ClCompile Include="src\note\note.cpp" />
-    <ClCompile Include="src\util\timing_utils.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e8fc8484-971e-48d5-8523-1f38e5f9a45e}</ProjectGuid>
-    <RootNamespace>ksh</RootNamespace>
+    <ProjectGuid>{590cb790-463c-417a-bb1f-183adf4fe900}</ProjectGuid>
+    <RootNamespace>ksmaudio</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -134,7 +88,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,7 +105,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,10 +122,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalOptions>/Zm500  /MP3 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -182,10 +139,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/Zm500  /MP7 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -194,7 +150,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ksmaudio\ksmaudio.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ksmaudio.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

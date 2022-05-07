@@ -74,7 +74,7 @@
       <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalOptions>/Zc:__cplusplus /Zm500 /MP3 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)ksh\include;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ksh\include;$(SolutionDir)ksmaudio\include;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -100,7 +100,7 @@
       <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalOptions>/Zc:__cplusplus /Zm500 /MP7 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)ksh\include;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ksh\include;$(SolutionDir)ksmaudio\include;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -492,6 +492,9 @@
   <ItemGroup>
     <ProjectReference Include="..\ksh\ksh.vcxproj">
       <Project>{e8fc8484-971e-48d5-8523-1f38e5f9a45e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ksmaudio\ksmaudio.vcxproj">
+      <Project>{590cb790-463c-417a-bb1f-183adf4fe900}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
