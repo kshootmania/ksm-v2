@@ -29,7 +29,7 @@ namespace ksmaudio
 
 		double durationSec() const;
 
-		void addAudioEffect(IAudioEffectDSP* pDSP, int priority);
+		void addAudioEffect(IAudioEffectDSP* pDSP, int priority) const;
 	};
 
 }

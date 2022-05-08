@@ -59,7 +59,7 @@ namespace ksmaudio
 		return BASS_ChannelBytes2Seconds(m_hStream, BASS_ChannelGetLength(m_hStream, BASS_POS_BYTE));
 	}
 
-	void Stream::addAudioEffect(IAudioEffectDSP* pDSP, int priority)
+	void Stream::addAudioEffect(IAudioEffectDSP* pDSP, int priority) const
 	{
 		BASS_ChannelSetDSP(m_hStream, ProcessAudioEffectDSP, pDSP, priority);
 	}

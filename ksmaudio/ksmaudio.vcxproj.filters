@@ -45,6 +45,9 @@
     <ClInclude Include="include\ksmaudio\audio_effect_dsp\biquad_filter.hpp">
       <Filter>Header Files\audio_effect_dsp</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect_dsp\bitcrusher_dsp.hpp">
+      <Filter>Header Files\audio_effect_dsp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ksmaudio.cpp">
@@ -57,6 +60,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\audio_effect_dsp\flanger_dsp.cpp">
+      <Filter>Source Files\audio_effect_dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio_effect_dsp\bitcrusher_dsp.cpp">
       <Filter>Source Files\audio_effect_dsp</Filter>
     </ClCompile>
   </ItemGroup>
