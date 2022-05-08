@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "bass.h"
+#include "audio_effect_dsp/flanger_dsp.hpp"
 
 namespace ksmaudio
 {
@@ -27,6 +28,8 @@ namespace ksmaudio
 		void seekPosSec(double timeSec) const;
 
 		double durationSec() const;
+
+		void addAudioEffect(IAudioEffectDSP* pDSP, int priority);
 	};
 
 }
