@@ -4,10 +4,12 @@ namespace
 {
 	constexpr double kRelaxationTime = 10.0 / 60;
 	constexpr double kDelayRelaxationTime = 100.0 / 60;
+	constexpr double kBlendTimeSec = 5.0;
 }
 
 MusicGame::Audio::BGM::BGM(FilePathView filePath)
-	: m_audio(filePath)
+	: m_audio(filePath.toUTF8())
+	, m_durationSec(m_audio.durationSec())
 	, m_stopwatch(StartImmediately::No)
 {
 }
@@ -19,69 +21,47 @@ void MusicGame::Audio::BGM::update()
 		return;
 	}
 
-	if (m_audio.isPlaying())
+	if (m_isStreamStarted)
 	{
-		const double rawTimeSec = m_audio.posSec();
-		const double dt = Scene::DeltaTime();
-		if (m_isPlayingPrev && dt < kRelaxationTime)
-		{
-			// Time filter (https://sol.gfxile.net/soloud/coremisc.html#soloud.getstreamtime) + delay removal
-			m_timeSec = (m_timeSec * (kRelaxationTime - dt) + rawTimeSec * dt) / kRelaxationTime;
-			m_delaySec = (m_delaySec * (kDelayRelaxationTime - dt) + (m_timeSec - rawTimeSec) * dt) / kDelayRelaxationTime;
-		}
-		else
-		{
-			m_timeSec = rawTimeSec;
-			m_delaySec = 0.0;
-		}
+		m_timeSec = m_audio.posSec();
 
-		m_isPlayingPrev = true;
+		if (m_timeSec < m_durationSec - kBlendTimeSec)
+		{
+			// Synchronize stopwatch value
+			m_stopwatch.set(SecondsF{ m_timeSec });
+		}
 	}
 	else
 	{
-		if (m_isPlayingPrev || !m_stopwatch.isStarted())
-		{
-			m_stopwatch.set(SecondsF(m_timeSec - m_delaySec));
-			m_stopwatch.resume();
-		}
-		else
-		{
-			m_timeSec = m_stopwatch.sF();
-		}
-		m_delaySec = 0.0;
+		m_timeSec = m_stopwatch.sF();
 
-		if (m_timeSec >= 0.0 && m_timeSec < m_audio.lengthSec())
+		if (m_timeSec >= 0.0)
 		{
-			m_audio.seekTime(m_timeSec);
+			m_audio.seekPosSec(m_timeSec);
 			m_audio.play();
+			m_isStreamStarted = true;
 		}
-
-		m_isPlayingPrev = false;
 	}
 }
 
 void MusicGame::Audio::BGM::play()
 {
+	m_stopwatch.start();
+	m_isStreamStarted = false;
 	m_isPaused = false;
-	m_isPlayingPrev = false;
-
-	if (m_audio.isPaused())
-	{
-		m_audio.play();
-	}
 }
 
 void MusicGame::Audio::BGM::pause()
 {
-	m_isPaused = true;
-
-	if (m_audio.isPlaying())
+	if (m_isStreamStarted)
 	{
 		m_audio.pause();
 	}
+	m_stopwatch.pause();
+	m_isPaused = true;
 }
 
-void MusicGame::Audio::BGM::seekTime(double posSec)
+void MusicGame::Audio::BGM::seekPosSec(double posSec)
 {
 	if (posSec < 0.0)
 	{
@@ -89,22 +69,32 @@ void MusicGame::Audio::BGM::seekTime(double posSec)
 	}
 	else
 	{
-		m_audio.seekTime(posSec);
+		m_audio.seekPosSec(posSec);
 	}
 	m_timeSec = posSec;
-	m_delaySec = 0.0;
+	m_stopwatch.set(SecondsF{ posSec });
 }
 
 double MusicGame::Audio::BGM::posSec() const
 {
-	// Blend stopwatch time to remove brake at start
-	const double timeSec = m_timeSec - m_delaySec;
-	constexpr double kBlendMaxTimeSec = 5.0;
-	if (m_audio.isPlaying() && 0.0 <= timeSec && timeSec < kBlendMaxTimeSec)
+	// Blend stopwatch time to remove brake at start/end
+	if (m_isStreamStarted)
 	{
-		const double lerpRate = timeSec / kBlendMaxTimeSec;
-		return Math::Lerp(m_stopwatch.sF(), timeSec, lerpRate);
+		if (0.0 <= m_timeSec && m_timeSec < kBlendTimeSec)
+		{
+			const double lerpRate = m_timeSec / kBlendTimeSec;
+			return Math::Lerp(m_stopwatch.sF(), m_timeSec, lerpRate);
+		}
+		else if (m_durationSec - kBlendTimeSec <= m_timeSec && m_timeSec < m_durationSec)
+		{
+			const double lerpRate = (m_timeSec - (m_durationSec - kBlendTimeSec)) / kBlendTimeSec;
+			return Math::Lerp(m_timeSec, m_stopwatch.sF(), lerpRate);
+		}
+		else if (m_durationSec <= m_stopwatch.sF())
+		{
+			return m_stopwatch.sF();
+		}
 	}
 
-	return timeSec;
+	return m_timeSec;
 }

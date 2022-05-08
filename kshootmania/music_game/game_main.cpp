@@ -48,7 +48,7 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
 	, m_musicGameGraphics(m_chartData, m_timingCache)
 {
-	m_bgm.seekTime(-TimeSecBeforeStart(false/* TODO: movie */));
+	m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 	m_bgm.play();
 }
 

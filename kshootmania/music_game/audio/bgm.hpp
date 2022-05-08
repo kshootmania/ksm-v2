@@ -1,19 +1,20 @@
 ﻿#pragma once
+#include "ksmaudio/ksmaudio.hpp"
 
 namespace MusicGame::Audio
 {
 	class BGM
 	{
 	private:
-		s3d::Audio m_audio;
+		const ksmaudio::Stream/*s3d::Audio*/ m_audio;
 
-		double m_delaySec = 0.0;
+		const double m_durationSec;
 
 		double m_timeSec = 0.0;
 
-		bool m_isPaused = true;
+		bool m_isStreamStarted = false;
 
-		bool m_isPlayingPrev = false;
+		bool m_isPaused = true;
 
 		Stopwatch m_stopwatch;
 
@@ -26,7 +27,7 @@ namespace MusicGame::Audio
 
 		void pause();
 
-		void seekTime(double posSec);
+		void seekPosSec(double posSec);
 
 		double posSec() const;
 	};

@@ -16,7 +16,11 @@ void Main()
 	Graphics3D::SetSunColor(Palette::Black);
 
 	// Initialize audio backend
-	ksmaudio::Init();
+#ifdef _WIN32
+	ksmaudio::Init(s3d::Platform::Windows::Window::GetHWND());
+#else
+	ksmaudio::Init(nullptr);
+#endif
 
 	// Load language text file
 	I18n::LoadLanguage(U"Japanese");
@@ -29,20 +33,22 @@ void Main()
 
 	//Graphics::SetVSyncEnabled(false);
 
-	// Create scene manager
-	MySceneManager sceneManager;
-	sceneManager.add<TitleScene>(SceneName::kTitle);
-	sceneManager.add<OptionScene>(SceneName::kOption);
-	sceneManager.add<SelectScene>(SceneName::kSelect);
-	sceneManager.add<PlayScene>(SceneName::kPlay);
-	sceneManager.changeScene(SceneName::kTitle, kDefaultTransitionMs);
-
-	// Main loop
-	while (System::Update())
 	{
-		if (!sceneManager.update())
+		// Create scene manager
+		MySceneManager sceneManager;
+		sceneManager.add<TitleScene>(SceneName::kTitle);
+		sceneManager.add<OptionScene>(SceneName::kOption);
+		sceneManager.add<SelectScene>(SceneName::kSelect);
+		sceneManager.add<PlayScene>(SceneName::kPlay);
+		sceneManager.changeScene(SceneName::kTitle, kDefaultTransitionMs);
+
+		// Main loop
+		while (System::Update())
 		{
-			break;
+			if (!sceneManager.update())
+			{
+				break;
+			}
 		}
 	}
 
