@@ -5,13 +5,13 @@
 
 namespace kson
 {
-	struct CameraRoot
+	struct CameraInfo
 	{
-		CamRoot cam;
-		TiltRoot tilt;
+		CamInfo cam;
+		TiltInfo tilt;
 
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const CameraRoot& camera);
+	void to_json(nlohmann::json& j, const CameraInfo& camera);
 }

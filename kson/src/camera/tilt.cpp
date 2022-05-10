@@ -1,11 +1,11 @@
 #include "kson/camera/tilt.hpp"
 
-bool kson::TiltRoot::empty() const
+bool kson::TiltInfo::empty() const
 {
 	return scale.empty() && manual.empty() && keep.empty();
 }
 
-void kson::to_json(nlohmann::json& j, const TiltRoot& tilt)
+void kson::to_json(nlohmann::json& j, const TiltInfo& tilt)
 {
 	j = nlohmann::json::object();
 

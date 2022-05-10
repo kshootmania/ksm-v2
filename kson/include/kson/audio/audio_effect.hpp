@@ -92,7 +92,7 @@ namespace kson
 
 	void to_json(nlohmann::json& j, const AudioEffectLaserInfo& audioEffect);
 
-	struct AudioEffectRoot
+	struct AudioEffectInfo
 	{
 		AudioEffectFXInfo fx;
 		AudioEffectLaserInfo laser;
@@ -100,5 +100,5 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const AudioEffectRoot& audioEffect);
+	void to_json(nlohmann::json& j, const AudioEffectInfo& audioEffect);
 }

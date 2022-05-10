@@ -7,17 +7,17 @@
 
 namespace kson
 {
-	struct AudioRoot
+	struct AudioInfo
 	{
 		BGMInfo bgmInfo;
-		KeySoundRoot keySounds;
-		AudioEffectRoot audioEffects;
+		KeySoundInfo keySounds;
+		AudioEffectInfo audioEffects;
 		LegacyAudioInfo legacy;
 	};
 
-	void to_json(nlohmann::json& j, const AudioRoot& audio);
+	void to_json(nlohmann::json& j, const AudioInfo& audio);
 
-	struct MetaAudioRoot
+	struct MetaAudioInfo
 	{
 		MetaBGMInfo bgmInfo;
 	};

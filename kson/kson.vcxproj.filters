@@ -123,25 +123,25 @@
     <ClInclude Include="include\kson\camera\cam.hpp">
       <Filter>Header Files\camera</Filter>
     </ClInclude>
-    <ClInclude Include="include\kson\bg\bg.hpp">
+    <ClInclude Include="include\kson\bg\bg_info.hpp">
       <Filter>Header Files\bg</Filter>
     </ClInclude>
     <ClInclude Include="include\kson\chart_data.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\kson\note\note.hpp">
+    <ClInclude Include="include\kson\note\note_info.hpp">
       <Filter>Header Files\note</Filter>
     </ClInclude>
-    <ClInclude Include="include\kson\gauge\gauge.hpp">
+    <ClInclude Include="include\kson\gauge\gauge_info.hpp">
       <Filter>Header Files\gauge</Filter>
     </ClInclude>
-    <ClInclude Include="include\kson\audio\audio.hpp">
+    <ClInclude Include="include\kson\audio\audio_info.hpp">
       <Filter>Header Files\audio</Filter>
     </ClInclude>
-    <ClInclude Include="include\kson\camera\camera.hpp">
+    <ClInclude Include="include\kson\camera\camera_info.hpp">
       <Filter>Header Files\camera</Filter>
     </ClInclude>
-    <ClInclude Include="include\kson\meta\meta.hpp">
+    <ClInclude Include="include\kson\meta\meta_info.hpp">
       <Filter>Header Files\meta</Filter>
     </ClInclude>
     <ClInclude Include="include\kson\util\timing_utils.hpp">
@@ -194,7 +194,7 @@
     <ClCompile Include="src\audio\legacy_audio_info.cpp">
       <Filter>Source Files\audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\audio\audio.cpp">
+    <ClCompile Include="src\audio\audio_info.cpp">
       <Filter>Source Files\audio</Filter>
     </ClCompile>
     <ClCompile Include="src\beat\beat_map.cpp">
@@ -203,10 +203,10 @@
     <ClCompile Include="src\beat\time_sig.cpp">
       <Filter>Source Files\beat</Filter>
     </ClCompile>
-    <ClCompile Include="src\bg\bg.cpp">
+    <ClCompile Include="src\bg\bg_info.cpp">
       <Filter>Source Files\bg</Filter>
     </ClCompile>
-    <ClCompile Include="src\camera\camera.cpp">
+    <ClCompile Include="src\camera\camera_info.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
     <ClCompile Include="src\camera\tilt.cpp">
@@ -215,13 +215,13 @@
     <ClCompile Include="src\common\common.cpp">
       <Filter>Source Files\common</Filter>
     </ClCompile>
-    <ClCompile Include="src\gauge\gauge.cpp">
+    <ClCompile Include="src\gauge\gauge_info.cpp">
       <Filter>Source Files\gauge</Filter>
     </ClCompile>
-    <ClCompile Include="src\meta\meta.cpp">
+    <ClCompile Include="src\meta\meta_info.cpp">
       <Filter>Source Files\meta</Filter>
     </ClCompile>
-    <ClCompile Include="src\note\note.cpp">
+    <ClCompile Include="src\note\note_info.cpp">
       <Filter>Source Files\note</Filter>
     </ClCompile>
     <ClCompile Include="src\chart_data.cpp">

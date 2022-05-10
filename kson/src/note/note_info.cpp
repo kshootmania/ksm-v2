@@ -1,4 +1,4 @@
-#include "kson/note/note.hpp"
+#include "kson/note/note_info.hpp"
 
 void kson::to_json(nlohmann::json& j, const Lane<LaserSection>& lane)
 {
@@ -20,16 +20,16 @@ void kson::to_json(nlohmann::json& j, const Lane<LaserSection>& lane)
 	}
 }
 
-void kson::to_json(nlohmann::json& j, const NoteRoot& noteRoot)
+void kson::to_json(nlohmann::json& j, const NoteInfo& noteInfo)
 {
 	nlohmann::json bt = nlohmann::json::array();
-	for (const auto& lane : noteRoot.btLanes)
+	for (const auto& lane : noteInfo.btLanes)
 	{
 		bt.push_back(lane);
 	}
 
 	nlohmann::json fx = nlohmann::json::array();
-	for (const auto& lane : noteRoot.fxLanes)
+	for (const auto& lane : noteInfo.fxLanes)
 	{
 		fx.push_back(lane);
 	}
@@ -37,6 +37,6 @@ void kson::to_json(nlohmann::json& j, const NoteRoot& noteRoot)
 	j = {
 		{ "bt", bt },
 		{ "fx", fx },
-		{ "laser", noteRoot.laserLanes },
+		{ "laser", noteInfo.laserLanes },
 	};
 }

@@ -1,4 +1,4 @@
-#include "kson/meta/meta.hpp"
+#include "kson/meta/meta_info.hpp"
 
 void kson::to_json(nlohmann::json& j, const DifficultyInfo& difficulty)
 {
@@ -25,7 +25,7 @@ void kson::to_json(nlohmann::json& j, const LegacyMetaInfo& legacy)
 	}
 }
 
-void kson::to_json(nlohmann::json& j, const MetaRoot& meta)
+void kson::to_json(nlohmann::json& j, const MetaInfo& meta)
 {
 	j = {
 		{ "title", meta.title },

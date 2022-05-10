@@ -54,12 +54,12 @@ void kson::to_json(nlohmann::json& j, const KeySoundLaserInfo& laser)
 	}
 }
 
-bool kson::KeySoundRoot::empty() const
+bool kson::KeySoundInfo::empty() const
 {
 	return fx.empty() && laser.empty();
 }
 
-void kson::to_json(nlohmann::json& j, const KeySoundRoot& keySound)
+void kson::to_json(nlohmann::json& j, const KeySoundInfo& keySound)
 {
 	if (!keySound.fx.empty())
 	{

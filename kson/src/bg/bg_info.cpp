@@ -1,4 +1,4 @@
-#include "kson/bg/bg.hpp"
+#include "kson/bg/bg_info.hpp"
 
 bool kson::KSHRotationFlags::operator==(const KSHRotationFlags& rhs) const
 {
@@ -71,7 +71,7 @@ void kson::to_json(nlohmann::json& j, const KSHMovieInfo& movie)
 	};
 }
 
-void kson::to_json(nlohmann::json& j, const LegacyBGRoot& legacy)
+void kson::to_json(nlohmann::json& j, const LegacyBGInfo& legacy)
 {
 	j = nlohmann::json::object();
 
@@ -99,12 +99,12 @@ void kson::to_json(nlohmann::json& j, const LegacyBGRoot& legacy)
 	}
 }
 
-bool kson::LegacyBGRoot::empty() const
+bool kson::LegacyBGInfo::empty() const
 {
 	return bgInfos.empty() && layerInfos.empty() && movieInfos.empty();
 }
 
-void kson::to_json(nlohmann::json& j, const BGRoot& bg)
+void kson::to_json(nlohmann::json& j, const BGInfo& bg)
 {
 	j = nlohmann::json::object();
 

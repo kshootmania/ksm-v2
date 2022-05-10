@@ -106,7 +106,7 @@ namespace kson
 
 	void to_json(nlohmann::json& j, const CamPatternInfo& info);
 
-	struct CamRoot
+	struct CamInfo
 	{
 		CamGraphs<Graph> body;
 		CamPatternInfo pattern;
@@ -114,5 +114,5 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const CamRoot& cam);
+	void to_json(nlohmann::json& j, const CamInfo& cam);
 }

@@ -1,6 +1,6 @@
-#include "kson/audio/audio.hpp"
+#include "kson/audio/audio_info.hpp"
 
-void kson::to_json(nlohmann::json& j, const AudioRoot& audio)
+void kson::to_json(nlohmann::json& j, const AudioInfo& audio)
 {
 	j["bgm"] = audio.bgmInfo;
 

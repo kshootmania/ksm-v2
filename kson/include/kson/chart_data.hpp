@@ -1,12 +1,12 @@
 #pragma once
 #include "kson/common/common.hpp"
-#include "kson/meta/meta.hpp"
+#include "kson/meta/meta_info.hpp"
 #include "kson/beat/beat_map.hpp"
-#include "kson/gauge/gauge.hpp"
-#include "kson/note/note.hpp"
-#include "kson/audio/audio.hpp"
-#include "kson/camera/camera.hpp"
-#include "kson/bg/bg.hpp"
+#include "kson/gauge/gauge_info.hpp"
+#include "kson/note/note_info.hpp"
+#include "kson/audio/audio_info.hpp"
+#include "kson/camera/camera_info.hpp"
+#include "kson/bg/bg_info.hpp"
 #include "kson/editor/editor_info.hpp"
 #include "kson/compat/compat_info.hpp"
 
@@ -23,8 +23,8 @@ namespace kson
 
 	struct MetaChartData
 	{
-		MetaRoot meta;
-		MetaAudioRoot audio;
+		MetaInfo meta;
+		MetaAudioInfo audio;
 		MetaCompatInfo compat;
 
 		std::string filePath; // Note: OS native encoding (Not UTF-8 in Windows)
@@ -33,13 +33,13 @@ namespace kson
 
 	struct ChartData
 	{
-		MetaRoot meta;
+		MetaInfo meta;
 		BeatMap beat;
-		GaugeRoot gauge;
-		NoteRoot note;
-		AudioRoot audio;
-		CameraRoot camera;
-		BGRoot bg;
+		GaugeInfo gauge;
+		NoteInfo note;
+		AudioInfo audio;
+		CameraInfo camera;
+		BGInfo bg;
 		EditorInfo editor;
 		CompatInfo compat;
 		nlohmann::json impl;

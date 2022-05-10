@@ -3,7 +3,7 @@
 
 namespace kson
 {
-	struct TiltRoot
+	struct TiltInfo
 	{
 		ByPulse<double> scale;
 		GraphSections manual;
@@ -12,5 +12,5 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const TiltRoot& tilt);
+	void to_json(nlohmann::json& j, const TiltInfo& tilt);
 }

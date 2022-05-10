@@ -37,7 +37,7 @@ namespace kson
 
 	void to_json(nlohmann::json& j, const KeySoundLaserInfo& laser);
 
-	struct KeySoundRoot
+	struct KeySoundInfo
 	{
 		KeySoundFXInfo fx;
 
@@ -46,5 +46,5 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const KeySoundRoot& keySound);
+	void to_json(nlohmann::json& j, const KeySoundInfo& keySound);
 }

@@ -65,12 +65,12 @@ void kson::to_json(nlohmann::json& j, const CamPatternInfo& info)
 	};
 }
 
-bool kson::CamRoot::empty() const
+bool kson::CamInfo::empty() const
 {
 	return body.empty() && pattern.empty();
 }
 
-void kson::to_json(nlohmann::json& j, const CamRoot& cam)
+void kson::to_json(nlohmann::json& j, const CamInfo& cam)
 {
 	j = nlohmann::json::object();
 

@@ -156,12 +156,12 @@ void kson::to_json(nlohmann::json& j, const AudioEffectLaserInfo& laser)
 	}
 }
 
-bool kson::AudioEffectRoot::empty() const
+bool kson::AudioEffectInfo::empty() const
 {
 	return fx.empty() && laser.empty();
 }
 
-void kson::to_json(nlohmann::json& j, const AudioEffectRoot& audioEffect)
+void kson::to_json(nlohmann::json& j, const AudioEffectInfo& audioEffect)
 {
 	if (!audioEffect.fx.empty())
 	{

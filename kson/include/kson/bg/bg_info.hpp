@@ -46,7 +46,7 @@ namespace kson
 
 	void to_json(nlohmann::json& j, const KSHMovieInfo& movie);
 
-	struct LegacyBGRoot
+	struct LegacyBGInfo
 	{
 		// first index: when gauge < 70%, second index: when gauge >= 70%
 		std::array<KSHBGInfo, 2> bgInfos;
@@ -57,13 +57,13 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const LegacyBGRoot& legacy);
+	void to_json(nlohmann::json& j, const LegacyBGInfo& legacy);
 
-	struct BGRoot
+	struct BGInfo
 	{
 		// KSH format will be legacy
-		LegacyBGRoot legacy;
+		LegacyBGInfo legacy;
 	};
 
-	void to_json(nlohmann::json& j, const BGRoot& bg);
+	void to_json(nlohmann::json& j, const BGInfo& bg);
 }

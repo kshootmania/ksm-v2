@@ -12,12 +12,12 @@ namespace kson
 
 	void to_json(nlohmann::json& j, const Lane<LaserSection>& lane);
 
-	struct NoteRoot
+	struct NoteInfo
 	{
 		std::array<Lane<Interval>, kNumBTLanes> btLanes;
 		std::array<Lane<Interval>, kNumFXLanes> fxLanes;
 		std::array<Lane<LaserSection>, kNumLaserLanes> laserLanes;
 	};
 
-	void to_json(nlohmann::json& j, const NoteRoot& noteRoot);
+	void to_json(nlohmann::json& j, const NoteInfo& noteInfo);
 }

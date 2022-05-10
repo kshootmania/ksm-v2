@@ -20,7 +20,7 @@ namespace kson
 
 	void to_json(nlohmann::json& j, const LegacyMetaInfo& legacy);
 
-	struct MetaRoot
+	struct MetaInfo
 	{
 		std::string title;
 		std::string titleTranslit;
@@ -38,5 +38,5 @@ namespace kson
 		LegacyMetaInfo legacy;
 	};
 
-	void to_json(nlohmann::json& j, const MetaRoot& meta);
+	void to_json(nlohmann::json& j, const MetaInfo& meta);
 }

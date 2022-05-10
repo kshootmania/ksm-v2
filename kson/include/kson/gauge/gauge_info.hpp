@@ -3,12 +3,12 @@
 
 namespace kson
 {
-	struct GaugeRoot
+	struct GaugeInfo
 	{
 		double total = 0.0;
 
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const GaugeRoot& gauge);
+	void to_json(nlohmann::json& j, const GaugeInfo& gauge);
 }
