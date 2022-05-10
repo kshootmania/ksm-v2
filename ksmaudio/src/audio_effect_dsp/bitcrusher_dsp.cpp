@@ -1,4 +1,5 @@
 #include "ksmaudio/audio_effect_dsp/bitcrusher_dsp.hpp"
+#include <cmath>
 
 namespace ksmaudio
 {
