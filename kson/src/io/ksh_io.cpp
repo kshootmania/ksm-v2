@@ -871,6 +871,12 @@ namespace
 		std::string value;
 	};
 
+	struct BufUnknownLine
+	{
+		std::size_t lineIdx;
+		std::string value;
+	};
+
 	std::string Pop(std::unordered_map<std::string, std::string>& meta, const std::string& key, std::string_view defaultValue = "")
 	{
 		if (meta.contains(key)) // Note: key is const string& instead of string_view because unordered_map<string, string>::contains() and at() do not support string_view as key
@@ -1145,6 +1151,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 	// (needed because actual addition cannot come before the pulse value calculation)
 	std::vector<std::string> chartLines;
 	std::vector<BufOptionLine> optionLines;
+	std::vector<BufUnknownLine> unknownLines;
 	PreparedLongNoteArray preparedLongNoteArray(&chartData);
 
 	// GraphSections buffers
@@ -1459,8 +1466,17 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 					++laneIdx;
 				}
 			}
+
+			// Add unknown lines
+			for (const auto& [lineIdx, value] : unknownLines)
+			{
+				const Pulse time = currentPulse + lineIdx * oneLinePulse;
+				chartData.compat.kshUnknown.line.emplace(time, value);
+			}
+
 			chartLines.clear();
 			optionLines.clear();
+			unknownLines.clear();
 			for (auto& set : currentMeasureLaserXScale2x)
 			{
 				set.clear();
@@ -1479,6 +1495,10 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 		else
 		{
 			// TODO: Insert to chartData.compat.kshUnknown.line
+			unknownLines.push_back({
+				.lineIdx = chartLines.size(),
+				.value = line,
+			});
 		}
 	}
 
