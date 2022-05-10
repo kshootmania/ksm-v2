@@ -1494,7 +1494,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 		}
 		else
 		{
-			// TODO: Insert to chartData.compat.kshUnknown.line
+			// Insert unrecognized line
 			unknownLines.push_back({
 				.lineIdx = chartLines.size(),
 				.value = line,
