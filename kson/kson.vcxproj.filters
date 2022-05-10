@@ -99,7 +99,7 @@
     <ClInclude Include="include\kson\common\common.hpp">
       <Filter>Header Files\common</Filter>
     </ClInclude>
-    <ClInclude Include="include\kson\beat\beat_map.hpp">
+    <ClInclude Include="include\kson\beat\beat_info.hpp">
       <Filter>Header Files\beat</Filter>
     </ClInclude>
     <ClInclude Include="include\kson\beat\time_sig.hpp">
@@ -197,7 +197,7 @@
     <ClCompile Include="src\audio\audio_info.cpp">
       <Filter>Source Files\audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\beat\beat_map.cpp">
+    <ClCompile Include="src\beat\beat_info.cpp">
       <Filter>Source Files\beat</Filter>
     </ClCompile>
     <ClCompile Include="src\beat\time_sig.cpp">

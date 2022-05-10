@@ -6,7 +6,7 @@ namespace kson
 {
 	constexpr Pulse kDefaultResolution = 240;
 
-	struct BeatMap
+	struct BeatInfo
 	{
 		ByPulse<double> bpmChanges;
 
@@ -15,7 +15,7 @@ namespace kson
 		Pulse resolution = kDefaultResolution;
 	};
 
-	void to_json(nlohmann::json& j, const BeatMap& beatMap);
+	void to_json(nlohmann::json& j, const BeatInfo& beatInfo);
 
-	void from_json(const nlohmann::json& j, BeatMap& beatMap);
+	void from_json(const nlohmann::json& j, BeatInfo& beatInfo);
 }

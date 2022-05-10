@@ -29,7 +29,7 @@ namespace MusicGame::Judgment
 		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, const Graphics::LaneState& laneStateRef);
 
 	public:
-		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatMap& beatMap, const kson::TimingCache& timingCache);
+		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
 
 		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, Graphics::LaneState& laneStateRef);
 

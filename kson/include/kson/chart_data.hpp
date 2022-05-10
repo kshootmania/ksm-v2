@@ -1,7 +1,7 @@
 #pragma once
 #include "kson/common/common.hpp"
 #include "kson/meta/meta_info.hpp"
-#include "kson/beat/beat_map.hpp"
+#include "kson/beat/beat_info.hpp"
 #include "kson/gauge/gauge_info.hpp"
 #include "kson/note/note_info.hpp"
 #include "kson/audio/audio_info.hpp"
@@ -34,7 +34,7 @@ namespace kson
 	struct ChartData
 	{
 		MetaInfo meta;
-		BeatMap beat;
+		BeatInfo beat;
 		GaugeInfo gauge;
 		NoteInfo note;
 		AudioInfo audio;

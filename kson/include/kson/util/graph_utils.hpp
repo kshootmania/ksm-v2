@@ -122,7 +122,6 @@ namespace kson
 			}
 		}
 
-
 		{
 			const auto& [lastRelPulse, _] = *pGraphSection->rbegin();
 			if (relPulse >= lastRelPulse)

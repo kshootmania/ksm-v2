@@ -6,7 +6,7 @@ namespace
 {
 	constexpr double kHalveComboBPMThreshold = 256.0;
 
-	std::map<kson::Pulse, double> CreatePulseToSec(const kson::ByPulse<kson::Interval>& lane, const kson::BeatMap& beatMap, const kson::TimingCache& timingCache)
+	std::map<kson::Pulse, double> CreatePulseToSec(const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 	{
 		std::map<kson::Pulse, double> pulseToSec;
 
@@ -14,12 +14,12 @@ namespace
 		{
 			if (!pulseToSec.contains(y))
 			{
-				const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y, beatMap, timingCache));
+				const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y, beatInfo, timingCache));
 				pulseToSec.emplace(y, sec);
 			}
 			if (!pulseToSec.contains(y + note.length))
 			{
-				const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y + note.length, beatMap, timingCache));
+				const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y + note.length, beatInfo, timingCache));
 				pulseToSec.emplace(y + note.length, sec);
 			}
 		}
@@ -42,9 +42,9 @@ namespace
 		return judgmentArray;
 	}
 
-	kson::ByPulse<JudgmentResult> CreateLongNoteJudgmentArray(const kson::ByPulse<kson::Interval>& lane, const kson::BeatMap& beatMap)
+	kson::ByPulse<JudgmentResult> CreateLongNoteJudgmentArray(const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo)
 	{
-		const kson::Pulse unitMeasure = beatMap.resolution * 4;
+		const kson::Pulse unitMeasure = beatInfo.resolution * 4;
 
 		kson::ByPulse<JudgmentResult> judgmentArray;
 
@@ -54,7 +54,7 @@ namespace
 			{
 				// Determine whether to halve the combo based on the BPM at the start of the note
 				// (BPM changes during the notes are ignored)
-				const bool halvesCombo = kson::TimingUtils::PulseTempo(y, beatMap) >= kHalveComboBPMThreshold;
+				const bool halvesCombo = kson::TimingUtils::PulseTempo(y, beatInfo) >= kHalveComboBPMThreshold;
 				const kson::RelPulse minPulseInterval = halvesCombo ? (unitMeasure * 3 / 8) : (unitMeasure * 3 / 16);
 				const kson::RelPulse pulseInterval = halvesCombo ? (unitMeasure / 8) : (unitMeasure / 16);
 
@@ -195,11 +195,11 @@ void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const kson::ByPu
 	}
 }
 
-ButtonLaneJudgment::ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatMap& beatMap, const kson::TimingCache& timingCache)
+ButtonLaneJudgment::ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 	: m_keyConfigButton(keyConfigButton)
-	, m_pulseToSec(CreatePulseToSec(lane, beatMap, timingCache))
+	, m_pulseToSec(CreatePulseToSec(lane, beatInfo, timingCache))
 	, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane))
-	, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatMap))
+	, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatInfo))
 	, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size()) * kScoreValueCritical)
 {
 }
