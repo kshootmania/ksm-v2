@@ -5,13 +5,15 @@ void kson::to_json(nlohmann::json& j, const BGMInfo& bgm)
 	j = {
 		{ "filename", bgm.filename },
 		{ "vol", bgm.vol },
-		{ "offset", bgm.offsetMs },
-		{ "preview_offset", bgm.previewOffsetMs },
-		{ "preview_duration", bgm.previewDurationMs },
+		{ "offset", bgm.offset },
+		{ "preview", {
+			{ "offset", bgm.preview.offset },
+			{ "duration", bgm.preview.duration },
+		}},
 	};
 
-	if (bgm.filename != bgm.previewFilename)
+	if (bgm.preview.filename != bgm.filename)
 	{
-		j["preview_filename"] = bgm.previewFilename;
+		j["preview"]["filename"] = bgm.preview.filename;
 	}
 }

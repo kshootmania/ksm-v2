@@ -3,19 +3,24 @@
 
 namespace kson
 {
+	struct BGMPreviewInfo
+	{
+		std::string filename; // UTF-8 guaranteed
+
+		int64_t offset = 0;
+
+		int64_t duration = 15000;
+	};
+
 	struct BGMInfo
 	{
 		std::string filename; // UTF-8 guaranteed
 
 		double vol = 1.0;
 
-		int64_t offsetMs = 0;
+		int64_t offset = 0;
 
-		std::string previewFilename;
-
-		int64_t previewOffsetMs = 0;
-
-		int64_t previewDurationMs = 0;
+		BGMPreviewInfo preview;
 	};
 
 	void to_json(nlohmann::json& j, const BGMInfo& bgm);
@@ -24,10 +29,6 @@ namespace kson
 	{
 		double vol = 1.0;
 
-		std::string previewFilename; // UTF-8 guaranteed
-
-		int64_t previewOffsetMs = 0;
-
-		int64_t previewDurationMs = 0;
+		BGMPreviewInfo preview;
 	};
 }

@@ -1021,7 +1021,7 @@ namespace
 				chartData.audio.legacy.bgmInfo.filenameP = bgmFilenames[2];
 				chartData.audio.legacy.bgmInfo.filenameFP = bgmFilenames[3];
 			}
-			chartData.audio.bgmInfo.previewFilename = bgmFilenames[0];
+			chartData.audio.bgmInfo.preview.filename = bgmFilenames[0];
 
 			const std::int32_t volInt = PopInt<std::int32_t>(metaDataHashMap, "mvol", 50);
 			chartData.audio.bgmInfo.vol = volInt / 100.0;
@@ -1036,10 +1036,10 @@ namespace
 
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{
-				chartData.audio.bgmInfo.offsetMs = PopInt<std::int64_t>(metaDataHashMap, "o", 0);
+				chartData.audio.bgmInfo.offset = PopInt<std::int64_t>(metaDataHashMap, "o", 0);
 			}
-			chartData.audio.bgmInfo.previewOffsetMs = PopInt<std::int64_t>(metaDataHashMap, "po", 0);
-			chartData.audio.bgmInfo.previewDurationMs = PopInt<std::int64_t>(metaDataHashMap, "plength", 0);
+			chartData.audio.bgmInfo.preview.offset = PopInt<std::int64_t>(metaDataHashMap, "po", 0);
+			chartData.audio.bgmInfo.preview.duration = PopInt<std::int64_t>(metaDataHashMap, "plength", 0);
 
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{
