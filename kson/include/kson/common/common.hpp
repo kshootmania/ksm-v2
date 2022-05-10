@@ -209,26 +209,6 @@ namespace kson
 
 	void to_json(nlohmann::json& j, const GraphValue& graphValue);
 
-	struct RelGraphValue
-	{
-		double rv = 0.0;
-		double rvf = 0.0;
-
-		RelGraphValue(double rv)
-			: rv(rv)
-			, rvf(rv)
-		{
-		}
-
-		RelGraphValue(double rv, double rvf)
-			: rv(rv)
-			, rvf(rvf)
-		{
-		}
-	};
-
-	void to_json(nlohmann::json& j, const RelGraphValue& graphValue);
-
 	struct Interval
 	{
 		RelPulse length = 0;
@@ -247,10 +227,6 @@ namespace kson
 	using Graph = ByPulse<GraphValue>;
 
 	using GraphSections = ByPulse<ByRelPulse<GraphValue>>;
-
-	using RelGraph = ByPulse<RelGraphValue>;
-
-	using RelGraphSections = ByRelPulse<RelGraphValue>;
 
 	template <typename T>
 	using Lane = ByPulse<T>; // TODO: For editor, ByPulseMulti would be used instead of ByPulse?

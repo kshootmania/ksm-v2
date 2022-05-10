@@ -38,7 +38,7 @@ void kson::to_json(nlohmann::json& j, const KeySoundFXInfo& fx)
 
 bool kson::KeySoundLaserInfo::empty() const
 {
-	return def.empty() && slamInvoke.empty();
+	return def.empty() && slamEvent.empty();
 }
 
 void kson::to_json(nlohmann::json& j, const KeySoundLaserInfo& laser)
@@ -48,9 +48,9 @@ void kson::to_json(nlohmann::json& j, const KeySoundLaserInfo& laser)
 		j["def"] = laser.def;
 	}
 
-	if (!laser.slamInvoke.empty())
+	if (!laser.slamEvent.empty())
 	{
-		j["slam_invoke"] = laser.slamInvoke;
+		j["slam_invoke"] = laser.slamEvent;
 	}
 }
 

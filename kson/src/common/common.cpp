@@ -17,23 +17,6 @@ void kson::to_json(nlohmann::json& j, const GraphValue& graphValue)
 	}
 }
 
-void kson::to_json(nlohmann::json& j, const RelGraphValue& graphValue)
-{
-	if (graphValue.rv == graphValue.rvf)
-	{
-		j = {
-			{ "rv", graphValue.rv },
-		};
-	}
-	else
-	{
-		j = {
-			{ "rv", graphValue.rv },
-			{ "rvf", graphValue.rvf },
-		};
-	}
-}
-
 void kson::to_json(nlohmann::json& j, const ByPulse<Interval>& intervals)
 {
 	j = nlohmann::json::array();

@@ -233,5 +233,8 @@
     <ClCompile Include="src\compat\compat_info.cpp">
       <Filter>Source Files\compat</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\graph_utils.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

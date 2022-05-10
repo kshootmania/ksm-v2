@@ -30,7 +30,7 @@ namespace kson
 	struct KeySoundLaserInfo
 	{
 		DefList<KeySoundDef> def;
-		InvokeList<ByPulse<KeySoundParams>> slamInvoke;
+		InvokeList<ByPulse<KeySoundParams>> slamEvent;
 
 		bool empty() const;
 	};

@@ -65,6 +65,7 @@
     <ClCompile Include="src\io\kson_io.cpp" />
     <ClCompile Include="src\meta\meta_info.cpp" />
     <ClCompile Include="src\note\note_info.cpp" />
+    <ClCompile Include="src\util\graph_utils.cpp" />
     <ClCompile Include="src\util\timing_utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

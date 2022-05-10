@@ -1,5 +1,57 @@
 #include "kson/camera/cam.hpp"
 
+bool kson::CamGraphs::empty() const
+{
+	return
+		zoom.empty() &&
+		shiftX.empty() &&
+		rotationX.empty() &&
+		rotationZ.empty() &&
+		rotationZLane.empty() &&
+		rotationZJdgLine.empty() &&
+		centerSplit.empty();
+}
+
+void kson::to_json(nlohmann::json& j, const CamGraphs& camGraphs)
+{
+	j = nlohmann::json::object();
+
+	if (!camGraphs.zoom.empty())
+	{
+		j["zoom"] = camGraphs.zoom;
+	}
+
+	if (!camGraphs.shiftX.empty())
+	{
+		j["shift_x"] = camGraphs.shiftX;
+	}
+
+	if (!camGraphs.rotationX.empty())
+	{
+		j["rotation_x"] = camGraphs.rotationX;
+	}
+
+	if (!camGraphs.rotationZ.empty())
+	{
+		j["rotation_z"] = camGraphs.rotationZ;
+	}
+
+	if (!camGraphs.rotationZLane.empty())
+	{
+		j["rotation_z.lane"] = camGraphs.rotationZLane;
+	}
+
+	if (!camGraphs.rotationZJdgLine.empty())
+	{
+		j["rotation_z.jdgline"] = camGraphs.rotationZJdgLine;
+	}
+
+	if (!camGraphs.centerSplit.empty())
+	{
+		j["center_split"] = camGraphs.centerSplit;
+	}
+}
+
 void kson::to_json(nlohmann::json& j, const CamPatternParams& params)
 {
 	j["l"] = params.length;
@@ -14,42 +66,24 @@ void kson::to_json(nlohmann::json& j, const CamPatternParams& params)
 		j["repeat"] = params.repeat;
 	}
 
-	if (params.repeatScale != 1.0)
-	{
-		j["repeat_scale"] = params.repeatScale;
-	}
-
 	if (params.decayOrder != 0.0)
 	{
 		j["decay_order"] = params.decayOrder;
 	}
 }
 
-void kson::to_json(nlohmann::json& j, const CamPatternDef& def)
-{
-	j = {
-		{ "body", def.body },
-		{ "v", def.params },
-	};
-}
-
 bool kson::CamPatternLaserInfo::empty() const
 {
-	return def.empty() && slamInvoke.empty();
+	return slamEvent.empty();
 }
 
 void kson::to_json(nlohmann::json& j, const CamPatternLaserInfo& info)
 {
 	j = nlohmann::json::object();
 
-	if (!info.def.empty())
+	if (!info.slamEvent.empty())
 	{
-		j["def"] = info.def;
-	}
-
-	if (!info.slamInvoke.empty())
-	{
-		j["slam_invoke"] = info.slamInvoke;
+		j["slam_event"] = info.slamEvent;
 	}
 }
 

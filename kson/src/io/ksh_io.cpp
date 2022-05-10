@@ -451,7 +451,7 @@ namespace
 		return ParseNumeric<Pulse>(str) * resolution * 4 / 192;
 	}
 
-	std::tuple<Pulse, std::int64_t, std::int64_t, std::int64_t> SplitSwingParams(std::string_view paramStr, Pulse resolution)
+	std::tuple<Pulse, std::int32_t, std::int32_t, std::int32_t> SplitSwingParams(std::string_view paramStr, Pulse resolution)
 	{
 		std::array<std::string, 4> params{
 			"192", "250", "3", "2"
@@ -469,9 +469,9 @@ namespace
 
 		return std::make_tuple(
 			KSHLengthToMeasure(params[0], resolution),
-			ParseNumeric<std::int64_t>(params[1]),
-			ParseNumeric<std::int64_t>(params[2]),
-			ParseNumeric<std::int64_t>(params[3]));
+			ParseNumeric<std::int32_t>(params[1]),
+			ParseNumeric<std::int32_t>(params[2]),
+			ParseNumeric<std::int32_t>(params[3]));
 	}
 
 	constexpr double kKSHToKSONCamScale = 1.0 / 100.0;
@@ -499,11 +499,11 @@ namespace
 
 		Pulse duration = 0;
 
-		std::int64_t swingAmplitude = 0;
+		std::int32_t swingAmplitude = 0;
 
-		std::int64_t swingRepeat = 0;
+		std::int32_t swingRepeat = 0;
 
-		std::int64_t swingDecayOrder = 0;
+		std::int32_t swingDecayOrder = 0;
 
 		static PreparedLaneSpin FromKSHSpinStr(std::string_view strFromKsh, Pulse resolution) // From .ksh spin string (example: "@(192")
 		{
@@ -578,7 +578,7 @@ namespace
 
 			// Specify the spin length
 			Pulse duration;
-			std::int64_t swingAmplitude = 0, swingRepeat = 0, swingDecayOrder = 0;
+			std::int32_t swingAmplitude = 0, swingRepeat = 0, swingDecayOrder = 0;
 			if (type == Type::kNoSpin || direction == Direction::kUnspecified)
 			{
 				duration = 0;
@@ -816,7 +816,7 @@ namespace
 
 						if (!patternKey.empty())
 						{
-							m_pTargetChartData->camera.cam.pattern.laser.slamInvoke[patternKey].emplace(m_time + relPulse, params);
+							m_pTargetChartData->camera.cam.pattern.laser.slamEvent[patternKey].emplace(m_time + relPulse, params);
 						}
 					}
 				}
