@@ -5,37 +5,25 @@ namespace kson
 {
 	struct DifficultyInfo
 	{
-		std::int8_t idx = 0; // 0-3 in KSH
+		std::int32_t idx = 0; // 0-3 in KSH
 	};
 
 	void to_json(nlohmann::json& j, const DifficultyInfo& difficulty);
 
-	struct LegacyMetaInfo
-	{
-		std::string titleImageFilename; // UTF-8 guaranteed
-		std::string artistImageFilename; // UTF-8 guaranteed
-
-		bool empty() const;
-	};
-
-	void to_json(nlohmann::json& j, const LegacyMetaInfo& legacy);
-
 	struct MetaInfo
 	{
 		std::string title;
-		std::string titleTranslit;
-		std::string subtitle;
+		std::string titleImgFilename; // UTF-8 guaranteed
 		std::string artist;
-		std::string artistTranslit;
+		std::string artistImgFilename; // UTF-8 guaranteed
 		std::string chartAuthor;
 		DifficultyInfo difficulty;
-		std::int8_t level = 1;
+		std::int32_t level = 1;
 		std::string dispBPM;
-		double standardBPM = 0.0;
+		double stdBPM = 0.0;
 		std::string jacketFilename; // UTF-8 guaranteed
 		std::string jacketAuthor;
 		std::string information;
-		LegacyMetaInfo legacy;
 	};
 
 	void to_json(nlohmann::json& j, const MetaInfo& meta);

@@ -12,17 +12,17 @@ namespace kson
 		bool empty() const;
 	};
 
-	struct MetaCompatInfo
-	{
-		std::string kshVersion;
-	};
-
 	struct CompatInfo
 	{
 		std::string kshVersion;
 		KSHUnknownInfo kshUnknown;
 
 		bool empty() const;
+	};
+
+	struct MetaCompatInfo
+	{
+		std::string kshVersion;
 	};
 
 	void to_json(nlohmann::json& j, const KSHUnknownInfo& unknown);

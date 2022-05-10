@@ -9,7 +9,7 @@ namespace kson
 {
 	struct AudioInfo
 	{
-		BGMInfo bgmInfo;
+		BGMInfo bgm;
 		KeySoundInfo keySounds;
 		AudioEffectInfo audioEffects;
 		LegacyAudioInfo legacy;
@@ -19,6 +19,6 @@ namespace kson
 
 	struct MetaAudioInfo
 	{
-		MetaBGMInfo bgmInfo;
+		MetaBGMInfo bgm;
 	};
 }

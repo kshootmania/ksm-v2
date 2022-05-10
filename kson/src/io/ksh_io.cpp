@@ -1011,24 +1011,24 @@ namespace
 			}
 			chartData.meta.dispBPM = Pop(metaDataHashMap, "t", "");
 
-			chartData.meta.standardBPM = ParseNumeric<double>(Pop(metaDataHashMap, "to", "0"), 0.0);
+			chartData.meta.stdBPM = ParseNumeric<double>(Pop(metaDataHashMap, "to", "0"), 0.0);
 
 			const auto bgmFilenames = Split<4>(Pop(metaDataHashMap, "m"), ';');
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{
-				chartData.audio.bgmInfo.filename = bgmFilenames[0];
-				chartData.audio.legacy.bgmInfo.filenameF = bgmFilenames[1];
-				chartData.audio.legacy.bgmInfo.filenameP = bgmFilenames[2];
-				chartData.audio.legacy.bgmInfo.filenameFP = bgmFilenames[3];
+				chartData.audio.bgm.filename = bgmFilenames[0];
+				chartData.audio.legacy.bgm.filenameF = bgmFilenames[1];
+				chartData.audio.legacy.bgm.filenameP = bgmFilenames[2];
+				chartData.audio.legacy.bgm.filenameFP = bgmFilenames[3];
 			}
-			chartData.audio.bgmInfo.preview.filename = bgmFilenames[0];
+			chartData.audio.bgm.preview.filename = bgmFilenames[0];
 
 			const std::int32_t volInt = PopInt<std::int32_t>(metaDataHashMap, "mvol", 50);
-			chartData.audio.bgmInfo.vol = volInt / 100.0;
+			chartData.audio.bgm.vol = volInt / 100.0;
 			if (chartData.compat.kshVersion.empty())
 			{
 				// For historical reasons, the value is multiplied by 0.6 if the value of "ver" is not specified.
-				chartData.audio.bgmInfo.vol *= 0.6;
+				chartData.audio.bgm.vol *= 0.6;
 			}
 
 			// TODO: Store chokkakuautovol
@@ -1036,10 +1036,10 @@ namespace
 
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{
-				chartData.audio.bgmInfo.offset = PopInt<std::int64_t>(metaDataHashMap, "o", 0);
+				chartData.audio.bgm.offset = PopInt<std::int64_t>(metaDataHashMap, "o", 0);
 			}
-			chartData.audio.bgmInfo.preview.offset = PopInt<std::int64_t>(metaDataHashMap, "po", 0);
-			chartData.audio.bgmInfo.preview.duration = PopInt<std::int64_t>(metaDataHashMap, "plength", 0);
+			chartData.audio.bgm.preview.offset = PopInt<std::int64_t>(metaDataHashMap, "po", 0);
+			chartData.audio.bgm.preview.duration = PopInt<std::int64_t>(metaDataHashMap, "plength", 0);
 
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{

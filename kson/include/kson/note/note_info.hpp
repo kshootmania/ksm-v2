@@ -7,7 +7,7 @@ namespace kson
 	{
 		ByRelPulse<GraphValue> points;
 
-		int8_t xScale = 1; // 1-2, sets whether the laser section is 2x-widen or not
+		std::int32_t xScale = 1; // 1-2, sets whether the laser section is 2x-widen or not
 	};
 
 	void to_json(nlohmann::json& j, const Lane<LaserSection>& lane);

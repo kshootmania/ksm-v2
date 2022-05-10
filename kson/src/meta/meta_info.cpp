@@ -5,26 +5,6 @@ void kson::to_json(nlohmann::json& j, const DifficultyInfo& difficulty)
 	j["idx"] = difficulty.idx;
 }
 
-bool kson::LegacyMetaInfo::empty() const
-{
-	return titleImageFilename.empty() && artistImageFilename.empty();
-}
-
-void kson::to_json(nlohmann::json& j, const LegacyMetaInfo& legacy)
-{
-	j = nlohmann::json::object();
-
-	if (!legacy.titleImageFilename.empty())
-	{
-		j["title_img_filename"] = legacy.titleImageFilename;
-	}
-
-	if (!legacy.artistImageFilename.empty())
-	{
-		j["artist_img_filename"] = legacy.artistImageFilename;
-	}
-}
-
 void kson::to_json(nlohmann::json& j, const MetaInfo& meta)
 {
 	j = {
@@ -36,24 +16,19 @@ void kson::to_json(nlohmann::json& j, const MetaInfo& meta)
 		{ "disp_bpm", meta.dispBPM },
 	};
 
-	if (!meta.titleTranslit.empty())
+	if (!meta.titleImgFilename.empty())
 	{
-		j["title_translit"] = meta.titleTranslit;
+		j["title_img_filename"] = meta.titleImgFilename;
 	}
 
-	if (!meta.subtitle.empty())
+	if (!meta.artistImgFilename.empty())
 	{
-		j["subtitle"] = meta.subtitle;
+		j["artist_img_filename"] = meta.artistImgFilename;
 	}
 
-	if (!meta.artistTranslit.empty())
+	if (meta.stdBPM != 0.0)
 	{
-		j["artist_translit"] = meta.artistTranslit;
-	}
-
-	if (meta.standardBPM != 0.0)
-	{
-		j["std_bpm"] = meta.standardBPM;
+		j["std_bpm"] = meta.stdBPM;
 	}
 
 	if (!meta.information.empty())

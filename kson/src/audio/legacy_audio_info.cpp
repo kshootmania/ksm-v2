@@ -1,5 +1,10 @@
 #include "kson/audio/legacy_audio_info.hpp"
 
+bool kson::LegacyAudioBGMInfo::empty() const
+{
+	return filenameF.empty() && filenameP.empty() && filenameFP.empty();
+}
+
 std::vector<std::string> kson::LegacyAudioBGMInfo::toStrArray() const
 {
 	if (!filenameFP.empty())
@@ -39,12 +44,17 @@ void kson::to_json(nlohmann::json& j, const LegacyAudioBGMInfo& legacy)
 	}
 }
 
+bool kson::LegacyAudioInfo::empty() const
+{
+	return bgm.empty();
+}
+
 void kson::to_json(nlohmann::json& j, const LegacyAudioInfo& legacy)
 {
 	j = nlohmann::json::object();
 
-	if (!legacy.bgmInfo.empty())
+	if (!legacy.bgm.empty())
 	{
-		j["bgm"] = legacy.bgmInfo;
+		j["bgm"] = legacy.bgm;
 	}
 }

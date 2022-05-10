@@ -2,7 +2,7 @@
 
 void kson::to_json(nlohmann::json& j, const AudioInfo& audio)
 {
-	j["bgm"] = audio.bgmInfo;
+	j["bgm"] = audio.bgm;
 
 	if (!audio.audioEffects.empty())
 	{

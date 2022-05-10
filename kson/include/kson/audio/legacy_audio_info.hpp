@@ -10,10 +10,7 @@ namespace kson
 		std::string filenameP; // "xxx_p.ogg", UTF-8 guaranteed
 		std::string filenameFP; // "xxx_fp.ogg", UTF-8 guaranteed
 
-		bool empty() const
-		{
-			return filenameF.empty() && filenameP.empty() && filenameFP.empty();
-		}
+		bool empty() const;
 
 		std::vector<std::string> toStrArray() const;
 	};
@@ -22,12 +19,9 @@ namespace kson
 
 	struct LegacyAudioInfo
 	{
-		LegacyAudioBGMInfo bgmInfo;
+		LegacyAudioBGMInfo bgm;
 
-		bool empty() const
-		{
-			return bgmInfo.empty();
-		}
+		bool empty() const;
 	};
 
 	void to_json(nlohmann::json& j, const LegacyAudioInfo& legacy);

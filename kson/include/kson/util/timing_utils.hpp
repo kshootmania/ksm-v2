@@ -8,8 +8,8 @@ namespace kson
 	{
 		std::map<Pulse, Ms> bpmChangeMs;
 		std::map<Ms, Pulse> bpmChangePulse;
-		std::map<int64_t, Pulse> timeSigChangePulse;
-		std::map<Pulse, int64_t> timeSigChangeMeasureIdx;
+		std::map<std::int64_t, Pulse> timeSigChangePulse;
+		std::map<Pulse, std::int64_t> timeSigChangeMeasureIdx;
 	};
 
 	namespace TimingUtils
@@ -22,15 +22,15 @@ namespace kson
 
 		Pulse MsToPulse(Ms ms, const BeatInfo& beatInfo, const TimingCache& cache);
 
-		int64_t PulseToMeasureIdx(Pulse pulse, const BeatInfo& beatInfo, const TimingCache& cache);
+		std::int64_t PulseToMeasureIdx(Pulse pulse, const BeatInfo& beatInfo, const TimingCache& cache);
 
-		int64_t MsToMeasureIdx(Ms ms, const BeatInfo& beatInfo, const TimingCache& cache);
+		std::int64_t MsToMeasureIdx(Ms ms, const BeatInfo& beatInfo, const TimingCache& cache);
 
-		Pulse MeasureIdxToPulse(int64_t measureIdx, const BeatInfo& beatInfo, const TimingCache& cache);
+		Pulse MeasureIdxToPulse(std::int64_t measureIdx, const BeatInfo& beatInfo, const TimingCache& cache);
 
 		Pulse MeasureValueToPulse(double measureValue, const BeatInfo& beatInfo, const TimingCache& cache);
 
-		Ms MeasureIdxToMs(int64_t measureIdx, const BeatInfo& beatInfo, const TimingCache& cache);
+		Ms MeasureIdxToMs(std::int64_t measureIdx, const BeatInfo& beatInfo, const TimingCache& cache);
 
 		Ms MeasureValueToMs(double measureValue, const BeatInfo& beatInfo, const TimingCache& cache);
 

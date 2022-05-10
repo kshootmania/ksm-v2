@@ -104,7 +104,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 					continue;
 				}
 
-				int8 difficultyIdx = chartData.meta.difficulty.idx;
+				int32 difficultyIdx = chartData.meta.difficulty.idx;
 				if (difficultyIdx < 0 || kNumDifficulties <= difficultyIdx)
 				{
 					// Set to rightmost difficulty if unknown difficulty is detected
@@ -125,9 +125,9 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 					.chartFilePath = FileSystem::FullPath(chartFile),
 					.chartAuthor = FromUTF8(chartData.meta.chartAuthor),
 					.level = chartData.meta.level,
-					.previewBGMFilePath = FromUTF8(chartData.audio.bgmInfo.preview.filename),
-					.previewBGMOffsetSec = chartData.audio.bgmInfo.preview.offset / 1000.0,
-					.previewBGMDurationSec = chartData.audio.bgmInfo.preview.duration / 1000.0,
+					.previewBGMFilePath = FromUTF8(chartData.audio.bgm.preview.filename),
+					.previewBGMOffsetSec = chartData.audio.bgm.preview.offset / 1000.0,
+					.previewBGMDurationSec = chartData.audio.bgm.preview.duration / 1000.0,
 					.iconFilePath = U""/*TODO*/,
 					.information = FromUTF8(chartData.meta.information),
 					.highScoreInfo = HighScoreInfo{}/*TODO*/,
