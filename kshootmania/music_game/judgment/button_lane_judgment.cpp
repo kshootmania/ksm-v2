@@ -6,20 +6,20 @@ namespace
 {
 	constexpr double kHalveComboBPMThreshold = 256.0;
 
-	std::map<ksh::Pulse, double> CreatePulseToSec(const ksh::ByPulse<ksh::Interval>& lane, const ksh::BeatMap& beatMap, const ksh::TimingCache& timingCache)
+	std::map<kson::Pulse, double> CreatePulseToSec(const kson::ByPulse<kson::Interval>& lane, const kson::BeatMap& beatMap, const kson::TimingCache& timingCache)
 	{
-		std::map<ksh::Pulse, double> pulseToSec;
+		std::map<kson::Pulse, double> pulseToSec;
 
 		for (const auto& [y, note] : lane)
 		{
 			if (!pulseToSec.contains(y))
 			{
-				const double sec = MathUtils::MsToSec(ksh::TimingUtils::PulseToMs(y, beatMap, timingCache));
+				const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y, beatMap, timingCache));
 				pulseToSec.emplace(y, sec);
 			}
 			if (!pulseToSec.contains(y + note.length))
 			{
-				const double sec = MathUtils::MsToSec(ksh::TimingUtils::PulseToMs(y + note.length, beatMap, timingCache));
+				const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y + note.length, beatMap, timingCache));
 				pulseToSec.emplace(y + note.length, sec);
 			}
 		}
@@ -27,9 +27,9 @@ namespace
 		return pulseToSec;
 	}
 
-	ksh::ByPulse<JudgmentResult> CreateChipNoteJudgmentArray(const ksh::ByPulse<ksh::Interval>& lane)
+	kson::ByPulse<JudgmentResult> CreateChipNoteJudgmentArray(const kson::ByPulse<kson::Interval>& lane)
 	{
-		ksh::ByPulse<JudgmentResult> judgmentArray;
+		kson::ByPulse<JudgmentResult> judgmentArray;
 
 		for (const auto& [y, note] : lane)
 		{
@@ -42,11 +42,11 @@ namespace
 		return judgmentArray;
 	}
 
-	ksh::ByPulse<JudgmentResult> CreateLongNoteJudgmentArray(const ksh::ByPulse<ksh::Interval>& lane, const ksh::BeatMap& beatMap)
+	kson::ByPulse<JudgmentResult> CreateLongNoteJudgmentArray(const kson::ByPulse<kson::Interval>& lane, const kson::BeatMap& beatMap)
 	{
-		const ksh::Pulse unitMeasure = beatMap.resolution * 4;
+		const kson::Pulse unitMeasure = beatMap.resolution * 4;
 
-		ksh::ByPulse<JudgmentResult> judgmentArray;
+		kson::ByPulse<JudgmentResult> judgmentArray;
 
 		for (const auto& [y, note] : lane) // TODO: merge two long notes if note1.y + note1.l == note2.y
 		{
@@ -54,9 +54,9 @@ namespace
 			{
 				// Determine whether to halve the combo based on the BPM at the start of the note
 				// (BPM changes during the notes are ignored)
-				const bool halvesCombo = ksh::TimingUtils::PulseTempo(y, beatMap) >= kHalveComboBPMThreshold;
-				const ksh::RelPulse minPulseInterval = halvesCombo ? (unitMeasure * 3 / 8) : (unitMeasure * 3 / 16);
-				const ksh::RelPulse pulseInterval = halvesCombo ? (unitMeasure / 8) : (unitMeasure / 16);
+				const bool halvesCombo = kson::TimingUtils::PulseTempo(y, beatMap) >= kHalveComboBPMThreshold;
+				const kson::RelPulse minPulseInterval = halvesCombo ? (unitMeasure * 3 / 8) : (unitMeasure * 3 / 16);
+				const kson::RelPulse pulseInterval = halvesCombo ? (unitMeasure / 8) : (unitMeasure / 16);
 
 				if (note.length <= minPulseInterval)
 				{
@@ -64,10 +64,10 @@ namespace
 				}
 				else
 				{
-					const ksh::Pulse start = ((y + pulseInterval - 1) / pulseInterval + 1) * pulseInterval;
-					const ksh::Pulse end = y + note.length - pulseInterval;
+					const kson::Pulse start = ((y + pulseInterval - 1) / pulseInterval + 1) * pulseInterval;
+					const kson::Pulse end = y + note.length - pulseInterval;
 
-					for (ksh::Pulse pulse = start; pulse < end; pulse += pulseInterval)
+					for (kson::Pulse pulse = start; pulse < end; pulse += pulseInterval)
 					{
 						judgmentArray.emplace(pulse, JudgmentResult::kUnspecified);
 					}
@@ -79,14 +79,14 @@ namespace
 	}
 }
 
-void ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentTimeSec, Graphics::LaneState& laneStateRef)
+void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, Graphics::LaneState& laneStateRef)
 {
 	using namespace TimingWindow;
 
 	// Pick up the nearest note from the lane
 	bool found = false;
 	double minDistance;
-	ksh::Pulse nearestNotePulse;
+	kson::Pulse nearestNotePulse;
 	for (auto itr = lane.upper_bound(m_passedNotePulse); itr != lane.end(); ++itr)
 	{
 		const auto& [y, note] = *itr;
@@ -170,13 +170,13 @@ void ButtonLaneJudgment::processKeyDown(const ksh::ByPulse<ksh::Interval>& lane,
 	}
 }
 
-void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec, const Graphics::LaneState& laneStateRef)
+void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, const Graphics::LaneState& laneStateRef)
 {
 	if (laneStateRef.currentLongNotePulse.has_value())
 	{
-		const ksh::Pulse noteStartPulse = *laneStateRef.currentLongNotePulse;
-		const ksh::Pulse noteEndPulse = *laneStateRef.currentLongNotePulse + lane.at(*laneStateRef.currentLongNotePulse).length;
-		const ksh::Pulse limitPulse = Min(currentPulse, noteEndPulse);
+		const kson::Pulse noteStartPulse = *laneStateRef.currentLongNotePulse;
+		const kson::Pulse noteEndPulse = *laneStateRef.currentLongNotePulse + lane.at(*laneStateRef.currentLongNotePulse).length;
+		const kson::Pulse limitPulse = Min(currentPulse, noteEndPulse);
 
 		for (auto itr = m_longJudgmentArray.upper_bound(Max(noteStartPulse, m_prevPulse) - 1); itr != m_longJudgmentArray.end(); ++itr)
 		{
@@ -195,7 +195,7 @@ void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const ksh::ByPul
 	}
 }
 
-ButtonLaneJudgment::ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const ksh::ByPulse<ksh::Interval>& lane, const ksh::BeatMap& beatMap, const ksh::TimingCache& timingCache)
+ButtonLaneJudgment::ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatMap& beatMap, const kson::TimingCache& timingCache)
 	: m_keyConfigButton(keyConfigButton)
 	, m_pulseToSec(CreatePulseToSec(lane, beatMap, timingCache))
 	, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane))
@@ -204,7 +204,7 @@ ButtonLaneJudgment::ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const 
 {
 }
 
-void MusicGame::Judgment::ButtonLaneJudgment::update(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentTimeSec, Graphics::LaneState& laneStateRef)
+void MusicGame::Judgment::ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, Graphics::LaneState& laneStateRef)
 {
 	// Chip note & long note start
 	if (KeyConfig::Down(m_keyConfigButton))

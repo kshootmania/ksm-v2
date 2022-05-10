@@ -2,8 +2,8 @@
 #include "judgment_defines.hpp"
 #include "music_game/game_defines.hpp"
 #include "music_game/graphics/update_info.hpp"
-#include "ksh/chart_data.hpp"
-#include "ksh/util/timing_utils.hpp"
+#include "kson/chart_data.hpp"
+#include "kson/util/timing_utils.hpp"
 
 namespace MusicGame::Judgment
 {
@@ -11,27 +11,27 @@ namespace MusicGame::Judgment
 	{
 	private:
 		const KeyConfig::Button m_keyConfigButton;
-		const std::map<ksh::Pulse, double> m_pulseToSec;
+		const std::map<kson::Pulse, double> m_pulseToSec;
 
-		ksh::ByPulse<JudgmentResult> m_chipJudgmentArray;
-		ksh::ByPulse<JudgmentResult> m_longJudgmentArray;
+		kson::ByPulse<JudgmentResult> m_chipJudgmentArray;
+		kson::ByPulse<JudgmentResult> m_longJudgmentArray;
 
-		ksh::Pulse m_prevPulse = kPastPulse;
+		kson::Pulse m_prevPulse = kPastPulse;
 
-		ksh::Pulse m_passedNotePulse = kPastPulse;
+		kson::Pulse m_passedNotePulse = kPastPulse;
 
 		int32 m_scoreValue = 0;
 
 		const int32 m_scoreValueMax;
 
-		void processKeyDown(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec, Graphics::LaneState& laneStateRef);
+		void processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, Graphics::LaneState& laneStateRef);
 
-		void processKeyPressed(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec, const Graphics::LaneState& laneStateRef);
+		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, const Graphics::LaneState& laneStateRef);
 
 	public:
-		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const ksh::ByPulse<ksh::Interval>& lane, const ksh::BeatMap& beatMap, const ksh::TimingCache& timingCache);
+		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatMap& beatMap, const kson::TimingCache& timingCache);
 
-		void update(const ksh::ByPulse<ksh::Interval>& lane, ksh::Pulse currentPulse, double currentSec, Graphics::LaneState& laneStateRef);
+		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, Graphics::LaneState& laneStateRef);
 
 		int32 scoreValue() const;
 

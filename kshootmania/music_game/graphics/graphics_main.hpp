@@ -8,7 +8,7 @@
 #include "hud/gauge_panel.hpp"
 #include "hud/frame_rate_monitor.hpp"
 #include "update_info.hpp"
-#include "ksh/util/timing_utils.hpp"
+#include "kson/util/timing_utils.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -36,7 +36,7 @@ namespace MusicGame::Graphics
 		GaugePanel m_gaugePanel;
 		FrameRateMonitor m_frameRateMonitor;
 
-		ksh::Pulse m_initialPulse;
+		kson::Pulse m_initialPulse;
 
 		UpdateInfo m_updateInfo;
 
@@ -45,7 +45,7 @@ namespace MusicGame::Graphics
 		void drawLayer() const;
 
 	public:
-		explicit GraphicsMain(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache);
+		explicit GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache);
 
 		void update(const UpdateInfo& updateInfo);
 

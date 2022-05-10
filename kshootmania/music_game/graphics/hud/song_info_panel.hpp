@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "graphics/number_font_texture.hpp"
-#include "ksh/chart_data.hpp"
+#include "kson/chart_data.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -24,7 +24,7 @@ namespace MusicGame::Graphics
 		const int32 m_level;
 
 	public:
-		explicit SongInfoPanel(const ksh::ChartData& chartData);
+		explicit SongInfoPanel(const kson::ChartData& chartData);
 
 		void draw(double currentBPM) const;
 	};

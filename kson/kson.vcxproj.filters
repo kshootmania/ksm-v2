@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\common">
+      <UniqueIdentifier>{e3dc6123-ab19-4362-8811-24791b368e1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\beat">
+      <UniqueIdentifier>{264dd214-509e-485e-9c86-0e501954cb10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\note">
+      <UniqueIdentifier>{cc7fe7c7-a4bd-47d6-ad59-54afb4ef91d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\audio">
+      <UniqueIdentifier>{73e725c9-a346-4bd4-bd28-5e0f85394a30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\camera">
+      <UniqueIdentifier>{52829020-c041-4fc2-b6e9-998038d2fccc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\bg">
+      <UniqueIdentifier>{f7fbdf73-c662-4630-86dd-c84216be1527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gauge">
+      <UniqueIdentifier>{e14d3bcf-d778-43d7-9a1e-021c79f0170e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\meta">
+      <UniqueIdentifier>{13b32fa0-d846-42fe-a3db-70351950232d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{9b12689f-4bc7-4397-a75d-309ec8fb44aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\io">
+      <UniqueIdentifier>{2c98438b-8a80-4821-b14d-d49e8792fe49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{a2090f85-fc49-4788-ba90-288585399b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\io">
+      <UniqueIdentifier>{6ca76504-536e-4d4d-8c01-9cbe68f5a282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\encoding">
+      <UniqueIdentifier>{6953bb0c-d184-4934-b293-ef98787f5b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\encoding">
+      <UniqueIdentifier>{86abbf6b-112a-4cd9-bdfa-51388100d32c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\impl">
+      <UniqueIdentifier>{8f6b340d-32fe-4f47-9145-41f71e03249f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\third_party">
+      <UniqueIdentifier>{3eb524fe-e604-41a6-8582-7ad07c0f1384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\audio">
+      <UniqueIdentifier>{62055d93-0e73-4ab1-85e8-32f35abaaa38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\beat">
+      <UniqueIdentifier>{2c05af48-0cc7-4939-931f-754597c3daf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\bg">
+      <UniqueIdentifier>{befdee94-b647-47b5-9fa4-30c83616af2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\camera">
+      <UniqueIdentifier>{4343161c-c9ba-477b-9a58-5192c948195d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\common">
+      <UniqueIdentifier>{277ceb7e-8933-4314-831d-e0a784fdaa2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gauge">
+      <UniqueIdentifier>{196f0968-a24c-48ad-8f40-b4e6b6433902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\meta">
+      <UniqueIdentifier>{1684ae2c-a631-4d9f-8f66-d31ba4c94e7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\note">
+      <UniqueIdentifier>{26d06ae5-986b-41d1-b1da-ce5a5aa0a668}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\kson\common\common.hpp">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\beat\beat_map.hpp">
+      <Filter>Header Files\beat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\beat\time_sig.hpp">
+      <Filter>Header Files\beat</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\audio\bgm_info.hpp">
+      <Filter>Header Files\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\audio\key_sound.hpp">
+      <Filter>Header Files\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\audio\audio_effect.hpp">
+      <Filter>Header Files\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\audio\legacy_audio_info.hpp">
+      <Filter>Header Files\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\camera\tilt.hpp">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\camera\cam.hpp">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\bg\bg.hpp">
+      <Filter>Header Files\bg</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\chart_data.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\note\note.hpp">
+      <Filter>Header Files\note</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\gauge\gauge.hpp">
+      <Filter>Header Files\gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\audio\audio.hpp">
+      <Filter>Header Files\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\camera\camera.hpp">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\meta\meta.hpp">
+      <Filter>Header Files\meta</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\util\timing_utils.hpp">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\io\ksh_io.hpp">
+      <Filter>Header Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\encoding\encoding.hpp">
+      <Filter>Header Files\encoding</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\impl\impl.hpp">
+      <Filter>Header Files\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\io\kson_io.hpp">
+      <Filter>Header Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\util\graph_utils.hpp">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\util\timing_utils.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\ksh_io.cpp">
+      <Filter>Source Files\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\encoding\encoding_win.cpp">
+      <Filter>Source Files\encoding</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\kson_io.cpp">
+      <Filter>Source Files\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\cam.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\audio_effect.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\bgm_info.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\key_sound.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\legacy_audio_info.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\audio.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\beat\beat_map.cpp">
+      <Filter>Source Files\beat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\beat\time_sig.cpp">
+      <Filter>Source Files\beat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bg\bg.cpp">
+      <Filter>Source Files\bg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\camera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\tilt.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\common.cpp">
+      <Filter>Source Files\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gauge\gauge.cpp">
+      <Filter>Source Files\gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="src\meta\meta.cpp">
+      <Filter>Source Files\meta</Filter>
+    </ClCompile>
+    <ClCompile Include="src\note\note.cpp">
+      <Filter>Source Files\note</Filter>
+    </ClCompile>
+    <ClCompile Include="src\chart_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -33,7 +33,7 @@ namespace
 	}
 }
 
-MusicGame::Graphics::SongInfoPanel::SongInfoPanel(const ksh::ChartData& chartData)
+MusicGame::Graphics::SongInfoPanel::SongInfoPanel(const kson::ChartData& chartData)
 	: m_jacketTexture(FileSystem::ParentPath(Unicode::Widen(chartData.filePath)) + Unicode::FromUTF8(chartData.meta.jacketFilename))
 	, m_jacketPosition(Scene::Width() / 2 + static_cast<int32>(ScreenUtils::Scaled(kJacketPosition.x)), static_cast<int32>(ScreenUtils::Scaled(kJacketPosition.y)))
 	, m_scaledJacketSize(ScaledJacketSize(m_jacketTexture.size()))

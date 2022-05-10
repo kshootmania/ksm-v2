@@ -1,11 +1,11 @@
 ﻿#include "math_utils.hpp"
 
-ksh::Ms MathUtils::SecToMs(double sec)
+kson::Ms MathUtils::SecToMs(double sec)
 {
 	return sec * 1000;
 }
 
-double MathUtils::MsToSec(ksh::Ms sec)
+double MathUtils::MsToSec(kson::Ms sec)
 {
 	return sec / 1000;
 }

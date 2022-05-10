@@ -1,7 +1,7 @@
 ﻿#include "graphics_main.hpp"
 #include "graphics_defines.hpp"
 #include "music_game/game_defines.hpp"
-#include "ksh/util/graph_utils.hpp"
+#include "kson/util/graph_utils.hpp"
 
 namespace
 {
@@ -19,7 +19,7 @@ namespace
 	constexpr Float3 kLayerBillboardPosition = Float3{ 0, -41.0f, 0 };
 	constexpr Float2 kLayerBillboardSize = Float2{ 880.0f, 704.0f } * 0.65f;
 
-	FilePath BGFilePath(const ksh::ChartData& chartData)
+	FilePath BGFilePath(const kson::ChartData& chartData)
 	{
 		const String bgFilename = Unicode::FromUTF8(chartData.bg.legacy.bgInfos.at(0).filename);
 		if (FileSystem::Extension(bgFilename).empty())
@@ -32,7 +32,7 @@ namespace
 		return bgFilename;
 	}
 
-	FilePath LayerFilePath(const ksh::ChartData& chartData)
+	FilePath LayerFilePath(const kson::ChartData& chartData)
 	{
 		const String layerFilename = Unicode::FromUTF8(chartData.bg.legacy.layerInfos.at(0).filename);
 		if (FileSystem::Extension(layerFilename).empty())
@@ -94,12 +94,12 @@ void MusicGame::Graphics::GraphicsMain::drawLayer() const
 	}
 
 	// TODO: Layer speed specified by KSH
-	const ksh::Pulse resolution = m_updateInfo.pChartData->beat.resolution;
+	const kson::Pulse resolution = m_updateInfo.pChartData->beat.resolution;
 	const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)), static_cast<int32>(m_layerFrameTextures[0].size()));
 	m_bgBillboardMesh.draw(m_layerTransform * TiltTransformMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
 }
 
-MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache)
+MusicGame::Graphics::GraphicsMain::GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache)
 	: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 	, m_bgBillboardMesh(MeshData::Billboard())
 	, m_bgTexture(BGFilePath(chartData))
@@ -108,7 +108,7 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const ksh::ChartData& chartData,
 	, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
 	, m_songInfoPanel(chartData)
 	, m_gaugePanel(kNormalGauge/* TODO: gauge type */, chartData.beat.resolution)
-	, m_initialPulse(ksh::TimingUtils::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
+	, m_initialPulse(kson::TimingUtils::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
 {
 }
 
@@ -119,9 +119,9 @@ void MusicGame::Graphics::GraphicsMain::update(const UpdateInfo& updateInfo)
 	double tiltFactor = 0.0;
 	if (updateInfo.pChartData != nullptr)
 	{
-		const ksh::ChartData& chartData = *updateInfo.pChartData;
-		const double leftLaserValue = ksh::GraphSectionValueAtWithDefault(chartData.note.laserLanes[0], updateInfo.currentPulse, 0.0); // range: [0, +1]
-		const double rightLaserValue = ksh::GraphSectionValueAtWithDefault(chartData.note.laserLanes[1], updateInfo.currentPulse, 1.0) - 1.0; // range: [-1, 0]
+		const kson::ChartData& chartData = *updateInfo.pChartData;
+		const double leftLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laserLanes[0], updateInfo.currentPulse, 0.0); // range: [0, +1]
+		const double rightLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laserLanes[1], updateInfo.currentPulse, 1.0) - 1.0; // range: [-1, 0]
 		tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
 	}
 	m_highwayTilt.update(tiltFactor);
@@ -130,7 +130,7 @@ void MusicGame::Graphics::GraphicsMain::update(const UpdateInfo& updateInfo)
 void MusicGame::Graphics::GraphicsMain::draw() const
 {
 	assert(m_updateInfo.pChartData != nullptr);
-	const ksh::ChartData& chartData = *m_updateInfo.pChartData;
+	const kson::ChartData& chartData = *m_updateInfo.pChartData;
 
 	// Draw 2D render textures
 	m_highway3DGraphics.draw2D(m_updateInfo);

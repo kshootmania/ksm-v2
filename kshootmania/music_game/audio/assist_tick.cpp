@@ -6,7 +6,7 @@ namespace
 	constexpr double kLatencySec = 0.03;
 
 	// Note: Lane<Interval> is std::map<Pulse, Interval>
-	ksh::Pulse CurrentNotePulse(const ksh::Lane<ksh::Interval>& lane, ksh::Pulse currentPulse)
+	kson::Pulse CurrentNotePulse(const kson::Lane<kson::Interval>& lane, kson::Pulse currentPulse)
 	{
 		const auto nextNote = lane.upper_bound(currentPulse);
 		if (nextNote == lane.begin())
@@ -25,19 +25,19 @@ MusicGame::Audio::AssistTick::AssistTick(bool enabled)
 {
 }
 
-void MusicGame::Audio::AssistTick::update(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache, double currentTimeSec)
+void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, const kson::TimingCache& timingCache, double currentTimeSec)
 {
 	if (!m_enabled)
 	{
 		return;
 	}
 
-	const ksh::Pulse currentPulseForAssistTick = ksh::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec + kLatencySec), chartData.beat, timingCache);
+	const kson::Pulse currentPulseForAssistTick = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec + kLatencySec), chartData.beat, timingCache);
 
 	// BT notes
-	for (std::size_t i = 0; i < ksh::kNumBTLanes; ++i)
+	for (std::size_t i = 0; i < kson::kNumBTLanes; ++i)
 	{
-		const ksh::Pulse currentNotePulse = CurrentNotePulse(chartData.note.btLanes[i], currentPulseForAssistTick);
+		const kson::Pulse currentNotePulse = CurrentNotePulse(chartData.note.btLanes[i], currentPulseForAssistTick);
 		if (currentNotePulse > m_btPlayedPulses[i])
 		{
 			// Chip & long notes
@@ -48,9 +48,9 @@ void MusicGame::Audio::AssistTick::update(const ksh::ChartData& chartData, const
 	}
 
 	// FX notes
-	for (std::size_t i = 0; i < ksh::kNumFXLanes; ++i)
+	for (std::size_t i = 0; i < kson::kNumFXLanes; ++i)
 	{
-		const ksh::Pulse currentNotePulse = CurrentNotePulse(chartData.note.fxLanes[i], currentPulseForAssistTick);
+		const kson::Pulse currentNotePulse = CurrentNotePulse(chartData.note.fxLanes[i], currentPulseForAssistTick);
 		if (currentNotePulse > m_fxPlayedPulses[i])
 		{
 			if (chartData.note.fxLanes[i].contains(currentNotePulse) && chartData.note.fxLanes[i].at(currentNotePulse).length == 0)

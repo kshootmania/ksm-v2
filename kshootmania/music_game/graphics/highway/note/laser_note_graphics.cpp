@@ -77,9 +77,9 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 	{
 		const ScopedRenderStates2D renderState(BlendState::Additive);
 
-		const ksh::ChartData& chartData = *updateInfo.pChartData;
+		const kson::ChartData& chartData = *updateInfo.pChartData;
 
-		for (std::size_t laneIdx = 0; laneIdx < ksh::kNumLaserLanes; ++laneIdx)
+		for (std::size_t laneIdx = 0; laneIdx < kson::kNumLaserLanes; ++laneIdx)
 		{
 			const auto& lane = chartData.note.laserLanes[laneIdx];
 			for (const auto& [y, laserSection] : lane)

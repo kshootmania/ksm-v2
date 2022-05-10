@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "music_game/game_defines.hpp"
-#include "ksh/chart_data.hpp"
-#include "ksh/util/timing_utils.hpp"
+#include "kson/chart_data.hpp"
+#include "kson/util/timing_utils.hpp"
 
 namespace MusicGame::Audio
 {
@@ -12,12 +12,12 @@ namespace MusicGame::Audio
 		s3d::Audio m_btTickSound;
 		s3d::Audio m_fxTickSound;
 
-		std::array<ksh::Pulse, ksh::kNumBTLanes> m_btPlayedPulses = { kPastPulse, kPastPulse, kPastPulse, kPastPulse };
-		std::array<ksh::Pulse, ksh::kNumFXLanes> m_fxPlayedPulses = { kPastPulse, kPastPulse };
+		std::array<kson::Pulse, kson::kNumBTLanes> m_btPlayedPulses = { kPastPulse, kPastPulse, kPastPulse, kPastPulse };
+		std::array<kson::Pulse, kson::kNumFXLanes> m_fxPlayedPulses = { kPastPulse, kPastPulse };
 
 	public:
 		explicit AssistTick(bool enabled);
 
-		void update(const ksh::ChartData& chartData, const ksh::TimingCache& timingCache, double currentTimeSec);
+		void update(const kson::ChartData& chartData, const kson::TimingCache& timingCache, double currentTimeSec);
 	};
 }

@@ -23,13 +23,13 @@ namespace
 
 void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, bool isBT) const
 {
-	const ksh::ChartData& chartData = *updateInfo.pChartData;
+	const kson::ChartData& chartData = *updateInfo.pChartData;
 	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
 
 	const ScopedRenderTarget2D renderTarget(additiveTarget);
 	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
-	for (std::size_t laneIdx = 0; laneIdx < (isBT ? ksh::kNumBTLanes : ksh::kNumFXLanes); ++laneIdx)
+	for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanes : kson::kNumFXLanes); ++laneIdx)
 	{
 		const auto& lane = isBT ? chartData.note.btLanes[laneIdx] : chartData.note.fxLanes[laneIdx];
 		for (const auto& [y, note] : lane)
@@ -71,12 +71,12 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawChipFXNotes(const UpdateInfo& 
 
 void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, bool isBT) const
 {
-	const ksh::ChartData& chartData = *updateInfo.pChartData;
+	const kson::ChartData& chartData = *updateInfo.pChartData;
 	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
 
 	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
-	for (std::size_t laneIdx = 0; laneIdx < (isBT ? ksh::kNumBTLanes : ksh::kNumFXLanes); ++laneIdx)
+	for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanes : kson::kNumFXLanes); ++laneIdx)
 	{
 		const auto& lane = isBT ? chartData.note.btLanes[laneIdx] : chartData.note.fxLanes[laneIdx];
 		for (const auto& [y, note] : lane)

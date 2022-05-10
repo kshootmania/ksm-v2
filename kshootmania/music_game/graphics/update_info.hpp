@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "music_game/judgment/judgment_defines.hpp"
-#include "ksh/common/common.hpp"
-#include "ksh/chart_data.hpp"
+#include "kson/common/common.hpp"
+#include "kson/chart_data.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -21,7 +21,7 @@ namespace MusicGame::Graphics
 		std::array<ChipAnimState, kChipAnimMax> chipAnimStateRingBuffer;
 		int32 chipAnimStateRingBufferCursor = 0;
 
-		Optional<ksh::Pulse> currentLongNotePulse = none;
+		Optional<kson::Pulse> currentLongNotePulse = none;
 		double currentLongNoteAnimOffsetTimeSec = kPastTimeSec; // Timing of key press or key release
 	};
 
@@ -38,13 +38,13 @@ namespace MusicGame::Graphics
 	struct UpdateInfo
 	{
 		double currentTimeSec = 0.0;
-		ksh::Pulse currentPulse = 0;
+		kson::Pulse currentPulse = 0;
 		double currentBPM = 120.0;
 
-		const ksh::ChartData* pChartData = nullptr;
+		const kson::ChartData* pChartData = nullptr;
 		
-		std::array<LaneState, ksh::kNumBTLanes> btLaneState;
-		std::array<LaneState, ksh::kNumFXLanes> fxLaneState;
+		std::array<LaneState, kson::kNumBTLanes> btLaneState;
+		std::array<LaneState, kson::kNumFXLanes> fxLaneState;
 
 		CamValues camValues;
 

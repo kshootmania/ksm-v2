@@ -1,6 +1,6 @@
 ﻿#include "game_main.hpp"
 #include "game_defines.hpp"
-#include "ksh/io/ksh_io.hpp"
+#include "kson/io/ksh_io.hpp"
 
 namespace
 {
@@ -30,8 +30,8 @@ namespace
 }
 
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
-	: m_chartData(ksh::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
-	, m_timingCache(ksh::TimingUtils::CreateTimingCache(m_chartData.beat))
+	: m_chartData(kson::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
+	, m_timingCache(kson::TimingUtils::CreateTimingCache(m_chartData.beat))
 	, m_btLaneJudgments{
 			Judgment::ButtonLaneJudgment(kBTButtons[0], m_chartData.note.btLanes[0], m_chartData.beat, m_timingCache),
 			Judgment::ButtonLaneJudgment(kBTButtons[1], m_chartData.note.btLanes[1], m_chartData.beat, m_timingCache),
@@ -59,18 +59,18 @@ void MusicGame::GameMain::update()
 	const double currentTimeSec = m_bgm.posSec();
 	m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
 
-	const ksh::Pulse currentPulse = ksh::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
+	const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
 
 	m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
 	m_graphicsUpdateInfo.currentPulse = currentPulse;
-	m_graphicsUpdateInfo.currentBPM = ksh::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
+	m_graphicsUpdateInfo.currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
 
-	for (int i = 0; i < ksh::kNumBTLanes; ++i)
+	for (int i = 0; i < kson::kNumBTLanes; ++i)
 	{
 		m_btLaneJudgments[i].update(m_chartData.note.btLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.btLaneState[i]);
 	}
 
-	for (int i = 0; i < ksh::kNumFXLanes; ++i)
+	for (int i = 0; i < kson::kNumFXLanes; ++i)
 	{
 		m_fxLaneJudgments[i].update(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.fxLaneState[i]);
 	}

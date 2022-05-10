@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <concepts>
-#include "ksh/common/common.hpp"
+#include "kson/common/common.hpp"
 
 namespace MathUtils
 {
@@ -33,9 +33,9 @@ namespace MathUtils
 		}
 	}
 
-	ksh::Ms SecToMs(double sec);
+	kson::Ms SecToMs(double sec);
 
-	double MsToSec(ksh::Ms sec);
+	double MsToSec(kson::Ms sec);
 
 	int32 NumDigits(int32 number);
 }

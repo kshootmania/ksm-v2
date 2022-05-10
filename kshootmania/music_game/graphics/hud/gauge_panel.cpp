@@ -11,13 +11,13 @@ namespace
 	constexpr SizeF kBarSize = { 47.25, 434.0 };
 	constexpr SizeF kBarAnimSize = { kBarSize.x, kBarSize.y * 2 };
 
-	double AnimRate(ksh::Pulse currentPulse, ksh::Pulse intervalPulse)
+	double AnimRate(kson::Pulse currentPulse, kson::Pulse intervalPulse)
 	{
 		return static_cast<double>(MathUtils::WrappedMod(currentPulse, intervalPulse)) / intervalPulse;
 	}
 }
 
-MusicGame::Graphics::GaugePanel::GaugePanel(GaugeType gaugeType, ksh::Pulse pulseResolution)
+MusicGame::Graphics::GaugePanel::GaugePanel(GaugeType gaugeType, kson::Pulse pulseResolution)
 	: m_gaugeType(gaugeType)
 	, m_intervalPulse((pulseResolution * 4) * 3 / 2) // 1.5 measure
 	, m_baseTexture(kBaseTextureFilename,
@@ -43,7 +43,7 @@ MusicGame::Graphics::GaugePanel::GaugePanel(GaugeType gaugeType, ksh::Pulse puls
 {
 }
 
-void MusicGame::Graphics::GaugePanel::draw(double percent, ksh::Pulse currentPulse) const
+void MusicGame::Graphics::GaugePanel::draw(double percent, kson::Pulse currentPulse) const
 {
 	using namespace ScreenUtils;
 	const ScopedRenderStates2D samplerState(SamplerState::ClampAniso);

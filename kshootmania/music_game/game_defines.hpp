@@ -10,19 +10,19 @@ namespace MusicGame
 		return movie ? kTimeSecBeforeStartMovie : kTimeSecBeforeStart;
 	}
 
-	const std::array<KeyConfig::Button, ksh::kNumBTLanes> kBTButtons = {
+	const std::array<KeyConfig::Button, kson::kNumBTLanes> kBTButtons = {
 		KeyConfig::kBT_A,
 		KeyConfig::kBT_B,
 		KeyConfig::kBT_C,
 		KeyConfig::kBT_D,
 	};
 
-	const std::array<KeyConfig::Button, ksh::kNumFXLanes> kFXButtons = {
+	const std::array<KeyConfig::Button, kson::kNumFXLanes> kFXButtons = {
 		KeyConfig::kFX_L,
 		KeyConfig::kFX_R,
 	};
 
-	constexpr ksh::Pulse kPastPulse = -100000000;
+	constexpr kson::Pulse kPastPulse = -100000000;
 
 	enum GaugeType : int32
 	{

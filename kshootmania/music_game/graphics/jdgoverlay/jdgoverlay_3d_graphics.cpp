@@ -1,6 +1,6 @@
 ﻿#include "jdgoverlay_3d_graphics.hpp"
 #include "music_game/graphics/graphics_defines.hpp"
-#include "ksh/common/common.hpp"
+#include "kson/common/common.hpp"
 
 namespace
 {
@@ -57,7 +57,7 @@ const TiledTexture& MusicGame::Graphics::Jdgoverlay3DGraphics::chipAnimTexture(J
 
 void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimCommon(const UpdateInfo& updateInfo, bool isBT) const
 {
-	for (int32 i = 0; std::cmp_less(i, (isBT ? ksh::kNumBTLanes : ksh::kNumFXLanes)); ++i)
+	for (int32 i = 0; std::cmp_less(i, (isBT ? kson::kNumBTLanes : kson::kNumFXLanes)); ++i)
 	{
 		const auto& laneState = isBT ? updateInfo.btLaneState[i] : updateInfo.fxLaneState[i];
 		for (const auto& chipAnimState : laneState.chipAnimStateRingBuffer)
@@ -85,7 +85,7 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimFX(const UpdateInfo&
 
 void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimCommon(const UpdateInfo& updateInfo, bool isBT) const
 {
-	for (int32 i = 0; std::cmp_less(i, (isBT ? ksh::kNumBTLanes : ksh::kNumFXLanes)); ++i)
+	for (int32 i = 0; std::cmp_less(i, (isBT ? kson::kNumBTLanes : kson::kNumFXLanes)); ++i)
 	{
 		const auto& laneState = isBT ? updateInfo.btLaneState[i] : updateInfo.fxLaneState[i];
 		const double sec = updateInfo.currentTimeSec - laneState.currentLongNoteAnimOffsetTimeSec;

@@ -8,7 +8,7 @@ namespace MusicGame::Graphics
 	{
 	private:
 		const GaugeType m_gaugeType;
-		const ksh::Pulse m_intervalPulse;
+		const kson::Pulse m_intervalPulse;
 		const TiledTexture m_baseTexture;
 		const TiledTexture m_barTexture;
 		const TiledTexture m_barAnimTexture;
@@ -16,8 +16,8 @@ namespace MusicGame::Graphics
 		const NumberFontTexture m_percentNumberFontTexture;
 
 	public:
-		GaugePanel(GaugeType gaugeType, ksh::Pulse pulseResolution);
+		GaugePanel(GaugeType gaugeType, kson::Pulse pulseResolution);
 
-		void draw(double percent, ksh::Pulse currentPulse) const;
+		void draw(double percent, kson::Pulse currentPulse) const;
 	};
 }

@@ -2,7 +2,7 @@
 #include <cassert>
 
 #include "ui/menu_helper.hpp"
-#include "ksh/io/ksh_io.hpp"
+#include "kson/io/ksh_io.hpp"
 
 namespace
 {
@@ -97,8 +97,8 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 					continue;
 				}
 
-				const ksh::MetaChartData chartData = ksh::LoadKSHMetaChartData(chartFile.narrow());
-				if (chartData.error != ksh::Error::kNone)
+				const kson::MetaChartData chartData = kson::LoadKSHMetaChartData(chartFile.narrow());
+				if (chartData.error != kson::Error::kNone)
 				{
 					Logger << U"[SelectMenu] KSH Loading Error (" << static_cast<int32>(chartData.error) << U"): " << chartFile;
 					continue;

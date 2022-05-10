@@ -74,7 +74,7 @@
       <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalOptions>/Zc:__cplusplus /Zm500 /MP3 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)ksh\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\third_party\bass;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)kson\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\third_party\bass;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -100,7 +100,7 @@
       <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalOptions>/Zc:__cplusplus /Zm500 /MP7 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)ksh\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\third_party\bass;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)kson\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\third_party\bass;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -492,7 +492,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ksh\ksh.vcxproj">
+    <ProjectReference Include="..\kson\kson.vcxproj">
       <Project>{e8fc8484-971e-48d5-8523-1f38e5f9a45e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ksmaudio\ksmaudio.vcxproj">
