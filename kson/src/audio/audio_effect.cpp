@@ -38,6 +38,7 @@ kson::AudioEffectType kson::StrToAudioEffectType(std::string_view str)
 void kson::to_json(nlohmann::json& j, const AudioEffectParams& params)
 {
 	j = nlohmann::json::object();
+
 	for (const auto& [name, value] : params)
 	{
 		if (value.value == value.valueOn)

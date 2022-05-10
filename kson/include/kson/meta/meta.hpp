@@ -36,7 +36,6 @@ namespace kson
 		std::string jacketAuthor;
 		std::string information;
 		LegacyMetaInfo legacy;
-		std::string kshVersion;
 	};
 
 	void to_json(nlohmann::json& j, const MetaRoot& meta);

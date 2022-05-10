@@ -7,7 +7,7 @@ namespace kson
 	{
 		std::string filename; // UTF-8 guaranteed
 
-		double volume = 1.0;
+		double vol = 1.0;
 
 		int64_t offsetMs = 0;
 
@@ -22,7 +22,7 @@ namespace kson
 
 	struct MetaBGMInfo
 	{
-		double volume = 1.0;
+		double vol = 1.0;
 
 		std::string previewFilename; // UTF-8 guaranteed
 

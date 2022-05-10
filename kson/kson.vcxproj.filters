@@ -55,9 +55,6 @@
     <Filter Include="Source Files\encoding">
       <UniqueIdentifier>{86abbf6b-112a-4cd9-bdfa-51388100d32c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\impl">
-      <UniqueIdentifier>{8f6b340d-32fe-4f47-9145-41f71e03249f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\third_party">
       <UniqueIdentifier>{3eb524fe-e604-41a6-8582-7ad07c0f1384}</UniqueIdentifier>
     </Filter>
@@ -84,6 +81,18 @@
     </Filter>
     <Filter Include="Source Files\note">
       <UniqueIdentifier>{26d06ae5-986b-41d1-b1da-ce5a5aa0a668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\editor">
+      <UniqueIdentifier>{a255a5ca-e088-46bd-8a18-6d55761a0afb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\editor">
+      <UniqueIdentifier>{d069eb46-c2fa-448d-9deb-3eba6901aee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\compat">
+      <UniqueIdentifier>{d5b98459-9009-4a0b-abd9-7926ceae39f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\compat">
+      <UniqueIdentifier>{b2a0467d-3f44-4e3e-96ac-6c5e02d6fb74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -144,14 +153,17 @@
     <ClInclude Include="include\kson\encoding\encoding.hpp">
       <Filter>Header Files\encoding</Filter>
     </ClInclude>
-    <ClInclude Include="include\kson\impl\impl.hpp">
-      <Filter>Header Files\impl</Filter>
-    </ClInclude>
     <ClInclude Include="include\kson\io\kson_io.hpp">
       <Filter>Header Files\io</Filter>
     </ClInclude>
     <ClInclude Include="include\kson\util\graph_utils.hpp">
       <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\editor\editor_info.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\kson\compat\compat_info.hpp">
+      <Filter>Header Files\compat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +226,12 @@
     </ClCompile>
     <ClCompile Include="src\chart_data.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\editor_info.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\compat\compat_info.cpp">
+      <Filter>Source Files\compat</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

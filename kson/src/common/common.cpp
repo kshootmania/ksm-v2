@@ -44,14 +44,14 @@ void kson::to_json(nlohmann::json& j, const ByPulse<Interval>& intervals)
 		{
 			j.push_back({
 				{ "y", y },
-				});
+			});
 		}
 		else
 		{
 			j.push_back({
 				{ "y", y },
 				{ "l", interval.length },
-				});
+			});
 		}
 	}
 }
@@ -66,14 +66,14 @@ void kson::IntervalByRelPulseToJSON(nlohmann::json& j, const ByRelPulse<Interval
 		{
 			j.push_back({
 				{ "ry", y },
-				});
+			});
 		}
 		else
 		{
 			j.push_back({
 				{ "ry", y },
 				{ "l", interval.length },
-				});
+			});
 		}
 	}
 }
@@ -88,14 +88,14 @@ void kson::to_json(nlohmann::json& j, const ByPulseMulti<Interval>& intervals)
 		{
 			j.push_back({
 				{ "y", y },
-				});
+			});
 		}
 		else
 		{
 			j.push_back({
 				{ "y", y },
 				{ "l", interval.length },
-				});
+			});
 		}
 	}
 }
@@ -111,14 +111,14 @@ void kson::IntervalByRelPulseMultiToJSON(nlohmann::json& j, const ByRelPulseMult
 		{
 			j.push_back({
 				{ "ry", y },
-				});
+			});
 		}
 		else
 		{
 			j.push_back({
 				{ "ry", y },
 				{ "l", interval.length },
-				});
+			});
 		}
 	}
 }

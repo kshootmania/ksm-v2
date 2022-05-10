@@ -4,7 +4,7 @@ void kson::to_json(nlohmann::json& j, const BGMInfo& bgm)
 {
 	j = {
 		{ "filename", bgm.filename },
-		{ "volume", bgm.volume },
+		{ "vol", bgm.vol },
 		{ "offset", bgm.offsetMs },
 		{ "preview_offset", bgm.previewOffsetMs },
 		{ "preview_duration", bgm.previewDurationMs },

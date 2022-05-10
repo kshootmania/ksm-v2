@@ -32,9 +32,10 @@
     <ClInclude Include="include\kson\camera\tilt.hpp" />
     <ClInclude Include="include\kson\common\common.hpp" />
     <ClInclude Include="include\kson\chart_data.hpp" />
+    <ClInclude Include="include\kson\compat\compat_info.hpp" />
+    <ClInclude Include="include\kson\editor\editor_info.hpp" />
     <ClInclude Include="include\kson\encoding\encoding.hpp" />
     <ClInclude Include="include\kson\gauge\gauge.hpp" />
-    <ClInclude Include="include\kson\impl\impl.hpp" />
     <ClInclude Include="include\kson\io\ksh_io.hpp" />
     <ClInclude Include="include\kson\io\kson_io.hpp" />
     <ClInclude Include="include\kson\meta\meta.hpp" />
@@ -56,6 +57,8 @@
     <ClCompile Include="src\camera\tilt.cpp" />
     <ClCompile Include="src\chart_data.cpp" />
     <ClCompile Include="src\common\common.cpp" />
+    <ClCompile Include="src\compat\compat_info.cpp" />
+    <ClCompile Include="src\editor\editor_info.cpp" />
     <ClCompile Include="src\encoding\encoding_win.cpp" />
     <ClCompile Include="src\gauge\gauge.cpp" />
     <ClCompile Include="src\io\ksh_io.cpp" />

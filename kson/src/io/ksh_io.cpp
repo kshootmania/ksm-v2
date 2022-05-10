@@ -93,7 +93,7 @@ namespace
 
 	bool IsCommentLine(std::string_view line)
 	{
-		return (line.length() >= 1 && line[0] == ';') || (line.length() >= 2 && line[0] == '/' && line[1] == '/');
+		return line.length() >= 2 && line[0] == '/' && line[1] == '/';
 	}
 
 	std::pair<std::string, std::string> SplitOptionLine(std::string_view optionLine, bool isUTF8)
@@ -871,22 +871,24 @@ namespace
 		std::string value;
 	};
 
-	std::string_view Get(const std::unordered_map<std::string, std::string>& meta, const std::string& key, std::string_view defaultValue = "")
+	std::string Pop(std::unordered_map<std::string, std::string>& meta, const std::string& key, std::string_view defaultValue = "")
 	{
 		if (meta.contains(key)) // Note: key is const string& instead of string_view because unordered_map<string, string>::contains() and at() do not support string_view as key
 		{
-			return meta.at(key);
+			const std::string value = meta.at(key);
+			meta.erase(key);
+			return value;
 		}
 		else
 		{
-			return defaultValue;
+			return std::string(defaultValue);
 		}
 	}
 
 	template <typename T>
-	T GetInt(const std::unordered_map<std::string, std::string>& meta, const std::string& key, T defaultValue = T{ 0 })
+	T PopInt(std::unordered_map<std::string, std::string>& meta, const std::string& key, T defaultValue = T{ 0 })
 	{
-		std::string_view str = Get(meta, key);
+		const std::string str = Pop(meta, key);
 		if (str.empty())
 		{
 			return defaultValue;
@@ -895,9 +897,10 @@ namespace
 	}
 
 	template <typename T>
-	T GetInt(const std::unordered_map<std::string, std::string>& meta, const std::string& key, T defaultValue, T min, T max)
+	T PopInt(std::unordered_map<std::string, std::string>& meta, const std::string& key, T defaultValue, T minValue, T maxValue)
 	{
-		return std::clamp(GetInt<T>(meta, key, defaultValue), min, max);
+		const T value = PopInt<T>(meta, key, defaultValue);
+		return std::clamp(value, minValue, maxValue);
 	}
 
 	const std::unordered_map<std::string_view, std::int8_t> s_difficultyNameTable
@@ -909,158 +912,189 @@ namespace
 	};
 
 	template <typename ChartDataType>
-	ChartDataType CreateChartDataFromKSHMetaData(const std::unordered_map<std::string, std::string>& meta)
+	ChartDataType CreateChartDataFromMetaDataStream(std::istream& stream, bool* pIsUTF8)
 		requires std::is_same_v<ChartDataType, kson::ChartData> || std::is_same_v<ChartDataType, kson::MetaChartData>
 	{
 		ChartDataType chartData;
-
-		chartData.meta.kshVersion = Get(meta, "ver", "");
-		std::int32_t kshVersionInt = ParseNumeric<std::int32_t>(chartData.meta.kshVersion, 100);
-
-		chartData.meta.title = Get(meta, "title");
-		chartData.meta.artist = Get(meta, "artist");
-		chartData.meta.chartAuthor = Get(meta, "effect");
-		chartData.meta.jacketFilename = Get(meta, "jacket");
-		chartData.meta.jacketAuthor = Get(meta, "illustrator");
-
-		const std::string_view difficultyName = Get(meta, "difficulty", "infinite");
-		if (s_difficultyNameTable.contains(difficultyName))
+		const bool isUTF8 = EliminateUTF8BOM(stream);
+		if (pIsUTF8)
 		{
-			chartData.meta.difficulty.idx = s_difficultyNameTable.at(difficultyName);
-		}
-		else
-		{
-			chartData.meta.difficulty.idx = 3;
+			*pIsUTF8 = isUTF8;
 		}
 
-		chartData.meta.level = GetInt<std::int8_t>(meta, "level", 1, 1, 20);
-
-		chartData.meta.dispBPM = Get(meta, "t", "");
-
-		chartData.meta.standardBPM = ParseNumeric<double>(Get(meta, "to", "0"), 0.0);
-
-		const auto bgmFilenames = Split<4>(Get(meta, "m"), ';');
-		if constexpr (std::is_same_v<ChartDataType, ChartData>)
+		// Read header lines and create meta data hash map
+		[[maybe_unused]] bool barLineExists = false;
+		std::unordered_map<std::string, std::string> metaDataHashMap;
+		std::string line;
+		while (std::getline(stream, line, '\n'))
 		{
-			chartData.audio.bgmInfo.filename = bgmFilenames[0];
-			chartData.audio.legacy.bgmInfo.filenameF = bgmFilenames[1];
-			chartData.audio.legacy.bgmInfo.filenameP = bgmFilenames[2];
-			chartData.audio.legacy.bgmInfo.filenameFP = bgmFilenames[3];
-		}
-		chartData.audio.bgmInfo.previewFilename = bgmFilenames[0];
-
-		std::int32_t volumeInt = GetInt<std::int32_t>(meta, "mvol", 50);
-		chartData.audio.bgmInfo.volume = volumeInt / 100.0;
-		if (chartData.meta.kshVersion.empty()) [[unlikely]]
-		{
-			// For historical reasons, the value is multiplied by 0.6 if the value of "ver" is not specified.
-			chartData.audio.bgmInfo.volume *= 0.6;
-		}
-
-		// TODO: Adjust volume if chokkakuautovol is 1
-
-		if constexpr (std::is_same_v<ChartDataType, ChartData>)
-		{
-			chartData.audio.bgmInfo.offsetMs = GetInt<std::int64_t>(meta, "o", 0);
-		}
-		chartData.audio.bgmInfo.previewOffsetMs = GetInt<std::int64_t>(meta, "po", 0);
-		chartData.audio.bgmInfo.previewDurationMs = GetInt<std::int64_t>(meta, "plength", 0);
-
-		if constexpr (std::is_same_v<ChartDataType, ChartData>)
-		{
-			// "bg"
-			const std::string_view bgStr = Get(meta, "bg", "desert");
-			if (bgStr.find(';') != std::string_view::npos)
+			// Eliminate CR
+			if (!line.empty() && *line.crbegin() == '\r')
 			{
-				const auto bgFilenames = Split<2>(bgStr, ';');
-				chartData.bg.legacy.bgInfos[0].filename = bgFilenames[0];
-				chartData.bg.legacy.bgInfos[1].filename = bgFilenames[1];
+				line.pop_back();
+			}
+
+			if (IsBarLine(line))
+			{
+				// Chart meta data is before the first bar line ("--")
+				barLineExists = true;
+				break;
+			}
+
+			// Comments
+			if (IsCommentLine(line))
+			{
+				if constexpr (std::is_same_v<ChartDataType, ChartData>)
+				{
+					chartData.editor.comment.emplace(0, line.substr(2)); // 2 = strlen("//")
+				}
+				continue;
+			}
+
+			// Unexpected header lines
+			if (!IsOptionLine(line))
+			{
+				if constexpr (std::is_same_v<ChartDataType, ChartData>)
+				{
+					chartData.compat.kshUnknown.line.emplace(0, line);
+				}
+				continue;
+			}
+
+			const auto [key, value] = SplitOptionLine(line, isUTF8);
+			metaDataHashMap.insert_or_assign(key, value);
+		}
+
+		// .ksh files must have at least one bar line ("--")
+		// TODO: Error handling
+		assert(barLineExists);
+
+		// Insert meta data to chartData
+		{
+			chartData.compat.kshVersion = Pop(metaDataHashMap, "ver", "");
+			const std::int32_t kshVersionInt = ParseNumeric<std::int32_t>(chartData.compat.kshVersion, 170);
+
+			chartData.meta.title = Pop(metaDataHashMap, "title");
+			chartData.meta.artist = Pop(metaDataHashMap, "artist");
+			chartData.meta.chartAuthor = Pop(metaDataHashMap, "effect");
+			chartData.meta.jacketFilename = Pop(metaDataHashMap, "jacket");
+			chartData.meta.jacketAuthor = Pop(metaDataHashMap, "illustrator");
+
+			const std::string difficultyName = Pop(metaDataHashMap, "difficulty", "infinite");
+			if (s_difficultyNameTable.contains(difficultyName))
+			{
+				chartData.meta.difficulty.idx = s_difficultyNameTable.at(difficultyName);
 			}
 			else
 			{
-				chartData.bg.legacy.bgInfos[0].filename = bgStr;
-				chartData.bg.legacy.bgInfos[1].filename = bgStr;
+				chartData.meta.difficulty.idx = 3;
 			}
 
-			// "layer"
-			const char layerSeparator = kshVersionInt >= 166 ? ';' : '/';
-			const std::string_view layerStr = Get(meta, "layer", "arrow");
-			const auto layerOptionArray = Split<3>(layerStr, layerSeparator);
-			auto& layerInfos = chartData.bg.legacy.layerInfos;
-			layerInfos[0].filename = layerInfos[1].filename = layerOptionArray[0];
-			layerInfos[0].durationMs = layerInfos[1].durationMs = ParseNumeric<int64_t>(layerOptionArray[1]);
-			const std::int32_t rotationFlagsInt = ParseNumeric<std::int32_t>(layerOptionArray[1], 3);
-			layerInfos[0].rotationFlags = layerInfos[1].rotationFlags = {
-				.tiltAffected = ((rotationFlagsInt & 1) != 0),
-				.spinAffected = ((rotationFlagsInt & 2) != 0),
-			};
+			chartData.meta.level = PopInt<std::int8_t>(metaDataHashMap, "level", 1, 1, 20);
 
-			chartData.bg.legacy.movieInfos.filename = Get(meta, "v");
-			chartData.bg.legacy.movieInfos.offsetMs = GetInt<std::int64_t>(meta, "vo");
+			if constexpr (std::is_same_v<ChartDataType, ChartData>)
+			{
+				// Insert the first time signature change
+				TimeSig firstTimeSig{ 4, 4 };
+				if (metaDataHashMap.contains("beat")) [[unlikely]] // unlikely because "beat=" is usually after the first bar line
+				{
+					firstTimeSig = ParseTimeSig(metaDataHashMap.at("beat"));
+					metaDataHashMap.erase("beat");
+				}
+				chartData.beat.timeSigChanges.emplace(0, firstTimeSig);
 
-			chartData.gauge.total = static_cast<double>(GetInt<std::int32_t>(meta, "total", 0));
+				// Insert the first tempo change
+				if (metaDataHashMap.contains("t")) [[likely]]
+				{
+					InsertBPMChange(chartData.beat.bpmChanges, 0, metaDataHashMap.at("t"));
+				}
+			}
+			chartData.meta.dispBPM = Pop(metaDataHashMap, "t", "");
+
+			chartData.meta.standardBPM = ParseNumeric<double>(Pop(metaDataHashMap, "to", "0"), 0.0);
+
+			const auto bgmFilenames = Split<4>(Pop(metaDataHashMap, "m"), ';');
+			if constexpr (std::is_same_v<ChartDataType, ChartData>)
+			{
+				chartData.audio.bgmInfo.filename = bgmFilenames[0];
+				chartData.audio.legacy.bgmInfo.filenameF = bgmFilenames[1];
+				chartData.audio.legacy.bgmInfo.filenameP = bgmFilenames[2];
+				chartData.audio.legacy.bgmInfo.filenameFP = bgmFilenames[3];
+			}
+			chartData.audio.bgmInfo.previewFilename = bgmFilenames[0];
+
+			const std::int32_t volInt = PopInt<std::int32_t>(metaDataHashMap, "mvol", 50);
+			chartData.audio.bgmInfo.vol = volInt / 100.0;
+			if (chartData.compat.kshVersion.empty())
+			{
+				// For historical reasons, the value is multiplied by 0.6 if the value of "ver" is not specified.
+				chartData.audio.bgmInfo.vol *= 0.6;
+			}
+
+			// TODO: Store chokkakuautovol
+			Pop(metaDataHashMap, "chokkakuautovol", "1");
+
+			if constexpr (std::is_same_v<ChartDataType, ChartData>)
+			{
+				chartData.audio.bgmInfo.offsetMs = PopInt<std::int64_t>(metaDataHashMap, "o", 0);
+			}
+			chartData.audio.bgmInfo.previewOffsetMs = PopInt<std::int64_t>(metaDataHashMap, "po", 0);
+			chartData.audio.bgmInfo.previewDurationMs = PopInt<std::int64_t>(metaDataHashMap, "plength", 0);
+
+			if constexpr (std::is_same_v<ChartDataType, ChartData>)
+			{
+				// "bg"
+				const std::string bgStr = Pop(metaDataHashMap, "bg", "desert");
+				if (bgStr.find(';') != std::string::npos)
+				{
+					const auto bgFilenames = Split<2>(bgStr, ';');
+					chartData.bg.legacy.bgInfos[0].filename = bgFilenames[0];
+					chartData.bg.legacy.bgInfos[1].filename = bgFilenames[1];
+				}
+				else
+				{
+					chartData.bg.legacy.bgInfos[0].filename = bgStr;
+					chartData.bg.legacy.bgInfos[1].filename = bgStr;
+				}
+
+				// "layer"
+				const char layerSeparator = (kshVersionInt >= 166) ? ';' : '/';
+				const std::string layerStr = Pop(metaDataHashMap, "layer", "arrow");
+				const auto layerOptionArray = Split<3>(layerStr, layerSeparator);
+				auto& layerInfos = chartData.bg.legacy.layerInfos;
+				layerInfos[0].filename = layerInfos[1].filename = layerOptionArray[0];
+				layerInfos[0].durationMs = layerInfos[1].durationMs = ParseNumeric<int64_t>(layerOptionArray[1]);
+				const std::int32_t rotationFlagsInt = ParseNumeric<std::int32_t>(layerOptionArray[1], 3);
+				layerInfos[0].rotationFlags = layerInfos[1].rotationFlags = {
+					.tiltAffected = ((rotationFlagsInt & 1) != 0),
+					.spinAffected = ((rotationFlagsInt & 2) != 0),
+				};
+
+				chartData.bg.legacy.movieInfos.filename = Pop(metaDataHashMap, "v");
+				chartData.bg.legacy.movieInfos.offsetMs = PopInt<std::int64_t>(metaDataHashMap, "vo");
+
+				chartData.gauge.total = static_cast<double>(PopInt<std::int32_t>(metaDataHashMap, "total", 0));
+			}
+
+			chartData.meta.information = Pop(metaDataHashMap, "information");
 		}
 
-		chartData.meta.information = Get(meta, "information");
+		// Store unrecognized meta data in compat.meta
+		if constexpr (std::is_same_v<ChartDataType, ChartData>)
+		{
+			for (const auto& [key, value] : metaDataHashMap)
+			{
+				chartData.compat.kshUnknown.meta.emplace(key, value);
+			}
+		}
 
 		return chartData;
 	}
 }
 
-std::unordered_map<std::string, std::string> kson::LoadKSHMetaDataHashMap(std::istream& stream, bool* pIsUTF8)
-{
-	std::unordered_map<std::string, std::string> metaDataHashMap;
-
-	const bool isUTF8 = EliminateUTF8BOM(stream);
-	if (pIsUTF8)
-	{
-		*pIsUTF8 = isUTF8;
-	}
-
-	std::string line;
-	bool barLineExists = false;
-	while (std::getline(stream, line, '\n'))
-	{
-		// Eliminate CR
-		if (!line.empty() && *line.crbegin() == '\r')
-		{
-			line.pop_back();
-		}
-
-		if (IsBarLine(line))
-		{
-			// Chart meta data is before the first bar line ("--")
-			barLineExists = true;
-			break;
-		}
-
-		// Skip comments
-		// TODO: Store comments if editor
-		if (IsCommentLine(line)) [[unlikely]]
-		{
-			continue;
-		}
-
-		// Skip unexpected header lines
-		if (!IsOptionLine(line)) [[unlikely]]
-		{
-			continue;
-		}
-
-		const auto [key, value] = SplitOptionLine(line, isUTF8);
-		metaDataHashMap.insert_or_assign(key, value);
-	}
-
-	// .ksh files must have at least one bar line ("--")
-	assert(barLineExists);
-
-	return metaDataHashMap;
-}
-
 MetaChartData kson::LoadKSHMetaChartData(std::istream& stream)
 {
-	const auto meta = LoadKSHMetaDataHashMap(stream);
-	return CreateChartDataFromKSHMetaData<MetaChartData>(meta);
+	return CreateChartDataFromMetaDataStream<MetaChartData>(stream, nullptr);
 }
 
 MetaChartData kson::LoadKSHMetaChartData(const std::string& filePath)
@@ -1088,30 +1122,20 @@ MetaChartData kson::LoadKSHMetaChartData(const std::string& filePath)
 
 kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 {
-	bool isUTF8 = false;
-	const auto meta = LoadKSHMetaDataHashMap(stream, &isUTF8);
+	// Load chart meta data
+	bool isUTF8;
+	ChartData chartData = CreateChartDataFromMetaDataStream<ChartData>(stream, &isUTF8);
 
-	ChartData chartData = CreateChartDataFromKSHMetaData<ChartData>(meta);
+	assert(chartData.beat.timeSigChanges.contains(0));
+	TimeSig currentTimeSig = chartData.beat.timeSigChanges.at(0);
 
-	// Insert the first tempo change
 	double currentTempo = 120.0;
-	if (meta.contains("t")) [[likely]]
+	if (chartData.beat.bpmChanges.contains(0))
 	{
-		if (InsertBPMChange(chartData.beat.bpmChanges, 0, meta.at("t")))
-		{
-			currentTempo = chartData.beat.bpmChanges.at(0);
-		}
+		currentTempo = chartData.beat.bpmChanges.at(0);
 	}
 
-	// Insert the first time signature change
-	TimeSig currentTimeSig{ 4, 4 };
-	if (meta.contains("beat")) [[unlikely]] // unlikely because "beat=" is usually after the first bar line
-	{
-		currentTimeSig = ParseTimeSig(meta.at("beat"));
-	}
-	chartData.beat.timeSigChanges.emplace(0, currentTimeSig);
-
-	std::int32_t kshVersionInt = ParseNumeric<std::int32_t>(chartData.meta.kshVersion, 100);
+	const std::int32_t kshVersionInt = ParseNumeric<std::int32_t>(chartData.compat.kshVersion, 170);
 
 	// For backward compatibility of zoom_top/zoom_bottom/zoom_side
 	const double zoomAbsMax = (kshVersionInt >= 167) ? kZoomAbsMax : kZoomAbsMaxLegacy;
@@ -1315,10 +1339,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 				}
 				else
 				{
-					chartData.impl.kshUnknownOptionLines.emplace(time, KSHUnknownOptionLine{
-						.key = key,
-						.value = value,
-					});
+					chartData.compat.kshUnknown.option[key].emplace(time, value);
 				}
 			}
 
@@ -1454,6 +1475,10 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 			}
 			currentPulse += chartData.beat.resolution * 4 * currentTimeSig.numerator / currentTimeSig.denominator;
 			++currentMeasureIdx;
+		}
+		else
+		{
+			// TODO: Insert to chartData.compat.kshUnknown.line
 		}
 	}
 

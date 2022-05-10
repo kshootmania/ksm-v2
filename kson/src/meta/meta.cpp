@@ -70,9 +70,4 @@ void kson::to_json(nlohmann::json& j, const MetaRoot& meta)
 	{
 		j["jacket_author"] = meta.jacketAuthor;
 	}
-
-	if (!meta.kshVersion.empty())
-	{
-		j["ksh_version"] = meta.kshVersion;
-	}
 }

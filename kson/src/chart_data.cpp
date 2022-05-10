@@ -19,4 +19,19 @@ void kson::to_json(nlohmann::json& j, const ChartData& chartData)
 	{
 		j["camera"] = chartData.camera;
 	}
+
+	if (!chartData.compat.empty())
+	{
+		j["compat"] = chartData.compat;
+	}
+
+	if (!chartData.editor.empty())
+	{
+		j["editor"] = chartData.editor;
+	}
+
+	if (!chartData.impl.empty())
+	{
+		j["impl"] = chartData.impl;
+	}
 }

@@ -7,7 +7,8 @@
 #include "kson/audio/audio.hpp"
 #include "kson/camera/camera.hpp"
 #include "kson/bg/bg.hpp"
-#include "kson/impl/impl.hpp"
+#include "kson/editor/editor_info.hpp"
+#include "kson/compat/compat_info.hpp"
 
 namespace kson
 {
@@ -24,6 +25,7 @@ namespace kson
 	{
 		MetaRoot meta;
 		MetaAudioRoot audio;
+		MetaCompatInfo compat;
 
 		std::string filePath; // Note: OS native encoding (Not UTF-8 in Windows)
 		Error error = Error::kNone;
@@ -38,7 +40,9 @@ namespace kson
 		AudioRoot audio;
 		CameraRoot camera;
 		BGRoot bg;
-		ImplRoot impl;
+		EditorInfo editor;
+		CompatInfo compat;
+		nlohmann::json impl;
 
 		std::string filePath; // Note: OS native encoding (Not UTF-8 in Windows)
 		Error error = Error::kNone;

@@ -2,7 +2,7 @@
 
 void kson::to_json(nlohmann::json& j, const BeatMap& beatMap)
 {
-	nlohmann::json bpmChanges = {};
+	nlohmann::json bpmChanges = nlohmann::json::array();
 	for (const auto [y, bpm] : beatMap.bpmChanges)
 	{
 		bpmChanges.push_back({
