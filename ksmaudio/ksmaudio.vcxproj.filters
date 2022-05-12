@@ -13,11 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\audio_effect_dsp">
+    <Filter Include="Source Files\audio_effect">
+      <UniqueIdentifier>{5aca9668-1a76-42f0-bce1-19ebc5e7492c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\audio_effect">
       <UniqueIdentifier>{76aa4d8e-e7fa-454d-93b3-aded0f9216ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\audio_effect_dsp">
-      <UniqueIdentifier>{5aca9668-1a76-42f0-bce1-19ebc5e7492c}</UniqueIdentifier>
+    <Filter Include="Header Files\audio_effect\detail">
+      <UniqueIdentifier>{ae6e503d-41e1-431e-80ff-792658686882}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,23 +33,23 @@
     <ClInclude Include="include\ksmaudio\stream.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect_dsp\audio_effect_dsp.hpp">
-      <Filter>Header Files\audio_effect_dsp</Filter>
+    <ClInclude Include="include\ksmaudio\audio_effect\audio_effect.hpp">
+      <Filter>Header Files\audio_effect</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect_dsp\flanger_dsp.hpp">
-      <Filter>Header Files\audio_effect_dsp</Filter>
+    <ClInclude Include="include\ksmaudio\audio_effect\bitcrusher.hpp">
+      <Filter>Header Files\audio_effect</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect_dsp\ring_buffer.hpp">
-      <Filter>Header Files\audio_effect_dsp</Filter>
+    <ClInclude Include="include\ksmaudio\audio_effect\flanger.hpp">
+      <Filter>Header Files\audio_effect</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect_dsp\math_utils.hpp">
-      <Filter>Header Files\audio_effect_dsp</Filter>
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\biquad_filter.hpp">
+      <Filter>Header Files\audio_effect\detail</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect_dsp\biquad_filter.hpp">
-      <Filter>Header Files\audio_effect_dsp</Filter>
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\math_utils.hpp">
+      <Filter>Header Files\audio_effect\detail</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect_dsp\bitcrusher_dsp.hpp">
-      <Filter>Header Files\audio_effect_dsp</Filter>
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\ring_buffer.hpp">
+      <Filter>Header Files\audio_effect\detail</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -59,11 +62,11 @@
     <ClCompile Include="src\stream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\audio_effect_dsp\flanger_dsp.cpp">
-      <Filter>Source Files\audio_effect_dsp</Filter>
+    <ClCompile Include="src\audio_effect\bitcrusher.cpp">
+      <Filter>Source Files\audio_effect</Filter>
     </ClCompile>
-    <ClCompile Include="src\audio_effect_dsp\bitcrusher_dsp.cpp">
-      <Filter>Source Files\audio_effect_dsp</Filter>
+    <ClCompile Include="src\audio_effect\flanger.cpp">
+      <Filter>Source Files\audio_effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
