@@ -160,18 +160,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\ksmaudio\audio_effect\audio_effect.hpp" />
-    <ClInclude Include="include\ksmaudio\audio_effect\bitcrusher.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\biquad_filter.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\math_utils.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\ring_buffer.hpp" />
-    <ClInclude Include="include\ksmaudio\audio_effect\flanger.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\effects\bitcrusher.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\effects\flanger.hpp" />
     <ClInclude Include="include\ksmaudio\stream.hpp" />
     <ClInclude Include="include\ksmaudio\ksmaudio.hpp" />
     <ClInclude Include="include\ksmaudio\sample.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\audio_effect\bitcrusher.cpp" />
-    <ClCompile Include="src\audio_effect\flanger.cpp" />
+    <ClCompile Include="src\audio_effect\effects\bitcrusher.cpp" />
+    <ClCompile Include="src\audio_effect\effects\flanger.cpp" />
     <ClCompile Include="src\stream.cpp" />
     <ClCompile Include="src\ksmaudio.cpp" />
     <ClCompile Include="src\sample.cpp" />

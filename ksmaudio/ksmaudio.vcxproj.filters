@@ -22,6 +22,12 @@
     <Filter Include="Header Files\audio_effect\detail">
       <UniqueIdentifier>{ae6e503d-41e1-431e-80ff-792658686882}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\audio_effect\effects">
+      <UniqueIdentifier>{e7afd076-36f2-42a6-9e5b-7f5d2a253434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\audio_effect\effects">
+      <UniqueIdentifier>{d05deea0-7285-4596-9f78-fca8d7a9ca65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ksmaudio\ksmaudio.hpp">
@@ -36,12 +42,6 @@
     <ClInclude Include="include\ksmaudio\audio_effect\audio_effect.hpp">
       <Filter>Header Files\audio_effect</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect\bitcrusher.hpp">
-      <Filter>Header Files\audio_effect</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect\flanger.hpp">
-      <Filter>Header Files\audio_effect</Filter>
-    </ClInclude>
     <ClInclude Include="include\ksmaudio\audio_effect\detail\biquad_filter.hpp">
       <Filter>Header Files\audio_effect\detail</Filter>
     </ClInclude>
@@ -50,6 +50,12 @@
     </ClInclude>
     <ClInclude Include="include\ksmaudio\audio_effect\detail\ring_buffer.hpp">
       <Filter>Header Files\audio_effect\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\effects\flanger.hpp">
+      <Filter>Header Files\audio_effect\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\effects\bitcrusher.hpp">
+      <Filter>Header Files\audio_effect\effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -62,11 +68,11 @@
     <ClCompile Include="src\stream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\audio_effect\bitcrusher.cpp">
-      <Filter>Source Files\audio_effect</Filter>
+    <ClCompile Include="src\audio_effect\effects\bitcrusher.cpp">
+      <Filter>Source Files\audio_effect\effects</Filter>
     </ClCompile>
-    <ClCompile Include="src\audio_effect\flanger.cpp">
-      <Filter>Source Files\audio_effect</Filter>
+    <ClCompile Include="src\audio_effect\effects\flanger.cpp">
+      <Filter>Source Files\audio_effect\effects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
