@@ -1,5 +1,4 @@
 #pragma once
-#include <cstdint>
 
 namespace ksmaudio
 {
@@ -10,3 +9,4 @@ namespace ksmaudio
 
 #include "stream.hpp"
 #include "sample.hpp"
+#include "audio_effect/all.hpp"

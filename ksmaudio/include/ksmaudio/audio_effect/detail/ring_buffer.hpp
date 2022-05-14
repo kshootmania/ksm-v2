@@ -10,7 +10,7 @@
 
 namespace ksmaudio::AudioEffect
 {
-
+    // TODO: No need to use class template
     template <typename T>
     class RingBuffer
     {
@@ -163,5 +163,4 @@ namespace ksmaudio::AudioEffect
             return m_buffer;
         }
     };
-
 }

@@ -60,10 +60,7 @@
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\flanger_dsp.hpp">
       <Filter>Header Files\audio_effect\dsp</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect\flanger.hpp">
-      <Filter>Header Files\audio_effect</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect\bitcrusher.hpp">
+    <ClInclude Include="include\ksmaudio\audio_effect\all.hpp">
       <Filter>Header Files\audio_effect</Filter>
     </ClInclude>
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\bitcrusher_dsp.hpp">
@@ -91,12 +88,6 @@
     </ClCompile>
     <ClCompile Include="src\audio_effect\dsp\flanger_dsp.cpp">
       <Filter>Source Files\audio_effect\dsp</Filter>
-    </ClCompile>
-    <ClCompile Include="src\audio_effect\bitcrusher.cpp">
-      <Filter>Source Files\audio_effect</Filter>
-    </ClCompile>
-    <ClCompile Include="src\audio_effect\flanger.cpp">
-      <Filter>Source Files\audio_effect</Filter>
     </ClCompile>
     <ClCompile Include="src\audio_effect\dsp\bitcrusher_dsp.cpp">
       <Filter>Source Files\audio_effect\dsp</Filter>

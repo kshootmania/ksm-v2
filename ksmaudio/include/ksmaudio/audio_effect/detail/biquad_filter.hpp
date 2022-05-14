@@ -3,7 +3,8 @@
 
 namespace ksmaudio::AudioEffect
 {
-
+    // TODO: No need to use class template
+    // TODO: Use struct and non-member functions
     template <typename T>
     class BiquadFilter
     {
@@ -128,5 +129,4 @@ namespace ksmaudio::AudioEffect
             m_b2 = T{ 1 } + alpha;
         }
     };
-
 }

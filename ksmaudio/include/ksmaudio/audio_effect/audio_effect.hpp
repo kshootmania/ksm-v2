@@ -34,4 +34,32 @@ namespace ksmaudio::AudioEffect
 		{
 		}
 	};
+
+	template <typename Params, typename DSP, typename DSPParams>
+	class BasicAudioEffect : public IAudioEffect
+	{
+	private:
+		bool m_bypass = false;
+		Params m_params;
+		DSPParams m_dspParams;
+		DSP m_dsp;
+
+	public:
+		BasicAudioEffect(std::size_t sampleRate, std::size_t numChannels)
+			: m_dsp(DSPCommonInfo{ sampleRate, numChannels })
+		{
+		}
+
+		virtual ~BasicAudioEffect() = default;
+
+		virtual void process(float* pData, std::size_t dataSize) override
+		{
+			m_dsp.process(pData, dataSize, m_bypass, m_dspParams);
+		}
+
+		virtual void updateStatus(const Status& status) override
+		{
+			m_dspParams = m_params.render(status);
+		}
+	};
 }
