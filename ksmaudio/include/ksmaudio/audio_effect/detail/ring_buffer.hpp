@@ -8,7 +8,7 @@
 #include <cstdint>
 #include "math_utils.hpp"
 
-namespace ksmaudio::AudioEffect
+namespace ksmaudio::AudioEffect::detail
 {
     // TODO: No need to use class template
     template <typename T>

@@ -6,7 +6,6 @@
 
 namespace ksmaudio::AudioEffect
 {
-
 	// Implementation in HSP: https://github.com/m4saka/kshootmania-v1-hsp/blob/19bfb6acbec8abd304b2e7dae6009df8e8e1f66f/src/scene/play/play_utils.hsp#L405
 	float StrToValue(Type type, const std::string& str)
 	{
@@ -108,6 +107,10 @@ namespace ksmaudio::AudioEffect
 
 			case Type::kFilename:
 				return 0.0f;
+
+			default:
+				// Just ignore errors here
+				return 0.0f;
 			}
 		}
 		catch ([[maybe_unused]] const std::invalid_argument& e)
@@ -122,7 +125,7 @@ namespace ksmaudio::AudioEffect
 		}
 	}
 
-	ValueSet StrToValueSet(Type type, const std::string& str)
+	ValueSet StrToValueSet(Type type, const std::string& str, bool* pSuccess)
 	{
 		const std::size_t pos1 = str.find('>');
 		const std::size_t pos2 = str.find('-', pos1 + 2); // 2 = strlen(">" + negative value sign "-")
@@ -141,7 +144,16 @@ namespace ksmaudio::AudioEffect
 		// Otherwise, a value set of 0 is returned.
 		if (type == Type::kLength && ((valueSet.onMin < 0) != (valueSet.onMax < 0)))
 		{
+			if (pSuccess != nullptr)
+			{
+				*pSuccess = false;
+			}
 			return {};
+		}
+
+		if (pSuccess != nullptr)
+		{
+			*pSuccess = true;
 		}
 
 		// For pitch parameters, the min and max values must have the same sign.
@@ -158,11 +170,11 @@ namespace ksmaudio::AudioEffect
 		return valueSet;
 	}
 
-	float GetValue(Type type, const ValueSet& valueSet, const Status& status)
+	float GetValue(const Param& param, const Status& status)
 	{
-		const float lerped = status.isOn ? std::lerp(valueSet.onMin, valueSet.onMax, status.v) : valueSet.off;
+		const float lerped = status.isOn ? std::lerp(param.valueSet.onMin, param.valueSet.onMax, status.v) : param.valueSet.off;
 
-		if (type == Type::kLength)
+		if (param.type == Type::kLength)
 		{
 			if (lerped > 0.0f)
 			{
@@ -176,7 +188,7 @@ namespace ksmaudio::AudioEffect
 			}
 		}
 		
-		if (type == Type::kPitch)
+		if (param.type == Type::kPitch)
 		{
 			if (lerped > 0.0f)
 			{
@@ -193,20 +205,11 @@ namespace ksmaudio::AudioEffect
 		return lerped;
 	}
 
-	float GetValue(const Param& param, const Status& status)
-	{
-		return GetValue(param.def.type, param.valueSet, status);
-	}
-
-	Param DefineParam(const std::string& name, Type type, const std::string& valueSetStr)
+	Param DefineParam(Type type, const std::string& valueSetStr)
 	{
 		return {
-			.def = {
-				.name = name,
-				.type = type,
-			},
+			.type = type,
 			.valueSet = StrToValueSet(type, valueSetStr),
 		};
 	}
-
 }

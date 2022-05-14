@@ -6,7 +6,7 @@ namespace MusicGame::Audio
 	class BGM
 	{
 	private:
-		const ksmaudio::Stream/*s3d::Audio*/ m_audio;
+		ksmaudio::StreamWithEffects/*s3d::Audio*/ m_audio;
 
 		const double m_durationSec;
 

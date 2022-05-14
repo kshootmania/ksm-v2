@@ -14,6 +14,8 @@ namespace ksmaudio::AudioEffect
 		virtual void process(float* pData, std::size_t dataSize) = 0;
 
 		virtual void updateStatus(const Status& status) = 0;
+
+		virtual bool setParamValueSet(const std::string& name, const std::string& valueSetStr) = 0;
 	};
 
 	struct DSPCommonInfo
@@ -48,6 +50,7 @@ namespace ksmaudio::AudioEffect
 		BasicAudioEffect(std::size_t sampleRate, std::size_t numChannels)
 			: m_dsp(DSPCommonInfo{ sampleRate, numChannels })
 		{
+			updateStatus(Status{});
 		}
 
 		virtual ~BasicAudioEffect() = default;
@@ -60,6 +63,21 @@ namespace ksmaudio::AudioEffect
 		virtual void updateStatus(const Status& status) override
 		{
 			m_dspParams = m_params.render(status);
+		}
+
+		virtual bool setParamValueSet(const std::string& name, const std::string& valueSetStr) override
+		{
+			if (m_params.dict.contains(name))
+			{
+				Param& paramRef = *m_params.dict.at(name);
+				bool success;
+				paramRef.valueSet = StrToValueSet(paramRef.type, valueSetStr, &success);
+				return success;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	};
 }

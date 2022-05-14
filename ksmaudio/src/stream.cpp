@@ -7,6 +7,13 @@ namespace
 		return BASS_StreamCreateFile(FALSE, filePath.c_str(), 0, 0, BASS_SAMPLE_FLOAT | BASS_STREAM_PRESCAN);
 	}
 
+	BASS_CHANNELINFO GetChannelInfo(HSTREAM hStream)
+	{
+		BASS_CHANNELINFO info;
+		BASS_ChannelGetInfo(hStream, &info);
+		return info;
+	}
+
 	void ProcessAudioEffect(HDSP handle, DWORD channel, void* buffer, DWORD length, void* user)
 	{
 		const auto pAudioEffect = reinterpret_cast<ksmaudio::AudioEffect::IAudioEffect*>(user);
@@ -20,6 +27,7 @@ namespace ksmaudio
 
 	Stream::Stream(const std::string& filePath)
 		: m_hStream(LoadStream(filePath))
+		, m_info(GetChannelInfo(m_hStream))
 	{
 	}
 
@@ -61,6 +69,16 @@ namespace ksmaudio
 	void Stream::addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const
 	{
 		BASS_ChannelSetDSP(m_hStream, ProcessAudioEffect, pAudioEffect, priority);
+	}
+
+	std::size_t Stream::sampleRate() const
+	{
+		return static_cast<std::size_t>(m_info.freq);
+	}
+
+	std::size_t Stream::numChannels() const
+	{
+		return static_cast<std::size_t>(m_info.chans);
 	}
 
 }

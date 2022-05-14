@@ -7,9 +7,9 @@
 #include "ksmaudio/audio_effect/dsp/bitcrusher_dsp.hpp"
 #include "ksmaudio/audio_effect/params/bitcrusher_params.hpp"
 
-namespace ksmaudio::AudioEffect
+namespace ksmaudio
 {
-	using Flanger = BasicAudioEffect<FlangerParams, FlangerDSP, FlangerDSPParams>;
+	using Flanger = AudioEffect::BasicAudioEffect<AudioEffect::FlangerParams, AudioEffect::FlangerDSP, AudioEffect::FlangerDSPParams>;
 
-	using Bitcrusher = BasicAudioEffect<BitcrusherParams, BitcrusherDSP, BitcrusherDSPParams>;
+	using Bitcrusher = AudioEffect::BasicAudioEffect<AudioEffect::BitcrusherParams, AudioEffect::BitcrusherDSP, AudioEffect::BitcrusherDSPParams>;
 }

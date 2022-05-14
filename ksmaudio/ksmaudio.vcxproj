@@ -172,6 +172,7 @@
     <ClInclude Include="include\ksmaudio\stream.hpp" />
     <ClInclude Include="include\ksmaudio\ksmaudio.hpp" />
     <ClInclude Include="include\ksmaudio\sample.hpp" />
+    <ClInclude Include="include\ksmaudio\stream_with_effects.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\audio_effect\audio_effect_param.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="src\stream.cpp" />
     <ClCompile Include="src\ksmaudio.cpp" />
     <ClCompile Include="src\sample.cpp" />
+    <ClCompile Include="src\stream_with_effects.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

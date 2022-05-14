@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <unordered_map>
 
 namespace ksmaudio::AudioEffect
 {
@@ -27,20 +28,13 @@ namespace ksmaudio::AudioEffect
 		float onMax = 0.0f;
 	};
 
-	struct ParamDef
-	{
-		std::string name;
-
-		Type type = Type::kUnspecified;
-	};
-
 	float StrToValue(Type type, const std::string& str);
 
-	ValueSet StrToValueSet(Type type, const std::string& str);
+	ValueSet StrToValueSet(Type type, const std::string& str, bool* pIsError = nullptr);
 
 	struct Param
 	{
-		const ParamDef def;
+		Type type = Type::kUnspecified;
 
 		ValueSet valueSet;
 	};
@@ -54,9 +48,7 @@ namespace ksmaudio::AudioEffect
 		float bpm = 120.0f;
 	};
 
-	float GetValue(Type type, const ValueSet& valueSet, const Status& status);
-
 	float GetValue(const Param& param, const Status& status);
 
-	Param DefineParam(const std::string& name, Type type, const std::string& valueSetStr);
+	Param DefineParam(Type type, const std::string& valueSetStr);
 }

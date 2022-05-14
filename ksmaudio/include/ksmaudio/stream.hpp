@@ -5,14 +5,14 @@
 
 namespace ksmaudio
 {
-
 	class Stream
 	{
 	private:
 		const HSTREAM m_hStream;
+		const BASS_CHANNELINFO m_info;
 
 	public:
-		// Note: filePath must be in UTF-8
+		// TODO: filePath encoding problem
 		explicit Stream(const std::string& filePath);
 
 		~Stream();
@@ -30,6 +30,9 @@ namespace ksmaudio
 		double durationSec() const;
 
 		void addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const;
-	};
 
+		std::size_t sampleRate() const;
+
+		std::size_t numChannels() const;
+	};
 }

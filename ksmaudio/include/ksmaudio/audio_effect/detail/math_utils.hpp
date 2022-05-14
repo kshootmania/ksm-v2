@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 
-namespace ksmaudio::AudioEffect
+namespace ksmaudio::AudioEffect::detail
 {
 
     template <typename T>

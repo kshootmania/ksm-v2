@@ -1,7 +1,7 @@
 #pragma once
 #include <numbers>
 
-namespace ksmaudio::AudioEffect
+namespace ksmaudio::AudioEffect::detail
 {
     // TODO: No need to use class template
     // TODO: Use struct and non-member functions

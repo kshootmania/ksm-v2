@@ -10,9 +10,9 @@ namespace ksmaudio::AudioEffect
 	{
 	private:
 		const DSPCommonInfo m_info;
-		RingBuffer<float> m_ringBuffer;
+		detail::RingBuffer<float> m_ringBuffer;
 		float m_lfoTimeRate = 0.0f;
-		std::array<BiquadFilter<float>, 2> m_lowShelfFilters;
+		std::array<detail::BiquadFilter<float>, 2> m_lowShelfFilters;
 
 	public:
 		explicit FlangerDSP(const DSPCommonInfo& info);

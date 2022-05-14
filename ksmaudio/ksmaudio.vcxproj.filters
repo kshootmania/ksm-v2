@@ -72,6 +72,9 @@
     <ClInclude Include="include\ksmaudio\audio_effect\params\bitcrusher_params.hpp">
       <Filter>Header Files\audio_effect\params</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksmaudio\stream_with_effects.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ksmaudio.cpp">
@@ -91,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="src\audio_effect\dsp\bitcrusher_dsp.cpp">
       <Filter>Source Files\audio_effect\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stream_with_effects.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
