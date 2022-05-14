@@ -1,5 +1,4 @@
 #include "ksmaudio/stream.hpp"
-#include "ksmaudio/audio_effect/audio_effect.hpp"
 
 namespace
 {
@@ -8,9 +7,9 @@ namespace
 		return BASS_StreamCreateFile(FALSE, filePath.c_str(), 0, 0, BASS_SAMPLE_FLOAT | BASS_STREAM_PRESCAN);
 	}
 
-	void ProcessAudioEffectDSP(HDSP handle, DWORD channel, void* buffer, DWORD length, void* user)
+	void ProcessAudioEffect(HDSP handle, DWORD channel, void* buffer, DWORD length, void* user)
 	{
-		const auto pAudioEffect = reinterpret_cast<ksmaudio::IAudioEffect*>(user);
+		const auto pAudioEffect = reinterpret_cast<ksmaudio::AudioEffect::IAudioEffect*>(user);
 		const auto pData = reinterpret_cast<float*>(buffer);
 		pAudioEffect->process(pData, length / sizeof(float));
 	}
@@ -59,9 +58,9 @@ namespace ksmaudio
 		return BASS_ChannelBytes2Seconds(m_hStream, BASS_ChannelGetLength(m_hStream, BASS_POS_BYTE));
 	}
 
-	void Stream::addAudioEffect(IAudioEffect* pAudioEffect, int priority) const
+	void Stream::addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const
 	{
-		BASS_ChannelSetDSP(m_hStream, ProcessAudioEffectDSP, pAudioEffect, priority);
+		BASS_ChannelSetDSP(m_hStream, ProcessAudioEffect, pAudioEffect, priority);
 	}
 
 }

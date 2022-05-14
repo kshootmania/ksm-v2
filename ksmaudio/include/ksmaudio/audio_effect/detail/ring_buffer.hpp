@@ -8,7 +8,7 @@
 #include <cstdint>
 #include "math_utils.hpp"
 
-namespace ksmaudio
+namespace ksmaudio::AudioEffect
 {
 
     template <typename T>
@@ -119,7 +119,7 @@ namespace ksmaudio
         T lerpedDelay(U floatDelayFrames, std::size_t channel) const
         {
             const std::size_t delayFrames = static_cast<std::size_t>(floatDelayFrames);
-            return Lerp(
+            return std::lerp(
                 m_buffer[delayCursor(delayFrames) * m_numChannels + channel],
                 m_buffer[delayCursor(delayFrames + 1) * m_numChannels + channel],
                 DecimalPart(floatDelayFrames));

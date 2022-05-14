@@ -1,14 +1,8 @@
 #pragma once
 #include <cmath>
 
-namespace ksmaudio
+namespace ksmaudio::AudioEffect
 {
-
-    template <typename T>
-    constexpr T Lerp(T a, T b, T rate)
-    {
-        return a + (b - a) * rate;
-    }
 
     template <typename T>
     constexpr T DecimalPart(T a)

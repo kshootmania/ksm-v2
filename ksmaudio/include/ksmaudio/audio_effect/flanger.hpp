@@ -1,20 +1,9 @@
 #pragma once
-#include <memory>
-#include "audio_effect.hpp"
+#include "ksmaudio/audio_effect/audio_effect.hpp"
+#include "ksmaudio/audio_effect/params/flanger_params.hpp"
 
-namespace ksmaudio
+namespace ksmaudio::AudioEffect
 {
-	struct FlangerParams
-	{
-		float periodSec = 4.0f;
-		float delay = 30.0f;
-		float depth = 45.0f;
-		float feedback = 0.6f;
-		float stereoWidth = 0.0f;
-		float vol = 0.75f;
-		float mix = 0.8f;
-	};
-
 	class FlangerDSP;
 
 	class Flanger : public IAudioEffect
@@ -22,6 +11,7 @@ namespace ksmaudio
 	private:
 		bool m_bypass = false;
 		FlangerParams m_params;
+		FlangerDSPParams m_dspParams;
 		std::unique_ptr<FlangerDSP> m_dsp;
 
 	public:
@@ -31,5 +21,4 @@ namespace ksmaudio
 
 		void process(float* pData, std::size_t dataSize);
 	};
-
 }

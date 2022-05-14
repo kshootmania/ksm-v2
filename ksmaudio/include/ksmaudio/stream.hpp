@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "bass.h"
-#include "audio_effect/flanger.hpp"
+#include "ksmaudio/audio_effect/audio_effect.hpp"
 
 namespace ksmaudio
 {
@@ -29,7 +29,7 @@ namespace ksmaudio
 
 		double durationSec() const;
 
-		void addAudioEffect(IAudioEffect* pAudioEffect, int priority) const;
+		void addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const;
 	};
 
 }
