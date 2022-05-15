@@ -12,7 +12,6 @@ namespace ksmaudio::AudioEffect
 		kSwitch,
 		kRate,
 		kFreq,
-		kDB,
 		kPitch,
 		kInt,
 		kFloat,

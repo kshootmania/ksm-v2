@@ -72,13 +72,6 @@ namespace ksmaudio::AudioEffect
 				}
 				return 0.0f;
 
-			case Type::kDB:
-				if (str.ends_with("dB"))
-				{
-					return std::stof(str);
-				}
-				return 0.0f;
-
 			case Type::kPitch:
 				// param
 				//   > 0: not quantized (real_value + 48)
