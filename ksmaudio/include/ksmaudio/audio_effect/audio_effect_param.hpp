@@ -8,6 +8,7 @@ namespace ksmaudio::AudioEffect
 	{
 		kUnspecified,
 		kLength,
+		kWaveLength,
 		kSample,
 		kSwitch,
 		kRate,

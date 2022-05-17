@@ -75,6 +75,7 @@ namespace ksmaudio::AudioEffect::detail
         {
             assert(m_numChannels > 0);
             assert(size % m_numChannels == 0);
+            m_buffer.shrink_to_fit();
         }
 
         void write(const T* pData, std::size_t size)

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <cmath>
+#include "ksmaudio/audio_effect/detail/wave_length_utils.hpp"
 
 namespace ksmaudio::AudioEffect
 {
@@ -14,12 +15,17 @@ namespace ksmaudio::AudioEffect
 			switch (type)
 			{
 			case Type::kLength:
+			case Type::kWaveLength:
 				// value
 				//   > 0: measure
 				//   < 0: sec
 				if (str.ends_with("ms"))
 				{
 					return -std::max(std::stof(str), 0.0f) / 1000;
+				}
+				else if (str.ends_with('s') && !str.ends_with("es")) // Do not allow "XXXsamples"
+				{
+					return -std::max(std::stof(str), 0.0f);
 				}
 				else if (str.starts_with("1/"))
 				{
@@ -33,11 +39,6 @@ namespace ksmaudio::AudioEffect
 						return 0.0f;
 					}
 				}
-				else if (str.ends_with('s') && !str.ends_with("es")) // Do not allow "XXXsamples"
-				{
-					return -std::max(std::stof(str), 0.0f);
-				}
-				// TODO: more validations needed here
 				return std::max(std::stof(str), 0.0f);
 
 			case Type::kSample:
@@ -173,6 +174,29 @@ namespace ksmaudio::AudioEffect
 			{
 				// Tempo-synced
 				return lerped * 4 * 60 / status.bpm;
+			}
+			else
+			{
+				// Not tempo-synced
+				return -lerped;
+			}
+		}
+
+		if (param.type == Type::kWaveLength)
+		{
+			if (lerped > 0.0f)
+			{
+				// Tempo-synced
+				float waveLength;
+				if (status.isOn)
+				{
+					waveLength = detail::WaveLengthUtils::Interpolate(param.valueSet.onMin, param.valueSet.onMax, status.v);
+				}
+				else
+				{
+					waveLength = lerped;
+				}
+				return waveLength * 4 * 60 / status.bpm;
 			}
 			else
 			{

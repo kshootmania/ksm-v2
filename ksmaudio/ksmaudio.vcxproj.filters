@@ -75,6 +75,12 @@
     <ClInclude Include="include\ksmaudio\stream_with_effects.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\params\retrigger_params.hpp">
+      <Filter>Header Files\audio_effect\params</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\wave_length_utils.hpp">
+      <Filter>Header Files\audio_effect\detail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ksmaudio.cpp">
