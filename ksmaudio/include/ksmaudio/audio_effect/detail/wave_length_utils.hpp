@@ -56,7 +56,7 @@ namespace ksmaudio::AudioEffect::detail
 
 			// Interpolate two values in the fixed array
 			const float aIdx = static_cast<float>(DenominatorToQuantizationArrayIdx(static_cast<int>(1 / a)));
-			const float bIdx = static_cast<float>(DenominatorToQuantizationArrayIdx(static_cast<int>(1 / b)));
+			const float bIdx = static_cast<float>(DenominatorToQuantizationArrayIdx(static_cast<int>(1 / b)) + 1);
 			const float lerpedIdx = std::lerp(aIdx, bIdx, std::min(rate, kAlmostOne));
 			const int lerpedIdxInt = std::clamp(static_cast<int>(lerpedIdx), 0, kQuantizationArraySize - 1);
 			return 1.0f / kQuantizationArray[lerpedIdxInt];
