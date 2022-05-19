@@ -66,9 +66,14 @@ namespace ksmaudio
 		return BASS_ChannelBytes2Seconds(m_hStream, BASS_ChannelGetLength(m_hStream, BASS_POS_BYTE));
 	}
 
-	void Stream::addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const
+	HDSP Stream::addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const
 	{
-		BASS_ChannelSetDSP(m_hStream, ProcessAudioEffect, pAudioEffect, priority);
+		return BASS_ChannelSetDSP(m_hStream, ProcessAudioEffect, pAudioEffect, priority);
+	}
+
+	void Stream::removeAudioEffect(HDSP hDSP) const
+	{
+		BASS_ChannelRemoveDSP(m_hStream, hDSP);
 	}
 
 	std::size_t Stream::sampleRate() const

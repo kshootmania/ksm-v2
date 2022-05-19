@@ -29,7 +29,9 @@ namespace ksmaudio
 
 		double durationSec() const;
 
-		void addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const;
+		HDSP addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const;
+
+		void removeAudioEffect(HDSP hDSP) const;
 
 		std::size_t sampleRate() const;
 

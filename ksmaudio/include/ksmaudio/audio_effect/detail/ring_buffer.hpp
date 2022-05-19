@@ -1,16 +1,15 @@
 #pragma once
 #include <vector>
 #include <type_traits>
-#include <iostream>
-#include <memory>
 #include <cassert>
+#include <cstring>
 #include <cstddef>
 #include <cstdint>
 #include "math_utils.hpp"
 
 namespace ksmaudio::AudioEffect::detail
 {
-    // TODO: No need to use class template
+    // Useful for time modulation
     template <typename T>
     class RingBuffer
     {
@@ -53,12 +52,12 @@ namespace ksmaudio::AudioEffect::detail
             const std::size_t frameSize = size / m_numChannels;
             if (cursorFrame + frameSize < m_numFrames)
             {
-                std::memcpy(&m_buffer[cursorFrame * m_numChannels], pData, sizeof(float) * frameSize * m_numChannels);
+                std::memcpy(&m_buffer[cursorFrame * m_numChannels], pData, sizeof(T) * frameSize * m_numChannels);
             }
             else
             {
                 const std::size_t firstFrameSize = m_numFrames - cursorFrame;
-                std::memcpy(&m_buffer[cursorFrame * m_numChannels], pData, sizeof(float) * firstFrameSize * m_numChannels);
+                std::memcpy(&m_buffer[cursorFrame * m_numChannels], pData, sizeof(T) * firstFrameSize * m_numChannels);
                 const std::size_t secondFrameSize = frameSize - firstFrameSize;
                 if (secondFrameSize > 0U)
                 {
@@ -113,7 +112,7 @@ namespace ksmaudio::AudioEffect::detail
 
         void delay(std::size_t delayFrames, T* pDest)
         {
-            std::memcpy(pDest, &m_buffer[delayCursor(delayFrames) * m_numChannels], sizeof(float) * m_numChannels);
+            std::memcpy(pDest, &m_buffer[delayCursor(delayFrames) * m_numChannels], sizeof(T) * m_numChannels);
         }
 
         template <typename U>

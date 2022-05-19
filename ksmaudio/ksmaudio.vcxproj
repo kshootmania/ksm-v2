@@ -163,11 +163,13 @@
     <ClInclude Include="include\ksmaudio\audio_effect\audio_effect_param.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\all.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\biquad_filter.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\linear_buffer.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\math_utils.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\ring_buffer.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\wave_length_utils.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\bitcrusher_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\flanger_dsp.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\dsp\retrigger_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\bitcrusher_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\flanger_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\retrigger_params.hpp" />
@@ -180,6 +182,7 @@
     <ClCompile Include="src\audio_effect\audio_effect_param.cpp" />
     <ClCompile Include="src\audio_effect\dsp\bitcrusher_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\flanger_dsp.cpp" />
+    <ClCompile Include="src\audio_effect\dsp\retrigger_dsp.cpp" />
     <ClCompile Include="src\stream.cpp" />
     <ClCompile Include="src\ksmaudio.cpp" />
     <ClCompile Include="src\sample.cpp" />

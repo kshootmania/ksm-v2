@@ -7,6 +7,14 @@ namespace ksmaudio
 	{
 	}
 
+	StreamWithEffects::~StreamWithEffects()
+	{
+		for (const auto& [name, hDSP] : m_audioEffectHDSPs)
+		{
+			m_stream.removeAudioEffect(hDSP);
+		}
+	}
+
 	void StreamWithEffects::play() const
 	{
 		m_stream.play();

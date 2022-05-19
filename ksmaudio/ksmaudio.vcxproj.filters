@@ -81,6 +81,12 @@
     <ClInclude Include="include\ksmaudio\audio_effect\detail\wave_length_utils.hpp">
       <Filter>Header Files\audio_effect\detail</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\dsp\retrigger_dsp.hpp">
+      <Filter>Header Files\audio_effect\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\linear_buffer.hpp">
+      <Filter>Header Files\audio_effect\detail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ksmaudio.cpp">
@@ -103,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="src\stream_with_effects.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio_effect\dsp\retrigger_dsp.cpp">
+      <Filter>Source Files\audio_effect\dsp</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@ namespace ksmaudio::AudioEffect
 {
 	struct RetriggerDSPParams
 	{
-		int samplesUntilTrigger = -1;
+		float secUntilTrigger = -1.0f; // Note: Negative value is just ignored
 		float waveLength = 0.0f;
 		float rate = 0.7f;
 		float mix = 1.0f;
@@ -28,13 +28,13 @@ namespace ksmaudio::AudioEffect
 		};
 
 	private:
-		int m_samplesUntilTrigger = -1;
+		float m_secUntilTrigger = -1.0f;
 		bool m_updateTriggerPrev = false;
 
 	public:
-		void setSamplesUntilTrigger(int numSamples)
+		void setSecUntilTrigger(float sec)
 		{
-			m_samplesUntilTrigger = numSamples;
+			m_secUntilTrigger = sec;
 		}
 
 		RetriggerDSPParams render(const Status& status)
@@ -42,12 +42,12 @@ namespace ksmaudio::AudioEffect
 			const bool updateTriggerNow = GetValue(updateTrigger, status) == 1.0f;
 			if (!m_updateTriggerPrev && updateTriggerNow)
 			{
-				m_samplesUntilTrigger = 0;
+				m_secUntilTrigger = 0.0f;
 			}
 			m_updateTriggerPrev = updateTriggerNow;
 
 			return {
-				.samplesUntilTrigger = std::exchange(m_samplesUntilTrigger, -1),
+				.secUntilTrigger = std::exchange(m_secUntilTrigger, -1.0f),
 				.waveLength = GetValue(waveLength, status),
 				.rate = GetValue(rate, status),
 				.mix = GetValue(mix, status),

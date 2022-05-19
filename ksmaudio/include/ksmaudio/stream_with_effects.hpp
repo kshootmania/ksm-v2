@@ -12,10 +12,13 @@ namespace ksmaudio
 	private:
 		Stream m_stream;
 		std::unordered_map<std::string, std::unique_ptr<AudioEffect::IAudioEffect>> m_audioEffects;
+		std::unordered_map<std::string, HDSP> m_audioEffectHDSPs;
 
 	public:
 		// TODO: filePath encoding problem
 		explicit StreamWithEffects(const std::string& filePath);
+
+		~StreamWithEffects();
 
 		void play() const;
 
@@ -42,10 +45,16 @@ namespace ksmaudio
 			{
 				audioEffect->setParamValueSet(paramName, valueSetStr);
 			}
+			audioEffect->updateStatus(AudioEffect::Status{});
 
 			m_audioEffects.insert_or_assign(name, std::move(audioEffect));
 
-			m_stream.addAudioEffect(m_audioEffects.at(name).get(), 0/*FIXME*/);
+			const HDSP hDSP = m_stream.addAudioEffect(m_audioEffects.at(name).get(), 0/*FIXME*/);
+			if (m_audioEffectHDSPs.contains(name))
+			{
+				m_stream.removeAudioEffect(m_audioEffectHDSPs.at(name));
+			}
+			m_audioEffectHDSPs.insert_or_assign(name, hDSP);
 		}
 
 		void updateAudioEffectStatus(const AudioEffect::Status& status);

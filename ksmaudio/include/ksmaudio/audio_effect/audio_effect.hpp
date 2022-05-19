@@ -18,6 +18,14 @@ namespace ksmaudio::AudioEffect
 		virtual bool setParamValueSet(const std::string& name, const std::string& valueSetStr) = 0;
 	};
 
+	class IUpdateTrigger
+	{
+	public:
+		virtual ~IUpdateTrigger() = default;
+
+		virtual void setSecUntilTrigger(float sec) = 0;
+	};
+
 	struct DSPCommonInfo
 	{
 		bool isUnsupported;
@@ -40,7 +48,7 @@ namespace ksmaudio::AudioEffect
 	template <typename Params, typename DSP, typename DSPParams>
 	class BasicAudioEffect : public IAudioEffect
 	{
-	private:
+	protected:
 		bool m_bypass = false;
 		Params m_params;
 		DSPParams m_dspParams;
@@ -49,8 +57,8 @@ namespace ksmaudio::AudioEffect
 	public:
 		BasicAudioEffect(std::size_t sampleRate, std::size_t numChannels)
 			: m_dsp(DSPCommonInfo{ sampleRate, numChannels })
+			, m_dspParams(m_params.render(Status{}))
 		{
-			updateStatus(Status{});
 		}
 
 		virtual ~BasicAudioEffect() = default;
@@ -78,6 +86,26 @@ namespace ksmaudio::AudioEffect
 			{
 				return false;
 			}
+		}
+	};
+
+	template <typename Params, typename DSP, typename DSPParams>
+	class BasicAudioEffectWithTrigger : public BasicAudioEffect<Params, DSP, DSPParams>, public IUpdateTrigger
+	{
+	protected:
+		using BasicAudioEffect<Params, DSP, DSPParams>::m_params;
+
+	public:
+		BasicAudioEffectWithTrigger(std::size_t sampleRate, std::size_t numChannels)
+			: BasicAudioEffect<Params, DSP, DSPParams>(sampleRate, numChannels)
+		{
+		}
+
+		virtual ~BasicAudioEffectWithTrigger() = default;
+
+		virtual void setSecUntilTrigger(float sec) override
+		{
+			m_params.setSecUntilTrigger(sec);
 		}
 	};
 }
