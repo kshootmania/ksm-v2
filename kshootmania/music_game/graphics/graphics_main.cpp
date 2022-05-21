@@ -21,7 +21,7 @@ namespace
 
 	FilePath BGFilePath(const kson::ChartData& chartData)
 	{
-		const String bgFilename = Unicode::FromUTF8(chartData.bg.legacy.bgInfos.at(0).filename);
+		const String bgFilename = Unicode::FromUTF8(chartData.bg.legacy.bg.at(0).filename);
 		if (FileSystem::Extension(bgFilename).empty())
 		{
 			// Built-in BG textures
@@ -34,7 +34,7 @@ namespace
 
 	FilePath LayerFilePath(const kson::ChartData& chartData)
 	{
-		const String layerFilename = Unicode::FromUTF8(chartData.bg.legacy.layerInfos.at(0).filename);
+		const String layerFilename = Unicode::FromUTF8(chartData.bg.legacy.layer.filename);
 		if (FileSystem::Extension(layerFilename).empty())
 		{
 			// Built-in BG textures
@@ -74,11 +74,7 @@ namespace
 void MusicGame::Graphics::GraphicsMain::drawBG() const
 {
 	const ScopedRenderStates3D samplerState(SamplerState::ClampNearest);
-	double bgTiltRadians = 0.0;
-	if (m_updateInfo.pChartData->bg.legacy.bgInfos[0].rotationFlags.tiltAffected) // TODO: Change BG depending on gauge value
-	{
-		bgTiltRadians += m_highwayTilt.radians() / 3;
-	}
+	double bgTiltRadians = m_highwayTilt.radians() / 3;
 	m_bgBillboardMesh.draw(m_bgTransform * TiltTransformMatrix(bgTiltRadians, kBGBillboardPosition), m_bgTexture);
 }
 
@@ -88,7 +84,7 @@ void MusicGame::Graphics::GraphicsMain::drawLayer() const
 	const ScopedRenderStates3D renderState(BlendState::Additive);
 
 	double layerTiltRadians = 0.0;
-	if (m_updateInfo.pChartData->bg.legacy.layerInfos[0].rotationFlags.tiltAffected)
+	if (m_updateInfo.pChartData->bg.legacy.layer.rotation.tilt)
 	{
 		layerTiltRadians += m_highwayTilt.radians() * 0.8;
 	}

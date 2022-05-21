@@ -21,6 +21,9 @@ namespace kson
 	using Pulse = std::int64_t;
 	using RelPulse = std::int64_t;
 
+	constexpr Pulse kResolution = 240;
+	constexpr Pulse kResolution4 = kResolution * 4;
+
 	// The difference between Pulse and RelPulse is only for annotation
 	static_assert(std::is_same_v<Pulse, RelPulse>);
 
@@ -232,10 +235,7 @@ namespace kson
 	using Lane = ByPulse<T>; // TODO: For editor, ByPulseMulti would be used instead of ByPulse?
 
 	template <typename T>
-	using DefList = std::unordered_map<std::string, T>;
-
-	template <typename T>
-	using InvokeList = std::unordered_map<std::string, T>;
+	using Dict = std::unordered_map<std::string, T>;
 
 	template <typename T>
 	T Lerp(T value1, T value2, double rate)
@@ -250,6 +250,35 @@ namespace kson
 		if (itr != map.begin())
 		{
 			--itr;
+		}
+		return itr;
+	}
+
+	template <typename T>
+	std::size_t CountInRange(const ByPulse<T>& map, Pulse start, Pulse end)
+	{
+		static_assert(std::is_signed_v<Pulse>);
+		assert(start <= end);
+
+		const auto itr1 = map.upper_bound(start - Pulse{ 1 });
+		if (itr1 == map.end() || itr1->first >= end)
+		{
+			return std::size_t{ 0 };
+		}
+		const auto itr2 = map.upper_bound(end - Pulse{ 1 });
+		return static_cast<std::size_t>(std::distance(itr1, itr2));
+	}
+
+	template <typename T>
+	auto FirstInRange(const ByPulse<T>& map, Pulse start, Pulse end)
+	{
+		static_assert(std::is_signed_v<Pulse>);
+		assert(start <= end);
+
+		const auto itr = map.upper_bound(start - Pulse{ 1 });
+		if (itr == map.end() || itr->first >= end)
+		{
+			return map.end();
 		}
 		return itr;
 	}

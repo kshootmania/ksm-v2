@@ -30,7 +30,7 @@ namespace kson
 
 	struct CamPatternLaserInfo
 	{
-		InvokeList<ByPulse<CamPatternParams>> slamEvent;
+		Dict<ByPulse<CamPatternParams>> slamEvent;
 
 		bool empty() const;
 	};

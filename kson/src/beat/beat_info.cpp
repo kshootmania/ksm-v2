@@ -16,7 +16,7 @@ void kson::to_json(nlohmann::json& j, const BeatInfo& beatInfo)
 		{ "time_sig", beatInfo.timeSigChanges },
 	};
 
-	if (beatInfo.resolution != kDefaultResolution)
+	if (beatInfo.resolution != kResolution)
 	{
 		j["resolution"] = beatInfo.resolution;
 	}
@@ -32,6 +32,6 @@ void kson::from_json(const nlohmann::json& j, BeatInfo& beatInfo)
 	}
 	else
 	{
-		beatInfo.resolution = kDefaultResolution;
+		beatInfo.resolution = kResolution;
 	}
 }

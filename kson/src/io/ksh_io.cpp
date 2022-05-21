@@ -428,7 +428,7 @@ namespace
 				}
 				if (!audioEffectName.empty())
 				{
-					m_pTargetChartData->audio.audioEffects.fx.longInvoke[audioEffectName][m_targetLaneIdx].emplace(m_time, AudioEffectParams{
+					m_pTargetChartData->audio.audioEffects.fx.longEvent[audioEffectName][m_targetLaneIdx].emplace(m_time, AudioEffectParams{
 						// Store the value of the parameters in temporary keys
 						// (Since the conversion requires determining the type of audio effect, it is processed
 						//  after reading the "#define_fx"/"#define_filter" lines.)
@@ -1527,7 +1527,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 	}
 
 	// Convert FX parameters
-	for (auto& [audioEffectName, lanes] : chartData.audio.audioEffects.fx.longInvoke)
+	for (auto& [audioEffectName, lanes] : chartData.audio.audioEffects.fx.longEvent)
 	{
 		AudioEffectType type = AudioEffectType::Unspecified;
 		if (chartData.audio.audioEffects.fx.def.contains(audioEffectName))

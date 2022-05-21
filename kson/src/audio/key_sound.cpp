@@ -20,7 +20,7 @@ void kson::to_json(nlohmann::json& j, const KeySoundDef& def)
 
 bool kson::KeySoundFXInfo::empty() const
 {
-	return def.empty() && chipInvoke.empty();
+	return def.empty() && chipEvent.empty();
 }
 
 void kson::to_json(nlohmann::json& j, const KeySoundFXInfo& fx)
@@ -30,9 +30,9 @@ void kson::to_json(nlohmann::json& j, const KeySoundFXInfo& fx)
 		j["def"] = fx.def;
 	}
 
-	if (!fx.chipInvoke.empty())
+	if (!fx.chipEvent.empty())
 	{
-		j["chip_invoke"] = fx.chipInvoke;
+		j["chip_event"] = fx.chipEvent;
 	}
 }
 
@@ -50,7 +50,7 @@ void kson::to_json(nlohmann::json& j, const KeySoundLaserInfo& laser)
 
 	if (!laser.slamEvent.empty())
 	{
-		j["slam_invoke"] = laser.slamEvent;
+		j["slam_event"] = laser.slamEvent;
 	}
 }
 

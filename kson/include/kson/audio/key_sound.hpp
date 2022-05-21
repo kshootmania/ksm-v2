@@ -19,8 +19,8 @@ namespace kson
 
 	struct KeySoundFXInfo
 	{
-		DefList<KeySoundDef> def;
-		InvokeList<std::array<ByPulse<KeySoundParams>, kNumFXLanes>> chipInvoke;
+		Dict<KeySoundDef> def;
+		Dict<std::array<ByPulse<KeySoundParams>, kNumFXLanes>> chipEvent;
 
 		bool empty() const;
 	};
@@ -29,8 +29,8 @@ namespace kson
 
 	struct KeySoundLaserInfo
 	{
-		DefList<KeySoundDef> def;
-		InvokeList<ByPulse<KeySoundParams>> slamEvent;
+		Dict<KeySoundDef> def;
+		Dict<ByPulse<KeySoundParams>> slamEvent;
 
 		bool empty() const;
 	};
@@ -40,7 +40,6 @@ namespace kson
 	struct KeySoundInfo
 	{
 		KeySoundFXInfo fx;
-
 		KeySoundLaserInfo laser;
 
 		bool empty() const;

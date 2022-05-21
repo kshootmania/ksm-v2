@@ -47,7 +47,7 @@ void kson::to_json(nlohmann::json& j, const AudioEffectDef& def)
 
 bool kson::AudioEffectFXInfo::empty() const
 {
-	return def.empty() && paramChange.empty() && longInvoke.empty();
+	return def.empty() && paramChange.empty() && longEvent.empty();
 }
 
 void kson::to_json(nlohmann::json& j, const AudioEffectFXInfo& fx)
@@ -64,15 +64,15 @@ void kson::to_json(nlohmann::json& j, const AudioEffectFXInfo& fx)
 		j["param_change"] = fx.paramChange;
 	}
 
-	if (!fx.longInvoke.empty())
+	if (!fx.longEvent.empty())
 	{
-		j["long_invoke"] = fx.longInvoke;
+		j["long_event"] = fx.longEvent;
 	}
 }
 
 bool kson::AudioEffectLaserInfo::empty() const
 {
-	return def.empty() && paramChange.empty() && pulseInvoke.empty();
+	return def.empty() && paramChange.empty() && pulseEvent.empty();
 }
 
 void kson::to_json(nlohmann::json& j, const AudioEffectLaserInfo& laser)
@@ -89,9 +89,9 @@ void kson::to_json(nlohmann::json& j, const AudioEffectLaserInfo& laser)
 		j["param_change"] = laser.paramChange;
 	}
 
-	if (!laser.pulseInvoke.empty())
+	if (!laser.pulseEvent.empty())
 	{
-		j["pulse_invoke"] = laser.pulseInvoke;
+		j["pulse_event"] = laser.pulseEvent;
 	}
 }
 

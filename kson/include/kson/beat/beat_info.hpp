@@ -4,15 +4,13 @@
 
 namespace kson
 {
-	constexpr Pulse kDefaultResolution = 240;
-
 	struct BeatInfo
 	{
 		ByPulse<double> bpmChanges;
 
 		ByMeasureIdx<TimeSig> timeSigChanges;
 
-		Pulse resolution = kDefaultResolution;
+		Pulse resolution = kResolution; // TODO: delete this
 	};
 
 	void to_json(nlohmann::json& j, const BeatInfo& beatInfo);

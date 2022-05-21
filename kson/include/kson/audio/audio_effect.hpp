@@ -42,7 +42,7 @@ namespace kson
 		{ AudioEffectType::PeakingFilter, "peaking_filter" },
 	});
 
-	using AudioEffectParams = std::unordered_map<std::string, std::string>;
+	using AudioEffectParams = Dict<std::string>;
 
 	struct AudioEffectDef
 	{
@@ -54,9 +54,9 @@ namespace kson
 
 	struct AudioEffectFXInfo
 	{
-		DefList<AudioEffectDef> def;
-		InvokeList<ByPulse<AudioEffectParams>> paramChange;
-		InvokeList<std::array<ByPulse<AudioEffectParams>, kNumFXLanes>> longInvoke;
+		Dict<AudioEffectDef> def;
+		Dict<Dict<ByPulse<std::string>>> paramChange;
+		Dict<std::array<ByPulse<AudioEffectParams>, kNumFXLanes>> longEvent;
 
 		bool empty() const;
 	};
@@ -65,9 +65,9 @@ namespace kson
 
 	struct AudioEffectLaserInfo
 	{
-		DefList<AudioEffectDef> def;
-		InvokeList<ByPulse<AudioEffectParams>> paramChange;
-		InvokeList<ByPulse<AudioEffectParams>> pulseInvoke;
+		Dict<AudioEffectDef> def;
+		Dict<Dict<ByPulse<std::string>>> paramChange;
+		Dict<ByPulse<AudioEffectParams>> pulseEvent;
 
 		bool empty() const;
 	};
