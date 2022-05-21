@@ -36,6 +36,9 @@ namespace
 	constexpr double kCenterSplitAbsMax = 65535.0;
 	constexpr double kManualTiltAbsMax = 1000.0;
 
+	constexpr std::int32_t kRotationFlagTilt = 1 << 0;
+	constexpr std::int32_t kRotationFlagSpin = 1 << 1;
+
 	template <typename T>
 	T ParseNumeric(std::string_view str, T defaultValue = T{ 0 })
 	{
@@ -1042,10 +1045,10 @@ namespace
 
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{
-				chartData.audio.bgm.offset = PopInt<std::int64_t>(metaDataHashMap, "o", 0);
+				chartData.audio.bgm.offset = PopInt<std::int32_t>(metaDataHashMap, "o", 0);
 			}
-			chartData.audio.bgm.preview.offset = PopInt<std::int64_t>(metaDataHashMap, "po", 0);
-			chartData.audio.bgm.preview.duration = PopInt<std::int64_t>(metaDataHashMap, "plength", 0);
+			chartData.audio.bgm.preview.offset = PopInt<std::int32_t>(metaDataHashMap, "po", 0);
+			chartData.audio.bgm.preview.duration = PopInt<std::int32_t>(metaDataHashMap, "plength", 0);
 
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{
@@ -1054,30 +1057,29 @@ namespace
 				if (bgStr.find(';') != std::string::npos)
 				{
 					const auto bgFilenames = Split<2>(bgStr, ';');
-					chartData.bg.legacy.bgInfos[0].filename = bgFilenames[0];
-					chartData.bg.legacy.bgInfos[1].filename = bgFilenames[1];
+					chartData.bg.legacy.bg[0].filename = bgFilenames[0];
+					chartData.bg.legacy.bg[1].filename = bgFilenames[1];
 				}
 				else
 				{
-					chartData.bg.legacy.bgInfos[0].filename = bgStr;
-					chartData.bg.legacy.bgInfos[1].filename = bgStr;
+					chartData.bg.legacy.bg[0].filename = bgStr;
+					chartData.bg.legacy.bg[1].filename = bgStr;
 				}
 
 				// "layer"
 				const char layerSeparator = (kshVersionInt >= 166) ? ';' : '/';
 				const std::string layerStr = Pop(metaDataHashMap, "layer", "arrow");
 				const auto layerOptionArray = Split<3>(layerStr, layerSeparator);
-				auto& layerInfos = chartData.bg.legacy.layerInfos;
-				layerInfos[0].filename = layerInfos[1].filename = layerOptionArray[0];
-				layerInfos[0].durationMs = layerInfos[1].durationMs = ParseNumeric<int64_t>(layerOptionArray[1]);
-				const std::int32_t rotationFlagsInt = ParseNumeric<std::int32_t>(layerOptionArray[1], 3);
-				layerInfos[0].rotationFlags = layerInfos[1].rotationFlags = {
-					.tiltAffected = ((rotationFlagsInt & 1) != 0),
-					.spinAffected = ((rotationFlagsInt & 2) != 0),
+				chartData.bg.legacy.layer.filename = layerOptionArray[0];
+				chartData.bg.legacy.layer.duration = ParseNumeric<std::int32_t>(layerOptionArray[1]);
+				const std::int32_t rotationFlags = ParseNumeric<std::int32_t>(layerOptionArray[1], kRotationFlagTilt | kRotationFlagSpin);
+				chartData.bg.legacy.layer.rotation = {
+					.tilt = ((rotationFlags & kRotationFlagTilt) != 0),
+					.spin = ((rotationFlags & kRotationFlagSpin) != 0),
 				};
 
-				chartData.bg.legacy.movieInfos.filename = Pop(metaDataHashMap, "v");
-				chartData.bg.legacy.movieInfos.offsetMs = PopInt<std::int64_t>(metaDataHashMap, "vo");
+				chartData.bg.legacy.movie.filename = Pop(metaDataHashMap, "v");
+				chartData.bg.legacy.movie.offset = PopInt<std::int32_t>(metaDataHashMap, "vo");
 
 				chartData.gauge.total = static_cast<double>(PopInt<std::int32_t>(metaDataHashMap, "total", 0));
 			}
@@ -1527,7 +1529,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 	// Convert FX parameters
 	for (auto& [audioEffectName, lanes] : chartData.audio.audioEffects.fx.longInvoke)
 	{
-		AudioEffectType type = AudioEffectType::kUnspecified;
+		AudioEffectType type = AudioEffectType::Unspecified;
 		if (chartData.audio.audioEffects.fx.def.contains(audioEffectName))
 		{
 			// User-defined audio effects
@@ -1539,7 +1541,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 			type = StrToAudioEffectType(audioEffectName);
 		}
 
-		assert(type != AudioEffectType::kUnspecified);
+		assert(type != AudioEffectType::Unspecified);
 
 		for (auto& lane : lanes)
 		{
@@ -1553,9 +1555,9 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 
 					switch (type)
 					{
-					case AudioEffectType::kRetrigger:
-					case AudioEffectType::kGate:
-					case AudioEffectType::kWobble:
+					case AudioEffectType::Retrigger:
+					case AudioEffectType::Gate:
+					case AudioEffectType::Wobble:
 						if (param1 > 0)
 						{
 							params.emplace("wave_length", 1.0 / param1);
@@ -1563,16 +1565,16 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 							//params.emplace("wave_length@tempo_sync", 1.0);
 						}
 						break;
-					case AudioEffectType::kPitchShift:
+					case AudioEffectType::PitchShift:
 						params.emplace("pitch", static_cast<double>(param1));
 						break;
-					case AudioEffectType::kBitcrusher:
+					case AudioEffectType::Bitcrusher:
 						params.emplace("reduction", static_cast<double>(param1));
 						break;
-					case AudioEffectType::kTapestop:
+					case AudioEffectType::Tapestop:
 						params.emplace("speed", param1 / 100.0);
 						break;
-					case AudioEffectType::kEcho:
+					case AudioEffectType::Echo:
 						params.emplace("wave_length", 1.0 / param1);
 						// Comment out as the default value is 1.0
 						//params.emplace("wave_length@tempo_sync", 1.0);

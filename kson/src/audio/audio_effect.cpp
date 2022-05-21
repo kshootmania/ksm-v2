@@ -6,20 +6,20 @@ namespace
 
 	const std::unordered_map<std::string_view, AudioEffectType> s_ksonPresetAudioEffectNames
 	{
-		{ "retrigger", AudioEffectType::kRetrigger },
-		{ "gate", AudioEffectType::kGate },
-		{ "flanger", AudioEffectType::kFlanger },
-		{ "pitch_shift", AudioEffectType::kPitchShift },
-		{ "bitcrusher", AudioEffectType::kBitcrusher },
-		{ "phaser", AudioEffectType::kPhaser },
-		{ "wobble", AudioEffectType::kWobble },
-		{ "tapestop", AudioEffectType::kTapestop },
-		{ "echo", AudioEffectType::kEcho },
-		{ "sidechain", AudioEffectType::kSidechain },
-		{ "audio_swap", AudioEffectType::kAudioSwap },
-		{ "high_pass_filter", AudioEffectType::kAudioSwap },
-		{ "low_pass_filter", AudioEffectType::kAudioSwap },
-		{ "peaking_filter", AudioEffectType::kAudioSwap },
+		{ "retrigger", AudioEffectType::Retrigger },
+		{ "gate", AudioEffectType::Gate },
+		{ "flanger", AudioEffectType::Flanger },
+		{ "pitch_shift", AudioEffectType::PitchShift },
+		{ "bitcrusher", AudioEffectType::Bitcrusher },
+		{ "phaser", AudioEffectType::Phaser },
+		{ "wobble", AudioEffectType::Wobble },
+		{ "tapestop", AudioEffectType::Tapestop },
+		{ "echo", AudioEffectType::Echo },
+		{ "sidechain", AudioEffectType::Sidechain },
+		{ "audio_swap", AudioEffectType::SwitchAudio },
+		{ "high_pass_filter", AudioEffectType::HighPassFilter },
+		{ "low_pass_filter", AudioEffectType::LowPassFilter },
+		{ "peaking_filter", AudioEffectType::PeakingFilter },
 	};
 }
 
@@ -31,7 +31,7 @@ kson::AudioEffectType kson::StrToAudioEffectType(std::string_view str)
 	}
 	else
 	{
-		return AudioEffectType::kUnspecified;
+		return AudioEffectType::Unspecified;
 	}
 }
 

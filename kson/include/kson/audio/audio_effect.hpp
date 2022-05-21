@@ -5,41 +5,41 @@ namespace kson
 {
 	enum class AudioEffectType
 	{
-		kUnspecified,
-		kRetrigger,
-		kGate,
-		kFlanger,
-		kPitchShift,
-		kBitcrusher,
-		kPhaser,
-		kWobble,
-		kTapestop,
-		kEcho,
-		kSidechain,
-		kAudioSwap,
-		kHighPassFilter,
-		kLowPassFilter,
-		kPeakingFilter,
+		Unspecified,
+		Retrigger,
+		Gate,
+		Flanger,
+		PitchShift,
+		Bitcrusher,
+		Phaser,
+		Wobble,
+		Tapestop,
+		Echo,
+		Sidechain,
+		SwitchAudio,
+		HighPassFilter,
+		LowPassFilter,
+		PeakingFilter,
 	};
 
 	AudioEffectType StrToAudioEffectType(std::string_view str);
 
 	NLOHMANN_JSON_SERIALIZE_ENUM(AudioEffectType, {
-		{ AudioEffectType::kUnspecified, nullptr },
-		{ AudioEffectType::kRetrigger, "retrigger" },
-		{ AudioEffectType::kGate, "gate" },
-		{ AudioEffectType::kFlanger, "flanger" },
-		{ AudioEffectType::kPitchShift, "pitch_shift" },
-		{ AudioEffectType::kBitcrusher, "bitcrusher" },
-		{ AudioEffectType::kPhaser, "phaser" },
-		{ AudioEffectType::kWobble, "wobble" },
-		{ AudioEffectType::kTapestop, "tapestop" },
-		{ AudioEffectType::kEcho, "echo" },
-		{ AudioEffectType::kSidechain, "sidechain" },
-		{ AudioEffectType::kAudioSwap, "audio_swap" },
-		{ AudioEffectType::kHighPassFilter, "high_pass_filter" },
-		{ AudioEffectType::kLowPassFilter, "low_pass_filter" },
-		{ AudioEffectType::kPeakingFilter, "peaking_filter" },
+		{ AudioEffectType::Unspecified, nullptr },
+		{ AudioEffectType::Retrigger, "retrigger" },
+		{ AudioEffectType::Gate, "gate" },
+		{ AudioEffectType::Flanger, "flanger" },
+		{ AudioEffectType::PitchShift, "pitch_shift" },
+		{ AudioEffectType::Bitcrusher, "bitcrusher" },
+		{ AudioEffectType::Phaser, "phaser" },
+		{ AudioEffectType::Wobble, "wobble" },
+		{ AudioEffectType::Tapestop, "tapestop" },
+		{ AudioEffectType::Echo, "echo" },
+		{ AudioEffectType::Sidechain, "sidechain" },
+		{ AudioEffectType::SwitchAudio, "switch_audio" },
+		{ AudioEffectType::HighPassFilter, "high_pass_filter" },
+		{ AudioEffectType::LowPassFilter, "low_pass_filter" },
+		{ AudioEffectType::PeakingFilter, "peaking_filter" },
 	});
 
 	struct AudioEffectParam
@@ -64,7 +64,7 @@ namespace kson
 
 	struct AudioEffectDef
 	{
-		AudioEffectType type = AudioEffectType::kUnspecified;
+		AudioEffectType type = AudioEffectType::Unspecified;
 		AudioEffectParams params;
 	};
 

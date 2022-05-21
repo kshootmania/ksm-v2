@@ -7,9 +7,9 @@ namespace kson
 	{
 		std::string filename; // UTF-8 guaranteed
 
-		std::int64_t offset = 0;
+		std::int32_t offset = 0;
 
-		std::int64_t duration = 15000;
+		std::int32_t duration = 15000;
 	};
 
 	struct BGMInfo
@@ -18,7 +18,7 @@ namespace kson
 
 		double vol = 1.0;
 
-		std::int64_t offset = 0;
+		std::int32_t offset = 0;
 
 		BGMPreviewInfo preview;
 	};

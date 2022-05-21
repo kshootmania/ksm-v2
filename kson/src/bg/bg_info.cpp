@@ -1,27 +1,22 @@
 #include "kson/bg/bg_info.hpp"
 
-bool kson::KSHRotationFlags::operator==(const KSHRotationFlags& rhs) const
-{
-	return tiltAffected == rhs.tiltAffected && spinAffected == rhs.spinAffected;
-}
-
-void kson::to_json(nlohmann::json& j, const KSHRotationFlags& flags)
+void kson::to_json(nlohmann::json& j, const KSHLayerRotationInfo& flags)
 {
 	j = {
-		{ "tilt", flags.tiltAffected },
-		{ "spin", flags.spinAffected },
+		{ "tilt", flags.tilt },
+		{ "spin", flags.spin },
 	};
 }
 
-void kson::from_json(const nlohmann::json& j, KSHRotationFlags& flags)
+void kson::from_json(const nlohmann::json& j, KSHLayerRotationInfo& flags)
 {
-	j.at("tilt").get_to(flags.tiltAffected);
-	j.at("spin").get_to(flags.spinAffected);
+	j.at("tilt").get_to(flags.tilt);
+	j.at("spin").get_to(flags.spin);
 }
 
 bool kson::KSHBGInfo::operator==(const KSHBGInfo& rhs) const
 {
-	return filename == rhs.filename && rotationFlags == rhs.rotationFlags;
+	return filename == rhs.filename;
 }
 
 void kson::to_json(nlohmann::json& j, const KSHBGInfo& bg)
@@ -29,16 +24,11 @@ void kson::to_json(nlohmann::json& j, const KSHBGInfo& bg)
 	j = {
 		{ "filename", bg.filename },
 	};
-
-	if (bg.rotationFlags != KSHRotationFlags{ true, false })
-	{
-		j["rotation"] = bg.rotationFlags;
-	}
 }
 
-bool kson::KSHLayerInfo::operator==(const KSHLayerInfo& rhs) const
+bool kson::KSHLayerInfo::empty() const
 {
-	return filename == rhs.filename && durationMs == rhs.durationMs && rotationFlags == rhs.rotationFlags;
+	return filename.empty() && duration == 0 && rotation.tilt == true && rotation.spin == true;
 }
 
 void kson::to_json(nlohmann::json& j, const KSHLayerInfo& layer)
@@ -47,27 +37,27 @@ void kson::to_json(nlohmann::json& j, const KSHLayerInfo& layer)
 		{ "filename", layer.filename },
 	};
 
-	if (layer.durationMs > 0)
+	if (layer.duration > 0)
 	{
-		j["duration"] = layer.durationMs;
+		j["duration"] = layer.duration;
 	}
 
-	if (layer.rotationFlags != KSHRotationFlags{ true, true })
+	if (layer.rotation.tilt != true || layer.rotation.spin != true) // default: { tilt:true, spin:true }
 	{
-		j["rotation"] = layer.rotationFlags;
+		j["rotation"] = layer.rotation;
 	}
 }
 
 bool kson::KSHMovieInfo::empty() const
 {
-	return filename.empty() && offsetMs == 0;
+	return filename.empty() && offset == 0;
 }
 
 void kson::to_json(nlohmann::json& j, const KSHMovieInfo& movie)
 {
 	j = {
 		{ "filename", movie.filename },
-		{ "offset", movie.offsetMs },
+		{ "offset", movie.offset },
 	};
 }
 
@@ -75,33 +65,29 @@ void kson::to_json(nlohmann::json& j, const LegacyBGInfo& legacy)
 {
 	j = nlohmann::json::object();
 
-	if (legacy.bgInfos[0] == legacy.bgInfos[1])
+	if (legacy.bg[0] == legacy.bg[1])
 	{
-		j["bg"] = nlohmann::json::array({ legacy.bgInfos[0] });
+		j["bg"] = nlohmann::json::array({ legacy.bg[0] });
 	}
 	else
 	{
-		j["bg"] = legacy.bgInfos;
+		j["bg"] = legacy.bg;
 	}
 
-	if (legacy.layerInfos[0] == legacy.layerInfos[1])
+	if (!legacy.layer.empty())
 	{
-		j["layer"] = nlohmann::json::array({ legacy.layerInfos[0] });
-	}
-	else
-	{
-		j["layer"] = legacy.layerInfos;
+		j["layer"] = legacy.layer;
 	}
 
-	if (!legacy.movieInfos.filename.empty() || legacy.movieInfos.offsetMs != 0)
+	if (!legacy.movie.filename.empty() || legacy.movie.offset != 0)
 	{
-		j["movie"] = legacy.movieInfos;
+		j["movie"] = legacy.movie;
 	}
 }
 
 bool kson::LegacyBGInfo::empty() const
 {
-	return bgInfos.empty() && layerInfos.empty() && movieInfos.empty();
+	return nlohmann::json(*this).empty();
 }
 
 void kson::to_json(nlohmann::json& j, const BGInfo& bg)
