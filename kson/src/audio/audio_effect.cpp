@@ -35,74 +35,14 @@ kson::AudioEffectType kson::StrToAudioEffectType(std::string_view str)
 	}
 }
 
-void kson::to_json(nlohmann::json& j, const AudioEffectParams& params)
-{
-	j = nlohmann::json::object();
-
-	for (const auto& [name, value] : params)
-	{
-		if (value.value == value.valueOn)
-		{
-			if (value.valueOn == value.valueOnMax)
-			{
-				// "xxx"
-				j[name] = value.value;
-			}
-			else
-			{
-				// "xxx-yyy"
-				j[name] = value.value;
-				j[name + ".on.max"] = value.valueOnMax;
-			}
-		}
-		else
-		{
-			if (value.valueOn == value.valueOnMax)
-			{
-				// "xxx>yyy"
-				j[name] = value.value;
-				j[name + ".on"] = value.valueOn;
-			}
-			else
-			{
-				// "xxx>yyy-zzz"
-				j[name] = value.value;
-				j[name + ".on"] = value.valueOn;
-				j[name + ".on.max"] = value.valueOnMax;
-			}
-		}
-	}
-}
-
 void kson::to_json(nlohmann::json& j, const AudioEffectDef& def)
 {
 	j["type"] = def.type;
 
-	if (!nlohmann::json(def.params).empty())
+	if (!def.v.empty())
 	{
-		j["v"] = def.params;
+		j["v"] = def.v;
 	}
-}
-
-kson::AudioEffectParam::AudioEffectParam(double value)
-	: value(value)
-	, valueOn(value)
-	, valueOnMax(value)
-{
-}
-
-kson::AudioEffectParam::AudioEffectParam(double value, double valueOn)
-	: value(value)
-	, valueOn(valueOn)
-	, valueOnMax(valueOn)
-{
-}
-
-kson::AudioEffectParam::AudioEffectParam(double value, double valueOn, double valueOnMax)
-	: value(value)
-	, valueOn(valueOn)
-	, valueOnMax(valueOnMax)
-{
 }
 
 bool kson::AudioEffectFXInfo::empty() const
@@ -129,7 +69,6 @@ void kson::to_json(nlohmann::json& j, const AudioEffectFXInfo& fx)
 		j["long_invoke"] = fx.longInvoke;
 	}
 }
-
 
 bool kson::AudioEffectLaserInfo::empty() const
 {

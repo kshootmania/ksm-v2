@@ -113,10 +113,10 @@ namespace
 		};
 	}
 
-	std::tuple<std::string, std::int64_t, std::int64_t> SplitAudioEffectStr(std::string_view optionLine)
+	std::tuple<std::string, std::int32_t, std::int32_t> SplitAudioEffectStr(std::string_view optionLine)
 	{
 		// TODO: default values of params
-		using Tuple = std::tuple<std::string, std::int64_t, std::int64_t>;
+		using Tuple = std::tuple<std::string, std::int32_t, std::int32_t>;
 
 		const std::size_t semicolonIdx1 = optionLine.find_first_of(kAudioEffectStrSeparator);
 		if (semicolonIdx1 == std::string_view::npos)
@@ -125,13 +125,13 @@ namespace
 		}
 
 		const std::size_t semicolonIdx2 = optionLine.substr(semicolonIdx1 + 1).find_first_of(kAudioEffectStrSeparator);
-		const std::int64_t param1 = ParseNumeric<std::int64_t>(optionLine.substr(semicolonIdx1 + 1));
+		const std::int32_t param1 = ParseNumeric<std::int32_t>(optionLine.substr(semicolonIdx1 + 1));
 		if (semicolonIdx2 == std::string_view::npos)
 		{
 			return Tuple{ optionLine.substr(0, semicolonIdx1), param1, 0 };
 		}
 
-		const std::int64_t param2 = ParseNumeric<std::int64_t>(optionLine.substr(semicolonIdx1 + semicolonIdx2 + 2));
+		const std::int32_t param2 = ParseNumeric<std::int32_t>(optionLine.substr(semicolonIdx1 + semicolonIdx2 + 2));
 
 		return Tuple{ optionLine.substr(0, semicolonIdx1), param1, param2 };
 	}
@@ -432,8 +432,8 @@ namespace
 						// Store the value of the parameters in temporary keys
 						// (Since the conversion requires determining the type of audio effect, it is processed
 						//  after reading the "#define_fx"/"#define_filter" lines.)
-						{ "_param1", AudioEffectParam(static_cast<double>(audioEffectParamValue1)) },
-						{ "_param2", AudioEffectParam(static_cast<double>(audioEffectParamValue2)) },
+						{ "_param1", std::to_string(audioEffectParamValue1) },
+						{ "_param2", std::to_string(audioEffectParamValue2) },
 					});
 				}
 			}
@@ -1550,35 +1550,34 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 				// Convert temporary stored "_param1"/"_param2" values to parameter values for each audio effect type
 				if (params.contains("_param1") && params.contains("_param2"))
 				{
-					const std::int32_t param1 = static_cast<std::int32_t>(std::round(params.at("_param1").value));
-					const std::int32_t param2 = static_cast<std::int32_t>(std::round(params.at("_param2").value));
+					const std::string param1 = params.at("_param1");
+					const std::string param2 = params.at("_param2");
 
 					switch (type)
 					{
 					case AudioEffectType::Retrigger:
 					case AudioEffectType::Gate:
 					case AudioEffectType::Wobble:
-						if (param1 > 0)
+						if (ParseNumeric<std::int32_t>(param1) > 0)
 						{
-							params.emplace("wave_length", 1.0 / param1);
-							// Comment out as the default value is 1.0
-							//params.emplace("wave_length@tempo_sync", 1.0);
+							params.emplace("wave_length", "1/" + param1);
 						}
 						break;
 					case AudioEffectType::PitchShift:
-						params.emplace("pitch", static_cast<double>(param1));
+						params.emplace("pitch", param1);
 						break;
 					case AudioEffectType::Bitcrusher:
-						params.emplace("reduction", static_cast<double>(param1));
+						params.emplace("reduction", param1 + "samples");
 						break;
 					case AudioEffectType::Tapestop:
-						params.emplace("speed", param1 / 100.0);
+						params.emplace("speed", param1 + "%");
 						break;
 					case AudioEffectType::Echo:
-						params.emplace("wave_length", 1.0 / param1);
-						// Comment out as the default value is 1.0
-						//params.emplace("wave_length@tempo_sync", 1.0);
-						params.emplace("feedback", param2 / 100.0);
+						if (ParseNumeric<std::int32_t>(param1) > 0)
+						{
+							params.emplace("wave_length", "1/" + param1);
+						}
+						params.emplace("feedback", param2 + "%");
 						break;
 					};
 					

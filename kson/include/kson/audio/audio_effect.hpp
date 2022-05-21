@@ -42,30 +42,12 @@ namespace kson
 		{ AudioEffectType::PeakingFilter, "peaking_filter" },
 	});
 
-	struct AudioEffectParam
-	{
-		double value = 0.0;
-		double valueOn = 0.0;
-		double valueOnMax = 0.0;
-
-		AudioEffectParam() = default;
-
-		// Note: Implicit conversion from double to AudioEffectParam is allowed
-		AudioEffectParam(double value);
-
-		AudioEffectParam(double value, double valueOn);
-
-		AudioEffectParam(double value, double valueOn, double valueOnMax);
-	};
-
-	using AudioEffectParams = std::unordered_map<std::string, AudioEffectParam>;
-
-	void to_json(nlohmann::json& j, const AudioEffectParams& params);
+	using AudioEffectParams = std::unordered_map<std::string, std::string>;
 
 	struct AudioEffectDef
 	{
 		AudioEffectType type = AudioEffectType::Unspecified;
-		AudioEffectParams params;
+		AudioEffectParams v;
 	};
 
 	void to_json(nlohmann::json& j, const AudioEffectDef& def);
