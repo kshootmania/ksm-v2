@@ -44,8 +44,6 @@ namespace
 
 	kson::ByPulse<JudgmentResult> CreateLongNoteJudgmentArray(const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo)
 	{
-		const kson::Pulse unitMeasure = beatInfo.resolution * 4;
-
 		kson::ByPulse<JudgmentResult> judgmentArray;
 
 		for (const auto& [y, note] : lane) // TODO: merge two long notes if note1.y + note1.l == note2.y
@@ -55,8 +53,8 @@ namespace
 				// Determine whether to halve the combo based on the BPM at the start of the note
 				// (BPM changes during the notes are ignored)
 				const bool halvesCombo = kson::TimingUtils::PulseTempo(y, beatInfo) >= kHalveComboBPMThreshold;
-				const kson::RelPulse minPulseInterval = halvesCombo ? (unitMeasure * 3 / 8) : (unitMeasure * 3 / 16);
-				const kson::RelPulse pulseInterval = halvesCombo ? (unitMeasure / 8) : (unitMeasure / 16);
+				const kson::RelPulse minPulseInterval = halvesCombo ? (kson::kResolution4 * 3 / 8) : (kson::kResolution4 * 3 / 16);
+				const kson::RelPulse pulseInterval = halvesCombo ? (kson::kResolution4 / 8) : (kson::kResolution4 / 16);
 
 				if (note.length <= minPulseInterval)
 				{

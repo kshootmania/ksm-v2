@@ -17,9 +17,9 @@ namespace
 	}
 }
 
-MusicGame::Graphics::GaugePanel::GaugePanel(GaugeType gaugeType, kson::Pulse pulseResolution)
+MusicGame::Graphics::GaugePanel::GaugePanel(GaugeType gaugeType)
 	: m_gaugeType(gaugeType)
-	, m_intervalPulse((pulseResolution * 4) * 3 / 2) // 1.5 measure
+	, m_intervalPulse(kson::kResolution4 * 3 / 2) // 1.5 measure
 	, m_baseTexture(kBaseTextureFilename,
 		{
 			.column = kNumGaugeTypes * 2,

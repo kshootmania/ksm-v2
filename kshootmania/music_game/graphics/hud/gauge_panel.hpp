@@ -16,7 +16,7 @@ namespace MusicGame::Graphics
 		const NumberFontTexture m_percentNumberFontTexture;
 
 	public:
-		GaugePanel(GaugeType gaugeType, kson::Pulse pulseResolution);
+		explicit GaugePanel(GaugeType gaugeType);
 
 		void draw(double percent, kson::Pulse currentPulse) const;
 	};

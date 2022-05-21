@@ -34,12 +34,12 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const UpdateIn
 		const auto& lane = isBT ? chartData.note.btLanes[laneIdx] : chartData.note.fxLanes[laneIdx];
 		for (const auto& [y, note] : lane)
 		{
-			if (y + note.length < updateInfo.currentPulse - chartData.beat.resolution)
+			if (y + note.length < updateInfo.currentPulse - kson::kResolution)
 			{
 				continue;
 			}
 
-			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / kson::kResolution;
 			if (positionStartY < 0)
 			{
 				break;
@@ -81,12 +81,12 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const UpdateIn
 		const auto& lane = isBT ? chartData.note.btLanes[laneIdx] : chartData.note.fxLanes[laneIdx];
 		for (const auto& [y, note] : lane)
 		{
-			if (y + note.length < updateInfo.currentPulse - chartData.beat.resolution)
+			if (y + note.length < updateInfo.currentPulse - kson::kResolution)
 			{
 				continue;
 			}
 
-			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / kson::kResolution;
 			if (positionStartY < 0)
 			{
 				break;
@@ -94,7 +94,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const UpdateIn
 
 			if (note.length > 0)
 			{
-				const double positionEndY = highwayTextureHeight - static_cast<double>(y + note.length - updateInfo.currentPulse) * 480 / chartData.beat.resolution;
+				const double positionEndY = highwayTextureHeight - static_cast<double>(y + note.length - updateInfo.currentPulse) * 480 / kson::kResolution;
 				for (int32 i = 0; i < (isBT ? 2 : 1); ++i) // Note: Long BT note has additional texture for invMultiplyTarget
 				{
 					const ScopedRenderTarget2D renderTarget((i == 0) ? additiveTarget : invMultiplyTarget);
@@ -120,7 +120,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const UpdateIn
 					const int32 width = isBT ? 40 : 82;
 					const Vec2 position = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * laneIdx + Vec2::Down(positionEndY);
 					sourceTexture(width * i, sourceY + kOnePixelTextureSourceOffset, width, kOnePixelTextureSourceSize)
-						.resized(width, static_cast<double>(note.length) * 480 / chartData.beat.resolution)
+						.resized(width, static_cast<double>(note.length) * 480 / kson::kResolution)
 						.draw(position);
 				}
 			}

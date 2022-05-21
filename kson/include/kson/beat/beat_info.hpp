@@ -6,11 +6,9 @@ namespace kson
 {
 	struct BeatInfo
 	{
-		ByPulse<double> bpmChanges;
+		ByPulse<double> bpm;
 
-		ByMeasureIdx<TimeSig> timeSigChanges;
-
-		Pulse resolution = kResolution; // TODO: delete this
+		ByMeasureIdx<TimeSig> timeSig;
 	};
 
 	void to_json(nlohmann::json& j, const BeatInfo& beatInfo);

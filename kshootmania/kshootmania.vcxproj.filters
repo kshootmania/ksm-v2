@@ -387,7 +387,7 @@
     <ClCompile Include="common\asset_management.cpp">
       <Filter>Source Files\common</Filter>
     </ClCompile>
-    <ClCompile Include="music_game\audio\audio_effect_timeline.cpp">
+    <ClCompile Include="music_game\audio\audio_effect_utils.cpp">
       <Filter>Source Files\music_game\audio</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1186,7 +1186,7 @@
     <ClInclude Include="common\asset_management.hpp">
       <Filter>Header Files\common</Filter>
     </ClInclude>
-    <ClInclude Include="music_game\audio\audio_effect_timeline.hpp">
+    <ClInclude Include="music_game\audio\audio_effect_utils.hpp">
       <Filter>Header Files\music_game\audio</Filter>
     </ClInclude>
   </ItemGroup>

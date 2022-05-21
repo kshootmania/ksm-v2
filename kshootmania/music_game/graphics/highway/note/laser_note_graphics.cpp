@@ -84,7 +84,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 			const auto& lane = chartData.note.laserLanes[laneIdx];
 			for (const auto& [y, laserSection] : lane)
 			{
-				const double positionSectionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY;
+				const double positionSectionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y - updateInfo.currentPulse) * 480 / kson::kResolution + kLaserShiftY;
 				if (positionSectionStartY + kLaserStartTextureSize.y < 0)
 				{
 					// Laser section is above the drawing area
@@ -103,14 +103,14 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 							const ScopedRenderTarget2D renderTarget((i == 0) ? additiveTarget : invMultiplyTarget);
 							const Vec2 positionStart = {
 								point.v * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-								static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
+								static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / kson::kResolution + kLaserShiftY
 							};
 							const TiledTexture& startTexture = (laneIdx == 0) ? m_laserNoteLeftStartTexture : m_laserNoteRightStartTexture;
 							startTexture(0, i).draw(Arg::topCenter = positionStart);
 						}
 					}
 
-					const double positionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY;
+					const double positionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / kson::kResolution + kLaserShiftY;
 					if (positionStartY < 0)
 					{
 						// Laser point is above the drawing area
@@ -122,12 +122,12 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 					{
 						const Vec2 positionStart = {
 							point.v * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
+							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / kson::kResolution + kLaserShiftY
 						};
 
 						const Vec2 positionEnd = {
 							point.vf * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
+							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / kson::kResolution + kLaserShiftY
 						};
 
 						const bool isLeftToRight = (point.v < point.vf);
@@ -151,7 +151,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 						{
 							const Vec2 positionStart = {
 								point.vf * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-								static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
+								static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / kson::kResolution + kLaserShiftY
 							};
 							const Quad quad = LaserLineQuad(positionStart + Vec2{ 0.0, -kLaserTextureSize.y }, positionStart + Vec2{ 0.0, -kLaserTextureSize.y - 80.0 });
 
@@ -168,19 +168,19 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, 
 					// Draw laser line by two laser points
 					{
 						const auto& [nextRy, nextPoint] = *nextItr;
-						if (y + nextRy < updateInfo.currentPulse - chartData.beat.resolution)
+						if (y + nextRy < updateInfo.currentPulse - kson::kResolution)
 						{
 							continue;
 						}
 
 						const Vec2 positionStart = {
 							point.vf * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
+							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + ry - updateInfo.currentPulse) * 480 / kson::kResolution + kLaserShiftY
 						};
 
 						const Vec2 positionEnd = {
 							nextPoint.v * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + nextRy - updateInfo.currentPulse) * 480 / chartData.beat.resolution + kLaserShiftY
+							static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y + nextRy - updateInfo.currentPulse) * 480 / kson::kResolution + kLaserShiftY
 						};
 
 						const Quad quad = LaserLineQuad(positionStart + ((point.v != point.vf) ? Vec2{ 0.0, -kLaserTextureSize.y } : Vec2::Zero()), positionEnd);

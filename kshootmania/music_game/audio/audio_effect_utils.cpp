@@ -1,4 +1,4 @@
-﻿#include "music_game/audio/audio_effect_timeline.hpp"
+﻿#include "music_game/audio/audio_effect_utils.hpp"
 
 namespace
 {
@@ -30,9 +30,9 @@ namespace
 
 namespace MusicGame::Audio::AudioEffectUtils
 {
-	std::set<double> CreateTriggerUpdateTimingSet(bool isFX, const std::string& name, std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+	std::set<double> PrecalculateUpdateTriggerTiming(bool isFX, const std::string& audioEffectName, std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
 	{
-		const auto& def = isFX ? chartData.audio.audioEffects.fx.def.at(name) : chartData.audio.audioEffects.laser.def.at(name);
+		const auto& def = isFX ? chartData.audio.audioEffects.fx.def.at(audioEffectName) : chartData.audio.audioEffects.laser.def.at(audioEffectName);
 
 		bool barLineOnly;
 		switch (def.type)
@@ -65,7 +65,7 @@ namespace MusicGame::Audio::AudioEffectUtils
 
 		// Note: The edge case behavior of UpdatePeriod is different from HSP version, but is intended.
 
-		const auto& paramChangeDict = isFX ? chartData.audio.audioEffects.fx.paramChange.at(name) : chartData.audio.audioEffects.laser.paramChange.at(name);
+		const auto& paramChangeDict = isFX ? chartData.audio.audioEffects.fx.paramChange.at(audioEffectName) : chartData.audio.audioEffects.laser.paramChange.at(audioEffectName);
 		const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : kUpdatePeriodDefault);
 		if (!paramChangeDict.contains(kUpdatePeriodKey) || paramChangeDict.at(kUpdatePeriodKey).empty())
 		{

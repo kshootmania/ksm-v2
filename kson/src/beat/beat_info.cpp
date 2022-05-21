@@ -2,36 +2,28 @@
 
 void kson::to_json(nlohmann::json& j, const BeatInfo& beatInfo)
 {
-	nlohmann::json bpmChanges = nlohmann::json::array();
-	for (const auto [y, bpm] : beatInfo.bpmChanges)
+	nlohmann::json bpm = nlohmann::json::array();
+	for (const auto [y, v] : beatInfo.bpm)
 	{
-		bpmChanges.push_back({
+		bpm.push_back({
 			{ "y", y },
-			{ "v", bpm },
+			{ "v", v },
 		});
 	}
 
 	j = {
-		{ "bpm", bpmChanges },
-		{ "time_sig", beatInfo.timeSigChanges },
+		{ "bpm", bpm },
 	};
 
-	if (beatInfo.resolution != kResolution)
+	const auto itr = beatInfo.timeSig.begin();
+	if (beatInfo.timeSig.size() != 1U || itr->first != 0 || itr->second.numerator != 4 || itr->second.denominator != 4)
 	{
-		j["resolution"] = beatInfo.resolution;
+		j["time_sig"] = beatInfo.timeSig;
 	}
 }
 
 void kson::from_json(const nlohmann::json& j, BeatInfo& beatInfo)
 {
-	j.at("bpm").get_to(beatInfo.bpmChanges);
-	j.at("time_sig").get_to(beatInfo.timeSigChanges);
-	if (j.contains("resolution"))
-	{
-		j.at("resolution").get_to(beatInfo.resolution);
-	}
-	else
-	{
-		beatInfo.resolution = kResolution;
-	}
+	j.at("bpm").get_to(beatInfo.bpm);
+	j.at("time_sig").get_to(beatInfo.timeSig);
 }

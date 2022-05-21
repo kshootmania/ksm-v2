@@ -90,8 +90,7 @@ void MusicGame::Graphics::GraphicsMain::drawLayer() const
 	}
 
 	// TODO: Layer speed specified by KSH
-	const kson::Pulse resolution = m_updateInfo.pChartData->beat.resolution;
-	const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / (resolution * 4)), static_cast<int32>(m_layerFrameTextures[0].size()));
+	const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / kson::kResolution4), static_cast<int32>(m_layerFrameTextures[0].size()));
 	m_bgBillboardMesh.draw(m_layerTransform * TiltTransformMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
 }
 
@@ -103,7 +102,7 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const kson::ChartData& chartData
 	, m_layerFrameTextures(SplitLayerTexture(LayerFilePath(chartData)))
 	, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
 	, m_songInfoPanel(chartData)
-	, m_gaugePanel(kNormalGauge/* TODO: gauge type */, chartData.beat.resolution)
+	, m_gaugePanel(kNormalGauge/* TODO: gauge type */)
 	, m_initialPulse(kson::TimingUtils::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
 {
 }

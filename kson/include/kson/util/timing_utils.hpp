@@ -14,7 +14,7 @@ namespace kson
 
 	namespace TimingUtils
 	{
-		Pulse TimeSigMeasurePulse(const TimeSig& timeSig, Pulse resolution);
+		Pulse TimeSigMeasurePulse(const TimeSig& timeSig);
 
 		TimingCache CreateTimingCache(const BeatInfo& beatInfo);
 

@@ -449,12 +449,12 @@ namespace
 		}
 	};
 
-	Pulse KSHLengthToMeasure(std::string_view str, Pulse resolution)
+	Pulse KSHLengthToMeasure(std::string_view str)
 	{
-		return ParseNumeric<Pulse>(str) * resolution * 4 / 192;
+		return ParseNumeric<Pulse>(str) * kResolution4 / 192;
 	}
 
-	std::tuple<Pulse, std::int32_t, std::int32_t, std::int32_t> SplitSwingParams(std::string_view paramStr, Pulse resolution)
+	std::tuple<Pulse, std::int32_t, std::int32_t, std::int32_t> SplitSwingParams(std::string_view paramStr)
 	{
 		std::array<std::string, 4> params{
 			"192", "250", "3", "2"
@@ -471,7 +471,7 @@ namespace
 		}
 
 		return std::make_tuple(
-			KSHLengthToMeasure(params[0], resolution),
+			KSHLengthToMeasure(params[0]),
 			ParseNumeric<std::int32_t>(params[1]),
 			ParseNumeric<std::int32_t>(params[2]),
 			ParseNumeric<std::int32_t>(params[3]));
@@ -508,7 +508,7 @@ namespace
 
 		std::int32_t swingDecayOrder = 0;
 
-		static PreparedLaneSpin FromKSHSpinStr(std::string_view strFromKsh, Pulse resolution) // From .ksh spin string (example: "@(192")
+		static PreparedLaneSpin FromKSHSpinStr(std::string_view strFromKsh) // From .ksh spin string (example: "@(192")
 		{
 			// A .ksh spin string should have at least 3 chars
 			if (strFromKsh.length() < 3)
@@ -588,11 +588,11 @@ namespace
 			}
 			else if (type == Type::kSwing)
 			{
-				std::tie(duration, swingAmplitude, swingRepeat, swingDecayOrder) = SplitSwingParams(strFromKsh.substr(2), resolution);
+				std::tie(duration, swingAmplitude, swingRepeat, swingDecayOrder) = SplitSwingParams(strFromKsh.substr(2));
 			}
 			else
 			{
-				duration = KSHLengthToMeasure(strFromKsh.substr(2), resolution);
+				duration = KSHLengthToMeasure(strFromKsh.substr(2));
 			}
 
 			return {
@@ -763,7 +763,7 @@ namespace
 			assert(m_values.size() >= 2);
 
 			// Convert a 32th or shorter laser segment to a laser slam
-			const Pulse laserSlamThreshold = m_pTargetChartData->beat.resolution * 4 / 32;
+			const Pulse laserSlamThreshold = kResolution4 / 32;
 			ByRelPulse<GraphValue> convertedGraphSection;
 			for (auto itr = m_values.cbegin(); itr != m_values.cend(); ++itr)
 			{
@@ -1010,12 +1010,12 @@ namespace
 					firstTimeSig = ParseTimeSig(metaDataHashMap.at("beat"));
 					metaDataHashMap.erase("beat");
 				}
-				chartData.beat.timeSigChanges.emplace(0, firstTimeSig);
+				chartData.beat.timeSig.emplace(0, firstTimeSig);
 
 				// Insert the first tempo change
 				if (metaDataHashMap.contains("t")) [[likely]]
 				{
-					InsertBPMChange(chartData.beat.bpmChanges, 0, metaDataHashMap.at("t"));
+					InsertBPMChange(chartData.beat.bpm, 0, metaDataHashMap.at("t"));
 				}
 			}
 			chartData.meta.dispBPM = Pop(metaDataHashMap, "t", "");
@@ -1134,13 +1134,13 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 	bool isUTF8;
 	ChartData chartData = CreateChartDataFromMetaDataStream<ChartData>(stream, &isUTF8);
 
-	assert(chartData.beat.timeSigChanges.contains(0));
-	TimeSig currentTimeSig = chartData.beat.timeSigChanges.at(0);
+	assert(chartData.beat.timeSig.contains(0));
+	TimeSig currentTimeSig = chartData.beat.timeSig.at(0);
 
 	double currentTempo = 120.0;
-	if (chartData.beat.bpmChanges.contains(0))
+	if (chartData.beat.bpm.contains(0))
 	{
-		currentTempo = chartData.beat.bpmChanges.at(0);
+		currentTempo = chartData.beat.bpm.at(0);
 	}
 
 	const std::int32_t kshVersionInt = ParseNumeric<std::int32_t>(chartData.compat.kshVersion, 170);
@@ -1214,7 +1214,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 			else if (key == "beat")
 			{
 				currentTimeSig = ParseTimeSig(value);
-				chartData.beat.timeSigChanges.emplace(currentMeasureIdx, currentTimeSig);
+				chartData.beat.timeSig.emplace(currentMeasureIdx, currentTimeSig);
 			}
 			else
 			{
@@ -1228,7 +1228,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 		else if (IsBarLine(line))
 		{
 			const std::size_t bufLineCount = chartLines.size();
-			const Pulse oneLinePulse = chartData.beat.resolution * 4 * currentTimeSig.numerator / currentTimeSig.denominator / bufLineCount;
+			const Pulse oneLinePulse = kResolution4 * currentTimeSig.numerator / currentTimeSig.denominator / bufLineCount;
 
 			// Add options that require their position
 			for (const auto& [lineIdx, key, value] : optionLines)
@@ -1236,14 +1236,14 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 				const Pulse time = currentPulse + lineIdx * oneLinePulse;
 				if (key == "t")
 				{
-					if (chartData.beat.bpmChanges.empty()) [[unlikely]]
+					if (chartData.beat.bpm.empty()) [[unlikely]]
 					{
 						// In rare cases where BPM is not specified on the chart metadata
-						InsertBPMChange(chartData.beat.bpmChanges, 0, value);
+						InsertBPMChange(chartData.beat.bpm, 0, value);
 					}
 					else
 					{
-						InsertBPMChange(chartData.beat.bpmChanges, time, value);
+						InsertBPMChange(chartData.beat.bpm, time, value);
 					}
 				}
 				else if (key == "zoom_top")
@@ -1455,7 +1455,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 					else if (currentBlock == kBlockIdxLaser && laneIdx == kNumLaserLanes) // Lane spin
 					{
 						// Create a lane spin from string
-						const PreparedLaneSpin laneSpin = PreparedLaneSpin::FromKSHSpinStr(buf.substr(j), chartData.beat.resolution);
+						const PreparedLaneSpin laneSpin = PreparedLaneSpin::FromKSHSpinStr(buf.substr(j));
 						if (laneSpin.isValid())
 						{
 							// Assign to the laser point if valid
@@ -1491,7 +1491,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 			{
 				map.clear();
 			}
-			currentPulse += chartData.beat.resolution * 4 * currentTimeSig.numerator / currentTimeSig.denominator;
+			currentPulse += kResolution4 * currentTimeSig.numerator / currentTimeSig.denominator;
 			++currentMeasureIdx;
 		}
 		else
