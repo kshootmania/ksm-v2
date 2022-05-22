@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <set>
 #include <unordered_map>
 #include <concepts>
 #include "stream.hpp"
@@ -26,6 +27,8 @@ namespace ksmaudio
 
 		void stop() const;
 
+		void updateManually() const;
+
 		double posSec() const;
 
 		void seekPosSec(double timeSec) const;
@@ -37,7 +40,8 @@ namespace ksmaudio
 		std::size_t numChannels() const;
 
 		template <typename T>
-		void emplaceAudioEffect(const std::string& name, const std::unordered_map<std::string, std::string>& params = {}) requires std::derived_from<T, AudioEffect::IAudioEffect>
+		void emplaceAudioEffect(const std::string& name, const std::unordered_map<std::string, std::string>& params = {}, const std::set<float>& updateTriggerTiming = {})
+			requires std::derived_from<T, AudioEffect::IAudioEffect>
 		{
 			auto audioEffect = std::make_unique<T>(sampleRate(), numChannels());
 
@@ -46,6 +50,11 @@ namespace ksmaudio
 				audioEffect->setParamValueSet(paramName, valueSetStr);
 			}
 			audioEffect->updateStatus(AudioEffect::Status{});
+
+			if constexpr (std::is_base_of_v<AudioEffect::IUpdateTrigger, T>)
+			{
+				audioEffect->setUpdateTriggerTiming(updateTriggerTiming);
+			}
 
 			m_audioEffects.insert_or_assign(name, std::move(audioEffect));
 

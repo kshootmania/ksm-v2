@@ -1,5 +1,6 @@
 ﻿#include "game_main.hpp"
 #include "game_defines.hpp"
+#include "audio/audio_effect_utils.hpp"
 #include "kson/io/ksh_io.hpp"
 
 namespace
@@ -29,6 +30,48 @@ namespace
 	}
 }
 
+void MusicGame::GameMain::registerAudioEffects()
+{
+	const std::int64_t maxMeasureIdx = kson::TimingUtils::MsToMeasureIdx(MathUtils::SecToMs(m_bgm.durationSec()), m_chartData.beat, m_timingCache);
+	const std::int64_t measureCount = maxMeasureIdx + 1;
+	const std::int64_t totalMeasures = measureCount + 1;
+
+	// FX
+	for (const auto& [name, def] : m_chartData.audio.audioEffects.fx.def)
+	{
+		const auto& paramChangeDict = m_chartData.audio.audioEffects.fx.paramChange;
+		const std::set<float> updateTriggerTiming =
+			paramChangeDict.contains(name)
+				? Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, m_chartData, m_timingCache)
+				: Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
+
+		m_bgm.emplaceAudioEffect("fx:" + name, def, updateTriggerTiming);
+	}
+
+	// Laser
+	for (const auto& [name, def] : m_chartData.audio.audioEffects.laser.def)
+	{
+		const auto& paramChangeDict = m_chartData.audio.audioEffects.laser.paramChange;
+		const std::set<float> updateTriggerTiming =
+			paramChangeDict.contains(name)
+			? Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, m_chartData, m_timingCache)
+			: Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
+
+		m_bgm.emplaceAudioEffect("laser:" + name, def, updateTriggerTiming);
+	}
+
+	const kson::AudioEffectDef def_ = kson::AudioEffectDef{
+		.type = kson::AudioEffectType::Retrigger,
+		.v = {
+			{ "wave_length", "1/8" },
+			{ "mix", "0%>100%" },
+		},
+	};
+	const auto updateTriggerTiming_ = Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(
+		def_, totalMeasures, m_chartData, m_timingCache);
+	m_bgm.emplaceAudioEffect("retr", def_, updateTriggerTiming_);
+}
+
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	: m_chartData(kson::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
 	, m_timingCache(kson::TimingUtils::CreateTimingCache(m_chartData.beat))
@@ -48,6 +91,8 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
 	, m_musicGameGraphics(m_chartData, m_timingCache)
 {
+	registerAudioEffects();
+
 	m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 	m_bgm.play();
 }
@@ -61,9 +106,11 @@ void MusicGame::GameMain::update()
 
 	const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
 
+	const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
+
 	m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
 	m_graphicsUpdateInfo.currentPulse = currentPulse;
-	m_graphicsUpdateInfo.currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
+	m_graphicsUpdateInfo.currentBPM = currentBPM;
 
 	for (int i = 0; i < kson::kNumBTLanes; ++i)
 	{
@@ -76,6 +123,13 @@ void MusicGame::GameMain::update()
 	}
 
 	m_graphicsUpdateInfo.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax); // TODO: add laser
+
+	m_bgm.updateAudioEffectStatus({
+		.isOn = MouseL.pressed()/*TODO*/,
+		.v = 0.0f,
+		.bpm = static_cast<float>(currentBPM),
+		.sec = static_cast<float>(currentTimeSec) + 0.1f,//MathUtils::MsToSec<float>(ksmaudio::kBufferSizeMs),
+	});
 
 	m_musicGameGraphics.update(m_graphicsUpdateInfo);
 }

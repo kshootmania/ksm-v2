@@ -34,6 +34,8 @@ namespace MusicGame
 		Graphics::UpdateInfo m_graphicsUpdateInfo;
 		Graphics::GraphicsMain m_musicGameGraphics;
 
+		void registerAudioEffects();
+
 	public:
 		explicit GameMain(const GameCreateInfo& gameCreateInfo);
 

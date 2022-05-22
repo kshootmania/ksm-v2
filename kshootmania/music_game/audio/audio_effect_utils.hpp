@@ -5,5 +5,16 @@
 
 namespace MusicGame::Audio::AudioEffectUtils
 {
-	std::set<double> PrecalculateUpdateTriggerTiming(bool isFX, const std::string& audioEffectName, std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache);
+	std::set<float> PrecalculateUpdateTriggerTiming(
+		const kson::AudioEffectDef& def,
+		const kson::Dict<kson::ByPulse<std::string>>& paramChange,
+		std::int64_t totalMeasures,
+		const kson::ChartData& chartData,
+		const kson::TimingCache& timingCache);
+
+	std::set<float> PrecalculateUpdateTriggerTiming(
+		const kson::AudioEffectDef& def,
+		std::int64_t totalMeasures,
+		const kson::ChartData& chartData,
+		const kson::TimingCache& timingCache);
 }

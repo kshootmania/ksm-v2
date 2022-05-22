@@ -51,6 +51,11 @@ namespace ksmaudio
 		BASS_ChannelStop(m_hStream);
 	}
 
+	void Stream::updateManually() const
+	{
+		BASS_ChannelUpdate(m_hStream, 0);
+	}
+
 	double Stream::posSec() const
 	{
 		return BASS_ChannelBytes2Seconds(m_hStream, BASS_ChannelGetPosition(m_hStream, BASS_POS_BYTE));

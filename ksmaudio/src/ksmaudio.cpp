@@ -1,14 +1,6 @@
 #include "ksmaudio/ksmaudio.hpp"
 #include "bass.h"
 
-namespace
-{
-	constexpr DWORD kSampleRate = 44100;
-	constexpr DWORD kBufferSizeMs = 200;
-	constexpr DWORD kUpdatePeriodMs = 100;
-	constexpr DWORD kUpdateThreads = 2;
-}
-
 namespace ksmaudio
 {
 	void Init(void* hWnd)

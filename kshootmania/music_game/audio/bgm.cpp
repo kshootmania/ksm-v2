@@ -8,8 +8,8 @@ namespace
 }
 
 MusicGame::Audio::BGM::BGM(FilePathView filePath)
-	: m_audio(filePath.toUTF8())
-	, m_durationSec(m_audio.durationSec())
+	: m_stream(filePath.toUTF8())
+	, m_durationSec(m_stream.durationSec())
 	, m_stopwatch(StartImmediately::No)
 {
 }
@@ -23,7 +23,7 @@ void MusicGame::Audio::BGM::update()
 
 	if (m_isStreamStarted)
 	{
-		m_timeSec = m_audio.posSec();
+		m_timeSec = m_stream.posSec();
 
 		if (m_timeSec < m_durationSec - kBlendTimeSec)
 		{
@@ -37,11 +37,17 @@ void MusicGame::Audio::BGM::update()
 
 		if (m_timeSec >= 0.0)
 		{
-			m_audio.seekPosSec(m_timeSec);
-			m_audio.play();
+			m_stream.seekPosSec(m_timeSec);
+			m_stream.play();
 			m_isStreamStarted = true;
 		}
 	}
+}
+
+void MusicGame::Audio::BGM::updateAudioEffectStatus(const ksmaudio::AudioEffect::Status& status)
+{
+	m_stream.updateAudioEffectStatus(status);
+	m_stream.updateManually();
 }
 
 void MusicGame::Audio::BGM::play()
@@ -55,7 +61,7 @@ void MusicGame::Audio::BGM::pause()
 {
 	if (m_isStreamStarted)
 	{
-		m_audio.pause();
+		m_stream.pause();
 	}
 	m_stopwatch.pause();
 	m_isPaused = true;
@@ -65,11 +71,11 @@ void MusicGame::Audio::BGM::seekPosSec(double posSec)
 {
 	if (posSec < 0.0)
 	{
-		m_audio.stop();
+		m_stream.stop();
 	}
 	else
 	{
-		m_audio.seekPosSec(posSec);
+		m_stream.seekPosSec(posSec);
 	}
 	m_timeSec = posSec;
 	m_stopwatch.set(SecondsF{ posSec });
@@ -97,4 +103,27 @@ double MusicGame::Audio::BGM::posSec() const
 	}
 
 	return m_timeSec;
+}
+
+double MusicGame::Audio::BGM::durationSec() const
+{
+	return m_durationSec;
+}
+
+void MusicGame::Audio::BGM::emplaceAudioEffect(const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
+{
+	switch (def.type)
+	{
+	case kson::AudioEffectType::Retrigger:
+		m_stream.emplaceAudioEffect<ksmaudio::Retrigger>(name, def.v, updateTriggerTiming);
+		break;
+
+	case kson::AudioEffectType::Flanger:
+		m_stream.emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, updateTriggerTiming);
+		break;
+
+	case kson::AudioEffectType::Bitcrusher:
+		m_stream.emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, updateTriggerTiming);
+		break;
+	}
 }

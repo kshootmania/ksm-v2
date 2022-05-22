@@ -26,102 +26,130 @@ namespace
 		const kson::Pulse endY = kson::TimingUtils::MeasureIdxToPulse(measureIdx + 1, beatInfo, timingCache);
 		return { startY, endY };
 	}
+
+	std::set<float> PrecalculateUpdateTriggerTimingBarLineOnly(std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+	{
+		std::set<float> timingSet;
+		for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
+		{
+			const float sec = MathUtils::MsToSec<float>(kson::TimingUtils::MeasureIdxToMs(measureIdx, chartData.beat, timingCache));
+			timingSet.insert(sec);
+		}
+		return timingSet;
+	}
+
+	std::set<float> PrecalculateUpdateTriggerTimingRetriggerWithoutParamChange(const kson::AudioEffectDef& def, std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+	{
+		const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : kUpdatePeriodDefault);
+		if (defDy <= 0)
+		{
+			return {};
+		}
+
+		std::set<float> timingSet;
+		for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
+		{
+			const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
+			for (kson::Pulse y = startY; y < endY; y += defDy)
+			{
+				const float sec = MathUtils::MsToSec<float>(kson::TimingUtils::PulseToMs(y, chartData.beat, timingCache));
+				timingSet.insert(sec);
+			}
+		}
+		return timingSet;
+	}
+
+	std::set<float> PrecalculateUpdateTriggerTimingRetrigger(const kson::AudioEffectDef& def, const kson::Dict<kson::ByPulse<std::string>>& paramChange, std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+	{
+		// Note: The edge case behavior of UpdatePeriod is different from HSP version, but is intended.
+
+		if (!paramChange.contains(kUpdatePeriodKey) || paramChange.at(kUpdatePeriodKey).empty())
+		{
+			return PrecalculateUpdateTriggerTimingRetriggerWithoutParamChange(def, totalMeasures, chartData, timingCache);
+		}
+
+		const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : kUpdatePeriodDefault);
+		const auto& updatePeriodChanges = paramChange.at(kUpdatePeriodKey);
+		std::set<float> timingSet;
+		for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
+		{
+			const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
+			const std::size_t count = kson::CountInRange(updatePeriodChanges, startY, endY);
+			if (count == 0U) [[likely]]
+			{
+				const kson::RelPulse dy = ParamChangeUpdatePeriodDyAt(updatePeriodChanges, startY, defDy);
+				if (dy > 0)
+				{
+					for (kson::Pulse y = startY; y < endY; y += dy)
+					{
+						const float sec = MathUtils::MsToSec<float>(kson::TimingUtils::PulseToMs(y, chartData.beat, timingCache));
+						timingSet.insert(sec);
+					}
+				}
+			}
+			else
+			{
+				// Inefficient, but not that slow
+				for (kson::Pulse ry = 0; ry < endY - startY; ++ry)
+				{
+					const kson::Pulse y = startY + ry;
+					const kson::RelPulse dy = ParamChangeUpdatePeriodDyAt(updatePeriodChanges, y, defDy);
+					if (ry % dy == 0)
+					{
+						const float sec = MathUtils::MsToSec<float>(kson::TimingUtils::PulseToMs(y, chartData.beat, timingCache));
+						timingSet.insert(sec);
+					}
+				}
+			}
+		}
+		return timingSet;
+	}
 }
 
 namespace MusicGame::Audio::AudioEffectUtils
 {
-	std::set<double> PrecalculateUpdateTriggerTiming(bool isFX, const std::string& audioEffectName, std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+	std::set<float> PrecalculateUpdateTriggerTiming(
+		const kson::AudioEffectDef& def,
+		const kson::Dict<kson::ByPulse<std::string>>& paramChange,
+		std::int64_t totalMeasures,
+		const kson::ChartData& chartData,
+		const kson::TimingCache& timingCache)
 	{
-		const auto& def = isFX ? chartData.audio.audioEffects.fx.def.at(audioEffectName) : chartData.audio.audioEffects.laser.def.at(audioEffectName);
-
-		bool barLineOnly;
 		switch (def.type)
 		{
 		case kson::AudioEffectType::Retrigger:
 		case kson::AudioEffectType::Echo:
-			barLineOnly = false;
-			break;
+			return PrecalculateUpdateTriggerTimingRetrigger(def, paramChange, totalMeasures, chartData, timingCache);
 
 		case kson::AudioEffectType::Gate:
 		case kson::AudioEffectType::Wobble:
 		case kson::AudioEffectType::Sidechain:
-			barLineOnly = true;
-			break;
+			return PrecalculateUpdateTriggerTimingBarLineOnly(totalMeasures, chartData, timingCache);
 
 		default:
 			return {};
 		}
+	}
 
-		if (barLineOnly)
+	std::set<float> PrecalculateUpdateTriggerTiming(
+		const kson::AudioEffectDef& def,
+		std::int64_t totalMeasures,
+		const kson::ChartData& chartData,
+		const kson::TimingCache& timingCache)
+	{
+		switch (def.type)
 		{
-			std::set<double> timingSet;
-			for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
-			{
-				const double sec = MathUtils::MsToSec(kson::TimingUtils::MeasureIdxToMs(measureIdx, chartData.beat, timingCache));
-				timingSet.insert(sec);
-			}
-			return timingSet;
-		}
+		case kson::AudioEffectType::Retrigger:
+		case kson::AudioEffectType::Echo:
+			return PrecalculateUpdateTriggerTimingRetriggerWithoutParamChange(def, totalMeasures, chartData, timingCache);
 
-		// Note: The edge case behavior of UpdatePeriod is different from HSP version, but is intended.
+		case kson::AudioEffectType::Gate:
+		case kson::AudioEffectType::Wobble:
+		case kson::AudioEffectType::Sidechain:
+			return PrecalculateUpdateTriggerTimingBarLineOnly(totalMeasures, chartData, timingCache);
 
-		const auto& paramChangeDict = isFX ? chartData.audio.audioEffects.fx.paramChange.at(audioEffectName) : chartData.audio.audioEffects.laser.paramChange.at(audioEffectName);
-		const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : kUpdatePeriodDefault);
-		if (!paramChangeDict.contains(kUpdatePeriodKey) || paramChangeDict.at(kUpdatePeriodKey).empty())
-		{
-			if (defDy <= 0)
-			{
-				return {};
-			}
-
-			std::set<double> timingSet;
-			for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
-			{
-				const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
-				for (kson::Pulse y = startY; y < endY; y += defDy)
-				{
-					const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y, chartData.beat, timingCache));
-					timingSet.insert(sec);
-				}
-			}
-			return timingSet;
-		}
-
-		{
-			const auto& updatePeriodChanges = paramChangeDict.at(kUpdatePeriodKey);
-			std::set<double> timingSet;
-			for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
-			{
-				const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
-				const std::size_t count = kson::CountInRange(updatePeriodChanges, startY, endY);
-				if (count == 0U) [[likely]]
-				{
-					const kson::RelPulse dy = ParamChangeUpdatePeriodDyAt(updatePeriodChanges, startY, defDy);
-					if (dy > 0)
-					{
-						for (kson::Pulse y = startY; y < endY; y += dy)
-						{
-							const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y, chartData.beat, timingCache));
-							timingSet.insert(sec);
-						}
-					}
-				}
-				else
-				{
-					// Inefficient, but not that slow
-					for (kson::Pulse ry = 0; ry < endY - startY; ++ry)
-					{
-						const kson::Pulse y = startY + ry;
-						const kson::RelPulse dy = ParamChangeUpdatePeriodDyAt(updatePeriodChanges, y, defDy);
-						if (ry % dy == 0)
-						{
-							const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y, chartData.beat, timingCache));
-							timingSet.insert(sec);
-						}
-					}
-				}
-			}
-			return timingSet;
+		default:
+			return {};
 		}
 	}
 }

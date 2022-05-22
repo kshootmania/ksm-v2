@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <set>
 #include <unordered_map>
 
 namespace ksmaudio::AudioEffect
@@ -46,6 +47,8 @@ namespace ksmaudio::AudioEffect
 		float v = 0.0f;
 
 		float bpm = 120.0f;
+
+		float sec = -100.0f; // Non-zero negative value is used here to avoid update_trigger being processed before playback
 	};
 
 	float GetValue(const Param& param, const Status& status);

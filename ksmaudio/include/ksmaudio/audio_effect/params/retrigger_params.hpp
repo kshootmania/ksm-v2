@@ -5,7 +5,7 @@ namespace ksmaudio::AudioEffect
 {
 	struct RetriggerDSPParams
 	{
-		float secUntilTrigger = -1.0f; // Note: Negative value is just ignored
+		float secUntilTrigger = -1.0f; // Note: Negative value will be just ignored
 		float waveLength = 0.0f;
 		float rate = 0.7f;
 		float mix = 1.0f;
@@ -28,26 +28,51 @@ namespace ksmaudio::AudioEffect
 		};
 
 	private:
-		float m_secUntilTrigger = -1.0f;
+		std::set<float> m_updateTriggerTiming;
+		std::set<float>::const_iterator m_updateTriggerTimingCursor = m_updateTriggerTiming.begin();
 		bool m_updateTriggerPrev = false;
 
-	public:
-		void setSecUntilTrigger(float sec)
+		float getSecUntilTrigger(float currentSec)
 		{
-			m_secUntilTrigger = sec;
+			while (true)
+			{
+				if (m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
+				{
+					return -1.0f; // Negative value will be ignored in DSP
+				}
+
+				if (*m_updateTriggerTimingCursor < currentSec)
+				{
+					++m_updateTriggerTimingCursor;
+					return 0.0f;
+				}
+				else
+				{
+					break;
+				}
+			}
+			return *m_updateTriggerTimingCursor - currentSec;
+		}
+
+	public:
+		void setUpdateTriggerTiming(const std::set<float>& timing)
+		{
+			m_updateTriggerTiming = timing;
+			m_updateTriggerTimingCursor = m_updateTriggerTiming.begin();
 		}
 
 		RetriggerDSPParams render(const Status& status)
 		{
 			const bool updateTriggerNow = GetValue(updateTrigger, status) == 1.0f;
+			float secUntilTrigger = getSecUntilTrigger(status.sec);
 			if (!m_updateTriggerPrev && updateTriggerNow)
 			{
-				m_secUntilTrigger = 0.0f;
+				secUntilTrigger = 0.0f; // FIXME: Set back to false
 			}
 			m_updateTriggerPrev = updateTriggerNow;
 
 			return {
-				.secUntilTrigger = std::exchange(m_secUntilTrigger, -1.0f),
+				.secUntilTrigger = secUntilTrigger,
 				.waveLength = GetValue(waveLength, status),
 				.rate = GetValue(rate, status),
 				.mix = GetValue(mix, status),

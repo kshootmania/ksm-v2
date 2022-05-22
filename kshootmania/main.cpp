@@ -31,7 +31,7 @@ void Main()
 	// Register asset list
 	AssetManagement::RegisterAssets();
 
-	//Graphics::SetVSyncEnabled(false);
+	Graphics::SetVSyncEnabled(false);
 
 	{
 		// Create scene manager

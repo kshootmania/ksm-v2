@@ -23,7 +23,7 @@ namespace ksmaudio::AudioEffect
 	public:
 		virtual ~IUpdateTrigger() = default;
 
-		virtual void setSecUntilTrigger(float sec) = 0;
+		virtual void setUpdateTriggerTiming(const std::set<float>& timing) = 0;
 	};
 
 	struct DSPCommonInfo
@@ -103,9 +103,9 @@ namespace ksmaudio::AudioEffect
 
 		virtual ~BasicAudioEffectWithTrigger() = default;
 
-		virtual void setSecUntilTrigger(float sec) override
+		virtual void setUpdateTriggerTiming(const std::set<float>& timing) override
 		{
-			m_params.setSecUntilTrigger(sec);
+			m_params.setUpdateTriggerTiming(timing);
 		}
 	};
 }

@@ -1,12 +1,13 @@
 ﻿#pragma once
 #include "ksmaudio/ksmaudio.hpp"
+#include "kson/audio/audio_effect.hpp"
 
 namespace MusicGame::Audio
 {
 	class BGM
 	{
 	private:
-		ksmaudio::StreamWithEffects/*s3d::Audio*/ m_audio;
+		ksmaudio::StreamWithEffects m_stream;
 
 		const double m_durationSec;
 
@@ -23,6 +24,8 @@ namespace MusicGame::Audio
 
 		void update();
 
+		void updateAudioEffectStatus(const ksmaudio::AudioEffect::Status& status);
+
 		void play();
 
 		void pause();
@@ -30,5 +33,12 @@ namespace MusicGame::Audio
 		void seekPosSec(double posSec);
 
 		double posSec() const;
+
+		double durationSec() const;
+
+		void emplaceAudioEffect(
+			const std::string& name,
+			const kson::AudioEffectDef& def,
+			const std::set<float>& updateTriggerTiming = {});
 	};
 }

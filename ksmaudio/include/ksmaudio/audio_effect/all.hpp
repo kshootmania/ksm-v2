@@ -1,14 +1,14 @@
 #pragma once
-#include "ksmaudio/audio_effect/audio_effect.hpp"
+#include "audio_effect.hpp"
 
-#include "ksmaudio/audio_effect/dsp/retrigger_dsp.hpp"
-#include "ksmaudio/audio_effect/params/retrigger_params.hpp"
+#include "dsp/retrigger_dsp.hpp"
+#include "params/retrigger_params.hpp"
 
-#include "ksmaudio/audio_effect/dsp/flanger_dsp.hpp"
-#include "ksmaudio/audio_effect/params/flanger_params.hpp"
+#include "dsp/flanger_dsp.hpp"
+#include "params/flanger_params.hpp"
 
-#include "ksmaudio/audio_effect/dsp/bitcrusher_dsp.hpp"
-#include "ksmaudio/audio_effect/params/bitcrusher_params.hpp"
+#include "dsp/bitcrusher_dsp.hpp"
+#include "params/bitcrusher_params.hpp"
 
 namespace ksmaudio
 {
