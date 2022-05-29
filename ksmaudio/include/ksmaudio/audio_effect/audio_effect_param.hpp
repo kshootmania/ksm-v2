@@ -42,16 +42,14 @@ namespace ksmaudio::AudioEffect
 
 	struct Status
 	{
-		bool isOn = false;
-
-		float v = 0.0f;
+		float v = 0.0f; // Laser value (0-1)
 
 		float bpm = 120.0f;
 
 		float sec = -100.0f; // Non-zero negative value is used here to avoid update_trigger being processed before playback
 	};
 
-	float GetValue(const Param& param, const Status& status);
+	float GetValue(const Param& param, const Status& status, bool isOn);
 
 	Param DefineParam(Type type, const std::string& valueSetStr);
 }

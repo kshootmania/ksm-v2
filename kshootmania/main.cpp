@@ -31,7 +31,11 @@ void Main()
 	// Register asset list
 	AssetManagement::RegisterAssets();
 
-	Graphics::SetVSyncEnabled(false);
+	//Graphics::SetVSyncEnabled(false);
+
+	//AllocConsole();
+	//FILE* fp = NULL;
+	//freopen_s(&fp, "CONOUT$", "w", stdout);
 
 	{
 		// Create scene manager

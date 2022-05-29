@@ -1,18 +1,11 @@
 #include "ksmaudio/stream_with_effects.hpp"
+#include <stdexcept>
 
 namespace ksmaudio
 {
 	StreamWithEffects::StreamWithEffects(const std::string& filePath)
 		: m_stream(filePath)
 	{
-	}
-
-	StreamWithEffects::~StreamWithEffects()
-	{
-		for (const auto& [name, hDSP] : m_audioEffectHDSPs)
-		{
-			m_stream.removeAudioEffect(hDSP);
-		}
 	}
 
 	void StreamWithEffects::play() const
@@ -60,11 +53,10 @@ namespace ksmaudio
 		return m_stream.numChannels();
 	}
 
-	void StreamWithEffects::updateAudioEffectStatus(const AudioEffect::Status& status)
+	AudioEffect::AudioEffectBus* StreamWithEffects::emplaceAudioEffectBus()
 	{
-		for (const auto& [name, audioEffect] : m_audioEffects)
-		{
-			audioEffect->updateStatus(status);
-		}
+		// Note: Returning the contents of unique_ptr is intentional.
+		//       Management of the returned pointer is the responsibility of the caller.
+		return m_audioEffectBuses.emplace_back(std::make_unique<AudioEffect::AudioEffectBus>(&m_stream)).get();
 	}
 }

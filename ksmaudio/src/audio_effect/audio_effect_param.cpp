@@ -164,9 +164,9 @@ namespace ksmaudio::AudioEffect
 		return valueSet;
 	}
 
-	float GetValue(const Param& param, const Status& status)
+	float GetValue(const Param& param, const Status& status, bool isOn)
 	{
-		const float lerped = status.isOn ? std::lerp(param.valueSet.onMin, param.valueSet.onMax, status.v) : param.valueSet.off;
+		const float lerped = isOn ? std::lerp(param.valueSet.onMin, param.valueSet.onMax, status.v) : param.valueSet.off;
 
 		if (param.type == Type::kLength)
 		{
@@ -188,13 +188,13 @@ namespace ksmaudio::AudioEffect
 			{
 				// Tempo-synced
 				float waveLength;
-				if (status.isOn)
+				if (isOn)
 				{
 					waveLength = detail::WaveLengthUtils::Interpolate(param.valueSet.onMin, param.valueSet.onMax, status.v);
 				}
 				else
 				{
-					waveLength = lerped;
+					waveLength = param.valueSet.off;
 				}
 				return waveLength * 4 * 60 / status.bpm;
 			}

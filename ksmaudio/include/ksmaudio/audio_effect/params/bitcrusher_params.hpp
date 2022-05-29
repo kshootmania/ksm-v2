@@ -19,11 +19,11 @@ namespace ksmaudio::AudioEffect
 			{ "mix", &mix },
 		};
 
-		BitcrusherDSPParams render(const Status& status)
+		BitcrusherDSPParams render(const Status& status, bool isOn)
 		{
 			return {
-				.reduction = GetValue(reduction, status),
-				.mix = GetValue(mix, status),
+				.reduction = GetValue(reduction, status, isOn),
+				.mix = GetValue(mix, status, isOn),
 			};
 		}
 	};

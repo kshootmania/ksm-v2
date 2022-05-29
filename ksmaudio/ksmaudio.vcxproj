@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\ksmaudio\audio_effect\audio_effect.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\audio_effect_bus.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\audio_effect_param.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\all.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\biquad_filter.hpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="include\ksmaudio\stream_with_effects.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\audio_effect\audio_effect_bus.cpp" />
     <ClCompile Include="src\audio_effect\audio_effect_param.cpp" />
     <ClCompile Include="src\audio_effect\dsp\bitcrusher_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\flanger_dsp.cpp" />

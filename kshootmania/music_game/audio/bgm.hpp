@@ -8,15 +8,12 @@ namespace MusicGame::Audio
 	{
 	private:
 		ksmaudio::StreamWithEffects m_stream;
-
 		const double m_durationSec;
-
 		double m_timeSec = 0.0;
-
 		bool m_isStreamStarted = false;
-
 		bool m_isPaused = true;
-
+		ksmaudio::AudioEffect::AudioEffectBus* const m_pAudioEffectBusFX;
+		ksmaudio::AudioEffect::AudioEffectBus* const m_pAudioEffectBusLaser;
 		Stopwatch m_stopwatch;
 
 	public:
@@ -24,7 +21,7 @@ namespace MusicGame::Audio
 
 		void update();
 
-		void updateAudioEffectStatus(const ksmaudio::AudioEffect::Status& status);
+		void updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const std::array<Optional<std::string>, kson::kNumFXLanes>& laneAudioEffectNames);
 
 		void play();
 
@@ -37,6 +34,7 @@ namespace MusicGame::Audio
 		double durationSec() const;
 
 		void emplaceAudioEffect(
+			bool isFX,
 			const std::string& name,
 			const kson::AudioEffectDef& def,
 			const std::set<float>& updateTriggerTiming = {});

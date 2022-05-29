@@ -45,7 +45,7 @@ void MusicGame::GameMain::registerAudioEffects()
 				? Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, m_chartData, m_timingCache)
 				: Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
 
-		m_bgm.emplaceAudioEffect("fx:" + name, def, updateTriggerTiming);
+		m_bgm.emplaceAudioEffect(true, name, def, updateTriggerTiming);
 	}
 
 	// Laser
@@ -57,7 +57,7 @@ void MusicGame::GameMain::registerAudioEffects()
 			? Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, m_chartData, m_timingCache)
 			: Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
 
-		m_bgm.emplaceAudioEffect("laser:" + name, def, updateTriggerTiming);
+		m_bgm.emplaceAudioEffect(false, name, def, updateTriggerTiming);
 	}
 
 	const kson::AudioEffectDef def_ = kson::AudioEffectDef{
@@ -69,7 +69,7 @@ void MusicGame::GameMain::registerAudioEffects()
 	};
 	const auto updateTriggerTiming_ = Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(
 		def_, totalMeasures, m_chartData, m_timingCache);
-	m_bgm.emplaceAudioEffect("retr", def_, updateTriggerTiming_);
+	m_bgm.emplaceAudioEffect(true, "retr", def_, updateTriggerTiming_);
 }
 
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
@@ -88,6 +88,7 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	, m_scoreValueMax(SumScoreValueMax(m_btLaneJudgments) + SumScoreValueMax(m_fxLaneJudgments)) // TODO: add laser
 	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
 	, m_assistTick(gameCreateInfo.enableAssistTick)
+	, m_audioEffectUpdateInfo{ .pChartData = &m_chartData }
 	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
 	, m_musicGameGraphics(m_chartData, m_timingCache)
 {
@@ -102,34 +103,44 @@ void MusicGame::GameMain::update()
 	m_bgm.update();
 
 	const double currentTimeSec = m_bgm.posSec();
-	m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
 
-	const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
+	// TODO: Make separate functions for the code below
 
-	const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
-
-	m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
-	m_graphicsUpdateInfo.currentPulse = currentPulse;
-	m_graphicsUpdateInfo.currentBPM = currentBPM;
-
-	for (int i = 0; i < kson::kNumBTLanes; ++i)
+	// SE
 	{
-		m_btLaneJudgments[i].update(m_chartData.note.btLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.btLaneState[i]);
+		m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
 	}
 
-	for (int i = 0; i < kson::kNumFXLanes; ++i)
+	// Audio effects
 	{
-		m_fxLaneJudgments[i].update(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.fxLaneState[i]);
+		constexpr double kLatencySec = 0.2; // TODO: determined by buffer size?
+		const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec + kLatencySec), m_chartData.beat, m_timingCache);
+		const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
+		m_bgm.updateAudioEffectFX({
+			.v = 0.0f,
+			.bpm = static_cast<float>(currentBPM),
+			.sec = static_cast<float>(currentTimeSec + kLatencySec),//MathUtils::MsToSec<float>(ksmaudio::kBufferSizeMs),
+		}, { "retr"/*TODO*/ });
+		// TODO: laser
 	}
 
-	m_graphicsUpdateInfo.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax); // TODO: add laser
-
-	m_bgm.updateAudioEffectStatus({
-		.isOn = MouseL.pressed()/*TODO*/,
-		.v = 0.0f,
-		.bpm = static_cast<float>(currentBPM),
-		.sec = static_cast<float>(currentTimeSec) + 0.1f,//MathUtils::MsToSec<float>(ksmaudio::kBufferSizeMs),
-	});
+	// Graphics and judgment
+	{
+		const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
+		const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
+		m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
+		m_graphicsUpdateInfo.currentPulse = currentPulse;
+		m_graphicsUpdateInfo.currentBPM = currentBPM;
+		for (int i = 0; i < kson::kNumBTLanes; ++i)
+		{
+			m_btLaneJudgments[i].update(m_chartData.note.btLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.btLaneState[i]);
+		}
+		for (int i = 0; i < kson::kNumFXLanes; ++i)
+		{
+			m_fxLaneJudgments[i].update(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.fxLaneState[i]);
+		}
+		m_graphicsUpdateInfo.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax); // TODO: add laser
+	}
 
 	m_musicGameGraphics.update(m_graphicsUpdateInfo);
 }

@@ -10,6 +10,8 @@ namespace
 MusicGame::Audio::BGM::BGM(FilePathView filePath)
 	: m_stream(filePath.toUTF8())
 	, m_durationSec(m_stream.durationSec())
+	, m_pAudioEffectBusFX(m_stream.emplaceAudioEffectBus())
+	, m_pAudioEffectBusLaser(m_stream.emplaceAudioEffectBus())
 	, m_stopwatch(StartImmediately::No)
 {
 }
@@ -44,9 +46,21 @@ void MusicGame::Audio::BGM::update()
 	}
 }
 
-void MusicGame::Audio::BGM::updateAudioEffectStatus(const ksmaudio::AudioEffect::Status& status)
+void MusicGame::Audio::BGM::updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const std::array<Optional<std::string>, kson::kNumFXLanes>& laneAudioEffectNames)
 {
-	m_stream.updateAudioEffectStatus(status);
+	std::set<std::string> onAudioEffectNames;
+	for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+	{
+		if (laneAudioEffectNames[i].has_value())
+		{
+			onAudioEffectNames.insert(*laneAudioEffectNames[i]);
+		}
+	}
+
+	m_pAudioEffectBusFX->update(
+		status,
+		{ laneAudioEffectNames[0].has_value(), laneAudioEffectNames[1].has_value() },
+		onAudioEffectNames);
 	m_stream.updateManually();
 }
 
@@ -110,20 +124,21 @@ double MusicGame::Audio::BGM::durationSec() const
 	return m_durationSec;
 }
 
-void MusicGame::Audio::BGM::emplaceAudioEffect(const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
+void MusicGame::Audio::BGM::emplaceAudioEffect(bool isFX, const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
 {
+	const auto pAudioEffectBus = isFX ? m_pAudioEffectBusFX : m_pAudioEffectBusLaser;
 	switch (def.type)
 	{
 	case kson::AudioEffectType::Retrigger:
-		m_stream.emplaceAudioEffect<ksmaudio::Retrigger>(name, def.v, updateTriggerTiming);
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Retrigger>(name, def.v, { /*TODO*/ }, { /*TODO*/ }, updateTriggerTiming);
 		break;
 
 	case kson::AudioEffectType::Flanger:
-		m_stream.emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, updateTriggerTiming);
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, { /*TODO*/ }, { /*TODO*/ }, updateTriggerTiming);
 		break;
 
 	case kson::AudioEffectType::Bitcrusher:
-		m_stream.emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, updateTriggerTiming);
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, { /*TODO*/ }, { /*TODO*/ }, updateTriggerTiming);
 		break;
 	}
 }

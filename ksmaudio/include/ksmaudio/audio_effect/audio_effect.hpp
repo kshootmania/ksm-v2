@@ -13,9 +13,13 @@ namespace ksmaudio::AudioEffect
 
 		virtual void process(float* pData, std::size_t dataSize) = 0;
 
-		virtual void updateStatus(const Status& status) = 0;
+		virtual void updateStatus(const Status& status, bool isOn) = 0;
 
 		virtual bool setParamValueSet(const std::string& name, const std::string& valueSetStr) = 0;
+
+		virtual bool setParamValueSet(const std::string& name, const ValueSet& valueSetStr) = 0;
+
+		virtual Type paramTypeOf(const std::string& name) const = 0;
 	};
 
 	class IUpdateTrigger
@@ -57,7 +61,7 @@ namespace ksmaudio::AudioEffect
 	public:
 		BasicAudioEffect(std::size_t sampleRate, std::size_t numChannels)
 			: m_dsp(DSPCommonInfo{ sampleRate, numChannels })
-			, m_dspParams(m_params.render(Status{}))
+			, m_dspParams(m_params.render(Status{}, false))
 		{
 		}
 
@@ -68,9 +72,9 @@ namespace ksmaudio::AudioEffect
 			m_dsp.process(pData, dataSize, m_bypass, m_dspParams);
 		}
 
-		virtual void updateStatus(const Status& status) override
+		virtual void updateStatus(const Status& status, bool isOn) override
 		{
-			m_dspParams = m_params.render(status);
+			m_dspParams = m_params.render(status, isOn);
 		}
 
 		virtual bool setParamValueSet(const std::string& name, const std::string& valueSetStr) override
@@ -85,6 +89,31 @@ namespace ksmaudio::AudioEffect
 			else
 			{
 				return false;
+			}
+		}
+
+		virtual bool setParamValueSet(const std::string& name, const ValueSet& valueSet) override
+		{
+			if (m_params.dict.contains(name))
+			{
+				m_params.dict.at(name)->valueSet = valueSet;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		virtual Type paramTypeOf(const std::string& name) const
+		{
+			if (m_params.dict.contains(name))
+			{
+				return m_params.dict.at(name)->type;
+			}
+			else
+			{
+				return Type::kUnspecified;
 			}
 		}
 	};

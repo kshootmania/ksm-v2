@@ -1189,5 +1189,8 @@
     <ClInclude Include="music_game\audio\audio_effect_utils.hpp">
       <Filter>Header Files\music_game\audio</Filter>
     </ClInclude>
+    <ClInclude Include="music_game\audio\audio_effect_update_info.hpp">
+      <Filter>Header Files\music_game\audio</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

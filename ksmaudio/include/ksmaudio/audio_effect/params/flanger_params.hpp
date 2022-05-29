@@ -35,16 +35,16 @@ namespace ksmaudio::AudioEffect
 			{ "mix", &mix },
 		};
 
-		FlangerDSPParams render(const Status& status)
+		FlangerDSPParams render(const Status& status, bool isOn)
 		{
 			return {
-				.period = GetValue(period, status),
-				.delay = GetValue(delay, status),
-				.depth = GetValue(depth, status),
-				.feedback = GetValue(feedback, status),
-				.stereoWidth = GetValue(stereoWidth, status),
-				.vol = GetValue(vol, status),
-				.mix = GetValue(mix, status),
+				.period = GetValue(period, status, isOn),
+				.delay = GetValue(delay, status, isOn),
+				.depth = GetValue(depth, status, isOn),
+				.feedback = GetValue(feedback, status, isOn),
+				.stereoWidth = GetValue(stereoWidth, status, isOn),
+				.vol = GetValue(vol, status, isOn),
+				.mix = GetValue(mix, status, isOn),
 			};
 		}
 	};

@@ -61,9 +61,9 @@ namespace ksmaudio::AudioEffect
 			m_updateTriggerTimingCursor = m_updateTriggerTiming.begin();
 		}
 
-		RetriggerDSPParams render(const Status& status)
+		RetriggerDSPParams render(const Status& status, bool isOn)
 		{
-			const bool updateTriggerNow = GetValue(updateTrigger, status) == 1.0f;
+			const bool updateTriggerNow = GetValue(updateTrigger, status, isOn) == 1.0f;
 			float secUntilTrigger = getSecUntilTrigger(status.sec);
 			if (!m_updateTriggerPrev && updateTriggerNow)
 			{
@@ -73,9 +73,9 @@ namespace ksmaudio::AudioEffect
 
 			return {
 				.secUntilTrigger = secUntilTrigger,
-				.waveLength = GetValue(waveLength, status),
-				.rate = GetValue(rate, status),
-				.mix = GetValue(mix, status),
+				.waveLength = GetValue(waveLength, status, isOn),
+				.rate = GetValue(rate, status, isOn),
+				.mix = GetValue(mix, status, isOn),
 			};
 		}
 	};
