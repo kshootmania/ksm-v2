@@ -21,7 +21,7 @@ namespace MusicGame::Audio
 
 		void update();
 
-		void updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const std::array<Optional<std::string>, kson::kNumFXLanes>& laneAudioEffectNames);
+		void updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const std::set<std::string>& onAudioEffectNames);
 
 		void play();
 

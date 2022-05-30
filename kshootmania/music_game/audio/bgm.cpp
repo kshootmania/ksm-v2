@@ -46,20 +46,11 @@ void MusicGame::Audio::BGM::update()
 	}
 }
 
-void MusicGame::Audio::BGM::updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const std::array<Optional<std::string>, kson::kNumFXLanes>& laneAudioEffectNames)
+void MusicGame::Audio::BGM::updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const std::set<std::string>& onAudioEffectNames)
 {
-	std::set<std::string> onAudioEffectNames;
-	for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
-	{
-		if (laneAudioEffectNames[i].has_value())
-		{
-			onAudioEffectNames.insert(*laneAudioEffectNames[i]);
-		}
-	}
-
 	m_pAudioEffectBusFX->update(
 		status,
-		{ laneAudioEffectNames[0].has_value(), laneAudioEffectNames[1].has_value() },
+		{ true, true/*laneAudioEffectNames[0].has_value(), laneAudioEffectNames[1].has_value()*/ },
 		onAudioEffectNames);
 	m_stream.updateManually();
 }

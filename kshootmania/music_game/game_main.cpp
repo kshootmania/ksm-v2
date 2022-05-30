@@ -28,6 +28,53 @@ namespace
 		}
 		return sum;
 	}
+
+	Optional<kson::Pulse> CurrentLongNotePulseByTime(const kson::Lane<kson::Interval>& lane, kson::Pulse time)
+	{
+		const auto currentNoteItr = kson::CurrentAt(lane, time);
+		if (currentNoteItr != lane.end())
+		{
+			const auto& [y, currentNote] = *currentNoteItr;
+			if (y <= time && time < y + currentNote.length)
+			{
+				return y;
+			}
+		}
+		return none;
+	}
+
+	std::array<Optional<kson::Pulse>, kson::kNumFXLanes> CurrentLongNotePulseOfLanesByTime(const kson::ChartData& chartData, kson::Pulse time)
+	{
+		std::array<Optional<kson::Pulse>, kson::kNumFXLanes> pulses;
+		for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+		{
+			pulses[i] = CurrentLongNotePulseByTime(chartData.note.fxLanes[i], time);
+		}
+		return pulses;
+	}
+
+	// costly?
+	std::set<std::string> CurrentAudioEffectNamesFX(const kson::ChartData& chartData, const std::array<Optional<kson::Pulse>, kson::kNumFXLanes>& longNotePulseOfLanes)
+	{
+		std::set<std::string> set;
+		for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+		{
+			if (!longNotePulseOfLanes[i].has_value())
+			{
+				continue;
+			}
+
+			for (const auto& [audioEffectName, map] : chartData.audio.audioEffects.fx.longEvent)
+			{
+				if (map[i].contains(*longNotePulseOfLanes[i]))
+				{
+					set.insert(audioEffectName);
+				}
+			}
+		}
+
+		return set;
+	}
 }
 
 void MusicGame::GameMain::registerAudioEffects()
@@ -69,7 +116,7 @@ void MusicGame::GameMain::registerAudioEffects()
 	};
 	const auto updateTriggerTiming_ = Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(
 		def_, totalMeasures, m_chartData, m_timingCache);
-	m_bgm.emplaceAudioEffect(true, "retr", def_, updateTriggerTiming_);
+	m_bgm.emplaceAudioEffect(true, "retrigger", def_, updateTriggerTiming_);
 }
 
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
@@ -106,6 +153,24 @@ void MusicGame::GameMain::update()
 
 	// TODO: Make separate functions for the code below
 
+	// Graphics and judgment
+	{
+		const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
+		const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
+		m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
+		m_graphicsUpdateInfo.currentPulse = currentPulse;
+		m_graphicsUpdateInfo.currentBPM = currentBPM;
+		for (std::size_t i = 0U; i < kson::kNumBTLanes; ++i)
+		{
+			m_btLaneJudgments[i].update(m_chartData.note.btLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.btLaneState[i]);
+		}
+		for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+		{
+			m_fxLaneJudgments[i].update(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.fxLaneState[i]);
+		}
+		m_graphicsUpdateInfo.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax); // TODO: add laser
+	}
+
 	// SE
 	{
 		m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
@@ -116,30 +181,15 @@ void MusicGame::GameMain::update()
 		constexpr double kLatencySec = 0.2; // TODO: determined by buffer size?
 		const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec + kLatencySec), m_chartData.beat, m_timingCache);
 		const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
+
+		const std::array<Optional<kson::Pulse>, kson::kNumFXLanes> currentLongNotePulseOfLanes = CurrentLongNotePulseOfLanesByTime(m_chartData, currentPulse);
+		const std::set<std::string> currentAudioEffectNamesFX = CurrentAudioEffectNamesFX(m_chartData, currentLongNotePulseOfLanes);
 		m_bgm.updateAudioEffectFX({
 			.v = 0.0f,
 			.bpm = static_cast<float>(currentBPM),
 			.sec = static_cast<float>(currentTimeSec + kLatencySec),//MathUtils::MsToSec<float>(ksmaudio::kBufferSizeMs),
-		}, { "retr"/*TODO*/ });
+		}, currentAudioEffectNamesFX);
 		// TODO: laser
-	}
-
-	// Graphics and judgment
-	{
-		const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
-		const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
-		m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
-		m_graphicsUpdateInfo.currentPulse = currentPulse;
-		m_graphicsUpdateInfo.currentBPM = currentBPM;
-		for (int i = 0; i < kson::kNumBTLanes; ++i)
-		{
-			m_btLaneJudgments[i].update(m_chartData.note.btLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.btLaneState[i]);
-		}
-		for (int i = 0; i < kson::kNumFXLanes; ++i)
-		{
-			m_fxLaneJudgments[i].update(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.fxLaneState[i]);
-		}
-		m_graphicsUpdateInfo.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax); // TODO: add laser
 	}
 
 	m_musicGameGraphics.update(m_graphicsUpdateInfo);
