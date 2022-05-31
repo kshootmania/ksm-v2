@@ -2,8 +2,6 @@
 
 namespace
 {
-	constexpr double kRelaxationTime = 10.0 / 60;
-	constexpr double kDelayRelaxationTime = 100.0 / 60;
 	constexpr double kBlendTimeSec = 5.0;
 }
 
@@ -25,6 +23,7 @@ void MusicGame::Audio::BGM::update()
 
 	if (m_isStreamStarted)
 	{
+		m_stream.updateManually();
 		m_timeSec = m_stream.posSec();
 
 		if (m_timeSec < m_durationSec - kBlendTimeSec)
@@ -52,7 +51,6 @@ void MusicGame::Audio::BGM::updateAudioEffectFX(const ksmaudio::AudioEffect::Sta
 		status,
 		{ true, true/*laneAudioEffectNames[0].has_value(), laneAudioEffectNames[1].has_value()*/ },
 		onAudioEffectNames);
-	m_stream.updateManually();
 }
 
 void MusicGame::Audio::BGM::play()
@@ -113,6 +111,11 @@ double MusicGame::Audio::BGM::posSec() const
 double MusicGame::Audio::BGM::durationSec() const
 {
 	return m_durationSec;
+}
+
+double MusicGame::Audio::BGM::latencySec() const
+{
+	return m_stream.latencySec();
 }
 
 void MusicGame::Audio::BGM::emplaceAudioEffect(bool isFX, const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)

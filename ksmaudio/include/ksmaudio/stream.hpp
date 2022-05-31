@@ -38,5 +38,7 @@ namespace ksmaudio
 		std::size_t sampleRate() const;
 
 		std::size_t numChannels() const;
+
+		double latencySec() const;
 	};
 }

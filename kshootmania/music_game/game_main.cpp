@@ -178,16 +178,16 @@ void MusicGame::GameMain::update()
 
 	// Audio effects
 	{
-		constexpr double kLatencySec = 0.2; // TODO: determined by buffer size?
-		const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec + kLatencySec), m_chartData.beat, m_timingCache);
-		const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
+		const double currentTimeSecForAudio = currentTimeSec + m_bgm.latencySec(); // Note: Not sure why, but the effect is out of sync with BASS v2.4.13 or later (;_;)
+		const kson::Pulse currentPulseForAudio = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSecForAudio), m_chartData.beat, m_timingCache);
+		const double currentBPMForAudio = kson::TimingUtils::PulseTempo(currentPulseForAudio, m_chartData.beat);
 
-		const std::array<Optional<kson::Pulse>, kson::kNumFXLanes> currentLongNotePulseOfLanes = CurrentLongNotePulseOfLanesByTime(m_chartData, currentPulse);
+		const std::array<Optional<kson::Pulse>, kson::kNumFXLanes> currentLongNotePulseOfLanes = CurrentLongNotePulseOfLanesByTime(m_chartData, currentPulseForAudio);
 		const std::set<std::string> currentAudioEffectNamesFX = CurrentAudioEffectNamesFX(m_chartData, currentLongNotePulseOfLanes);
 		m_bgm.updateAudioEffectFX({
 			.v = 0.0f,
-			.bpm = static_cast<float>(currentBPM),
-			.sec = static_cast<float>(currentTimeSec + kLatencySec),//MathUtils::MsToSec<float>(ksmaudio::kBufferSizeMs),
+			.bpm = static_cast<float>(currentBPMForAudio),
+			.sec = static_cast<float>(currentTimeSecForAudio),
 		}, currentAudioEffectNamesFX);
 		// TODO: laser
 	}

@@ -33,6 +33,8 @@ namespace MusicGame::Audio
 
 		double durationSec() const;
 
+		double latencySec() const;
+
 		void emplaceAudioEffect(
 			bool isFX,
 			const std::string& name,

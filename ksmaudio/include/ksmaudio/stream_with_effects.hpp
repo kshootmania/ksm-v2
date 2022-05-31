@@ -34,6 +34,8 @@ namespace ksmaudio
 
 		std::size_t numChannels() const;
 
+		double latencySec() const;
+
 		// Note: The pointer is valid until this StreamWithEffects instance is destroyed.
 		AudioEffect::AudioEffectBus* emplaceAudioEffectBus();
 	};

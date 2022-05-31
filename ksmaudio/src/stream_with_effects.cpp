@@ -53,9 +53,14 @@ namespace ksmaudio
 		return m_stream.numChannels();
 	}
 
+	double StreamWithEffects::latencySec() const
+	{
+		return m_stream.latencySec();
+	}
+
 	AudioEffect::AudioEffectBus* StreamWithEffects::emplaceAudioEffectBus()
 	{
-		// Note: Returning the contents of unique_ptr is intentional.
+		// Note: It is intentional to return the internal raw pointer of unique_ptr here.
 		//       Management of the returned pointer is the responsibility of the caller.
 		return m_audioEffectBuses.emplace_back(std::make_unique<AudioEffect::AudioEffectBus>(&m_stream)).get();
 	}

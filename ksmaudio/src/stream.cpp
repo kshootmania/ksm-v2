@@ -91,4 +91,14 @@ namespace ksmaudio
 		return static_cast<std::size_t>(m_info.chans);
 	}
 
+	double Stream::latencySec() const
+	{
+		DWORD playbuf = BASS_ChannelGetData(m_hStream, NULL, BASS_DATA_AVAILABLE);
+		if (playbuf != (DWORD)-1)
+		{
+			return BASS_ChannelBytes2Seconds(m_hStream, playbuf);
+		}
+		return 0.0; // TODO: return kBufferSizeMs
+	}
+
 }
