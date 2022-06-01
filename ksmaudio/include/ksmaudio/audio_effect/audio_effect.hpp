@@ -15,11 +15,9 @@ namespace ksmaudio::AudioEffect
 
 		virtual void updateStatus(const Status& status, bool isOn) = 0;
 
-		virtual bool setParamValueSet(const std::string& name, const std::string& valueSetStr) = 0;
+		virtual bool setParamValueSet(ParamID paramID, const std::string& valueSetStr) = 0;
 
-		virtual bool setParamValueSet(const std::string& name, const ValueSet& valueSetStr) = 0;
-
-		virtual Type paramTypeOf(const std::string& name) const = 0;
+		virtual bool setParamValueSet(ParamID paramID, const ValueSet& valueSetStr) = 0;
 	};
 
 	class IUpdateTrigger
@@ -77,11 +75,11 @@ namespace ksmaudio::AudioEffect
 			m_dspParams = m_params.render(status, isOn);
 		}
 
-		virtual bool setParamValueSet(const std::string& name, const std::string& valueSetStr) override
+		virtual bool setParamValueSet(ParamID paramID, const std::string& valueSetStr) override
 		{
-			if (m_params.dict.contains(name))
+			if (m_params.dict.contains(paramID))
 			{
-				Param& paramRef = *m_params.dict.at(name);
+				Param& paramRef = *m_params.dict.at(paramID);
 				bool success;
 				paramRef.valueSet = StrToValueSet(paramRef.type, valueSetStr, &success);
 				return success;
@@ -92,28 +90,16 @@ namespace ksmaudio::AudioEffect
 			}
 		}
 
-		virtual bool setParamValueSet(const std::string& name, const ValueSet& valueSet) override
+		virtual bool setParamValueSet(ParamID paramID, const ValueSet& valueSet) override
 		{
-			if (m_params.dict.contains(name))
+			if (m_params.dict.contains(paramID))
 			{
-				m_params.dict.at(name)->valueSet = valueSet;
+				m_params.dict.at(paramID)->valueSet = valueSet;
 				return true;
 			}
 			else
 			{
 				return false;
-			}
-		}
-
-		virtual Type paramTypeOf(const std::string& name) const
-		{
-			if (m_params.dict.contains(name))
-			{
-				return m_params.dict.at(name)->type;
-			}
-			else
-			{
-				return Type::kUnspecified;
 			}
 		}
 	};

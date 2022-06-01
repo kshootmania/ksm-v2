@@ -25,14 +25,14 @@ namespace ksmaudio::AudioEffect
 		Param vol = DefineParam(Type::kRate, "75%");
 		Param mix = DefineParam(Type::kRate, "0%>80%");
 
-		const std::unordered_map<std::string, Param*> dict = {
-			{ "period", &period },
-			{ "delay", &delay },
-			{ "depth", &depth },
-			{ "feedback", &feedback },
-			{ "stereo_width", &stereoWidth },
-			{ "vol", &vol },
-			{ "mix", &mix },
+		const std::unordered_map<ParamID, Param*> dict = {
+			{ ParamID::kPeriod, &period },
+			{ ParamID::kDelay, &delay },
+			{ ParamID::kDepth, &depth },
+			{ ParamID::kFeedback, &feedback },
+			{ ParamID::kStereoWidth, &stereoWidth },
+			{ ParamID::kVol, &vol },
+			{ ParamID::kMix, &mix },
 		};
 
 		FlangerDSPParams render(const Status& status, bool isOn)

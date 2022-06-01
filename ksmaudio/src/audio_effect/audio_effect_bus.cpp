@@ -6,45 +6,29 @@ namespace ksmaudio::AudioEffect
 	{
 		m_currentParams = m_baseParams;
 	
-		// Note: It is assumed that m_baseParams contains all the keys contained in the following param changes.
+		// Note: It is assumed that m_baseParams contains all the keys contained in m_baseParamChanges.
 		//       Otherwise, the parameter values will not revert to default after the override ends.
 
-		for (const auto& [paramName, timeline] : m_baseParamChanges)
+		for (const auto& [paramID, timeline] : m_baseParamChanges)
 		{
 			if (timeline.hasValue())
 			{
-				m_currentParams[paramName] = timeline.value();
-			}
-		}
-
-		if (m_overrideActive[m_lastActiveOverrideIdx])
-		{
-			const auto& timeline = m_overrideParamChanges[m_lastActiveOverrideIdx];
-			if (timeline.hasValue())
-			{
-				for (const auto& [paramName, valueSet] : *timeline.value())
-				{
-					m_currentParams[paramName] = valueSet;
-				}
+				m_currentParams[paramID] = timeline.value();
 			}
 		}
 	}
 
 	ParamController::ParamController(const ValueSetDict& baseParams,
-		const std::unordered_map<std::string, std::map<float, ValueSet>>& baseParamChanges,
-		const std::array<std::map<float, std::optional<ValueSetDict>>, kOverrideMax>& overrideParamChanges)
+		const std::unordered_map<ParamID, std::map<float, ValueSet>>& baseParamChanges)
 		: m_baseParams(baseParams)
-		, m_overrideParamChanges{
-			Timeline<std::optional<ValueSetDict>>{ overrideParamChanges[0] },
-			Timeline<std::optional<ValueSetDict>>{ overrideParamChanges[1] } }
 	{
-		for (const auto& [paramName, map] : baseParamChanges)
+		for (const auto& [paramID, map] : baseParamChanges)
 		{
-			m_baseParamChanges.emplace(std::piecewise_construct, std::make_tuple(paramName), std::make_tuple(map));
+			m_baseParamChanges.emplace(std::piecewise_construct, std::make_tuple(paramID), std::make_tuple(map));
 		}
 	}
 
-	void ParamController::update(float timeSec, const std::array<bool, kOverrideMax>& overrideActive)
+	void ParamController::update(float timeSec)
 	{
 		if (timeSec < m_timeSec)
 		{
@@ -60,29 +44,6 @@ namespace ksmaudio::AudioEffect
 				isDirty = true;
 			}
 		}
-		for (auto& timeline : m_overrideParamChanges)
-		{
-			if (timeline.update(timeSec))
-			{
-				isDirty = true;
-			}
-		}
-
-		// Update override status
-		for (std::size_t i = 0U; i < kOverrideMax; ++i)
-		{
-			if (overrideActive[i] && !m_overrideActive[i])
-			{
-				m_lastActiveOverrideIdx = i;
-				isDirty = true;
-			}
-			else if (!overrideActive[i] && m_overrideActive[i] && m_lastActiveOverrideIdx == i && overrideActive[1U - i])
-			{
-				m_lastActiveOverrideIdx = 1U - i;
-				isDirty = true;
-			}
-		}
-		m_overrideActive = overrideActive;
 
 		if (isDirty)
 		{
@@ -92,9 +53,43 @@ namespace ksmaudio::AudioEffect
 		m_timeSec = timeSec;
 	}
 
-	const std::unordered_map<std::string, ValueSet> ParamController::currentParams() const
+	const std::unordered_map<ParamID, ValueSet> ParamController::currentParams() const
 	{
 		return m_currentParams;
+	}
+
+	std::unordered_map<ParamID, ValueSet> StrDictToValueSetDict(const std::unordered_map<std::string, std::string>& strDict)
+	{
+		std::unordered_map<ParamID, ValueSet> valueSetDict;
+		for (const auto& [paramName, valueSetStr] : strDict)
+		{
+			if (kStrToParamID.contains(paramName))
+			{
+				const ParamID paramID = kStrToParamID.at(paramName);
+				const Type type = kParamIDType.at(paramID);
+				valueSetDict.emplace(paramID, StrToValueSet(type, valueSetStr));
+			}
+		}
+		return valueSetDict;
+	}
+
+	std::unordered_map<ParamID, std::map<float, ValueSet>> StrTimelineToValueSetTimeline(const std::unordered_map<std::string, std::map<float, std::string>>& strTimeline)
+	{
+		std::unordered_map<ParamID, std::map<float, ValueSet>> valueSetTimeline;
+		for (const auto& [paramName, map] : strTimeline)
+		{
+			if (kStrToParamID.contains(paramName))
+			{
+				const ParamID paramID = kStrToParamID.at(paramName);
+				const Type type = kParamIDType.at(paramID);
+				auto& targetMap = valueSetTimeline[paramID];
+				for (const auto& [sec, valueSetStr] : map)
+				{
+					targetMap.emplace(sec, StrToValueSet(type, valueSetStr));
+				}
+			}
+		}
+		return valueSetTimeline;
 	}
 
 	AudioEffectBus::AudioEffectBus(Stream* pStream)
@@ -110,11 +105,11 @@ namespace ksmaudio::AudioEffect
 		}
     }
 
-	void AudioEffectBus::update(const AudioEffect::Status& status, const std::array<bool, kOverrideMax>& overrideActive, const std::set<std::string>& onAudioEffectNames)
+	void AudioEffectBus::update(const AudioEffect::Status& status, const std::set<std::string>& onAudioEffectNames)
 	{
 		for (std::size_t i = 0U; i < m_audioEffects.size(); ++i)
 		{
-			m_paramControllers[i].update(status.sec, overrideActive);
+			m_paramControllers[i].update(status.sec);
 			const bool isOn = onAudioEffectNames.contains(m_names[i]); // costly?
 			m_audioEffects[i]->updateStatus(status, isOn);
 		}

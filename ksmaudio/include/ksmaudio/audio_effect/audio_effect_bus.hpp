@@ -90,21 +90,14 @@ namespace ksmaudio::AudioEffect
 	class ParamController // TODO: review overhead
 	{
 	public:
-		using ValueSetDict = std::unordered_map<std::string, ValueSet>;
-		using ValueSetTimelineDict = std::unordered_map<std::string, Timeline<ValueSet>>;
-
-		using OverrideParamChanges = std::array<Timeline<std::optional<ValueSetDict>>, kOverrideMax>;
+		using ValueSetDict = std::unordered_map<ParamID, ValueSet>;
+		using ValueSetTimelineDict = std::unordered_map<ParamID, Timeline<ValueSet>>;
 
 	private:
 		ValueSetTimelineDict m_baseParamChanges; // For "param_change"
-		OverrideParamChanges m_overrideParamChanges; // For "long_event"
 
 		ValueSetDict m_baseParams;
 		ValueSetDict m_currentParams;
-
-		// Note: It is assumed that kOverrideMax is 2. Otherwise, a stack is required here.
-		std::size_t m_lastActiveOverrideIdx = 0U;
-		std::array<bool, kOverrideMax> m_overrideActive = { false, false };
 
 		float m_timeSec = kPastTimeSec;
 
@@ -112,13 +105,16 @@ namespace ksmaudio::AudioEffect
 
 	public:
 		ParamController(const ValueSetDict& baseParams,
-			const std::unordered_map<std::string, std::map<float, ValueSet>>& baseParamChanges,
-			const std::array<std::map<float, std::optional<ValueSetDict>>, kOverrideMax>& overrideParamChanges);
+			const std::unordered_map<ParamID, std::map<float, ValueSet>>& baseParamChanges);
 
-		void update(float timeSec, const std::array<bool, kOverrideMax>& overrideActive);
+		void update(float timeSec);
 
-		const std::unordered_map<std::string, ValueSet> currentParams() const;
+		const std::unordered_map<ParamID, ValueSet> currentParams() const;
 	};
+
+	std::unordered_map<ParamID, ValueSet> StrDictToValueSetDict(const std::unordered_map<std::string, std::string>& strDict);
+
+	std::unordered_map<ParamID, std::map<float, ValueSet>> StrTimelineToValueSetTimeline(const std::unordered_map<std::string, std::map<float, std::string>>& strTimeline);
 
     class AudioEffectBus
     {
@@ -137,13 +133,12 @@ namespace ksmaudio::AudioEffect
 
 		~AudioEffectBus();
 
-		void update(const AudioEffect::Status& status, const std::array<bool, kOverrideMax>& overrideActive, const std::set<std::string>& onAudioEffectNames);
+		void update(const AudioEffect::Status& status, const std::set<std::string>& onAudioEffectNames);
 
 		template <typename T>
 		void emplaceAudioEffect(const std::string& name,
-			const std::unordered_map<std::string, std::string>& params = {},
-			const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges = {},
-			const std::array<std::map<float, std::optional<std::unordered_map<std::string, std::string>>>, kOverrideMax>& overrideParamChanges = {},
+			const std::unordered_map<ParamID, ValueSet>& params = {},
+			const std::unordered_map<ParamID, std::map<float, ValueSet>>& paramChanges = {},
 			const std::set<float>& updateTriggerTiming = {})
 			requires std::derived_from<T, AudioEffect::IAudioEffect>
 		{
@@ -158,14 +153,9 @@ namespace ksmaudio::AudioEffect
 			m_audioEffects.push_back(std::make_unique<T>(m_pStream->sampleRate(), m_pStream->numChannels()));
 			const auto& audioEffect = m_audioEffects.back();
 
-			std::unordered_map<std::string, ValueSet> paramsAsValueSet;
-			for (const auto& [paramName, valueSetStr] : params)
+			for (const auto& [paramID, valueSet] : params)
 			{
-				paramsAsValueSet.emplace(paramName, StrToValueSet(audioEffect->paramTypeOf(paramName), valueSetStr));
-			}
-			for (const auto& [paramName, valueSet] : paramsAsValueSet)
-			{
-				audioEffect->setParamValueSet(paramName, valueSet);
+				audioEffect->setParamValueSet(paramID, valueSet);
 			}
 			audioEffect->updateStatus(AudioEffect::Status{}, false);
 
@@ -180,38 +170,17 @@ namespace ksmaudio::AudioEffect
 			const HDSP hDSP = m_pStream->addAudioEffect(audioEffect.get(), 0); // TODO: priority
 			m_hDSPs.push_back(hDSP);
 
-			std::unordered_map<std::string, std::map<float, ValueSet>> baseParamChangesAsValueSet;
-			for (const auto& [paramName, map] : paramChanges)
-			{
-				std::map<float, ValueSet>& targetMap = baseParamChangesAsValueSet[paramName];
-				for (const auto& [sec, valueSetStr] : map)
-				{
-					targetMap.emplace(sec, StrToValueSet(audioEffect->paramTypeOf(paramName), valueSetStr));
-				}
-			}
+			m_paramControllers.emplace_back(params, paramChanges);
+		}
 
-			std::array<std::map<float, std::optional<ValueSetDict>>, kOverrideMax> overrideParamChangesAsValueSet;
-			for (std::size_t i = 0U; i < kOverrideMax; ++i)
-			{
-				std::map<float, std::optional<ValueSetDict>>& targetMap = overrideParamChangesAsValueSet[i];
-				for (const auto& [sec, overrideParams] : overrideParamChanges[i])
-				{
-					if (overrideParams.has_value())
-					{
-						ValueSetDict& targetParams = targetMap[sec].emplace();
-						for (const auto& [paramName, valueSetStr] : *overrideParams)
-						{
-							targetParams.emplace(paramName, StrToValueSet(audioEffect->paramTypeOf(paramName), valueSetStr));
-						}
-					}
-					else
-					{
-						targetMap.emplace(sec, std::nullopt);
-					}
-				}
-			}
-
-			m_paramControllers.emplace_back(paramsAsValueSet, baseParamChangesAsValueSet, overrideParamChangesAsValueSet);
+		template <typename T>
+		void emplaceAudioEffect(const std::string& name,
+			const std::unordered_map<std::string, std::string>& params,
+			const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges = {},
+			const std::set<float>& updateTriggerTiming = {})
+			requires std::derived_from<T, AudioEffect::IAudioEffect>
+		{
+			emplaceAudioEffect<T>(name, StrDictToValueSetDict(params), StrTimelineToValueSetTimeline(paramChanges), updateTriggerTiming);
 		}
 
 		ParamController& paramControllerAt(const std::string& name);

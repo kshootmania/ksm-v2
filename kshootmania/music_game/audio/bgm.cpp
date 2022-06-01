@@ -49,7 +49,6 @@ void MusicGame::Audio::BGM::updateAudioEffectFX(const ksmaudio::AudioEffect::Sta
 {
 	m_pAudioEffectBusFX->update(
 		status,
-		{ true, true/*laneAudioEffectNames[0].has_value(), laneAudioEffectNames[1].has_value()*/ },
 		onAudioEffectNames);
 }
 
@@ -124,15 +123,15 @@ void MusicGame::Audio::BGM::emplaceAudioEffect(bool isFX, const std::string& nam
 	switch (def.type)
 	{
 	case kson::AudioEffectType::Retrigger:
-		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Retrigger>(name, def.v, { /*TODO*/ }, { /*TODO*/ }, updateTriggerTiming);
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Retrigger>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
 		break;
 
 	case kson::AudioEffectType::Flanger:
-		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, { /*TODO*/ }, { /*TODO*/ }, updateTriggerTiming);
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
 		break;
 
 	case kson::AudioEffectType::Bitcrusher:
-		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, { /*TODO*/ }, { /*TODO*/ }, updateTriggerTiming);
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
 		break;
 	}
 }

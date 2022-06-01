@@ -14,9 +14,9 @@ namespace ksmaudio::AudioEffect
 		Param reduction = DefineParam(Type::kSample, "0samples");
 		Param mix = DefineParam(Type::kRate, "0%>100%");
 
-		const std::unordered_map<std::string, Param*> dict = {
-			{ "reduction", &reduction },
-			{ "mix", &mix },
+		const std::unordered_map<ParamID, Param*> dict = {
+			{ ParamID::kReduction, &reduction },
+			{ ParamID::kMix, &mix },
 		};
 
 		BitcrusherDSPParams render(const Status& status, bool isOn)

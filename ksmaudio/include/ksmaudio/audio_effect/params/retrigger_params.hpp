@@ -19,12 +19,12 @@ namespace ksmaudio::AudioEffect
 		Param updateTrigger = DefineParam(Type::kSwitch, "off");
 		Param mix = DefineParam(Type::kRate, "0%>100%");
 
-		const std::unordered_map<std::string, Param*> dict = {
-			{ "update_period", &updatePeriod },
-			{ "wave_length", &waveLength },
-			{ "rate", &rate },
-			{ "update_trigger", &updateTrigger },
-			{ "mix", &mix },
+		const std::unordered_map<ParamID, Param*> dict = {
+			{ ParamID::kUpdatePeriod, &updatePeriod },
+			{ ParamID::kWaveLength, &waveLength },
+			{ ParamID::kRate, &rate },
+			{ ParamID::kUpdateTrigger, &updateTrigger },
+			{ ParamID::kMix, &mix },
 		};
 
 	private:
