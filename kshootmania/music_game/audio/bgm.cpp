@@ -3,6 +3,7 @@
 namespace
 {
 	constexpr double kBlendTimeSec = 5.0;
+	constexpr double kManualUpdateIntervalSec = 0.005;
 }
 
 MusicGame::Audio::BGM::BGM(FilePathView filePath)
@@ -11,6 +12,7 @@ MusicGame::Audio::BGM::BGM(FilePathView filePath)
 	, m_pAudioEffectBusFX(m_stream.emplaceAudioEffectBus())
 	, m_pAudioEffectBusLaser(m_stream.emplaceAudioEffectBus())
 	, m_stopwatch(StartImmediately::No)
+	, m_manualUpdateStopwatch(StartImmediately::Yes)
 {
 }
 
@@ -23,7 +25,11 @@ void MusicGame::Audio::BGM::update()
 
 	if (m_isStreamStarted)
 	{
-		m_stream.updateManually();
+		if (m_manualUpdateStopwatch.sF() >= kManualUpdateIntervalSec)
+		{
+			m_stream.updateManually();
+			m_manualUpdateStopwatch.restart();
+		}
 		m_timeSec = m_stream.posSec();
 
 		if (m_timeSec < m_durationSec - kBlendTimeSec)
