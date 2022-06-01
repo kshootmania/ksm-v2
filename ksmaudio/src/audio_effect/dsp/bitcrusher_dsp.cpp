@@ -15,8 +15,13 @@ namespace ksmaudio::AudioEffect
 			return;
 		}
 
-		const std::size_t numFrames = dataSize / m_info.numChannels;
 		const float reduction = params.reduction * m_info.sampleRateScale;
+		if (reduction == 0.0f)
+		{
+			return;
+		}
+
+		const std::size_t numFrames = dataSize / m_info.numChannels;
 		float* pCursor = pData;
 		for (std::size_t i = 0; i < numFrames; ++i)
 		{
