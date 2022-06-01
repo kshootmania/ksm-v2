@@ -107,16 +107,36 @@ void MusicGame::GameMain::registerAudioEffects()
 		m_bgm.emplaceAudioEffect(false, name, def, updateTriggerTiming);
 	}
 
-	const kson::AudioEffectDef def_ = kson::AudioEffectDef{
-		.type = kson::AudioEffectType::Retrigger,
-		.v = {
-			{ "wave_length", "1/8" },
-			{ "mix", "0%>100%" },
-		},
-	};
-	const auto updateTriggerTiming_ = Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(
-		def_, totalMeasures, m_chartData, m_timingCache);
-	m_bgm.emplaceAudioEffect(true, "retrigger", def_, updateTriggerTiming_);
+	// Just for testing
+	// TODO: Remove this code
+	{
+		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
+			.type = kson::AudioEffectType::Retrigger,
+			.v = {
+				{ "wave_length", "1/8" },
+				{ "mix", "0%>100%" },
+			},
+		};
+		const auto updateTriggerTiming_ = Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(
+			def_, totalMeasures, m_chartData, m_timingCache);
+		m_bgm.emplaceAudioEffect(true, "retrigger", def_, updateTriggerTiming_);
+	}
+	{
+		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
+			.type = kson::AudioEffectType::Flanger,
+			.v = {},
+		};
+		m_bgm.emplaceAudioEffect(true, "flanger", def_);
+	}
+	{
+		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
+			.type = kson::AudioEffectType::Bitcrusher,
+			.v = {
+				{ "reduction", "10samples" },
+			},
+		};
+		m_bgm.emplaceAudioEffect(true, "bitcrusher", def_);
+	}
 }
 
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
