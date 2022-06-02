@@ -387,6 +387,7 @@
     <ClInclude Include="music_game\judgment\judgment_defines.hpp" />
     <ClInclude Include="music_game\game_defines.hpp" />
     <ClInclude Include="music_game\game_main.hpp" />
+    <ClInclude Include="music_game\timeline.hpp" />
     <ClInclude Include="scene\option\option_assets.hpp" />
     <ClInclude Include="scene\option\option_menu.hpp" />
     <ClInclude Include="scene\option\option_menu_field.hpp" />

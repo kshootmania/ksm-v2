@@ -79,9 +79,10 @@ namespace
 
 void MusicGame::GameMain::registerAudioEffects()
 {
-	const std::int64_t maxMeasureIdx = kson::TimingUtils::MsToMeasureIdx(MathUtils::SecToMs(m_bgm.durationSec()), m_chartData.beat, m_timingCache);
-	const std::int64_t measureCount = maxMeasureIdx + 1;
-	const std::int64_t totalMeasures = measureCount + 1;
+	const std::int64_t totalMeasures =
+		kson::TimingUtils::MsToMeasureIdx(MathUtils::SecToMs(m_bgm.durationSec()), m_chartData.beat, m_timingCache)
+		+ 1/* add last measure */
+		+ 1/* index to size */;
 
 	// FX
 	for (const auto& [name, def] : m_chartData.audio.audioEffects.fx.def)
