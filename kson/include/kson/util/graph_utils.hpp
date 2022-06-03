@@ -9,10 +9,10 @@ namespace kson
 
 	GraphSections::const_iterator GraphSectionAt(const GraphSections& graphSections, Pulse pulse);
 
-	Lane<LaserSection>::const_iterator LaserSectionAt(const Lane<LaserSection>& laserSections, Pulse pulse);
+	ByPulse<LaserSection>::const_iterator LaserSectionAt(const ByPulse<LaserSection>& laserSections, Pulse pulse);
 
 	template <class GS>
-	std::optional<double> GraphSectionValueAt(const GS& graphSections, Pulse pulse) requires std::is_same_v<GS, GraphSections> || std::is_same_v<GS, Lane<LaserSection>>
+	std::optional<double> GraphSectionValueAt(const GS& graphSections, Pulse pulse) requires std::is_same_v<GS, GraphSections> || std::is_same_v<GS, ByPulse<LaserSection>>
 	{
 		if (graphSections.empty())
 		{
@@ -21,7 +21,7 @@ namespace kson
 
 		const Graph* pGraphSection;
 		RelPulse relPulse;
-		if constexpr (std::is_same_v<GS, Lane<LaserSection>>)
+		if constexpr (std::is_same_v<GS, ByPulse<LaserSection>>)
 		{
 			const auto& [laserSectionPulse, laserSection] = *LaserSectionAt(graphSections, pulse);
 			relPulse = pulse - laserSectionPulse;
@@ -59,7 +59,7 @@ namespace kson
 	}
 
 	template <class GS>
-	double GraphSectionValueAtWithDefault(const GS& graphSections, Pulse pulse, double defaultValue) requires std::is_same_v<GS, GraphSections> || std::is_same_v<GS, Lane<LaserSection>>
+	double GraphSectionValueAtWithDefault(const GS& graphSections, Pulse pulse, double defaultValue) requires std::is_same_v<GS, GraphSections> || std::is_same_v<GS, ByPulse<LaserSection>>
 	{
 		const std::optional<double> sectionValue = GraphSectionValueAt(graphSections, pulse);
 		if (sectionValue.has_value())

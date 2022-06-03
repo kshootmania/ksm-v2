@@ -1,6 +1,6 @@
 #include "kson/note/note_info.hpp"
 
-void kson::to_json(nlohmann::json& j, const Lane<LaserSection>& lane)
+void kson::to_json(nlohmann::json& j, const ByPulse<LaserSection>& lane)
 {
 	j = nlohmann::json::array();
 

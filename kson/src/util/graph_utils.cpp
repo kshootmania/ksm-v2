@@ -43,7 +43,7 @@ kson::GraphSections::const_iterator kson::GraphSectionAt(const GraphSections& gr
 	return itr;
 }
 
-kson::Lane<kson::LaserSection>::const_iterator kson::LaserSectionAt(const Lane<LaserSection>& laserSections, Pulse pulse)
+kson::ByPulse<kson::LaserSection>::const_iterator kson::LaserSectionAt(const ByPulse<LaserSection>& laserSections, Pulse pulse)
 {
 	assert(!laserSections.empty());
 

@@ -163,35 +163,6 @@ namespace kson
 		}
 	}
 
-	template <typename Params>
-	struct ByNotes
-	{
-		std::array<ByPulse<Params>, kNumBTLanes> bt;
-		std::array<ByPulse<Params>, kNumFXLanes> fx;
-		std::array<ByPulse<Params>, kNumLaserLanes> laser;
-	};
-
-	template <typename T>
-	void to_json(nlohmann::json& j, const ByNotes<T>& byNotes)
-	{
-		j = nlohmann::json::object();
-
-		if (nlohmann::json bt = byNotes.bt; !bt[0].empty() || !bt[1].empty() || !bt[2].empty() || !bt[3].empty())
-		{
-			j["bt"] = byNotes.bt;
-		}
-
-		if (nlohmann::json fx = byNotes.fx; !fx[0].empty() || !fx[1].empty())
-		{
-			j["fx"] = byNotes.fx;
-		}
-
-		if (nlohmann::json laser = byNotes.laser; !laser[0].empty() || !laser[1].empty())
-		{
-			j["laser"] = byNotes.laser;
-		}
-	}
-
 	struct GraphValue
 	{
 		double v = 0.0;
@@ -230,9 +201,6 @@ namespace kson
 	using Graph = ByPulse<GraphValue>;
 
 	using GraphSections = ByPulse<ByRelPulse<GraphValue>>;
-
-	template <typename T>
-	using Lane = ByPulse<T>; // TODO: For editor, ByPulseMulti would be used instead of ByPulse?
 
 	template <typename T>
 	using Dict = std::unordered_map<std::string, T>;
