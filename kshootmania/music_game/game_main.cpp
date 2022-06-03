@@ -29,7 +29,7 @@ namespace
 		return sum;
 	}
 
-	Optional<kson::Pulse> CurrentLongNotePulseByTime(const kson::Lane<kson::Interval>& lane, kson::Pulse time)
+	Optional<kson::Pulse> CurrentLongNotePulseByTime(const kson::ByPulse<kson::Interval>& lane, kson::Pulse time)
 	{
 		const auto currentNoteItr = kson::CurrentAt(lane, time);
 		if (currentNoteItr != lane.end())

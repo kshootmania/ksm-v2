@@ -56,7 +56,7 @@ namespace kson
 	{
 		Dict<AudioEffectDef> def;
 		Dict<Dict<ByPulse<std::string>>> paramChange;
-		Dict<std::array<ByPulse<AudioEffectParams>, kNumFXLanes>> longEvent;
+		Dict<FXLane<AudioEffectParams>> longEvent;
 
 		bool empty() const;
 	};

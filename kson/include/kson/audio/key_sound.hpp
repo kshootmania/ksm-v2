@@ -20,7 +20,7 @@ namespace kson
 	struct KeySoundFXInfo
 	{
 		Dict<KeySoundDef> def;
-		Dict<std::array<ByPulse<KeySoundParams>, kNumFXLanes>> chipEvent;
+		Dict<FXLane<KeySoundParams>> chipEvent;
 
 		bool empty() const;
 	};

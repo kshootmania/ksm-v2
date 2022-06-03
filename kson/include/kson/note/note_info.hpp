@@ -14,9 +14,9 @@ namespace kson
 
 	struct NoteInfo
 	{
-		std::array<ByPulse<Interval>, kNumBTLanes> btLanes;
-		std::array<ByPulse<Interval>, kNumFXLanes> fxLanes;
-		std::array<ByPulse<LaserSection>, kNumLaserLanes> laserLanes;
+		BTLane<Interval> btLanes;
+		FXLane<Interval> fxLanes;
+		LaserLane<LaserSection> laserLanes;
 	};
 
 	void to_json(nlohmann::json& j, const NoteInfo& noteInfo);

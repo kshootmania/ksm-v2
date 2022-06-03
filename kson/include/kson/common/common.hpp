@@ -31,6 +31,15 @@ namespace kson
 	using ByPulse = std::map<Pulse, T>;
 
 	template <typename T>
+	using BTLane = std::array<ByPulse<T>, kNumBTLanes>;
+
+	template <typename T>
+	using FXLane = std::array<ByPulse<T>, kNumFXLanes>;
+
+	template <typename T>
+	using LaserLane = std::array<ByPulse<T>, kNumLaserLanes>;
+
+	template <typename T>
 	void to_json(nlohmann::json& j, const ByPulse<T>& events)
 	{
 		j = nlohmann::json::array();

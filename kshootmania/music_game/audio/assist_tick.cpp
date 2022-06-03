@@ -5,8 +5,8 @@ namespace
 	// Assist tick sound is played 30ms early
 	constexpr double kLatencySec = 0.03;
 
-	// Note: Lane<Interval> is std::map<Pulse, Interval>
-	kson::Pulse CurrentNotePulse(const kson::Lane<kson::Interval>& lane, kson::Pulse currentPulse)
+	// Note: ByPulse<Interval> is std::map<Pulse, Interval>
+	kson::Pulse CurrentNotePulse(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse)
 	{
 		const auto nextNote = lane.upper_bound(currentPulse);
 		if (nextNote == lane.begin())
