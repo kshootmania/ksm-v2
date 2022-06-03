@@ -157,4 +157,6 @@ namespace ksmaudio::AudioEffect
 		{ ParamID::kFreqMax, Type::kFreq },
 		{ ParamID::kGain, Type::kRate },
 	};
+
+	using ParamValueSetDict = std::unordered_map<ParamID, ValueSet>;
 }

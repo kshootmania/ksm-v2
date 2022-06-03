@@ -18,7 +18,7 @@ namespace ksmaudio::AudioEffect
 		}
 	}
 
-	ParamController::ParamController(const ValueSetDict& baseParams,
+	ParamController::ParamController(const ParamValueSetDict& baseParams,
 		const std::unordered_map<ParamID, std::map<float, ValueSet>>& baseParamChanges)
 		: m_baseParams(baseParams)
 	{
@@ -53,24 +53,24 @@ namespace ksmaudio::AudioEffect
 		m_timeSec = timeSec;
 	}
 
-	const std::unordered_map<ParamID, ValueSet> ParamController::currentParams() const
+	const ParamValueSetDict& ParamController::currentParams() const
 	{
 		return m_currentParams;
 	}
 
-	std::unordered_map<ParamID, ValueSet> StrDictToValueSetDict(const std::unordered_map<std::string, std::string>& strDict)
+	ParamValueSetDict StrDictToParamValueSetDict(const std::unordered_map<std::string, std::string>& strDict)
 	{
-		std::unordered_map<ParamID, ValueSet> valueSetDict;
+		std::unordered_map<ParamID, ValueSet> paramValueSetDict;
 		for (const auto& [paramName, valueSetStr] : strDict)
 		{
 			if (kStrToParamID.contains(paramName))
 			{
 				const ParamID paramID = kStrToParamID.at(paramName);
 				const Type type = kParamIDType.at(paramID);
-				valueSetDict.emplace(paramID, StrToValueSet(type, valueSetStr));
+				paramValueSetDict.emplace(paramID, StrToValueSet(type, valueSetStr));
 			}
 		}
-		return valueSetDict;
+		return paramValueSetDict;
 	}
 
 	std::unordered_map<ParamID, std::map<float, ValueSet>> StrTimelineToValueSetTimeline(const std::unordered_map<std::string, std::map<float, std::string>>& strTimeline)

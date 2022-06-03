@@ -89,30 +89,26 @@ namespace ksmaudio::AudioEffect
 
 	class ParamController // TODO: review overhead
 	{
-	public:
-		using ValueSetTimelineDict = std::unordered_map<ParamID, detail::Timeline<ValueSet>>;
-		using ValueSetDict = std::unordered_map<ParamID, ValueSet>;
-
 	private:
-		ValueSetTimelineDict m_baseParamChanges; // For "param_change"
+		const ParamValueSetDict m_baseParams;
+		std::unordered_map<ParamID, detail::Timeline<ValueSet>> m_baseParamChanges; // For "param_change"
 
-		ValueSetDict m_baseParams;
-		ValueSetDict m_currentParams;
+		ParamValueSetDict m_currentParams;
 
 		float m_timeSec = kPastTimeSec;
 
 		void refreshCurrentParams(float timeSec);
 
 	public:
-		ParamController(const ValueSetDict& baseParams,
+		ParamController(const ParamValueSetDict& baseParams,
 			const std::unordered_map<ParamID, std::map<float, ValueSet>>& baseParamChanges);
 
 		void update(float timeSec);
 
-		const std::unordered_map<ParamID, ValueSet> currentParams() const;
+		const ParamValueSetDict& currentParams() const;
 	};
 
-	std::unordered_map<ParamID, ValueSet> StrDictToValueSetDict(const std::unordered_map<std::string, std::string>& strDict);
+	ParamValueSetDict StrDictToParamValueSetDict(const std::unordered_map<std::string, std::string>& strDict);
 
 	std::unordered_map<ParamID, std::map<float, ValueSet>> StrTimelineToValueSetTimeline(const std::unordered_map<std::string, std::map<float, std::string>>& strTimeline);
 
@@ -142,8 +138,6 @@ namespace ksmaudio::AudioEffect
 			const std::set<float>& updateTriggerTiming = {})
 			requires std::derived_from<T, AudioEffect::IAudioEffect>
 		{
-			using ValueSetDict = ParamController::ValueSetDict;
-
 			if (m_nameIdxDict.contains(name))
 			{
 				// TODO: Report warning
@@ -180,7 +174,7 @@ namespace ksmaudio::AudioEffect
 			const std::set<float>& updateTriggerTiming = {})
 			requires std::derived_from<T, AudioEffect::IAudioEffect>
 		{
-			emplaceAudioEffect<T>(name, StrDictToValueSetDict(params), StrTimelineToValueSetTimeline(paramChanges), updateTriggerTiming);
+			emplaceAudioEffect<T>(name, StrDictToParamValueSetDict(params), StrTimelineToValueSetTimeline(paramChanges), updateTriggerTiming);
 		}
 
 		ParamController& paramControllerAt(const std::string& name);
