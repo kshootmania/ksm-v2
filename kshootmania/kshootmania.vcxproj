@@ -127,6 +127,7 @@
     <ClCompile Include="input\key_config.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="music_game\audio\assist_tick.cpp" />
+    <ClCompile Include="music_game\audio\audio_effect_main.cpp" />
     <ClCompile Include="music_game\audio\audio_effect_utils.cpp" />
     <ClCompile Include="music_game\audio\bgm.cpp" />
     <ClCompile Include="music_game\game_main.cpp" />
@@ -365,6 +366,7 @@
     <ClInclude Include="ini\ksm_ini_data.hpp" />
     <ClInclude Include="input\key_config.hpp" />
     <ClInclude Include="music_game\audio\assist_tick.hpp" />
+    <ClInclude Include="music_game\audio\audio_effect_main.hpp" />
     <ClInclude Include="music_game\audio\audio_effect_update_info.hpp" />
     <ClInclude Include="music_game\audio\audio_effect_utils.hpp" />
     <ClInclude Include="music_game\audio\bgm.hpp" />
@@ -382,7 +384,7 @@
     <ClInclude Include="music_game\graphics\hud\song_info_panel.hpp" />
     <ClInclude Include="music_game\graphics\jdgline\jdgline_3d_graphics.hpp" />
     <ClInclude Include="music_game\graphics\jdgoverlay\jdgoverlay_3d_graphics.hpp" />
-    <ClInclude Include="music_game\graphics\update_info.hpp" />
+    <ClInclude Include="music_game\graphics\graphics_update_info.hpp" />
     <ClInclude Include="music_game\judgment\button_lane_judgment.hpp" />
     <ClInclude Include="music_game\judgment\judgment_defines.hpp" />
     <ClInclude Include="music_game\game_defines.hpp" />

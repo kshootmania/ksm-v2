@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "music_game/graphics/update_info.hpp"
+#include "music_game/graphics/graphics_update_info.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -12,21 +12,21 @@ namespace MusicGame::Graphics
 		const TiledTexture m_chipFXNoteTexture;
 		const Texture m_longFXNoteTexture;
 
-		void drawChipNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, bool isBT) const;
+		void drawChipNotesCommon(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, bool isBT) const;
 
-		void drawChipBTNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget) const;
+		void drawChipBTNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget) const;
 
-		void drawChipFXNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget) const;
+		void drawChipFXNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget) const;
 
-		void drawLongNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, bool isBT) const;
+		void drawLongNotesCommon(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, bool isBT) const;
 
-		void drawLongBTNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
+		void drawLongBTNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
 
-		void drawLongFXNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
+		void drawLongFXNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
 
 	public:
 		ButtonNoteGraphics();
 
-		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
+		void draw(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
 	};
 }

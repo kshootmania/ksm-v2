@@ -3,7 +3,7 @@
 #include "music_game/graphics/graphics_main.hpp"
 #include "music_game/audio/bgm.hpp"
 #include "music_game/audio/assist_tick.hpp"
-#include "music_game/audio/audio_effect_update_info.hpp"
+#include "music_game/audio/audio_effect_main.hpp"
 #include "kson/util/timing_utils.hpp"
 
 namespace MusicGame
@@ -32,10 +32,10 @@ namespace MusicGame
 		Audio::AssistTick m_assistTick;
 
 		// Audio effects
-		Audio::AudioEffectUpdateInfo m_audioEffectUpdateInfo;
+		Audio::AudioEffectMain m_audioEffectMain;
 
 		// Graphics
-		Graphics::UpdateInfo m_graphicsUpdateInfo;
+		Graphics::GraphicsUpdateInfo m_graphicsUpdateInfo;
 		Graphics::GraphicsMain m_musicGameGraphics;
 
 		void registerAudioEffects();

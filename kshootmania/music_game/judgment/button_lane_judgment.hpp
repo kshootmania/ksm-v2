@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "judgment_defines.hpp"
 #include "music_game/game_defines.hpp"
-#include "music_game/graphics/update_info.hpp"
+#include "music_game/graphics/graphics_update_info.hpp"
 #include "kson/chart_data.hpp"
 #include "kson/util/timing_utils.hpp"
 

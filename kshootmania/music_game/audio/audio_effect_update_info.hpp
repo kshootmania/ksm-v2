@@ -14,8 +14,6 @@ namespace MusicGame::Audio
 		kson::Pulse currentPulse = 0;
 		double currentBPM = 120.0;
 
-		const kson::ChartData* pChartData = nullptr;
-
 		std::array<FXLaneState, kson::kNumFXLanes> fxLaneState;
 	};
 }

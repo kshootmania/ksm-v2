@@ -107,7 +107,7 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const kson::ChartData& chartData
 {
 }
 
-void MusicGame::Graphics::GraphicsMain::update(const UpdateInfo& updateInfo)
+void MusicGame::Graphics::GraphicsMain::update(const GraphicsUpdateInfo& updateInfo)
 {
 	m_updateInfo = updateInfo;
 

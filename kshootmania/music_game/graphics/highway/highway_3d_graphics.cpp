@@ -37,7 +37,7 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 {
 }
 
-void MusicGame::Graphics::Highway3DGraphics::draw2D(const UpdateInfo& updateInfo) const
+void MusicGame::Graphics::Highway3DGraphics::draw2D(const GraphicsUpdateInfo& updateInfo) const
 {
 	assert(updateInfo.pChartData != nullptr);
 

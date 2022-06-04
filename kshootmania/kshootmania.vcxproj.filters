@@ -390,6 +390,9 @@
     <ClCompile Include="music_game\audio\audio_effect_utils.cpp">
       <Filter>Source Files\music_game\audio</Filter>
     </ClCompile>
+    <ClCompile Include="music_game\audio\audio_effect_main.cpp">
+      <Filter>Source Files\music_game\audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1138,7 +1141,7 @@
     <ClInclude Include="music_game\graphics\graphics_defines.hpp">
       <Filter>Header Files\music_game\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="music_game\graphics\update_info.hpp">
+    <ClInclude Include="music_game\graphics\graphics_update_info.hpp">
       <Filter>Header Files\music_game\graphics</Filter>
     </ClInclude>
     <ClInclude Include="music_game\graphics\highway\highway_tilt.hpp">
@@ -1194,6 +1197,9 @@
     </ClInclude>
     <ClInclude Include="music_game\timeline.hpp">
       <Filter>Header Files\music_game</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\audio\audio_effect_main.hpp">
+      <Filter>Header Files\music_game\audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

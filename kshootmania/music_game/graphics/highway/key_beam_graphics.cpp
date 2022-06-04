@@ -20,7 +20,7 @@ MusicGame::Graphics::KeyBeamGraphics::KeyBeamGraphics()
 {
 }
 
-void MusicGame::Graphics::KeyBeamGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
+void MusicGame::Graphics::KeyBeamGraphics::draw(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
 {
 	const ScopedRenderTarget2D renderTarget(additiveTarget);
 	const ScopedRenderStates2D renderState(BlendState::Additive);

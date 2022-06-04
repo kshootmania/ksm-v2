@@ -58,7 +58,7 @@ MusicGame::Graphics::LaserNoteGraphics::LaserNoteGraphics()
 {
 }
 
-void MusicGame::Graphics::LaserNoteGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+void MusicGame::Graphics::LaserNoteGraphics::draw(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
 {
 	if (updateInfo.pChartData == nullptr)
 	{

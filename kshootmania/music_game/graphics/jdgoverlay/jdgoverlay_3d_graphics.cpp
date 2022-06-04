@@ -55,7 +55,7 @@ const TiledTexture& MusicGame::Graphics::Jdgoverlay3DGraphics::chipAnimTexture(J
 	}
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimCommon(const UpdateInfo& updateInfo, bool isBT) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimCommon(const GraphicsUpdateInfo& updateInfo, bool isBT) const
 {
 	for (int32 i = 0; std::cmp_less(i, (isBT ? kson::kNumBTLanes : kson::kNumFXLanes)); ++i)
 	{
@@ -73,17 +73,17 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimCommon(const UpdateI
 	}
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimBT(const UpdateInfo& updateInfo) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimBT(const GraphicsUpdateInfo& updateInfo) const
 {
 	drawChipAnimCommon(updateInfo, true);
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimFX(const UpdateInfo& updateInfo) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimFX(const GraphicsUpdateInfo& updateInfo) const
 {
 	drawChipAnimCommon(updateInfo, false);
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimCommon(const UpdateInfo& updateInfo, bool isBT) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimCommon(const GraphicsUpdateInfo& updateInfo, bool isBT) const
 {
 	for (int32 i = 0; std::cmp_less(i, (isBT ? kson::kNumBTLanes : kson::kNumFXLanes)); ++i)
 	{
@@ -121,12 +121,12 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimCommon(const UpdateI
 	}
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimBT(const UpdateInfo& updateInfo) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimBT(const GraphicsUpdateInfo& updateInfo) const
 {
 	drawLongAnimCommon(updateInfo, true);
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimFX(const UpdateInfo& updateInfo) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimFX(const GraphicsUpdateInfo& updateInfo) const
 {
 	drawLongAnimCommon(updateInfo, false);
 }
@@ -162,7 +162,7 @@ MusicGame::Graphics::Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
 {
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::draw2D(const UpdateInfo& updateInfo) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::draw2D(const GraphicsUpdateInfo& updateInfo) const
 {
 	// Prepare 2D render texture to draw
 	const ScopedRenderTarget2D renderTarget(m_renderTexture.clear(Palette::Black));

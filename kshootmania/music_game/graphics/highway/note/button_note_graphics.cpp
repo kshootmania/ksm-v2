@@ -21,7 +21,7 @@ namespace
 	}
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, bool isBT) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, bool isBT) const
 {
 	const kson::ChartData& chartData = *updateInfo.pChartData;
 	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
@@ -59,17 +59,17 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const UpdateIn
 	}
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawChipBTNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawChipBTNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
 {
 	drawChipNotesCommon(updateInfo, additiveTarget, true);
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawChipFXNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawChipFXNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
 {
 	drawChipNotesCommon(updateInfo, additiveTarget, false);
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, bool isBT) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, bool isBT) const
 {
 	const kson::ChartData& chartData = *updateInfo.pChartData;
 	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
@@ -128,12 +128,12 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const UpdateIn
 	}
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawLongBTNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawLongBTNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
 {
 	drawLongNotesCommon(updateInfo, additiveTarget, invMultiplyTarget, true);
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawLongFXNotes(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawLongFXNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
 {
 	drawLongNotesCommon(updateInfo, additiveTarget, invMultiplyTarget, false);
 }
@@ -154,7 +154,7 @@ MusicGame::Graphics::ButtonNoteGraphics::ButtonNoteGraphics()
 {
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+void MusicGame::Graphics::ButtonNoteGraphics::draw(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
 {
 	if (updateInfo.pChartData == nullptr)
 	{

@@ -28,53 +28,6 @@ namespace
 		}
 		return sum;
 	}
-
-	Optional<kson::Pulse> CurrentLongNotePulseByTime(const kson::ByPulse<kson::Interval>& lane, kson::Pulse time)
-	{
-		const auto currentNoteItr = kson::CurrentAt(lane, time);
-		if (currentNoteItr != lane.end())
-		{
-			const auto& [y, currentNote] = *currentNoteItr;
-			if (y <= time && time < y + currentNote.length)
-			{
-				return y;
-			}
-		}
-		return none;
-	}
-
-	std::array<Optional<kson::Pulse>, kson::kNumFXLanes> CurrentLongNotePulseOfLanesByTime(const kson::ChartData& chartData, kson::Pulse time)
-	{
-		std::array<Optional<kson::Pulse>, kson::kNumFXLanes> pulses;
-		for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
-		{
-			pulses[i] = CurrentLongNotePulseByTime(chartData.note.fxLanes[i], time);
-		}
-		return pulses;
-	}
-
-	// costly?
-	std::set<std::string> CurrentAudioEffectNamesFX(const kson::ChartData& chartData, const std::array<Optional<kson::Pulse>, kson::kNumFXLanes>& longNotePulseOfLanes)
-	{
-		std::set<std::string> set;
-		for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
-		{
-			if (!longNotePulseOfLanes[i].has_value())
-			{
-				continue;
-			}
-
-			for (const auto& [audioEffectName, map] : chartData.audio.audioEffects.fx.longEvent)
-			{
-				if (map[i].contains(*longNotePulseOfLanes[i]))
-				{
-					set.insert(audioEffectName);
-				}
-			}
-		}
-
-		return set;
-	}
 }
 
 void MusicGame::GameMain::registerAudioEffects()
@@ -156,7 +109,7 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	, m_scoreValueMax(SumScoreValueMax(m_btLaneJudgments) + SumScoreValueMax(m_fxLaneJudgments)) // TODO: add laser
 	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
 	, m_assistTick(gameCreateInfo.enableAssistTick)
-	, m_audioEffectUpdateInfo{ .pChartData = &m_chartData }
+	, m_audioEffectMain(m_chartData)
 	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
 	, m_musicGameGraphics(m_chartData, m_timingCache)
 {
@@ -192,26 +145,11 @@ void MusicGame::GameMain::update()
 		m_graphicsUpdateInfo.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax); // TODO: add laser
 	}
 
-	// SE
-	{
-		m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
-	}
-
 	// Audio effects
-	{
-		const double currentTimeSecForAudio = currentTimeSec + m_bgm.latencySec(); // Note: Not sure why, but the effect is out of sync with BASS v2.4.13 or later (;_;)
-		const kson::Pulse currentPulseForAudio = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSecForAudio), m_chartData.beat, m_timingCache);
-		const double currentBPMForAudio = kson::TimingUtils::PulseTempo(currentPulseForAudio, m_chartData.beat);
+	m_audioEffectMain.update(m_bgm, m_chartData, m_timingCache);
 
-		const std::array<Optional<kson::Pulse>, kson::kNumFXLanes> currentLongNotePulseOfLanes = CurrentLongNotePulseOfLanesByTime(m_chartData, currentPulseForAudio);
-		const std::set<std::string> currentAudioEffectNamesFX = CurrentAudioEffectNamesFX(m_chartData, currentLongNotePulseOfLanes);
-		m_bgm.updateAudioEffectFX({
-			.v = 0.0f,
-			.bpm = static_cast<float>(currentBPMForAudio),
-			.sec = static_cast<float>(currentTimeSecForAudio),
-		}, currentAudioEffectNamesFX);
-		// TODO: laser
-	}
+	// SE
+	m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
 
 	m_musicGameGraphics.update(m_graphicsUpdateInfo);
 }

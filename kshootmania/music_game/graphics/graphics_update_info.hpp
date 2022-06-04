@@ -35,7 +35,7 @@ namespace MusicGame::Graphics
 		double rotationZJdgLine = 0.0;
 	};
 
-	struct UpdateInfo
+	struct GraphicsUpdateInfo
 	{
 		double currentTimeSec = 0.0;
 		kson::Pulse currentPulse = 0;

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "music_game/graphics/update_info.hpp"
+#include "music_game/graphics/graphics_update_info.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -14,6 +14,6 @@ namespace MusicGame::Graphics
 	public:
 		LaserNoteGraphics();
 
-		void draw(const UpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
+		void draw(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const;
 	};
 }
