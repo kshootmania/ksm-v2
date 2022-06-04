@@ -51,11 +51,11 @@ void MusicGame::Audio::BGM::update()
 	}
 }
 
-void MusicGame::Audio::BGM::updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const std::set<std::string>& onAudioEffectNames)
+void MusicGame::Audio::BGM::updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict>& activeAudioEffects)
 {
 	m_pAudioEffectBusFX->update(
 		status,
-		onAudioEffectNames);
+		activeAudioEffects);
 }
 
 void MusicGame::Audio::BGM::play()

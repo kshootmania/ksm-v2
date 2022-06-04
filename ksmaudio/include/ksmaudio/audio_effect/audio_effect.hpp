@@ -15,9 +15,7 @@ namespace ksmaudio::AudioEffect
 
 		virtual void updateStatus(const Status& status, bool isOn) = 0;
 
-		virtual bool setParamValueSet(ParamID paramID, const std::string& valueSetStr) = 0;
-
-		virtual bool setParamValueSet(ParamID paramID, const ValueSet& valueSetStr) = 0;
+		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSetStr) = 0;
 	};
 
 	class IUpdateTrigger
@@ -75,31 +73,11 @@ namespace ksmaudio::AudioEffect
 			m_dspParams = m_params.render(status, isOn);
 		}
 
-		virtual bool setParamValueSet(ParamID paramID, const std::string& valueSetStr) override
-		{
-			if (m_params.dict.contains(paramID))
-			{
-				Param& paramRef = *m_params.dict.at(paramID);
-				bool success;
-				paramRef.valueSet = StrToValueSet(paramRef.type, valueSetStr, &success);
-				return success;
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		virtual bool setParamValueSet(ParamID paramID, const ValueSet& valueSet) override
+		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSet) override
 		{
 			if (m_params.dict.contains(paramID))
 			{
 				m_params.dict.at(paramID)->valueSet = valueSet;
-				return true;
-			}
-			else
-			{
-				return false;
 			}
 		}
 	};

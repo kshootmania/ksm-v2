@@ -22,7 +22,7 @@ namespace MusicGame::Audio
 
 		void update();
 
-		void updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const std::set<std::string>& onAudioEffectNames);
+		void updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict>& activeAudioEffects);
 
 		void play();
 

@@ -64,9 +64,9 @@ namespace MusicGame::Audio
 		}
 	}
 
-	std::set<std::string> AudioEffectMain::currentAudioEffectNamesFX(const kson::ChartData& chartData, const std::array<Optional<kson::Pulse>, kson::kNumFXLanes>& longNotePulseOfLanes) const
+	kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> AudioEffectMain::currentActiveAudioEffectsFX(const kson::ChartData& chartData, const std::array<Optional<kson::Pulse>, kson::kNumFXLanes>& longNotePulseOfLanes) const
 	{
-		std::set<std::string> set;
+		kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> audioEffects;
 		for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
 		{
 			if (!longNotePulseOfLanes[i].has_value())
@@ -77,11 +77,11 @@ namespace MusicGame::Audio
 			const kson::Pulse y = *longNotePulseOfLanes[i];
 			if (m_longFXNoteAudioEffectNames[i].contains(y))
 			{
-				set.emplace(m_longFXNoteAudioEffectNames[i].at(y));
+				assert(m_longFXNoteAudioEffectParams.contains(y));
+				audioEffects.emplace(m_longFXNoteAudioEffectNames[i].at(y), m_longFXNoteAudioEffectParams[i].at(y));
 			}
 		}
-
-		return set;
+		return audioEffects;
 	}
 
 	AudioEffectMain::AudioEffectMain(const kson::ChartData& chartData)
@@ -98,12 +98,12 @@ namespace MusicGame::Audio
 		const double currentBPMForAudio = kson::TimingUtils::PulseTempo(currentPulseForAudio, chartData.beat);
 
 		const std::array<Optional<kson::Pulse>, kson::kNumFXLanes> currentLongNotePulseOfLanes = CurrentLongFXNotePulseOfLanesByTime(chartData, currentPulseForAudio);
-		const std::set<std::string> audioEffectNames = currentAudioEffectNamesFX(chartData, currentLongNotePulseOfLanes);
+		const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> activeAudioEffects = currentActiveAudioEffectsFX(chartData, currentLongNotePulseOfLanes);
 		bgm.updateAudioEffectFX({
 			.v = 0.0f,
 			.bpm = static_cast<float>(currentBPMForAudio),
 			.sec = static_cast<float>(currentTimeSecForAudio),
-		}, audioEffectNames);
+		}, activeAudioEffects);
 		// TODO: laser
 	}
 }

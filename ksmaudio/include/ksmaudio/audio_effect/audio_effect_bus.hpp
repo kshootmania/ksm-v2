@@ -3,10 +3,10 @@
 #include <array>
 #include <set>
 #include <map>
+#include <unordered_set>
 #include <unordered_map>
 #include <concepts>
 #include <optional>
-#include <stdexcept>
 #include <cassert>
 #include "bass.h"
 #include "audio_effect.hpp"
@@ -52,6 +52,7 @@ namespace ksmaudio::AudioEffect
 			{
 				if (timeSec < m_timeSec) [[unlikely]]
 				{
+					// Avoid backtracking
 					return false;
 				}
 
@@ -92,10 +93,13 @@ namespace ksmaudio::AudioEffect
 	private:
 		const ParamValueSetDict m_baseParams;
 		std::unordered_map<ParamID, detail::Timeline<ValueSet>> m_baseParamChanges; // For "param_change"
+		ParamValueSetDict m_overrideParams;
 
 		ParamValueSetDict m_currentParams;
 
 		float m_timeSec = kPastTimeSec;
+
+		bool m_isDirty = false;
 
 		void refreshCurrentParams(float timeSec);
 
@@ -103,7 +107,11 @@ namespace ksmaudio::AudioEffect
 		ParamController(const ParamValueSetDict& baseParams,
 			const std::unordered_map<ParamID, std::map<float, ValueSet>>& baseParamChanges);
 
-		void update(float timeSec);
+		bool update(float timeSec);
+
+		void setOverrideParams(const ParamValueSetDict& overrideParams);
+
+		void clearOverrideParams();
 
 		const ParamValueSetDict& currentParams() const;
 	};
@@ -121,6 +129,7 @@ namespace ksmaudio::AudioEffect
 		std::vector<ParamController> m_paramControllers;
 		std::vector<std::string> m_names;
 		std::unordered_map<std::string, std::size_t> m_nameIdxDict;
+		std::unordered_set<std::size_t> m_activeAudioEffectIdxs;
 
 	public:
 		AudioEffectBus() = default;
@@ -129,7 +138,7 @@ namespace ksmaudio::AudioEffect
 
 		~AudioEffectBus();
 
-		void update(const AudioEffect::Status& status, const std::set<std::string>& onAudioEffectNames);
+		void update(const AudioEffect::Status& status, const std::unordered_map<std::string, ParamValueSetDict>& activeAudioEffects);
 
 		template <typename T>
 		void emplaceAudioEffect(const std::string& name,
@@ -159,7 +168,7 @@ namespace ksmaudio::AudioEffect
 			}
 
 			m_names.push_back(name);
-			m_nameIdxDict.emplace(name, m_audioEffects.size());
+			m_nameIdxDict.emplace(name, m_audioEffects.size() - 1U);
 
 			const HDSP hDSP = m_pStream->addAudioEffect(audioEffect.get(), 0); // TODO: priority
 			m_hDSPs.push_back(hDSP);
@@ -176,7 +185,5 @@ namespace ksmaudio::AudioEffect
 		{
 			emplaceAudioEffect<T>(name, StrDictToParamValueSetDict(params), StrTimelineToValueSetTimeline(paramChanges), updateTriggerTiming);
 		}
-
-		ParamController& paramControllerAt(const std::string& name);
     };
 }

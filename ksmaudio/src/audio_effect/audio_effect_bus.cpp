@@ -5,9 +5,6 @@ namespace ksmaudio::AudioEffect
 	void ParamController::refreshCurrentParams(float timeSec)
 	{
 		m_currentParams = m_baseParams;
-	
-		// Note: It is assumed that m_baseParams contains all the keys contained in m_baseParamChanges.
-		//       Otherwise, the parameter values will not revert to default after the override ends.
 
 		for (const auto& [paramID, timeline] : m_baseParamChanges)
 		{
@@ -16,6 +13,13 @@ namespace ksmaudio::AudioEffect
 				m_currentParams[paramID] = timeline.value();
 			}
 		}
+
+		for (const auto& [paramID, valueSet] : m_overrideParams)
+		{
+			m_currentParams[paramID] = valueSet;
+		}
+
+		m_isDirty = true;
 	}
 
 	ParamController::ParamController(const ParamValueSetDict& baseParams,
@@ -28,29 +32,43 @@ namespace ksmaudio::AudioEffect
 		}
 	}
 
-	void ParamController::update(float timeSec)
+	bool ParamController::update(float timeSec)
 	{
 		if (timeSec < m_timeSec)
 		{
-			return;
+			return std::exchange(m_isDirty, false);
 		}
 
 		// Update timelines
-		bool isDirty = false;
+		bool baseParamChanged = false;
 		for (auto& [_, timeline] : m_baseParamChanges)
 		{
 			if (timeline.update(timeSec))
 			{
-				isDirty = true;
+				baseParamChanged = true;
 			}
 		}
 
-		if (isDirty)
+		if (baseParamChanged)
 		{
 			refreshCurrentParams(timeSec);
 		}
 
 		m_timeSec = timeSec;
+
+		return std::exchange(m_isDirty, false);
+	}
+
+	void ParamController::setOverrideParams(const ParamValueSetDict& overrideParams)
+	{
+		m_overrideParams = overrideParams;
+		refreshCurrentParams(m_timeSec);
+	}
+
+	void ParamController::clearOverrideParams()
+	{
+		m_overrideParams.clear();
+		refreshCurrentParams(m_timeSec);
 	}
 
 	const ParamValueSetDict& ParamController::currentParams() const
@@ -105,21 +123,53 @@ namespace ksmaudio::AudioEffect
 		}
     }
 
-	void AudioEffectBus::update(const AudioEffect::Status& status, const std::set<std::string>& onAudioEffectNames)
+	void AudioEffectBus::update(const AudioEffect::Status& status, const std::unordered_map<std::string, ParamValueSetDict>& activeAudioEffects)
 	{
+		// Update override params
+		{
+			// Active -> Inactive
+			for (const std::size_t& idx : m_activeAudioEffectIdxs)
+			{
+				assert(m_names.size() > idx);
+				if (!activeAudioEffects.contains(m_names[idx]))
+				{
+					assert(m_paramControllers.size() > idx);
+					m_paramControllers[idx].clearOverrideParams();
+				}
+			}
+
+			// Inactive -> Active or Active -> Active
+			m_activeAudioEffectIdxs.clear();
+			for (const auto& [audioEffectName, params] : activeAudioEffects)
+			{
+				if (!m_nameIdxDict.contains(audioEffectName))
+				{
+					continue;
+				}
+
+				const std::size_t idx = m_nameIdxDict.at(audioEffectName);
+
+				assert(m_paramControllers.size() > idx);
+				m_paramControllers[idx].setOverrideParams(params);
+
+				m_activeAudioEffectIdxs.insert(idx);
+			}
+		}
+
+		// Update all audio effects
 		for (std::size_t i = 0U; i < m_audioEffects.size(); ++i)
 		{
-			m_paramControllers[i].update(status.sec);
-			const bool isOn = onAudioEffectNames.contains(m_names[i]); // costly?
+			if (m_paramControllers[i].update(status.sec))
+			{
+				// When the parameter value set is updated, pass it to the audio effect
+				for (const auto& [paramID, valueSet] : m_paramControllers[i].currentParams())
+				{
+					m_audioEffects[i]->setParamValueSet(paramID, valueSet);
+				}
+			}
+
+			const bool isOn = activeAudioEffects.contains(m_names[i]);
 			m_audioEffects[i]->updateStatus(status, isOn);
 		}
-	}
-
-	ParamController& AudioEffectBus::paramControllerAt(const std::string& name)
-	{
-		assert(m_nameIdxDict.contains(name));
-		const std::size_t idx = m_nameIdxDict.at(name);
-		assert(idx < m_paramControllers.size());
-		return m_paramControllers[idx];
 	}
 }
