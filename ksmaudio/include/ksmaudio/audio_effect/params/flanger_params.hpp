@@ -6,7 +6,7 @@ namespace ksmaudio::AudioEffect
 {
 	struct FlangerDSPParams
 	{
-		float period = 4.0f;
+		float period = 4.0f; // 4s = 2 bars at 120 BPM
 		float delay = 30.0f;
 		float depth = 45.0f;
 		float feedback = 0.6f;
