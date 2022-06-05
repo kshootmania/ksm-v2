@@ -12,6 +12,8 @@
 
 namespace ksmaudio::AudioEffect::detail
 {
+    constexpr std::size_t kLinearBufferDeclickFrames = 12U;
+
     // Useful for audio recording
     template <typename T>
     class LinearBuffer
@@ -20,6 +22,7 @@ namespace ksmaudio::AudioEffect::detail
             "Value type of LinearBuffer is required to be arithmetic");
 
     private:
+
         std::vector<T> m_buffer;
 
         std::size_t m_readCursorFrame = 0U;
@@ -75,13 +78,26 @@ namespace ksmaudio::AudioEffect::detail
             }
 
             const std::size_t frameSize = size / m_numChannels;
+            const bool canDeclick = numNonZeroFrames > kLinearBufferDeclickFrames;
             for (std::size_t frameIdx = 0U; frameIdx < frameSize; ++frameIdx)
             {
                 for (std::size_t ch = 0U; ch < m_numChannels; ++ch)
                 {
-                    if (m_readCursorFrame < numNonZeroFrames)
+                    if (canDeclick && m_readCursorFrame < kLinearBufferDeclickFrames)
+                    {
+                        // Declick (start)
+                        const float rate = static_cast<float>(m_readCursorFrame + 1U) / (kLinearBufferDeclickFrames + 1U);
+                        *pData = std::lerp(*pData, m_buffer[m_readCursorFrame * m_numChannels + ch] * rate, mix);
+                    }
+                    else if (m_readCursorFrame < numNonZeroFrames)
                     {
                         *pData = std::lerp(*pData, m_buffer[m_readCursorFrame * m_numChannels + ch], mix);
+                    }
+                    else if (canDeclick && m_readCursorFrame < numNonZeroFrames + kLinearBufferDeclickFrames)
+                    {
+                        // Declick (end)
+                        const float rate = static_cast<float>(kLinearBufferDeclickFrames - (m_readCursorFrame - numNonZeroFrames)) / (kLinearBufferDeclickFrames + 1U);
+                        *pData = std::lerp(*pData, m_buffer[m_readCursorFrame * m_numChannels + ch] * rate, mix);
                     }
                     else
                     {
