@@ -18,7 +18,11 @@ namespace MusicGame::Audio
 		const kson::FXLane<std::string> m_longFXNoteAudioEffectNames;
 		const kson::FXLane<ksmaudio::AudioEffect::ParamValueSetDict> m_longFXNoteAudioEffectParams;
 
-		kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> currentActiveAudioEffectsFX(const kson::ChartData& chartData, const std::array<Optional<kson::Pulse>, kson::kNumFXLanes>& longNotePulseOfLanes) const;
+		std::array<bool, kson::kNumFXLanes> m_longFXPressedPrev = { false, false };
+		std::size_t m_lastPressedLongFXNoteLaneIdx = 0U;
+
+		kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> currentActiveAudioEffectsFX(
+			const std::array<Optional<kson::Pulse>, kson::kNumFXLanes>& longNotePulseOfLanes) const;
 		
 	public:
 		AudioEffectMain(const kson::ChartData& chartData);

@@ -50,6 +50,8 @@ namespace MusicGame
 		std::array<LaneStatus, kson::kNumBTLanes> btLaneStatus;
 		std::array<LaneStatus, kson::kNumFXLanes> fxLaneStatus;
 
+		std::size_t lastPressedLongFXNoteLaneIdx = 0U; // For audio effect parameter priority
+
 		CamStatus camStatus;
 
 		int32 score = 0;

@@ -40,9 +40,9 @@ namespace MathUtils
 	}
 
 	template <typename T = double>
-	constexpr T MsToSec(kson::Ms sec)
+	constexpr T MsToSec(kson::Ms ms)
 	{
-		return static_cast<T>(sec / 1000);
+		return static_cast<T>(ms / 1000);
 	}
 
 	int32 NumDigits(int32 number);

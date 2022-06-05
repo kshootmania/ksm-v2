@@ -101,14 +101,19 @@ void MusicGame::GameMain::updateGameStatus()
 	m_gameStatus.currentTimeSec = currentTimeSec;
 	m_gameStatus.currentPulse = currentPulse;
 	m_gameStatus.currentBPM = currentBPM;
+
+	// BT lane judgments
 	for (std::size_t i = 0U; i < kson::kNumBTLanes; ++i)
 	{
 		m_btLaneJudgments[i].update(m_chartData.note.btLanes[i], currentPulse, currentTimeSec, m_gameStatus.btLaneStatus[i]);
 	}
+
+	// FX lane judgments
 	for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
 	{
 		m_fxLaneJudgments[i].update(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec, m_gameStatus.fxLaneStatus[i]);
 	}
+
 	m_gameStatus.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax); // TODO: add laser
 
 	// TODO: Calculate camera values
