@@ -98,7 +98,7 @@ void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lan
 
 	// Pick up the nearest note from the lane
 	bool found = false;
-	double minDistance;
+	double minDistance = 0.0;
 	kson::Pulse nearestNotePulse;
 	for (auto itr = lane.upper_bound(m_passedNotePulse); itr != lane.end(); ++itr)
 	{
@@ -173,17 +173,17 @@ void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lan
 
 		if (chipAnimType.has_value())
 		{
-			assert(0 <= laneStatusRef.chipAnimStateRingBufferCursor && laneStatusRef.chipAnimStateRingBufferCursor < Graphics::kChipAnimMax);
+			assert(laneStatusRef.chipAnimStateRingBufferCursor < Graphics::kChipAnimMax);
 			laneStatusRef.chipAnimStatusRingBuffer[laneStatusRef.chipAnimStateRingBufferCursor] = {
 				.startTimeSec = currentTimeSec,
 				.type = *chipAnimType,
 			};
-			laneStatusRef.chipAnimStateRingBufferCursor = (laneStatusRef.chipAnimStateRingBufferCursor + 1) % Graphics::kChipAnimMax;
+			laneStatusRef.chipAnimStateRingBufferCursor = (laneStatusRef.chipAnimStateRingBufferCursor + 1U) % Graphics::kChipAnimMax;
 		}
 	}
 }
 
-void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, const LaneStatus& laneStatusRef)
+void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const LaneStatus& laneStatusRef)
 {
 	if (laneStatusRef.currentLongNotePulse.has_value())
 	{
@@ -228,7 +228,7 @@ void MusicGame::Judgment::ButtonLaneJudgment::update(const kson::ByPulse<kson::I
 	// Long note hold
 	if (KeyConfig::Pressed(m_keyConfigButton))
 	{
-		processKeyPressed(lane, currentPulse, currentTimeSec, laneStatusRef);
+		processKeyPressed(lane, currentPulse, laneStatusRef);
 	}
 
 	// Long note release

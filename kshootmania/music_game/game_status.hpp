@@ -17,7 +17,7 @@ namespace MusicGame
 		Judgment::KeyBeamType keyBeamType = Judgment::KeyBeamType::kDefault;
 
 		std::array<ChipAnimStatus, Graphics::kChipAnimMax> chipAnimStatusRingBuffer;
-		int32 chipAnimStateRingBufferCursor = 0;
+		std::size_t chipAnimStateRingBufferCursor = 0U;
 
 		// This value will be none while a long note pressed before the note start
 		// (for audio effects)

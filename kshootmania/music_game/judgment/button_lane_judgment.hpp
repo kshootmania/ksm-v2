@@ -25,7 +25,7 @@ namespace MusicGame::Judgment
 
 		void processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, LaneStatus& laneStatusRef);
 
-		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, const LaneStatus& laneStatusRef);
+		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const LaneStatus& laneStatusRef);
 
 	public:
 		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);

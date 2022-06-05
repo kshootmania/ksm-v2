@@ -49,7 +49,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const kson::Ch
 				const double yRate = (highwayTextureHeight - positionStartY) / highwayTextureHeight;
 				const double height = NoteGraphicsUtils::ChipNoteHeight(yRate);
 				const TiledTexture& sourceTexture = isBT ? m_chipBTNoteTexture : m_chipFXNoteTexture;
-				const Vec2 position = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * laneIdx + Vec2::Down(positionStartY - height / 2);
+				const Vec2 position = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * static_cast<double>(laneIdx) + Vec2::Down(positionStartY - height / 2);
 				sourceTexture() // TODO: Chip BT color
 					.resized(isBT ? 40 : 82, NoteGraphicsUtils::ChipNoteHeight(yRate))
 					.draw(position);
@@ -116,7 +116,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const kson::Ch
 					}
 					const Texture& sourceTexture = isBT ? m_longBTNoteTexture : m_longFXNoteTexture;
 					const int32 width = isBT ? 40 : 82;
-					const Vec2 position = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * laneIdx + Vec2::Down(positionEndY);
+					const Vec2 position = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * static_cast<double>(laneIdx) + Vec2::Down(positionEndY);
 					sourceTexture(width * i, sourceY + kOnePixelTextureSourceOffset, width, kOnePixelTextureSourceSize)
 						.resized(width, static_cast<double>(note.length) * 480 / kson::kResolution)
 						.draw(position);
