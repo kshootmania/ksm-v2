@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "music_game/graphics/graphics_update_info.hpp"
+#include "music_game/game_status.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -18,22 +18,22 @@ namespace MusicGame::Graphics
 
 		const TiledTexture& chipAnimTexture(Judgment::JudgmentResult type) const;
 
-		void drawChipAnimCommon(const GraphicsUpdateInfo& updateInfo, bool isBT) const;
+		void drawChipAnimCommon(const GameStatus& gameStatus, bool isBT) const;
 
-		void drawChipAnimBT(const GraphicsUpdateInfo& updateInfo) const;
+		void drawChipAnimBT(const GameStatus& gameStatus) const;
 
-		void drawChipAnimFX(const GraphicsUpdateInfo& updateInfo) const;
+		void drawChipAnimFX(const GameStatus& gameStatus) const;
 
-		void drawLongAnimCommon(const GraphicsUpdateInfo& updateInfo, bool isBT) const;
+		void drawLongAnimCommon(const GameStatus& gameStatus, bool isBT) const;
 
-		void drawLongAnimBT(const GraphicsUpdateInfo& updateInfo) const;
+		void drawLongAnimBT(const GameStatus& gameStatus) const;
 
-		void drawLongAnimFX(const GraphicsUpdateInfo& updateInfo) const;
+		void drawLongAnimFX(const GameStatus& gameStatus) const;
 
 	public:
 		Jdgoverlay3DGraphics();
 
-		void draw2D(const GraphicsUpdateInfo& updateInfo) const;
+		void draw2D(const GameStatus& gameStatus) const;
 
 		void draw3D(double tiltRadians) const;
 	};

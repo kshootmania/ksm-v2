@@ -21,9 +21,8 @@ namespace
 	}
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, bool isBT) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const RenderTexture& additiveTarget, bool isBT) const
 {
-	const kson::ChartData& chartData = *updateInfo.pChartData;
 	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
 
 	const ScopedRenderTarget2D renderTarget(additiveTarget);
@@ -34,12 +33,12 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const Graphics
 		const auto& lane = isBT ? chartData.note.btLanes[laneIdx] : chartData.note.fxLanes[laneIdx];
 		for (const auto& [y, note] : lane)
 		{
-			if (y + note.length < updateInfo.currentPulse - kson::kResolution)
+			if (y + note.length < gameStatus.currentPulse - kson::kResolution)
 			{
 				continue;
 			}
 
-			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / kson::kResolution;
+			const double positionStartY = highwayTextureHeight - static_cast<double>(y - gameStatus.currentPulse) * 480 / kson::kResolution;
 			if (positionStartY < 0)
 			{
 				break;
@@ -59,19 +58,18 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const Graphics
 	}
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawChipBTNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const RenderTexture& additiveTarget) const
 {
-	drawChipNotesCommon(updateInfo, additiveTarget, true);
+	drawChipNotesCommon(chartData, gameStatus, additiveTarget, true);
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawChipFXNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const RenderTexture& additiveTarget) const
 {
-	drawChipNotesCommon(updateInfo, additiveTarget, false);
+	drawChipNotesCommon(chartData, gameStatus, additiveTarget, false);
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, bool isBT) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget, bool isBT) const
 {
-	const kson::ChartData& chartData = *updateInfo.pChartData;
 	const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
 
 	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
@@ -81,12 +79,12 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const Graphics
 		const auto& lane = isBT ? chartData.note.btLanes[laneIdx] : chartData.note.fxLanes[laneIdx];
 		for (const auto& [y, note] : lane)
 		{
-			if (y + note.length < updateInfo.currentPulse - kson::kResolution)
+			if (y + note.length < gameStatus.currentPulse - kson::kResolution)
 			{
 				continue;
 			}
 
-			const double positionStartY = highwayTextureHeight - static_cast<double>(y - updateInfo.currentPulse) * 480 / kson::kResolution;
+			const double positionStartY = highwayTextureHeight - static_cast<double>(y - gameStatus.currentPulse) * 480 / kson::kResolution;
 			if (positionStartY < 0)
 			{
 				break;
@@ -94,19 +92,19 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const Graphics
 
 			if (note.length > 0)
 			{
-				const double positionEndY = highwayTextureHeight - static_cast<double>(y + note.length - updateInfo.currentPulse) * 480 / kson::kResolution;
+				const double positionEndY = highwayTextureHeight - static_cast<double>(y + note.length - gameStatus.currentPulse) * 480 / kson::kResolution;
 				for (int32 i = 0; i < (isBT ? 2 : 1); ++i) // Note: Long BT note has additional texture for invMultiplyTarget
 				{
 					const ScopedRenderTarget2D renderTarget((i == 0) ? additiveTarget : invMultiplyTarget);
 					const ScopedRenderStates2D blendState((i == 0) ? (isBT ? BlendState::Additive : BlendState::Default2D) : BlendState::Subtractive);
-					const LaneState& laneState = isBT ? updateInfo.btLaneState[laneIdx] : updateInfo.fxLaneState[laneIdx];
+					const LaneStatus& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
 					double sourceY;
-					if (laneState.currentLongNotePulse == y)
+					if (laneStatus.currentLongNotePulse == y)
 					{
 						// Current note and pressed
-						sourceY = PressedLongNoteSourceY(updateInfo.currentTimeSec);
+						sourceY = PressedLongNoteSourceY(gameStatus.currentTimeSec);
 					}
-					else if (y <= updateInfo.currentPulse && updateInfo.currentPulse < y + note.length)
+					else if (y <= gameStatus.currentPulse && gameStatus.currentPulse < y + note.length)
 					{
 						// Current note but not pressed
 						sourceY = kLongNoteSourceYNotPressed;
@@ -128,14 +126,14 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const Graphics
 	}
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawLongBTNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawLongBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
 {
-	drawLongNotesCommon(updateInfo, additiveTarget, invMultiplyTarget, true);
+	drawLongNotesCommon(chartData, gameStatus, additiveTarget, invMultiplyTarget, true);
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::drawLongFXNotes(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+void MusicGame::Graphics::ButtonNoteGraphics::drawLongFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
 {
-	drawLongNotesCommon(updateInfo, additiveTarget, invMultiplyTarget, false);
+	drawLongNotesCommon(chartData, gameStatus, additiveTarget, invMultiplyTarget, false);
 }
 
 MusicGame::Graphics::ButtonNoteGraphics::ButtonNoteGraphics()
@@ -154,15 +152,10 @@ MusicGame::Graphics::ButtonNoteGraphics::ButtonNoteGraphics()
 {
 }
 
-void MusicGame::Graphics::ButtonNoteGraphics::draw(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+void MusicGame::Graphics::ButtonNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
 {
-	if (updateInfo.pChartData == nullptr)
-	{
-		return;
-	}
-
-	drawLongFXNotes(updateInfo, additiveTarget, invMultiplyTarget);
-	drawLongBTNotes(updateInfo, additiveTarget, invMultiplyTarget);
-	drawChipFXNotes(updateInfo, additiveTarget);
-	drawChipBTNotes(updateInfo, additiveTarget);
+	drawLongFXNotes(chartData, gameStatus, additiveTarget, invMultiplyTarget);
+	drawLongBTNotes(chartData, gameStatus, additiveTarget, invMultiplyTarget);
+	drawChipFXNotes(chartData, gameStatus, additiveTarget);
+	drawChipBTNotes(chartData, gameStatus, additiveTarget);
 }

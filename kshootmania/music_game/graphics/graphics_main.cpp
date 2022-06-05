@@ -78,19 +78,19 @@ void MusicGame::Graphics::GraphicsMain::drawBG() const
 	m_bgBillboardMesh.draw(m_bgTransform * TiltTransformMatrix(bgTiltRadians, kBGBillboardPosition), m_bgTexture);
 }
 
-void MusicGame::Graphics::GraphicsMain::drawLayer() const
+void MusicGame::Graphics::GraphicsMain::drawLayer(const kson::ChartData& chartData, const GameStatus& gameStatus) const
 {
 	const ScopedRenderStates3D samplerState(SamplerState::ClampNearest);
 	const ScopedRenderStates3D renderState(BlendState::Additive);
 
 	double layerTiltRadians = 0.0;
-	if (m_updateInfo.pChartData->bg.legacy.layer.rotation.tilt)
+	if (chartData.bg.legacy.layer.rotation.tilt)
 	{
 		layerTiltRadians += m_highwayTilt.radians() * 0.8;
 	}
 
 	// TODO: Layer speed specified by KSH
-	const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(m_updateInfo.currentPulse * 1000 / 35 / kson::kResolution4), static_cast<int32>(m_layerFrameTextures[0].size()));
+	const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(gameStatus.currentPulse * 1000 / 35 / kson::kResolution4), static_cast<int32>(m_layerFrameTextures[0].size()));
 	m_bgBillboardMesh.draw(m_layerTransform * TiltTransformMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
 }
 
@@ -107,43 +107,33 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const kson::ChartData& chartData
 {
 }
 
-void MusicGame::Graphics::GraphicsMain::update(const GraphicsUpdateInfo& updateInfo)
+void MusicGame::Graphics::GraphicsMain::update(const kson::ChartData& chartData, const GameStatus& gameStatus)
 {
-	m_updateInfo = updateInfo;
-
-	double tiltFactor = 0.0;
-	if (updateInfo.pChartData != nullptr)
-	{
-		const kson::ChartData& chartData = *updateInfo.pChartData;
-		const double leftLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laserLanes[0], updateInfo.currentPulse, 0.0); // range: [0, +1]
-		const double rightLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laserLanes[1], updateInfo.currentPulse, 1.0) - 1.0; // range: [-1, 0]
-		tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
-	}
+	const double leftLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laserLanes[0], gameStatus.currentPulse, 0.0); // range: [0, +1]
+	const double rightLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laserLanes[1], gameStatus.currentPulse, 1.0) - 1.0; // range: [-1, 0]
+	const double tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
 	m_highwayTilt.update(tiltFactor);
 }
 
-void MusicGame::Graphics::GraphicsMain::draw() const
+void MusicGame::Graphics::GraphicsMain::draw(const kson::ChartData& chartData, const GameStatus& gameStatus) const
 {
-	assert(m_updateInfo.pChartData != nullptr);
-	const kson::ChartData& chartData = *m_updateInfo.pChartData;
-
 	// Draw 2D render textures
-	m_highway3DGraphics.draw2D(m_updateInfo);
-	m_jdgoverlay3DGraphics.draw2D(m_updateInfo);
+	m_highway3DGraphics.draw2D(chartData, gameStatus);
+	m_jdgoverlay3DGraphics.draw2D(gameStatus);
 	Graphics2D::Flush();
 
 	// Draw 3D space
 	Graphics3D::SetCameraTransform(m_camera);
 	drawBG();
-	drawLayer();
+	drawLayer(chartData, gameStatus);
 	const double tiltRadians = m_highwayTilt.radians();
 	m_highway3DGraphics.draw3D(tiltRadians);
 	m_jdgline3DGraphics.draw3D(tiltRadians);
 	m_jdgoverlay3DGraphics.draw3D(tiltRadians);
 
 	// Draw 2D HUD
-	m_songInfoPanel.draw(m_updateInfo.currentBPM);
-	m_scorePanel.draw(m_updateInfo.score);
-	m_gaugePanel.draw(100.0/* TODO: Percentage */, m_updateInfo.currentPulse);
+	m_songInfoPanel.draw(gameStatus.currentBPM);
+	m_scorePanel.draw(gameStatus.score);
+	m_gaugePanel.draw(100.0/* TODO: Percentage */, gameStatus.currentPulse);
 	m_frameRateMonitor.draw();
 }

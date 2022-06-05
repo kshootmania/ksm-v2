@@ -55,14 +55,14 @@ const TiledTexture& MusicGame::Graphics::Jdgoverlay3DGraphics::chipAnimTexture(J
 	}
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimCommon(const GraphicsUpdateInfo& updateInfo, bool isBT) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimCommon(const GameStatus& gameStatus, bool isBT) const
 {
 	for (int32 i = 0; std::cmp_less(i, (isBT ? kson::kNumBTLanes : kson::kNumFXLanes)); ++i)
 	{
-		const auto& laneState = isBT ? updateInfo.btLaneState[i] : updateInfo.fxLaneState[i];
-		for (const auto& chipAnimState : laneState.chipAnimStateRingBuffer)
+		const auto& laneStatus = isBT ? gameStatus.btLaneStatus[i] : gameStatus.fxLaneStatus[i];
+		for (const auto& chipAnimState : laneStatus.chipAnimStatusRingBuffer)
 		{
-			const double sec = updateInfo.currentTimeSec - chipAnimState.startTimeSec;
+			const double sec = gameStatus.currentTimeSec - chipAnimState.startTimeSec;
 			if (0.0 <= sec && sec < kChipAnimDurationSec && chipAnimState.type != Judgment::JudgmentResult::kUnspecified)
 			{
 				const int32 frameIdx = static_cast<int32>(sec / kChipAnimDurationSec * kChipAnimFrames);
@@ -73,27 +73,27 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimCommon(const Graphic
 	}
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimBT(const GraphicsUpdateInfo& updateInfo) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimBT(const GameStatus& gameStatus) const
 {
-	drawChipAnimCommon(updateInfo, true);
+	drawChipAnimCommon(gameStatus, true);
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimFX(const GraphicsUpdateInfo& updateInfo) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawChipAnimFX(const GameStatus& gameStatus) const
 {
-	drawChipAnimCommon(updateInfo, false);
+	drawChipAnimCommon(gameStatus, false);
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimCommon(const GraphicsUpdateInfo& updateInfo, bool isBT) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimCommon(const GameStatus& gameStatus, bool isBT) const
 {
 	for (int32 i = 0; std::cmp_less(i, (isBT ? kson::kNumBTLanes : kson::kNumFXLanes)); ++i)
 	{
-		const auto& laneState = isBT ? updateInfo.btLaneState[i] : updateInfo.fxLaneState[i];
-		const double sec = updateInfo.currentTimeSec - laneState.currentLongNoteAnimOffsetTimeSec;
+		const auto& laneStatus = isBT ? gameStatus.btLaneStatus[i] : gameStatus.fxLaneStatus[i];
+		const double sec = gameStatus.currentTimeSec - laneStatus.currentLongNoteAnimOffsetTimeSec;
 		const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + (isBT ? 75 : 96) + (isBT ? 60 : 120) * i, isBT ? 10 : 0);
 		const SizeF size = ScreenUtils::Scaled(isBT ? kLongAnimSizeBT : kLongAnimSizeFX);
 
 		int32 frameIdx;
-		if (laneState.currentLongNotePulse.has_value())
+		if (laneStatus.currentLongNotePulse.has_value())
 		{
 			if (0.0 <= sec && sec < kChipAnimDurationSec)
 			{
@@ -121,14 +121,14 @@ void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimCommon(const Graphic
 	}
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimBT(const GraphicsUpdateInfo& updateInfo) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimBT(const GameStatus& gameStatus) const
 {
-	drawLongAnimCommon(updateInfo, true);
+	drawLongAnimCommon(gameStatus, true);
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimFX(const GraphicsUpdateInfo& updateInfo) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::drawLongAnimFX(const GameStatus& gameStatus) const
 {
-	drawLongAnimCommon(updateInfo, false);
+	drawLongAnimCommon(gameStatus, false);
 }
 
 MusicGame::Graphics::Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
@@ -162,15 +162,15 @@ MusicGame::Graphics::Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
 {
 }
 
-void MusicGame::Graphics::Jdgoverlay3DGraphics::draw2D(const GraphicsUpdateInfo& updateInfo) const
+void MusicGame::Graphics::Jdgoverlay3DGraphics::draw2D(const GameStatus& gameStatus) const
 {
 	// Prepare 2D render texture to draw
 	const ScopedRenderTarget2D renderTarget(m_renderTexture.clear(Palette::Black));
 	const ScopedRenderStates2D blendState(BlendState::Additive);
-	drawChipAnimBT(updateInfo);
-	drawChipAnimFX(updateInfo);
-	drawLongAnimBT(updateInfo);
-	drawLongAnimFX(updateInfo);
+	drawChipAnimBT(gameStatus);
+	drawChipAnimFX(gameStatus);
+	drawLongAnimBT(gameStatus);
+	drawLongAnimFX(gameStatus);
 }
 
 void MusicGame::Graphics::Jdgoverlay3DGraphics::draw3D(double tiltRadians) const

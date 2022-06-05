@@ -5,6 +5,13 @@
 
 namespace MusicGame::Audio
 {
+	struct AudioEffectInputStatus
+	{
+		std::array<Optional<bool>, kson::kNumFXLanes> longFXPressed;
+
+		std::array<Optional<float>, kson::kNumLaserLanes> laserValues;
+	};
+
 	class AudioEffectMain
 	{
 	private:
@@ -16,6 +23,6 @@ namespace MusicGame::Audio
 	public:
 		AudioEffectMain(const kson::ChartData& chartData);
 
-		void update(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache);
+		void update(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus);
 	};
 }

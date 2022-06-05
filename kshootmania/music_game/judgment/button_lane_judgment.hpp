@@ -1,7 +1,6 @@
 ﻿#pragma once
-#include "judgment_defines.hpp"
 #include "music_game/game_defines.hpp"
-#include "music_game/graphics/graphics_update_info.hpp"
+#include "music_game/game_status.hpp"
 #include "kson/chart_data.hpp"
 #include "kson/util/timing_utils.hpp"
 
@@ -24,14 +23,14 @@ namespace MusicGame::Judgment
 
 		const int32 m_scoreValueMax;
 
-		void processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, Graphics::LaneState& laneStateRef);
+		void processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, LaneStatus& laneStatusRef);
 
-		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, const Graphics::LaneState& laneStateRef);
+		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, const LaneStatus& laneStatusRef);
 
 	public:
 		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
 
-		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, Graphics::LaneState& laneStateRef);
+		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, LaneStatus& laneStatusRef);
 
 		int32 scoreValue() const;
 

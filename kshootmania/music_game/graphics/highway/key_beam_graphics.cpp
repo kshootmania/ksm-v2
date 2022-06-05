@@ -20,7 +20,7 @@ MusicGame::Graphics::KeyBeamGraphics::KeyBeamGraphics()
 {
 }
 
-void MusicGame::Graphics::KeyBeamGraphics::draw(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget) const
+void MusicGame::Graphics::KeyBeamGraphics::draw(const GameStatus& gameStatus, const RenderTexture& additiveTarget) const
 {
 	const ScopedRenderTarget2D renderTarget(additiveTarget);
 	const ScopedRenderStates2D renderState(BlendState::Additive);
@@ -29,9 +29,9 @@ void MusicGame::Graphics::KeyBeamGraphics::draw(const GraphicsUpdateInfo& update
 	{
 		const bool isBT = (i < kson::kNumBTLanes);
 		const std::size_t laneIdx = isBT ? i : (i - kson::kNumBTLanes);
-		const LaneState& laneState = isBT ? updateInfo.btLaneState[laneIdx] : updateInfo.fxLaneState[laneIdx];
+		const LaneStatus& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
 
-		const double sec = updateInfo.currentTimeSec - laneState.keyBeamTimeSec;
+		const double sec = gameStatus.currentTimeSec - laneStatus.keyBeamTimeSec;
 		if (sec < 0.0 || kKeyBeamEndSec < sec)
 		{
 			continue;
@@ -49,7 +49,7 @@ void MusicGame::Graphics::KeyBeamGraphics::draw(const GraphicsUpdateInfo& update
 		}
 
 		const TextureRegion beamTextureRegion = m_beamTexture(
-			kBTKeyBeamTextureSize.x * (static_cast<double>(static_cast<int32>(laneState.keyBeamType)) + 0.5 - widthRate / 2),
+			kBTKeyBeamTextureSize.x * (static_cast<double>(static_cast<int32>(laneStatus.keyBeamType)) + 0.5 - widthRate / 2),
 			0,
 			kBTKeyBeamTextureSize.x * widthRate,
 			kBTKeyBeamTextureSize.y);

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "game_status.hpp"
 #include "music_game/judgment/button_lane_judgment.hpp"
 #include "music_game/graphics/graphics_main.hpp"
 #include "music_game/audio/bgm.hpp"
@@ -18,6 +19,8 @@ namespace MusicGame
 	class GameMain
 	{
 	private:
+		GameStatus m_gameStatus;
+
 		// Chart
 		const kson::ChartData m_chartData;
 		const kson::TimingCache m_timingCache;
@@ -35,10 +38,11 @@ namespace MusicGame
 		Audio::AudioEffectMain m_audioEffectMain;
 
 		// Graphics
-		Graphics::GraphicsUpdateInfo m_graphicsUpdateInfo;
 		Graphics::GraphicsMain m_musicGameGraphics;
 
 		void registerAudioEffects();
+
+		void updateGameStatus();
 
 	public:
 		explicit GameMain(const GameCreateInfo& gameCreateInfo);

@@ -7,7 +7,7 @@
 #include "hud/score_panel.hpp"
 #include "hud/gauge_panel.hpp"
 #include "hud/frame_rate_monitor.hpp"
-#include "graphics_update_info.hpp"
+#include "music_game/game_status.hpp"
 #include "kson/util/timing_utils.hpp"
 
 namespace MusicGame::Graphics
@@ -38,17 +38,15 @@ namespace MusicGame::Graphics
 
 		kson::Pulse m_initialPulse;
 
-		GraphicsUpdateInfo m_updateInfo;
-
 		void drawBG() const;
 
-		void drawLayer() const;
+		void drawLayer(const kson::ChartData& chartData, const GameStatus& gameStatus) const;
 
 	public:
 		explicit GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache);
 
-		void update(const GraphicsUpdateInfo& updateInfo);
+		void update(const kson::ChartData& chartData, const GameStatus& gameStatus);
 
-		void draw() const;
+		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus) const;
 	};
 }

@@ -88,7 +88,7 @@ namespace ksmaudio::AudioEffect
 		};
 	}
 
-	class ParamController // TODO: review overhead
+	class ParamController
 	{
 	private:
 		const ParamValueSetDict m_baseParams;
@@ -149,6 +149,7 @@ namespace ksmaudio::AudioEffect
 		{
 			if (m_nameIdxDict.contains(name))
 			{
+				// There is already an audio effect of the same name
 				// TODO: Report warning
 				return;
 			}

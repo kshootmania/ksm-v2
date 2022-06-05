@@ -37,10 +37,8 @@ MusicGame::Graphics::Highway3DGraphics::Highway3DGraphics()
 {
 }
 
-void MusicGame::Graphics::Highway3DGraphics::draw2D(const GraphicsUpdateInfo& updateInfo) const
+void MusicGame::Graphics::Highway3DGraphics::draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus) const
 {
-	assert(updateInfo.pChartData != nullptr);
-
 	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 	Shader::Copy(m_baseTexture(0, 0, kHighwayTextureSize), m_additiveRenderTexture);
 	Shader::Copy(m_baseTexture(kHighwayTextureSize.x, 0, kHighwayTextureSize), m_invMultiplyRenderTexture);
@@ -52,18 +50,18 @@ void MusicGame::Graphics::Highway3DGraphics::draw2D(const GraphicsUpdateInfo& up
 
 		for (int32 i = 0; i < kNumShineEffects; ++i)
 		{
-			m_shineEffectTexture.draw(kShineEffectPositionOffset + kShineEffectPositionDiff * i + kShineEffectPositionDiff * MathUtils::WrappedFmod(updateInfo.currentTimeSec, 0.2) / 0.2);
+			m_shineEffectTexture.draw(kShineEffectPositionOffset + kShineEffectPositionDiff * i + kShineEffectPositionDiff * MathUtils::WrappedFmod(gameStatus.currentTimeSec, 0.2) / 0.2);
 		}
 	}
 
 	// Draw BT/FX notes
-	m_buttonNoteGraphics.draw(updateInfo, m_additiveRenderTexture, m_invMultiplyRenderTexture);
+	m_buttonNoteGraphics.draw(chartData, gameStatus, m_additiveRenderTexture, m_invMultiplyRenderTexture);
 
 	// Draw key beams
-	m_keyBeamGraphics.draw(updateInfo, m_additiveRenderTexture);
+	m_keyBeamGraphics.draw(gameStatus, m_additiveRenderTexture);
 
 	// Draw laser notes
-	m_laserNoteGraphics.draw(updateInfo, m_additiveRenderTexture, m_invMultiplyRenderTexture);
+	m_laserNoteGraphics.draw(chartData, gameStatus, m_additiveRenderTexture, m_invMultiplyRenderTexture);
 }
 
 void MusicGame::Graphics::Highway3DGraphics::draw3D(double tiltRadians) const

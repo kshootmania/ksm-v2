@@ -93,6 +93,27 @@ void MusicGame::GameMain::registerAudioEffects()
 	}
 }
 
+void MusicGame::GameMain::updateGameStatus()
+{
+	const double currentTimeSec = m_bgm.posSec();
+	const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
+	const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
+	m_gameStatus.currentTimeSec = currentTimeSec;
+	m_gameStatus.currentPulse = currentPulse;
+	m_gameStatus.currentBPM = currentBPM;
+	for (std::size_t i = 0U; i < kson::kNumBTLanes; ++i)
+	{
+		m_btLaneJudgments[i].update(m_chartData.note.btLanes[i], currentPulse, currentTimeSec, m_gameStatus.btLaneStatus[i]);
+	}
+	for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+	{
+		m_fxLaneJudgments[i].update(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec, m_gameStatus.fxLaneStatus[i]);
+	}
+	m_gameStatus.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax); // TODO: add laser
+
+	// TODO: Calculate camera values
+}
+
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	: m_chartData(kson::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
 	, m_timingCache(kson::TimingUtils::CreateTimingCache(m_chartData.beat))
@@ -110,7 +131,6 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
 	, m_assistTick(gameCreateInfo.enableAssistTick)
 	, m_audioEffectMain(m_chartData)
-	, m_graphicsUpdateInfo{ .pChartData = &m_chartData }
 	, m_musicGameGraphics(m_chartData, m_timingCache)
 {
 	registerAudioEffects();
@@ -123,39 +143,28 @@ void MusicGame::GameMain::update()
 {
 	m_bgm.update();
 
-	const double currentTimeSec = m_bgm.posSec();
-
-	// TODO: Make separate functions for the code below
-
-	// Graphics and judgment
-	{
-		const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
-		const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
-		m_graphicsUpdateInfo.currentTimeSec = currentTimeSec;
-		m_graphicsUpdateInfo.currentPulse = currentPulse;
-		m_graphicsUpdateInfo.currentBPM = currentBPM;
-		for (std::size_t i = 0U; i < kson::kNumBTLanes; ++i)
-		{
-			m_btLaneJudgments[i].update(m_chartData.note.btLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.btLaneState[i]);
-		}
-		for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
-		{
-			m_fxLaneJudgments[i].update(m_chartData.note.fxLanes[i], currentPulse, currentTimeSec, m_graphicsUpdateInfo.fxLaneState[i]);
-		}
-		m_graphicsUpdateInfo.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreValue(m_btLaneJudgments) + SumScoreValue(m_fxLaneJudgments)) / m_scoreValueMax); // TODO: add laser
-	}
+	// Game status and judgment
+	updateGameStatus();
 
 	// Audio effects
-	m_audioEffectMain.update(m_bgm, m_chartData, m_timingCache);
+	std::array<Optional<bool>, kson::kNumFXLanes> longFXPressed;
+	for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+	{
+		longFXPressed[i] = m_gameStatus.fxLaneStatus[i].longNotePressed;
+	}
+	m_audioEffectMain.update(m_bgm, m_chartData, m_timingCache, {
+		.longFXPressed = longFXPressed,
+	});
 
 	// SE
+	const double currentTimeSec = m_bgm.posSec();
 	m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
 
-	m_musicGameGraphics.update(m_graphicsUpdateInfo);
+	// Graphics
+	m_musicGameGraphics.update(m_chartData, m_gameStatus);
 }
 
 void MusicGame::GameMain::draw() const
 {
-	// TODO: Calculate camera state
-	m_musicGameGraphics.draw();
+	m_musicGameGraphics.draw(m_chartData, m_gameStatus);
 }

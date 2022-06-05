@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "music_game/graphics/graphics_update_info.hpp"
+#include "music_game/game_status.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -11,6 +11,6 @@ namespace MusicGame::Graphics
 	public:
 		KeyBeamGraphics();
 
-		void draw(const GraphicsUpdateInfo& updateInfo, const RenderTexture& additiveTarget) const;
+		void draw(const GameStatus& gameStatus, const RenderTexture& additiveTarget) const;
 	};
 }

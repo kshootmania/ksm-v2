@@ -1,4 +1,5 @@
 ﻿#include "button_lane_judgment.hpp"
+#include "music_game/graphics/graphics_defines.hpp"
 
 using namespace MusicGame::Judgment;
 
@@ -75,9 +76,23 @@ namespace
 
 		return judgmentArray;
 	}
+
+	bool IsDuringLongNote(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse)
+	{
+		const auto& currentNoteItr = kson::CurrentAt(lane, currentPulse);
+		if (currentNoteItr != lane.end())
+		{
+			const auto& [y, note] = *currentNoteItr;
+			if (y <= currentPulse && currentPulse < y + note.length)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }
 
-void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, Graphics::LaneState& laneStateRef)
+void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, LaneStatus& laneStatusRef)
 {
 	using namespace TimingWindow;
 
@@ -118,8 +133,8 @@ void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lan
 		{
 			if ((!found || Abs(sec - currentTimeSec) < minDistance) && sec - currentTimeSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
 			{
-				laneStateRef.currentLongNotePulse = y;
-				laneStateRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
+				laneStatusRef.currentLongNotePulse = y;
+				laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
 				return;
 			}
 			else if (found && sec - currentTimeSec > LongNote::kWindowSecPreHold && y > currentPulse)
@@ -129,8 +144,8 @@ void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lan
 		}
 	}
 
-	laneStateRef.keyBeamTimeSec = currentTimeSec;
-	laneStateRef.keyBeamType = KeyBeamType::kDefault;
+	laneStatusRef.keyBeamTimeSec = currentTimeSec;
+	laneStatusRef.keyBeamType = KeyBeamType::kDefault;
 
 	if (found)
 	{
@@ -139,41 +154,41 @@ void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lan
 		{
 			m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kCritical;
 			m_scoreValue += kScoreValueCritical;
-			laneStateRef.keyBeamType = KeyBeamType::kCritical;
+			laneStatusRef.keyBeamType = KeyBeamType::kCritical;
 			chipAnimType = JudgmentResult::kCritical;
 		}
 		else if (minDistance < ChipNote::kWindowSecNear)
 		{
 			m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kNear;
 			m_scoreValue += kScoreValueNear;
-			laneStateRef.keyBeamType = KeyBeamType::kNear; // TODO: fast/slow
+			laneStatusRef.keyBeamType = KeyBeamType::kNear; // TODO: fast/slow
 			chipAnimType = JudgmentResult::kNear; // TODO: fast/slow
 		}
 		else if (minDistance < ChipNote::kWindowSecError) // TODO: easy gauge, fast/slow
 		{
 			m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kError;
-			laneStateRef.keyBeamType = KeyBeamType::kDefault;
+			laneStatusRef.keyBeamType = KeyBeamType::kDefault;
 			chipAnimType = JudgmentResult::kError;
 		}
 
 		if (chipAnimType.has_value())
 		{
-			assert(0 <= laneStateRef.chipAnimStateRingBufferCursor && laneStateRef.chipAnimStateRingBufferCursor < Graphics::kChipAnimMax);
-			laneStateRef.chipAnimStateRingBuffer[laneStateRef.chipAnimStateRingBufferCursor] = {
+			assert(0 <= laneStatusRef.chipAnimStateRingBufferCursor && laneStatusRef.chipAnimStateRingBufferCursor < Graphics::kChipAnimMax);
+			laneStatusRef.chipAnimStatusRingBuffer[laneStatusRef.chipAnimStateRingBufferCursor] = {
 				.startTimeSec = currentTimeSec,
 				.type = *chipAnimType,
 			};
-			laneStateRef.chipAnimStateRingBufferCursor = (laneStateRef.chipAnimStateRingBufferCursor + 1) % Graphics::kChipAnimMax;
+			laneStatusRef.chipAnimStateRingBufferCursor = (laneStatusRef.chipAnimStateRingBufferCursor + 1) % Graphics::kChipAnimMax;
 		}
 	}
 }
 
-void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, const Graphics::LaneState& laneStateRef)
+void MusicGame::Judgment::ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, const LaneStatus& laneStatusRef)
 {
-	if (laneStateRef.currentLongNotePulse.has_value())
+	if (laneStatusRef.currentLongNotePulse.has_value())
 	{
-		const kson::Pulse noteStartPulse = *laneStateRef.currentLongNotePulse;
-		const kson::Pulse noteEndPulse = *laneStateRef.currentLongNotePulse + lane.at(*laneStateRef.currentLongNotePulse).length;
+		const kson::Pulse noteStartPulse = *laneStatusRef.currentLongNotePulse;
+		const kson::Pulse noteEndPulse = *laneStatusRef.currentLongNotePulse + lane.at(*laneStatusRef.currentLongNotePulse).length;
 		const kson::Pulse limitPulse = Min(currentPulse, noteEndPulse);
 
 		for (auto itr = m_longJudgmentArray.upper_bound(Max(noteStartPulse, m_prevPulse) - 1); itr != m_longJudgmentArray.end(); ++itr)
@@ -202,26 +217,35 @@ ButtonLaneJudgment::ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const 
 {
 }
 
-void MusicGame::Judgment::ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, Graphics::LaneState& laneStateRef)
+void MusicGame::Judgment::ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, LaneStatus& laneStatusRef)
 {
 	// Chip note & long note start
 	if (KeyConfig::Down(m_keyConfigButton))
 	{
-		processKeyDown(lane, currentPulse, currentTimeSec, laneStateRef);
+		processKeyDown(lane, currentPulse, currentTimeSec, laneStatusRef);
 	}
 
 	// Long note hold
 	if (KeyConfig::Pressed(m_keyConfigButton))
 	{
-		processKeyPressed(lane, currentPulse, currentTimeSec, laneStateRef);
+		processKeyPressed(lane, currentPulse, currentTimeSec, laneStatusRef);
 	}
 
 	// Long note release
-	if (laneStateRef.currentLongNotePulse.has_value() &&
-		(KeyConfig::Up(m_keyConfigButton) || (*laneStateRef.currentLongNotePulse + lane.at(*laneStateRef.currentLongNotePulse).length < currentPulse)))
+	if (laneStatusRef.currentLongNotePulse.has_value() &&
+		(KeyConfig::Up(m_keyConfigButton) || (*laneStatusRef.currentLongNotePulse + lane.at(*laneStatusRef.currentLongNotePulse).length < currentPulse)))
 	{
-		laneStateRef.currentLongNotePulse = none;
-		laneStateRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
+		laneStatusRef.currentLongNotePulse = none;
+		laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
+	}
+
+	if (IsDuringLongNote(lane, currentPulse))
+	{
+		laneStatusRef.longNotePressed = laneStatusRef.currentLongNotePulse.has_value();
+	}
+	else
+	{
+		laneStatusRef.longNotePressed = none;
 	}
 
 	m_prevPulse = currentPulse;

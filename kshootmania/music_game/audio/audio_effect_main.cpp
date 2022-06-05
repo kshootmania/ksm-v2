@@ -39,28 +39,18 @@ namespace MusicGame::Audio
 			return convertedLongEvent;
 		}
 
-		Optional<kson::Pulse> CurrentLongNotePulseByTime(const kson::ByPulse<kson::Interval>& lane, kson::Pulse time)
+		Optional<kson::Pulse> CurrentLongNotePulseByTime(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse)
 		{
-			const auto currentNoteItr = kson::CurrentAt(lane, time);
+			const auto currentNoteItr = kson::CurrentAt(lane, currentPulse);
 			if (currentNoteItr != lane.end())
 			{
 				const auto& [y, currentNote] = *currentNoteItr;
-				if (y <= time && time < y + currentNote.length)
+				if (y <= currentPulse && currentPulse < y + currentNote.length)
 				{
 					return y;
 				}
 			}
 			return none;
-		}
-
-		std::array<Optional<kson::Pulse>, kson::kNumFXLanes> CurrentLongFXNotePulseOfLanesByTime(const kson::ChartData& chartData, kson::Pulse time)
-		{
-			std::array<Optional<kson::Pulse>, kson::kNumFXLanes> pulses;
-			for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
-			{
-				pulses[i] = CurrentLongNotePulseByTime(chartData.note.fxLanes[i], time);
-			}
-			return pulses;
 		}
 	}
 
@@ -90,20 +80,35 @@ namespace MusicGame::Audio
 	{
 	}
 
-	void AudioEffectMain::update(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+	void AudioEffectMain::update(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus)
 	{
 		const double currentTimeSec = bgm.posSec();
-		const double currentTimeSecForAudio = currentTimeSec + bgm.latencySec(); // Note: Not sure why, but the effect is out of sync with BASS v2.4.13 or later (;_;)
+		const double currentTimeSecForAudio = currentTimeSec + bgm.latencySec(); // Note: In BASS v2.4.13 and later, for unknown reasons, the effects are out of sync even after adding this latency.
 		const kson::Pulse currentPulseForAudio = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSecForAudio), chartData.beat, timingCache);
 		const double currentBPMForAudio = kson::TimingUtils::PulseTempo(currentPulseForAudio, chartData.beat);
 
-		const std::array<Optional<kson::Pulse>, kson::kNumFXLanes> currentLongNotePulseOfLanes = CurrentLongFXNotePulseOfLanesByTime(chartData, currentPulseForAudio);
-		const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> activeAudioEffects = currentActiveAudioEffectsFX(chartData, currentLongNotePulseOfLanes);
+		// FX audio effects
+		std::array<Optional<kson::Pulse>, kson::kNumFXLanes> currentLongNotePulseOfLanes;
+		for (std::size_t i = 0; i < kson::kNumFXLanes; ++i)
+		{
+			// Note: When longFXPressed[i].has_value() is false (i.e., there are no FX notes in actual time), it is treated as if a long FX note was pressed.
+			//       This is because the audio effect must be activated ahead of time by the buffer size, and the effect must be activated regardless of
+			//       the input when a FX note has not yet arrived.
+			if (inputStatus.longFXPressed[i].has_value() && !*inputStatus.longFXPressed[i])
+			{
+				currentLongNotePulseOfLanes[i] = none;
+			}
+			else
+			{
+				currentLongNotePulseOfLanes[i] = CurrentLongNotePulseByTime(chartData.note.fxLanes[i], currentPulseForAudio);
+			}
+		}
+		const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> activeAudioEffectsFX = currentActiveAudioEffectsFX(chartData, currentLongNotePulseOfLanes);
 		bgm.updateAudioEffectFX({
-			.v = 0.0f,
 			.bpm = static_cast<float>(currentBPMForAudio),
 			.sec = static_cast<float>(currentTimeSecForAudio),
-		}, activeAudioEffects);
+		}, activeAudioEffectsFX);
+
 		// TODO: laser
 	}
 }
