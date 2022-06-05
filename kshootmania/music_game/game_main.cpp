@@ -33,7 +33,7 @@ namespace
 void MusicGame::GameMain::registerAudioEffects()
 {
 	const std::int64_t totalMeasures =
-		kson::TimingUtils::MsToMeasureIdx(MathUtils::SecToMs(m_bgm.durationSec()), m_chartData.beat, m_timingCache)
+		kson::TimingUtils::SecToMeasureIdx(m_bgm.durationSec(), m_chartData.beat, m_timingCache)
 		+ 1/* add last measure */
 		+ 1/* index to size */;
 
@@ -96,7 +96,7 @@ void MusicGame::GameMain::registerAudioEffects()
 void MusicGame::GameMain::updateGameStatus()
 {
 	const double currentTimeSec = m_bgm.posSec();
-	const kson::Pulse currentPulse = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec), m_chartData.beat, m_timingCache);
+	const kson::Pulse currentPulse = kson::TimingUtils::SecToPulse(currentTimeSec, m_chartData.beat, m_timingCache);
 	const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
 	m_gameStatus.currentTimeSec = currentTimeSec;
 	m_gameStatus.currentPulse = currentPulse;

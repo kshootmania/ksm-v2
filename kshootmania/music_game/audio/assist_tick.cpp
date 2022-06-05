@@ -32,7 +32,7 @@ void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, cons
 		return;
 	}
 
-	const kson::Pulse currentPulseForAssistTick = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSec + kLatencySec), chartData.beat, timingCache);
+	const kson::Pulse currentPulseForAssistTick = kson::TimingUtils::SecToPulse(currentTimeSec + kLatencySec, chartData.beat, timingCache);
 
 	// BT notes
 	for (std::size_t i = 0; i < kson::kNumBTLanes; ++i)

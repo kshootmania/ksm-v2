@@ -32,7 +32,7 @@ namespace
 		std::set<float> timingSet;
 		for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
 		{
-			const float sec = MathUtils::MsToSec<float>(kson::TimingUtils::MeasureIdxToMs(measureIdx, chartData.beat, timingCache));
+			const float sec = static_cast<float>(kson::TimingUtils::MeasureIdxToSec(measureIdx, chartData.beat, timingCache));
 			timingSet.insert(sec);
 		}
 		return timingSet;
@@ -52,7 +52,7 @@ namespace
 			const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
 			for (kson::Pulse y = startY; y < endY; y += defDy)
 			{
-				const float sec = MathUtils::MsToSec<float>(kson::TimingUtils::PulseToMs(y, chartData.beat, timingCache));
+				const float sec = static_cast<float>(kson::TimingUtils::PulseToSec(y, chartData.beat, timingCache));
 				timingSet.insert(sec);
 			}
 		}
@@ -82,7 +82,7 @@ namespace
 				{
 					for (kson::Pulse y = startY; y < endY; y += dy)
 					{
-						const float sec = MathUtils::MsToSec<float>(kson::TimingUtils::PulseToMs(y, chartData.beat, timingCache));
+						const float sec = static_cast<float>(kson::TimingUtils::PulseToSec(y, chartData.beat, timingCache));
 						timingSet.insert(sec);
 					}
 				}
@@ -96,7 +96,7 @@ namespace
 					const kson::RelPulse dy = ParamChangeUpdatePeriodDyAt(updatePeriodChanges, y, defDy);
 					if (ry % dy == 0)
 					{
-						const float sec = MathUtils::MsToSec<float>(kson::TimingUtils::PulseToMs(y, chartData.beat, timingCache));
+						const float sec = static_cast<float>(kson::TimingUtils::PulseToSec(y, chartData.beat, timingCache));
 						timingSet.insert(sec);
 					}
 				}

@@ -93,7 +93,7 @@ namespace MusicGame::Audio
 	{
 		const double currentTimeSec = bgm.posSec();
 		const double currentTimeSecForAudio = currentTimeSec + bgm.latencySec(); // Note: In BASS v2.4.13 and later, for unknown reasons, the effects are out of sync even after adding this latency.
-		const kson::Pulse currentPulseForAudio = kson::TimingUtils::MsToPulse(MathUtils::SecToMs(currentTimeSecForAudio), chartData.beat, timingCache);
+		const kson::Pulse currentPulseForAudio = kson::TimingUtils::SecToPulse(currentTimeSecForAudio, chartData.beat, timingCache);
 		const double currentBPMForAudio = kson::TimingUtils::PulseTempo(currentPulseForAudio, chartData.beat);
 
 		// FX audio effects
@@ -102,15 +102,12 @@ namespace MusicGame::Audio
 		{
 			const Optional<kson::Pulse> currentLongNotePulseByTime = CurrentLongNotePulseByTime(chartData.note.fxLanes[i], currentPulseForAudio);
 
-			const double timeSecSinceLongNoteStart =
-				currentLongNotePulseByTime.has_value()
-					? (currentTimeSec - MathUtils::MsToSec(kson::TimingUtils::PulseToMs(*currentLongNotePulseByTime, chartData.beat, timingCache)))
-					: 0.0;
-
 			// Note: When longFXPressed[i] is none (i.e., there are no FX notes in actual time), it is treated as if a long FX note was pressed.
 			//       This is because the audio effect should be activated ahead of time by the buffer size + 30ms regardless of the input.
 			// Implementation in HSP: https://github.com/m4saka/kshootmania-v1-hsp/blob/19bfb6acbec8abd304b2e7dae6009df8e8e1f66f/src/scene/play/play_audio_effects.hsp#L488
-			if (currentLongNotePulseByTime.has_value() && (inputStatus.longFXPressed[i].value_or(true) || (timeSecSinceLongNoteStart < kLongFXNoteAudioEffectAutoPlaySec)))
+			if (currentLongNotePulseByTime.has_value()
+				&& (inputStatus.longFXPressed[i].value_or(true)
+					|| (currentTimeSec - kson::TimingUtils::PulseToSec(*currentLongNotePulseByTime, chartData.beat, timingCache)) < kLongFXNoteAudioEffectAutoPlaySec))
 			{
 				currentLongNotePulseOfLanes[i] = currentLongNotePulseByTime;
 				if (!m_longFXPressedPrev[i])

@@ -15,12 +15,12 @@ namespace
 		{
 			if (!pulseToSec.contains(y))
 			{
-				const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y, beatInfo, timingCache));
+				const double sec = kson::TimingUtils::PulseToSec(y, beatInfo, timingCache);
 				pulseToSec.emplace(y, sec);
 			}
 			if (!pulseToSec.contains(y + note.length))
 			{
-				const double sec = MathUtils::MsToSec(kson::TimingUtils::PulseToMs(y + note.length, beatInfo, timingCache));
+				const double sec = kson::TimingUtils::PulseToSec(y + note.length, beatInfo, timingCache);
 				pulseToSec.emplace(y + note.length, sec);
 			}
 		}
