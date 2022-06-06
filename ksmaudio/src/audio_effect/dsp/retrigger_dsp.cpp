@@ -10,7 +10,7 @@ namespace ksmaudio::AudioEffect
     {
     }
 
-    void RetriggerDSP::process(float* pData, std::size_t dataSize, bool bypass, RetriggerDSPParams& params)
+    void RetriggerDSP::process(float* pData, std::size_t dataSize, bool bypass, const RetriggerDSPParams& params)
     {
         assert(dataSize % m_info.numChannels == 0);
 

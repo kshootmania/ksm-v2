@@ -4,6 +4,9 @@
 #include "dsp/retrigger_dsp.hpp"
 #include "params/retrigger_params.hpp"
 
+#include "dsp/gate_dsp.hpp"
+#include "params/gate_params.hpp"
+
 #include "dsp/flanger_dsp.hpp"
 #include "params/flanger_params.hpp"
 
@@ -13,6 +16,8 @@
 namespace ksmaudio
 {
 	using Retrigger = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::RetriggerParams, AudioEffect::RetriggerDSP, AudioEffect::RetriggerDSPParams>;
+
+	using Gate = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::GateParams, AudioEffect::GateDSP, AudioEffect::GateDSPParams>;
 
 	using Flanger = AudioEffect::BasicAudioEffect<AudioEffect::FlangerParams, AudioEffect::FlangerDSP, AudioEffect::FlangerDSPParams>;
 

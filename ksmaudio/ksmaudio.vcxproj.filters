@@ -78,9 +78,6 @@
     <ClInclude Include="include\ksmaudio\audio_effect\params\retrigger_params.hpp">
       <Filter>Header Files\audio_effect\params</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect\detail\wave_length_utils.hpp">
-      <Filter>Header Files\audio_effect\detail</Filter>
-    </ClInclude>
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\retrigger_dsp.hpp">
       <Filter>Header Files\audio_effect\dsp</Filter>
     </ClInclude>
@@ -89,6 +86,15 @@
     </ClInclude>
     <ClInclude Include="include\ksmaudio\audio_effect\audio_effect_bus.hpp">
       <Filter>Header Files\audio_effect</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\wave_length_utils.hpp">
+      <Filter>Header Files\audio_effect\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\dsp\gate_dsp.hpp">
+      <Filter>Header Files\audio_effect\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\params\gate_params.hpp">
+      <Filter>Header Files\audio_effect\params</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="src\audio_effect\audio_effect_bus.cpp">
       <Filter>Source Files\audio_effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio_effect\dsp\gate_dsp.cpp">
+      <Filter>Source Files\audio_effect\dsp</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

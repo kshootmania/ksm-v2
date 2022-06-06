@@ -77,6 +77,17 @@ void MusicGame::GameMain::registerAudioEffects()
 	}
 	{
 		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
+			.type = kson::AudioEffectType::Gate,
+			.v = {
+				{ "wave_length", "1/8" },
+			},
+		};
+		const auto updateTriggerTiming_ = Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(
+			def_, totalMeasures, m_chartData, m_timingCache);
+		m_bgm.emplaceAudioEffect(true, "gate", def_, updateTriggerTiming_);
+	}
+	{
+		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
 			.type = kson::AudioEffectType::Flanger,
 			.v = {},
 		};

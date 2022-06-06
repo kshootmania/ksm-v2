@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <memory>
+#include <cassert>
 #include "bass.h"
 #include "audio_effect_param.hpp"
 

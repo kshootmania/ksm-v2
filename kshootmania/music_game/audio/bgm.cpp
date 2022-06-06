@@ -132,6 +132,10 @@ void MusicGame::Audio::BGM::emplaceAudioEffect(bool isFX, const std::string& nam
 		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Retrigger>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
 		break;
 
+	case kson::AudioEffectType::Gate:
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Gate>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+		break;
+
 	case kson::AudioEffectType::Flanger:
 		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
 		break;
