@@ -39,29 +39,40 @@ namespace ksmaudio::AudioEffect
         }
 
         const std::size_t frameSize = dataSize / m_info.numChannels;
+        const std::size_t numPeriodFrames = static_cast<std::size_t>(params.waveLength * m_info.sampleRate);
         
         if (bypass || params.mix == 0.0f)
         {
             if (m_framesUntilTrigger < 0)
             {
                 m_framesSincePrevTrigger += frameSize;
-                return;
             }
             else if (m_framesUntilTrigger > frameSize)
             {
                 m_framesSincePrevTrigger += frameSize;
                 m_framesUntilTrigger -= frameSize;
-                return;
             }
             else
             {
                 m_framesSincePrevTrigger = frameSize - m_framesUntilTrigger;
                 m_framesUntilTrigger = -1;
-                return;
             }
+
+            // Process the last frame to avoid noise at the beginning of the wobble audio effect
+            if (frameSize > 0U) [[likely]]
+            {
+                // Note: Here, framesSincePrevTrigger is one frame different, but it doesn't matter much.
+                const float freq = WobbleFreq(m_framesSincePrevTrigger, numPeriodFrames, params.loFreq, params.hiFreq);
+                for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
+                {
+                    m_lowPassFilters[ch].process(pData[(frameSize - 1U) * m_info.numChannels + ch]);
+                }
+            }
+
+            return;
         }
 
-        const std::size_t numPeriodFrames = static_cast<std::size_t>(params.waveLength * m_info.sampleRate);
+        // Wobble processing main
         const float fSampleRate = static_cast<float>(m_info.sampleRate);
         for (std::size_t i = 0U; i < frameSize; ++i)
         {

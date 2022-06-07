@@ -45,20 +45,18 @@ namespace ksmaudio::AudioEffect
             if (m_framesUntilTrigger < 0)
             {
                 m_framesSincePrevTrigger += frameSize;
-                return;
             }
             else if (m_framesUntilTrigger > frameSize)
             {
                 m_framesSincePrevTrigger += frameSize;
                 m_framesUntilTrigger -= frameSize;
-                return;
             }
             else
             {
                 m_framesSincePrevTrigger = frameSize - m_framesUntilTrigger;
                 m_framesUntilTrigger = -1;
-                return;
             }
+            return;
         }
 
         const std::size_t numPeriodFrames = static_cast<std::size_t>(params.waveLength * m_info.sampleRate);
