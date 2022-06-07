@@ -76,7 +76,7 @@ namespace MusicGame::Audio
 			const kson::Pulse y = *longNotePulseOfLanes[laneIdx];
 			if (m_longFXNoteAudioEffectNames[laneIdx].contains(y))
 			{
-				assert(m_longFXNoteAudioEffectParams.contains(y));
+				assert(m_longFXNoteAudioEffectParams[laneIdx].contains(y));
 				audioEffects.emplace(m_longFXNoteAudioEffectNames[laneIdx].at(y), m_longFXNoteAudioEffectParams[laneIdx].at(y));
 			}
 		}

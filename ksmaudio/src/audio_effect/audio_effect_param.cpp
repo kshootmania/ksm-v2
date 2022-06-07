@@ -101,22 +101,17 @@ namespace ksmaudio::AudioEffect
 
 			case Type::kFilename:
 				return 0.0f;
-
-			default:
-				// Just ignore errors here
-				return 0.0f;
 			}
 		}
 		catch ([[maybe_unused]] const std::invalid_argument& e)
 		{
 			// Just ignore errors here
-			return 0.0f;
 		}
 		catch ([[maybe_unused]] const std::out_of_range& e)
 		{
 			// Just ignore errors here
-			return 0.0f;
 		}
+		return 0.0f;
 	}
 
 	ValueSet StrToValueSet(Type type, const std::string& str, bool* pSuccess)

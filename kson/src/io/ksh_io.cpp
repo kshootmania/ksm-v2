@@ -419,7 +419,7 @@ namespace
 				if (!m_audioEffectParamStr.empty())
 				{
 					// Apply legacy FX audio effect parameters
-					audioEffectParamValue1 = ParseNumeric<std::int64_t>(m_audioEffectParamStr);
+					audioEffectParamValue1 = ParseNumeric<std::int32_t>(m_audioEffectParamStr);
 				}
 				if (s_kshFXToKsonAudioEffectNameTable.contains(audioEffectName))
 				{

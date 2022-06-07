@@ -46,7 +46,7 @@ namespace ksmaudio::AudioEffect
             {
                 m_framesSincePrevTrigger += frameSize;
             }
-            else if (m_framesUntilTrigger > frameSize)
+            else if (m_framesUntilTrigger > static_cast<std::ptrdiff_t>(frameSize))
             {
                 m_framesSincePrevTrigger += frameSize;
                 m_framesUntilTrigger -= frameSize;

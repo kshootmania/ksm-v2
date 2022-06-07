@@ -47,7 +47,7 @@ namespace ksmaudio::AudioEffect
             {
                 m_framesSincePrevTrigger += frameSize;
             }
-            else if (m_framesUntilTrigger > frameSize)
+            else if (m_framesUntilTrigger > static_cast<std::ptrdiff_t>(frameSize))
             {
                 m_framesSincePrevTrigger += frameSize;
                 m_framesUntilTrigger -= frameSize;
@@ -59,7 +59,7 @@ namespace ksmaudio::AudioEffect
             }
 
             // Process the last frame to avoid noise at the beginning of the wobble audio effect
-            if (frameSize > 0U) [[likely]]
+            if (frameSize > 0U && numPeriodFrames > 0U)
             {
                 // Note: Here, framesSincePrevTrigger is one frame different, but it doesn't matter much.
                 const float freq = WobbleFreq(m_framesSincePrevTrigger, numPeriodFrames, params.loFreq, params.hiFreq);
