@@ -13,6 +13,9 @@
 #include "dsp/bitcrusher_dsp.hpp"
 #include "params/bitcrusher_params.hpp"
 
+#include "dsp/wobble_dsp.hpp"
+#include "params/wobble_params.hpp"
+
 namespace ksmaudio
 {
 	using Retrigger = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::RetriggerParams, AudioEffect::RetriggerDSP, AudioEffect::RetriggerDSPParams>;
@@ -22,4 +25,6 @@ namespace ksmaudio
 	using Flanger = AudioEffect::BasicAudioEffect<AudioEffect::FlangerParams, AudioEffect::FlangerDSP, AudioEffect::FlangerDSPParams>;
 
 	using Bitcrusher = AudioEffect::BasicAudioEffect<AudioEffect::BitcrusherParams, AudioEffect::BitcrusherDSP, AudioEffect::BitcrusherDSPParams>;
+
+	using Wobble = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::WobbleParams, AudioEffect::WobbleDSP, AudioEffect::WobbleDSPParams>;
 }

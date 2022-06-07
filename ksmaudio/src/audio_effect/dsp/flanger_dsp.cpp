@@ -8,9 +8,9 @@ namespace ksmaudio::AudioEffect
 			static_cast<std::size_t>(info.sampleRate) * 3 * info.numChannels, // 3 seconds
 			info.numChannels)
 	{
-		for (int i = 0; i < 2; ++i)
+		for (auto& filter : m_lowShelfFilters)
 		{
-			m_lowShelfFilters[i].setLowShelfFilter(250.0f, 0.5f, -20.0f, static_cast<float>(info.sampleRate));
+			filter.setLowShelfFilter(250.0f, 0.5f, -20.0f, static_cast<float>(info.sampleRate));
 		}
 	}
 

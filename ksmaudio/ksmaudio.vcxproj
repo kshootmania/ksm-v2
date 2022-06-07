@@ -172,10 +172,12 @@
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\flanger_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\gate_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\retrigger_dsp.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\dsp\wobble_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\bitcrusher_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\flanger_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\gate_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\retrigger_params.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\params\wobble_params.hpp" />
     <ClInclude Include="include\ksmaudio\stream.hpp" />
     <ClInclude Include="include\ksmaudio\ksmaudio.hpp" />
     <ClInclude Include="include\ksmaudio\sample.hpp" />
@@ -188,6 +190,7 @@
     <ClCompile Include="src\audio_effect\dsp\flanger_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\gate_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\retrigger_dsp.cpp" />
+    <ClCompile Include="src\audio_effect\dsp\wobble_dsp.cpp" />
     <ClCompile Include="src\stream.cpp" />
     <ClCompile Include="src\ksmaudio.cpp" />
     <ClCompile Include="src\sample.cpp" />

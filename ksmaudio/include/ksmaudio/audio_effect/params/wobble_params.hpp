@@ -3,23 +3,29 @@
 
 namespace ksmaudio::AudioEffect
 {
-	struct GateDSPParams
+	struct WobbleDSPParams
 	{
 		float secUntilTrigger = -1.0f; // Note: Negative value will be just ignored
 		float waveLength = 0.0f;
-		float rate = 0.5f;
-		float mix = 0.9f;
+		float loFreq = 500.0f;
+		float hiFreq = 20000.0f;
+		float q = 1.414f;
+		float mix = 0.5f;
 	};
 
-	struct GateParams
+	struct WobbleParams
 	{
 		Param waveLength = DefineParam(Type::kLength, "0");
-		Param rate = DefineParam(Type::kRate, "50%");
-		Param mix = DefineParam(Type::kRate, "0%>90%");
+		Param loFreq = DefineParam(Type::kFreq, "500Hz");
+		Param hiFreq = DefineParam(Type::kFreq, "20000Hz");
+		Param q = DefineParam(Type::kFloat, "1.414");
+		Param mix = DefineParam(Type::kRate, "0%>50%");
 
 		const std::unordered_map<ParamID, Param*> dict = {
 			{ ParamID::kWaveLength, &waveLength },
-			{ ParamID::kRate, &rate },
+			{ ParamID::kLoFreq, &loFreq },
+			{ ParamID::kHiFreq, &hiFreq },
+			{ ParamID::kQ, &q },
 			{ ParamID::kMix, &mix },
 		};
 
@@ -51,19 +57,21 @@ namespace ksmaudio::AudioEffect
 		}
 
 	public:
-		// Note: For gate audio effects, the update trigger timing is the bar line timing
+		// Note: For wobble audio effects, the update trigger timing is the bar line timing
 		void setUpdateTriggerTiming(const std::set<float>& timing)
 		{
 			m_updateTriggerTiming = timing;
 			m_updateTriggerTimingCursor = m_updateTriggerTiming.begin();
 		}
 
-		GateDSPParams render(const Status& status, bool isOn)
+		WobbleDSPParams render(const Status& status, bool isOn)
 		{
 			return {
 				.secUntilTrigger = getSecUntilTrigger(status.sec),
 				.waveLength = GetValue(waveLength, status, isOn),
-				.rate = GetValue(rate, status, isOn),
+				.loFreq = GetValue(loFreq, status, isOn),
+				.hiFreq = GetValue(hiFreq, status, isOn),
+				.q = GetValue(q, status, isOn),
 				.mix = GetValue(mix, status, isOn),
 			};
 		}

@@ -102,6 +102,15 @@ void MusicGame::GameMain::registerAudioEffects()
 		};
 		m_bgm.emplaceAudioEffect(true, "bitcrusher", def_);
 	}
+	{
+		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
+			.type = kson::AudioEffectType::Wobble,
+			.v = {},
+		};
+		const auto updateTriggerTiming_ = Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(
+			def_, totalMeasures, m_chartData, m_timingCache);
+		m_bgm.emplaceAudioEffect(true, "wobble", def_, updateTriggerTiming_);
+	}
 }
 
 void MusicGame::GameMain::updateGameStatus()

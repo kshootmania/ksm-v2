@@ -96,6 +96,12 @@
     <ClInclude Include="include\ksmaudio\audio_effect\params\gate_params.hpp">
       <Filter>Header Files\audio_effect\params</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\dsp\wobble_dsp.hpp">
+      <Filter>Header Files\audio_effect\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\params\wobble_params.hpp">
+      <Filter>Header Files\audio_effect\params</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ksmaudio.cpp">
@@ -126,6 +132,9 @@
       <Filter>Source Files\audio_effect</Filter>
     </ClCompile>
     <ClCompile Include="src\audio_effect\dsp\gate_dsp.cpp">
+      <Filter>Source Files\audio_effect\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio_effect\dsp\wobble_dsp.cpp">
       <Filter>Source Files\audio_effect\dsp</Filter>
     </ClCompile>
   </ItemGroup>

@@ -143,5 +143,9 @@ void MusicGame::Audio::BGM::emplaceAudioEffect(bool isFX, const std::string& nam
 	case kson::AudioEffectType::Bitcrusher:
 		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
 		break;
+
+	case kson::AudioEffectType::Wobble:
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Wobble>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+		break;
 	}
 }
