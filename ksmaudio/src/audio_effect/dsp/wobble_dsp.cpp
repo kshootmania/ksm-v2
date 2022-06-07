@@ -40,6 +40,7 @@ namespace ksmaudio::AudioEffect
 
         const std::size_t frameSize = dataSize / m_info.numChannels;
         const std::size_t numPeriodFrames = static_cast<std::size_t>(params.waveLength * m_info.sampleRate);
+        const float fSampleRate = static_cast<float>(m_info.sampleRate);
         
         if (bypass || params.mix == 0.0f)
         {
@@ -58,14 +59,22 @@ namespace ksmaudio::AudioEffect
                 m_framesUntilTrigger = -1;
             }
 
-            // Process the last frame to avoid noise at the beginning of the wobble audio effect
-            if (frameSize > 0U && numPeriodFrames > 0U)
+            // Process frames even if bypassed to avoid noise at the beginning of wobble audio effects
+            if (numPeriodFrames > 0U)
             {
-                // Note: Here, framesSincePrevTrigger is one frame different, but it doesn't matter much.
+                // Here, a fixed frequency is used for performance
                 const float freq = WobbleFreq(m_framesSincePrevTrigger, numPeriodFrames, params.loFreq, params.hiFreq);
                 for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
                 {
-                    m_lowPassFilters[ch].process(pData[(frameSize - 1U) * m_info.numChannels + ch]);
+                    m_lowPassFilters[ch].setLowPassFilter(freq, params.q, fSampleRate);
+                }
+                for (std::size_t i = 0U; i < frameSize; ++i)
+                {
+                    for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
+                    {
+                        m_lowPassFilters[ch].process(*pData);
+                        ++pData;
+                    }
                 }
             }
 
@@ -73,7 +82,6 @@ namespace ksmaudio::AudioEffect
         }
 
         // Wobble processing main
-        const float fSampleRate = static_cast<float>(m_info.sampleRate);
         for (std::size_t i = 0U; i < frameSize; ++i)
         {
             const float freq = WobbleFreq(m_framesSincePrevTrigger, numPeriodFrames, params.loFreq, params.hiFreq);
