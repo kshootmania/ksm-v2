@@ -23,7 +23,7 @@ namespace ksmaudio::AudioEffect
 
 		assert(dataSize % m_info.numChannels == 0);
 		const std::size_t numFrames = dataSize / m_info.numChannels;
-		if (bypass)
+		if (bypass || params.mix == 0.0f)
 		{
 			m_ringBuffer.write(pData, dataSize);
 			m_ringBuffer.advanceCursor(numFrames);

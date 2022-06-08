@@ -19,6 +19,7 @@ namespace ksmaudio::AudioEffect
             m_framesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * m_info.sampleRate);
         }
 
+        const bool active = !bypass && params.mix > 0.0f;
         const std::size_t frameSize = dataSize / m_info.numChannels;
         const std::size_t numLoopFrames = static_cast<std::size_t>(params.waveLength * m_info.sampleRate);
         const std::size_t numNonZeroFrames = static_cast<std::size_t>(numLoopFrames * params.rate);
@@ -26,7 +27,7 @@ namespace ksmaudio::AudioEffect
         {
             const std::size_t formerSize = static_cast<std::size_t>(m_framesUntilTrigger) * m_info.numChannels;
             m_linearBuffer.write(pData, formerSize);
-            if (params.mix > 0.0f)
+            if (active)
             {
                 m_linearBuffer.read(pData, formerSize, numLoopFrames, numNonZeroFrames, params.mix);
             }
@@ -37,7 +38,7 @@ namespace ksmaudio::AudioEffect
 
             const std::size_t latterSize = dataSize - formerSize;
             m_linearBuffer.write(pData + formerSize, latterSize);
-            if (params.mix > 0.0f)
+            if (active)
             {
                 m_linearBuffer.read(pData + formerSize, latterSize, numLoopFrames, numNonZeroFrames, params.mix);
             }
@@ -45,7 +46,7 @@ namespace ksmaudio::AudioEffect
         else
         {
             m_linearBuffer.write(pData, dataSize);
-            if (params.mix > 0.0f)
+            if (active)
             {
                 m_linearBuffer.read(pData, dataSize, numLoopFrames, numNonZeroFrames, params.mix);
             }

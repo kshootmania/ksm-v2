@@ -59,7 +59,7 @@ namespace ksmaudio::AudioEffect
                 m_framesUntilTrigger = -1;
             }
 
-            // Process frames even if bypassed to avoid noise at the beginning of wobble audio effects
+            // Process frames even if bypassed to avoid noise at the beginning of effects
             if (numPeriodFrames > 0U)
             {
                 // Here, a fixed frequency is used for performance

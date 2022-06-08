@@ -127,7 +127,7 @@ namespace ksmaudio::AudioEffect
 	{
 		// Update override params
 		{
-			// Active -> Inactive
+			// "Active -> Inactive"
 			for (const std::size_t& idx : m_activeAudioEffectIdxs)
 			{
 				assert(m_names.size() > idx);
@@ -138,7 +138,7 @@ namespace ksmaudio::AudioEffect
 				}
 			}
 
-			// Inactive -> Active or Active -> Active
+			// "Inactive -> Active" or "Active -> Active"
 			m_activeAudioEffectIdxs.clear();
 			for (const auto& [audioEffectName, params] : activeAudioEffects)
 			{
