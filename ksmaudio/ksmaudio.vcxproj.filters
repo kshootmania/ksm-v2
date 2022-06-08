@@ -105,6 +105,9 @@
     <ClInclude Include="include\ksmaudio\audio_effect\detail\simple_trigger_handler.hpp">
       <Filter>Header Files\audio_effect\detail</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\param_controller.hpp">
+      <Filter>Header Files\audio_effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ksmaudio.cpp">
@@ -139,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="src\audio_effect\dsp\wobble_dsp.cpp">
       <Filter>Source Files\audio_effect\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio_effect\param_controller.cpp">
+      <Filter>Source Files\audio_effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

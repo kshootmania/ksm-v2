@@ -179,6 +179,7 @@
     <ClInclude Include="include\ksmaudio\audio_effect\params\gate_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\retrigger_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\wobble_params.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\param_controller.hpp" />
     <ClInclude Include="include\ksmaudio\stream.hpp" />
     <ClInclude Include="include\ksmaudio\ksmaudio.hpp" />
     <ClInclude Include="include\ksmaudio\sample.hpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="src\audio_effect\dsp\gate_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\retrigger_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\wobble_dsp.cpp" />
+    <ClCompile Include="src\audio_effect\param_controller.cpp" />
     <ClCompile Include="src\stream.cpp" />
     <ClCompile Include="src\ksmaudio.cpp" />
     <ClCompile Include="src\sample.cpp" />
