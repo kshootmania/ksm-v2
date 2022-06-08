@@ -28,7 +28,7 @@ namespace MusicGame
 		// Judgment
 		std::array<Judgment::ButtonLaneJudgment, kson::kNumBTLanes> m_btLaneJudgments;
 		std::array<Judgment::ButtonLaneJudgment, kson::kNumFXLanes> m_fxLaneJudgments;
-		const int32 m_scoreValueMax;
+		const int32 m_scoreFactorMax;
 
 		// Audio
 		Audio::BGM m_bgm;
@@ -38,7 +38,7 @@ namespace MusicGame
 		Audio::AudioEffectMain m_audioEffectMain;
 
 		// Graphics
-		Graphics::GraphicsMain m_musicGameGraphics;
+		Graphics::GraphicsMain m_graphicsMain;
 
 		void updateGameStatus();
 
