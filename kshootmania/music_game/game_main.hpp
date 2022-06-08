@@ -40,8 +40,6 @@ namespace MusicGame
 		// Graphics
 		Graphics::GraphicsMain m_musicGameGraphics;
 
-		void registerAudioEffects();
-
 		void updateGameStatus();
 
 	public:

@@ -1,4 +1,5 @@
 ﻿#include "audio_effect_main.hpp"
+#include "audio_effect_utils.hpp"
 
 namespace MusicGame::Audio
 {
@@ -56,6 +57,66 @@ namespace MusicGame::Audio
 		}
 	}
 
+	void AudioEffectMain::registerAudioEffects(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+	{
+		using AudioEffectUtils::PrecalculateUpdateTriggerTiming;
+
+		const std::int64_t totalMeasures =
+			kson::TimingUtils::SecToMeasureIdx(bgm.durationSec(), chartData.beat, timingCache)
+			+ 1/* add last measure */
+			+ 1/* index to size */;
+
+		// FX
+		for (const auto& [name, def] : chartData.audio.audioEffects.fx.def)
+		{
+			const auto& paramChangeDict = chartData.audio.audioEffects.fx.paramChange;
+			const std::set<float> updateTriggerTiming =
+				paramChangeDict.contains(name)
+				? PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, chartData, timingCache)
+				: PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
+
+			bgm.emplaceAudioEffectFX(name, def, updateTriggerTiming);
+		}
+
+		// Laser
+		for (const auto& [name, def] : chartData.audio.audioEffects.laser.def)
+		{
+			const auto& paramChangeDict = chartData.audio.audioEffects.laser.paramChange;
+			const std::set<float> updateTriggerTiming =
+				paramChangeDict.contains(name)
+				? PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, chartData, timingCache)
+				: PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
+
+			bgm.emplaceAudioEffectLaser(name, def, updateTriggerTiming);
+		}
+
+		// Just for testing
+		// TODO: Remove this code
+		{
+			const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Retrigger };
+			const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
+			bgm.emplaceAudioEffectFX("retrigger", def, updateTriggerTiming);
+		}
+		{
+			const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Gate };
+			const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
+			bgm.emplaceAudioEffectFX("gate", def, updateTriggerTiming);
+		}
+		{
+			const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Flanger };
+			bgm.emplaceAudioEffectFX("flanger", def);
+		}
+		{
+			const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Bitcrusher };
+			bgm.emplaceAudioEffectFX("bitcrusher", def);
+		}
+		{
+			const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Wobble };
+			const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
+			bgm.emplaceAudioEffectFX("wobble", def, updateTriggerTiming);
+		}
+	}
+
 	kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> AudioEffectMain::currentActiveAudioEffectsFX(
 		const std::array<Optional<kson::Pulse>, kson::kNumFXLanes>& longNotePulseOfLanes) const
 	{
@@ -83,10 +144,11 @@ namespace MusicGame::Audio
 		return audioEffects;
 	}
 
-	AudioEffectMain::AudioEffectMain(const kson::ChartData& chartData)
+	AudioEffectMain::AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
 		: m_longFXNoteAudioEffectNames(CreateLongFXNoteAudioEffectNames(chartData))
 		, m_longFXNoteAudioEffectParams(CreateLongFXNoteAudioEffectParams(chartData))
 	{
+		registerAudioEffects(bgm, chartData, timingCache);
 	}
 
 	void AudioEffectMain::update(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus)

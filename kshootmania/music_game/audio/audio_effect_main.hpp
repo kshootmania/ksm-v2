@@ -21,11 +21,13 @@ namespace MusicGame::Audio
 		std::array<bool, kson::kNumFXLanes> m_longFXPressedPrev = { false, false };
 		std::size_t m_lastPressedLongFXNoteLaneIdx = 0U;
 
+		void registerAudioEffects(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache);
+
 		kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> currentActiveAudioEffectsFX(
 			const std::array<Optional<kson::Pulse>, kson::kNumFXLanes>& longNotePulseOfLanes) const;
 		
 	public:
-		AudioEffectMain(const kson::ChartData& chartData);
+		AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache);
 
 		void update(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus);
 	};

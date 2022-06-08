@@ -1,6 +1,5 @@
 ﻿#include "game_main.hpp"
 #include "game_defines.hpp"
-#include "audio/audio_effect_utils.hpp"
 #include "kson/io/ksh_io.hpp"
 
 namespace
@@ -27,66 +26,6 @@ namespace
 			sum += laneJudgment.scoreValueMax();
 		}
 		return sum;
-	}
-}
-
-void MusicGame::GameMain::registerAudioEffects()
-{
-	using Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming;
-
-	const std::int64_t totalMeasures =
-		kson::TimingUtils::SecToMeasureIdx(m_bgm.durationSec(), m_chartData.beat, m_timingCache)
-		+ 1/* add last measure */
-		+ 1/* index to size */;
-
-	// FX
-	for (const auto& [name, def] : m_chartData.audio.audioEffects.fx.def)
-	{
-		const auto& paramChangeDict = m_chartData.audio.audioEffects.fx.paramChange;
-		const std::set<float> updateTriggerTiming =
-			paramChangeDict.contains(name)
-				? PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, m_chartData, m_timingCache)
-				: PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
-
-		m_bgm.emplaceAudioEffectFX(name, def, updateTriggerTiming);
-	}
-
-	// Laser
-	for (const auto& [name, def] : m_chartData.audio.audioEffects.laser.def)
-	{
-		const auto& paramChangeDict = m_chartData.audio.audioEffects.laser.paramChange;
-		const std::set<float> updateTriggerTiming =
-			paramChangeDict.contains(name)
-			? PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, m_chartData, m_timingCache)
-			: PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
-
-		m_bgm.emplaceAudioEffectLaser(name, def, updateTriggerTiming);
-	}
-
-	// Just for testing
-	// TODO: Remove this code
-	{
-		const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Retrigger };
-		const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
-		m_bgm.emplaceAudioEffectFX("retrigger", def, updateTriggerTiming);
-	}
-	{
-		const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Gate };
-		const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
-		m_bgm.emplaceAudioEffectFX("gate", def, updateTriggerTiming);
-	}
-	{
-		const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Flanger };
-		m_bgm.emplaceAudioEffectFX("flanger", def);
-	}
-	{
-		const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Bitcrusher };
-		m_bgm.emplaceAudioEffectFX("bitcrusher", def);
-	}
-	{
-		const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Wobble };
-		const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
-		m_bgm.emplaceAudioEffectFX("wobble", def, updateTriggerTiming);
 	}
 }
 
@@ -132,11 +71,9 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	, m_scoreValueMax(SumScoreValueMax(m_btLaneJudgments) + SumScoreValueMax(m_fxLaneJudgments)) // TODO: add laser
 	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
 	, m_assistTick(gameCreateInfo.enableAssistTick)
-	, m_audioEffectMain(m_chartData)
+	, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)
 	, m_musicGameGraphics(m_chartData, m_timingCache)
 {
-	registerAudioEffects();
-
 	m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 	m_bgm.play();
 }
