@@ -17,6 +17,8 @@ namespace ksmaudio::AudioEffect
 		virtual void updateStatus(const Status& status, bool isOn) = 0;
 
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSetStr) = 0;
+
+		virtual void setBypass(bool bypass) = 0;
 	};
 
 	class IUpdateTrigger
@@ -80,6 +82,11 @@ namespace ksmaudio::AudioEffect
 			{
 				m_params.dict.at(paramID)->valueSet = valueSet;
 			}
+		}
+
+		virtual void setBypass(bool bypass) override
+		{
+			m_bypass = bypass;
 		}
 	};
 

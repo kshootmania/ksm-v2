@@ -17,12 +17,18 @@ namespace MusicGame::Audio
 		Stopwatch m_stopwatch;
 		Stopwatch m_manualUpdateStopwatch;
 
+		void emplaceAudioEffectImpl(
+			bool isFX,
+			const std::string& name,
+			const kson::AudioEffectDef& def,
+			const std::set<float>& updateTriggerTiming);
+
 	public:
 		explicit BGM(FilePathView filePath);
 
 		void update();
 
-		void updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict>& activeAudioEffects);
+		void updateAudioEffectFX(bool bypass, const ksmaudio::AudioEffect::Status& status, const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict>& activeAudioEffects);
 
 		void play();
 
@@ -36,10 +42,14 @@ namespace MusicGame::Audio
 
 		double latencySec() const;
 
-		void emplaceAudioEffect(
-			bool isFX,
+		void emplaceAudioEffectFX(
 			const std::string& name,
 			const kson::AudioEffectDef& def,
-			const std::set<float>& updateTriggerTiming = {});
+			const std::set<float>& updateTriggerTiming = {}); // TODO: param_change
+
+		void emplaceAudioEffectLaser(
+			const std::string& name,
+			const kson::AudioEffectDef& def,
+			const std::set<float>& updateTriggerTiming = {}); // TODO: param_change
 	};
 }

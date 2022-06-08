@@ -32,6 +32,8 @@ namespace
 
 void MusicGame::GameMain::registerAudioEffects()
 {
+	using Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming;
+
 	const std::int64_t totalMeasures =
 		kson::TimingUtils::SecToMeasureIdx(m_bgm.durationSec(), m_chartData.beat, m_timingCache)
 		+ 1/* add last measure */
@@ -43,10 +45,10 @@ void MusicGame::GameMain::registerAudioEffects()
 		const auto& paramChangeDict = m_chartData.audio.audioEffects.fx.paramChange;
 		const std::set<float> updateTriggerTiming =
 			paramChangeDict.contains(name)
-				? Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, m_chartData, m_timingCache)
-				: Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
+				? PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, m_chartData, m_timingCache)
+				: PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
 
-		m_bgm.emplaceAudioEffect(true, name, def, updateTriggerTiming);
+		m_bgm.emplaceAudioEffectFX(name, def, updateTriggerTiming);
 	}
 
 	// Laser
@@ -55,61 +57,36 @@ void MusicGame::GameMain::registerAudioEffects()
 		const auto& paramChangeDict = m_chartData.audio.audioEffects.laser.paramChange;
 		const std::set<float> updateTriggerTiming =
 			paramChangeDict.contains(name)
-			? Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, m_chartData, m_timingCache)
-			: Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
+			? PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, m_chartData, m_timingCache)
+			: PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
 
-		m_bgm.emplaceAudioEffect(false, name, def, updateTriggerTiming);
+		m_bgm.emplaceAudioEffectLaser(name, def, updateTriggerTiming);
 	}
 
 	// Just for testing
 	// TODO: Remove this code
 	{
-		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
-			.type = kson::AudioEffectType::Retrigger,
-			.v = {
-				{ "wave_length", "1/8" },
-				{ "mix", "0%>100%" },
-			},
-		};
-		const auto updateTriggerTiming_ = Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(
-			def_, totalMeasures, m_chartData, m_timingCache);
-		m_bgm.emplaceAudioEffect(true, "retrigger", def_, updateTriggerTiming_);
+		const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Retrigger };
+		const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
+		m_bgm.emplaceAudioEffectFX("retrigger", def, updateTriggerTiming);
 	}
 	{
-		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
-			.type = kson::AudioEffectType::Gate,
-			.v = {
-				{ "wave_length", "1/8" },
-			},
-		};
-		const auto updateTriggerTiming_ = Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(
-			def_, totalMeasures, m_chartData, m_timingCache);
-		m_bgm.emplaceAudioEffect(true, "gate", def_, updateTriggerTiming_);
+		const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Gate };
+		const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
+		m_bgm.emplaceAudioEffectFX("gate", def, updateTriggerTiming);
 	}
 	{
-		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
-			.type = kson::AudioEffectType::Flanger,
-			.v = {},
-		};
-		m_bgm.emplaceAudioEffect(true, "flanger", def_);
+		const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Flanger };
+		m_bgm.emplaceAudioEffectFX("flanger", def);
 	}
 	{
-		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
-			.type = kson::AudioEffectType::Bitcrusher,
-			.v = {
-				{ "reduction", "10samples" },
-			},
-		};
-		m_bgm.emplaceAudioEffect(true, "bitcrusher", def_);
+		const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Bitcrusher };
+		m_bgm.emplaceAudioEffectFX("bitcrusher", def);
 	}
 	{
-		const kson::AudioEffectDef def_ = kson::AudioEffectDef{
-			.type = kson::AudioEffectType::Wobble,
-			.v = {},
-		};
-		const auto updateTriggerTiming_ = Audio::AudioEffectUtils::PrecalculateUpdateTriggerTiming(
-			def_, totalMeasures, m_chartData, m_timingCache);
-		m_bgm.emplaceAudioEffect(true, "wobble", def_, updateTriggerTiming_);
+		const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Wobble };
+		const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, m_chartData, m_timingCache);
+		m_bgm.emplaceAudioEffectFX("wobble", def, updateTriggerTiming);
 	}
 }
 

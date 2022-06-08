@@ -91,9 +91,9 @@ namespace ksmaudio::AudioEffect
 	class ParamController
 	{
 	private:
-		const ParamValueSetDict m_baseParams;
-		std::unordered_map<ParamID, detail::Timeline<ValueSet>> m_baseParamChanges; // For "param_change"
-		ParamValueSetDict m_overrideParams;
+		const ParamValueSetDict m_baseParams; // For "def" in kson
+		std::unordered_map<ParamID, detail::Timeline<ValueSet>> m_baseParamChanges; // For "param_change" in kson
+		ParamValueSetDict m_overrideParams; // For "long_event" in kson
 
 		ParamValueSetDict m_currentParams;
 
@@ -185,6 +185,14 @@ namespace ksmaudio::AudioEffect
 			requires std::derived_from<T, AudioEffect::IAudioEffect>
 		{
 			emplaceAudioEffect<T>(name, StrDictToParamValueSetDict(params), StrTimelineToValueSetTimeline(paramChanges), updateTriggerTiming);
+		}
+
+		void setBypass(bool bypass)
+		{
+			for (const auto& audioEffect : m_audioEffects)
+			{
+				audioEffect->setBypass(bypass);
+			}
 		}
     };
 }

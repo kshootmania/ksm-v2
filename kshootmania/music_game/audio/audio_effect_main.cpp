@@ -97,6 +97,7 @@ namespace MusicGame::Audio
 		const double currentBPMForAudio = kson::TimingUtils::PulseTempo(currentPulseForAudio, chartData.beat);
 
 		// FX audio effects
+		bool bypassFX = true;
 		std::array<Optional<kson::Pulse>, kson::kNumFXLanes> currentLongNotePulseOfLanes;
 		for (std::size_t i = 0; i < kson::kNumFXLanes; ++i)
 		{
@@ -110,6 +111,7 @@ namespace MusicGame::Audio
 					|| (currentTimeSec - kson::TimingUtils::PulseToSec(*currentLongNotePulseByTime, chartData.beat, timingCache)) < kLongFXNoteAudioEffectAutoPlaySec))
 			{
 				currentLongNotePulseOfLanes[i] = currentLongNotePulseByTime;
+				bypassFX = false;
 				if (!m_longFXPressedPrev[i])
 				{
 					m_lastPressedLongFXNoteLaneIdx = i;
@@ -123,10 +125,13 @@ namespace MusicGame::Audio
 			}
 		}
 		const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> activeAudioEffectsFX = currentActiveAudioEffectsFX(currentLongNotePulseOfLanes);
-		bgm.updateAudioEffectFX({
-			.bpm = static_cast<float>(currentBPMForAudio),
-			.sec = static_cast<float>(currentTimeSecForAudio),
-		}, activeAudioEffectsFX);
+		bgm.updateAudioEffectFX(
+			bypassFX,
+			{
+				.bpm = static_cast<float>(currentBPMForAudio),
+				.sec = static_cast<float>(currentTimeSecForAudio),
+			},
+			activeAudioEffectsFX);
 
 		// TODO: laser
 	}

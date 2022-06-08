@@ -6,6 +6,33 @@ namespace
 	constexpr double kManualUpdateIntervalSec = 0.005;
 }
 
+void MusicGame::Audio::BGM::emplaceAudioEffectImpl(bool isFX, const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
+{
+	const auto pAudioEffectBus = isFX ? m_pAudioEffectBusFX : m_pAudioEffectBusLaser;
+	switch (def.type)
+	{
+	case kson::AudioEffectType::Retrigger:
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Retrigger>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+		break;
+
+	case kson::AudioEffectType::Gate:
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Gate>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+		break;
+
+	case kson::AudioEffectType::Flanger:
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+		break;
+
+	case kson::AudioEffectType::Bitcrusher:
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+		break;
+
+	case kson::AudioEffectType::Wobble:
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Wobble>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+		break;
+	}
+}
+
 MusicGame::Audio::BGM::BGM(FilePathView filePath)
 	: m_stream(filePath.toUTF8())
 	, m_durationSec(m_stream.durationSec())
@@ -51,8 +78,9 @@ void MusicGame::Audio::BGM::update()
 	}
 }
 
-void MusicGame::Audio::BGM::updateAudioEffectFX(const ksmaudio::AudioEffect::Status& status, const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict>& activeAudioEffects)
+void MusicGame::Audio::BGM::updateAudioEffectFX(bool bypass, const ksmaudio::AudioEffect::Status& status, const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict>& activeAudioEffects)
 {
+	m_pAudioEffectBusFX->setBypass(bypass);
 	m_pAudioEffectBusFX->update(
 		status,
 		activeAudioEffects);
@@ -123,29 +151,12 @@ double MusicGame::Audio::BGM::latencySec() const
 	return m_stream.latencySec();
 }
 
-void MusicGame::Audio::BGM::emplaceAudioEffect(bool isFX, const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
+void MusicGame::Audio::BGM::emplaceAudioEffectFX(const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
 {
-	const auto pAudioEffectBus = isFX ? m_pAudioEffectBusFX : m_pAudioEffectBusLaser;
-	switch (def.type)
-	{
-	case kson::AudioEffectType::Retrigger:
-		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Retrigger>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
-		break;
+	emplaceAudioEffectImpl(true, name, def, updateTriggerTiming);
+}
 
-	case kson::AudioEffectType::Gate:
-		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Gate>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
-		break;
-
-	case kson::AudioEffectType::Flanger:
-		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
-		break;
-
-	case kson::AudioEffectType::Bitcrusher:
-		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
-		break;
-
-	case kson::AudioEffectType::Wobble:
-		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Wobble>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
-		break;
-	}
+void MusicGame::Audio::BGM::emplaceAudioEffectLaser(const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
+{
+	emplaceAudioEffectImpl(false, name, def, updateTriggerTiming);
 }
