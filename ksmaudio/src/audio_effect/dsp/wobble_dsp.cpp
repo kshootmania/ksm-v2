@@ -33,10 +33,7 @@ namespace ksmaudio::AudioEffect
     {
         assert(dataSize % m_info.numChannels == 0);
 
-        if (params.secUntilTrigger >= 0.0) // Negative value is ignored
-        {
-            m_framesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * m_info.sampleRate);
-        }
+        m_triggerHandler.setFramesUntilTrigger(params.secUntilTrigger, m_info.sampleRate);
 
         const std::size_t frameSize = dataSize / m_info.numChannels;
         const std::size_t numPeriodFrames = static_cast<std::size_t>(params.waveLength * m_info.sampleRate);
@@ -44,26 +41,13 @@ namespace ksmaudio::AudioEffect
         
         if (bypass || params.mix == 0.0f)
         {
-            if (m_framesUntilTrigger < 0)
-            {
-                m_framesSincePrevTrigger += frameSize;
-            }
-            else if (m_framesUntilTrigger > static_cast<std::ptrdiff_t>(frameSize))
-            {
-                m_framesSincePrevTrigger += frameSize;
-                m_framesUntilTrigger -= frameSize;
-            }
-            else
-            {
-                m_framesSincePrevTrigger = frameSize - m_framesUntilTrigger;
-                m_framesUntilTrigger = -1;
-            }
+            m_triggerHandler.advanceBatch(frameSize);
 
             // Process frames even if bypassed to avoid noise at the beginning of effects
             if (numPeriodFrames > 0U)
             {
-                // Here, a fixed frequency is used for performance
-                const float freq = WobbleFreq(m_framesSincePrevTrigger, numPeriodFrames, params.loFreq, params.hiFreq);
+                // Here, a fixed frequency is used to reduce computational costs
+                const float freq = WobbleFreq(m_triggerHandler.framesSincePrevTrigger(), numPeriodFrames, params.loFreq, params.hiFreq);
                 for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
                 {
                     m_lowPassFilters[ch].setLowPassFilter(freq, params.q, fSampleRate);
@@ -84,14 +68,14 @@ namespace ksmaudio::AudioEffect
         // Wobble processing main
         for (std::size_t i = 0U; i < frameSize; ++i)
         {
-            const float freq = WobbleFreq(m_framesSincePrevTrigger, numPeriodFrames, params.loFreq, params.hiFreq);
+            const float freq = WobbleFreq(m_triggerHandler.framesSincePrevTrigger(), numPeriodFrames, params.loFreq, params.hiFreq);
             for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
             {
                 m_lowPassFilters[ch].setLowPassFilter(freq, params.q, fSampleRate);
                 *pData = m_lowPassFilters[ch].process(*pData);
                 ++pData;
             }
-            ++m_framesSincePrevTrigger;
+            m_triggerHandler.advance();
         }
     }
 }

@@ -2,6 +2,7 @@
 #include "ksmaudio/audio_effect/audio_effect.hpp"
 #include "ksmaudio/audio_effect/params/wobble_params.hpp"
 #include "ksmaudio/audio_effect/detail/biquad_filter.hpp"
+#include "ksmaudio/audio_effect/detail/simple_trigger_handler.hpp"
 
 namespace ksmaudio::AudioEffect
 {
@@ -9,8 +10,7 @@ namespace ksmaudio::AudioEffect
 	{
 	private:
 		const DSPCommonInfo m_info;
-		std::ptrdiff_t m_framesUntilTrigger = -1;
-		std::size_t m_framesSincePrevTrigger = 0U;
+		detail::SimpleTriggerHandler m_triggerHandler;
 		std::array<detail::BiquadFilter<float>, 2> m_lowPassFilters;
 
 	public:

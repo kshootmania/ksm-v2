@@ -31,17 +31,16 @@ namespace ksmaudio::AudioEffect
 		}
 
 		const float lfoSpeed = 1.0f / params.period / m_info.sampleRate;
-		float* pCursor = pData;
 		for (std::size_t i = 0; i < numFrames; ++i)
 		{
 			for (std::size_t channel = 0; channel < m_info.numChannels; ++channel)
 			{
 				const float lfoValue = (channel == 0U) ? detail::Triangle(m_lfoTimeRate) : detail::Triangle(detail::DecimalPart(m_lfoTimeRate + params.stereoWidth / 2));
 				const float delayFrames = (params.delay + lfoValue * params.depth) * m_info.sampleRateScale;
-				const float wet = (*pCursor + m_ringBuffer.lerpedDelay(delayFrames, channel)) * params.vol;
-				m_ringBuffer.write(m_lowShelfFilters[channel].process(std::lerp(*pCursor, wet, params.feedback) * std::lerp(1.0f, params.vol, params.mix)), channel);
-				*pCursor = std::lerp(*pCursor, wet, params.mix);
-				++pCursor;
+				const float wet = (*pData + m_ringBuffer.lerpedDelay(delayFrames, channel)) * params.vol;
+				m_ringBuffer.write(m_lowShelfFilters[channel].process(std::lerp(*pData, wet, params.feedback) * std::lerp(1.0f, params.vol, params.mix)), channel);
+				*pData = std::lerp(*pData, wet, params.mix);
+				++pData;
 			}
 			m_ringBuffer.advanceCursor();
 

@@ -33,29 +33,13 @@ namespace ksmaudio::AudioEffect
     {
         assert(dataSize % m_info.numChannels == 0);
 
-        if (params.secUntilTrigger >= 0.0) // Negative value is ignored
-        {
-            m_framesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * m_info.sampleRate);
-        }
+        m_triggerHandler.setFramesUntilTrigger(params.secUntilTrigger, m_info.sampleRate);
 
         const std::size_t frameSize = dataSize / m_info.numChannels;
         
         if (bypass || params.mix == 0.0f)
         {
-            if (m_framesUntilTrigger < 0)
-            {
-                m_framesSincePrevTrigger += frameSize;
-            }
-            else if (m_framesUntilTrigger > static_cast<std::ptrdiff_t>(frameSize))
-            {
-                m_framesSincePrevTrigger += frameSize;
-                m_framesUntilTrigger -= frameSize;
-            }
-            else
-            {
-                m_framesSincePrevTrigger = frameSize - m_framesUntilTrigger;
-                m_framesUntilTrigger = -1;
-            }
+            m_triggerHandler.advanceBatch(frameSize);
             return;
         }
 
@@ -64,13 +48,13 @@ namespace ksmaudio::AudioEffect
 
         for (std::size_t i = 0U; i < frameSize; ++i)
         {
-            const float scale = std::lerp(1.0f, Scale(m_framesSincePrevTrigger, numPeriodFrames, numNonZeroFrames), params.mix);
+            const float scale = std::lerp(1.0f, Scale(m_triggerHandler.framesSincePrevTrigger(), numPeriodFrames, numNonZeroFrames), params.mix);
             for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
             {
                 *pData *= scale;
                 ++pData;
             }
-            ++m_framesSincePrevTrigger;
+            m_triggerHandler.advance();
         }
     }
 }
