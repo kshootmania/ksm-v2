@@ -5,8 +5,6 @@
 
 namespace ksmaudio::AudioEffect
 {
-	constexpr std::size_t kOverrideMax = 2U;
-
 	constexpr float kPastTimeSec = -1000.0f;
 
 	namespace detail
