@@ -30,7 +30,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const kson::Ch
 
 	for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanes : kson::kNumFXLanes); ++laneIdx)
 	{
-		const auto& lane = isBT ? chartData.note.btLanes[laneIdx] : chartData.note.fxLanes[laneIdx];
+		const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
 		for (const auto& [y, note] : lane)
 		{
 			if (y + note.length < gameStatus.currentPulse - kson::kResolution)
@@ -76,7 +76,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const kson::Ch
 
 	for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanes : kson::kNumFXLanes); ++laneIdx)
 	{
-		const auto& lane = isBT ? chartData.note.btLanes[laneIdx] : chartData.note.fxLanes[laneIdx];
+		const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
 		for (const auto& [y, note] : lane)
 		{
 			if (y + note.length < gameStatus.currentPulse - kson::kResolution)

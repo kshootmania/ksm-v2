@@ -37,7 +37,7 @@ void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, cons
 	// BT notes
 	for (std::size_t i = 0; i < kson::kNumBTLanes; ++i)
 	{
-		const kson::Pulse currentNotePulse = CurrentNotePulse(chartData.note.btLanes[i], currentPulseForAssistTick);
+		const kson::Pulse currentNotePulse = CurrentNotePulse(chartData.note.bt[i], currentPulseForAssistTick);
 		if (currentNotePulse > m_btPlayedPulses[i])
 		{
 			// Chip & long notes
@@ -50,10 +50,10 @@ void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, cons
 	// FX notes
 	for (std::size_t i = 0; i < kson::kNumFXLanes; ++i)
 	{
-		const kson::Pulse currentNotePulse = CurrentNotePulse(chartData.note.fxLanes[i], currentPulseForAssistTick);
+		const kson::Pulse currentNotePulse = CurrentNotePulse(chartData.note.fx[i], currentPulseForAssistTick);
 		if (currentNotePulse > m_fxPlayedPulses[i])
 		{
-			if (chartData.note.fxLanes[i].contains(currentNotePulse) && chartData.note.fxLanes[i].at(currentNotePulse).length == 0)
+			if (chartData.note.fx[i].contains(currentNotePulse) && chartData.note.fx[i].at(currentNotePulse).length == 0)
 			{
 				// Chip notes only
 				m_fxTickSound.stop();

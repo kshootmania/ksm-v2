@@ -11,25 +11,25 @@ void kson::to_json(nlohmann::json& j, const ByPulse<LaserSection>& lane)
 			{ "v", ByRelPulseToJSON(section.points) },
 		};
 
-		if (section.xScale != 1)
+		if (section.w != 1)
 		{
-			sectionJSON["w"] = section.xScale;
+			sectionJSON["w"] = section.w;
 		}
 
 		j.push_back(std::move(sectionJSON));
 	}
 }
 
-void kson::to_json(nlohmann::json& j, const NoteInfo& noteInfo)
+void kson::to_json(nlohmann::json& j, const NoteInfo& note)
 {
 	nlohmann::json bt = nlohmann::json::array();
-	for (const auto& lane : noteInfo.btLanes)
+	for (const auto& lane : note.bt)
 	{
 		bt.push_back(lane);
 	}
 
 	nlohmann::json fx = nlohmann::json::array();
-	for (const auto& lane : noteInfo.fxLanes)
+	for (const auto& lane : note.fx)
 	{
 		fx.push_back(lane);
 	}
@@ -37,6 +37,6 @@ void kson::to_json(nlohmann::json& j, const NoteInfo& noteInfo)
 	j = {
 		{ "bt", bt },
 		{ "fx", fx },
-		{ "laser", noteInfo.laserLanes },
+		{ "laser", note.laser },
 	};
 }

@@ -163,7 +163,7 @@ namespace MusicGame::Audio
 		std::array<Optional<kson::Pulse>, kson::kNumFXLanes> currentLongNotePulseOfLanes;
 		for (std::size_t i = 0; i < kson::kNumFXLanes; ++i)
 		{
-			const Optional<kson::Pulse> currentLongNotePulseByTime = CurrentLongNotePulseByTime(chartData.note.fxLanes[i], currentPulseForAudio);
+			const Optional<kson::Pulse> currentLongNotePulseByTime = CurrentLongNotePulseByTime(chartData.note.fx[i], currentPulseForAudio);
 
 			// Note: When longFXPressed[i] is none (i.e., there are no FX notes in actual time), it is treated as if a long FX note was pressed.
 			//       This is because the audio effect should be activated ahead of time by the buffer size + 30ms regardless of the input.

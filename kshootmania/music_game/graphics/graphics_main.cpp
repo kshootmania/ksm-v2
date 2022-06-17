@@ -109,8 +109,8 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const kson::ChartData& chartData
 
 void MusicGame::Graphics::GraphicsMain::update(const kson::ChartData& chartData, const GameStatus& gameStatus)
 {
-	const double leftLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laserLanes[0], gameStatus.currentPulse, 0.0); // range: [0, +1]
-	const double rightLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laserLanes[1], gameStatus.currentPulse, 1.0) - 1.0; // range: [-1, 0]
+	const double leftLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laser[0], gameStatus.currentPulse, 0.0); // range: [0, +1]
+	const double rightLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laser[1], gameStatus.currentPulse, 1.0) - 1.0; // range: [-1, 0]
 	const double tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
 	m_highwayTilt.update(tiltFactor);
 }

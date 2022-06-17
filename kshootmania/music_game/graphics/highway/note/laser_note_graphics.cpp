@@ -72,7 +72,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const kson::ChartData& chartDa
 	// Draw laser notes
 	for (std::size_t laneIdx = 0; laneIdx < kson::kNumLaserLanes; ++laneIdx)
 	{
-		const auto& lane = chartData.note.laserLanes[laneIdx];
+		const auto& lane = chartData.note.laser[laneIdx];
 		for (const auto& [y, laserSection] : lane)
 		{
 			const double positionSectionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(y - gameStatus.currentPulse) * 480 / kson::kResolution + kLaserShiftY;

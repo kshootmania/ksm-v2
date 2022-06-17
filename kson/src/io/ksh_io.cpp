@@ -354,7 +354,7 @@ namespace
 				return;
 			}
 
-			m_pTargetChartData->note.btLanes[m_targetLaneIdx].emplace(
+			m_pTargetChartData->note.bt[m_targetLaneIdx].emplace(
 				m_time,
 				m_length);
 
@@ -406,7 +406,7 @@ namespace
 				return;
 			}
 
-			auto& targetLane = m_pTargetChartData->note.fxLanes[m_targetLaneIdx];
+			auto& targetLane = m_pTargetChartData->note.fx[m_targetLaneIdx];
 
 			// Publish prepared long FX note
 			const auto [_, inserted] = targetLane.emplace(
@@ -726,7 +726,7 @@ namespace
 	{
 	private:
 		std::size_t m_targetLaneIdx = 0;
-		std::int8_t m_xScale = 1;
+		std::int32_t m_w = 1; // normal laser: w=1, 2x-widen laser: w=2
 		ByRelPulse<PreparedLaneSpin> m_preparedLaneSpins;
 
 	public:
@@ -744,12 +744,12 @@ namespace
 
 		void prepare(Pulse) = delete;
 
-		void prepare(Pulse time, std::int8_t xScale)
+		void prepare(Pulse time, std::int32_t w)
 		{
 			if (!m_prepared)
 			{
 				PreparedGraphSection::prepare(time);
-				m_xScale = xScale;
+				m_w = w;
 			}
 		}
 
@@ -783,12 +783,12 @@ namespace
 			}
 
 			// Publish prepared laser section
-			auto& targetLane = m_pTargetChartData->note.laserLanes[m_targetLaneIdx];
+			auto& targetLane = m_pTargetChartData->note.laser[m_targetLaneIdx];
 			const auto [_, inserted] = targetLane.emplace(
 				m_time,
 				LaserSection{
 					.points = convertedGraphSection,
-					.xScale = m_xScale,
+					.w = m_w,
 				});
 
 			if (inserted)
@@ -832,7 +832,7 @@ namespace
 		{
 			PreparedGraphSection::clear();
 
-			m_xScale = 1;
+			m_w = 1;
 			m_preparedLaneSpins.clear();
 		}
 
@@ -1384,7 +1384,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 							break;
 						case '1': // Chip BT note
 							preparedLongNoteRef.publishLongBTNote();
-							chartData.note.btLanes[laneIdx].emplace(time, 0);
+							chartData.note.bt[laneIdx].emplace(time, 0);
 							break;
 						default:  // Empty
 							preparedLongNoteRef.publishLongBTNote();
@@ -1397,7 +1397,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 						switch (buf[j])
 						{
 						case '2': // Chip FX note
-							chartData.note.fxLanes[laneIdx].emplace(time, 0);
+							chartData.note.fx[laneIdx].emplace(time, 0);
 							break;
 						case '0': // Empty
 							preparedLongNoteRef.publishLongFXNote();
