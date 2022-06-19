@@ -9,18 +9,12 @@ namespace kson
 		bool spin = false;
 	};
 
-	void to_json(nlohmann::json& j, const KSHLayerRotationInfo& flags);
-
-	void from_json(const nlohmann::json& j, KSHLayerRotationInfo& flags);
-
 	struct KSHBGInfo
 	{
 		std::string filename; // UTF-8 guaranteed
 
 		bool operator==(const KSHBGInfo& rhs) const;
 	};
-
-	void to_json(nlohmann::json& j, const KSHBGInfo& bg);
 
 	struct KSHLayerInfo
 	{
@@ -31,8 +25,6 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const KSHLayerInfo& layer);
-
 	struct KSHMovieInfo
 	{
 		std::string filename; // UTF-8 guaranteed
@@ -40,8 +32,6 @@ namespace kson
 
 		bool empty() const;
 	};
-
-	void to_json(nlohmann::json& j, const KSHMovieInfo& movie);
 
 	struct LegacyBGInfo
 	{
@@ -55,13 +45,9 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const LegacyBGInfo& legacy);
-
 	struct BGInfo
 	{
 		// KSH format will be legacy
 		LegacyBGInfo legacy;
 	};
-
-	void to_json(nlohmann::json& j, const BGInfo& bg);
 }

@@ -10,14 +10,10 @@ namespace kson
 		std::int32_t w = 1; // 1-2, sets whether the laser section is 2x-widen or not
 	};
 
-	void to_json(nlohmann::json& j, const ByPulse<LaserSection>& lane);
-
 	struct NoteInfo
 	{
 		BTLane<Interval> bt;
 		FXLane<Interval> fx;
 		LaserLane<LaserSection> laser;
 	};
-
-	void to_json(nlohmann::json& j, const NoteInfo& noteInfo);
 }

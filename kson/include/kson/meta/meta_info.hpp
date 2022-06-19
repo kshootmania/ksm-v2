@@ -8,8 +8,6 @@ namespace kson
 		std::int32_t idx = 0; // 0-3 in KSH
 	};
 
-	void to_json(nlohmann::json& j, const DifficultyInfo& difficulty);
-
 	struct MetaInfo
 	{
 		std::string title;
@@ -25,6 +23,4 @@ namespace kson
 		std::string jacketAuthor;
 		std::string information;
 	};
-
-	void to_json(nlohmann::json& j, const MetaInfo& meta);
 }

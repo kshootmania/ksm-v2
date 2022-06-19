@@ -42,11 +42,8 @@ namespace kson
 		BGInfo bg;
 		EditorInfo editor;
 		CompatInfo compat;
-		nlohmann::json impl;
 
 		std::string filePath; // Note: OS native encoding (Not UTF-8 in Windows)
 		Error error = Error::kNone;
 	};
-
-	void to_json(nlohmann::json& j, const ChartData& chartData);
 }

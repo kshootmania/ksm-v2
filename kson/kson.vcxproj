@@ -44,27 +44,10 @@
     <ClInclude Include="include\kson\util\timing_utils.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\audio\audio_info.cpp" />
     <ClCompile Include="src\audio\audio_effect.cpp" />
-    <ClCompile Include="src\audio\bgm_info.cpp" />
-    <ClCompile Include="src\audio\key_sound.cpp" />
-    <ClCompile Include="src\audio\legacy_audio_info.cpp" />
-    <ClCompile Include="src\beat\beat_info.cpp" />
-    <ClCompile Include="src\beat\time_sig.cpp" />
-    <ClCompile Include="src\bg\bg_info.cpp" />
-    <ClCompile Include="src\camera\cam.cpp" />
-    <ClCompile Include="src\camera\camera_info.cpp" />
-    <ClCompile Include="src\camera\tilt.cpp" />
-    <ClCompile Include="src\chart_data.cpp" />
-    <ClCompile Include="src\common\common.cpp" />
-    <ClCompile Include="src\compat\compat_info.cpp" />
-    <ClCompile Include="src\editor\editor_info.cpp" />
     <ClCompile Include="src\encoding\encoding_win.cpp" />
-    <ClCompile Include="src\gauge\gauge_info.cpp" />
     <ClCompile Include="src\io\ksh_io.cpp" />
     <ClCompile Include="src\io\kson_io.cpp" />
-    <ClCompile Include="src\meta\meta_info.cpp" />
-    <ClCompile Include="src\note\note_info.cpp" />
     <ClCompile Include="src\util\graph_utils.cpp" />
     <ClCompile Include="src\util\timing_utils.cpp" />
   </ItemGroup>

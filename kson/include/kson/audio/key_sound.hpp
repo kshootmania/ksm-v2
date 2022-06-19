@@ -8,14 +8,10 @@ namespace kson
 		double volume = 1.0;
 	};
 
-	void to_json(nlohmann::json& j, const KeySoundParams& params);
-
 	struct KeySoundDef
 	{
 		KeySoundParams v;
 	};
-
-	void to_json(nlohmann::json& j, const KeySoundDef& def);
 
 	struct KeySoundFXInfo
 	{
@@ -25,8 +21,6 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const KeySoundFXInfo& fx);
-
 	struct KeySoundLaserInfo
 	{
 		Dict<KeySoundDef> def;
@@ -35,8 +29,6 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const KeySoundLaserInfo& laser);
-
 	struct KeySoundInfo
 	{
 		KeySoundFXInfo fx;
@@ -44,6 +36,4 @@ namespace kson
 
 		bool empty() const;
 	};
-
-	void to_json(nlohmann::json& j, const KeySoundInfo& keySound);
 }

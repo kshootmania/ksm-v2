@@ -15,8 +15,6 @@ namespace kson
 		LegacyAudioInfo legacy;
 	};
 
-	void to_json(nlohmann::json& j, const AudioInfo& audio);
-
 	struct MetaAudioInfo
 	{
 		MetaBGMInfo bgm;

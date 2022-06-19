@@ -10,8 +10,4 @@ namespace kson
 
 		ByMeasureIdx<TimeSig> timeSig;
 	};
-
-	void to_json(nlohmann::json& j, const BeatInfo& beatInfo);
-
-	void from_json(const nlohmann::json& j, BeatInfo& beatInfo);
 }

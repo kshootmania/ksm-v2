@@ -9,7 +9,6 @@
 #include <cassert>
 #include <cstdint>
 #include "kson/encoding/encoding.hpp"
-#include "kson/third_party/nlohmann/json.hpp"
 
 namespace kson
 {
@@ -40,137 +39,16 @@ namespace kson
 	using LaserLane = std::array<ByPulse<T>, kNumLaserLanes>;
 
 	template <typename T>
-	void to_json(nlohmann::json& j, const ByPulse<T>& events)
-	{
-		j = nlohmann::json::array();
-
-		for (const auto& [y, v] : events)
-		{
-			if (nlohmann::json(v).empty())
-			{
-				j.push_back({
-					{ "y", y },
-				});
-			}
-			else
-			{
-				j.push_back({
-					{ "y", y },
-					{ "v", v },
-				});
-			}
-		}
-	}
-
-	template <typename T>
 	using ByPulseMulti = std::multimap<Pulse, T>;
-
-	template <typename T>
-	void to_json(nlohmann::json& j, const ByPulseMulti<T>& events)
-	{
-		j = nlohmann::json::array();
-
-		for (const auto& [y, v] : events)
-		{
-			if (nlohmann::json(v).empty())
-			{
-				j.push_back({
-					{ "y", y },
-				});
-			}
-			else
-			{
-				j.push_back({
-					{ "y", y },
-					{ "v", v },
-				});
-			}
-		}
-	}
 
 	template <typename T>
 	using ByRelPulse = std::map<RelPulse, T>;
 
-	// Note: This function cannot overload to_json() because ByRelPulse<T> is the same type as ByPulse<T>
-	template <typename T>
-	nlohmann::json ByRelPulseToJSON(const ByRelPulse<T>& events)
-	{
-		nlohmann::json j = nlohmann::json::array();
-
-		for (const auto& [ry, v] : events)
-		{
-			if (nlohmann::json(v).empty())
-			{
-				j.push_back({
-					{ "ry", ry },
-				});
-			}
-			else
-			{
-				j.push_back({
-					{ "ry", ry },
-					{ "v", v },
-				});
-			}
-		}
-
-		return j;
-	}
-
 	template <typename T>
 	using ByRelPulseMulti = std::multimap<RelPulse, T>;
 
-	// Note: This function cannot overload to_json() because ByRelPulseMulti<T> is the same type as ByPulseMulti<T>
-	template <typename T>
-	nlohmann::json ByRelPulseMultiToJSON(const ByRelPulseMulti<T>& events)
-	{
-		nlohmann::json j = nlohmann::json::array();
-
-		for (const auto& [ry, v] : events)
-		{
-			if (nlohmann::json(v).empty())
-			{
-				j.push_back({
-					{ "ry", ry },
-				});
-			}
-			else
-			{
-				j.push_back({
-					{ "ry", ry },
-					{ "v", v },
-				});
-			}
-		}
-
-		return j;
-	}
-
 	template <typename T>
 	using ByMeasureIdx = std::map<std::int64_t, T>;
-
-	template <typename T>
-	void ByMeasureIdxToJSON(nlohmann::json& j, const ByMeasureIdx<T>& events)
-	{
-		j = nlohmann::json::array();
-
-		for (const auto& [idx, v] : events)
-		{
-			if (nlohmann::json(v).empty())
-			{
-				j.push_back({
-					{ "idx", idx },
-				});
-			}
-			else
-			{
-				j.push_back({
-					{ "idx", idx },
-					{ "v", v },
-				});
-			}
-		}
-	}
 
 	struct GraphValue
 	{
@@ -190,22 +68,10 @@ namespace kson
 		}
 	};
 
-	void to_json(nlohmann::json& j, const GraphValue& graphValue);
-
 	struct Interval
 	{
 		RelPulse length = 0;
 	};
-
-	void to_json(nlohmann::json& j, const ByPulse<Interval>& intervals);
-
-	// Note: This function cannot overload to_json() because ByRelPulse<T> is the same type as ByPulse<T>
-	void IntervalByRelPulseToJSON(nlohmann::json& j, const ByRelPulse<Interval>& intervals);
-
-	void to_json(nlohmann::json& j, const ByPulseMulti<Interval>& intervals);
-
-	// Note: This function cannot overload to_json() because ByRelPulseMulti<T> is the same type as ByPulseMulti<T>
-	void IntervalByRelPulseMultiToJSON(nlohmann::json& j, const ByRelPulseMulti<Interval>& intervals);
 
 	using Graph = ByPulse<GraphValue>;
 

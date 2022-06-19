@@ -15,14 +15,10 @@ namespace kson
 		std::vector<std::string> toStrArray() const;
 	};
 
-	void to_json(nlohmann::json& j, const LegacyAudioBGMInfo& legacy);
-
 	struct LegacyAudioInfo
 	{
 		LegacyAudioBGMInfo bgm;
 
 		bool empty() const;
 	};
-
-	void to_json(nlohmann::json& j, const LegacyAudioInfo& legacy);
 }

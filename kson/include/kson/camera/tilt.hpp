@@ -11,6 +11,4 @@ namespace kson
 
 		bool empty() const;
 	};
-
-	void to_json(nlohmann::json& j, const TiltInfo& tilt);
 }
