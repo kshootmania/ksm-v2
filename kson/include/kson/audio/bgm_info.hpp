@@ -23,8 +23,6 @@ namespace kson
 		BGMPreviewInfo preview;
 	};
 
-	void to_json(nlohmann::json& j, const BGMInfo& bgm);
-
 	struct MetaBGMInfo
 	{
 		double vol = 1.0;

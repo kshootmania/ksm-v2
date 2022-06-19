@@ -16,8 +16,6 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const CamGraphs& camGraphs);
-
 	struct CamPatternParams
 	{
 		RelPulse length = 0;
@@ -26,16 +24,12 @@ namespace kson
 		double decayOrder = 0.0;  // Swing only
 	};
 
-	void to_json(nlohmann::json& j, const CamPatternParams& params);
-
 	struct CamPatternLaserInfo
 	{
 		Dict<ByPulse<CamPatternParams>> slamEvent;
 
 		bool empty() const;
 	};
-
-	void to_json(nlohmann::json& j, const CamPatternLaserInfo& info);
 
 	struct CamPatternInfo
 	{
@@ -44,8 +38,6 @@ namespace kson
 		bool empty() const;
 	};
 
-	void to_json(nlohmann::json& j, const CamPatternInfo& info);
-
 	struct CamInfo
 	{
 		CamGraphs body;
@@ -53,6 +45,4 @@ namespace kson
 
 		bool empty() const;
 	};
-
-	void to_json(nlohmann::json& j, const CamInfo& cam);
 }

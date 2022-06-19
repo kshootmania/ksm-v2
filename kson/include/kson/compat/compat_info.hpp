@@ -24,7 +24,4 @@ namespace kson
 	{
 		std::string kshVersion;
 	};
-
-	void to_json(nlohmann::json& j, const KSHUnknownInfo& unknown);
-	void to_json(nlohmann::json& j, const CompatInfo& compat);
 }

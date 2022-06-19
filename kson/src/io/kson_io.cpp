@@ -1,13 +1,9 @@
 #include "kson/io/kson_io.hpp"
 #include <fstream>
 
-using json = nlohmann::json;
-
 bool kson::SaveKSONChartData(std::ostream& stream, const ChartData& chartData)
 {
-	const json j = chartData;
-	stream << j.dump();
-	// TODO: Error handling
+	// TODO
 	return true;
 }
 
