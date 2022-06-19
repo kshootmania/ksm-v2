@@ -211,6 +211,9 @@ namespace kson
 
 	using GraphSections = ByPulse<ByRelPulse<GraphValue>>;
 
+	// Note: This function cannot overload to_json() because GraphSections is a container and the default overload is used
+	void GraphSectionsToJSON(nlohmann::json& j, const GraphSections& graphSections);
+
 	template <typename T>
 	using Dict = std::unordered_map<std::string, T>;
 

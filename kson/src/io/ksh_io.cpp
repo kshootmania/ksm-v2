@@ -1228,7 +1228,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 		else if (IsBarLine(line))
 		{
 			const std::size_t bufLineCount = chartLines.size();
-			const Pulse oneLinePulse = kResolution4 * currentTimeSig.numerator / currentTimeSig.denominator / bufLineCount;
+			const Pulse oneLinePulse = (bufLineCount == 0U) ? 0 : kResolution4 * currentTimeSig.numerator / currentTimeSig.denominator / bufLineCount;
 
 			// Add options that require their position
 			for (const auto& [lineIdx, key, value] : optionLines)
@@ -1541,7 +1541,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 			type = StrToAudioEffectType(audioEffectName);
 		}
 
-		assert(type != AudioEffectType::Unspecified);
+		//assert(type != AudioEffectType::Unspecified);
 
 		for (auto& lane : lanes)
 		{

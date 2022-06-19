@@ -16,7 +16,7 @@ void kson::to_json(nlohmann::json& j, const TiltInfo& tilt)
 
 	if (!tilt.manual.empty())
 	{
-		j["manual"] = tilt.manual;
+		GraphSectionsToJSON(j["manual"], tilt.manual);
 	}
 
 	if (!tilt.keep.empty())

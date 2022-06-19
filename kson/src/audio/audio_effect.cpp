@@ -66,7 +66,16 @@ void kson::to_json(nlohmann::json& j, const AudioEffectFXInfo& fx)
 
 	if (!fx.longEvent.empty())
 	{
-		j["long_event"] = fx.longEvent;
+		j["long_event"] = nlohmann::json::object();
+		for (const auto& [audioEffectName, lanes] : fx.longEvent)
+		{
+			auto lanesJSON = nlohmann::json::array();
+			for (std::size_t i = 0; i < kNumFXLanes; ++i)
+			{
+				lanesJSON.push_back(lanes[i]);
+			}
+			j["long_event"][audioEffectName] = lanesJSON;
+		}
 	}
 }
 
