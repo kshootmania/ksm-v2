@@ -187,10 +187,19 @@ namespace
 			nlohmann::json a = nlohmann::json::array();
 			for (const auto& [y, interval] : lanes[i])
 			{
-				a.push_back({
-					{ "y", y },
-					{ "l", interval.length },
-				});
+				if (interval.length == 0)
+				{
+					a.push_back({
+						{ "y", y },
+					});
+				}
+				else
+				{
+					a.push_back({
+						{ "y", y },
+						{ "l", interval.length },
+					});
+				}
 			}
 			j.push_back(std::move(a));
 		}
@@ -425,6 +434,7 @@ namespace
 		Write(j, "std_bpm", d.stdBPM, 0.0);
 		Write(j, "jacket_filename", d.jacketFilename, "");
 		Write(j, "jacket_author", d.jacketAuthor, "");
+		Write(j, "icon_filename", d.iconFilename, "");
 		Write(j, "information", d.information, "");
 		return j;
 	}
@@ -544,12 +554,12 @@ namespace
 						}
 						slamEventJSON.emplace(filename, std::move(pulseSetJSON));
 					}
-					Write(keySoundJSON, "slam_event", std::move(slamEventJSON));
+					Write(laserJSON, "slam_event", std::move(slamEventJSON));
 				}
 				{
 					nlohmann::json legacy = nlohmann::json::object();
 					Write(legacy, "auto_vol", d.keySound.laser.legacy.autoVol, false);
-					Write(keySoundJSON, "legacy", std::move(legacy));
+					Write(laserJSON, "legacy", std::move(legacy));
 				}
 				Write(keySoundJSON, "laser", std::move(laserJSON));
 			}

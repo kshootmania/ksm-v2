@@ -21,6 +21,7 @@ namespace kson
 		double stdBPM = 0.0;
 		std::string jacketFilename; // UTF-8 guaranteed
 		std::string jacketAuthor;
+		std::string iconFilename; // UTF-8 guaranteed
 		std::string information;
 	};
 }

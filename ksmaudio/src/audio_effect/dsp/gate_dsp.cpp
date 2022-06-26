@@ -8,6 +8,11 @@ namespace ksmaudio::AudioEffect
 
         constexpr float Scale(std::size_t framesSincePrevTrigger, std::size_t numPeriodFrames, std::size_t numNonZeroFrames)
         {
+            if (numPeriodFrames == 0U)
+            {
+                return 1.0f;
+            }
+
             const std::size_t framesSincePeriodStart = framesSincePrevTrigger % numPeriodFrames;
             if (framesSincePeriodStart < numNonZeroFrames)
             {

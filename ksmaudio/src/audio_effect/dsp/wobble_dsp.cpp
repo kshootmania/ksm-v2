@@ -10,6 +10,11 @@ namespace ksmaudio::AudioEffect
         // Returns 0-1
         float LFOValue(std::size_t framesSincePrevTrigger, std::size_t numPeriodFrames)
         {
+            if (numPeriodFrames == 0U)
+            {
+                return 0.0;
+            }
+
             float value = static_cast<float>(framesSincePrevTrigger % numPeriodFrames) / numPeriodFrames;
             value = ((value > 0.5f) ? (1.0f - value) : value) * 2;
             value = std::sin(value * std::numbers::pi_v<float> / 2);
@@ -43,7 +48,7 @@ namespace ksmaudio::AudioEffect
         {
             m_triggerHandler.advanceBatch(frameSize);
 
-            // Process frames even if bypassed to avoid noise at the beginning of effects
+            // Process frames even if bypassed to avoid noise at the beginning of effectsd
             if (numPeriodFrames > 0U)
             {
                 // Here, a fixed frequency is used to reduce computational costs

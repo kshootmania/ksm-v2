@@ -39,6 +39,9 @@ namespace
 	constexpr std::int32_t kRotationFlagTilt = 1 << 0;
 	constexpr std::int32_t kRotationFlagSpin = 1 << 1;
 
+	constexpr std::int32_t kAudioEffectParamUnspecified = -99999;
+	const std::string kAudioEffectParamUnspecifiedStr = std::to_string(kAudioEffectParamUnspecified);
+
 	template <typename T>
 	T ParseNumeric(std::string_view str, T defaultValue = T{ 0 })
 	{
@@ -106,6 +109,10 @@ namespace
 
 		// Option line must have "="
 		assert(equalIdx != std::string_view::npos);
+		if (equalIdx == std::string_view::npos)
+		{
+			return std::pair<std::string, std::string>();
+		}
 
 		return {
 			optionLineUTF8.substr(0, equalIdx),
@@ -115,20 +122,19 @@ namespace
 
 	std::tuple<std::string, std::int32_t, std::int32_t> SplitAudioEffectStr(std::string_view optionLine)
 	{
-		// TODO: default values of params
 		using Tuple = std::tuple<std::string, std::int32_t, std::int32_t>;
 
 		const std::size_t semicolonIdx1 = optionLine.find_first_of(kAudioEffectStrSeparator);
 		if (semicolonIdx1 == std::string_view::npos)
 		{
-			return Tuple{ optionLine, 0, 0 };
+			return Tuple{ optionLine, kAudioEffectParamUnspecified, kAudioEffectParamUnspecified };
 		}
 
 		const std::size_t semicolonIdx2 = optionLine.substr(semicolonIdx1 + 1).find_first_of(kAudioEffectStrSeparator);
 		const std::int32_t param1 = ParseNumeric<std::int32_t>(optionLine.substr(semicolonIdx1 + 1));
 		if (semicolonIdx2 == std::string_view::npos)
 		{
-			return Tuple{ optionLine.substr(0, semicolonIdx1), param1, 0 };
+			return Tuple{ optionLine.substr(0, semicolonIdx1), param1, kAudioEffectParamUnspecified };
 		}
 
 		const std::int32_t param2 = ParseNumeric<std::int32_t>(optionLine.substr(semicolonIdx1 + semicolonIdx2 + 2));
@@ -184,7 +190,7 @@ namespace
 		}
 	}
 
-	const std::unordered_map<std::string_view, std::string_view> s_kshFXToKsonAudioEffectNameTable
+	const std::unordered_map<std::string_view, std::string_view> s_kshFXToKSONAudioEffectNameTable
 	{
 		{ "Retrigger", "retrigger" },
 		{ "Gate", "gate" },
@@ -196,16 +202,71 @@ namespace
 		{ "TapeStop", "tapestop" },
 		{ "Echo", "echo" },
 		{ "SideChain", "sidechain" },
-		{ "SwitchAudio", "audio_swap" },
 	};
 
-	const std::unordered_map<std::string_view, std::string_view> s_kshFilterToKsonAudioEffectNameTable
+	const std::unordered_map<std::string_view, std::string_view> s_kshFilterToKSONAudioEffectNameTable
 	{
 		{ "peak", "peaking_filter" },
 		{ "hpf1", "high_pass_filter" },
 		{ "lpf1", "low_pass_filter" },
 		{ "bitc", "bitcrusher" },
-		// TODO: Add fallback effect option to audio_swap to simulate "fx;bitc"
+		{ "fx", "fx" },
+		{ "fx;bitc", "fx;bitcrusher" },
+	};
+
+	const std::unordered_map<std::string_view, AudioEffectType> s_audioEffectTypeTable
+	{
+		{ "Retrigger", AudioEffectType::Retrigger },
+		{ "Gate", AudioEffectType::Gate },
+		{ "Flanger", AudioEffectType::Flanger },
+		{ "PitchShift", AudioEffectType::PitchShift },
+		{ "BitCrusher", AudioEffectType::Bitcrusher },
+		{ "Phaser", AudioEffectType::Phaser },
+		{ "Wobble", AudioEffectType::Wobble },
+		{ "TapeStop", AudioEffectType::Tapestop },
+		{ "Echo", AudioEffectType::Echo },
+		{ "SideChain", AudioEffectType::Sidechain },
+		{ "SwitchAudio", AudioEffectType::SwitchAudio },
+
+		// Note: These filters are not yet supported in the KSH format, but are added to convert future charts.
+		{ "PeakingFilter", AudioEffectType::PeakingFilter },
+		{ "HighPassFilter", AudioEffectType::HighPassFilter },
+		{ "LowPassFilter", AudioEffectType::LowPassFilter },
+	};
+
+	const std::unordered_map<std::string_view, std::string_view> s_audioEffectParamNameTable
+	{
+		{ "updatePeriod", "update_period" },
+		{ "waveLength", "wave_length" },
+		{ "rate", "rate" },
+		{ "updateTrigger", "update_trigger" },
+		{ "mix", "mix" },
+		{ "period", "period" },
+		{ "delay", "delay" },
+		{ "depth", "depth" },
+		{ "feedback", "feedback" },
+		{ "stereoWidth", "stereo_width" },
+		{ "volume", "vol" },
+		{ "pitch", "pitch" },
+		{ "chunkSize", "chunk_size" },
+		{ "overWrap", "overlap" },
+		{ "reduction", "reduction" },
+		{ "stage", "stage" },
+		{ "loFreq", "lo_freq" },
+		{ "hiFreq", "hi_freq" },
+		{ "Q", "q" },
+		{ "speed", "speed" },
+		{ "trigger", "trigger" },
+		{ "feedbackLevel", "feedback_level" },
+		{ "holdTime", "hold_time" },
+		{ "attackTime", "attack_time" },
+		{ "releaseTime", "release_time" },
+		{ "ratio", "ratio" },
+		{ "fileName", "filename" },
+		{ "v", "v" },
+		{ "freq", "freq" },
+		{ "freqMax", "freq_max" },
+		{ "gain", "gain" },
 	};
 
 	static constexpr std::int32_t kLaserXMax = 100;
@@ -278,6 +339,44 @@ namespace
 
 		bpmChanges.insert_or_assign(time, ParseNumeric<double>(value));
 		return true;
+	}
+
+	void InsertFiltertype(ChartData& chartData, Pulse time, const std::string& value)
+	{
+		if (s_kshFilterToKSONAudioEffectNameTable.contains(value))
+		{
+			std::string name(s_kshFilterToKSONAudioEffectNameTable.at(value));
+			if (name == "fx" && !chartData.audio.audioEffect.laser.def.contains(name))
+			{
+				if (chartData.audio.bgm.legacy.filenameF.empty())
+				{
+					name.clear();
+				}
+				else
+				{
+					chartData.audio.audioEffect.laser.def.emplace("fx", AudioEffectDef{
+						.type = AudioEffectType::SwitchAudio,
+						.v = {
+							{ "filename", chartData.audio.bgm.legacy.filenameF },
+						},
+					});
+				}
+			}
+			else if (name == "fx;bitcrusher" && !chartData.audio.audioEffect.laser.def.contains(name))
+			{
+				chartData.audio.audioEffect.laser.def.emplace("fx;bitcrusher", AudioEffectDef{
+					.type = AudioEffectType::Bitcrusher,
+				});
+			}
+			if (!name.empty())
+			{
+				chartData.audio.audioEffect.laser.pulseEvent[name].insert(time);
+			}
+		}
+		else
+		{
+			chartData.audio.audioEffect.laser.pulseEvent[value].insert(time);
+		}
 	}
 
 	// TODO: refactor
@@ -421,10 +520,10 @@ namespace
 					// Apply legacy FX audio effect parameters
 					audioEffectParamValue1 = ParseNumeric<std::int32_t>(m_audioEffectParamStr);
 				}
-				if (s_kshFXToKsonAudioEffectNameTable.contains(audioEffectName))
+				if (s_kshFXToKSONAudioEffectNameTable.contains(audioEffectName))
 				{
 					// Convert the name of preset audio effects
-					audioEffectName = s_kshFXToKsonAudioEffectNameTable.at(audioEffectName);
+					audioEffectName = s_kshFXToKSONAudioEffectNameTable.at(audioEffectName);
 				}
 				if (!audioEffectName.empty())
 				{
@@ -649,11 +748,8 @@ namespace
 	{
 	protected:
 		bool m_prepared = false;
-
 		Pulse m_time = 0;
-
 		ByRelPulse<GraphValue> m_values;
-
 		ChartData* m_pTargetChartData = nullptr;
 
 	public:
@@ -722,12 +818,13 @@ namespace
 		}
 	};
 
-	class PreparedLaserSection : public PreparedGraphSection
+	class PreparedLaserSection : public PreparedGraphSection // TODO: resolve this bad inheritance
 	{
 	private:
 		std::size_t m_targetLaneIdx = 0;
 		std::int32_t m_w = 1; // normal laser: w=1, 2x-widen laser: w=2
 		ByRelPulse<PreparedLaneSpin> m_preparedLaneSpins;
+		std::string m_keySound;
 
 	public:
 		PreparedLaserSection() = default;
@@ -874,10 +971,22 @@ namespace
 		std::string value;
 	};
 
+	struct BufCommentLine
+	{
+		std::size_t lineIdx;
+		std::string value;
+	};
+
 	struct BufUnknownLine
 	{
 		std::size_t lineIdx;
 		std::string value;
+	};
+
+	struct BufKeySound
+	{
+		std::string name;
+		std::int32_t vol;
 	};
 
 	std::string Pop(std::unordered_map<std::string, std::string>& meta, const std::string& key, std::string_view defaultValue = "")
@@ -988,6 +1097,7 @@ namespace
 			chartData.meta.chartAuthor = Pop(metaDataHashMap, "effect");
 			chartData.meta.jacketFilename = Pop(metaDataHashMap, "jacket");
 			chartData.meta.jacketAuthor = Pop(metaDataHashMap, "illustrator");
+			chartData.meta.iconFilename = Pop(metaDataHashMap, "icon");
 
 			const std::string difficultyName = Pop(metaDataHashMap, "difficulty", "infinite");
 			if (s_difficultyNameTable.contains(difficultyName))
@@ -1039,15 +1149,27 @@ namespace
 				chartData.audio.bgm.vol *= 0.6;
 			}
 
-			// TODO: Store chokkakuautovol
-			Pop(metaDataHashMap, "chokkakuautovol", "1");
-
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{
 				chartData.audio.bgm.offset = PopInt<std::int32_t>(metaDataHashMap, "o", 0);
 			}
 			chartData.audio.bgm.preview.offset = PopInt<std::int32_t>(metaDataHashMap, "po", 0);
 			chartData.audio.bgm.preview.duration = PopInt<std::int32_t>(metaDataHashMap, "plength", 0);
+
+			if constexpr (std::is_same_v<ChartDataType, ChartData>)
+			{
+				chartData.audio.keySound.laser.vol.emplace(0, static_cast<double>(PopInt<std::int32_t>(metaDataHashMap, "chokkakuvol", 50)) / 100);
+				chartData.audio.keySound.laser.legacy.autoVol = PopInt<std::int32_t>(metaDataHashMap, "chokkakuautovol", 1) != 0;
+				if (metaDataHashMap.contains("filtertype"))
+				{
+					InsertFiltertype(chartData, 0, Pop(metaDataHashMap, "filtertype", "peak"));
+				}
+				if (metaDataHashMap.contains("pfiltergain"))
+				{
+					chartData.audio.audioEffect.laser.paramChange["peaking_filter"]["gain"].emplace(0, std::to_string(PopInt<std::int32_t>(metaDataHashMap, "pfiltergain", 50)) + "%");
+				}
+				chartData.audio.audioEffect.laser.peakingFilterDelay = chartData.audio.bgm.legacy.filenameP.empty() ? PopInt<std::int32_t>(metaDataHashMap, "pfilterdelay", 40) : 0;
+			}
 
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{
@@ -1152,6 +1274,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 	// (needed because actual addition cannot come before the pulse value calculation)
 	std::vector<std::string> chartLines;
 	std::vector<BufOptionLine> optionLines;
+	std::vector<BufCommentLine> commentLines;
 	std::vector<BufUnknownLine> unknownLines;
 	PreparedLongNoteArray preparedLongNoteArray(&chartData);
 
@@ -1162,11 +1285,11 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 	std::array<std::unordered_set<std::size_t>, kNumLaserLanes> currentMeasureLaserXScale2x;
 	std::array<std::unordered_map<std::size_t, std::string>, kNumFXLanes> currentMeasureFXAudioEffectStrs; // "fx-l=" or "fx-r=" in KSH
 	std::array<std::unordered_map<std::size_t, std::string>, kNumFXLanes> currentMeasureFXAudioEffectParamStrs; // "fx-l_param1=" or "fx-r_param1=" in KSH
+	std::array<std::unordered_map<std::size_t, BufKeySound>, kNumFXLanes> currentMeasureFXKeySounds; // "fx-l_se=" or "fx-r_se=" in KSH
+	std::unordered_map<std::size_t, std::string> currentMeasureLaserKeySounds; // "chokkakuse=" in KSH
 
 	Pulse currentPulse = 0;
 	std::int64_t currentMeasureIdx = 0;
-
-	// TODO: chokkakuvol (laser slam volume envelope)
 
 	// Read chart body
 	// The stream start from the next of the first bar line ("--")
@@ -1179,23 +1302,133 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 			line.pop_back();
 		}
 
-		// Skip comments
-		if (IsCommentLine(line))
+		// Skip empty lines
+		if (line.empty())
 		{
 			continue;
 		}
 
-		// TODO: Read user-defined audio effects
-		if (!line.empty() && line[0] == '#')
+		// Comments
+		if (IsCommentLine(line))
 		{
+			commentLines.push_back({
+				.lineIdx = chartLines.size(),
+				.value = line.substr(2), // 2 = strlen("//")
+			});
+			continue;
+		}
+
+		// User-defined audio effects
+		if (line[0] == '#')
+		{
+			const bool isDefineFX = line.starts_with("#define_fx ");
+			const bool isDefineFilter = !isDefineFX && line.starts_with("#define_filter ");
+			if (isDefineFX || isDefineFilter)
+			{
+				std::string_view sv = line;
+
+				// Move cursor to audio effect name start
+				{
+					bool whiteSpaceFound = false;
+					while (!sv.empty())
+					{
+						if (sv[0] == ' ')
+						{
+							whiteSpaceFound = true;
+						}
+						else if (whiteSpaceFound)
+						{
+							break;
+						}
+
+						sv = sv.substr(1);
+					}
+				}
+
+				// Get audio effect name while moving cursor to parameter value start
+				std::string name;
+				{
+					bool whiteSpaceFound = false;
+					while (!sv.empty())
+					{
+						if (sv[0] == ' ')
+						{
+							whiteSpaceFound = true;
+						}
+						else if (whiteSpaceFound)
+						{
+							break;
+						}
+						else
+						{
+							name.push_back(sv[0]);
+						}
+
+						sv = sv.substr(1);
+					}
+				}
+
+				Dict<std::string> params;
+				while (!sv.empty())
+				{
+					const std::size_t semicolonIdx = sv.find_first_of(kAudioEffectStrSeparator);
+					std::string_view paramSV = (semicolonIdx == std::string_view::npos) ? sv : sv.substr(0, semicolonIdx);
+					const std::pair<std::string, std::string> pair = SplitOptionLine(paramSV, isUTF8);
+					if (!pair.second.empty())
+					{
+						params.emplace(pair);
+					}
+
+					if (semicolonIdx == std::string_view::npos)
+					{
+						break;
+					}
+					else
+					{
+						sv = sv.substr(semicolonIdx + 1);
+					}
+				}
+
+				assert(params.contains("type"));
+				if (!params.contains("type"))
+				{
+					continue;
+				}
+
+				const std::string type = params.at("type");
+				params.erase("type");
+				assert(s_audioEffectTypeTable.contains(type));
+				if (!s_audioEffectTypeTable.contains(type))
+				{
+					continue;
+				}
+
+				AudioEffectParams paramsKSON;
+				for (const auto& [paramName, value] : params)
+				{
+					// Note: Parameters deleted in the KSON format (e.g., "hiCutGain") are just ignored.
+					if (s_audioEffectParamNameTable.contains(paramName))
+					{
+						paramsKSON.emplace(s_audioEffectParamNameTable.at(paramName), value);
+					}
+				}
+
+				auto& def = isDefineFX ? chartData.audio.audioEffect.fx.def : chartData.audio.audioEffect.laser.def;
+				def.emplace(name, AudioEffectDef{
+					.type = s_audioEffectTypeTable.at(type),
+					.v = std::move(paramsKSON),
+				});
+			}
 			continue;
 		}
 
 		if (IsChartLine(line))
 		{
 			chartLines.push_back(line);
+			continue;
 		}
-		else if (IsOptionLine(line))
+
+		if (IsOptionLine(line))
 		{
 			const auto [key, value] = SplitOptionLine(line, isUTF8);
 			if (key == "t")
@@ -1223,8 +1456,10 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 					.value = value,
 				});
 			}
+			continue;
 		}
-		else if (IsBarLine(line))
+		
+		if (IsBarLine(line))
 		{
 			const std::size_t bufLineCount = chartLines.size();
 			const Pulse oneLinePulse = kResolution4 * currentTimeSig.numerator / currentTimeSig.denominator / bufLineCount;
@@ -1319,6 +1554,19 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 						}
 					}
 				}
+				else if (key == "chokkakuvol")
+				{
+					const double dValue = ParseNumeric<double>(value) / 100;
+					chartData.audio.keySound.laser.vol.insert_or_assign(time, dValue);
+				}
+				else if (key == "chokkakuse")
+				{
+					currentMeasureLaserKeySounds.insert_or_assign(lineIdx, value);
+				}
+				else if (key == "pfiltergain")
+				{
+					chartData.audio.audioEffect.laser.paramChange["peaking_filter"]["gain"].emplace(time, std::to_string(ParseNumeric<std::int32_t>(value, 50)) + "%");
+				}
 				else if (key == "fx-l")
 				{
 					currentMeasureFXAudioEffectStrs[0].insert_or_assign(lineIdx, value);
@@ -1337,6 +1585,18 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 				{
 					currentMeasureFXAudioEffectParamStrs[1].insert_or_assign(lineIdx, value);
 				}
+				else if (bool isL = key == "fx-l_se"; isL || key == "fx-r_se")
+				{
+					const auto strPair = Split<2>(value, ';');
+					currentMeasureFXKeySounds[isL ? 0 : 1].insert_or_assign(lineIdx, BufKeySound{
+						.name = strPair[0],
+						.vol = ParseNumeric<std::int32_t>(strPair[1], 50),
+					});
+				}
+				else if (key == "filtertype")
+				{
+					InsertFiltertype(chartData, time, value);
+				}
 				else if (key == "laserrange_l")
 				{
 					if (value == "2x")
@@ -1349,6 +1609,18 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 					if (value == "2x")
 					{
 						currentMeasureLaserXScale2x[1].emplace(lineIdx);
+					}
+				}
+				else if (bool isFX = key.starts_with("fx:"); isFX || key.starts_with("filter:"))
+				{
+					constexpr std::size_t kAudioEffectNameIdx = 1;
+					constexpr std::size_t kParamNameIdx = 2;
+
+					const auto& a = Split<3>(key, ':');
+					if (!a[kAudioEffectNameIdx].empty() && !a[kParamNameIdx].empty())
+					{
+						auto& paramChange = isFX ? chartData.audio.audioEffect.fx.paramChange : chartData.audio.audioEffect.laser.paramChange;
+						paramChange[a[kAudioEffectNameIdx]][a[kParamNameIdx]].insert_or_assign(time, value);
 					}
 				}
 				else
@@ -1403,6 +1675,13 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 						{
 						case '2': // Chip FX note
 							chartData.note.fx[laneIdx].emplace(time, 0);
+							if (currentMeasureFXKeySounds[laneIdx].contains(i))
+							{
+								const auto& bufKeySound = currentMeasureFXKeySounds[laneIdx].at(i);
+								chartData.audio.keySound.fx.chipEvent[bufKeySound.name][laneIdx].emplace(time, KeySoundInvokeFX{
+									.vol = static_cast<double>(bufKeySound.vol) / 100,
+								});
+							}
 							break;
 						case '0': // Empty
 							preparedLongNoteRef.publishLongFXNote();
@@ -1455,6 +1734,16 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 
 									const double dLaserX = static_cast<double>(laserX) / kLaserXMax;
 									preparedLaserSectionRef.addGraphPoint(time, dLaserX);
+
+									if (currentMeasureLaserKeySounds.contains(i))
+									{
+										// Note: Here, the key sound element is inserted even if the laser segment is not a slam, but it doesn't matter much.
+										const std::string& name = currentMeasureLaserKeySounds.at(i);
+										if (!name.empty())
+										{
+											chartData.audio.keySound.laser.slamEvent[name].insert(time);
+										}
+									}
 								}
 							}
 							break;
@@ -1477,6 +1766,13 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 				}
 			}
 
+			// Add comments
+			for (const auto& [lineIdx, value] : commentLines)
+			{
+				const Pulse time = currentPulse + lineIdx * oneLinePulse;
+				chartData.editor.comment.emplace(time, value);
+			}
+
 			// Add unknown lines
 			for (const auto& [lineIdx, value] : unknownLines)
 			{
@@ -1486,6 +1782,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 
 			chartLines.clear();
 			optionLines.clear();
+			commentLines.clear();
 			unknownLines.clear();
 			for (auto& set : currentMeasureLaserXScale2x)
 			{
@@ -1501,15 +1798,14 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 			}
 			currentPulse += kResolution4 * currentTimeSig.numerator / currentTimeSig.denominator;
 			++currentMeasureIdx;
+			continue;
 		}
-		else
-		{
-			// Insert unrecognized line
-			unknownLines.push_back({
-				.lineIdx = chartLines.size(),
-				.value = line,
-			});
-		}
+
+		// Insert unrecognized line
+		unknownLines.push_back({
+			.lineIdx = chartLines.size(),
+			.value = line,
+		});
 	}
 
 	// Publish the last manual tilt section if exists
@@ -1518,7 +1814,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 		preparedManualTilt.publishManualTilt();
 	}
 
-	// KSH file must end with the bar line "--", so there can never be a prepared button note here
+	// KSH file must end with the bar line "--" (except for user-defined audio effects), so there can never be a prepared button note here
 	for (const auto& preparedBTNote : preparedLongNoteArray.bt)
 	{
 		assert(!preparedBTNote.prepared());
@@ -1558,9 +1854,54 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 				// Convert temporary stored "_param1"/"_param2" values to parameter values for each audio effect type
 				if (params.contains("_param1") && params.contains("_param2"))
 				{
-					const std::string param1 = params.at("_param1");
-					const std::string param2 = params.at("_param2");
+					std::string param1 = params.at("_param1");
+					std::string param2 = params.at("_param2");
 
+					// Replace unspecified values with defaults
+					if (param1 == kAudioEffectParamUnspecifiedStr)
+					{
+						switch (type)
+						{
+						case AudioEffectType::Retrigger:
+							param1 = "8";
+							break;
+						case AudioEffectType::Gate:
+							param1 = "4";
+							break;
+						case AudioEffectType::Wobble:
+							param1 = "12";
+							break;
+						case AudioEffectType::PitchShift:
+							param1 = "12";
+							break;
+						case AudioEffectType::Bitcrusher:
+							param1 = "5";
+							break;
+						case AudioEffectType::Tapestop:
+							param1 = "50";
+							break;
+						case AudioEffectType::Echo:
+							param1 = "4";
+							break;
+						default:
+							param1 = "0";
+							break;
+						};
+					}
+					if (param2 == kAudioEffectParamUnspecifiedStr)
+					{
+						switch (type)
+						{
+						case AudioEffectType::Echo:
+							param2 = "60";
+							break;
+						default:
+							param2 = "0";
+							break;
+						};
+					}
+
+					// Insert parameter
 					switch (type)
 					{
 					case AudioEffectType::Retrigger:

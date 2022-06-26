@@ -90,8 +90,12 @@ void MusicGame::Graphics::GraphicsMain::drawLayer(const kson::ChartData& chartDa
 	}
 
 	// TODO: Layer speed specified by KSH
-	const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(gameStatus.currentPulse * 1000 / 35 / kson::kResolution4), static_cast<int32>(m_layerFrameTextures[0].size()));
-	m_bgBillboardMesh.draw(m_layerTransform * TiltTransformMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
+	// TODO: Use different layer texture index depending on gauge percentage
+	if (!m_layerFrameTextures[0].empty())
+	{
+		const int32 layerFrame = MathUtils::WrappedMod(static_cast<int32>(gameStatus.currentPulse * 1000 / 35 / kson::kResolution4), static_cast<int32>(m_layerFrameTextures[0].size()));
+		m_bgBillboardMesh.draw(m_layerTransform * TiltTransformMatrix(layerTiltRadians, kLayerBillboardPosition), m_layerFrameTextures[0].at(layerFrame));
+	}
 }
 
 MusicGame::Graphics::GraphicsMain::GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache)
