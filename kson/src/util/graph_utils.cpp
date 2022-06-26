@@ -29,29 +29,3 @@ double kson::GraphValueAt(const Graph& graph, Pulse pulse)
 	const double lerpRate = static_cast<double>(pulse - pulse1) / static_cast<double>(pulse2 - pulse1);
 	return Lerp(value1.vf, value2.v, lerpRate);
 }
-
-kson::GraphSections::const_iterator kson::GraphSectionAt(const GraphSections& graphSections, Pulse pulse)
-{
-	assert(!graphSections.empty());
-
-	auto itr = graphSections.upper_bound(pulse);
-	if (itr != graphSections.begin())
-	{
-		--itr;
-	}
-
-	return itr;
-}
-
-kson::ByPulse<kson::LaserSection>::const_iterator kson::LaserSectionAt(const ByPulse<LaserSection>& laserSections, Pulse pulse)
-{
-	assert(!laserSections.empty());
-
-	auto itr = laserSections.upper_bound(pulse);
-	if (itr != laserSections.begin())
-	{
-		--itr;
-	}
-
-	return itr;
-}

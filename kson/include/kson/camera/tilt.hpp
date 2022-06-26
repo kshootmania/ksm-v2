@@ -6,9 +6,7 @@ namespace kson
 	struct TiltInfo
 	{
 		ByPulse<double> scale;
-		GraphSections manual;
+		ByPulse<GraphSection> manual;
 		ByPulse<bool> keep;
-
-		bool empty() const;
 	};
 }

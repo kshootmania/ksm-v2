@@ -10,6 +10,10 @@
 #include "kson/editor/editor_info.hpp"
 #include "kson/compat/compat_info.hpp"
 
+#ifndef KSON_WITHOUT_JSON_DEPENDENCY
+#include "third_party/nlohmann/json.hpp"
+#endif
+
 namespace kson
 {
 	enum class Error
@@ -42,6 +46,10 @@ namespace kson
 		BGInfo bg;
 		EditorInfo editor;
 		CompatInfo compat;
+
+#ifndef KSON_WITHOUT_JSON_DEPENDENCY
+		nlohmann::json impl = nlohmann::json::object();
+#endif
 
 		std::string filePath; // Note: OS native encoding (Not UTF-8 in Windows)
 		Error error = Error::kNone;

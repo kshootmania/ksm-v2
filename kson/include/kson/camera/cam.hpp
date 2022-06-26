@@ -9,11 +9,9 @@ namespace kson
 		Graph shiftX; // "zoom_side"
 		Graph rotationX; // "zoom_top"
 		Graph rotationZ; // Rotation degree
-		Graph rotationZLane; // Rotation degree (lane only)
-		Graph rotationZJdgLine; // Rotation degree (judgment line only)
+		Graph rotationZHighway; // Rotation degree (highway only)
+		Graph rotationZJdgline; // Rotation degree (judgment line only)
 		Graph centerSplit; // "center_split"
-
-		bool empty() const;
 	};
 
 	struct CamPatternParams
@@ -21,28 +19,36 @@ namespace kson
 		RelPulse length = 0;
 		double scale = 1.0;  // Swing only
 		std::int32_t repeat = 1;  // Swing only
-		double decayOrder = 0.0;  // Swing only
+		std::int32_t decayOrder = 0;  // Swing only
+	};
+
+	namespace CamPatternKey
+	{
+		constexpr std::string_view kSpin = "spin";
+		constexpr std::string_view kHalfSpin = "half_spin";
+		constexpr std::string_view kSwing = "swing";
+	}
+
+	template <typename T>
+	struct WithDirection
+	{
+		T v;
+		std::int32_t d = 0; // laser slam direction, -1 (left) or 1 (right)
 	};
 
 	struct CamPatternLaserInfo
 	{
-		Dict<ByPulse<CamPatternParams>> slamEvent;
-
-		bool empty() const;
+		Dict<ByPulse<WithDirection<CamPatternParams>>> slamEvent;
 	};
 
 	struct CamPatternInfo
 	{
 		CamPatternLaserInfo laser;
-
-		bool empty() const;
 	};
 
 	struct CamInfo
 	{
 		CamGraphs body;
 		CamPatternInfo pattern;
-
-		bool empty() const;
 	};
 }

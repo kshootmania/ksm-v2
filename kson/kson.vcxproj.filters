@@ -87,9 +87,6 @@
     <ClInclude Include="include\kson\audio\audio_effect.hpp">
       <Filter>Header Files\audio</Filter>
     </ClInclude>
-    <ClInclude Include="include\kson\audio\legacy_audio_info.hpp">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
     <ClInclude Include="include\kson\camera\tilt.hpp">
       <Filter>Header Files\camera</Filter>
     </ClInclude>
@@ -156,6 +153,9 @@
       <Filter>Source Files\io</Filter>
     </ClCompile>
     <ClCompile Include="src\audio\audio_effect.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\bgm_info.cpp">
       <Filter>Source Files\audio</Filter>
     </ClCompile>
   </ItemGroup>

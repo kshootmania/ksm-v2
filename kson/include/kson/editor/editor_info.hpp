@@ -6,7 +6,5 @@ namespace kson
 	struct EditorInfo
 	{
 		ByPulse<std::string> comment;
-
-		bool empty() const;
 	};
 }

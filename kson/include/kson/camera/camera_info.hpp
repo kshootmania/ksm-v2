@@ -9,7 +9,5 @@ namespace kson
 	{
 		CamInfo cam;
 		TiltInfo tilt;
-
-		bool empty() const;
 	};
 }

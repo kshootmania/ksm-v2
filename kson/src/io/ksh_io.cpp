@@ -428,7 +428,7 @@ namespace
 				}
 				if (!audioEffectName.empty())
 				{
-					m_pTargetChartData->audio.audioEffects.fx.longEvent[audioEffectName][m_targetLaneIdx].emplace(m_time, AudioEffectParams{
+					m_pTargetChartData->audio.audioEffect.fx.longEvent[audioEffectName][m_targetLaneIdx].emplace(m_time, AudioEffectParams{
 						// Store the value of the parameters in temporary keys
 						// (Since the conversion requires determining the type of audio effect, it is processed
 						//  after reading the "#define_fx"/"#define_filter" lines.)
@@ -614,9 +614,9 @@ namespace
 	const std::unordered_map<PreparedLaneSpin::Type, std::string_view> s_kshSpinTypeToKsonCamPatternNameTable
 	{
 		{ PreparedLaneSpin::Type::kNoSpin, "" },
-		{ PreparedLaneSpin::Type::kNormal, "spin" },
-		{ PreparedLaneSpin::Type::kHalf, "half_spin" },
-		{ PreparedLaneSpin::Type::kSwing, "swing" },
+		{ PreparedLaneSpin::Type::kNormal, CamPatternKey::kSpin },
+		{ PreparedLaneSpin::Type::kHalf, CamPatternKey::kHalfSpin },
+		{ PreparedLaneSpin::Type::kSwing, CamPatternKey::kSwing },
 	};
 
 	const std::unordered_map<std::string_view, double> s_tiltTypeScaleTable
@@ -787,7 +787,7 @@ namespace
 			const auto [_, inserted] = targetLane.emplace(
 				m_time,
 				LaserSection{
-					.points = convertedGraphSection,
+					.v = convertedGraphSection,
 					.w = m_w,
 				});
 
@@ -807,7 +807,7 @@ namespace
 								.length = laneSpin.duration,
 								.scale = static_cast<double>(laneSpin.swingAmplitude) * kKSHToKSONSwingScale,
 								.repeat = laneSpin.swingRepeat,
-								.decayOrder = static_cast<double>(laneSpin.swingDecayOrder),
+								.decayOrder = laneSpin.swingDecayOrder,
 							};
 						}
 						else
@@ -999,7 +999,7 @@ namespace
 				chartData.meta.difficulty.idx = 3;
 			}
 
-			chartData.meta.level = PopInt<std::int8_t>(metaDataHashMap, "level", 1, 1, 20);
+			chartData.meta.level = PopInt<std::int32_t>(metaDataHashMap, "level", 1, 1, 20);
 
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{
@@ -1026,11 +1026,10 @@ namespace
 			if constexpr (std::is_same_v<ChartDataType, ChartData>)
 			{
 				chartData.audio.bgm.filename = bgmFilenames[0];
-				chartData.audio.legacy.bgm.filenameF = bgmFilenames[1];
-				chartData.audio.legacy.bgm.filenameP = bgmFilenames[2];
-				chartData.audio.legacy.bgm.filenameFP = bgmFilenames[3];
+				chartData.audio.bgm.legacy.filenameF = bgmFilenames[1];
+				chartData.audio.bgm.legacy.filenameP = bgmFilenames[2];
+				chartData.audio.bgm.legacy.filenameFP = bgmFilenames[3];
 			}
-			chartData.audio.bgm.preview.filename = bgmFilenames[0];
 
 			const std::int32_t volInt = PopInt<std::int32_t>(metaDataHashMap, "mvol", 50);
 			chartData.audio.bgm.vol = volInt / 100.0;
@@ -1081,7 +1080,7 @@ namespace
 				chartData.bg.legacy.movie.filename = Pop(metaDataHashMap, "v");
 				chartData.bg.legacy.movie.offset = PopInt<std::int32_t>(metaDataHashMap, "vo");
 
-				chartData.gauge.total = static_cast<double>(PopInt<std::int32_t>(metaDataHashMap, "total", 0));
+				chartData.gauge.total = PopInt<std::int32_t>(metaDataHashMap, "total", 0);
 			}
 
 			chartData.meta.information = Pop(metaDataHashMap, "information");
@@ -1296,10 +1295,16 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 							preparedManualTilt.publishManualTilt();
 						}
 
-						// Insert cam.tilt_assign
+						// Insert tilt.scale
 						if (s_tiltTypeScaleTable.contains(value))
 						{
-							chartData.camera.tilt.scale.insert_or_assign(time, s_tiltTypeScaleTable.at(value));
+							auto& target = chartData.camera.tilt.scale;
+							const double prevValue = target.empty() ? 1.0 : target.crbegin()->second;
+							const double currentValue = s_tiltTypeScaleTable.at(value);
+							if (currentValue != prevValue)
+							{
+								target.insert_or_assign(time, currentValue);
+							}
 						}
 
 						// Insert tilt.keep
@@ -1408,7 +1413,10 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 								if (buf[j] == '1')
 								{
 									const std::string audioEffectStr = currentMeasureFXAudioEffectStrs[laneIdx].contains(i) ? currentMeasureFXAudioEffectStrs[laneIdx].at(i) : "";
-									const std::string audioEffectParamStr = currentMeasureFXAudioEffectParamStrs[laneIdx].contains(i) ? currentMeasureFXAudioEffectParamStrs[laneIdx].at(i) : ""; // Note: Normally this is not used here because it's for legacy long FX chars
+									const std::string audioEffectParamStr =
+										currentMeasureFXAudioEffectParamStrs[laneIdx].contains(i)
+										? currentMeasureFXAudioEffectParamStrs[laneIdx].at(i) // Note: Normally this is not used here because it's for legacy long FX chars
+										: "";
 									preparedLongNoteRef.prepare(time, audioEffectStr, audioEffectParamStr);
 								}
 								else
@@ -1527,13 +1535,13 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 	}
 
 	// Convert FX parameters
-	for (auto& [audioEffectName, lanes] : chartData.audio.audioEffects.fx.longEvent)
+	for (auto& [audioEffectName, lanes] : chartData.audio.audioEffect.fx.longEvent)
 	{
 		AudioEffectType type = AudioEffectType::Unspecified;
-		if (chartData.audio.audioEffects.fx.def.contains(audioEffectName))
+		if (chartData.audio.audioEffect.fx.def.contains(audioEffectName))
 		{
 			// User-defined audio effects
-			type = chartData.audio.audioEffects.fx.def.at(audioEffectName).type;
+			type = chartData.audio.audioEffect.fx.def.at(audioEffectName).type;
 		}
 		else
 		{

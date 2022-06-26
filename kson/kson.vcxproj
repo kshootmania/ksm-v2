@@ -23,7 +23,6 @@
     <ClInclude Include="include\kson\audio\audio_effect.hpp" />
     <ClInclude Include="include\kson\audio\bgm_info.hpp" />
     <ClInclude Include="include\kson\audio\key_sound.hpp" />
-    <ClInclude Include="include\kson\audio\legacy_audio_info.hpp" />
     <ClInclude Include="include\kson\beat\beat_info.hpp" />
     <ClInclude Include="include\kson\beat\time_sig.hpp" />
     <ClInclude Include="include\kson\bg\bg_info.hpp" />
@@ -45,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\audio\audio_effect.cpp" />
+    <ClCompile Include="src\audio\bgm_info.cpp" />
     <ClCompile Include="src\encoding\encoding_win.cpp" />
     <ClCompile Include="src\io\ksh_io.cpp" />
     <ClCompile Include="src\io\kson_io.cpp" />

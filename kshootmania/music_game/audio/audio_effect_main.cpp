@@ -10,7 +10,7 @@ namespace MusicGame::Audio
 		// TODO: Use IDs instead of names
 		kson::FXLane<std::string> CreateLongFXNoteAudioEffectNames(const kson::ChartData& chartData)
 		{
-			const auto& longEvent = chartData.audio.audioEffects.fx.longEvent;
+			const auto& longEvent = chartData.audio.audioEffect.fx.longEvent;
 			kson::FXLane<std::string> convertedLongEvent;
 			for (const auto& [audioEffectName, lanes] : longEvent)
 			{
@@ -27,7 +27,7 @@ namespace MusicGame::Audio
 
 		kson::FXLane<ksmaudio::AudioEffect::ParamValueSetDict> CreateLongFXNoteAudioEffectParams(const kson::ChartData& chartData)
 		{
-			const auto& longEvent = chartData.audio.audioEffects.fx.longEvent;
+			const auto& longEvent = chartData.audio.audioEffect.fx.longEvent;
 			kson::FXLane<ksmaudio::AudioEffect::ParamValueSetDict> convertedLongEvent;
 			for (const auto& [_, lanes] : longEvent)
 			{
@@ -67,9 +67,9 @@ namespace MusicGame::Audio
 			+ 1/* index to size */;
 
 		// FX
-		for (const auto& [name, def] : chartData.audio.audioEffects.fx.def)
+		for (const auto& [name, def] : chartData.audio.audioEffect.fx.def)
 		{
-			const auto& paramChangeDict = chartData.audio.audioEffects.fx.paramChange;
+			const auto& paramChangeDict = chartData.audio.audioEffect.fx.paramChange;
 			const std::set<float> updateTriggerTiming =
 				paramChangeDict.contains(name)
 				? PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, chartData, timingCache)
@@ -79,9 +79,9 @@ namespace MusicGame::Audio
 		}
 
 		// Laser
-		for (const auto& [name, def] : chartData.audio.audioEffects.laser.def)
+		for (const auto& [name, def] : chartData.audio.audioEffect.laser.def)
 		{
-			const auto& paramChangeDict = chartData.audio.audioEffects.laser.paramChange;
+			const auto& paramChangeDict = chartData.audio.audioEffect.laser.paramChange;
 			const std::set<float> updateTriggerTiming =
 				paramChangeDict.contains(name)
 				? PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, chartData, timingCache)

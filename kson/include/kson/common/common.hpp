@@ -4,6 +4,7 @@
 #include <string_view>
 #include <array>
 #include <vector>
+#include <set>
 #include <map>
 #include <unordered_map>
 #include <cassert>
@@ -75,7 +76,10 @@ namespace kson
 
 	using Graph = ByPulse<GraphValue>;
 
-	using GraphSections = ByPulse<ByRelPulse<GraphValue>>;
+	struct GraphSection
+	{
+		ByRelPulse<GraphValue> v;
+	};
 
 	template <typename T>
 	using Dict = std::unordered_map<std::string, T>;
@@ -124,5 +128,12 @@ namespace kson
 			return map.end();
 		}
 		return itr;
+	}
+
+	template <typename T>
+	bool AlmostEquals(T a, T b) requires std::is_floating_point_v<T>
+	{
+		// Not perfect algorithm, but okay for now.
+		return std::fabs(a - b) <= std::numeric_limits<T>::epsilon();
 	}
 }

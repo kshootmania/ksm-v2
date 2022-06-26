@@ -1,6 +1,7 @@
 ﻿#include "game_main.hpp"
 #include "game_defines.hpp"
 #include "kson/io/ksh_io.hpp"
+#include "kson/io/kson_io.hpp"
 
 namespace
 {
@@ -76,6 +77,8 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 {
 	m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 	m_bgm.play();
+
+	kson::SaveKSONChartData("hogehoge.kson", m_chartData);
 }
 
 void MusicGame::GameMain::update()

@@ -5,8 +5,6 @@ namespace kson
 {
 	struct GaugeInfo
 	{
-		double total = 0.0;
-
-		bool empty() const;
+		std::int32_t total = 0;
 	};
 }

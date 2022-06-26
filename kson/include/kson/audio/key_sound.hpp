@@ -1,39 +1,40 @@
 #pragma once
+#include <set>
 #include "kson/common/common.hpp"
 
 namespace kson
 {
-	struct KeySoundParams
+	struct KeySoundInvokeFX
 	{
-		double volume = 1.0;
+		double vol = 1.0;
 	};
 
-	struct KeySoundDef
-	{
-		KeySoundParams v;
-	};
+	// Dictionary key: filename/clap/clap_impact/clap_punchy/snare/snare_lo
+	using KeySoundInvokeListFX = Dict<FXLane<KeySoundInvokeFX>>;
 
 	struct KeySoundFXInfo
 	{
-		Dict<KeySoundDef> def;
-		Dict<FXLane<KeySoundParams>> chipEvent;
+		KeySoundInvokeListFX chipEvent;
+	};
 
-		bool empty() const;
+	// Dictionary key: slam_up/slam_down/slam_swing/slam_mute
+	using KeySoundInvokeListLaser = Dict<std::set<Pulse>>;
+
+	struct KeySoundLaserLegacyInfo
+	{
+		bool autoVol = false;
 	};
 
 	struct KeySoundLaserInfo
 	{
-		Dict<KeySoundDef> def;
-		Dict<ByPulse<KeySoundParams>> slamEvent;
-
-		bool empty() const;
+		ByPulse<double> vol;
+		KeySoundInvokeListLaser slamEvent;
+		KeySoundLaserLegacyInfo legacy;
 	};
 
 	struct KeySoundInfo
 	{
 		KeySoundFXInfo fx;
 		KeySoundLaserInfo laser;
-
-		bool empty() const;
 	};
 }

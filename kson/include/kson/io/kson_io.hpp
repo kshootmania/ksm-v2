@@ -1,4 +1,6 @@
 #pragma once
+
+#ifndef KSON_WITHOUT_JSON_DEPENDENCY
 #include "kson/chart_data.hpp"
 
 namespace kson
@@ -7,3 +9,4 @@ namespace kson
 
 	bool SaveKSONChartData(const std::string& filePath, const ChartData& chartData);
 }
+#endif

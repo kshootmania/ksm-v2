@@ -7,59 +7,57 @@ namespace kson
 {
 	double GraphValueAt(const Graph& graph, Pulse pulse);
 
-	GraphSections::const_iterator GraphSectionAt(const GraphSections& graphSections, Pulse pulse);
+	template <class GS>
+	ByPulse<GS>::const_iterator GraphSectionAt(const ByPulse<GS>& graphSections, Pulse pulse) requires std::is_same_v<GS, GraphSection> || std::is_same_v<GS, LaserSection>
+	{
+		assert(!graphSections.empty());
 
-	ByPulse<LaserSection>::const_iterator LaserSectionAt(const ByPulse<LaserSection>& laserSections, Pulse pulse);
+		auto itr = graphSections.upper_bound(pulse);
+		if (itr != graphSections.begin())
+		{
+			--itr;
+		}
+
+		return itr;
+	}
 
 	template <class GS>
-	std::optional<double> GraphSectionValueAt(const GS& graphSections, Pulse pulse) requires std::is_same_v<GS, GraphSections> || std::is_same_v<GS, ByPulse<LaserSection>>
+	std::optional<double> GraphSectionValueAt(const ByPulse<GS>& graphSections, Pulse pulse) requires std::is_same_v<GS, GraphSection> || std::is_same_v<GS, LaserSection>
 	{
 		if (graphSections.empty())
 		{
 			return std::nullopt;
 		}
 
-		const Graph* pGraphSection;
-		RelPulse relPulse;
-		if constexpr (std::is_same_v<GS, ByPulse<LaserSection>>)
-		{
-			const auto& [laserSectionPulse, laserSection] = *LaserSectionAt(graphSections, pulse);
-			relPulse = pulse - laserSectionPulse;
-			pGraphSection = &laserSection.points;
-		}
-		else
-		{
-			const auto& [graphSectionPulse, graphSection] = *GraphSectionAt(graphSections, pulse);
-			relPulse = pulse - graphSectionPulse;
-			pGraphSection = &graphSection;
-		}
+		const auto& [y, graphSection] = *GraphSectionAt(graphSections, pulse);
+		const RelPulse ry = pulse - y;
 
-		if (pGraphSection->size() <= 1)
+		if (graphSection.v.size() <= 1)
 		{
 			return std::nullopt;
 		}
 
 		{
-			const auto& [firstRelPulse, _] = *pGraphSection->begin();
-			if (relPulse < firstRelPulse)
+			const auto& [firstRy, _] = *graphSection.v.begin();
+			if (ry < firstRy)
 			{
 				return std::nullopt;
 			}
 		}
 
 		{
-			const auto& [lastRelPulse, _] = *pGraphSection->rbegin();
-			if (relPulse >= lastRelPulse)
+			const auto& [lastRy, _] = *graphSection.v.rbegin();
+			if (ry >= lastRy)
 			{
 				return std::nullopt;
 			}
 		}
 
-		return std::make_optional(GraphValueAt(*pGraphSection, relPulse));
+		return std::make_optional(GraphValueAt(graphSection.v, ry));
 	}
 
 	template <class GS>
-	double GraphSectionValueAtWithDefault(const GS& graphSections, Pulse pulse, double defaultValue) requires std::is_same_v<GS, GraphSections> || std::is_same_v<GS, ByPulse<LaserSection>>
+	double GraphSectionValueAtWithDefault(const ByPulse<GS>& graphSections, Pulse pulse, double defaultValue) requires std::is_same_v<GS, GraphSection> || std::is_same_v<GS, LaserSection>
 	{
 		const std::optional<double> sectionValue = GraphSectionValueAt(graphSections, pulse);
 		if (sectionValue.has_value())

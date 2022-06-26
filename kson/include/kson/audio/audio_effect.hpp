@@ -24,6 +24,8 @@ namespace kson
 
 	AudioEffectType StrToAudioEffectType(std::string_view str);
 
+	std::string_view AudioEffectTypeToStr(AudioEffectType type);
+
 	using AudioEffectParams = Dict<std::string>;
 
 	struct AudioEffectDef
@@ -37,24 +39,19 @@ namespace kson
 		Dict<AudioEffectDef> def;
 		Dict<Dict<ByPulse<std::string>>> paramChange;
 		Dict<FXLane<AudioEffectParams>> longEvent;
-
-		bool empty() const;
 	};
 
 	struct AudioEffectLaserInfo
 	{
 		Dict<AudioEffectDef> def;
 		Dict<Dict<ByPulse<std::string>>> paramChange;
-		Dict<ByPulse<AudioEffectParams>> pulseEvent;
-
-		bool empty() const;
+		Dict<std::set<Pulse>> pulseEvent;
+		std::int32_t peakingFilterDelay = 0; // 0ms - 160ms
 	};
 
 	struct AudioEffectInfo
 	{
 		AudioEffectFXInfo fx;
 		AudioEffectLaserInfo laser;
-
-		bool empty() const;
 	};
 }

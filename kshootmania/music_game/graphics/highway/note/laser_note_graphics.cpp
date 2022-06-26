@@ -82,12 +82,12 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const kson::ChartData& chartDa
 				break;
 			}
 
-			for (auto itr = laserSection.points.begin(); itr != laserSection.points.end(); ++itr)
+			for (auto itr = laserSection.v.begin(); itr != laserSection.v.end(); ++itr)
 			{
 				const auto& [ry, point] = *itr;
 
 				// Draw laser start texture
-				if (itr == laserSection.points.begin())
+				if (itr == laserSection.v.begin())
 				{
 					for (int32 i = 0; i < 2; ++i)
 					{
@@ -135,7 +135,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const kson::ChartData& chartDa
 
 				// Last laser point does not create laser line
 				const auto nextItr = std::next(itr);
-				if (nextItr == laserSection.points.end())
+				if (nextItr == laserSection.v.end())
 				{
 					// If the final point is a laser slam, draw its extension
 					if (point.v != point.vf)
