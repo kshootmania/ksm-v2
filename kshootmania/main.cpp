@@ -33,9 +33,11 @@ void Main()
 
 	//Graphics::SetVSyncEnabled(false);
 
-	//AllocConsole();
-	//FILE* fp = NULL;
-	//freopen_s(&fp, "CONOUT$", "w", stdout);
+#if defined(_WIN32) && defined(_DEBUG)
+	AllocConsole();
+	FILE* fp = NULL;
+	freopen_s(&fp, "CONOUT$", "w", stdout);
+#endif
 
 	{
 		// Create scene manager
