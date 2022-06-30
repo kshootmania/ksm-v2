@@ -389,7 +389,7 @@ namespace
 
 		RelPulse m_length = 0;
 
-		ChartData* m_pTargetChartData = nullptr;
+		ChartData* m_pTargetChartData = nullptr; // TODO: this is troublesome
 
 		std::size_t m_targetLaneIdx = 0;
 
@@ -461,17 +461,15 @@ namespace
 		}
 	};
 
-	class PreparedLongFXNote : public AbstractPreparedLongNote
+	class PreparedLongFXNote : public AbstractPreparedLongNote // TODO: remove this bad inheritance
 	{
-	protected:
-		// FX audio effect string ("fx-l=" or "fx-r=" in .ksh)
-		std::string m_audioEffectStr;
-
-		// Legacy FX audio effect parameters ("fx-l_param1=" or "fx-r_param1=" in .ksh)
-		std::string m_audioEffectParamStr;
+	private:
+		std::optional<std::string> m_audioEffectStr;
+		std::optional<std::string> m_audioEffectParamStr;
+		bool m_isLegacyChar = false;
 
 	public:
-		PreparedLongFXNote() = default;
+		PreparedLongFXNote() = default; // TODO: this is troublesome
 
 		PreparedLongFXNote(ChartData* pTargetChartData, std::size_t targetLaneIdx)
 			: AbstractPreparedLongNote(pTargetChartData, targetLaneIdx)
@@ -480,22 +478,30 @@ namespace
 
 		virtual ~PreparedLongFXNote() = default;
 
-		void prepare(Pulse time) = delete;
-
-		void prepare(Pulse time, std::string_view audioEffectStr, std::string_view audioEffectParamStr)
+		void prepare(Pulse time)
 		{
-#ifdef KSM_EDITOR
-			if (m_prepared && (audioEffectStr != m_audioEffectStr || audioEffectParamStr != m_audioEffectParamStr))
+			if (m_isLegacyChar)
 			{
-				publishLongFXNote();
+				prepare(time, "", "", false); // If the long note starts with a legacy character (e.g., "F" = Flanger), insert no audio effect when it changes to "1"
+				return;
 			}
-#endif
-			if (!m_prepared)
+
+			AbstractPreparedLongNote::prepare(time);
+		}
+
+		// audioEffectStr: FX audio effect string ("fx-l=" or "fx-r=" in .ksh, e.g., "Retrigger;16", "Echo;8;70")
+		// audioEffectParamStr: Legacy FX audio effect parameters ("fx-l_param1=" or "fx-r_param1=" in .ksh)
+		void prepare(Pulse time, std::string_view audioEffectStr, std::string_view audioEffectParamStr, bool isLegacyChar)
+		{
+			if ((audioEffectStr != m_audioEffectStr || audioEffectParamStr != m_audioEffectParamStr) && (!audioEffectStr.empty() || m_prepared))
 			{
-				AbstractPreparedLongNote::prepare(time);
-				m_audioEffectStr = audioEffectStr;
-				m_audioEffectParamStr = audioEffectParamStr;
+				publishLongFXAudioEffectEvent(time, audioEffectStr, audioEffectParamStr);
 			}
+			m_audioEffectStr = audioEffectStr;
+			m_audioEffectParamStr = audioEffectParamStr;
+			m_isLegacyChar = isLegacyChar;
+
+			AbstractPreparedLongNote::prepare(time);
 		}
 
 		void publishLongFXNote()
@@ -505,55 +511,50 @@ namespace
 				return;
 			}
 
-			auto& targetLane = m_pTargetChartData->note.fx[m_targetLaneIdx];
-
 			// Publish prepared long FX note
-			const auto [_, inserted] = targetLane.emplace(
-				m_time,
-				m_length);
-
-			if (inserted)
-			{
-				auto [audioEffectName, audioEffectParamValue1, audioEffectParamValue2] = SplitAudioEffectStr(m_audioEffectStr);
-				if (!m_audioEffectParamStr.empty())
-				{
-					// Apply legacy FX audio effect parameters
-					audioEffectParamValue1 = ParseNumeric<std::int32_t>(m_audioEffectParamStr);
-				}
-				if (s_kshFXToKSONAudioEffectNameTable.contains(audioEffectName))
-				{
-					// Convert the name of preset audio effects
-					audioEffectName = s_kshFXToKSONAudioEffectNameTable.at(audioEffectName);
-				}
-				if (!audioEffectName.empty())
-				{
-					m_pTargetChartData->audio.audioEffect.fx.longEvent[audioEffectName][m_targetLaneIdx].emplace(m_time, AudioEffectParams{
-						// Store the value of the parameters in temporary keys
-						// (Since the conversion requires determining the type of audio effect, it is processed
-						//  after reading the "#define_fx"/"#define_filter" lines.)
-						{ "_param1", std::to_string(audioEffectParamValue1) },
-						{ "_param2", std::to_string(audioEffectParamValue2) },
-					});
-				}
-			}
+			m_pTargetChartData->note.fx[m_targetLaneIdx].emplace(m_time, m_length);
 
 			clear();
 		}
 
+		void publishLongFXAudioEffectEvent(Pulse time, std::string_view audioEffectStr, std::string_view audioEffectParamStr)
+		{
+			auto [audioEffectName, audioEffectParamValue1, audioEffectParamValue2] = SplitAudioEffectStr(audioEffectStr);
+			if (!audioEffectParamStr.empty())
+			{
+				// Apply legacy FX audio effect parameters
+				// Note: Legacy parameters do not support audioEffectParamValue2 (for Echo), so only audioEffectParamValue1 is sufficient.
+				audioEffectParamValue1 = ParseNumeric<std::int32_t>(audioEffectParamStr);
+			}
+			if (s_kshFXToKSONAudioEffectNameTable.contains(audioEffectName))
+			{
+				// Convert the name of preset audio effects
+				audioEffectName = s_kshFXToKSONAudioEffectNameTable.at(audioEffectName);
+			}
+			m_pTargetChartData->audio.audioEffect.fx.longEvent[audioEffectName][m_targetLaneIdx].emplace(time, AudioEffectParams{
+				// Store the value of the parameters in temporary keys
+				// (Since the conversion requires determining the type of audio effect, it is processed
+				//  after reading the "#define_fx"/"#define_filter" lines.)
+				{ "_param1", std::to_string(audioEffectParamValue1) },
+				{ "_param2", std::to_string(audioEffectParamValue2) },
+			});
+		}
+
 		virtual void clear() override
 		{
+			m_audioEffectStr = std::nullopt;
+			m_audioEffectParamStr = std::nullopt;
+			m_isLegacyChar = false;
 			AbstractPreparedLongNote::clear();
-			m_audioEffectStr.clear();
-			m_audioEffectParamStr.clear();
 		}
 	};
 
-	Pulse KSHLengthToMeasure(std::string_view str)
+	RelPulse KSHLengthToRelPulse(std::string_view str)
 	{
-		return ParseNumeric<Pulse>(str) * kResolution4 / 192;
+		return ParseNumeric<RelPulse>(str) * kResolution4 / 192;
 	}
 
-	std::tuple<Pulse, std::int32_t, std::int32_t, std::int32_t> SplitSwingParams(std::string_view paramStr)
+	std::tuple<RelPulse, std::int32_t, std::int32_t, std::int32_t> SplitSwingParams(std::string_view paramStr)
 	{
 		std::array<std::string, 4> params{
 			"192", "250", "3", "2"
@@ -570,7 +571,7 @@ namespace
 		}
 
 		return std::make_tuple(
-			KSHLengthToMeasure(params[0]),
+			KSHLengthToRelPulse(params[0]),
 			ParseNumeric<std::int32_t>(params[1]),
 			ParseNumeric<std::int32_t>(params[2]),
 			ParseNumeric<std::int32_t>(params[3]));
@@ -599,7 +600,7 @@ namespace
 		};
 		Direction direction = Direction::kUnspecified;
 
-		Pulse duration = 0;
+		RelPulse duration = 0;
 
 		std::int32_t swingAmplitude = 0;
 
@@ -679,7 +680,7 @@ namespace
 			}
 
 			// Specify the spin length
-			Pulse duration;
+			RelPulse duration;
 			std::int32_t swingAmplitude = 0, swingRepeat = 0, swingDecayOrder = 0;
 			if (type == Type::kNoSpin || direction == Direction::kUnspecified)
 			{
@@ -691,7 +692,7 @@ namespace
 			}
 			else
 			{
-				duration = KSHLengthToMeasure(strFromKsh.substr(2));
+				duration = KSHLengthToRelPulse(strFromKsh.substr(2));
 			}
 
 			return {
@@ -818,7 +819,7 @@ namespace
 		}
 	};
 
-	class PreparedLaserSection : public PreparedGraphSection // TODO: resolve this bad inheritance
+	class PreparedLaserSection : public PreparedGraphSection // TODO: remove this bad inheritance
 	{
 	private:
 		std::size_t m_targetLaneIdx = 0;
@@ -1462,7 +1463,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 		if (IsBarLine(line))
 		{
 			const std::size_t bufLineCount = chartLines.size();
-			const Pulse oneLinePulse = kResolution4 * currentTimeSig.numerator / currentTimeSig.denominator / bufLineCount;
+			const RelPulse oneLinePulse = kResolution4 * currentTimeSig.numerator / currentTimeSig.denominator / bufLineCount;
 
 			// Add options that require their position
 			for (const auto& [lineIdx, key, value] : optionLines)
@@ -1686,25 +1687,27 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 						case '0': // Empty
 							preparedLongNoteRef.publishLongFXNote();
 							break;
-						default:  // Long FX note
-							if (!preparedLongNoteRef.prepared())
+						case '1': // Long FX note
+							if (currentMeasureFXAudioEffectStrs[laneIdx].contains(i))
 							{
-								if (buf[j] == '1')
-								{
-									const std::string audioEffectStr = currentMeasureFXAudioEffectStrs[laneIdx].contains(i) ? currentMeasureFXAudioEffectStrs[laneIdx].at(i) : "";
-									const std::string audioEffectParamStr =
-										currentMeasureFXAudioEffectParamStrs[laneIdx].contains(i)
-										? currentMeasureFXAudioEffectParamStrs[laneIdx].at(i) // Note: Normally this is not used here because it's for legacy long FX chars
-										: "";
-									preparedLongNoteRef.prepare(time, audioEffectStr, audioEffectParamStr);
-								}
-								else
-								{
-									// Legacy long FX chars
-									const std::string audioEffectStr(KSHLegacyFXCharToKSHAudioEffectStr(buf[j]));
-									const std::string audioEffectParamStr = currentMeasureFXAudioEffectParamStrs[laneIdx].contains(i) ? currentMeasureFXAudioEffectParamStrs[laneIdx].at(i) : "";
-									preparedLongNoteRef.prepare(time, audioEffectStr, audioEffectParamStr);
-								}
+								const std::string audioEffectStr = currentMeasureFXAudioEffectStrs[laneIdx].at(i);
+								const std::string audioEffectParamStr =
+									currentMeasureFXAudioEffectParamStrs[laneIdx].contains(i)
+									? currentMeasureFXAudioEffectParamStrs[laneIdx].at(i) // Note: Normally this is not used here because it's for legacy long FX chars
+									: "";
+								preparedLongNoteRef.prepare(time, audioEffectStr, audioEffectParamStr, false);
+							}
+							else
+							{
+								preparedLongNoteRef.prepare(time);
+							}
+							preparedLongNoteRef.extendLength(oneLinePulse);
+							break;
+						default: // Long FX note (legacy characters, e.g., "F" = Flanger)
+							{
+								const std::string audioEffectStr(KSHLegacyFXCharToKSHAudioEffectStr(buf[j]));
+								const std::string audioEffectParamStr = currentMeasureFXAudioEffectParamStrs[laneIdx].contains(i) ? currentMeasureFXAudioEffectParamStrs[laneIdx].at(i) : "";
+								preparedLongNoteRef.prepare(time, audioEffectStr, audioEffectParamStr, true);
 							}
 							preparedLongNoteRef.extendLength(oneLinePulse);
 							break;
@@ -1845,93 +1848,107 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 			type = StrToAudioEffectType(audioEffectName);
 		}
 
-		assert(type != AudioEffectType::Unspecified);
+		assert(type != AudioEffectType::Unspecified || audioEffectName.empty());
 
-		for (auto& lane : lanes)
+		if (type == AudioEffectType::Unspecified)
 		{
-			for (auto& [y, params] : lane)
+			for (auto& lane : lanes)
 			{
-				// Convert temporary stored "_param1"/"_param2" values to parameter values for each audio effect type
-				if (params.contains("_param1") && params.contains("_param2"))
+				for (auto& [y, params] : lane)
 				{
-					std::string param1 = params.at("_param1");
-					std::string param2 = params.at("_param2");
-
-					// Replace unspecified values with defaults
-					if (param1 == kAudioEffectParamUnspecifiedStr)
+					params.erase("_param1");
+					params.erase("_param2");
+				}
+			}
+		}
+		else
+		{
+			for (auto& lane : lanes)
+			{
+				for (auto& [y, params] : lane)
+				{
+					// Convert temporary stored "_param1"/"_param2" values to parameter values for each audio effect type
+					if (params.contains("_param1") && params.contains("_param2"))
 					{
+						std::string param1 = params.at("_param1");
+						std::string param2 = params.at("_param2");
+
+						// Replace unspecified values with defaults
+						if (param1 == kAudioEffectParamUnspecifiedStr)
+						{
+							switch (type)
+							{
+							case AudioEffectType::Retrigger:
+								param1 = "8";
+								break;
+							case AudioEffectType::Gate:
+								param1 = "4";
+								break;
+							case AudioEffectType::Wobble:
+								param1 = "12";
+								break;
+							case AudioEffectType::PitchShift:
+								param1 = "12";
+								break;
+							case AudioEffectType::Bitcrusher:
+								param1 = "5";
+								break;
+							case AudioEffectType::Tapestop:
+								param1 = "50";
+								break;
+							case AudioEffectType::Echo:
+								param1 = "4";
+								break;
+							default:
+								param1 = "0";
+								break;
+							};
+						}
+						if (param2 == kAudioEffectParamUnspecifiedStr)
+						{
+							switch (type)
+							{
+							case AudioEffectType::Echo:
+								param2 = "60";
+								break;
+							default:
+								param2 = "0";
+								break;
+							};
+						}
+
+						// Insert parameter
 						switch (type)
 						{
 						case AudioEffectType::Retrigger:
-							param1 = "8";
-							break;
 						case AudioEffectType::Gate:
-							param1 = "4";
-							break;
 						case AudioEffectType::Wobble:
-							param1 = "12";
+							if (ParseNumeric<std::int32_t>(param1) > 0)
+							{
+								params.emplace("wave_length", "1/" + param1);
+							}
 							break;
 						case AudioEffectType::PitchShift:
-							param1 = "12";
+							params.emplace("pitch", param1);
 							break;
 						case AudioEffectType::Bitcrusher:
-							param1 = "5";
+							params.emplace("reduction", param1 + "samples");
 							break;
 						case AudioEffectType::Tapestop:
-							param1 = "50";
+							params.emplace("speed", param1 + "%");
 							break;
 						case AudioEffectType::Echo:
-							param1 = "4";
-							break;
-						default:
-							param1 = "0";
-							break;
-						};
-					}
-					if (param2 == kAudioEffectParamUnspecifiedStr)
-					{
-						switch (type)
-						{
-						case AudioEffectType::Echo:
-							param2 = "60";
-							break;
-						default:
-							param2 = "0";
+							if (ParseNumeric<std::int32_t>(param1) > 0)
+							{
+								params.emplace("wave_length", "1/" + param1);
+							}
+							params.emplace("feedback", param2 + "%");
 							break;
 						};
-					}
 
-					// Insert parameter
-					switch (type)
-					{
-					case AudioEffectType::Retrigger:
-					case AudioEffectType::Gate:
-					case AudioEffectType::Wobble:
-						if (ParseNumeric<std::int32_t>(param1) > 0)
-						{
-							params.emplace("wave_length", "1/" + param1);
-						}
-						break;
-					case AudioEffectType::PitchShift:
-						params.emplace("pitch", param1);
-						break;
-					case AudioEffectType::Bitcrusher:
-						params.emplace("reduction", param1 + "samples");
-						break;
-					case AudioEffectType::Tapestop:
-						params.emplace("speed", param1 + "%");
-						break;
-					case AudioEffectType::Echo:
-						if (ParseNumeric<std::int32_t>(param1) > 0)
-						{
-							params.emplace("wave_length", "1/" + param1);
-						}
-						params.emplace("feedback", param2 + "%");
-						break;
-					};
-					
-					params.erase("_param1");
-					params.erase("_param2");
+						params.erase("_param1");
+						params.erase("_param2");
+					}
 				}
 			}
 		}

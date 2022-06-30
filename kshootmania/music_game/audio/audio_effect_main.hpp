@@ -24,7 +24,7 @@ namespace MusicGame::Audio
 		void registerAudioEffects(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache);
 
 		kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> currentActiveAudioEffectsFX(
-			const std::array<Optional<kson::Pulse>, kson::kNumFXLanes>& longNotePulseOfLanes) const;
+			const std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanes>& longNoteOfLanes, kson::Pulse currentPulseForAudio) const;
 		
 	public:
 		AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache);
