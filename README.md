@@ -15,5 +15,5 @@ K-Shoot MANIA v1 Remake
 
 - Visual Studio 2022
     - Install "Desktop development with C++" from the Visual Studio Installer
-- OpenSiv3D 0.6.3 (installed to Visual Studio 2022)
+- OpenSiv3D 0.6.4 (installed to Visual Studio 2022)
     - Installer: https://github.com/Siv3D/OpenSiv3D#downloads
