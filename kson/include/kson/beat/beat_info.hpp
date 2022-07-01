@@ -9,5 +9,7 @@ namespace kson
 		ByPulse<double> bpm;
 
 		ByMeasureIdx<TimeSig> timeSig;
+
+		Graph scrollSpeed;
 	};
 }

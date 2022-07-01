@@ -444,7 +444,7 @@ namespace
 		nlohmann::json j = nlohmann::json::object();
 		WriteByPulse(j, "bpm", d.bpm);
 		WriteTimeSigByMeasureIdx(j, "time_sig", d.timeSig);
-		// TODO: scroll_speed
+		WriteGraph(j, "scroll_speed", d.scrollSpeed);
 		return j;
 	}
 

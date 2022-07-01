@@ -1277,6 +1277,7 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 	std::vector<BufOptionLine> optionLines;
 	std::vector<BufCommentLine> commentLines;
 	std::vector<BufUnknownLine> unknownLines;
+	ByPulse<std::int32_t> relScrollSpeeds;
 	PreparedLongNoteArray preparedLongNoteArray(&chartData);
 
 	// GraphSections buffers
@@ -1481,6 +1482,27 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 						InsertBPMChange(chartData.beat.bpm, time, value);
 					}
 				}
+				else if (key == "stop")
+				{
+					if (relScrollSpeeds.contains(time))
+					{
+						relScrollSpeeds.at(time) -= 1;
+					}
+					else
+					{
+						relScrollSpeeds.emplace(time, -1);
+					}
+
+					const Pulse endTime = time + KSHLengthToRelPulse(value);
+					if (relScrollSpeeds.contains(endTime))
+					{
+						relScrollSpeeds.at(endTime) += 1;
+					}
+					else
+					{
+						relScrollSpeeds.emplace(endTime, 1);
+					}
+				}
 				else if (key == "zoom_top")
 				{
 					const double dValue = ParseNumeric<double>(std::string_view(value).substr(0, zoomMaxChar)) * kKSHToKSONCamScale;
@@ -1621,7 +1643,10 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 					if (!a[kAudioEffectNameIdx].empty() && !a[kParamNameIdx].empty())
 					{
 						auto& paramChange = isFX ? chartData.audio.audioEffect.fx.paramChange : chartData.audio.audioEffect.laser.paramChange;
-						paramChange[a[kAudioEffectNameIdx]][a[kParamNameIdx]].insert_or_assign(time, value);
+						if (s_audioEffectParamNameTable.contains(a[kParamNameIdx]))
+						{
+							paramChange[a[kAudioEffectNameIdx]][std::string(s_audioEffectParamNameTable.at(a[kParamNameIdx]))].insert_or_assign(time, value);
+						}
 					}
 				}
 				else
@@ -1831,6 +1856,26 @@ kson::ChartData kson::LoadKSHChartData(std::istream& stream)
 	for (auto& preparedFXSection : preparedLongNoteArray.laser)
 	{
 		preparedFXSection.publishLaserNote();
+	}
+
+	// Convert scroll speeds
+	{
+		std::int32_t currentSpeed = 1;
+		for (const auto& [y, relSpeed] : relScrollSpeeds)
+		{
+			if (y < 0) [[unlikely]]
+			{
+				continue;
+			}
+
+			currentSpeed += relSpeed;
+			chartData.beat.scrollSpeed.emplace(y, static_cast<double>(currentSpeed));
+		}
+
+		if (!chartData.beat.scrollSpeed.contains(0))
+		{
+			chartData.beat.scrollSpeed.emplace(0, 1.0);
+		}
 	}
 
 	// Convert FX parameters

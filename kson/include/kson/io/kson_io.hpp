@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef KSON_WITHOUT_JSON_DEPENDENCY
 #include "kson/chart_data.hpp"
 
