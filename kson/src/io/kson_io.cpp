@@ -756,6 +756,7 @@ namespace
 bool kson::SaveKSONChartData(std::ostream& stream, const ChartData& chartData)
 {
 	nlohmann::json json = nlohmann::json::object();
+	Write(json, "version", "0.4.0");
 	Write(json, "meta", ToJSON(chartData.meta));
 	Write(json, "beat", ToJSON(chartData.beat));
 	Write(json, "gauge", ToJSON(chartData.gauge));
@@ -766,7 +767,7 @@ bool kson::SaveKSONChartData(std::ostream& stream, const ChartData& chartData)
 	Write(json, "editor", ToJSON(chartData.editor));
 	Write(json, "compat", ToJSON(chartData.compat));
 	Write(json, "impl", chartData.impl);
-	stream << json;
+	stream << json.dump(-1, ' ', false, nlohmann::detail::error_handler_t::replace);
 	return true;
 }
 
