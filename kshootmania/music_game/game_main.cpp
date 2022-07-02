@@ -34,7 +34,7 @@ void MusicGame::GameMain::updateGameStatus()
 {
 	const double currentTimeSec = m_bgm.posSec();
 	const kson::Pulse currentPulse = kson::SecToPulse(currentTimeSec, m_chartData.beat, m_timingCache);
-	const double currentBPM = kson::PulseTempo(currentPulse, m_chartData.beat);
+	const double currentBPM = kson::TempoAt(currentPulse, m_chartData.beat);
 	m_gameStatus.currentTimeSec = currentTimeSec;
 	m_gameStatus.currentPulse = currentPulse;
 	m_gameStatus.currentBPM = currentBPM;

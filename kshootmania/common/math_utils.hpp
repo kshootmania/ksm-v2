@@ -45,17 +45,5 @@ namespace MathUtils
 		}
 	}
 
-	template <typename T>
-	constexpr kson::Ms SecToMs(T sec)
-	{
-		return static_cast<kson::Ms>(sec * 1000);
-	}
-
-	template <typename T = double>
-	constexpr T MsToSec(kson::Ms ms)
-	{
-		return static_cast<T>(ms / 1000);
-	}
-
 	int32 NumDigits(int32 number);
 }

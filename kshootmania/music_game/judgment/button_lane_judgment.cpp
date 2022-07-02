@@ -53,7 +53,7 @@ namespace
 			{
 				// Determine whether to halve the combo based on the BPM at the start of the note
 				// (BPM changes during the notes are ignored)
-				const bool halvesCombo = kson::PulseTempo(y, beatInfo) >= kHalveComboBPMThreshold;
+				const bool halvesCombo = kson::TempoAt(y, beatInfo) >= kHalveComboBPMThreshold;
 				const kson::RelPulse minPulseInterval = halvesCombo ? (kson::kResolution4 * 3 / 8) : (kson::kResolution4 * 3 / 16);
 				const kson::RelPulse pulseInterval = halvesCombo ? (kson::kResolution4 / 8) : (kson::kResolution4 / 16);
 
@@ -79,7 +79,7 @@ namespace
 
 	bool IsDuringLongNote(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse)
 	{
-		const auto& currentNoteItr = kson::CurrentAt(lane, currentPulse);
+		const auto& currentNoteItr = kson::ValueItrAt(lane, currentPulse);
 		if (currentNoteItr != lane.end())
 		{
 			const auto& [y, note] = *currentNoteItr;

@@ -44,7 +44,7 @@ namespace MusicGame::Audio
 
 		Optional<std::pair<kson::Pulse, kson::Interval>> CurrentLongNoteByTime(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse)
 		{
-			const auto currentNoteItr = kson::CurrentAt(lane, currentPulse);
+			const auto currentNoteItr = kson::ValueItrAt(lane, currentPulse);
 			if (currentNoteItr != lane.end())
 			{
 				const auto& [y, currentNote] = *currentNoteItr;
@@ -135,7 +135,7 @@ namespace MusicGame::Audio
 			}
 
 			const auto& [longNoteY, longNote] = *currentLongNoteOfLanes[laneIdx];
-			const auto itr = kson::CurrentAt(m_longFXNoteAudioEffectNames[laneIdx], currentPulseForAudio);
+			const auto itr = kson::ValueItrAt(m_longFXNoteAudioEffectNames[laneIdx], currentPulseForAudio);
 			if (itr == m_longFXNoteAudioEffectNames[laneIdx].end())
 			{
 				continue;
@@ -168,7 +168,7 @@ namespace MusicGame::Audio
 		const double currentTimeSec = bgm.posSec();
 		const double currentTimeSecForAudio = currentTimeSec + bgm.latencySec(); // Note: In BASS v2.4.13 and later, for unknown reasons, the effects are out of sync even after adding this latency.
 		const kson::Pulse currentPulseForAudio = kson::SecToPulse(currentTimeSecForAudio, chartData.beat, timingCache);
-		const double currentBPMForAudio = kson::PulseTempo(currentPulseForAudio, chartData.beat);
+		const double currentBPMForAudio = kson::TempoAt(currentPulseForAudio, chartData.beat);
 
 		// FX audio effects
 		bool bypassFX = true;

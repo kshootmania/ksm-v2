@@ -12,7 +12,7 @@ namespace
 
 	kson::RelPulse ParamChangeUpdatePeriodDyAt(const kson::ByPulse<std::string>& updatePeriodChanges, kson::Pulse y, kson::RelPulse defDy)
 	{
-		const auto itr = kson::CurrentAt(updatePeriodChanges, y);
+		const auto itr = kson::ValueItrAt(updatePeriodChanges, y);
 		if (itr == updatePeriodChanges.end() || itr->first > y)
 		{
 			return defDy;

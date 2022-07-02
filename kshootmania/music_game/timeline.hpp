@@ -39,7 +39,7 @@ namespace MusicGame
 				return false;
 			}
 
-			const auto itr = detail::CurrentAt(m_map, m_time);
+			const auto itr = detail::ValueItrAt(m_map, m_time);
 			m_cursorItr = itr;
 			m_nextCursorItr = itr == m_map.cend() ? itr : std::next(itr);
 
