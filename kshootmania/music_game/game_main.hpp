@@ -26,8 +26,8 @@ namespace MusicGame
 		const kson::TimingCache m_timingCache;
 
 		// Judgment
-		std::array<Judgment::ButtonLaneJudgment, kson::kNumBTLanes> m_btLaneJudgments;
-		std::array<Judgment::ButtonLaneJudgment, kson::kNumFXLanes> m_fxLaneJudgments;
+		std::array<Judgment::ButtonLaneJudgment, kson::kNumBTLanesSZ> m_btLaneJudgments;
+		std::array<Judgment::ButtonLaneJudgment, kson::kNumFXLanesSZ> m_fxLaneJudgments;
 		const int32 m_scoreFactorMax;
 
 		// Audio

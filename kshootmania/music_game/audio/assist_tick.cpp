@@ -32,10 +32,10 @@ void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, cons
 		return;
 	}
 
-	const kson::Pulse currentPulseForAssistTick = kson::TimingUtils::SecToPulse(currentTimeSec + kLatencySec, chartData.beat, timingCache);
+	const kson::Pulse currentPulseForAssistTick = kson::SecToPulse(currentTimeSec + kLatencySec, chartData.beat, timingCache);
 
 	// BT notes
-	for (std::size_t i = 0; i < kson::kNumBTLanes; ++i)
+	for (std::size_t i = 0; i < kson::kNumBTLanesSZ; ++i)
 	{
 		const kson::Pulse currentNotePulse = CurrentNotePulse(chartData.note.bt[i], currentPulseForAssistTick);
 		if (currentNotePulse > m_btPlayedPulses[i])
@@ -48,7 +48,7 @@ void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, cons
 	}
 
 	// FX notes
-	for (std::size_t i = 0; i < kson::kNumFXLanes; ++i)
+	for (std::size_t i = 0; i < kson::kNumFXLanesSZ; ++i)
 	{
 		const kson::Pulse currentNotePulse = CurrentNotePulse(chartData.note.fx[i], currentPulseForAssistTick);
 		if (currentNotePulse > m_fxPlayedPulses[i])

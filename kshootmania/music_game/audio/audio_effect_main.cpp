@@ -14,7 +14,7 @@ namespace MusicGame::Audio
 			kson::FXLane<std::string> convertedLongEvent;
 			for (const auto& [audioEffectName, lanes] : longEvent)
 			{
-				for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+				for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 				{
 					for (const auto& [y, _] : lanes[i])
 					{
@@ -31,7 +31,7 @@ namespace MusicGame::Audio
 			kson::FXLane<ksmaudio::AudioEffect::ParamValueSetDict> convertedLongEvent;
 			for (const auto& [_, lanes] : longEvent)
 			{
-				for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+				for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 				{
 					for (const auto& [y, dict] : lanes[i])
 					{
@@ -62,7 +62,7 @@ namespace MusicGame::Audio
 		using AudioEffectUtils::PrecalculateUpdateTriggerTiming;
 
 		const std::int64_t totalMeasures =
-			kson::TimingUtils::SecToMeasureIdx(bgm.durationSec(), chartData.beat, timingCache)
+			kson::SecToMeasureIdx(bgm.durationSec(), chartData.beat, timingCache)
 			+ 1/* add last measure */
 			+ 1/* index to size */;
 
@@ -118,16 +118,16 @@ namespace MusicGame::Audio
 	}
 
 	kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> AudioEffectMain::currentActiveAudioEffectsFX(
-		const std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanes>& currentLongNoteOfLanes, kson::Pulse currentPulseForAudio) const
+		const std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ>& currentLongNoteOfLanes, kson::Pulse currentPulseForAudio) const
 	{
 		kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> audioEffects; // TODO: Use IDs instead of names
-		for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 		{
 			// The first lane processed is the one where a long note was last pressed.
 			// Note that Dict<T>::emplace() ignores a second insertion of the same key.
-			static_assert(kson::kNumFXLanes == 2U);
-			const std::size_t laneIdx = (i == 0) ? m_lastPressedLongFXNoteLaneIdx : (1U - m_lastPressedLongFXNoteLaneIdx); // This code assumes kNumFXLanes is 2
-			assert(laneIdx < kson::kNumFXLanes);
+			static_assert(kson::kNumFXLanesSZ == 2U);
+			const std::size_t laneIdx = (i == 0) ? m_lastPressedLongFXNoteLaneIdx : (1U - m_lastPressedLongFXNoteLaneIdx); // This code assumes kNumFXLanesSZ is 2
+			assert(laneIdx < kson::kNumFXLanesSZ);
 
 			if (!currentLongNoteOfLanes[laneIdx].has_value())
 			{
@@ -167,13 +167,13 @@ namespace MusicGame::Audio
 	{
 		const double currentTimeSec = bgm.posSec();
 		const double currentTimeSecForAudio = currentTimeSec + bgm.latencySec(); // Note: In BASS v2.4.13 and later, for unknown reasons, the effects are out of sync even after adding this latency.
-		const kson::Pulse currentPulseForAudio = kson::TimingUtils::SecToPulse(currentTimeSecForAudio, chartData.beat, timingCache);
-		const double currentBPMForAudio = kson::TimingUtils::PulseTempo(currentPulseForAudio, chartData.beat);
+		const kson::Pulse currentPulseForAudio = kson::SecToPulse(currentTimeSecForAudio, chartData.beat, timingCache);
+		const double currentBPMForAudio = kson::PulseTempo(currentPulseForAudio, chartData.beat);
 
 		// FX audio effects
 		bool bypassFX = true;
-		std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanes> currentLongNoteOfLanes;
-		for (std::size_t i = 0; i < kson::kNumFXLanes; ++i)
+		std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ> currentLongNoteOfLanes;
+		for (std::size_t i = 0; i < kson::kNumFXLanesSZ; ++i)
 		{
 			const auto currentLongNoteByTime = CurrentLongNoteByTime(chartData.note.fx[i], currentPulseForAudio);
 
@@ -183,7 +183,7 @@ namespace MusicGame::Audio
 			// Implementation in HSP: https://github.com/m4saka/kshootmania-v1-hsp/blob/19bfb6acbec8abd304b2e7dae6009df8e8e1f66f/src/scene/play/play_audio_effects.hsp#L488
 			if (currentLongNoteByTime.has_value()
 				&& (inputStatus.longFXPressed[i].value_or(true)
-					|| (currentTimeSec - kson::TimingUtils::PulseToSec(currentLongNoteByTime->first, chartData.beat, timingCache)) < kLongFXNoteAudioEffectAutoPlaySec))
+					|| (currentTimeSec - kson::PulseToSec(currentLongNoteByTime->first, chartData.beat, timingCache)) < kLongFXNoteAudioEffectAutoPlaySec))
 			{
 				currentLongNoteOfLanes[i] = currentLongNoteByTime;
 				bypassFX = false;

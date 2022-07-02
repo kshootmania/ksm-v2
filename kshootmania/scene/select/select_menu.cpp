@@ -98,7 +98,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 				}
 
 				const kson::MetaChartData chartData = kson::LoadKSHMetaChartData(chartFile.narrow());
-				if (chartData.error != kson::Error::kNone)
+				if (chartData.error != kson::Error::None)
 				{
 					Logger << U"[SelectMenu] KSH Loading Error (" << static_cast<int32>(chartData.error) << U"): " << chartFile;
 					continue;

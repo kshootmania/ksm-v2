@@ -47,8 +47,8 @@ namespace MusicGame
 		kson::Pulse currentPulse = 0;
 		double currentBPM = 120.0;
 		
-		std::array<LaneStatus, kson::kNumBTLanes> btLaneStatus;
-		std::array<LaneStatus, kson::kNumFXLanes> fxLaneStatus;
+		std::array<LaneStatus, kson::kNumBTLanesSZ> btLaneStatus;
+		std::array<LaneStatus, kson::kNumFXLanesSZ> fxLaneStatus;
 
 		std::size_t lastPressedLongFXNoteLaneIdx = 0U; // For audio effect parameter priority
 

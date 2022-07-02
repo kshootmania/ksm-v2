@@ -25,10 +25,10 @@ void MusicGame::Graphics::KeyBeamGraphics::draw(const GameStatus& gameStatus, co
 	const ScopedRenderTarget2D renderTarget(additiveTarget);
 	const ScopedRenderStates2D renderState(BlendState::Additive);
 
-	for (std::size_t i = 0; i < kson::kNumBTLanes + kson::kNumFXLanes; ++i)
+	for (std::size_t i = 0; i < kson::kNumBTLanesSZ + kson::kNumFXLanesSZ; ++i)
 	{
-		const bool isBT = (i < kson::kNumBTLanes);
-		const std::size_t laneIdx = isBT ? i : (i - kson::kNumBTLanes);
+		const bool isBT = (i < kson::kNumBTLanesSZ);
+		const std::size_t laneIdx = isBT ? i : (i - kson::kNumBTLanesSZ);
 		const LaneStatus& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
 
 		const double sec = gameStatus.currentTimeSec - laneStatus.keyBeamTimeSec;

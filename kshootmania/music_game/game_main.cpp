@@ -33,20 +33,20 @@ namespace
 void MusicGame::GameMain::updateGameStatus()
 {
 	const double currentTimeSec = m_bgm.posSec();
-	const kson::Pulse currentPulse = kson::TimingUtils::SecToPulse(currentTimeSec, m_chartData.beat, m_timingCache);
-	const double currentBPM = kson::TimingUtils::PulseTempo(currentPulse, m_chartData.beat);
+	const kson::Pulse currentPulse = kson::SecToPulse(currentTimeSec, m_chartData.beat, m_timingCache);
+	const double currentBPM = kson::PulseTempo(currentPulse, m_chartData.beat);
 	m_gameStatus.currentTimeSec = currentTimeSec;
 	m_gameStatus.currentPulse = currentPulse;
 	m_gameStatus.currentBPM = currentBPM;
 
 	// BT lane judgments
-	for (std::size_t i = 0U; i < kson::kNumBTLanes; ++i)
+	for (std::size_t i = 0U; i < kson::kNumBTLanesSZ; ++i)
 	{
 		m_btLaneJudgments[i].update(m_chartData.note.bt[i], currentPulse, currentTimeSec, m_gameStatus.btLaneStatus[i]);
 	}
 
 	// FX lane judgments
-	for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+	for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 	{
 		m_fxLaneJudgments[i].update(m_chartData.note.fx[i], currentPulse, currentTimeSec, m_gameStatus.fxLaneStatus[i]);
 	}
@@ -58,7 +58,7 @@ void MusicGame::GameMain::updateGameStatus()
 
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	: m_chartData(kson::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
-	, m_timingCache(kson::TimingUtils::CreateTimingCache(m_chartData.beat))
+	, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
 	, m_btLaneJudgments{
 			Judgment::ButtonLaneJudgment(kBTButtons[0], m_chartData.note.bt[0], m_chartData.beat, m_timingCache),
 			Judgment::ButtonLaneJudgment(kBTButtons[1], m_chartData.note.bt[1], m_chartData.beat, m_timingCache),
@@ -89,8 +89,8 @@ void MusicGame::GameMain::update()
 	updateGameStatus();
 
 	// Audio effects
-	std::array<Optional<bool>, kson::kNumFXLanes> longFXPressed;
-	for (std::size_t i = 0U; i < kson::kNumFXLanes; ++i)
+	std::array<Optional<bool>, kson::kNumFXLanesSZ> longFXPressed;
+	for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 	{
 		longFXPressed[i] = m_gameStatus.fxLaneStatus[i].longNotePressed;
 	}

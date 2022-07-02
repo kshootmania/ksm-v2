@@ -1,0 +1,3 @@
+[submodule "kson"]
+	path = kson
+	url = https://github.com/m4saka/libkson.git

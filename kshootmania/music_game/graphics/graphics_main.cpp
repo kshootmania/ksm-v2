@@ -107,7 +107,7 @@ MusicGame::Graphics::GraphicsMain::GraphicsMain(const kson::ChartData& chartData
 	, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
 	, m_songInfoPanel(chartData)
 	, m_gaugePanel(kNormalGauge/* TODO: gauge type */)
-	, m_initialPulse(kson::TimingUtils::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
+	, m_initialPulse(kson::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
 {
 }
 

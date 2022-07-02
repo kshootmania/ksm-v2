@@ -28,7 +28,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const kson::Ch
 	const ScopedRenderTarget2D renderTarget(additiveTarget);
 	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
-	for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanes : kson::kNumFXLanes); ++laneIdx)
+	for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ); ++laneIdx)
 	{
 		const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
 		for (const auto& [y, note] : lane)
@@ -74,7 +74,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const kson::Ch
 
 	const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
-	for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanes : kson::kNumFXLanes); ++laneIdx)
+	for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ); ++laneIdx)
 	{
 		const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
 		for (const auto& [y, note] : lane)

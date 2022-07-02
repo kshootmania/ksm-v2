@@ -12,8 +12,8 @@ namespace MusicGame::Audio
 		s3d::Audio m_btTickSound;
 		s3d::Audio m_fxTickSound;
 
-		std::array<kson::Pulse, kson::kNumBTLanes> m_btPlayedPulses = { kPastPulse, kPastPulse, kPastPulse, kPastPulse };
-		std::array<kson::Pulse, kson::kNumFXLanes> m_fxPlayedPulses = { kPastPulse, kPastPulse };
+		std::array<kson::Pulse, kson::kNumBTLanesSZ> m_btPlayedPulses = { kPastPulse, kPastPulse, kPastPulse, kPastPulse };
+		std::array<kson::Pulse, kson::kNumFXLanesSZ> m_fxPlayedPulses = { kPastPulse, kPastPulse };
 
 	public:
 		explicit AssistTick(bool enabled);

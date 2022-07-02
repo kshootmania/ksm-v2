@@ -15,12 +15,12 @@ namespace
 		{
 			if (!pulseToSec.contains(y))
 			{
-				const double sec = kson::TimingUtils::PulseToSec(y, beatInfo, timingCache);
+				const double sec = kson::PulseToSec(y, beatInfo, timingCache);
 				pulseToSec.emplace(y, sec);
 			}
 			if (!pulseToSec.contains(y + note.length))
 			{
-				const double sec = kson::TimingUtils::PulseToSec(y + note.length, beatInfo, timingCache);
+				const double sec = kson::PulseToSec(y + note.length, beatInfo, timingCache);
 				pulseToSec.emplace(y + note.length, sec);
 			}
 		}
@@ -53,7 +53,7 @@ namespace
 			{
 				// Determine whether to halve the combo based on the BPM at the start of the note
 				// (BPM changes during the notes are ignored)
-				const bool halvesCombo = kson::TimingUtils::PulseTempo(y, beatInfo) >= kHalveComboBPMThreshold;
+				const bool halvesCombo = kson::PulseTempo(y, beatInfo) >= kHalveComboBPMThreshold;
 				const kson::RelPulse minPulseInterval = halvesCombo ? (kson::kResolution4 * 3 / 8) : (kson::kResolution4 * 3 / 16);
 				const kson::RelPulse pulseInterval = halvesCombo ? (kson::kResolution4 / 8) : (kson::kResolution4 / 16);
 

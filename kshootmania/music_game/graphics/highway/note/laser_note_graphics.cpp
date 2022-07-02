@@ -70,7 +70,7 @@ void MusicGame::Graphics::LaserNoteGraphics::draw(const kson::ChartData& chartDa
 	};
 
 	// Draw laser notes
-	for (std::size_t laneIdx = 0; laneIdx < kson::kNumLaserLanes; ++laneIdx)
+	for (std::size_t laneIdx = 0; laneIdx < kson::kNumLaserLanesSZ; ++laneIdx)
 	{
 		const auto& lane = chartData.note.laser[laneIdx];
 		for (const auto& [y, laserSection] : lane)

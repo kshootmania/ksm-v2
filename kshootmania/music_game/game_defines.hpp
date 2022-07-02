@@ -10,14 +10,14 @@ namespace MusicGame
 		return movie ? kTimeSecBeforeStartMovie : kTimeSecBeforeStart;
 	}
 
-	const std::array<KeyConfig::Button, kson::kNumBTLanes> kBTButtons = {
+	const std::array<KeyConfig::Button, kson::kNumBTLanesSZ> kBTButtons = {
 		KeyConfig::kBT_A,
 		KeyConfig::kBT_B,
 		KeyConfig::kBT_C,
 		KeyConfig::kBT_D,
 	};
 
-	const std::array<KeyConfig::Button, kson::kNumFXLanes> kFXButtons = {
+	const std::array<KeyConfig::Button, kson::kNumFXLanesSZ> kFXButtons = {
 		KeyConfig::kFX_L,
 		KeyConfig::kFX_R,
 	};
