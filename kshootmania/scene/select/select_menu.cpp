@@ -125,6 +125,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 					.chartFilePath = FileSystem::FullPath(chartFile),
 					.chartAuthor = FromUTF8(chartData.meta.chartAuthor),
 					.level = chartData.meta.level,
+					.previewBGMFilePath = FileSystem::FullPath(FileSystem::ParentPath(chartFile) + FromUTF8(chartData.audio.bgm.filename)),
 					.previewBGMOffsetSec = chartData.audio.bgm.preview.offset / 1000.0,
 					.previewBGMDurationSec = chartData.audio.bgm.preview.duration / 1000.0,
 					.iconFilePath = U""/*TODO*/,
