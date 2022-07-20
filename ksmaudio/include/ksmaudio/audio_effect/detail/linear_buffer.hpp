@@ -36,17 +36,17 @@ namespace ksmaudio::AudioEffect::detail
     public:
         explicit LinearBuffer(std::size_t size, std::size_t numChannels)
             : m_buffer(size, T{ 0 })
-            , m_numFrames(size / numChannels)
+            , m_numFrames(numChannels == 0U ? 0U : size / numChannels)
             , m_numChannels(numChannels)
         {
-            assert(m_numChannels > 0);
-            assert(size % m_numChannels == 0);
+            assert(m_numChannels > 0U);
+            assert(size % m_numChannels == 0U);
             m_buffer.shrink_to_fit();
         }
 
         void write(const T* pData, std::size_t size)
         {
-            assert(size % m_numChannels == 0);
+            assert(size % m_numChannels == 0U);
 
             const std::size_t frameSize = size / m_numChannels;
             const std::size_t numWriteFrames = std::min(frameSize, m_numFrames - m_writeCursorFrame);
@@ -60,7 +60,7 @@ namespace ksmaudio::AudioEffect::detail
 
         void read(T* pData, std::size_t size, std::size_t numLoopFrames, std::size_t numNonZeroFrames, float mix = 1.0f)
         {
-            assert(size % m_numChannels == 0);
+            assert(size % m_numChannels == 0U);
 
             if (numLoopFrames > m_numFrames) [[unlikely]]
             {
