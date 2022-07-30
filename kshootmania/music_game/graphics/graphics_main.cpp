@@ -98,14 +98,14 @@ void MusicGame::Graphics::GraphicsMain::drawLayer(const kson::ChartData& chartDa
 	}
 }
 
-MusicGame::Graphics::GraphicsMain::GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+MusicGame::Graphics::GraphicsMain::GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath, const kson::TimingCache& timingCache)
 	: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 	, m_bgBillboardMesh(MeshData::Billboard())
 	, m_bgTexture(BGFilePath(chartData))
 	, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
 	, m_layerFrameTextures(SplitLayerTexture(LayerFilePath(chartData)))
 	, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
-	, m_songInfoPanel(chartData)
+	, m_songInfoPanel(chartData, parentPath)
 	, m_gaugePanel(kNormalGauge/* TODO: gauge type */)
 	, m_initialPulse(kson::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
 {

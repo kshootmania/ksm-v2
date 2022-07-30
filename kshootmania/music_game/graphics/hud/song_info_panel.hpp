@@ -24,7 +24,7 @@ namespace MusicGame::Graphics
 		const int32 m_level;
 
 	public:
-		explicit SongInfoPanel(const kson::ChartData& chartData);
+		SongInfoPanel(const kson::ChartData& chartData, FilePathView parentPath);
 
 		void draw(double currentBPM) const;
 	};

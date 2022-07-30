@@ -73,7 +73,7 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
 	, m_assistTick(gameCreateInfo.enableAssistTick)
 	, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)
-	, m_graphicsMain(m_chartData, m_timingCache)
+	, m_graphicsMain(m_chartData, FileSystem::ParentPath(gameCreateInfo.chartFilePath), m_timingCache)
 {
 	m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 	m_bgm.play();
