@@ -21,6 +21,8 @@ namespace MusicGame
 	private:
 		GameStatus m_gameStatus;
 
+		FilePath m_parentPath;
+
 		// Chart
 		const kson::ChartData m_chartData;
 		const kson::TimingCache m_timingCache;

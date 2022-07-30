@@ -57,7 +57,8 @@ void MusicGame::GameMain::updateGameStatus()
 }
 
 MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
-	: m_chartData(kson::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
+	: m_parentPath(FileSystem::ParentPath(gameCreateInfo.chartFilePath))
+	, m_chartData(kson::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
 	, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
 	, m_btLaneJudgments{
 			Judgment::ButtonLaneJudgment(kBTButtons[0], m_chartData.note.bt[0], m_chartData.beat, m_timingCache),
@@ -70,10 +71,10 @@ MusicGame::GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
 			Judgment::ButtonLaneJudgment(kFXButtons[1], m_chartData.note.fx[1], m_chartData.beat, m_timingCache),
 		}
 	, m_scoreFactorMax(SumScoreFactorMax(m_btLaneJudgments) + SumScoreFactorMax(m_fxLaneJudgments)) // TODO: add laser
-	, m_bgm(FileSystem::ParentPath(gameCreateInfo.chartFilePath) + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
+	, m_bgm(m_parentPath + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
 	, m_assistTick(gameCreateInfo.enableAssistTick)
 	, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)
-	, m_graphicsMain(m_chartData, FileSystem::ParentPath(gameCreateInfo.chartFilePath), m_timingCache)
+	, m_graphicsMain(m_chartData, m_parentPath, m_timingCache)
 {
 	m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 	m_bgm.play();
