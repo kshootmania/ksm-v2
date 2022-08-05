@@ -100,7 +100,7 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	GraphicsMain::GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath, const kson::TimingCache& timingCache)
+	GraphicsMain::GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath)
 		: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 		, m_bgBillboardMesh(MeshData::Billboard())
 		, m_bgTexture(BGFilePath(chartData))
@@ -109,7 +109,6 @@ namespace MusicGame::Graphics
 		, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
 		, m_songInfoPanel(chartData, parentPath)
 		, m_gaugePanel(kNormalGauge/* TODO: gauge type */)
-		, m_initialPulse(kson::MsToPulse(TimeSecBeforeStart(false/* TODO: movie */), chartData.beat, timingCache))
 	{
 	}
 

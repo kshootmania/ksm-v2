@@ -72,7 +72,7 @@ namespace MusicGame
 		, m_bgm(m_parentPath + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
 		, m_assistTick(gameCreateInfo.enableAssistTick)
 		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)
-		, m_graphicsMain(m_chartData, m_parentPath, m_timingCache)
+		, m_graphicsMain(m_chartData, m_parentPath)
 	{
 		m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 		m_bgm.play();
