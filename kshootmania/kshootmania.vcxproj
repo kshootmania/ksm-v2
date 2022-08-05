@@ -143,7 +143,7 @@
     <ClCompile Include="music_game\graphics\hud\score_panel.cpp" />
     <ClCompile Include="music_game\graphics\hud\song_info_panel.cpp" />
     <ClCompile Include="music_game\graphics\jdgline\jdgline_3d_graphics.cpp" />
-    <ClCompile Include="music_game\graphics\jdgoverlay\jdgoverlay_3d_graphics.cpp" />
+    <ClCompile Include="music_game\graphics\jdgline\jdgoverlay_3d_graphics.cpp" />
     <ClCompile Include="music_game\judgment\button_lane_judgment.cpp" />
     <ClCompile Include="scene\option\option_menu.cpp" />
     <ClCompile Include="scene\option\option_menu_field.cpp" />
@@ -382,7 +382,7 @@
     <ClInclude Include="music_game\graphics\hud\score_panel.hpp" />
     <ClInclude Include="music_game\graphics\hud\song_info_panel.hpp" />
     <ClInclude Include="music_game\graphics\jdgline\jdgline_3d_graphics.hpp" />
-    <ClInclude Include="music_game\graphics\jdgoverlay\jdgoverlay_3d_graphics.hpp" />
+    <ClInclude Include="music_game\graphics\jdgline\jdgoverlay_3d_graphics.hpp" />
     <ClInclude Include="music_game\judgment\button_lane_judgment.hpp" />
     <ClInclude Include="music_game\judgment\judgment_defines.hpp" />
     <ClInclude Include="music_game\game_defines.hpp" />

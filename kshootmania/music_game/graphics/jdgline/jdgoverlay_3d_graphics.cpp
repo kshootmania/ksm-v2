@@ -57,7 +57,8 @@ namespace MusicGame::Graphics
 
 	void Jdgoverlay3DGraphics::drawChipAnimCommon(const GameStatus& gameStatus, bool isBT) const
 	{
-		for (int32 i = 0; std::cmp_less(i, (isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ)); ++i)
+		const int32 numLanes = isBT ? kson::kNumBTLanes : kson::kNumFXLanes;
+		for (int32 i = 0; i < numLanes; ++i)
 		{
 			const auto& laneStatus = isBT ? gameStatus.btLaneStatus[i] : gameStatus.fxLaneStatus[i];
 			for (const auto& chipAnimState : laneStatus.chipAnimStatusRingBuffer)
@@ -85,7 +86,8 @@ namespace MusicGame::Graphics
 
 	void Jdgoverlay3DGraphics::drawLongAnimCommon(const GameStatus& gameStatus, bool isBT) const
 	{
-		for (int32 i = 0; std::cmp_less(i, (isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ)); ++i)
+		const int32 numLanes = isBT ? kson::kNumBTLanes : kson::kNumFXLanes;
+		for (int32 i = 0; i < numLanes; ++i)
 		{
 			const auto& laneStatus = isBT ? gameStatus.btLaneStatus[i] : gameStatus.fxLaneStatus[i];
 			const double sec = gameStatus.currentTimeSec - laneStatus.currentLongNoteAnimOffsetTimeSec;
