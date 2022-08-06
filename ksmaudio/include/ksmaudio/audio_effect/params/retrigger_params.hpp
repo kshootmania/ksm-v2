@@ -34,23 +34,29 @@ namespace ksmaudio::AudioEffect
 
 		float getSecUntilTrigger(float currentSec)
 		{
-			while (true)
+			if (m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
 			{
+				return -1.0f; // Negative value will be ignored in DSP
+			}
+
+			// Advance m_updateTriggerTimingCursor to currentSec
+			if (*m_updateTriggerTimingCursor < currentSec)
+			{
+				do
+				{
+					++m_updateTriggerTimingCursor;
+				} while (m_updateTriggerTimingCursor != m_updateTriggerTiming.end() && *m_updateTriggerTimingCursor < currentSec);
+
 				if (m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
 				{
 					return -1.0f; // Negative value will be ignored in DSP
 				}
-
-				if (*m_updateTriggerTimingCursor < currentSec)
-				{
-					++m_updateTriggerTimingCursor;
-					return 0.0f;
-				}
 				else
 				{
-					break;
+					return 0.0f; // Update immediately (TODO: avoid extra update)
 				}
 			}
+
 			return *m_updateTriggerTimingCursor - currentSec;
 		}
 
