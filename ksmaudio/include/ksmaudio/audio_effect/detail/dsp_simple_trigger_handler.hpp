@@ -3,14 +3,14 @@
 
 namespace ksmaudio::AudioEffect::detail
 {
-    class SimpleTriggerHandler
+    class DSPSimpleTriggerHandler
     {
     private:
         std::size_t m_framesSincePrevTrigger = 0U;
         std::ptrdiff_t m_framesUntilTrigger = -1;
 
     public:
-        SimpleTriggerHandler() = default;
+        DSPSimpleTriggerHandler() = default;
 
         const std::size_t& framesSincePrevTrigger() const
         {

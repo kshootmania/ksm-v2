@@ -102,7 +102,7 @@
     <ClInclude Include="include\ksmaudio\audio_effect\params\wobble_params.hpp">
       <Filter>Header Files\audio_effect\params</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect\detail\simple_trigger_handler.hpp">
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\dsp_simple_trigger_handler.hpp">
       <Filter>Header Files\audio_effect\detail</Filter>
     </ClInclude>
     <ClInclude Include="include\ksmaudio\audio_effect\param_controller.hpp">

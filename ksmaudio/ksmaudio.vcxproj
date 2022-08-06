@@ -167,7 +167,7 @@
     <ClInclude Include="include\ksmaudio\audio_effect\detail\linear_buffer.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\math_utils.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\ring_buffer.hpp" />
-    <ClInclude Include="include\ksmaudio\audio_effect\detail\simple_trigger_handler.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\dsp_simple_trigger_handler.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\wave_length_utils.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\bitcrusher_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\flanger_dsp.hpp" />
