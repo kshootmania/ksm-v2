@@ -48,7 +48,14 @@ namespace ksmaudio::AudioEffect
 				return;
 			}
 
-			m_audioEffects.push_back(std::make_unique<T>(m_pStream->sampleRate(), m_pStream->numChannels()));
+			if constexpr (T::kIsWithTrigger)
+			{
+				m_audioEffects.push_back(std::make_unique<T>(m_pStream->sampleRate(), m_pStream->numChannels(), updateTriggerTiming));
+			}
+			else
+			{
+				m_audioEffects.push_back(std::make_unique<T>(m_pStream->sampleRate(), m_pStream->numChannels()));
+			}
 			const auto& audioEffect = m_audioEffects.back();
 
 			for (const auto& [paramID, valueSet] : params)
@@ -56,11 +63,6 @@ namespace ksmaudio::AudioEffect
 				audioEffect->setParamValueSet(paramID, valueSet);
 			}
 			audioEffect->updateStatus(AudioEffect::Status{}, false);
-
-			if constexpr (std::is_base_of_v<AudioEffect::IUpdateTrigger, T>)
-			{
-				dynamic_cast<T*>(audioEffect.get())->setUpdateTriggerTiming(updateTriggerTiming);
-			}
 
 			m_names.push_back(name);
 			m_nameIdxDict.emplace(name, m_audioEffects.size() - 1U);

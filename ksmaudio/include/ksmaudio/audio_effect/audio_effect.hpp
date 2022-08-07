@@ -4,6 +4,7 @@
 #include <cassert>
 #include "bass.h"
 #include "audio_effect_param.hpp"
+#include "detail/update_trigger_timeline.hpp"
 
 namespace ksmaudio::AudioEffect
 {
@@ -19,14 +20,6 @@ namespace ksmaudio::AudioEffect
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSetStr) = 0;
 
 		virtual void setBypass(bool bypass) = 0;
-	};
-
-	class IUpdateTrigger
-	{
-	public:
-		virtual ~IUpdateTrigger() = default;
-
-		virtual void setUpdateTriggerTiming(const std::set<float>& timing) = 0;
 	};
 
 	struct DSPCommonInfo
@@ -58,6 +51,8 @@ namespace ksmaudio::AudioEffect
 		DSP m_dsp;
 
 	public:
+		static constexpr bool kIsWithTrigger = false;
+
 		BasicAudioEffect(std::size_t sampleRate, std::size_t numChannels)
 			: m_dsp(DSPCommonInfo{ sampleRate, numChannels })
 			, m_dspParams(m_params.render(Status{}, false))
@@ -91,22 +86,51 @@ namespace ksmaudio::AudioEffect
 	};
 
 	template <typename Params, typename DSP, typename DSPParams>
-	class BasicAudioEffectWithTrigger : public BasicAudioEffect<Params, DSP, DSPParams>, public IUpdateTrigger
+	class BasicAudioEffectWithTrigger : public IAudioEffect
 	{
 	protected:
-		using BasicAudioEffect<Params, DSP, DSPParams>::m_params;
+		bool m_bypass = false;
+		Params m_params;
+		DSPParams m_dspParams;
+		DSP m_dsp;
+		detail::UpdateTriggerTimeline m_updateTriggerTimeline;
 
 	public:
-		BasicAudioEffectWithTrigger(std::size_t sampleRate, std::size_t numChannels)
-			: BasicAudioEffect<Params, DSP, DSPParams>(sampleRate, numChannels)
+		static constexpr bool kIsWithTrigger = true;
+
+		BasicAudioEffectWithTrigger(std::size_t sampleRate, std::size_t numChannels, const std::set<float>& updateTriggerTiming)
+			: m_dsp(DSPCommonInfo{ sampleRate, numChannels })
+			, m_dspParams(m_params.render(Status{}, false))
+			, m_updateTriggerTimeline(updateTriggerTiming)
 		{
 		}
 
 		virtual ~BasicAudioEffectWithTrigger() = default;
 
-		virtual void setUpdateTriggerTiming(const std::set<float>& timing) override
+		virtual void process(float* pData, std::size_t dataSize) override
 		{
-			m_params.setUpdateTriggerTiming(timing);
+			m_dsp.process(pData, dataSize, m_bypass, m_dspParams);
+		}
+
+		virtual void updateStatus(const Status& status, bool isOn) override
+		{
+			m_dspParams = m_params.render(status, isOn);
+
+			m_updateTriggerTimeline.update(status.sec);
+			m_dspParams.secUntilTrigger = m_updateTriggerTimeline.secUntilTrigger();
+		}
+
+		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSet) override
+		{
+			if (m_params.dict.contains(paramID))
+			{
+				m_params.dict.at(paramID)->valueSet = valueSet;
+			}
+		}
+
+		virtual void setBypass(bool bypass) override
+		{
+			m_bypass = bypass;
 		}
 	};
 }

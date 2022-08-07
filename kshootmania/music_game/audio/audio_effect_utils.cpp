@@ -68,9 +68,11 @@ namespace
 			return PrecalculateUpdateTriggerTimingRetriggerWithoutParamChange(def, totalMeasures, chartData, timingCache);
 		}
 
+		std::set<float> timingSet;
+
+		// Add trigger timing for "update_period"
 		const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : kUpdatePeriodDefault);
 		const auto& updatePeriodChanges = paramChange.at(kUpdatePeriodKey);
-		std::set<float> timingSet;
 		for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
 		{
 			const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
@@ -102,6 +104,7 @@ namespace
 				}
 			}
 		}
+
 		return timingSet;
 	}
 }

@@ -29,51 +29,9 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-	private:
-		// TODO: Make a class for this
-		std::set<float> m_updateTriggerTiming;
-		std::set<float>::const_iterator m_updateTriggerTimingCursor = m_updateTriggerTiming.begin();
-
-		float getSecUntilTrigger(float currentSec)
-		{
-			if (m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
-			{
-				return -1.0f; // Negative value will be ignored in DSP
-			}
-
-			// Advance m_updateTriggerTimingCursor to currentSec
-			if (*m_updateTriggerTimingCursor < currentSec)
-			{
-				do
-				{
-					++m_updateTriggerTimingCursor;
-				} while (m_updateTriggerTimingCursor != m_updateTriggerTiming.end() && *m_updateTriggerTimingCursor < currentSec);
-
-				if (m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
-				{
-					return -1.0f; // Negative value will be ignored in DSP
-				}
-				else
-				{
-					return 0.0f; // Update immediately (TODO: avoid extra update)
-				}
-			}
-
-			return *m_updateTriggerTimingCursor - currentSec;
-		}
-
-	public:
-		// Note: For wobble audio effects, the update trigger timing is the bar line timing
-		void setUpdateTriggerTiming(const std::set<float>& timing)
-		{
-			m_updateTriggerTiming = timing;
-			m_updateTriggerTimingCursor = m_updateTriggerTiming.begin();
-		}
-
 		WobbleDSPParams render(const Status& status, bool isOn)
 		{
 			return {
-				.secUntilTrigger = getSecUntilTrigger(status.sec),
 				.waveLength = GetValue(waveLength, status, isOn),
 				.loFreq = GetValue(loFreq, status, isOn),
 				.hiFreq = GetValue(hiFreq, status, isOn),

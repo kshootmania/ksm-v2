@@ -27,58 +27,19 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-	private:
-		std::set<float> m_updateTriggerTiming;
-		std::set<float>::const_iterator m_updateTriggerTimingCursor = m_updateTriggerTiming.begin();
-		bool m_updateTriggerPrev = false;
-
-		float getSecUntilTrigger(float currentSec)
-		{
-			if (m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
-			{
-				return -1.0f; // Negative value will be ignored in DSP
-			}
-
-			// Advance m_updateTriggerTimingCursor to currentSec
-			if (*m_updateTriggerTimingCursor < currentSec)
-			{
-				do
-				{
-					++m_updateTriggerTimingCursor;
-				} while (m_updateTriggerTimingCursor != m_updateTriggerTiming.end() && *m_updateTriggerTimingCursor < currentSec);
-
-				if (m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
-				{
-					return -1.0f; // Negative value will be ignored in DSP
-				}
-				else
-				{
-					return 0.0f; // Update immediately (TODO: avoid extra update)
-				}
-			}
-
-			return *m_updateTriggerTimingCursor - currentSec;
-		}
-
-	public:
-		void setUpdateTriggerTiming(const std::set<float>& timing)
-		{
-			m_updateTriggerTiming = timing;
-			m_updateTriggerTimingCursor = m_updateTriggerTiming.begin();
-		}
-
 		RetriggerDSPParams render(const Status& status, bool isOn)
 		{
-			const bool updateTriggerNow = GetValue(updateTrigger, status, isOn) == 1.0f;
+			// TODO: Use updateTrigger
+			/*const bool updateTriggerNow = GetValue(updateTrigger, status, isOn) == 1.0f;
 			float secUntilTrigger = getSecUntilTrigger(status.sec);
 			if (!m_updateTriggerPrev && updateTriggerNow)
 			{
 				secUntilTrigger = 0.0f; // FIXME: Set back to false
 			}
-			m_updateTriggerPrev = updateTriggerNow;
+			m_updateTriggerPrev = updateTriggerNow;*/
 
 			return {
-				.secUntilTrigger = secUntilTrigger,
+				//.secUntilTrigger = secUntilTrigger,
 				.waveLength = GetValue(waveLength, status, isOn),
 				.rate = GetValue(rate, status, isOn),
 				.mix = GetValue(mix, status, isOn),
