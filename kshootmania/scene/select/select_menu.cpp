@@ -75,7 +75,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 		m_menu.push_back({
 			.itemType = SelectMenuItem::kCurrentFolder,
 			.fullPath = FileSystem::FullPath(directoryPath),
-			.info = std::make_unique<SelectMenuFolderItemInfo>(FileSystem::BaseName(directoryPath)),
+			.info = std::make_unique<SelectMenuFolderItemInfo>(FileSystem::FileName(directoryPath)),
 		});
 
 		// TODO: Insert course items

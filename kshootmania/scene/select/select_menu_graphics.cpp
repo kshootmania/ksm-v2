@@ -24,30 +24,6 @@ namespace
 
 	String FolderItemDisplayName(const SelectMenuItem& item, bool isCenter)
 	{
-		StringView format;
-		if (isCenter)
-		{
-			if (item.itemType == SelectMenuItem::kCurrentFolder)
-			{
-				format = U"<<   {}   <<";
-			}
-			else
-			{
-				format = U">>   {}   >>";
-			}
-		}
-		else
-		{
-			if (item.itemType == SelectMenuItem::kCurrentFolder)
-			{
-				format = U"<<   {}     ";
-			}
-			else
-			{
-				format = U"     {}   >>";
-			}
-		}
-
 		StringView displayName = U"?";
 		if (item.itemType == SelectMenuItem::kAllFolder)
 		{
@@ -58,7 +34,28 @@ namespace
 			displayName = pInfo->displayName;
 		}
 
-		return Fmt(format)(displayName);
+		if (isCenter)
+		{
+			if (item.itemType == SelectMenuItem::kCurrentFolder)
+			{
+				return U"<<   " + displayName + U"   <<";
+			}
+			else
+			{
+				return U">>   " + displayName + U"   >>";
+			}
+		}
+		else
+		{
+			if (item.itemType == SelectMenuItem::kCurrentFolder)
+			{
+				return U"<<   " + displayName + U"     ";
+			}
+			else
+			{
+				return U"     " + displayName + U"   >>";
+			}
+		}
 	}
 
 	void DrawJacketImage(FilePathView filePath, const Vec2& pos, SizeF size)
