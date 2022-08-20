@@ -22,7 +22,7 @@ struct SelectMenuItem
 
 		kCurrentFolder,
 
-		kSection,
+		kSubDir,
 	};
 
 	ItemType itemType = kUndefined;

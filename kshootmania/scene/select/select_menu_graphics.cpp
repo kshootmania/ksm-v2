@@ -33,6 +33,10 @@ namespace
 		{
 			displayName = pInfo->displayName;
 		}
+		else if (auto pInfo = dynamic_cast<SelectMenuSectionItemInfo*>(item.info.get()))
+		{
+			displayName = pInfo->displayName;
+		}
 
 		if (isCenter)
 		{
@@ -125,6 +129,11 @@ void SelectMenuGraphics::refreshCenterMenuItem(const SelectMenuItem& item, int32
 		m_fontLL(FolderItemDisplayName(item, true)).drawAt(Vec2{ 16 + 740 / 2, 135 + 102 / 2 });
 		break;
 
+	case SelectMenuItem::kSubDir:
+		Shader::Copy(m_subDirItemTextures.center, m_centerItem);
+		m_fontLL(FolderItemDisplayName(item, true)).drawAt(Vec2{ 16 + 740 / 2, 135 + 102 / 2 });
+		break;
+
 		// TODO: Other types
 
 	default:
@@ -177,6 +186,11 @@ void SelectMenuGraphics::refreshUpperLowerMenuItem(const RenderTexture& target, 
 		m_fontL(FolderItemDisplayName(item, false)).drawAt(isUpperHalf ? Vec2{ 16 + 770 / 2, 12 + 86 / 2 } : Vec2{ 16 + 770 / 2, 126 + 86 / 2 });
 		break;
 
+	case SelectMenuItem::kSubDir:
+		Shader::Copy(isUpperHalf ? m_subDirItemTextures.upperHalf : m_subDirItemTextures.lowerHalf, target);
+		m_fontL(FolderItemDisplayName(item, false)).drawAt(isUpperHalf ? Vec2{ 16 + 770 / 2, 12 + 86 / 2 } : Vec2{ 16 + 770 / 2, 126 + 86 / 2 });
+		break;
+
 		// TODO: Other types
 
 	default:
@@ -194,6 +208,10 @@ SelectMenuGraphics::SelectMenuGraphics()
 		.center = TextureAsset(SelectTexture::kDirCenter),
 		.upperHalf = TextureAsset(SelectTexture::kDirUpperHalf),
 		.lowerHalf = TextureAsset(SelectTexture::kDirLowerHalf) }
+	, m_subDirItemTextures{
+		.center = TextureAsset(SelectTexture::kSubDirCenter),
+		.upperHalf = TextureAsset(SelectTexture::kSubDirUpperHalf),
+		.lowerHalf = TextureAsset(SelectTexture::kSubDirLowerHalf) }
 	, m_centerItem({ 766, 378 }, Color::Zero())
 	, m_upperHalfItems(MakeRenderTextureArray(kNumUpperHalfItems, { 816, 228 }))
 	, m_lowerHalfItems(MakeRenderTextureArray(kNumLowerHalfItems, { 816, 228 }))

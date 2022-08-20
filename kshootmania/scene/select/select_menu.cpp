@@ -61,6 +61,75 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 {
 	using Unicode::FromUTF8;
 
+	// 曲の項目を挿入する関数
+	// (挿入されたかどうかを返す)
+	const auto fnInsertSongItem = [this](const String& songDirectory) -> bool
+	{
+		if (!FileSystem::IsDirectory(songDirectory))
+		{
+			return false;
+		}
+
+		std::array<Optional<SelectMenuSongItemChartInfo>, kNumDifficulties> chartInfos;
+		const Array<FilePath> chartFiles = FileSystem::DirectoryContents(songDirectory, Recursive::No);
+		bool chartExists = false;
+		for (const auto& chartFile : chartFiles)
+		{
+			if (FileSystem::Extension(chartFile) != kKSHExtension) // Note: FileSystem::Extension() always returns lowercase.
+			{
+				continue;
+			}
+
+			const kson::MetaChartData chartData = kson::LoadKSHMetaChartData(chartFile.narrow());
+			if (chartData.error != kson::Error::None)
+			{
+				Logger << U"[SelectMenu] KSH Loading Error (" << static_cast<int32>(chartData.error) << U"): " << chartFile;
+				continue;
+			}
+
+			int32 difficultyIdx = chartData.meta.difficulty.idx;
+			if (difficultyIdx < 0 || kNumDifficulties <= difficultyIdx)
+			{
+				// 未知の難易度の場合は一番右の難易度にする
+				difficultyIdx = kNumDifficulties - 1;
+			}
+
+			if (chartInfos[difficultyIdx].has_value()) [[unlikely]]
+			{
+				Logger << U"[SelectMenu] Skip duplication (difficultyIdx:" << difficultyIdx << U"): " << chartFile;
+				continue;
+			}
+
+			chartInfos[difficultyIdx] = SelectMenuSongItemChartInfo{
+				.title = FromUTF8(chartData.meta.title),
+				.artist = FromUTF8(chartData.meta.artist),
+				.jacketFilePath = FileSystem::FullPath(FileSystem::ParentPath(chartFile) + FromUTF8(chartData.meta.jacketFilename)),
+				.jacketAuthor = FromUTF8(chartData.meta.jacketAuthor),
+				.chartFilePath = FileSystem::FullPath(chartFile),
+				.chartAuthor = FromUTF8(chartData.meta.chartAuthor),
+				.level = chartData.meta.level,
+				.previewBGMFilePath = FileSystem::FullPath(FileSystem::ParentPath(chartFile) + FromUTF8(chartData.audio.bgm.filename)),
+				.previewBGMOffsetSec = chartData.audio.bgm.preview.offset / 1000.0,
+				.previewBGMDurationSec = chartData.audio.bgm.preview.duration / 1000.0,
+				.iconFilePath = U""/*TODO*/,
+				.information = FromUTF8(chartData.meta.information),
+				.highScoreInfo = HighScoreInfo{}/*TODO*/,
+			};
+			chartExists = true;
+		}
+
+		if (chartExists)
+		{
+			m_menu.push_back({
+				.itemType = SelectMenuItem::kSong,
+				.fullPath = FileSystem::FullPath(songDirectory),
+				.info = std::make_unique<SelectMenuSongItemInfo>(chartInfos),
+			});
+		}
+
+		return chartExists;
+	};
+
 	if (!directoryPath.empty())
 	{
 		if (!FileSystem::IsDirectory(directoryPath))
@@ -81,65 +150,46 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 		// TODO: Insert course items
 
 		// 曲の項目を追加
+		Array<FilePath> subDirCandidates;
 		const Array<FilePath> songDirectories = GetSubDirectories(directoryPath);
 		for (const auto& songDirectory : songDirectories)
 		{
-			if (!FileSystem::IsDirectory(songDirectory))
+			// 項目追加
+			const bool chartExists = fnInsertSongItem(songDirectory);
+
+			// フォルダ直下に譜面がなかった場合はサブディレクトリの候補に追加
+			if (!chartExists)
 			{
-				continue;
+				subDirCandidates.push_back(songDirectory);
 			}
+		}
 
-			std::array<Optional<SelectMenuSongItemChartInfo>, kNumDifficulties> chartInfos;
-			const Array<FilePath> chartFiles = FileSystem::DirectoryContents(songDirectory, Recursive::No);
-			for (const auto& chartFile : chartFiles)
-			{
-				if (FileSystem::Extension(chartFile) != kKSHExtension) // Note: FileSystem::Extension() always returns lowercase.
-				{
-					continue;
-				}
-
-				const kson::MetaChartData chartData = kson::LoadKSHMetaChartData(chartFile.narrow());
-				if (chartData.error != kson::Error::None)
-				{
-					Logger << U"[SelectMenu] KSH Loading Error (" << static_cast<int32>(chartData.error) << U"): " << chartFile;
-					continue;
-				}
-
-				int32 difficultyIdx = chartData.meta.difficulty.idx;
-				if (difficultyIdx < 0 || kNumDifficulties <= difficultyIdx)
-				{
-					// 未知の難易度の場合は一番右の難易度にする
-					difficultyIdx = kNumDifficulties - 1;
-				}
-
-				if (chartInfos[difficultyIdx].has_value()) [[unlikely]]
-				{
-					Logger << U"[SelectMenu] Skip duplication (difficultyIdx:" << difficultyIdx << U"): " << chartFile;
-					continue;
-				}
-
-				chartInfos[difficultyIdx] = SelectMenuSongItemChartInfo{
-					.title = FromUTF8(chartData.meta.title),
-					.artist = FromUTF8(chartData.meta.artist),
-					.jacketFilePath = FileSystem::FullPath(FileSystem::ParentPath(chartFile) + FromUTF8(chartData.meta.jacketFilename)),
-					.jacketAuthor = FromUTF8(chartData.meta.jacketAuthor),
-					.chartFilePath = FileSystem::FullPath(chartFile),
-					.chartAuthor = FromUTF8(chartData.meta.chartAuthor),
-					.level = chartData.meta.level,
-					.previewBGMFilePath = FileSystem::FullPath(FileSystem::ParentPath(chartFile) + FromUTF8(chartData.audio.bgm.filename)),
-					.previewBGMOffsetSec = chartData.audio.bgm.preview.offset / 1000.0,
-					.previewBGMDurationSec = chartData.audio.bgm.preview.duration / 1000.0,
-					.iconFilePath = U""/*TODO*/,
-					.information = FromUTF8(chartData.meta.information),
-					.highScoreInfo = HighScoreInfo{}/*TODO*/,
-				};
-			}
-
+		// サブディレクトリ内の曲の項目を追加
+		for (const auto& subDirCandidate : subDirCandidates)
+		{
+			// サブディレクトリの見出し項目を追加
 			m_menu.push_back({
-				.itemType = SelectMenuItem::kSong,
-				.fullPath = FileSystem::FullPath(songDirectory),
-				.info = std::make_unique<SelectMenuSongItemInfo>(chartInfos),
+				.itemType = SelectMenuItem::kSubDir,
+				.fullPath = FileSystem::FullPath(subDirCandidate),
+				.info = std::make_unique<SelectMenuSectionItemInfo>(FileSystem::FileName(subDirCandidate)), // TODO: foldername.csvから読み込んだフォルダ名で置換
 			});
+
+			bool chartExists = false;
+			const Array<FilePath> songDirectories = GetSubDirectories(subDirCandidate);
+			for (const auto& songDirectory : songDirectories)
+			{
+				// 項目追加
+				if (fnInsertSongItem(songDirectory))
+				{
+					chartExists = true;
+				}
+			}
+
+			// サブディレクトリ内に譜面が存在しなかった場合は見出し項目を削除
+			if (!chartExists)
+			{
+				m_menu.pop_back();
+			}
 		}
 
 		m_folderState.folderType = SelectFolderState::kDirectory;
