@@ -159,6 +159,12 @@ namespace ksmaudio::AudioEffect
 		return valueSet;
 	}
 
+	bool ValueAsBool(float value)
+	{
+		constexpr float kBoolThreshold = 0.999f;
+		return value > kBoolThreshold;
+	}
+
 	float GetValue(const Param& param, const Status& status, bool isOn)
 	{
 		const float lerped = isOn ? std::lerp(param.valueSet.onMin, param.valueSet.onMax, status.v) : param.valueSet.off;

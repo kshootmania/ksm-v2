@@ -22,7 +22,6 @@ namespace ksmaudio::AudioEffect::detail
             "Value type of LinearBuffer is required to be arithmetic");
 
     private:
-
         std::vector<T> m_buffer;
 
         std::size_t m_readCursorFrame = 0U;

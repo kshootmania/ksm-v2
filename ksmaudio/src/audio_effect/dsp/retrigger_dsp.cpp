@@ -19,6 +19,13 @@ namespace ksmaudio::AudioEffect
             m_framesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * m_info.sampleRate);
         }
 
+        // updateTriggerによるトリガ更新
+        // ("update_trigger"を"off>on"や"off-on"などにした場合のノーツ判定による更新)
+        if (params.updateTrigger)
+        {
+            m_linearBuffer.resetReadWriteCursors();
+        }
+
         const bool active = !bypass && params.mix > 0.0f;
         const std::size_t frameSize = dataSize / m_info.numChannels;
         const std::size_t numLoopFrames = static_cast<std::size_t>(params.waveLength * m_info.sampleRate);
@@ -32,7 +39,8 @@ namespace ksmaudio::AudioEffect
                 m_linearBuffer.read(pData, formerSize, numLoopFrames, numNonZeroFrames, params.mix);
             }
 
-            // Update trigger
+            // framesUntilTriggerによるトリガ更新
+            // ("update_period"や、"update_trigger"を"param_change"で"on"に変更した場合の更新)
             m_linearBuffer.resetReadWriteCursors();
             m_framesUntilTrigger = -1;
 
