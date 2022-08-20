@@ -4,7 +4,7 @@ namespace
 {
 	void RegisterTextureAssets()
 	{
-		// Register all files under the "imgs" directory
+		// "imgs"ディレクトリ以下の全ファイルを登録
 		constexpr FilePathView kImgPath = U"imgs";
 		const FilePath imgFullPath = FileSystem::FullPath(kImgPath);
 		for (const FilePath& path : FileSystem::DirectoryContents(imgFullPath, Recursive::Yes))
@@ -16,7 +16,7 @@ namespace
 
 	void RegisterAudioAssets()
 	{
-		// Register all files under the "se" directory
+		// "se"ディレクトリ以下の全ファイルを登録
 		constexpr FilePathView kSePath = U"se";
 		const FilePath seFullPath = FileSystem::FullPath(kSePath);
 		for (const FilePath& path : FileSystem::DirectoryContents(seFullPath, Recursive::Yes))
@@ -30,7 +30,7 @@ namespace
 
 void AssetManagement::RegisterAssets()
 {
-	// Note: Assets are not loaded here. They are loaded at the time of use.
+	// 注意: アセットの実際のロードはここではなく、各シーンでの使用時に実施される
 	RegisterTextureAssets();
 	RegisterAudioAssets();
 }

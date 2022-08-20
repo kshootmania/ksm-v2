@@ -156,7 +156,7 @@ void SelectMenuGraphics::refreshUpperLowerMenuItem(const RenderTexture& target, 
 			{
 				const auto& chartInfo = *(pInfo->chartInfos[altDifficultyIdx]);
 
-				// Title
+				// 曲名を描画
 				for (int32 i = 0; i < 2; ++i)
 				{
 					// Draw twice to make the font slightly bold
@@ -164,10 +164,10 @@ void SelectMenuGraphics::refreshUpperLowerMenuItem(const RenderTexture& target, 
 					m_fontM(chartInfo.title).drawAt(isUpperHalf ? Vec2{ 12 + i + 576 / 2, 8 + 40 / 2 } : Vec2{ 12 + i + 576 / 2, 116 + 40 / 2 });
 				}
 
-				// Artist
+				// アーティスト名を描画
 				m_fontS(chartInfo.artist).drawAt(isUpperHalf ? Vec2{ 230 + 354 / 2, 67 + 40 / 2 } : Vec2{ 230 + 354 / 2, 171 + 40 / 2 });
 
-				// Jacket
+				// ジャケット画像を描画
 				DrawJacketImage(chartInfo.jacketFilePath, { 600, 10 }, { 208, 208 });
 			}
 		}
@@ -213,10 +213,11 @@ void SelectMenuGraphics::refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu
 {
 	const ScopedRenderStates2D state(kBlendState);
 
-	// Refresh upper/lower half item textures
-	// Note: Here, swap is used because it is much faster than Shader::Copy()
+	// 中央以外の項目のテクスチャを更新
 	if (type == kCursorUp)
 	{
+		// 上移動の場合、一番上と中央の1つ下以外は既に描画済みのものがあるので使い回す
+		// (使い回す際、swapする方がShader::Copy()より圧倒的に速いのでswapを採用)
 		for (int32 i = kNumUpperHalfItems - 1; i > 0; --i)
 		{
 			m_upperHalfItems[i].swap(m_upperHalfItems[i - 1]);
@@ -230,6 +231,8 @@ void SelectMenuGraphics::refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu
 	}
 	else if (type == kCursorDown)
 	{
+		// 下移動の場合、一番下と中央の1つ上以外は既に描画済みのものがあるので使い回す
+		// (使い回す際、swapする方がShader::Copy()より圧倒的に速いのでswapを採用)
 		for (int32 i = 0; i < kNumUpperHalfItems - 1; ++i)
 		{
 			m_upperHalfItems[i].swap(m_upperHalfItems[i + 1]);
@@ -243,7 +246,7 @@ void SelectMenuGraphics::refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu
 	}
 	else
 	{
-		// Refresh all upper/lower half items
+		// 使い回せない場合は全描画
 		for (int32 i = 0; i < kNumUpperHalfItems; ++i)
 		{
 			const SelectMenuItem& item = menu.atCyclic(menu.cursor() - kNumUpperHalfItems + i);
@@ -256,7 +259,7 @@ void SelectMenuGraphics::refresh(const ArrayWithLinearMenu<SelectMenuItem>& menu
 		}
 	}
 
-	// Refresh center item texture
+	// 中央の項目のテクスチャを更新
 	{
 		const SelectMenuItem& item = menu.at(menu.cursor());
 		refreshCenterMenuItem(item, difficultyIdx);
@@ -267,7 +270,7 @@ void SelectMenuGraphics::draw(const Vec2& shakeVec) const
 {
 	using namespace ScreenUtils;
 
-	// Draw upper half items
+	// 上半分の項目を描画
 	for (int32 i = 0; i < std::ssize(m_upperHalfItems); ++i)
 	{
 		const int32 distance = kNumUpperHalfItems - i;
@@ -275,13 +278,13 @@ void SelectMenuGraphics::draw(const Vec2& shakeVec) const
 		m_upperHalfItems[i].resized(ScaledL(1632, 456) * 3 / 5).draw(Scaled(85 + distance * 20 + distance * distance * 10 / 4 - 7, i * (30 + i * 2 / 3) - 3) + LeftMarginVec());
 	}
 
-	// Draw lower half items
+	// 下半分の項目を描画
 	for (int32 i = static_cast<int32>(std::ssize(m_lowerHalfItems) - 1); i >= 0; --i)
 	{
 		const int32 distance = i + 1;
 		m_lowerHalfItems[i].resized(ScaledL(1632, 456) * 3 / 5).draw(Scaled(85 + distance * 20 + distance * distance * 13 / 4 - 7, 139 + (i + kNumUpperHalfItems + 1) * (34 - i * 4 / 9) - 3) + LeftMarginVec());
 	}
 
-	// Draw center item
+	// 中央の項目を描画
 	m_centerItem.resized(Scaled(450, 222)).draw(Scaled(65, 128) + LeftMarginVec() + shakeVec);
 }

@@ -53,7 +53,6 @@ void SelectBGAnim::draw() const
 {
 	using namespace ScreenUtils;
 
-	// Additive
 	const ScopedRenderStates2D additive(BlendState::Additive);
 	const double sec = m_stopwatch.sF();
 	const double alpha = AlphaValue(sec);
@@ -66,7 +65,7 @@ void SelectBGAnim::draw() const
 			posValue.y += kBaseScreenHeight - 50.0;
 		}
 
-		// Draw twice for loop
+		// ループ用に左右2つ描画
 		m_texture(rectValue).resized(Scaled2x(rectValue.w), Scaled2x(rectValue.h)).draw(Scaled(posValue), ColorF{ 1.0, alpha });
 		rectValue.w = rectValue.x;
 		posValue.x += kWidth - rectValue.x / 2;

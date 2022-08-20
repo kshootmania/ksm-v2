@@ -7,28 +7,28 @@
 
 void Main()
 {
-	// Disable application termination by Esc key
+	// Escキーによるプログラム終了を無効化
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 
-	// Set default colors
+	// デフォルト色を指定
 	Scene::SetBackground(Palette::Black);
 	Graphics3D::SetGlobalAmbientColor(Palette::White);
 	Graphics3D::SetSunColor(Palette::Black);
 
-	// Initialize audio backend
+	// 音声処理のバックエンドを初期化
 #ifdef _WIN32
 	ksmaudio::Init(s3d::Platform::Windows::Window::GetHWND());
 #else
 	ksmaudio::Init(nullptr);
 #endif
 
-	// Load language text file
+	// 言語ファイルを読み込み
 	I18n::LoadLanguage(U"Japanese");
 
-	// Load config.ini
+	// config.iniを読み込み
 	ConfigIni::Load();
 
-	// Register asset list
+	// アセット一覧を登録
 	AssetManagement::RegisterAssets();
 
 	//Graphics::SetVSyncEnabled(false);
@@ -40,7 +40,7 @@ void Main()
 #endif
 
 	{
-		// Create scene manager
+		// 各シーンを作成
 		MySceneManager sceneManager;
 		sceneManager.add<TitleScene>(SceneName::kTitle);
 		sceneManager.add<OptionScene>(SceneName::kOption);
@@ -48,7 +48,7 @@ void Main()
 		sceneManager.add<PlayScene>(SceneName::kPlay);
 		sceneManager.changeScene(SceneName::kTitle, kDefaultTransitionMs);
 
-		// Main loop
+		// メインループ
 		while (System::Update())
 		{
 			if (!sceneManager.update())
@@ -58,9 +58,9 @@ void Main()
 		}
 	}
 
-	// Save config.ini
+	// config.iniを保存
 	ConfigIni::Save();
 
-	// Terminate audio backend
+	// 音声のバックエンドを終了
 	ksmaudio::Terminate();
 }

@@ -101,17 +101,17 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const kson::Ch
 					double sourceY;
 					if (laneStatus.currentLongNotePulse == y)
 					{
-						// Current note and pressed
+						// 現在判定対象の押下中のロングノーツ
 						sourceY = PressedLongNoteSourceY(gameStatus.currentTimeSec);
 					}
 					else if (y <= gameStatus.currentPulse && gameStatus.currentPulse < y + note.length)
 					{
-						// Current note but not pressed
+						// 現在判定対象だが押していないロングノーツ
 						sourceY = kLongNoteSourceYNotPressed;
 					}
 					else
 					{
-						// Not current note
+						// 現在判定対象でないロングノーツ
 						sourceY = kLongNoteSourceYDefault;
 					}
 					const Texture& sourceTexture = isBT ? m_longBTNoteTexture : m_longFXNoteTexture;

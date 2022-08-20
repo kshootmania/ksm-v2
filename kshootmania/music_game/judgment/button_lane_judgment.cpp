@@ -51,8 +51,8 @@ namespace MusicGame::Judgment
 			{
 				if (note.length > 0)
 				{
-					// Determine whether to halve the combo based on the BPM at the start of the note
-					// (BPM changes during the notes are ignored)
+					// BPMをもとにロングノーツのコンボ数を半減させるかを決める
+					// (ノーツ途中でのBPM変更は特に加味しない)
 					const bool halvesCombo = kson::TempoAt(y, beatInfo) >= kHalveComboBPMThreshold;
 					const kson::RelPulse minPulseInterval = halvesCombo ? (kson::kResolution4 * 3 / 8) : (kson::kResolution4 * 3 / 16);
 					const kson::RelPulse pulseInterval = halvesCombo ? (kson::kResolution4 / 8) : (kson::kResolution4 / 16);
@@ -96,7 +96,7 @@ namespace MusicGame::Judgment
 	{
 		using namespace TimingWindow;
 
-		// Pick up the nearest note from the lane
+		// レーン上で最も現在時間に近いノーツを調べる
 		bool found = false;
 		double minDistance = 0.0;
 		kson::Pulse nearestNotePulse;
@@ -219,19 +219,19 @@ namespace MusicGame::Judgment
 
 	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, LaneStatus& laneStatusRef)
 	{
-		// Chip note & long note start
+		// チップノーツとロングノーツの始点の判定処理
 		if (KeyConfig::Down(m_keyConfigButton))
 		{
 			processKeyDown(lane, currentPulse, currentTimeSec, laneStatusRef);
 		}
 
-		// Long note hold
+		// ロングノーツ押下中の判定処理
 		if (KeyConfig::Pressed(m_keyConfigButton))
 		{
 			processKeyPressed(lane, currentPulse, laneStatusRef);
 		}
 
-		// Long note release
+		// ロングノーツを離したときの判定処理
 		if (laneStatusRef.currentLongNotePulse.has_value() &&
 			(KeyConfig::Up(m_keyConfigButton) || (*laneStatusRef.currentLongNotePulse + lane.at(*laneStatusRef.currentLongNotePulse).length < currentPulse)))
 		{

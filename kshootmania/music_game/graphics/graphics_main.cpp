@@ -26,7 +26,7 @@ namespace MusicGame::Graphics
 			const String bgFilename = Unicode::FromUTF8(chartData.bg.legacy.bg.at(0).filename);
 			if (FileSystem::Extension(bgFilename).empty())
 			{
-				// Built-in BG textures
+				// 標準の背景
 				return U"imgs/bg/{}0.jpg"_fmt(bgFilename);
 			}
 
@@ -39,7 +39,7 @@ namespace MusicGame::Graphics
 			const String layerFilename = Unicode::FromUTF8(chartData.bg.legacy.layer.filename);
 			if (FileSystem::Extension(layerFilename).empty())
 			{
-				// Built-in BG textures
+				// 標準のレイヤーアニメーション
 				return U"imgs/bg/{}.gif"_fmt(layerFilename);
 			}
 
@@ -122,12 +122,12 @@ namespace MusicGame::Graphics
 
 	void GraphicsMain::draw(const kson::ChartData& chartData, const GameStatus& gameStatus) const
 	{
-		// Draw 2D render textures
+		// 各レンダーテクスチャを用意
 		m_highway3DGraphics.draw2D(chartData, gameStatus);
 		m_jdgoverlay3DGraphics.draw2D(gameStatus);
 		Graphics2D::Flush();
 
-		// Draw 3D space
+		// 3D空間を描画
 		Graphics3D::SetCameraTransform(m_camera);
 		drawBG();
 		drawLayer(chartData, gameStatus);
@@ -136,7 +136,7 @@ namespace MusicGame::Graphics
 		m_jdgline3DGraphics.draw3D(tiltRadians);
 		m_jdgoverlay3DGraphics.draw3D(tiltRadians);
 
-		// Draw 2D HUD
+		// 手前に表示する2DのHUDを描画
 		m_songInfoPanel.draw(gameStatus.currentBPM);
 		m_scorePanel.draw(gameStatus.score);
 		m_gaugePanel.draw(100.0/* TODO: Percentage */, gameStatus.currentPulse);

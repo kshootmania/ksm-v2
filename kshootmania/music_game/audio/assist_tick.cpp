@@ -2,10 +2,10 @@
 
 namespace
 {
-	// Assist tick sound is played 30ms early
+	// Assist Tickは30ms早めのタイミングで再生する
 	constexpr double kLatencySec = 0.03;
 
-	// Note: ByPulse<Interval> is std::map<Pulse, Interval>
+	// Note: ByPulse<Interval>はstd::map<Pulse, Interval>の型エイリアス
 	kson::Pulse CurrentNotePulse(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse)
 	{
 		const auto nextNote = lane.upper_bound(currentPulse);
@@ -34,20 +34,20 @@ void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, cons
 
 	const kson::Pulse currentPulseForAssistTick = kson::SecToPulse(currentTimeSec + kLatencySec, chartData.beat, timingCache);
 
-	// BT notes
+	// BT
 	for (std::size_t i = 0; i < kson::kNumBTLanesSZ; ++i)
 	{
 		const kson::Pulse currentNotePulse = CurrentNotePulse(chartData.note.bt[i], currentPulseForAssistTick);
 		if (currentNotePulse > m_btPlayedPulses[i])
 		{
-			// Chip & long notes
+			// BTの場合はチップノーツとロングノーツの両方で鳴らす
 			m_btTickSound.stop();
 			m_btTickSound.play();
 			m_btPlayedPulses[i] = currentNotePulse;
 		}
 	}
 
-	// FX notes
+	// FX
 	for (std::size_t i = 0; i < kson::kNumFXLanesSZ; ++i)
 	{
 		const kson::Pulse currentNotePulse = CurrentNotePulse(chartData.note.fx[i], currentPulseForAssistTick);
@@ -55,7 +55,7 @@ void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, cons
 		{
 			if (chartData.note.fx[i].contains(currentNotePulse) && chartData.note.fx[i].at(currentNotePulse).length == 0)
 			{
-				// Chip notes only
+				// FXの場合はチップノーツのみ鳴らす
 				m_fxTickSound.stop();
 				m_fxTickSound.play();
 			}

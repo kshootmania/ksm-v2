@@ -61,7 +61,7 @@ void MusicGame::Audio::BGM::update()
 
 		if (m_timeSec < m_durationSec - kBlendTimeSec)
 		{
-			// Synchronize stopwatch value
+			// ストップウォッチの時間を同期
 			m_stopwatch.set(SecondsF{ m_timeSec });
 		}
 	}
@@ -119,7 +119,8 @@ void MusicGame::Audio::BGM::seekPosSec(double posSec)
 
 double MusicGame::Audio::BGM::posSec() const
 {
-	// Blend stopwatch time to remove brake at start/end
+	// 開始・終了地点でノーツの動きが一瞬止まるのを防ぐため、最初と最後は再生位置に対してストップウォッチの時間を混ぜる
+	// TODO: うまく効いていないようなので見直す
 	if (m_isStreamStarted)
 	{
 		if (0.0 <= m_timeSec && m_timeSec < kBlendTimeSec)

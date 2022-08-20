@@ -29,7 +29,7 @@ private:
 
 	void decideDirectoryFolderItem();
 
-	// Note: Set directoryPath to empty to close folder
+	// Note: フォルダを閉じる場合はdirectoryPath引数に空文字列を指定すること
 	bool openDirectory(FilePathView directoryPath);
 
 	void refreshGraphics(SelectMenuGraphics::RefreshType type);

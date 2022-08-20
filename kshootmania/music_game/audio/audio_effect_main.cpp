@@ -7,7 +7,7 @@ namespace MusicGame::Audio
 	{
 		constexpr double kLongFXNoteAudioEffectAutoPlaySec = 0.03;
 
-		// TODO: Use IDs instead of names
+		// TODO: 名前ではなくIDで管理したい(パフォーマンスのため)
 		kson::FXLane<std::string> CreateLongFXNoteAudioEffectNames(const kson::ChartData& chartData)
 		{
 			const auto& longEvent = chartData.audio.audioEffect.fx.longEvent;
@@ -63,8 +63,8 @@ namespace MusicGame::Audio
 
 		const std::int64_t totalMeasures =
 			kson::SecToMeasureIdx(bgm.durationSec(), chartData.beat, timingCache)
-			+ 1/* add last measure */
-			+ 1/* index to size */;
+			+ 1/* 最後の小節の分を足す */
+			+ 1/* インデックスを要素数にするために1を足す */;
 
 		// FX
 		for (const auto& [name, def] : chartData.audio.audioEffect.fx.def)
@@ -90,7 +90,7 @@ namespace MusicGame::Audio
 			bgm.emplaceAudioEffectLaser(name, def, updateTriggerTiming);
 		}
 
-		// Just for testing
+		// テスト用
 		// TODO: Remove this code
 		{
 			const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Retrigger };
@@ -120,13 +120,13 @@ namespace MusicGame::Audio
 	kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> AudioEffectMain::currentActiveAudioEffectsFX(
 		const std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ>& currentLongNoteOfLanes, kson::Pulse currentPulseForAudio) const
 	{
-		kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> audioEffects; // TODO: Use IDs instead of names
+		kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> audioEffects; // TODO: 名前ではなくIDで管理したい(パフォーマンスのため)
 		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 		{
-			// The first lane processed is the one where a long note was last pressed.
-			// Note that Dict<T>::emplace() ignores a second insertion of the same key.
-			static_assert(kson::kNumFXLanesSZ == 2U);
-			const std::size_t laneIdx = (i == 0) ? m_lastPressedLongFXNoteLaneIdx : (1U - m_lastPressedLongFXNoteLaneIdx); // This code assumes kNumFXLanesSZ is 2
+			// 2レーンのうち直近ロングFXノーツが押され始めた方のレーンを先に処理する
+			// なお, Dict<T>::emplace()では同じキーの2回目の挿入は無視される
+			static_assert(kson::kNumFXLanesSZ == 2U); // 下のコードはkNumFXLanesSZが2である前提である
+			const std::size_t laneIdx = (i == 0) ? m_lastPressedLongFXNoteLaneIdx : (1U - m_lastPressedLongFXNoteLaneIdx);
 			assert(laneIdx < kson::kNumFXLanesSZ);
 
 			if (!currentLongNoteOfLanes[laneIdx].has_value())
@@ -141,8 +141,8 @@ namespace MusicGame::Audio
 				continue;
 			}
 
-			// Note: Since multiple audio effect invocations (audio.audio_effect.fx.long_event) may be used within one long FX note, the determination of
-			//       whether the event belongs to the current note is based on the range, not the start point.
+			// 1本のロングFXノーツの途中で他の種類の音声エフェクトに変更される場合がある。
+			// そのため、イベントが現在のロングノーツに属するかを調べるには、ロングノーツの開始点との一致判定ではなく、ロングノーツの範囲(開始～終了)の中にあるかを調べる必要がある。
 			const auto& [longEventY, audioEffectName] = *itr;
 			if (longEventY < longNoteY || longNoteY + longNote.length <= longEventY)
 			{
@@ -170,17 +170,20 @@ namespace MusicGame::Audio
 		const kson::Pulse currentPulseForAudio = kson::SecToPulse(currentTimeSecForAudio, chartData.beat, timingCache);
 		const double currentBPMForAudio = kson::TempoAt(currentPulseForAudio, chartData.beat);
 
-		// FX audio effects
+		// ロングFXノーツの音声エフェクト
 		bool bypassFX = true;
 		std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ> currentLongNoteOfLanes;
 		for (std::size_t i = 0; i < kson::kNumFXLanesSZ; ++i)
 		{
 			const auto currentLongNoteByTime = CurrentLongNoteByTime(chartData.note.fx[i], currentPulseForAudio);
 
-			// Note: When longFXPressed[i] is none (i.e., there are no FX notes in actual time), it is treated as if a long FX note was pressed.
-			//       This is because the audio effect should be activated ahead of time by the buffer size regardless of the input.
-			//       In addition, the audio effect is autoplayed for 30 ms from the beginning of long notes so that the effect remains active even if the key press timing is slightly delayed.
-			// Implementation in HSP: https://github.com/m4saka/kshootmania-v1-hsp/blob/19bfb6acbec8abd304b2e7dae6009df8e8e1f66f/src/scene/play/play_audio_effects.hsp#L488
+			// 音声エフェクトはバッファサイズによる遅延を回避するため、バッファサイズ分だけ早めに適用し始める必要がある。
+			// これはプレイヤーのキー入力に関係なく実施する必要があるため、下記の「～.value_or(true)」で、longFXPressed[i]がnoneである(つまり判定中のロングFXノーツがまだ存在しない)場合でも、
+			// あたかもロングFXが押されている(trueである)かのように扱っている。
+			// 
+			// それに加えて、キー入力がやや遅れた場合でも音声エフェクトが途切れないように、(バッファサイズとは別に)最初の30ms分はプレイヤーのキー入力に関係なく音声エフェクトを有効にしている。
+			// 
+			// HSP版での対応箇所: https://github.com/m4saka/kshootmania-v1-hsp/blob/19bfb6acbec8abd304b2e7dae6009df8e8e1f66f/src/scene/play/play_audio_effects.hsp#L488
 			if (currentLongNoteByTime.has_value()
 				&& (inputStatus.longFXPressed[i].value_or(true)
 					|| (currentTimeSec - kson::PulseToSec(currentLongNoteByTime->first, chartData.beat, timingCache)) < kLongFXNoteAudioEffectAutoPlaySec))

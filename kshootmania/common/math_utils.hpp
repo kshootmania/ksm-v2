@@ -4,7 +4,7 @@
 
 namespace MathUtils
 {
-	// Fmod function consistent for negative values
+	// 必ず正の値を返す剰余(浮動小数点数版)
 	template <typename T>
 	T WrappedFmod(T a, T b) requires std::is_floating_point_v<T>
 	{
@@ -17,7 +17,7 @@ namespace MathUtils
 		const T mod = std::fmod(a, b);
 		if (mod < T{ 0.0 })
 		{
-			return mod + Abs(b); // wrap the value to positive
+			return mod + Abs(b); // fmodの結果が負の値になった場合は正の値へ
 		}
 		else
 		{
@@ -25,6 +25,7 @@ namespace MathUtils
 		}
 	}
 
+	// 必ず正の値を返す剰余(整数版)
 	template <typename T>
 	T WrappedMod(T a, T b) requires std::is_integral_v<T>
 	{
@@ -37,7 +38,7 @@ namespace MathUtils
 		const T mod = a % b;
 		if (mod < T{ 0 })
 		{
-			return mod + Abs(b); // wrap the value to positive
+			return mod + Abs(b); // %の結果が負の値になった場合は正の値へ
 		}
 		else
 		{

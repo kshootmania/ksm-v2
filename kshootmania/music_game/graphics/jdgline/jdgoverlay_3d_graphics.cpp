@@ -99,19 +99,19 @@ namespace MusicGame::Graphics
 			{
 				if (0.0 <= sec && sec < kChipAnimDurationSec)
 				{
-					// Key press animation
+					// ロングノーツ押下開始時のアニメーション
 					frameIdx = static_cast<int32>(sec / kLongAnimStartDurationSec * kLongAnimStartFrames);
 				}
 				else
 				{
-					// Loop animation
+					// ロングノーツ押下中のループアニメーション
 					frameIdx = kLongAnimLoopFrameOffset + static_cast<int32>(MathUtils::WrappedFmod(sec / kLongAnimLoopDurationSec, 1.0) * kLongAnimLoopFrames);
 					m_longAnimTexture(frameIdx).resized(size).draw(position);
 				}
 			}
 			else if (0.0 <= sec && sec < kChipAnimDurationSec)
 			{
-				// Key release animation
+				// ロングノーツ終了時または途中で離したときのアニメーション
 				frameIdx = kLongAnimEndFrameOffset + static_cast<int32>(sec / kLongAnimEndDurationSec * kLongAnimEndFrames);
 			}
 			else
@@ -144,13 +144,13 @@ namespace MusicGame::Graphics
 		, m_chipNearTexture(kChipNearAnimTextureFilename,
 			{
 				.row = kChipAnimFrames,
-				.column = 2, // Column#0: Slow (or Default), Column#1: Fast
+				.column = 2, // 1列目はSLOW(またはFAST/SLOW非表示時)、2列目はFAST
 				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
 				.sourceSize = kChipAnimSourceSize,
 			})
 		, m_chipErrorTexture(kChipErrorAnimTextureFilename,
 			{
-				.row = kChipAnimFrames,
+				.row = kChipAnimFrames, // TODO: FAST
 				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
 				.sourceSize = kChipAnimSourceSize,
 			})
@@ -166,7 +166,7 @@ namespace MusicGame::Graphics
 
 	void Jdgoverlay3DGraphics::draw2D(const GameStatus& gameStatus) const
 	{
-		// Prepare 2D render texture to draw
+		// 描画するレンダーテクスチャを用意
 		const ScopedRenderTarget2D renderTarget(m_renderTexture.clear(Palette::Black));
 		const ScopedRenderStates2D blendState(BlendState::Additive);
 		drawChipAnimBT(gameStatus);
@@ -177,7 +177,7 @@ namespace MusicGame::Graphics
 
 	void Jdgoverlay3DGraphics::draw3D(double tiltRadians) const
 	{
-		// Draw 2D render texture into 3D plane
+		// レンダーテクスチャを3D空間上に描画
 		const ScopedRenderStates3D blendState(BlendState::Additive);
 		const Transformer3D transform(JudgmentPlaneTransformMatrix(tiltRadians, kPlaneCenter));
 		m_mesh.draw(m_renderTexture);

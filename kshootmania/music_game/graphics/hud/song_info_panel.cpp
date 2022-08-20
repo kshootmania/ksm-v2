@@ -55,7 +55,7 @@ namespace MusicGame::Graphics
 	{
 		using namespace ScreenUtils;
 
-		// Predraw song title panel texture
+		// 曲名・アーティスト名のパネルのテクスチャははじめに用意しておく
 		{
 			Shader::Copy(TextureAsset(kTitlePanelBaseTextureFilename), m_titlePanelBaseTexture);
 
@@ -92,7 +92,7 @@ namespace MusicGame::Graphics
 		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(79, 4), m_level, 0, false, NumberFontTexture::kLeftAlign);
 
 		// BPM
-		// TODO: show floating-point BPM
+		// TODO: BPMの小数部分を表示
 		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(currentBPM), 0, false, NumberFontTexture::kLeftAlign);
 	}
 }

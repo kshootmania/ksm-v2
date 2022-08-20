@@ -61,8 +61,6 @@ namespace
 
 	std::set<float> PrecalculateUpdateTriggerTimingRetrigger(const kson::AudioEffectDef& def, const kson::Dict<kson::ByPulse<std::string>>& paramChange, std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
 	{
-		// Note: The edge case behavior of UpdatePeriod is different from HSP version, but is intended.
-
 		if (!paramChange.contains(kUpdatePeriodKey) || paramChange.at(kUpdatePeriodKey).empty())
 		{
 			return PrecalculateUpdateTriggerTimingRetriggerWithoutParamChange(def, totalMeasures, chartData, timingCache);
@@ -70,7 +68,7 @@ namespace
 
 		std::set<float> timingSet;
 
-		// Add trigger timing for "update_period"
+		// "update_period"のトリガタイミングをあらかじめ計算して記録
 		const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : kUpdatePeriodDefault);
 		const auto& updatePeriodChanges = paramChange.at(kUpdatePeriodKey);
 		for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
@@ -91,7 +89,7 @@ namespace
 			}
 			else
 			{
-				// Inefficient, but not that slow
+				// Pulse値を1ずつ巡回していてやや非効率だが、この処理が実行されるのは"update_period"の値変化を含む小節のみなので大した問題ではない
 				for (kson::Pulse ry = 0; ry < endY - startY; ++ry)
 				{
 					const kson::Pulse y = startY + ry;

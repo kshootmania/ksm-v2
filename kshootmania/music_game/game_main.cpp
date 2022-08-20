@@ -39,13 +39,13 @@ namespace MusicGame
 		m_gameStatus.currentPulse = currentPulse;
 		m_gameStatus.currentBPM = currentBPM;
 
-		// BT lane judgments
+		// BTレーンの判定
 		for (std::size_t i = 0U; i < kson::kNumBTLanesSZ; ++i)
 		{
 			m_btLaneJudgments[i].update(m_chartData.note.bt[i], currentPulse, currentTimeSec, m_gameStatus.btLaneStatus[i]);
 		}
 
-		// FX lane judgments
+		// FXレーンの判定
 		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 		{
 			m_fxLaneJudgments[i].update(m_chartData.note.fx[i], currentPulse, currentTimeSec, m_gameStatus.fxLaneStatus[i]);
@@ -84,10 +84,10 @@ namespace MusicGame
 	{
 		m_bgm.update();
 
-		// Game status and judgment
+		// ゲームステータスの更新とノーツ判定
 		updateGameStatus();
 
-		// Audio effects
+		// 音声エフェクトの更新
 		std::array<Optional<bool>, kson::kNumFXLanesSZ> longFXPressed;
 		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 		{
@@ -97,11 +97,11 @@ namespace MusicGame
 			.longFXPressed = longFXPressed,
 		});
 
-		// SE
+		// 効果音の更新
 		const double currentTimeSec = m_bgm.posSec();
 		m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
 
-		// Graphics
+		// グラフィックスの更新
 		m_graphicsMain.update(m_chartData, m_gameStatus);
 	}
 

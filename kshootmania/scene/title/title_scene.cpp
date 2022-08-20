@@ -30,7 +30,7 @@ void TitleScene::draw() const
 	ScreenUtils::FitToHeight(m_bgTexture).drawAt(Scene::Center());
 	m_menu.draw();
 
-	// Fadeout before exit
+	// 終了前のフェードアウト描画
 	if (m_exitStopwatch.isStarted())
 	{
 		const double alpha = m_exitStopwatch.sF() / kExitFadeOutDurationSec;
@@ -43,7 +43,7 @@ void TitleScene::processMenuItem(TitleMenu::Item item)
 	switch (item)
 	{
 	case TitleMenu::kStart:
-		// TODO: Sign in to Internet Ranking
+		// TODO: Internet Rankingへのサインイン
 		changeScene(SceneName::kSelect, kDefaultTransitionMs);
 		break;
 

@@ -41,7 +41,7 @@ TitleMenu::TitleMenu(TitleScene* pTitleScene)
 	, m_menuItemTexture(TitleTexture::kMenuItem,
 		{
 			.row = kItemEnumCount,
-			.column = 2, // Additive Texture & Subtractive Texture
+			.column = 2, // 加算テクスチャと減算テクスチャの2枚
 			.sourceScale = ScreenUtils::SourceScale::k3x,
 			.sourceSize = { 525, 75 },
 		})
@@ -71,7 +71,7 @@ void TitleMenu::draw() const
 
 	const int32 x = Scene::Center().x;
 
-	// Draw menu cursor (additive)
+	// メニューカーソルを描画(加算)
 	{
 		const ScopedColorMul2D colorMultiply(MenuCursorAlphaValue(m_stopwatch.sF()));
 		const ScopedRenderStates2D additive(BlendState::Additive);
@@ -79,18 +79,18 @@ void TitleMenu::draw() const
 		textureRegion.draw(x - textureRegion.size.x / 2, Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * m_easedCursorPos);
 	}
 
-	// Draw menu items
+	// メニュー項目を描画
 	for (int32 i = 0; i < kItemEnumCount; ++i)
 	{
 		const int32 y = Scaled(kMenuItemOffsetY) + Scaled(kMenuItemDiffY) * i;
 		{
-			// Sub-texture (subtractive)
+			// 減算テクスチャを描画
 			const ScopedRenderStates2D subtractive(BlendState::Subtractive);
 			const TextureRegion textureRegion = m_menuItemTexture(i, kSubTexCol);
 			textureRegion.draw(x - textureRegion.size.x / 2, y);
 		}
 		{
-			// Main texture (additive)
+			// 加算テクスチャを描画
 			const ScopedRenderStates2D additive(BlendState::Additive);
 			const TextureRegion textureRegion = m_menuItemTexture(i, kMainTexCol);
 			textureRegion.draw(x - textureRegion.size.x / 2, y);

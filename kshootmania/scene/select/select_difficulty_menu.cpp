@@ -33,6 +33,7 @@ void SelectDifficultyMenu::update()
 
 	m_menu.update();
 
+	// カーソルが変更なしの場合は特に何もしなくてOK
 	if (!m_menu.isCursorChanged())
 	{
 		return;
@@ -41,7 +42,7 @@ void SelectDifficultyMenu::update()
 	const SelectMenuSongItemInfo* pMenuItem = dynamic_cast<SelectMenuSongItemInfo*>(m_pSelectMenu->cursorMenuItem().info.get());
 	if (pMenuItem == nullptr)
 	{
-		// Do not move the cursor if the current item is not a song
+		// 選択中の項目が曲以外の場合は難易度カーソルを動かさない(元の状態に戻す)
 		m_menu.setCursor(cursorPrev);
 		return;
 	}
@@ -50,11 +51,11 @@ void SelectDifficultyMenu::update()
 	assert(0 <= cursor && cursor < pMenuItem->chartInfos.size());
 	if (pMenuItem->chartInfos[cursor].has_value())
 	{
-		// If the cursor difficulty exists, it is okay
+		// カーソルの難易度が存在すればその難易度から変更なしでOK
 		return;
 	}
 
-	// If no difficulty is found, try to change the cursor to another difficulty
+	// カーソルが存在しない難易度に変更された場合は、他の難易度への変更を試みる
 	int32 newCursor = cursorPrev;
 	if (m_menu.isCursorIncremented())
 	{
@@ -98,18 +99,18 @@ void SelectDifficultyMenu::draw(const Vec2& shakeVec) const
 	{
 		const bool difficultyExists = std::cmp_less(i, pMenuItem->chartInfos.size()) && pMenuItem->chartInfos[i].has_value();
 
-		// Draw difficulty item BG
-		// Note: Here, the incorrect texture aspect ratio in KSMv1 is simulated
+		// 難易度項目の背景を描画
+		// Note: KSMv1でテクスチャの比率とは異なる縦横比で描画されていたので、ここでもそれを再現するために大きさ指定でリサイズしている
 		m_difficultyTexture(difficultyExists ? 1 : 0, i).resized(ScaledL(220, 220)).draw(baseVec + ScaledL(50 + 236 * i, 324));
 
-		// Draw level number
+		// レベルの数字を描画
 		if (difficultyExists)
 		{
 			m_levelNumberTexture(Clamp(pMenuItem->chartInfos[i]->level - 1, 0, kLevelMax - 1)).draw(baseVec + ScaledL(86 + 236 * i, 358));
 		}
 	}
 
-	// Draw cursor animation
+	// カーソルのアニメーションを描画
 	{
 		const ScopedRenderStates2D renderState(BlendState::Additive);
 		const Vec2 position = Scaled(65 - 13, 125) + ScaledL(236 * cursor(), 246) + LeftMarginVec() + shakeVec;
@@ -153,18 +154,19 @@ bool SelectDifficultyMenu::isCursorChanged() const
 	return m_menu.isCursorChanged();
 }
 
+// 選択中の曲にカーソルの難易度が存在するとは限らないので、存在する難易度のうちカーソルに最も近いものを代替カーソル値(alternative cursor)として返す
 int32 SelectDifficultyMenu::GetAlternativeCursor(int32 rawCursor, std::function<bool(int32)> difficultyExistsFunc)
 {
-	// If the cursor difficulty exists, return it as is
+	// カーソルの難易度が存在すればそれをそのまま返す
 	if (difficultyExistsFunc(rawCursor))
 	{
 		return rawCursor;
 	}
 
-	// Alternative cursor value
+	// 代替カーソル値
 	int32 altCursor = -1;
 
-	// First try to change the cursor to a lower difficulty
+	// はじめにカーソルより下の難易度への変更を試みる
 	bool found = false;
 	for (int idx = rawCursor - 1; idx >= 0; --idx)
 	{
@@ -176,7 +178,7 @@ int32 SelectDifficultyMenu::GetAlternativeCursor(int32 rawCursor, std::function<
 		}
 	}
 
-	// If no difficulty is found, try to change the cursor to a higher difficulty
+	// もし見つからなければ、カーソルより上の難易度への変更を試みる
 	if (!found)
 	{
 		for (int idx = rawCursor + 1; idx < kNumDifficulties; ++idx)

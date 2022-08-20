@@ -9,8 +9,8 @@ namespace MusicGame::Graphics
 		constexpr StringView kHighwayBaseTextureFilename = U"base.gif";
 		constexpr StringView kShineEffectTextureFilename = U"lanelight.gif";
 
-		// Angle of the line connecting the camera position and the judgment line from the horizontal
-		// (Unconfirmed, but KSMv1 uses this value anyway)
+		// カメラ座標と判定ラインを線で結んだ場合の垂直からの角度
+		// (値の根拠は不明だが、KSMv1でこの値が使用されていたためそのまま持ってきている)
 		constexpr double kCameraToJdglineRadians = -0.6125;
 
 		constexpr double kJdglineYFromBottom = 14;
@@ -18,7 +18,7 @@ namespace MusicGame::Graphics
 		constexpr double kPlaneHeightBelowJdgline = kHighwayPlaneSize.y * kJdglineYFromBottom / kHighwayTextureSize.y;
 		constexpr double kPlaneHeightAboveJdgline = kHighwayPlaneSize.y - kPlaneHeightBelowJdgline;
 
-		// Shrink UV to remove edge pixels
+		// UV座標の縮め幅(端にテクスチャの折り返しピクセルが見える現象の対策)
 		constexpr float kUVShrinkX = 0.0075f;
 		constexpr float kUVShrinkY = 0.005f;
 
@@ -33,7 +33,7 @@ namespace MusicGame::Graphics
 		, m_additiveRenderTexture(kHighwayTextureSize)
 		, m_invMultiplyRenderTexture(kHighwayTextureSize)
 		, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, kHighwayPlaneSize, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
-		, m_mesh(m_meshData) // <- this initialization is required because DynamicMesh::fill() does not resize the vertex array dynamically
+		, m_mesh(m_meshData) // DynamicMesh::fill()で頂点データの配列サイズが動的に変更される訳ではないのでこの初期化は必須
 	{
 	}
 
@@ -54,19 +54,19 @@ namespace MusicGame::Graphics
 			}
 		}
 
-		// Draw BT/FX notes
+		// BT/FXノーツの描画
 		m_buttonNoteGraphics.draw(chartData, gameStatus, m_additiveRenderTexture, m_invMultiplyRenderTexture);
 
-		// Draw key beams
+		// キービームの描画
 		m_keyBeamGraphics.draw(gameStatus, m_additiveRenderTexture);
 
-		// Draw laser notes
+		// レーザーノーツの描画
 		m_laserNoteGraphics.draw(chartData, gameStatus, m_additiveRenderTexture, m_invMultiplyRenderTexture);
 	}
 
 	void Highway3DGraphics::draw3D(double tiltRadians) const
 	{
-		// Draw 2D render texture into 3D plane
+		// レンダーテクスチャを3D空間上へ描画
 		const Transformer3D transform(TiltTransformMatrix(tiltRadians));
 
 		{

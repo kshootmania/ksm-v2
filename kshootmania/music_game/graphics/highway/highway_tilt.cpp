@@ -13,20 +13,20 @@ namespace MusicGame::Graphics
 		{
 			double speed = 4.5;
 
-			// Slow down if close to target tilt factor
+			// 目標の傾きに近くなった場合は減速させる
 			const double diff = Abs(targetTiltFactor - currentTiltFactor);
 			if (diff < kSlowDownDiffThreshold)
 			{
 				speed *= diff / kSlowDownDiffThreshold;
 			}
 
-			// Slow down if the target is close to zero
+			// 目標の傾きがゼロに近い場合は遅くする
 			if (Abs(targetTiltFactor) < kZeroTiltFactorThreshold)
 			{
 				speed *= kZeroTiltSlowDownFactor;
 			}
 
-			// Do not make the speed too small
+			// スピードが遅くなりすぎないようにする(目標値に収束させるため)
 			speed = Max(speed, kMinSpeed);
 
 			return speed;

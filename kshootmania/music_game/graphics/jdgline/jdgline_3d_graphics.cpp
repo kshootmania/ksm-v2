@@ -18,7 +18,7 @@ namespace MusicGame::Graphics
 
 	void Jdgline3DGraphics::draw3D(double tiltRadians) const
 	{
-		// Draw judgment line texture into 3D plane
+		// 3Dの板に判定ラインのテクスチャを描画
 		const ScopedRenderStates3D blendState(BlendState::NonPremultiplied);
 		const Transformer3D transform(JudgmentPlaneTransformMatrix(tiltRadians, kPlaneCenter));
 		m_mesh.draw(m_jdglineTexture);

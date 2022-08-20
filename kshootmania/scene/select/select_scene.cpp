@@ -20,9 +20,9 @@ SelectScene::SelectScene(const InitData& initData)
 
 void SelectScene::update()
 {
-	const bool closeFolder = m_menu.isFolderOpen() && KeyConfig::Down(m_folderCloseButton/* <- kBackspace or kBack */);
+	const bool closeFolder = m_menu.isFolderOpen() && KeyConfig::Down(m_folderCloseButton/* ← kBackspace・kBackのいずれかが入っている */);
 
-	// Back to title screen
+	// Backボタン(Escキー)を押した場合、(フォルダを閉じる状況でなければ)タイトル画面へ戻る
 	if (!closeFolder && KeyConfig::Down(KeyConfig::kBack))
 	{
 		changeScene(SceneName::kTitle, kDefaultTransitionMs);
@@ -31,13 +31,13 @@ void SelectScene::update()
 
 	m_menu.update();
 
-	// Close folder
+	// BackSpaceキーまたはBackボタン(Escキー)でフォルダを閉じる
 	if (closeFolder)
 	{
 		m_menu.closeFolder();
 	}
 
-	// Open folder / Start playing
+	// スタートボタンを押した場合、フォルダを開く または プレイ開始
 	if (KeyConfig::Down(KeyConfig::kStart))
 	{
 		m_menu.decide();

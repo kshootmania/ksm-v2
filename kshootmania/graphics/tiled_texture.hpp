@@ -5,14 +5,16 @@ struct TiledTextureSizeInfo
 	static constexpr int kAutoDetect = 0;
 	static constexpr Size kAutoDetectSize = { 0, 0 };
 
-	// Set to kAutoDetect to automatically set based on sourceSize
+	// row・columnに対してkAutoDetectを指定するとsourceSizeに応じて自動的に決定される
+	// (その場合、sourceSizeにはkAutoDetectSize以外を指定すること)
 	int32 row = 1;
 	int32 column = 1;
 
 	Point offset = { 0, 0 };
 	ScreenUtils::SourceScale sourceScale = ScreenUtils::SourceScale::kNoScaling;
 
-	// Set to kAutoDetectSize to automatically set based on row/column
+	// sourceSizeに対してkAutoDetectSizeを指定するとrow・columnに応じて自動的に決定される
+	// (その場合、row・columnにはkAutoDetect以外を指定すること)
 	Size sourceSize = kAutoDetectSize;
 };
 

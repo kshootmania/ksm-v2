@@ -2,7 +2,7 @@
 
 namespace
 {
-	// Note: s3d::InputGroup is not used in order to make sure the array size fixed.
+	// キーコンフィグの設定画面や保存時などに配列サイズが固定のほうが都合が良いのでs3d::InputGroupは不使用
 	using ConfigSet = std::array<Input, KeyConfig::kButtonEnumCount>;
 	std::array<ConfigSet, KeyConfig::kConfigSetEnumCount> s_configSetArray;
 
@@ -67,7 +67,7 @@ void KeyConfig::SetConfigValue(ConfigSet targetConfigSet, StringView configValue
 		}
 	}
 
-	// Keyboard 1 has keys that cannot be configured by user
+	// Keyboard 1の場合、ユーザーによって変更できない固定のキーコンフィグがあるので上書き
 	if (targetConfigSet == kKeyboard1)
 	{
 		s_configSetArray[kKeyboard1][kStart] = KeyEnter;
@@ -121,7 +121,7 @@ bool KeyConfig::Up(Button button)
 		return false;
 	}
 
-	// All keys need to be released for key up
+	// あるボタンを離したと判定するには、そのボタンに対応する全キーを離している必要がある
 	if (Pressed(button))
 	{
 		return false;

@@ -13,17 +13,17 @@ void ConfigIni::Load()
 {
 	s_configIniData.load(kConfigIniFilePath);
 
-	// Convert legacy "hispeedtype" value
+	// 旧バージョンの"hispeedtype"の値を読み込む
 	if (s_configIniData.hasValue(Key::kHispeedShownModsLegacy))
 	{
 		const String commaSeparatedMods = s_configIniData.getString(Key::kHispeedShownModsLegacy) + U',';
 
-		// Note: The "O" and "C" are *intentionally* swapped to simulate mistakes in the old version...
+		// Note: 旧バージョンでは誤って"O"と"C"が逆に保存されていたため、正しく読み込むために意図的に入れ替えてある
 		using StrPair = std::pair<StringView, StringView>;
 		for (const auto& [key, modComma] : {
 				StrPair{ Key::kHispeedShowXMod, U"x," },
-				StrPair{ Key::kHispeedShowOMod, U"C,"/* <- Intentional swap!! */ },
-				StrPair{ Key::kHispeedShowCMod, U"O,"/* <- Intentional swap!! */ } })
+				StrPair{ Key::kHispeedShowOMod, U"C,"/* ← 食い違っているが意図的 */ },
+				StrPair{ Key::kHispeedShowCMod, U"O,"/* ← 食い違っているが意図的 */ } })
 		{
 			if (!s_configIniData.hasValue(key))
 			{
@@ -32,7 +32,7 @@ void ConfigIni::Load()
 		}
 	}
 
-	// Set key configurations
+	// キーコンフィグの読み込み
 	using KeyConfigTypes = std::initializer_list<std::tuple<StringView, KeyConfig::ConfigSet>>;
 	for (const auto & [iniKey, targetConfigSet]
 		: KeyConfigTypes{

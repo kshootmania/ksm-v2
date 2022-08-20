@@ -21,7 +21,7 @@ void PlayScene::update()
 {
 	m_gameMain.update();
 
-	// Back to song selection by Esc key
+	// Escキーで楽曲選択画面に戻る
 	if (KeyConfig::Down(KeyConfig::kBack))
 	{
 		changeScene(U"Select", kDefaultTransitionMs);

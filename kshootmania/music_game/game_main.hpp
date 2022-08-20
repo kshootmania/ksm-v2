@@ -23,23 +23,23 @@ namespace MusicGame
 
 		FilePath m_parentPath;
 
-		// Chart
+		// 譜面情報
 		const kson::ChartData m_chartData;
 		const kson::TimingCache m_timingCache;
 
-		// Judgment
+		// 判定
 		std::array<Judgment::ButtonLaneJudgment, kson::kNumBTLanesSZ> m_btLaneJudgments;
 		std::array<Judgment::ButtonLaneJudgment, kson::kNumFXLanesSZ> m_fxLaneJudgments;
 		const int32 m_scoreFactorMax;
 
-		// Audio
+		// 音声
 		Audio::BGM m_bgm;
 		Audio::AssistTick m_assistTick;
 
-		// Audio effects
+		// 音声エフェクト
 		Audio::AudioEffectMain m_audioEffectMain;
 
-		// Graphics
+		// グラフィックス
 		Graphics::GraphicsMain m_graphicsMain;
 
 		void updateGameStatus();

@@ -19,15 +19,15 @@ namespace MusicGame
 		std::array<ChipAnimStatus, Graphics::kChipAnimMax> chipAnimStatusRingBuffer;
 		std::size_t chipAnimStateRingBufferCursor = 0U;
 
-		// This value will be none while a long note pressed before the note start
-		// (for audio effects)
+		// 現在ロングノートが押されているかどうか
+		// (ロングノーツが判定ラインに到達するまではボタンを押していてもnoneになる。主に音声エフェクト用)
 		Optional<bool> longNotePressed = none;
 
-		// This value will NOT be none while a long note is pressed before the note start
-		// (for graphics)
+		// 現在押しているロングノートの始点のPulse値
+		// (ロングノーツが判定ラインに到達するまでにボタンを押した場合でもnoneではなくPulse値になる。主に判定グラフィックス用)
 		Optional<kson::Pulse> currentLongNotePulse = none;
 
-		// Timing of key press or key release
+		// 直近でキーを押した、または離した時間(秒)
 		double currentLongNoteAnimOffsetTimeSec = kPastTimeSec;
 	};
 

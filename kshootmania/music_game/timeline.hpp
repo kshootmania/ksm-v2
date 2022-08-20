@@ -23,7 +23,7 @@ namespace MusicGame
 		{
 			if (time < m_time) [[unlikely]]
 			{
-				// Avoid backtracking
+				// 逆走防止
 				return false;
 			}
 

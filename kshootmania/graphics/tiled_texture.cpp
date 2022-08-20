@@ -4,7 +4,7 @@ namespace
 {
 	TiledTextureSizeInfo AutoDetectSizeIfZero(TiledTextureSizeInfo sizeInfo, const Size& textureSize)
 	{
-		// Note: Here, kAutoDetect(=0) is written as 0 to make it clear that zero division is avoided.
+		// Note: ゼロ除算回避であることをわかりやすくするため、ここではあえてkAutoDetectを0として記載
 
 		if ((sizeInfo.row == 0 && sizeInfo.sourceSize.y == 0) || (sizeInfo.column == 0 && sizeInfo.sourceSize.x == 0))
 		{

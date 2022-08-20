@@ -35,14 +35,14 @@ void SelectMenu::decideSongItem()
 	assert(!m_menu.empty());
 	assert(m_menu.cursorValue().itemType == SelectMenuItem::kSong);
 
-	// Get information of the selected chart
+	// 選択されている譜面の情報を取得
 	const auto pChartInfo = cursorChartInfoPtr();
 	if (pChartInfo == nullptr) [[unlikely]]
 	{
 		return;
 	}
 
-	// Start playing
+	// プレイ開始
 	m_moveToPlaySceneFunc(pChartInfo->chartFilePath);
 }
 
@@ -51,8 +51,8 @@ void SelectMenu::decideDirectoryFolderItem()
 	assert(!m_menu.empty());
 	assert(m_menu.cursorValue().itemType == SelectMenuItem::kDirectoryFolder);
 
-	// Open folder
-	// Note: Here, fullPath is copied to a new FilePath instance because m_menu is cleared within openDirectory() and the original FilePath is destroyed.
+	// フォルダを開く
+	// Note: openDirectory()の実行中にm_menu.cursorValue().fullPathの中身は破棄されるので、ここでは新しいFilePathとしてコピーしてから渡している
 	const FilePath directoryPath = m_menu.cursorValue().fullPath;
 	openDirectory(directoryPath);
 }
@@ -63,14 +63,15 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 
 	if (!directoryPath.empty())
 	{
-		if (!FileSystem::IsDirectory(directoryPath)) // Note: FileSystem::IsDirectory() checks if the directory exists.
+		if (!FileSystem::IsDirectory(directoryPath))
 		{
+			// ディレクトリが存在しない場合は何もしない
 			return false;
 		}
 
 		m_menu.clear();
 
-		// Insert the directory heading item
+		// ディレクトリの見出し項目を追加
 		m_menu.push_back({
 			.itemType = SelectMenuItem::kCurrentFolder,
 			.fullPath = FileSystem::FullPath(directoryPath),
@@ -79,7 +80,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 
 		// TODO: Insert course items
 
-		// Insert song items
+		// 曲の項目を追加
 		const Array<FilePath> songDirectories = GetSubDirectories(directoryPath);
 		for (const auto& songDirectory : songDirectories)
 		{
@@ -107,7 +108,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 				int32 difficultyIdx = chartData.meta.difficulty.idx;
 				if (difficultyIdx < 0 || kNumDifficulties <= difficultyIdx)
 				{
-					// Set to rightmost difficulty if unknown difficulty is detected
+					// 未知の難易度の場合は一番右の難易度にする
 					difficultyIdx = kNumDifficulties - 1;
 				}
 
@@ -152,10 +153,12 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 		m_folderState.fullPath = U"";
 	}
 
+	// フォルダ項目を追加
+	// (フォルダを開いていない場合、または現在開いていないフォルダを表示する設定の場合のみ)
 	if (directoryPath.empty() || ConfigIni::GetBool(ConfigIni::Key::kAlwaysShowOtherFolders))
 	{
 		const Array<FilePath> searchPaths = {
-			U"songs", // TODO: make this configurable
+			U"songs", // TODO: 設定可能にする
 		};
 
 		Array<FilePath> directories;
@@ -164,7 +167,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 			directories.append(GetSubDirectories(path).map([](FilePathView p) { return FileSystem::FullPath(p); }));
 		}
 
-		// Find the currently opened directory item
+		// フォルダを開いている場合は、そのフォルダが先頭になるような順番で項目を追加する必要があるので、現在開いているフォルダのインデックスを調べる
 		std::size_t currentDirectoryIdx = 0;
 		bool found = false;
 		if (!directoryPath.empty())
@@ -177,23 +180,23 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 			}
 		}
 
-		// Insert directory items
+		// 項目を追加
 		for (std::size_t i = 0; i < directories.size(); ++i)
 		{
 			const std::size_t rotatedIdx = (i + currentDirectoryIdx) % directories.size();
 			if (rotatedIdx == 0)
 			{
-				// Insert "All" folder item
+				// "All"フォルダの項目を追加
 				m_menu.push_back({
 					.itemType = SelectMenuItem::kAllFolder,
 				});
 
-				// TODO: Add "Courses" folder item
+				// TODO: "Courses"フォルダの項目を追加
 			}
 
 			if (found && i == 0)
 			{
-				// Skip the first item because it has already been inserted as kCurrentFolder
+				// 現在開いているフォルダは項目タイプkCurrentFolderとして既に追加済みなのでスキップ
 				continue;
 			}
 
@@ -357,21 +360,23 @@ const SelectMenuItem& SelectMenu::cursorMenuItem() const
 
 const SelectMenuSongItemChartInfo* SelectMenu::cursorChartInfoPtr() const
 {
-	// Check if item type is kSong
+	// 項目タイプがkSongでなければ譜面情報なし
 	const SelectMenuItem& item = m_menu.cursorValue();
 	if (item.itemType != SelectMenuItem::kSong)
 	{
 		return nullptr;
 	}
 
-	// Check if SelectMenuItem::info can be casted to SelectMenuSongItemInfo*
+	// 何らかの理由でSelectMenuItem::infoがSelectMenuSongItemInfo*にキャストできなければ譜面情報なし
+	// (通常はキャストできるはず)
 	const SelectMenuSongItemInfo* const pSongInfo = dynamic_cast<const SelectMenuSongItemInfo*>(item.info.get());
 	if (pSongInfo == nullptr) [[unlikely]]
 	{
 		return nullptr;
 	}
 
-	// Check the song item has the current cursor difficulty
+	// 選択中の曲にカーソルの難易度が存在しなければ譜面情報なし
+	// (通常は存在するはず)
 	const int32 cursor = m_difficultyMenu.cursor();
 	assert(0 <= cursor && cursor < pSongInfo->chartInfos.size());
 	if (!pSongInfo->chartInfos[cursor].has_value()) [[unlikely]]

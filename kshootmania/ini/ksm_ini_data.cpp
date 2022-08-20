@@ -17,7 +17,7 @@ void KSMIniData::load(FilePathView path)
 	String line;
 	while (reader.readLine(line))
 	{
-		// Skip comments
+		// コメント行を読み飛ばす
 		if (line[0] == U';' || line.substrView(0, 2) == U"//")
 		{
 			continue;
@@ -26,7 +26,7 @@ void KSMIniData::load(FilePathView path)
 		const std::size_t equalPos = line.indexOf(U'=');
 		if (equalPos == String::npos)
 		{
-			// The line doesn't have '='
+			// 行内に'='がない
 			continue;
 		}
 
@@ -43,14 +43,14 @@ void KSMIniData::save(FilePathView path) const
 	String ini;
 	ini.reserve(kReserveSize);
 
-	// Set of remaining keys to write unappeared keys
+	// iniファイル内に登場しなかったキーのset
 	const auto keysView = std::views::keys(m_hashTable);
-	std::set<StringView> remainingKeys(keysView.begin(), keysView.end()); // Use ordered set to make write order stable
+	std::set<StringView> remainingKeys(keysView.begin(), keysView.end()); // 順序を安定にするためにunordered_setではなくsetを使用
 
-	// Read latest content and replace value
+	// iniファイルの内容を読み込みながら, 設定の行を最新の値で書き換える
 	if (FileSystem::Exists(path))
 	{
-		TextReader reader(path); // TODO: Deal with Shift-JIS
+		TextReader reader(path); // TODO: ファイル名にShift-JISが指定された場合の考慮
 		String line;
 		while (reader.readLine(line))
 		{
@@ -75,7 +75,7 @@ void KSMIniData::save(FilePathView path) const
 			if (hasValue(key))
 			{
 				remainingKeys.erase(key);
-				line = key + U'=' + getString(key); // Note: This assignment breaks the StringView reference of key
+				line = key + U'=' + getString(key); // Note: この代入によって変数keyの参照先が書き換わるため、ここ以降では変数keyを使用しないよう注意
 			}
 
 			ini += line;
@@ -83,7 +83,7 @@ void KSMIniData::save(FilePathView path) const
 		}
 	}
 
-	// Append remaining key values
+	// 残りの値を末尾に追加
 	for (const auto& key : remainingKeys)
 	{
 		ini += key;
@@ -92,7 +92,7 @@ void KSMIniData::save(FilePathView path) const
 		ini += U'\n';
 	}
 
-	// Write
+	// ファイルへ書き込み
 	TextWriter writer(path, TextEncoding::UTF8_NO_BOM);
 	if (writer)
 	{

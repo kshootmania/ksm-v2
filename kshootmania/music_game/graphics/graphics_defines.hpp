@@ -9,8 +9,8 @@ namespace MusicGame::Graphics
 	constexpr Vec2 kBTLanePositionDiff = { 42.0, 0.0 };
 	constexpr Vec2 kFXLanePositionDiff = { 84.0, 0.0 };
 
-	// Note: If you use this blend state, make sure the destination texture is opaque.
-	//       Otherwise, both alpha and color blending will take effect and the drawn image will be dark.
+	// アルファブレンド有効で描画
+	// (描画先テクスチャはあらかじめ不透明にしておく必要があるので注意。不透明でない場合、見た目が暗くなる)
 	constexpr BlendState kEnableAlphaBlend = BlendState(
 		true,
 		Blend::SrcAlpha,
@@ -18,6 +18,8 @@ namespace MusicGame::Graphics
 		BlendOp::Add,
 		Blend::One);
 
+	// 反転・乗算描画
+	// (HSP版ではhgimg3の「色減算(substract2)」を使用していたが、このモードはなぜか減算ではなく反転・乗算しているようだったのでこちらを使用)
 	constexpr BlendState kInvMultiply = BlendState(
 		true,
 		Blend::Zero,
@@ -31,9 +33,9 @@ namespace MusicGame::Graphics
 
 	constexpr ColorF kSongInfoFontColor = Color{ 0, 32, 8 };
 
-	constexpr double kOnePixelTextureSourceSize = 0.5; // Note: Do not use exactly 1px because it will create margin pixels
+	constexpr double kOnePixelTextureSourceSize = 0.5; // 幅1pxのテクスチャを幅1pxとして使用すると縁に余白ができるので、描画元サイズは正確に1pxにせず小さめにする
 
-	constexpr double kOnePixelTextureSourceOffset = (1.0 - kOnePixelTextureSourceSize) / 2;
+	constexpr double kOnePixelTextureSourceOffset = (1.0 - kOnePixelTextureSourceSize) / 2; // kOnePixelTextureSourceSize使用時の座標オフセット
 
 	constexpr Vec3 kHighwayTiltCenter = { 0.0, 42.0, 0.0 };
 

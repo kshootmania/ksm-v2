@@ -52,7 +52,7 @@ namespace MusicGame::Graphics
 		{
 			if (Abs(positionEnd.x - positionStart.x) <= kLaserLineWidth)
 			{
-				// Too short to draw line
+				// 左右が近すぎて直角レーザーの横線が描画できない場合はゼロを返す
 				return { Vec2::Zero(), Vec2::Zero(), Vec2::Zero(), Vec2::Zero() };
 			}
 
@@ -77,12 +77,12 @@ namespace MusicGame::Graphics
 				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
 			};
 
-			// Draw angles
+			// 直角レーザーの角のテクスチャを描画
 			const bool isLeftToRight = (point.v < point.vf);
 			laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(isLeftToRight).drawAt(positionStart + Vec2{ 0.0, -kLaserLineWidth / 2 });
 			laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(!isLeftToRight).flipped().drawAt(positionEnd + Vec2{ 0.0, -kLaserLineWidth / 2 });
 
-			// Draw line
+			// 直角レーザーの横線を描画
 			const Quad quad = LaserSlamLineQuad(positionStart, positionEnd);
 			quad(laserNoteTexture(kLaserTextureSize.x * laneIdx + kOnePixelTextureSourceOffset, 0, kOnePixelTextureSourceSize, kLaserTextureSize.y)).draw();
 		}
@@ -102,7 +102,7 @@ namespace MusicGame::Graphics
 			const double positionSectionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY;
 			if (positionSectionStartY + kLaserStartTextureSize.y < 0)
 			{
-				// Laser section is above the drawing area
+				// レーザーのセクション全体が描画範囲より上にある場合は描画しない
 				return;
 			}
 
@@ -112,7 +112,7 @@ namespace MusicGame::Graphics
 			{
 				const auto& [ry, point] = *itr;
 
-				// Draw laser start texture
+				// レーザー開始テクスチャを描画
 				if (itr == laserSection.v.begin())
 				{
 					const Vec2 positionStart = {
@@ -125,21 +125,22 @@ namespace MusicGame::Graphics
 				const double positionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse + ry) * 480 / kson::kResolution + kLaserShiftY;
 				if (positionStartY < 0)
 				{
-					// Laser point is above the drawing area
+					// レーザーの線を構成する2つの点(始点・終点)のうち始点が描画範囲より上にある場合は描画しない
+					// それ以降のレーザーも上にあるため描画対象外となるので、ここでreturnする
 					return;
 				}
 
-				// Draw laser slam
+				// 直角レーザーを描画
 				if (point.v != point.vf)
 				{
 					DrawLaserSlam(laneIdx, relPulse + ry, point, laserNoteTexture);
 				}
 
-				// Last laser point does not create laser line
+				// レーザー終端の点の場合は線を描画しない
 				const auto nextItr = std::next(itr);
 				if (nextItr == laserSection.v.end())
 				{
-					// If the last point is a laser slam, draw its tail
+					// 終端が直角の場合は終端を伸ばす
 					if (point.v != point.vf)
 					{
 						DrawLaserSlamTail(laneIdx, relPulse + ry, point, laserNoteTexture);
@@ -148,7 +149,7 @@ namespace MusicGame::Graphics
 					break;
 				}
 
-				// Draw laser line by two laser points
+				// レーザーの2つの点をもとに線を描画
 				{
 					const auto& [nextRy, nextPoint] = *nextItr;
 					if (relPulse + nextRy < -kson::kResolution)
@@ -185,8 +186,8 @@ namespace MusicGame::Graphics
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 		const ScopedRenderStates2D renderState(BlendState::Additive);
 
-		// Draw laser notes
-		for (int32 laneIdx = 0; laneIdx < kson::kNumLaserLanes; ++laneIdx) // Note: Use int32 instead of size_t here to avoid extra casting
+		// レーザーノーツを描画
+		for (int32 laneIdx = 0; laneIdx < kson::kNumLaserLanes; ++laneIdx) // 座標計算で結局int32にする必要があるのでここではsize_t不使用
 		{
 			const auto& lane = chartData.note.laser[laneIdx];
 			for (const auto& [y, laserSection] : lane)
