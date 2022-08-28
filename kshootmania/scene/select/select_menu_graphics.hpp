@@ -21,6 +21,7 @@ class SelectMenuGraphics
 private:
 	const SelectMenuItemTextures m_songItemTextures;
 	const SelectMenuItemTextures m_dirItemTextures;
+	const SelectMenuItemTextures m_subDirItemTextures;
 
 	static constexpr int32 kNumDisplayItems = 8;
 	static constexpr int32 kNumUpperHalfItems = kNumDisplayItems / 2;

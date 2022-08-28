@@ -33,6 +33,8 @@ namespace ksmaudio::AudioEffect
 
 	ValueSet StrToValueSet(Type type, const std::string& str, bool* pIsError = nullptr);
 
+	bool ValueAsBool(float value);
+
 	struct Param
 	{
 		Type type = Type::kUnspecified;

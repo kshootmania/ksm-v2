@@ -75,6 +75,8 @@ public:
 	template <typename... Args>
 	void emplace_back(Args&&... args);
 
+	void pop_back();
+
 	auto begin();
 
 	auto begin() const;
@@ -328,6 +330,13 @@ template<typename ...Args>
 void ArrayWithLinearMenu<T>::emplace_back(Args && ...args)
 {
 	m_array.emplace_back(std::forward<Args>(args)...);
+	updateLinearMenuCursorMax();
+}
+
+template <typename T>
+void ArrayWithLinearMenu<T>::pop_back()
+{
+	m_array.pop_back();
 	updateLinearMenuCursorMax();
 }
 

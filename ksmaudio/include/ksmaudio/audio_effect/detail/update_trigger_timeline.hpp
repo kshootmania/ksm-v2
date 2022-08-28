@@ -21,11 +21,12 @@ namespace ksmaudio::AudioEffect::detail
 		{
 			if (m_updateTriggerTiming.empty() || m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
 			{
-				m_secUntilTrigger = -1.0f; // Negative value will be ignored in DSP
+				// 負の値はDSP側で無視される
+				m_secUntilTrigger = -1.0f;
 				return;
 			}
 
-			// Advance m_updateTriggerTimingCursor to currentSec
+			// カーソルを現在時間まで進める
 			if (*m_updateTriggerTimingCursor < currentSec)
 			{
 				do
@@ -33,16 +34,9 @@ namespace ksmaudio::AudioEffect::detail
 					++m_updateTriggerTimingCursor;
 				} while (m_updateTriggerTimingCursor != m_updateTriggerTiming.end() && *m_updateTriggerTimingCursor < currentSec);
 
-				if (m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
-				{
-					m_secUntilTrigger = -1.0f; // Negative value will be ignored in DSP
-					return;
-				}
-				else
-				{
-					m_secUntilTrigger = 0.0f; // Update immediately (TODO: avoid extra update)
-					return;
-				}
+				// 負の値はDSP側で無視される
+				m_secUntilTrigger = -1.0f;
+				return;
 			}
 
 			m_secUntilTrigger = *m_updateTriggerTimingCursor - currentSec;
