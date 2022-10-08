@@ -53,6 +53,8 @@ namespace ksmaudio::AudioEffect
 
 	float GetValue(const Param& param, const Status& status, bool isOn);
 
+	bool GetValueAsBool(const Param& param, const Status& status, bool isOn);
+
 	Param DefineParam(Type type, const std::string& valueSetStr);
 
 	enum class ParamID

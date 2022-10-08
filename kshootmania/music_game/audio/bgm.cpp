@@ -30,6 +30,10 @@ void MusicGame::Audio::BGM::emplaceAudioEffectImpl(bool isFX, const std::string&
 	case kson::AudioEffectType::Wobble:
 		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Wobble>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
 		break;
+
+	case kson::AudioEffectType::Tapestop:
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Tapestop>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+		break;
 	}
 }
 

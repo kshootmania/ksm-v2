@@ -67,7 +67,7 @@ namespace ksmaudio::AudioEffect::detail
         }
 
     public:
-        explicit RingBuffer(std::size_t size, std::size_t numChannels)
+        RingBuffer(std::size_t size, std::size_t numChannels)
             : m_buffer(size, T{ 0 })
             , m_numFrames(size / numChannels)
             , m_numChannels(numChannels)
@@ -134,7 +134,7 @@ namespace ksmaudio::AudioEffect::detail
             const U lerpRate = DecimalPart(floatDelayFrames);
             for (std::size_t channel = 0; channel < m_numChannels; ++channel)
             {
-                pDest[channel] = Lerp(m_buffer[firstIdx + channel], m_buffer[secondIdx + channel], lerpRate);
+                pDest[channel] = std::lerp(m_buffer[firstIdx + channel], m_buffer[secondIdx + channel], lerpRate);
             }
         }
 
@@ -146,6 +146,11 @@ namespace ksmaudio::AudioEffect::detail
         std::size_t numFrames() const
         {
             return m_numFrames;
+        }
+
+        std::size_t numChannels() const
+        {
+            return m_numChannels;
         }
 
         std::size_t cursorFrame() const

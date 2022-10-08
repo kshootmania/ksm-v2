@@ -41,7 +41,7 @@ namespace ksmaudio::AudioEffect
 			const bool ignoreUpdateTrigger = updateTrigger.valueSet.off && updateTrigger.valueSet.onMin && updateTrigger.valueSet.onMax;
 
 			// DSPƒpƒ‰ƒ[ƒ^ã‚ÌupdateTrigger‚Íoff¨on‚É•Ï‚í‚Á‚½uŠÔ‚¾‚¯true‚É‚·‚é
-			const bool rawUpdateTrigger = ValueAsBool(GetValue(updateTrigger, status, isOn)) && !ignoreUpdateTrigger;
+			const bool rawUpdateTrigger = GetValueAsBool(updateTrigger, status, isOn) && !ignoreUpdateTrigger;
 			const bool updateTrigger = !m_prevRawUpdateTrigger && rawUpdateTrigger;
 			m_prevRawUpdateTrigger = rawUpdateTrigger;
 

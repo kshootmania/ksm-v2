@@ -115,6 +115,10 @@ namespace MusicGame::Audio
 			const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
 			bgm.emplaceAudioEffectFX("wobble", def, updateTriggerTiming);
 		}
+		{
+			const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Tapestop };
+			bgm.emplaceAudioEffectFX("tapestop", def);
+		}
 	}
 
 	kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> AudioEffectMain::currentActiveAudioEffectsFX(

@@ -16,6 +16,9 @@
 #include "dsp/wobble_dsp.hpp"
 #include "params/wobble_params.hpp"
 
+#include "dsp/tapestop_dsp.hpp"
+#include "params/tapestop_params.hpp"
+
 namespace ksmaudio
 {
 	using Retrigger = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::RetriggerParams, AudioEffect::RetriggerDSP, AudioEffect::RetriggerDSPParams>;
@@ -27,4 +30,6 @@ namespace ksmaudio
 	using Bitcrusher = AudioEffect::BasicAudioEffect<AudioEffect::BitcrusherParams, AudioEffect::BitcrusherDSP, AudioEffect::BitcrusherDSPParams>;
 
 	using Wobble = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::WobbleParams, AudioEffect::WobbleDSP, AudioEffect::WobbleDSPParams>;
+
+	using Tapestop = AudioEffect::BasicAudioEffect<AudioEffect::TapestopParams, AudioEffect::TapestopDSP, AudioEffect::TapestopDSPParams>;
 }
