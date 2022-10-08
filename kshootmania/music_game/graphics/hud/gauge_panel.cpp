@@ -13,34 +13,34 @@ namespace MusicGame::Graphics
 		constexpr SizeF kBarSize = { 47.25, 434.0 };
 		constexpr SizeF kBarAnimSize = { kBarSize.x, kBarSize.y * 2 };
 
-		double AnimRate(kson::Pulse currentPulse, kson::Pulse intervalPulse)
+		double AnimRate(kson::Pulse currentPulse)
 		{
-			return static_cast<double>(MathUtils::WrappedMod(currentPulse, intervalPulse)) / intervalPulse;
+			constexpr kson::Pulse kIntervalPulse = kson::kResolution4 * 3 / 2; // 1.5小節
+			return static_cast<double>(MathUtils::WrappedMod(currentPulse, kIntervalPulse)) / kIntervalPulse;
 		}
 	}
 
 	GaugePanel::GaugePanel(GaugeType gaugeType)
 		: m_gaugeType(gaugeType)
-		, m_intervalPulse(kson::kResolution4 * 3 / 2) // 1.5 measure
 		, m_baseTexture(kBaseTextureFilename,
 			{
 				.column = kNumGaugeTypes * 2,
 				.sourceScale = ScreenUtils::SourceScale::k2x,
 				.sourceSize = { 192, 570 },
 			})
-			, m_barTexture(kBarTextureFilename,
-				{
-					.column = kNumGaugeTypes * 2,
-					.sourceScale = ScreenUtils::SourceScale::k2x,
-					.sourceSize = { 48, 434 },
-				})
-				, m_barAnimTexture(kBarAnimTextureFilename,
-					{
-						.column = kNumGaugeTypes * 2,
-						.sourceScale = ScreenUtils::SourceScale::k2x,
-						.sourceSize = { 48, 868 },
-					})
-					, m_percentBaseTexture(TextureAsset(kPercentBaseTextureFilename))
+		, m_barTexture(kBarTextureFilename,
+			{
+				.column = kNumGaugeTypes * 2,
+				.sourceScale = ScreenUtils::SourceScale::k2x,
+				.sourceSize = { 48, 434 },
+			})
+		, m_barAnimTexture(kBarAnimTextureFilename,
+			{
+				.column = kNumGaugeTypes * 2,
+				.sourceScale = ScreenUtils::SourceScale::k2x,
+				.sourceSize = { 48, 868 },
+			})
+		, m_percentBaseTexture(TextureAsset(kPercentBaseTextureFilename))
 		, m_percentNumberFontTexture(kPercentNumberFontTextureFilename, ScreenUtils::Scaled2x(20, 18), { 20, 18 })
 	{
 	}
@@ -64,7 +64,7 @@ namespace MusicGame::Graphics
 			const RectF barClipRect = { barBasePosition + Vec2::Down(Scaled2x(kBarSize.y - barHeight)), Scaled2x(SizeF{ kBarSize.x, barHeight }) };
 			m_barTexture(0, column).resized(Scaled2x(kBarSize)).drawClipped(barBasePosition, barClipRect);
 
-			const double animRate = AnimRate(currentPulse, m_intervalPulse);
+			const double animRate = AnimRate(currentPulse);
 			m_barAnimTexture(0, column).resized(Scaled2x(kBarAnimSize)).drawClipped(barBasePosition + Vec2::Up(Scaled2x(kBarAnimSize.y) * animRate), barClipRect);
 			m_barAnimTexture(0, column).resized(Scaled2x(kBarAnimSize)).drawClipped(barBasePosition + Vec2::Up(Scaled2x(kBarAnimSize.y) * (animRate - 1.0)), barClipRect);
 		}

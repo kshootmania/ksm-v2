@@ -8,7 +8,6 @@ namespace MusicGame::Graphics
 	{
 	private:
 		const GaugeType m_gaugeType;
-		const kson::Pulse m_intervalPulse;
 		const TiledTexture m_baseTexture;
 		const TiledTexture m_barTexture;
 		const TiledTexture m_barAnimTexture;
