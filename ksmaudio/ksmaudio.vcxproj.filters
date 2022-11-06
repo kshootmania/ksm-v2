@@ -75,10 +75,10 @@
     <ClInclude Include="include\ksmaudio\stream_with_effects.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect\params\retrigger_params.hpp">
+    <ClInclude Include="include\ksmaudio\audio_effect\params\retrigger_echo_params.hpp">
       <Filter>Header Files\audio_effect\params</Filter>
     </ClInclude>
-    <ClInclude Include="include\ksmaudio\audio_effect\dsp\retrigger_dsp.hpp">
+    <ClInclude Include="include\ksmaudio\audio_effect\dsp\retrigger_echo_dsp.hpp">
       <Filter>Header Files\audio_effect\dsp</Filter>
     </ClInclude>
     <ClInclude Include="include\ksmaudio\audio_effect\detail\linear_buffer.hpp">
@@ -143,7 +143,7 @@
     <ClCompile Include="src\stream_with_effects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\audio_effect\dsp\retrigger_dsp.cpp">
+    <ClCompile Include="src\audio_effect\dsp\retrigger_echo_dsp.cpp">
       <Filter>Source Files\audio_effect\dsp</Filter>
     </ClCompile>
     <ClCompile Include="src\audio_effect\audio_effect_bus.cpp">

@@ -6,9 +6,6 @@
 #include <cstring>
 #include <cstddef>
 #include "math_utils.hpp"
-#ifdef min
-#undef min
-#endif
 
 namespace ksmaudio::AudioEffect::detail
 {
@@ -27,6 +24,8 @@ namespace ksmaudio::AudioEffect::detail
         std::size_t m_readCursorFrame = 0U;
 
         std::size_t m_writeCursorFrame = 0U;
+
+        float m_currentFadeOutScale = 1.0f;
 
         const std::size_t m_numFrames;
 
@@ -48,7 +47,7 @@ namespace ksmaudio::AudioEffect::detail
             assert(size % m_numChannels == 0U);
 
             const std::size_t frameSize = size / m_numChannels;
-            const std::size_t numWriteFrames = std::min(frameSize, m_numFrames - m_writeCursorFrame);
+            const std::size_t numWriteFrames = (std::min)(frameSize, m_numFrames - m_writeCursorFrame);
             if (numWriteFrames == 0U)
             {
                 return;
@@ -57,7 +56,7 @@ namespace ksmaudio::AudioEffect::detail
             m_writeCursorFrame += numWriteFrames;
         }
 
-        void read(T* pData, std::size_t size, std::size_t numLoopFrames, std::size_t numNonZeroFrames, float mix = 1.0f)
+        void read(T* pData, std::size_t size, std::size_t numLoopFrames, std::size_t numNonZeroFrames, bool fadesOut = false, float fadeOutFeedbackLevel = 1.0f, float mix = 1.0f)
         {
             assert(size % m_numChannels == 0U);
 
@@ -74,6 +73,7 @@ namespace ksmaudio::AudioEffect::detail
             if (m_readCursorFrame >= numLoopFrames)
             {
                 m_readCursorFrame = 0U;
+                m_currentFadeOutScale *= fadeOutFeedbackLevel;
             }
 
             const std::size_t frameSize = size / m_numChannels;
@@ -102,12 +102,20 @@ namespace ksmaudio::AudioEffect::detail
                     {
                         *pData = std::lerp(*pData, T{ 0 }, mix);
                     }
+
+                    if (fadesOut)
+                    {
+                        const float fadeOutScale = static_cast<float>(numLoopFrames - m_readCursorFrame) / numLoopFrames * m_currentFadeOutScale;
+                        *pData *= fadeOutScale;
+                    }
+
                     ++pData;
                 }
 
                 if (++m_readCursorFrame >= numLoopFrames)
                 {
                     m_readCursorFrame = 0U;
+                    m_currentFadeOutScale *= fadeOutFeedbackLevel;
                 }
             }
         }
@@ -140,15 +148,22 @@ namespace ksmaudio::AudioEffect::detail
             }
         }
 
+        void resetFadeOutScale()
+        {
+            m_currentFadeOutScale = 1.0f;
+        }
+
         void resetReadCursor()
         {
             m_readCursorFrame = 0U;
+            resetFadeOutScale();
         }
 
         void resetReadWriteCursors()
         {
             m_readCursorFrame = 0U;
             m_writeCursorFrame = 0U;
+            resetFadeOutScale();
         }
 
         std::size_t size() const

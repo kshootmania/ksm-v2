@@ -3,13 +3,26 @@
 namespace
 {
 	const std::string kUpdatePeriodKey = "update_period";
-	const std::string kUpdatePeriodDefault = "1/2";
+	const std::string kUpdatePeriodDefaultRetrigger = "1/2";
+	const std::string kUpdatePeriodDefaultOther = "0"; // Echoで使用
 
 	const std::string kUpdateTriggerKey = "update_trigger";
 
 	kson::RelPulse UpdatePeriodDy(const std::string& str)
 	{
 		return static_cast<kson::RelPulse>(kson::kResolution4 * ksmaudio::AudioEffect::StrToValueSet(ksmaudio::AudioEffect::Type::kLength, str).onMin);
+	}
+
+	const std::string& UpdatePeriodDefaultForAudioEffect(kson::AudioEffectType audioEffectType)
+	{
+		if (audioEffectType == kson::AudioEffectType::Retrigger)
+		{
+			return kUpdatePeriodDefaultRetrigger;
+		}
+		else
+		{
+			return kUpdatePeriodDefaultOther;
+		}
 	}
 
 	kson::RelPulse ParamChangeUpdatePeriodDyAt(const kson::ByPulse<std::string>& updatePeriodChanges, kson::Pulse y, kson::RelPulse defDy)
@@ -56,7 +69,7 @@ namespace
 		if (paramChange.contains(kUpdatePeriodKey) && !paramChange.at(kUpdatePeriodKey).empty())
 		{
 			// "update_period"の値に途中変更がある場合、それを加味して計算
-			const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : kUpdatePeriodDefault);
+			const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : UpdatePeriodDefaultForAudioEffect(def.type));
 			const auto& updatePeriodChanges = paramChange.at(kUpdatePeriodKey);
 			for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
 			{
@@ -91,7 +104,7 @@ namespace
 		else
 		{
 			// "update_period"の値に途中変更がない場合、簡易的な計算のみでOKになる
-			const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : kUpdatePeriodDefault);
+			const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : UpdatePeriodDefaultForAudioEffect(def.type));
 			if (defDy > 0) // "update_period"が0の場合はトリガ更新しない
 			{
 				for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)

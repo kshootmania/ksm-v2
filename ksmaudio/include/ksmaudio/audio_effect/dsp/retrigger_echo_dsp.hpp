@@ -1,11 +1,11 @@
 #pragma once
 #include "ksmaudio/audio_effect/audio_effect.hpp"
-#include "ksmaudio/audio_effect/params/retrigger_params.hpp"
+#include "ksmaudio/audio_effect/params/retrigger_echo_params.hpp"
 #include "ksmaudio/audio_effect/detail/linear_buffer.hpp"
 
 namespace ksmaudio::AudioEffect
 {
-	class RetriggerDSP
+	class RetriggerEchoDSP
 	{
 	private:
 		const DSPCommonInfo m_info;
@@ -13,8 +13,8 @@ namespace ksmaudio::AudioEffect
 		std::ptrdiff_t m_framesUntilTrigger = -1;
 
 	public:
-		explicit RetriggerDSP(const DSPCommonInfo& info);
+		explicit RetriggerEchoDSP(const DSPCommonInfo& info);
 
-		void process(float* pData, std::size_t dataSize, bool bypass, const RetriggerDSPParams& params);
+		void process(float* pData, std::size_t dataSize, bool bypass, const RetriggerEchoDSPParams& params);
 	};
 }

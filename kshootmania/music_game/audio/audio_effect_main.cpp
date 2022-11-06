@@ -119,8 +119,16 @@ namespace MusicGame::Audio
 			const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Tapestop };
 			bgm.emplaceAudioEffectFX("tapestop", def);
 		}
+		{
+			const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Echo };
+			const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
+			bgm.emplaceAudioEffectFX("echo", def, updateTriggerTiming);
+		}
 	}
 
+	// TODO:
+	// 現状"updateTrigger=off>on"がFX-L/Rに交互に降ってきた時に両方トリガできないので、戻り値の形式を変更してどちらのボタンで押したかの情報を入れる
+	// もしくはoff→onへの切り替わりフレームかどうかをここで判定するようにして、その結果を入れる
 	kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> AudioEffectMain::currentActiveAudioEffectsFX(
 		const std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ>& currentLongNoteOfLanes, kson::Pulse currentPulseForAudio) const
 	{
@@ -128,6 +136,8 @@ namespace MusicGame::Audio
 		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 		{
 			// 2レーンのうち直近ロングFXノーツが押され始めた方のレーンを先に処理する
+			// (2レーンで互いに異なるパラメータ値を持つ同じ音声エフェクトが指定される場合があり、直近の方を優先する必要があるため。
+			//  例: "wave_length=1/8"のRetriggerと"wave_length=1/16"のRetriggerが同時に配置されている場合、"wave_length"は後に押した方で指定された値にする必要がある)
 			// なお, Dict<T>::emplace()では同じキーの2回目の挿入は無視される
 			static_assert(kson::kNumFXLanesSZ == 2U); // 下のコードはkNumFXLanesSZが2である前提である
 			const std::size_t laneIdx = (i == 0) ? m_lastPressedLongFXNoteLaneIdx : (1U - m_lastPressedLongFXNoteLaneIdx);
