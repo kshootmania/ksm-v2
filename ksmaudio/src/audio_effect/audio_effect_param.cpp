@@ -235,4 +235,9 @@ namespace ksmaudio::AudioEffect
 			.valueSet = StrToValueSet(type, valueSetStr),
 		};
 	}
+
+	UpdateTriggerParam DefineUpdateTriggerParam(const std::string& valueSetStr)
+	{
+		return UpdateTriggerParam(StrToValueSet(Type::kSwitch, valueSetStr));
+	}
 }

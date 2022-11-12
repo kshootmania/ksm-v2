@@ -58,6 +58,38 @@ namespace ksmaudio::AudioEffect
 
 	Param DefineParam(Type type, const std::string& valueSetStr);
 
+	struct UpdateTriggerParam : public Param
+	{
+		explicit UpdateTriggerParam(const ValueSet& valueSet)
+			: Param{ .type = Type::kSwitch, .valueSet = valueSet }
+		{
+		}
+
+		bool render(const Status& status, std::optional<std::size_t> laneIdx)
+		{
+			const bool isOn = laneIdx.has_value();
+
+			// updateTriggerの"Off>OnMin-OnMax"のOffのトリガタイミングは事前に計算済みで別途secUntilTrigger側で処理されるため無視する
+			// (ただし、"on>off-on"や"on-off"の場合はプレイ中にoff→onになりうるので無視せず、3つすべて"on"の場合のみ無視する。secUntilTriggerの方と多重に更新される場合もあることになるが実用上大した問題はない)
+			const bool ignoreUpdateTrigger = valueSet.off && valueSet.onMin && valueSet.onMax;
+
+			// DSPパラメータ上のupdateTriggerはoff→onに変わった瞬間だけtrueにする
+			const bool rawUpdateTrigger = GetValueAsBool(*this, status, isOn) && !ignoreUpdateTrigger;
+			const bool updateTriggerValue = rawUpdateTrigger && (!m_prevRawUpdateTrigger || laneIdx != m_prevLaneIdx); // ノーツ中に別のレーンのノーツを追加で押してupdateTriggerがoff→onになる場合もあるので、laneIdxの変化もOR条件に入れる
+			m_prevRawUpdateTrigger = rawUpdateTrigger;
+			m_prevLaneIdx = laneIdx;
+
+			return updateTriggerValue;
+		}
+
+	private:
+		bool m_prevRawUpdateTrigger = false;
+
+		std::optional<std::size_t> m_prevLaneIdx = std::nullopt;
+	};
+
+	UpdateTriggerParam DefineUpdateTriggerParam(const std::string& valueSetStr);
+
 	enum class ParamID
 	{
 		kUnknown,
