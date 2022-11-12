@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <set>
+#include <optional>
 #include <unordered_map>
 
 namespace ksmaudio::AudioEffect

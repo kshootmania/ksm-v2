@@ -53,7 +53,7 @@ namespace ksmaudio::AudioEffect
 			}
 
 			const bool isOn = activeAudioEffectDict.contains(i);
-			m_audioEffects[i]->updateStatus(status, isOn);
+			m_audioEffects[i]->updateStatus(status, isOn ? std::make_optional(activeAudioEffectDict.at(i).laneIdx) : std::nullopt);
 		}
 	}
 

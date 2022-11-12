@@ -35,8 +35,9 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-		FlangerDSPParams render(const Status& status, bool isOn)
+		FlangerDSPParams render(const Status& status, std::optional<std::size_t> laneIdx)
 		{
+			const bool isOn = laneIdx.has_value();
 			return {
 				.period = GetValue(period, status, isOn),
 				.delay = GetValue(delay, status, isOn),

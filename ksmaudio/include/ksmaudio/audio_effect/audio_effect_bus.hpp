@@ -69,7 +69,7 @@ namespace ksmaudio::AudioEffect
 			{
 				audioEffect->setParamValueSet(paramID, valueSet);
 			}
-			audioEffect->updateStatus(AudioEffect::Status{}, false);
+			audioEffect->updateStatus(AudioEffect::Status{}, std::nullopt);
 
 			m_nameIdxDict.emplace(name, m_audioEffects.size() - 1U);
 

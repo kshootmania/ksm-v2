@@ -23,8 +23,9 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-		GateDSPParams render(const Status& status, bool isOn)
+		GateDSPParams render(const Status& status, std::optional<std::size_t> laneIdx)
 		{
+			const bool isOn = laneIdx.has_value();
 			return {
 				.waveLength = GetValue(waveLength, status, isOn),
 				.rate = GetValue(rate, status, isOn),

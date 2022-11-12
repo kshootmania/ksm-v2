@@ -22,8 +22,9 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-		TapestopDSPParams render(const Status& status, bool isOn)
+		TapestopDSPParams render(const Status& status, std::optional<std::size_t> laneIdx)
 		{
+			const bool isOn = laneIdx.has_value();
 			return {
 				.speed = GetValue(speed, status, isOn),
 				.trigger = GetValueAsBool(trigger, status, isOn),

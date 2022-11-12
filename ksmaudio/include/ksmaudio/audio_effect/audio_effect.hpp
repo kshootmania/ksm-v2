@@ -15,7 +15,7 @@ namespace ksmaudio::AudioEffect
 
 		virtual void process(float* pData, std::size_t dataSize) = 0;
 
-		virtual void updateStatus(const Status& status, bool isOn) = 0;
+		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) = 0;
 
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSetStr) = 0;
 
@@ -55,7 +55,7 @@ namespace ksmaudio::AudioEffect
 
 		BasicAudioEffect(std::size_t sampleRate, std::size_t numChannels)
 			: m_dsp(DSPCommonInfo{ sampleRate, numChannels })
-			, m_dspParams(m_params.render(Status{}, false))
+			, m_dspParams(m_params.render(Status{}, std::nullopt))
 		{
 		}
 
@@ -66,9 +66,9 @@ namespace ksmaudio::AudioEffect
 			m_dsp.process(pData, dataSize, m_bypass, m_dspParams);
 		}
 
-		virtual void updateStatus(const Status& status, bool isOn) override
+		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) override
 		{
-			m_dspParams = m_params.render(status, isOn);
+			m_dspParams = m_params.render(status, laneIdx);
 		}
 
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSet) override
@@ -100,7 +100,7 @@ namespace ksmaudio::AudioEffect
 
 		BasicAudioEffectWithTrigger(std::size_t sampleRate, std::size_t numChannels, const std::set<float>& updateTriggerTiming)
 			: m_dsp(DSPCommonInfo{ sampleRate, numChannels })
-			, m_dspParams(m_params.render(Status{}, false))
+			, m_dspParams(m_params.render(Status{}, std::nullopt))
 			, m_updateTriggerTimeline(updateTriggerTiming)
 		{
 		}
@@ -112,9 +112,9 @@ namespace ksmaudio::AudioEffect
 			m_dsp.process(pData, dataSize, m_bypass, m_dspParams);
 		}
 
-		virtual void updateStatus(const Status& status, bool isOn) override
+		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) override
 		{
-			m_dspParams = m_params.render(status, isOn);
+			m_dspParams = m_params.render(status, laneIdx);
 
 			m_updateTriggerTimeline.update(status.sec);
 			m_dspParams.secUntilTrigger = m_updateTriggerTimeline.secUntilTrigger();
