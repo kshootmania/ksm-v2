@@ -13,6 +13,15 @@
 
 namespace ksmaudio::AudioEffect
 {
+	struct ActiveAudioEffectInvocation
+	{
+		// 上書きパラメータへのポインタ
+		const ParamValueSetDict* pOverrideParams;
+
+		// 音声エフェクトを呼び出したノーツのレーンインデックス
+		std::size_t laneIdx;
+	};
+	using ActiveAudioEffectDict = std::unordered_map<std::size_t, ActiveAudioEffectInvocation>;
 
     class AudioEffectBus
     {
@@ -21,7 +30,6 @@ namespace ksmaudio::AudioEffect
 		std::vector<std::unique_ptr<AudioEffect::IAudioEffect>> m_audioEffects;
 		std::vector<HDSP> m_hDSPs;
 		std::vector<ParamController> m_paramControllers;
-		std::vector<std::string> m_names;
 		std::unordered_map<std::string, std::size_t> m_nameIdxDict;
 		std::unordered_set<std::size_t> m_activeAudioEffectIdxs;
 
@@ -32,7 +40,7 @@ namespace ksmaudio::AudioEffect
 
 		~AudioEffectBus();
 
-		void update(const AudioEffect::Status& status, const std::unordered_map<std::string, ParamValueSetDict>& activeAudioEffects);
+		void update(const AudioEffect::Status& status, const ActiveAudioEffectDict& activeAudioEffectDict);
 
 		template <typename T>
 		void emplaceAudioEffect(const std::string& name,
@@ -43,8 +51,7 @@ namespace ksmaudio::AudioEffect
 		{
 			if (m_nameIdxDict.contains(name))
 			{
-				// There is already an audio effect of the same name
-				// TODO: Report warning
+				assert(false && "There is already an audio effect of the same name");
 				return;
 			}
 
@@ -64,7 +71,6 @@ namespace ksmaudio::AudioEffect
 			}
 			audioEffect->updateStatus(AudioEffect::Status{}, false);
 
-			m_names.push_back(name);
 			m_nameIdxDict.emplace(name, m_audioEffects.size() - 1U);
 
 			const HDSP hDSP = m_pStream->addAudioEffect(audioEffect.get(), 0); // TODO: priority
@@ -83,12 +89,10 @@ namespace ksmaudio::AudioEffect
 			emplaceAudioEffect<T>(name, StrDictToParamValueSetDict(params), StrTimelineToValueSetTimeline(paramChanges), updateTriggerTiming);
 		}
 
-		void setBypass(bool bypass)
-		{
-			for (const auto& audioEffect : m_audioEffects)
-			{
-				audioEffect->setBypass(bypass);
-			}
-		}
+		void setBypass(bool bypass);
+
+		bool audioEffectContainsName(const std::string& name) const;
+
+		std::size_t audioEffectNameToIdx(const std::string& name) const;
     };
 }

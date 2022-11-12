@@ -61,7 +61,7 @@ namespace ksmaudio::AudioEffect
 
 	void ParamController::setOverrideParams(const ParamValueSetDict& overrideParams)
 	{
-		m_overrideParams = overrideParams;
+		m_overrideParams = overrideParams; // TODO: できるだけコピーを避けたい(パフォーマンスのため)
 		refreshCurrentParams(m_timeSec);
 	}
 

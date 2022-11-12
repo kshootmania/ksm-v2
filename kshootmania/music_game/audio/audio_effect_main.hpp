@@ -12,19 +12,25 @@ namespace MusicGame::Audio
 		std::array<Optional<float>, kson::kNumLaserLanesSZ> laserValues;
 	};
 
+	struct AudioEffectInvocation
+	{
+		std::size_t audioEffectIdx;
+
+		ksmaudio::AudioEffect::ParamValueSetDict overrideParams;
+	};
+
 	class AudioEffectMain
 	{
 	private:
-		const kson::FXLane<std::string> m_longFXNoteAudioEffectNames;
-		const kson::FXLane<ksmaudio::AudioEffect::ParamValueSetDict> m_longFXNoteAudioEffectParams;
+		const kson::FXLane<AudioEffectInvocation> m_longFXNoteInvocations;
 
 		std::array<bool, kson::kNumFXLanesSZ> m_longFXPressedPrev = { false, false };
+
 		std::size_t m_lastPressedLongFXNoteLaneIdx = 0U;
 
-		void registerAudioEffects(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache);
+		ksmaudio::AudioEffect::ActiveAudioEffectDict m_activeAudioEffectDictFX;
 
-		kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict> currentActiveAudioEffectsFX(
-			const std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ>& longNoteOfLanes, kson::Pulse currentPulseForAudio) const;
+		void updateActiveAudioEffectDictFX(const std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ>& currentLongNoteOfLanes, kson::Pulse currentPulseForAudio);
 		
 	public:
 		AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache);

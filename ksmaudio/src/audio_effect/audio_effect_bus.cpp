@@ -15,15 +15,14 @@ namespace ksmaudio::AudioEffect
 		}
     }
 
-	void AudioEffectBus::update(const AudioEffect::Status& status, const std::unordered_map<std::string, ParamValueSetDict>& activeAudioEffects)
+	void AudioEffectBus::update(const AudioEffect::Status& status, const ActiveAudioEffectDict& activeAudioEffectDict)
 	{
 		// Update override params
 		{
 			// "Active -> Inactive"
 			for (const std::size_t& idx : m_activeAudioEffectIdxs)
 			{
-				assert(m_names.size() > idx);
-				if (!activeAudioEffects.contains(m_names[idx]))
+				if (!activeAudioEffectDict.contains(idx))
 				{
 					assert(m_paramControllers.size() > idx);
 					m_paramControllers[idx].clearOverrideParams();
@@ -32,19 +31,12 @@ namespace ksmaudio::AudioEffect
 
 			// "Inactive -> Active" or "Active -> Active"
 			m_activeAudioEffectIdxs.clear();
-			for (const auto& [audioEffectName, params] : activeAudioEffects)
+			for (const auto& [audioEffectIdx, activeAudioEffectInvocation] : activeAudioEffectDict)
 			{
-				if (!m_nameIdxDict.contains(audioEffectName))
-				{
-					continue;
-				}
+				assert(m_paramControllers.size() > audioEffectIdx);
+				m_paramControllers[audioEffectIdx].setOverrideParams(*activeAudioEffectInvocation.pOverrideParams);
 
-				const std::size_t idx = m_nameIdxDict.at(audioEffectName);
-
-				assert(m_paramControllers.size() > idx);
-				m_paramControllers[idx].setOverrideParams(params);
-
-				m_activeAudioEffectIdxs.insert(idx);
+				m_activeAudioEffectIdxs.insert(audioEffectIdx);
 			}
 		}
 
@@ -60,8 +52,31 @@ namespace ksmaudio::AudioEffect
 				}
 			}
 
-			const bool isOn = activeAudioEffects.contains(m_names[i]);
+			const bool isOn = activeAudioEffectDict.contains(i);
 			m_audioEffects[i]->updateStatus(status, isOn);
 		}
+	}
+
+	void AudioEffectBus::setBypass(bool bypass)
+	{
+		for (const auto& audioEffect : m_audioEffects)
+		{
+			audioEffect->setBypass(bypass);
+		}
+	}
+
+	bool AudioEffectBus::audioEffectContainsName(const std::string& name) const
+	{
+		return m_nameIdxDict.contains(name);
+	}
+
+	std::size_t AudioEffectBus::audioEffectNameToIdx(const std::string& name) const
+	{
+		if (!audioEffectContainsName(name))
+		{
+			assert(false && "Audio effect name not found");
+			return static_cast<std::size_t>(-1);
+		}
+		return m_nameIdxDict.at(name);
 	}
 }

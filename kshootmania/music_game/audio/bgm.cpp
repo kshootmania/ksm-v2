@@ -86,7 +86,7 @@ void MusicGame::Audio::BGM::update()
 	}
 }
 
-void MusicGame::Audio::BGM::updateAudioEffectFX(bool bypass, const ksmaudio::AudioEffect::Status& status, const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict>& activeAudioEffects)
+void MusicGame::Audio::BGM::updateAudioEffectFX(bool bypass, const ksmaudio::AudioEffect::Status& status, const ksmaudio::AudioEffect::ActiveAudioEffectDict& activeAudioEffects)
 {
 	m_pAudioEffectBusFX->setBypass(bypass);
 	m_pAudioEffectBusFX->update(
@@ -168,4 +168,14 @@ void MusicGame::Audio::BGM::emplaceAudioEffectFX(const std::string& name, const 
 void MusicGame::Audio::BGM::emplaceAudioEffectLaser(const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
 {
 	emplaceAudioEffectImpl(false, name, def, updateTriggerTiming);
+}
+
+const ksmaudio::AudioEffect::AudioEffectBus& MusicGame::Audio::BGM::audioEffectBusFX() const
+{
+	return *m_pAudioEffectBusFX;
+}
+
+const ksmaudio::AudioEffect::AudioEffectBus& MusicGame::Audio::BGM::audioEffectBusLaser() const
+{
+	return *m_pAudioEffectBusLaser;
 }

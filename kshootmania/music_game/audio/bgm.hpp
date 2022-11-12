@@ -28,7 +28,7 @@ namespace MusicGame::Audio
 
 		void update();
 
-		void updateAudioEffectFX(bool bypass, const ksmaudio::AudioEffect::Status& status, const kson::Dict<ksmaudio::AudioEffect::ParamValueSetDict>& activeAudioEffects);
+		void updateAudioEffectFX(bool bypass, const ksmaudio::AudioEffect::Status& status, const ksmaudio::AudioEffect::ActiveAudioEffectDict& activeAudioEffects);
 
 		void play();
 
@@ -51,5 +51,9 @@ namespace MusicGame::Audio
 			const std::string& name,
 			const kson::AudioEffectDef& def,
 			const std::set<float>& updateTriggerTiming = {}); // TODO: param_change
+
+		const ksmaudio::AudioEffect::AudioEffectBus& audioEffectBusFX() const;
+
+		const ksmaudio::AudioEffect::AudioEffectBus& audioEffectBusLaser() const;
 	};
 }
