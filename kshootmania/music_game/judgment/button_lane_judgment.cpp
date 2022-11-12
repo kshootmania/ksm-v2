@@ -92,7 +92,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, LaneStatus& laneStatusRef)
+	void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef)
 	{
 		using namespace TimingWindow;
 
@@ -183,7 +183,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const LaneStatus& laneStatusRef)
+	void ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const ButtonLaneStatus& laneStatusRef)
 	{
 		if (laneStatusRef.currentLongNotePulse.has_value())
 		{
@@ -217,7 +217,7 @@ namespace MusicGame::Judgment
 	{
 	}
 
-	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, LaneStatus& laneStatusRef)
+	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef)
 	{
 		// チップノーツとロングノーツの始点の判定処理
 		if (KeyConfig::Down(m_keyConfigButton))

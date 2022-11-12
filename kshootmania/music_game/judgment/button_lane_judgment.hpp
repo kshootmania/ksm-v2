@@ -23,14 +23,14 @@ namespace MusicGame::Judgment
 
 		const int32 m_scoreValueMax;
 
-		void processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, LaneStatus& laneStatusRef);
+		void processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, ButtonLaneStatus& laneStatusRef);
 
-		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const LaneStatus& laneStatusRef);
+		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const ButtonLaneStatus& laneStatusRef);
 
 	public:
 		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
 
-		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, LaneStatus& laneStatusRef);
+		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentSec, ButtonLaneStatus& laneStatusRef);
 
 		int32 scoreValue() const;
 
