@@ -5,8 +5,6 @@ namespace MusicGame::Judgment
 {
 	namespace
 	{
-		constexpr double kHalveComboBPMThreshold = 256.0;
-
 		std::map<kson::Pulse, double> CreatePulseToSec(const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 		{
 			std::map<kson::Pulse, double> pulseToSec;

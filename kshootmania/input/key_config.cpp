@@ -97,6 +97,31 @@ bool KeyConfig::Pressed(Button button)
 	return false;
 }
 
+Optional<KeyConfig::Button> KeyConfig::LastPressed(Button button1, Button button2)
+{
+	assert(button1 != KeyConfig::kUnspecifiedButton);
+	assert(button2 != KeyConfig::kUnspecifiedButton);
+
+	Optional<Button> lastButton = none;
+	Duration minDuration = Duration::zero();
+	for (const auto& configSet : s_configSetArray)
+	{
+		for (Button button : { button1, button2 })
+		{
+			if (configSet[button].pressed())
+			{
+				const Duration duration = configSet[button].pressedDuration();
+				if (!lastButton.has_value() || duration < minDuration)
+				{
+					minDuration = duration;
+					lastButton = button;
+				}
+			}
+		}
+	}
+	return lastButton;
+}
+
 bool KeyConfig::Down(Button button)
 {
 	if (button == KeyConfig::kUnspecifiedButton)

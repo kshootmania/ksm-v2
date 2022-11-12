@@ -61,6 +61,8 @@ namespace KeyConfig
 
 	bool Pressed(Button button);
 
+	Optional<KeyConfig::Button> LastPressed(Button button1, Button button2);
+
 	bool Down(Button button);
 
 	bool Up(Button button);

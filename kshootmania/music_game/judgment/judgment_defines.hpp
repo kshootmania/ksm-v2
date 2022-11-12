@@ -60,4 +60,6 @@ namespace MusicGame::Judgment
 
 	constexpr int32 kScoreValueNear = 1;
 	constexpr int32 kScoreValueCritical = 2;
+
+	constexpr double kHalveComboBPMThreshold = 256.0;
 }

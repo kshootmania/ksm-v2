@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "game_status.hpp"
 #include "music_game/judgment/button_lane_judgment.hpp"
+#include "music_game/judgment/laser_lane_judgment.hpp"
 #include "music_game/graphics/graphics_main.hpp"
 #include "music_game/audio/bgm.hpp"
 #include "music_game/audio/assist_tick.hpp"
@@ -30,6 +31,7 @@ namespace MusicGame
 		// 判定
 		std::array<Judgment::ButtonLaneJudgment, kson::kNumBTLanesSZ> m_btLaneJudgments;
 		std::array<Judgment::ButtonLaneJudgment, kson::kNumFXLanesSZ> m_fxLaneJudgments;
+		std::array<Judgment::LaserLaneJudgment, kson::kNumLaserLanesSZ> m_laserLaneJudgments;
 		const int32 m_scoreFactorMax;
 
 		// 音声

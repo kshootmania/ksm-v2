@@ -22,6 +22,11 @@ namespace MusicGame
 		KeyConfig::kFX_R,
 	};
 
+	const std::array<std::array<KeyConfig::Button, 2U>, kson::kNumFXLanesSZ> kLaserButtons = { {
+		{ KeyConfig::kLeftLaserL, KeyConfig::kLeftLaserR },
+		{ KeyConfig::kRightLaserL, KeyConfig::kRightLaserR },
+	} };
+
 	constexpr kson::Pulse kPastPulse = -100000000;
 
 	enum GaugeType : int32
