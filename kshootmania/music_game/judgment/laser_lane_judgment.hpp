@@ -20,7 +20,7 @@ namespace MusicGame::Judgment
 
 		const int32 m_scoreValueMax;
 
-		void processKeyPressed(KeyConfig::Button button, const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, const LaserLaneStatus& laneStatusRef);
+		void processKeyPressed(KeyConfig::Button button, const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef);
 
 	public:
 		LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);

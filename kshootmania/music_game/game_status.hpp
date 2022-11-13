@@ -34,16 +34,16 @@ namespace MusicGame
 	struct LaserLaneStatus
 	{
 		// プレイヤーのカーソル横位置(0.0～1.0)
-		Optional<float> cursorX = none;
+		Optional<double> cursorX = none;
 
 		// ノーツ側の理想カーソル横位置(0.0～1.0)
-		Optional<float> noteCursorX = none;
+		Optional<double> noteCursorX = none;
 
 		// ノーツ側の表示用理想カーソル横位置(0.0～1.0)
 		// 
 		// LASERの判定タイミングをずらした際にカーソルが表示ノーツからずれないように別途設けている。
 		// cursorXがnoteCursorXから一定以内の距離であればnoteVisualCursorXをカーソル表示位置として使用する。
-		Optional<float> noteVisualCursorX = none;
+		Optional<double> noteVisualCursorX = none;
 	};
 
 	struct CamStatus
