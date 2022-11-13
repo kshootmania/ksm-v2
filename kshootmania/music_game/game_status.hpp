@@ -44,6 +44,11 @@ namespace MusicGame
 		// LASERの判定タイミングをずらした際にカーソルが表示ノーツからずれないように別途設けている。
 		// cursorXがnoteCursorXから一定以内の距離であればnoteVisualCursorXをカーソル表示位置として使用する。
 		Optional<double> noteVisualCursorX = none;
+
+		bool isCursorInCriticalJudgmentRange() const
+		{
+			return cursorX.has_value() && noteCursorX.has_value() && Abs(cursorX.value() - noteCursorX.value()) < MusicGame::Judgment::kLaserCriticalMaxDeltaX;
+		}
 	};
 
 	struct CamStatus

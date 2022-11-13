@@ -14,6 +14,8 @@ namespace MusicGame::Graphics
 
 		const TiledTexture m_longAnimTexture;
 
+		const TiledTexture m_laserAnimTexture;
+
 		const Mesh m_mesh;
 
 		const TiledTexture& chipAnimTexture(Judgment::JudgmentResult type) const;
@@ -29,6 +31,8 @@ namespace MusicGame::Graphics
 		void drawLongAnimBT(const GameStatus& gameStatus) const;
 
 		void drawLongAnimFX(const GameStatus& gameStatus) const;
+
+		void drawLaserAnim(const GameStatus& gameStatus) const;
 
 	public:
 		Jdgoverlay3DGraphics();

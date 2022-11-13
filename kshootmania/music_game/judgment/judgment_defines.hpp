@@ -64,4 +64,6 @@ namespace MusicGame::Judgment
 	constexpr double kHalveComboBPMThreshold = 256.0;
 
 	constexpr double kLaserKeyboardCursorXPerSec = 2.0;
+	constexpr double kLaserCriticalMaxDeltaX = 0.035;
+
 }

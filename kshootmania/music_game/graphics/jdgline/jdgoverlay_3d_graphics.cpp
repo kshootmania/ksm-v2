@@ -32,6 +32,12 @@ namespace MusicGame::Graphics
 		constexpr Size kLongAnimSourceSize = { 300, 300 };
 		constexpr Size kLongAnimSizeBT = { 120, 120 };
 		constexpr Size kLongAnimSizeFX = { 140, 140 };
+
+		constexpr StringView kLaserAnimTextureFilename = U"judgelaser.gif";
+		constexpr double kLaserAnimLoopDurationSec = 1.2;
+		constexpr int32 kLaserAnimLoopFrames = 26;
+		constexpr Size kLaserAnimSourceSize = { 150, 150 };
+		constexpr Size kLaserAnimSize = { 100, 100 };
 	}
 
 	const TiledTexture& Jdgoverlay3DGraphics::chipAnimTexture(Judgment::JudgmentResult type) const
@@ -133,6 +139,23 @@ namespace MusicGame::Graphics
 		drawLongAnimCommon(gameStatus, false);
 	}
 
+	void Jdgoverlay3DGraphics::drawLaserAnim(const GameStatus& gameStatus) const
+	{
+		const int32 frameIdx = static_cast<int32>(MathUtils::WrappedFmod(gameStatus.currentTimeSec / kLaserAnimLoopDurationSec, 1.0) * kLaserAnimLoopFrames);
+		const SizeF size = ScreenUtils::Scaled(kLaserAnimSize);
+		for (int32 i = 0; i < kson::kNumLaserLanes; ++i)
+		{
+			const auto& laneStatus = gameStatus.laserLaneStatus[i];
+			if (!laneStatus.isCursorInCriticalJudgmentRange())
+			{
+				// カーソルがクリティカル判定の範囲内でない
+				continue;
+			}
+			const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 22 + 295 * laneStatus.cursorX.value(), 17);
+			m_laserAnimTexture(frameIdx, i).resized(size).draw(position);
+		}
+	}
+
 	Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
 		: m_renderTexture(ScreenUtils::Scaled(kTextureSize.x), ScreenUtils::Scaled(kTextureSize.y))
 		, m_chipCriticalTexture(kChipCriticalAnimTextureFilename,
@@ -160,6 +183,13 @@ namespace MusicGame::Graphics
 				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
 				.sourceSize = kLongAnimSourceSize,
 			})
+		, m_laserAnimTexture(kLaserAnimTextureFilename,
+			{
+				.row = kLaserAnimLoopFrames,
+				.column = kson::kNumLaserLanes,
+				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
+				.sourceSize = kLaserAnimSourceSize,
+			})
 		, m_mesh(MeshData::Grid(kPlaneCenter, kPlaneSize, 2, 2))
 	{
 	}
@@ -173,6 +203,7 @@ namespace MusicGame::Graphics
 		drawChipAnimFX(gameStatus);
 		drawLongAnimBT(gameStatus);
 		drawLongAnimFX(gameStatus);
+		drawLaserAnim(gameStatus);
 	}
 
 	void Jdgoverlay3DGraphics::draw3D(double tiltRadians) const
