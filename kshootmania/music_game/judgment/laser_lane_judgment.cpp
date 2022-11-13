@@ -132,7 +132,7 @@ namespace MusicGame::Judgment
 		if (direction == noteDirection || noteDirection == 0)
 		{
 			// LASERノーツと同方向にカーソル移動している、または、LASERノーツが横移動なしの場合
-			const double overshootCursorX = cursorX + deltaCursorX * 5;
+			const double overshootCursorX = cursorX + deltaCursorX * 7.5;
 			if (Min(cursorX, overshootCursorX) <= noteCursorX && noteCursorX <= Max(cursorX, overshootCursorX))
 			{
 				// 理想カーソル位置が移動量を増幅して動かした場合の範囲に入っていれば、カーソルを理想カーソル位置へ吸い付かせる
@@ -168,7 +168,25 @@ namespace MusicGame::Judgment
 		laneStatusRef.noteVisualCursorX = laneStatusRef.noteCursorX; // TODO: タイミング調整に合わせてずらして取得
 
 		const auto pregeneratedCursorValue = GetPregeneratedCursorValue(lane, currentPulse);
-		if (laneStatusRef.cursorX.has_value())
+		if (!laneStatusRef.cursorX.has_value() || laneStatusRef.currentLaserSectionPulse != m_prevCurrentLaserSectionPulse)
+		{
+			// カーソルが出現
+			if (laneStatusRef.currentLaserSectionPulse.has_value())
+			{
+				// 既にレーザーに突入している場合はそのレーザーセクションの始点の値に合わせる
+				laneStatusRef.cursorX = lane.at(laneStatusRef.currentLaserSectionPulse.value()).v.begin()->second.v;
+			}
+			else if (pregeneratedCursorValue.has_value())
+			{
+				// 次のレーザーセクションの始点の値に合わせる
+				laneStatusRef.cursorX = pregeneratedCursorValue;
+			}
+			else
+			{
+				laneStatusRef.cursorX = none;
+			}
+		}
+		else
 		{
 			// カーソルが消滅
 			if (!laneStatusRef.noteCursorX.has_value() && !pregeneratedCursorValue.has_value())
@@ -176,21 +194,7 @@ namespace MusicGame::Judgment
 				laneStatusRef.cursorX = none;
 			}
 		}
-		else
-		{
-			// カーソルが出現
-			if (laneStatusRef.noteCursorX.has_value())
-			{
-				// 既にレーザーに突入している場合はその値に合わせる
-				// (1小節前に事前生成されるので、BPMが非常に速い場合以外は通らない)
-				laneStatusRef.cursorX = laneStatusRef.noteCursorX;
-			}
-			else if (pregeneratedCursorValue.has_value())
-			{
-				// 次のレーザーセクションの始点の値に合わせる
-				laneStatusRef.cursorX = pregeneratedCursorValue;
-			}
-		}
+		m_prevCurrentLaserSectionPulse = laneStatusRef.currentLaserSectionPulse;
 
 		// 現在判定対象になっているLASERセクションの始点Pulse値を取得
 		if (laneStatusRef.noteCursorX.has_value())

@@ -17,6 +17,8 @@ namespace MusicGame::Judgment
 		kson::ByPulse<JudgmentResult> m_lineJudgmentArray;
 		kson::ByPulse<JudgmentResult> m_slamJudgmentArray;
 
+		Optional<kson::Pulse> m_prevCurrentLaserSectionPulse = none;
+
 		int32 m_scoreValue = 0;
 
 		const int32 m_scoreValueMax;
