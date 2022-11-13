@@ -45,6 +45,10 @@ namespace MusicGame
 		// cursorXがnoteCursorXから一定以内の距離であればnoteVisualCursorXをカーソル表示位置として使用する。
 		Optional<double> noteVisualCursorX = none;
 
+		// 現在判定しているLASERセクションの始点のPulse値
+		// (クリティカル判定でない場合にもnoneではなくPulse値になる。主に判定グラフィックス用)
+		Optional<kson::Pulse> currentLaserSectionPulse = none;
+
 		bool isCursorInCriticalJudgmentRange() const
 		{
 			return cursorX.has_value() && noteCursorX.has_value() && Abs(cursorX.value() - noteCursorX.value()) < MusicGame::Judgment::kLaserCriticalMaxDeltaX;

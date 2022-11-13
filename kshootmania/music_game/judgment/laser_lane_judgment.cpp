@@ -201,6 +201,16 @@ namespace MusicGame::Judgment
 			}
 		}
 
+		// 現在判定対象になっているLASERセクションの始点Pulse値を取得
+		if (laneStatusRef.noteCursorX.has_value())
+		{
+			laneStatusRef.currentLaserSectionPulse = kson::ValueItrAt(lane, currentPulse)->first;
+		}
+		else
+		{
+			laneStatusRef.currentLaserSectionPulse = none;
+		}
+
 		// キー押下中の判定処理
 		const Optional<KeyConfig::Button> lastPressedButton = KeyConfig::LastPressed(m_keyConfigButtonL, m_keyConfigButtonR);
 		if (lastPressedButton.has_value())
