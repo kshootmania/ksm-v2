@@ -5,6 +5,31 @@ namespace MusicGame::Judgment
 {
 	namespace
 	{
+		kson::ByPulse<int32> CreateLaserLineDirectionMap(const kson::ByPulse<kson::LaserSection>& lane)
+		{
+			kson::ByPulse<int32> directionMap;
+			directionMap.emplace(kson::Pulse{ 0 }, 0);
+
+			for (const auto& [y, sec] : lane)
+			{
+				kson::Pulse prevPulse = y;
+				Optional<double> prevValue = none;
+				for (const auto& [ry, v] : sec.v)
+				{
+					if (prevValue.has_value())
+					{
+						const int32 direction = Sign(v.v - prevValue.value());
+						directionMap.insert_or_assign(prevPulse, direction);
+					}
+					prevPulse = y + ry;
+					prevValue = v.v;
+				}
+				directionMap.insert_or_assign(prevPulse, 0);
+			}
+
+			return directionMap;
+		}
+
 		kson::ByPulse<JudgmentResult> CreateLineJudgmentArray(const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo)
 		{
 			kson::ByPulse<JudgmentResult> judgmentArray;
@@ -99,18 +124,50 @@ namespace MusicGame::Judgment
 			return;
 		}
 
-		const int32 direction = button == m_keyConfigButtonL ? -1 : 1;
-		laneStatusRef.cursorX = laneStatusRef.cursorX.value() + kLaserKeyboardCursorXPerSec * Scene::DeltaTime() * direction;
+		if (!laneStatusRef.noteCursorX.has_value())
+		{
+			// 事前生成されたカーソルは動かさない
+			return;
+		}
 
-		Print << U"direction:" << direction << U", value:" << laneStatusRef.cursorX << U"," << laneStatusRef.noteCursorX;
+		const int32 direction = button == m_keyConfigButtonL ? -1 : 1;
+		const int32 noteDirection = kson::ValueItrAt(m_laserLineDirectionMap, currentPulse)->second;
+		const double noteCursorX = laneStatusRef.noteCursorX.value();
+		const double cursorX = laneStatusRef.cursorX.value();
+		const double deltaCursorX = kLaserKeyboardCursorXPerSec * Scene::DeltaTime() * direction;
+		double nextCursorX;
+		if (direction == noteDirection || noteDirection == 0)
+		{
+			// LASERノーツと同方向にカーソル移動している、または、LASERノーツが横移動なしの場合
+			const double overshootCursorX = cursorX + deltaCursorX * 5;
+			if (Min(cursorX, overshootCursorX) <= noteCursorX && noteCursorX <= Max(cursorX, overshootCursorX))
+			{
+				// 理想カーソル位置が移動量を増幅して動かした場合の範囲に入っていれば、カーソルを理想カーソル位置へ吸い付かせる
+				nextCursorX = noteCursorX;
+			}
+			else
+			{
+				// 足りなければ、カーソルを単純に動かす
+				nextCursorX = cursorX + deltaCursorX;
+			}
+		}
+		else
+		{
+			// LASERノーツと逆方向にカーソル移動している場合、カーソルを単純に動かす
+			nextCursorX = cursorX + deltaCursorX;
+		}
+		laneStatusRef.cursorX = Clamp(nextCursorX, 0.0, 1.0);
+
+		Print << U"direction:" << direction << U", noteDirection:" << noteDirection << U", value:" << laneStatusRef.cursorX << U"," << laneStatusRef.noteCursorX;
 	}
 
 	LaserLaneJudgment::LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 		: m_keyConfigButtonL(keyConfigButtonL)
 		, m_keyConfigButtonR(keyConfigButtonR)
+		, m_laserLineDirectionMap(CreateLaserLineDirectionMap(lane))
 		, m_lineJudgmentArray(CreateLineJudgmentArray(lane, beatInfo))
 		, m_slamJudgmentArray(CreateSlamJudgmentArray(lane))
-		, m_scoreValueMax(static_cast<int32>(m_lineJudgmentArray.size() + m_slamJudgmentArray.size())* kScoreValueCritical)
+		, m_scoreValueMax(static_cast<int32>(m_lineJudgmentArray.size() + m_slamJudgmentArray.size()) * kScoreValueCritical)
 	{
 	}
 

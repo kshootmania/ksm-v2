@@ -12,6 +12,7 @@ namespace MusicGame::Judgment
 		const KeyConfig::Button m_keyConfigButtonL;
 		const KeyConfig::Button m_keyConfigButtonR;
 		const std::map<kson::Pulse, double> m_pulseToSec;
+		const kson::ByPulse<int32> m_laserLineDirectionMap;
 
 		kson::ByPulse<JudgmentResult> m_lineJudgmentArray;
 		kson::ByPulse<JudgmentResult> m_slamJudgmentArray;
