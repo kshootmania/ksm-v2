@@ -91,15 +91,8 @@ namespace MusicGame::Judgment
 
 		Optional<double> GetPregeneratedCursorValue(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse)
 		{
-			// レーザーの値が存在すればカーソルが出ている
-			/*const auto graphSectionValue = kson::GraphSectionValueAt(lane, currentPulse);
-			if (graphSectionValue.has_value())
-			{
-				return graphSectionValue.value();
-			}*/
-
 			// 直近1小節以内にレーザーセクションの始点が存在すればカーソルが出ている
-			const auto itr = kson::FirstInRange(lane, currentPulse, currentPulse + kson::kResolution + kson::Pulse{ 1 });
+			const auto itr = kson::FirstInRange(lane, currentPulse, currentPulse + kson::kResolution4 + kson::Pulse{ 1 });
 			if (itr != lane.end())
 			{
 				const auto& [_, sec] = *itr;
@@ -157,8 +150,6 @@ namespace MusicGame::Judgment
 			nextCursorX = cursorX + deltaCursorX;
 		}
 		laneStatusRef.cursorX = Clamp(nextCursorX, 0.0, 1.0);
-
-		Print << U"direction:" << direction << U", noteDirection:" << noteDirection << U", value:" << laneStatusRef.cursorX << U"," << laneStatusRef.noteCursorX;
 	}
 
 	LaserLaneJudgment::LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)

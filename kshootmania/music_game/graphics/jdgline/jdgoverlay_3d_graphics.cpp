@@ -8,7 +8,7 @@ namespace MusicGame::Graphics
 	{
 		constexpr Size kTextureSize = { 452 * 2, 140 };
 
-		constexpr Float3 kPlaneCenter = { 0.0f, 3.6f, -kHighwayPlaneSize.y / 2 - 1.8f };
+		constexpr Float3 kPlaneCenter = { 0.0f, 3.5f, -kHighwayPlaneSize.y / 2 - 1.8f };
 		constexpr Float2 kPlaneSize = { kTextureSize.x * 0.95f / 8, kTextureSize.y * 0.95f / 8 };
 
 		constexpr StringView kChipCriticalAnimTextureFilename = U"judge1.gif";
@@ -151,12 +151,12 @@ namespace MusicGame::Graphics
 				// カーソルがクリティカル判定の範囲内でない
 				continue;
 			}
-			const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 22 + 295 * laneStatus.cursorX.value(), 17);
+			const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 28 + static_cast<int32>(295 * laneStatus.cursorX.value()), 17);
 			m_laserAnimTexture(frameIdx, i).resized(size).draw(position);
 		}
 	}
 
-	Jdgoverlay3DGraphics::Jdgoverlay3DGraphics()
+	Jdgoverlay3DGraphics::Jdgoverlay3DGraphics(const BasicCamera3D& camera)
 		: m_renderTexture(ScreenUtils::Scaled(kTextureSize.x), ScreenUtils::Scaled(kTextureSize.y))
 		, m_chipCriticalTexture(kChipCriticalAnimTextureFilename,
 			{
@@ -190,7 +190,8 @@ namespace MusicGame::Graphics
 				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
 				.sourceSize = kLaserAnimSourceSize,
 			})
-		, m_mesh(MeshData::Grid(kPlaneCenter, kPlaneSize, 2, 2))
+		, m_transform(camera.billboard(kPlaneCenter, kPlaneSize))
+		, m_mesh(MeshData::Billboard())
 	{
 	}
 
@@ -210,7 +211,7 @@ namespace MusicGame::Graphics
 	{
 		// レンダーテクスチャを3D空間上に描画
 		const ScopedRenderStates3D blendState(BlendState::Additive);
-		const Transformer3D transform(JudgmentPlaneTransformMatrix(tiltRadians, kPlaneCenter));
-		m_mesh.draw(m_renderTexture);
+		const Transformer3D transform(TiltTransformMatrix(tiltRadians));
+		m_mesh.draw(m_transform, m_renderTexture);
 	}
 }
