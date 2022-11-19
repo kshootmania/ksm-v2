@@ -56,6 +56,11 @@ namespace MusicGame::Judgment
 		{
 			constexpr double kWindowSecPreHold = 0.15;
 		}
+
+		namespace LaserNote
+		{
+			constexpr double kWindowSecSlam = 0.06;
+		}
 	}
 
 	constexpr int32 kScoreValueNear = 1;
@@ -63,7 +68,20 @@ namespace MusicGame::Judgment
 
 	constexpr double kHalveComboBPMThreshold = 256.0;
 
+	// キーボード入力での1秒あたりのLASERカーソル移動量
 	constexpr double kLaserKeyboardCursorXPerSec = 3.0;
-	constexpr double kLaserCriticalMaxDeltaX = 0.035;
 
+	// LASERカーソル位置をCRITICAL判定とする許容誤差
+	constexpr double kLaserCriticalMaxDeltaCursorX = 0.035;
+
+	// LASERカーソルの増幅移動量の倍率
+	// (LASERカーソル移動がLASERノーツと同方向の場合はこの倍率で入力があったものと見立てた"増幅移動量"を計算し、
+	//  "増幅移動量"での移動幅が理想位置を超えている場合は理想位置にカーソルを吸い付かせる)
+	constexpr double kLaserCursorInputOvershootScale = 7.5;
+
+	// 直角LASERをCRITICAL判定するのに必要な累計カーソル移動量
+	constexpr double kLaserSlamCriticalDeltaCursorXThreshold = 0.035;
+
+	// 直角LASER判定後の判定補正時間
+	constexpr double kLaserAutoSecAfterSlamJudgment = 0.075;
 }

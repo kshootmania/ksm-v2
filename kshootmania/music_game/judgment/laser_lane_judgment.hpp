@@ -6,6 +6,30 @@
 
 namespace MusicGame::Judgment
 {
+	class LaserSlamJudgment
+	{
+	private:
+		// 時間(秒)
+		const double m_sec;
+
+		// 方向(-1:左, +1:右)
+		const int32 m_direction;
+
+		// カーソルの累計移動量
+		double m_totalAbsDeltaCursorX = 0.0;
+
+	public:
+		LaserSlamJudgment(double sec, int32 direction);
+
+		double sec() const;
+
+		void addDeltaCursorX(double deltaCursorX, double currentTimeSec);
+
+		bool isCriticalSatisfied() const;
+
+		JudgmentResult judgmentResult(double currentTimeSec) const;
+	};
+
 	class LaserLaneJudgment
 	{
 	private:
@@ -15,7 +39,9 @@ namespace MusicGame::Judgment
 		const kson::ByPulse<int32> m_laserLineDirectionMap;
 
 		kson::ByPulse<JudgmentResult> m_lineJudgmentArray;
-		kson::ByPulse<JudgmentResult> m_slamJudgmentArray;
+
+		kson::ByPulse<LaserSlamJudgment> m_slamJudgmentArray;
+		kson::ByPulse<LaserSlamJudgment>::iterator m_slamJudgmentArrayCursor;
 
 		Optional<kson::Pulse> m_prevCurrentLaserSectionPulse = none;
 
@@ -23,7 +49,13 @@ namespace MusicGame::Judgment
 
 		const int32 m_scoreValueMax;
 
-		void processKeyPressed(KeyConfig::Button button, const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef);
+		void processLineJudgment(double deltaCursorX, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef);
+
+		void processSlamJudgment(double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef);
+
+		void processAutoCursorMovementBySlamJudgment(double currentTimeSec, LaserLaneStatus& laneStatusRef);
+
+		void processKeyPressed(KeyConfig::Button button, kson::Pulse currentPulse, double currentSec, LaserLaneStatus& laneStatusRef);
 
 	public:
 		LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);

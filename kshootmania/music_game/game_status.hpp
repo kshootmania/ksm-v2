@@ -49,9 +49,16 @@ namespace MusicGame
 		// (クリティカル判定でない場合にもnoneではなくPulse値になる。主に判定グラフィックス用)
 		Optional<kson::Pulse> currentLaserSectionPulse = none;
 
+		// 最後に直角LASERを判定した時間
+		// (先行判定の場合は直角LASERの時間、後で判定した場合は判定した時間が入る)
+		Optional<double> lastLaserSlamJudgedTimeSec = none;
+
+		// 最後に判定した直角LASERのPulse値
+		Optional<kson::Pulse> lastJudgedLaserSlamPulse = none;
+
 		bool isCursorInCriticalJudgmentRange() const
 		{
-			return cursorX.has_value() && noteCursorX.has_value() && Abs(cursorX.value() - noteCursorX.value()) < MusicGame::Judgment::kLaserCriticalMaxDeltaX;
+			return cursorX.has_value() && noteCursorX.has_value() && Abs(cursorX.value() - noteCursorX.value()) < MusicGame::Judgment::kLaserCriticalMaxDeltaCursorX;
 		}
 	};
 
