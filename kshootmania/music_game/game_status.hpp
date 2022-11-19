@@ -58,7 +58,7 @@ namespace MusicGame
 
 		bool isCursorInCriticalJudgmentRange() const
 		{
-			return cursorX.has_value() && noteCursorX.has_value() && Abs(cursorX.value() - noteCursorX.value()) < MusicGame::Judgment::kLaserCriticalMaxDeltaCursorX;
+			return cursorX.has_value() && noteCursorX.has_value() && MusicGame::Judgment::IsLaserCursorInCriticalJudgmentRange(cursorX.value(), noteCursorX.value());
 		}
 	};
 

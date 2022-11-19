@@ -38,12 +38,16 @@ namespace MusicGame::Judgment
 		const std::map<kson::Pulse, double> m_pulseToSec;
 		const kson::ByPulse<int32> m_laserLineDirectionMap;
 
+		const Array<double> m_laserLineDirectionChangeSecArray;
+		Array<double>::const_iterator m_laserLineDirectionChangeSecArrayCursor;
+
 		kson::ByPulse<JudgmentResult> m_lineJudgmentArray;
 
 		kson::ByPulse<LaserSlamJudgment> m_slamJudgmentArray;
 		kson::ByPulse<LaserSlamJudgment>::iterator m_slamJudgmentArrayCursor;
 
 		Optional<kson::Pulse> m_prevCurrentLaserSectionPulse = none;
+		bool m_prevIsCursorInCriticalRange = false;
 
 		int32 m_scoreValue = 0;
 
@@ -54,6 +58,8 @@ namespace MusicGame::Judgment
 		void processSlamJudgment(double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
 		void processAutoCursorMovementBySlamJudgment(double currentTimeSec, LaserLaneStatus& laneStatusRef);
+
+		void processAutoCursorMovementByLineDirectionChange(double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
 		void processKeyPressed(KeyConfig::Button button, kson::Pulse currentPulse, double currentSec, LaserLaneStatus& laneStatusRef);
 

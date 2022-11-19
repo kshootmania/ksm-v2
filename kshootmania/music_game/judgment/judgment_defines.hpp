@@ -71,17 +71,30 @@ namespace MusicGame::Judgment
 	// キーボード入力での1秒あたりのLASERカーソル移動量
 	constexpr double kLaserKeyboardCursorXPerSec = 3.0;
 
+	// LASERカーソル位置を理想カーソル位置と同一とみなす範囲
+	// (この範囲に入ったら理想位置に吸い付かせて表示し、カーソルは移動しない)
+	constexpr double kLaserAutoFitMaxDeltaCursorX = 0.035;
+
 	// LASERカーソル位置をCRITICAL判定とする許容誤差
-	constexpr double kLaserCriticalMaxDeltaCursorX = 0.035;
+	constexpr double kLaserCriticalMaxDeltaCursorX = 0.1;
+
+	constexpr bool IsLaserCursorInCriticalJudgmentRange(double cursorX, double noteCursorX)
+	{
+		return Abs(cursorX - noteCursorX) < kLaserCriticalMaxDeltaCursorX;
+	}
 
 	// LASERカーソルの増幅移動量の倍率
 	// (LASERカーソル移動がLASERノーツと同方向の場合はこの倍率で入力があったものと見立てた"増幅移動量"を計算し、
 	//  "増幅移動量"での移動幅が理想位置を超えている場合は理想位置にカーソルを吸い付かせる)
-	constexpr double kLaserCursorInputOvershootScale = 7.5;
+	constexpr double kLaserCursorInputOvershootScale = 20.0;
 
 	// 直角LASERをCRITICAL判定するのに必要な累計カーソル移動量
 	constexpr double kLaserSlamCriticalDeltaCursorXThreshold = 0.035;
 
-	// 直角LASER判定後の判定補正時間
+	// 直角LASER判定後の判定補正時間(秒)
 	constexpr double kLaserAutoSecAfterSlamJudgment = 0.075;
+
+	// 折り返し前後での判定補正時間(秒)
+	constexpr double kLaserAutoSecBeforeLineDirectionChange = 0.1;
+	constexpr double kLaserAutoSecAfterLineDirectionChange = 0.075;
 }
