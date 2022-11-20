@@ -185,8 +185,8 @@ namespace MusicGame::Judgment
 	{
 		if (laneStatusRef.currentLongNotePulse.has_value())
 		{
-			const kson::Pulse noteStartPulse = *laneStatusRef.currentLongNotePulse;
-			const kson::Pulse noteEndPulse = *laneStatusRef.currentLongNotePulse + lane.at(*laneStatusRef.currentLongNotePulse).length;
+			const kson::Pulse noteStartPulse = laneStatusRef.currentLongNotePulse.value();
+			const kson::Pulse noteEndPulse = noteStartPulse + lane.at(noteStartPulse).length;
 			const kson::Pulse limitPulse = Min(currentPulse, noteEndPulse);
 
 			for (auto itr = m_longJudgmentArray.upper_bound(Max(noteStartPulse, m_prevPulse) - 1); itr != m_longJudgmentArray.end(); ++itr)

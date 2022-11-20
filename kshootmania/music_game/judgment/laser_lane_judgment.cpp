@@ -206,7 +206,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void LaserLaneJudgment::processLineJudgment(double deltaCursorX, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef)
+	void LaserLaneJudgment::processCursorMovement(double deltaCursorX, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef)
 	{
 		if (!laneStatusRef.cursorX.has_value())
 		{
@@ -414,6 +414,49 @@ namespace MusicGame::Judgment
 		}
 	}
 
+	void LaserLaneJudgment::processLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef)
+	{
+		if (!laneStatusRef.cursorX.has_value())
+		{
+			// カーソルが出ていない場合は何もしない
+			return;
+		}
+
+		if (!laneStatusRef.noteCursorX.has_value() || !laneStatusRef.currentLaserSectionPulse.has_value())
+		{
+			// ノーツ判定中でない場合は何もしない
+			// TODO: LASERセクション終了フレームで処理落ちした場合を考慮すると、前回フレームでノーツ判定中だった場合は判定した方が良い？
+			return;
+		}
+
+		const kson::Pulse sectionStartPulse = laneStatusRef.currentLaserSectionPulse.value();
+		const auto& sectionPoints = lane.at(sectionStartPulse).v;
+		assert(!sectionPoints.empty() && "Laser section must not be empty");
+		const kson::Pulse sectionEndPulse = sectionStartPulse + sectionPoints.rbegin()->first;
+		const kson::Pulse limitPulse = Min(currentPulse, sectionEndPulse);
+
+		const double cursorX = laneStatusRef.cursorX.value();
+		const double noteCursorX = laneStatusRef.noteCursorX.value();
+		const JudgmentResult currentResult = IsLaserCursorInCriticalJudgmentRange(cursorX, noteCursorX) ? JudgmentResult::kCritical : JudgmentResult::kError;
+		for (auto itr = m_lineJudgmentArray.upper_bound(Max(sectionStartPulse, m_prevPulse) - 1); itr != m_lineJudgmentArray.end(); ++itr)
+		{
+			auto& [y, result] = *itr;
+			if (y >= limitPulse)
+			{
+				break;
+			}
+
+			if (result == JudgmentResult::kUnspecified)
+			{
+				result = currentResult;
+				if (currentResult == JudgmentResult::kCritical)
+				{
+					m_scoreValue += kScoreValueCritical;
+				}
+			}
+		}
+	}
+
 	LaserLaneJudgment::LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 		: m_keyConfigButtonL(keyConfigButtonL)
 		, m_keyConfigButtonR(keyConfigButtonR)
@@ -434,6 +477,11 @@ namespace MusicGame::Judgment
 
 		const auto pregeneratedCursorValue = GetPregeneratedCursorValue(lane, currentPulse);
 		const bool hasSectionChanged = laneStatusRef.currentLaserSectionPulse != m_prevCurrentLaserSectionPulse;
+		if (hasSectionChanged)
+		{
+			// 異なるLASERセクションに突入した初回フレームでは前回フレームでの判定状況を加味しない
+			m_prevIsCursorInCriticalRange = false;
+		}
 		if (!laneStatusRef.cursorX.has_value() || hasSectionChanged) // カーソルが出ていない、または前回とは異なるLASERセクションに突入した場合
 		{
 			if (laneStatusRef.currentLaserSectionPulse.has_value())
@@ -486,7 +534,7 @@ namespace MusicGame::Judgment
 		{
 			deltaCursorX = 0.0;
 		}
-		processLineJudgment(deltaCursorX, currentPulse, laneStatusRef);
+		processCursorMovement(deltaCursorX, currentPulse, laneStatusRef);
 		processSlamJudgment(deltaCursorX, currentTimeSec, laneStatusRef);
 
 		// 直角LASER判定直後のカーソル自動移動
@@ -495,11 +543,15 @@ namespace MusicGame::Judgment
 		// 折り返し地点でのカーソル自動移動
 		processAutoCursorMovementByLineDirectionChange(currentTimeSec, laneStatusRef);
 
+		// カーソル位置をもとにLASERの判定を決定
+		processLineJudgment(lane, currentPulse, currentTimeSec, laneStatusRef);
+
 		m_prevIsCursorInCriticalRange =
-			!hasSectionChanged &&
 			laneStatusRef.cursorX.has_value() &&
 			laneStatusRef.noteCursorX.has_value() &&
 			IsLaserCursorInCriticalJudgmentRange(laneStatusRef.cursorX.value(), laneStatusRef.noteCursorX.value());
+
+		m_prevPulse = currentPulse;
 	}
 
 	int32 LaserLaneJudgment::scoreValue() const
