@@ -515,45 +515,6 @@ namespace MusicGame::Judgment
 		laneStatusRef.noteCursorX = kson::GraphSectionValueAt(lane, currentPulse);
 		laneStatusRef.noteVisualCursorX = laneStatusRef.noteCursorX; // TODO: タイミング調整に合わせてずらして取得
 
-		const auto pregeneratedCursorValue = GetPregeneratedCursorValue(lane, currentPulse);
-		const bool hasSectionChanged = laneStatusRef.currentLaserSectionPulse != m_prevCurrentLaserSectionPulse;
-		if (hasSectionChanged)
-		{
-			// 異なるLASERセクションに突入した初回フレームの場合、前回フレームでの判定状況を加味しない
-			m_prevIsCursorInAutoFitRange = false;
-		}
-		if (!laneStatusRef.cursorX.has_value() || hasSectionChanged) // カーソルが出ていない、または前回とは異なるLASERセクションに突入した場合
-		{
-			if (laneStatusRef.currentLaserSectionPulse.has_value())
-			{
-				// 既にLASERセクションに突入している場合はカーソルを出現させる
-				// そのLASERセクションの始点の値に合わせる(※現在の理想位置に合わせるのではない理由は、始点が直角の場合に直角の移動先にカーソルが合ってしまうため)
-				laneStatusRef.cursorX = lane.at(laneStatusRef.currentLaserSectionPulse.value()).v.begin()->second.v;
-			}
-			else if (pregeneratedCursorValue.has_value())
-			{
-				// カーソルがLASERノーツの手前で事前生成された場合は、カーソルを出現させる
-				// 次のLASERセクションの始点の値に合わせる
-				laneStatusRef.cursorX = pregeneratedCursorValue;
-			}
-			else
-			{
-				laneStatusRef.cursorX = none;
-			}
-
-			// 補正時間をリセット
-			m_lastCorrectMovementSec = kPastTimeSec;
-		}
-		else // カーソルが出ている場合
-		{
-			// カーソルが消滅
-			if (!laneStatusRef.noteCursorX.has_value() && !pregeneratedCursorValue.has_value())
-			{
-				laneStatusRef.cursorX = none;
-			}
-		}
-		m_prevCurrentLaserSectionPulse = laneStatusRef.currentLaserSectionPulse;
-
 		// 現在判定対象になっているLASERセクションの始点Pulse値を取得
 		if (laneStatusRef.noteCursorX.has_value())
 		{
@@ -562,6 +523,40 @@ namespace MusicGame::Judgment
 		else
 		{
 			laneStatusRef.currentLaserSectionPulse = none;
+		}
+
+		const auto pregeneratedCursorValue = GetPregeneratedCursorValue(lane, currentPulse);
+		const bool hasSectionChanged = laneStatusRef.currentLaserSectionPulse != m_prevCurrentLaserSectionPulse;
+		if (hasSectionChanged)
+		{
+			// 異なるLASERセクションに突入した初回フレームの場合、前回フレームでの判定状況を加味しない
+			m_prevIsCursorInAutoFitRange = false;
+		}
+		if (laneStatusRef.noteCursorX.has_value())
+		{
+			// LASERセクションに突入した初回フレーム、または前回とは異なるLASERセクションに突入した場合
+			if (!laneStatusRef.cursorX.has_value() || hasSectionChanged)
+			{
+				// カーソルを出現させ、LASERセクションの始点の値に合わせる
+				// (※現在の理想位置に合わせるのではない理由は、始点が直角の場合に直角の移動先にカーソルが合ってしまうため)
+				laneStatusRef.cursorX = lane.at(laneStatusRef.currentLaserSectionPulse.value()).v.begin()->second.v;
+			}
+		}
+		else
+		{
+			if (pregeneratedCursorValue.has_value())
+			{
+				// カーソルをLASERノーツの手前で事前生成し、次のLASERセクションの始点の値に合わせる
+				laneStatusRef.cursorX = pregeneratedCursorValue;
+			}
+			else
+			{
+				// カーソルが消滅
+				laneStatusRef.cursorX = none;
+			}
+
+			// 補正時間をリセット
+			m_lastCorrectMovementSec = kPastTimeSec;
 		}
 
 		// キー押下中の判定処理
@@ -591,6 +586,8 @@ namespace MusicGame::Judgment
 
 		// カーソル位置をもとにLASERの判定を決定
 		processLineJudgment(lane, currentPulse, currentTimeSec, laneStatusRef);
+
+		m_prevCurrentLaserSectionPulse = laneStatusRef.currentLaserSectionPulse;
 
 		m_prevIsCursorInAutoFitRange =
 			laneStatusRef.cursorX.has_value() &&
