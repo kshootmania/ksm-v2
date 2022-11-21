@@ -206,7 +206,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void LaserLaneJudgment::processCursorMovement(double deltaCursorX, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef)
+	void LaserLaneJudgment::processCursorMovement(double deltaCursorX, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef)
 	{
 		if (!laneStatusRef.cursorX.has_value())
 		{
@@ -238,6 +238,7 @@ namespace MusicGame::Judgment
 			{
 				// 増幅移動量で計算したカーソル移動の範囲内に理想位置があれば、カーソルを理想位置へ吸い付かせる
 				nextCursorX = noteCursorX;
+				m_lastCorrectMovementSec = currentTimeSec;
 			}
 			else
 			{
@@ -289,6 +290,11 @@ namespace MusicGame::Judgment
 				// 判定した時間を記録(補正に使用)
 				laneStatusRef.lastLaserSlamJudgedTimeSec = Max(currentTimeSec, laserSlamJudgmentRef.sec());
 				laneStatusRef.lastJudgedLaserSlamPulse = laserSlamPulse;
+			}
+			else
+			{
+				// 直角LASERがERROR判定になった場合は補正を切る
+				m_lastCorrectMovementSec = kPastTimeSec;
 			}
 
 			// 判定対象を次の直角LASERへ進める
@@ -369,48 +375,82 @@ namespace MusicGame::Judgment
 		}
 
 		// 折り返しタイミング周辺の時間範囲内にあるかを調べる
-		while (true)
+		for (; m_laserLineDirectionChangeSecArrayCursor != m_laserLineDirectionChangeSecArray.end(); ++m_laserLineDirectionChangeSecArrayCursor)
 		{
-			if (m_laserLineDirectionChangeSecArrayCursor == m_laserLineDirectionChangeSecArray.end())
-			{
-				// 補正すべき折り返しタイミングがこれ以上ない場合は何もしない
-				return;
-			}
-
 			const double directionChangeSec = *m_laserLineDirectionChangeSecArrayCursor;
-			if (currentTimeSec >= directionChangeSec + kLaserAutoSecAfterLineDirectionChange)
+			if (currentTimeSec <= directionChangeSec - kLaserAutoSecBeforeLineDirectionChange && m_lastCorrectMovementSec <= directionChangeSec - kLaserAutoSecBeforeLineDirectionChangeByCorrectMovement)
 			{
-				// 既に補正時間を超えているので次に進む
-				++m_laserLineDirectionChangeSecArrayCursor;
-				continue;
-			}
-			if (currentTimeSec <= directionChangeSec - kLaserAutoSecBeforeLineDirectionChange)
-			{
-				// まだ補正時間に入っていないので何もしない
+				// 次の補正タイミングが現在時間より後ろにあるので何もせず抜ける
 				return;
 			}
-
-			// 未判定のまま過ぎ去った直角LASERがある場合は補正を無視
-			// (直角LASERを判定していないのに補正でカーソルが理想位置に飛ぶのを防ぐため)
-			if (m_slamJudgmentArrayCursor != m_slamJudgmentArray.end())
+			else if (currentTimeSec < directionChangeSec + kLaserAutoSecAfterLineDirectionChange)
 			{
-				const auto& [_, laserSlamJudgment] = *m_slamJudgmentArrayCursor;
-				const double laserSlamSec = laserSlamJudgment.sec();
-				if (laserSlamSec <= currentTimeSec)
-				{
-					++m_laserLineDirectionChangeSecArrayCursor;
-					return;
-				}
+				// 補正時間内なので補正を実行
+				break;
 			}
+		}
 
-			// 折り返し前後の補正時間内なので、カーソルが理想位置に近い(CRITICAL判定範囲内にある)場合は理想位置へ吸い付かせる
-			const double cursorX = laneStatusRef.cursorX.value();
-			const double noteCursorX = laneStatusRef.noteCursorX.value();
-			if (MusicGame::Judgment::IsLaserCursorInCriticalJudgmentRange(cursorX, noteCursorX) || m_prevIsCursorInCriticalRange)
+		// 未判定のまま過ぎ去った直角LASERがある場合は補正を無視
+		// (直角LASERを判定していないのに補正でカーソルが理想位置に飛ぶのを防ぐため)
+		if (m_slamJudgmentArrayCursor != m_slamJudgmentArray.end())
+		{
+			const auto& [_, laserSlamJudgment] = *m_slamJudgmentArrayCursor;
+			const double laserSlamSec = laserSlamJudgment.sec();
+			if (laserSlamSec <= currentTimeSec)
 			{
-				laneStatusRef.cursorX = laneStatusRef.noteCursorX;
+				++m_laserLineDirectionChangeSecArrayCursor;
+				return;
 			}
+		}
+
+		// 折り返し前後の補正時間内なので、カーソルが理想位置に近い場合は理想位置へ吸い付かせる
+		const double cursorX = laneStatusRef.cursorX.value();
+		const double noteCursorX = laneStatusRef.noteCursorX.value();
+		if (MusicGame::Judgment::IsLaserCursorInAutoFitRange(cursorX, noteCursorX) || m_prevIsCursorInAutoFitRange)
+		{
+			laneStatusRef.cursorX = laneStatusRef.noteCursorX;
+		}
+	}
+
+	void LaserLaneJudgment::processAutoCursorMovementAfterCorrectMovement(double currentTimeSec, LaserLaneStatus& laneStatusRef)
+	{
+		if (!laneStatusRef.cursorX.has_value())
+		{
+			// カーソルが出ていない場合は何もしない
 			return;
+		}
+
+		if (!laneStatusRef.noteCursorX.has_value())
+		{
+			// 事前生成されたカーソルは動かさない(いわゆる始点ロック)
+			return;
+		}
+
+		// 未判定のまま過ぎ去った直角LASERがある場合は補正を無視
+		// (直角LASERを判定していないのに補正でカーソルが理想位置に飛ぶのを防ぐため)
+		if (m_slamJudgmentArrayCursor != m_slamJudgmentArray.end())
+		{
+			const auto& [_, laserSlamJudgment] = *m_slamJudgmentArrayCursor;
+			const double laserSlamSec = laserSlamJudgment.sec();
+			if (laserSlamSec <= currentTimeSec)
+			{
+				m_lastCorrectMovementSec = kPastTimeSec;
+				return;
+			}
+		}
+
+		if (currentTimeSec - m_lastCorrectMovementSec >= kLaserAutoSecAfterCorrectMovement)
+		{
+			// 補正時間が過ぎているので何もしない
+			return;
+		}
+
+		// 補正時間内なので、カーソルが理想位置に近い場合は理想位置へ吸い付かせる
+		const double cursorX = laneStatusRef.cursorX.value();
+		const double noteCursorX = laneStatusRef.noteCursorX.value();
+		if (MusicGame::Judgment::IsLaserCursorInAutoFitRange(cursorX, noteCursorX) || m_prevIsCursorInAutoFitRange)
+		{
+			laneStatusRef.cursorX = laneStatusRef.noteCursorX;
 		}
 	}
 
@@ -479,8 +519,8 @@ namespace MusicGame::Judgment
 		const bool hasSectionChanged = laneStatusRef.currentLaserSectionPulse != m_prevCurrentLaserSectionPulse;
 		if (hasSectionChanged)
 		{
-			// 異なるLASERセクションに突入した初回フレームでは前回フレームでの判定状況を加味しない
-			m_prevIsCursorInCriticalRange = false;
+			// 異なるLASERセクションに突入した初回フレームの場合、前回フレームでの判定状況を加味しない
+			m_prevIsCursorInAutoFitRange = false;
 		}
 		if (!laneStatusRef.cursorX.has_value() || hasSectionChanged) // カーソルが出ていない、または前回とは異なるLASERセクションに突入した場合
 		{
@@ -500,6 +540,9 @@ namespace MusicGame::Judgment
 			{
 				laneStatusRef.cursorX = none;
 			}
+
+			// 補正時間をリセット
+			m_lastCorrectMovementSec = kPastTimeSec;
 		}
 		else // カーソルが出ている場合
 		{
@@ -528,13 +571,13 @@ namespace MusicGame::Judgment
 		if (lastPressedButton.has_value())
 		{
 			const int32 direction = lastPressedButton == m_keyConfigButtonL ? -1 : 1;
-			deltaCursorX = kLaserKeyboardCursorXPerSec * Scene::DeltaTime() * direction;
+			deltaCursorX = kLaserKeyboardCursorXPerSec * Scene::DeltaTime() * direction; // TODO: Scene::DeltaTime()を使わずcurrentTimeSecの差分を使う
 		}
 		else
 		{
 			deltaCursorX = 0.0;
 		}
-		processCursorMovement(deltaCursorX, currentPulse, laneStatusRef);
+		processCursorMovement(deltaCursorX, currentPulse, currentTimeSec, laneStatusRef);
 		processSlamJudgment(deltaCursorX, currentTimeSec, laneStatusRef);
 
 		// 直角LASER判定直後のカーソル自動移動
@@ -543,13 +586,16 @@ namespace MusicGame::Judgment
 		// 折り返し地点でのカーソル自動移動
 		processAutoCursorMovementByLineDirectionChange(currentTimeSec, laneStatusRef);
 
+		// 正解判定後のカーソル自動移動
+		processAutoCursorMovementAfterCorrectMovement(currentTimeSec, laneStatusRef);
+
 		// カーソル位置をもとにLASERの判定を決定
 		processLineJudgment(lane, currentPulse, currentTimeSec, laneStatusRef);
 
-		m_prevIsCursorInCriticalRange =
+		m_prevIsCursorInAutoFitRange =
 			laneStatusRef.cursorX.has_value() &&
 			laneStatusRef.noteCursorX.has_value() &&
-			IsLaserCursorInCriticalJudgmentRange(laneStatusRef.cursorX.value(), laneStatusRef.noteCursorX.value());
+			IsLaserCursorInAutoFitRange(laneStatusRef.cursorX.value(), laneStatusRef.noteCursorX.value());
 
 		m_prevPulse = currentPulse;
 	}

@@ -35,7 +35,6 @@ namespace MusicGame::Judgment
 	private:
 		const KeyConfig::Button m_keyConfigButtonL;
 		const KeyConfig::Button m_keyConfigButtonR;
-		const std::map<kson::Pulse, double> m_pulseToSec;
 		const kson::ByPulse<int32> m_laserLineDirectionMap;
 
 		const Array<double> m_laserLineDirectionChangeSecArray;
@@ -46,21 +45,25 @@ namespace MusicGame::Judgment
 		kson::ByPulse<LaserSlamJudgment> m_slamJudgmentArray;
 		kson::ByPulse<LaserSlamJudgment>::iterator m_slamJudgmentArrayCursor;
 
+		double m_lastCorrectMovementSec = kPastTimeSec;
+
 		Optional<kson::Pulse> m_prevCurrentLaserSectionPulse = none;
-		bool m_prevIsCursorInCriticalRange = false;
+		bool m_prevIsCursorInAutoFitRange = false;
 		kson::Pulse m_prevPulse = kPastPulse;
 
 		int32 m_scoreValue = 0;
 
 		const int32 m_scoreValueMax;
 
-		void processCursorMovement(double deltaCursorX, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef);
+		void processCursorMovement(double deltaCursorX, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
 		void processSlamJudgment(double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
 		void processAutoCursorMovementBySlamJudgment(double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
 		void processAutoCursorMovementByLineDirectionChange(double currentTimeSec, LaserLaneStatus& laneStatusRef);
+
+		void processAutoCursorMovementAfterCorrectMovement(double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
 		void processLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef);
 

@@ -211,7 +211,7 @@ namespace MusicGame::Judgment
 		, m_pulseToSec(CreatePulseToSec(lane, beatInfo, timingCache))
 		, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane))
 		, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatInfo))
-		, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size())* kScoreValueCritical)
+		, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size()) * kScoreValueCritical)
 	{
 	}
 
