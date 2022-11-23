@@ -23,11 +23,6 @@ namespace ksmaudio
 		m_stream.stop();
 	}
 
-	void StreamWithEffects::updateManually() const
-	{
-		m_stream.updateManually();
-	}
-
 	double StreamWithEffects::posSec() const
 	{
 		return m_stream.posSec();

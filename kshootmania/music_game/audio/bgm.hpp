@@ -15,7 +15,6 @@ namespace MusicGame::Audio
 		ksmaudio::AudioEffect::AudioEffectBus* const m_pAudioEffectBusFX;
 		ksmaudio::AudioEffect::AudioEffectBus* const m_pAudioEffectBusLaser;
 		Stopwatch m_stopwatch;
-		Stopwatch m_manualUpdateStopwatch;
 
 		void emplaceAudioEffectImpl(
 			bool isFX,
