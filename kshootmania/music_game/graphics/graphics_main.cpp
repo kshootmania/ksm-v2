@@ -107,6 +107,7 @@ namespace MusicGame::Graphics
 		, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
 		, m_layerFrameTextures(SplitLayerTexture(LayerFilePath(chartData)))
 		, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
+		, m_jdgoverlay3DGraphics(m_camera)
 		, m_songInfoPanel(chartData, parentPath)
 		, m_gaugePanel(kNormalGauge/* TODO: gauge type */)
 	{
@@ -135,6 +136,7 @@ namespace MusicGame::Graphics
 		m_highway3DGraphics.draw3D(tiltRadians);
 		m_jdgline3DGraphics.draw3D(tiltRadians);
 		m_jdgoverlay3DGraphics.draw3D(tiltRadians);
+		m_laserCursor3DGraphics.draw3D(tiltRadians, gameStatus);
 
 		// 手前に表示する2DのHUDを描画
 		m_songInfoPanel.draw(gameStatus.currentBPM);

@@ -7,8 +7,8 @@ namespace MusicGame
 {
 	namespace
 	{
-		template <std::size_t N>
-		int32 SumScoreFactor(const std::array<Judgment::ButtonLaneJudgment, N>& laneJudgements)
+		template <class LaneJudgment, std::size_t N>
+		int32 SumScoreFactor(const std::array<LaneJudgment, N>& laneJudgements)
 		{
 			int32 sum = 0;
 			for (const auto& laneJudgment : laneJudgements)
@@ -18,8 +18,8 @@ namespace MusicGame
 			return sum;
 		}
 
-		template <std::size_t N>
-		int32 SumScoreFactorMax(const std::array<Judgment::ButtonLaneJudgment, N>& laneJudgements)
+		template <class LaneJudgment, std::size_t N>
+		int32 SumScoreFactorMax(const std::array<LaneJudgment, N>& laneJudgements)
 		{
 			int32 sum = 0;
 			for (const auto& laneJudgment : laneJudgements)
@@ -51,7 +51,13 @@ namespace MusicGame
 			m_fxLaneJudgments[i].update(m_chartData.note.fx[i], currentPulse, currentTimeSec, m_gameStatus.fxLaneStatus[i]);
 		}
 
-		m_gameStatus.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreFactor(m_btLaneJudgments) + SumScoreFactor(m_fxLaneJudgments)) / m_scoreFactorMax); // TODO: add laser
+		// LASERレーンの判定
+		for (std::size_t i = 0U; i < kson::kNumLaserLanesSZ; ++i)
+		{
+			m_laserLaneJudgments[i].update(m_chartData.note.laser[i], currentPulse, currentTimeSec, m_gameStatus.laserLaneStatus[i]);
+		}
+
+		m_gameStatus.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreFactor(m_btLaneJudgments) + SumScoreFactor(m_fxLaneJudgments) + SumScoreFactor(m_laserLaneJudgments)) / m_scoreFactorMax);
 
 		// TODO: Calculate camera values
 	}
@@ -66,9 +72,12 @@ namespace MusicGame
 			Judgment::ButtonLaneJudgment(kBTButtons[2], m_chartData.note.bt[2], m_chartData.beat, m_timingCache),
 			Judgment::ButtonLaneJudgment(kBTButtons[3], m_chartData.note.bt[3], m_chartData.beat, m_timingCache) }
 		, m_fxLaneJudgments{
-				Judgment::ButtonLaneJudgment(kFXButtons[0], m_chartData.note.fx[0], m_chartData.beat, m_timingCache),
-				Judgment::ButtonLaneJudgment(kFXButtons[1], m_chartData.note.fx[1], m_chartData.beat, m_timingCache) }
-		, m_scoreFactorMax(SumScoreFactorMax(m_btLaneJudgments) + SumScoreFactorMax(m_fxLaneJudgments)) // TODO: add laser
+			Judgment::ButtonLaneJudgment(kFXButtons[0], m_chartData.note.fx[0], m_chartData.beat, m_timingCache),
+			Judgment::ButtonLaneJudgment(kFXButtons[1], m_chartData.note.fx[1], m_chartData.beat, m_timingCache) }
+		, m_laserLaneJudgments{
+			Judgment::LaserLaneJudgment(kLaserButtons[0][0], kLaserButtons[0][1], m_chartData.note.laser[0], m_chartData.beat, m_timingCache),
+			Judgment::LaserLaneJudgment(kLaserButtons[1][0], kLaserButtons[1][1], m_chartData.note.laser[1], m_chartData.beat, m_timingCache) }
+		, m_scoreFactorMax(SumScoreFactorMax(m_btLaneJudgments) + SumScoreFactorMax(m_fxLaneJudgments) + SumScoreFactorMax(m_laserLaneJudgments))
 		, m_bgm(m_parentPath + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
 		, m_assistTick(gameCreateInfo.enableAssistTick)
 		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)

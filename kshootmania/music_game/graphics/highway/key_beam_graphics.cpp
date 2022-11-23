@@ -29,7 +29,7 @@ namespace MusicGame::Graphics
 		{
 			const bool isBT = (i < kson::kNumBTLanesSZ);
 			const std::size_t laneIdx = isBT ? i : (i - kson::kNumBTLanesSZ);
-			const LaneStatus& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
+			const ButtonLaneStatus& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
 
 			const double sec = gameStatus.currentTimeSec - laneStatus.keyBeamTimeSec;
 			if (sec < 0.0 || kKeyBeamEndSec < sec)

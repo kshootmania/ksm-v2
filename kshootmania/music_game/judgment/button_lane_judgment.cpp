@@ -5,8 +5,6 @@ namespace MusicGame::Judgment
 {
 	namespace
 	{
-		constexpr double kHalveComboBPMThreshold = 256.0;
-
 		std::map<kson::Pulse, double> CreatePulseToSec(const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 		{
 			std::map<kson::Pulse, double> pulseToSec;
@@ -92,7 +90,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, LaneStatus& laneStatusRef)
+	void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef)
 	{
 		using namespace TimingWindow;
 
@@ -183,12 +181,12 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const LaneStatus& laneStatusRef)
+	void ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const ButtonLaneStatus& laneStatusRef)
 	{
 		if (laneStatusRef.currentLongNotePulse.has_value())
 		{
-			const kson::Pulse noteStartPulse = *laneStatusRef.currentLongNotePulse;
-			const kson::Pulse noteEndPulse = *laneStatusRef.currentLongNotePulse + lane.at(*laneStatusRef.currentLongNotePulse).length;
+			const kson::Pulse noteStartPulse = laneStatusRef.currentLongNotePulse.value();
+			const kson::Pulse noteEndPulse = noteStartPulse + lane.at(noteStartPulse).length;
 			const kson::Pulse limitPulse = Min(currentPulse, noteEndPulse);
 
 			for (auto itr = m_longJudgmentArray.upper_bound(Max(noteStartPulse, m_prevPulse) - 1); itr != m_longJudgmentArray.end(); ++itr)
@@ -213,11 +211,11 @@ namespace MusicGame::Judgment
 		, m_pulseToSec(CreatePulseToSec(lane, beatInfo, timingCache))
 		, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane))
 		, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatInfo))
-		, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size())* kScoreValueCritical)
+		, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size()) * kScoreValueCritical)
 	{
 	}
 
-	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, LaneStatus& laneStatusRef)
+	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef)
 	{
 		// チップノーツとロングノーツの始点の判定処理
 		if (KeyConfig::Down(m_keyConfigButton))

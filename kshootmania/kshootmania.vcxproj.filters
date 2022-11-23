@@ -387,6 +387,12 @@
     <ClCompile Include="music_game\graphics\jdgline\jdgoverlay_3d_graphics.cpp">
       <Filter>Source Files\music_game\graphics\jdgline</Filter>
     </ClCompile>
+    <ClCompile Include="music_game\judgment\laser_lane_judgment.cpp">
+      <Filter>Source Files\music_game\judgment</Filter>
+    </ClCompile>
+    <ClCompile Include="music_game\graphics\jdgline\laser_cursor_3d_graphics.cpp">
+      <Filter>Source Files\music_game\graphics\jdgline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1190,6 +1196,12 @@
       <Filter>Header Files\music_game</Filter>
     </ClInclude>
     <ClInclude Include="music_game\graphics\jdgline\jdgoverlay_3d_graphics.hpp">
+      <Filter>Header Files\music_game\graphics\jdgline</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\judgment\laser_lane_judgment.hpp">
+      <Filter>Header Files\music_game\judgment</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\graphics\jdgline\laser_cursor_3d_graphics.hpp">
       <Filter>Header Files\music_game\graphics\jdgline</Filter>
     </ClInclude>
   </ItemGroup>
