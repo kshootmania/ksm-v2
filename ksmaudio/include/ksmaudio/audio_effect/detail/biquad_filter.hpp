@@ -3,8 +3,6 @@
 
 namespace ksmaudio::AudioEffect::detail
 {
-    // TODO: No need to use class template
-    // TODO: Use struct and non-member functions
     template <typename T>
     class BiquadFilter
     {
@@ -100,10 +98,10 @@ namespace ksmaudio::AudioEffect::detail
             m_b2 = A * ((A + T{ 1 }) + (A - T{ 1 }) * cosOmega - beta * sinOmega);
         }
 
-        void setPeakingFilter(T freq, T bandWidth, T gain, T sampleRate)
+        void setPeakingFilter(T freq, T q, T gain, T sampleRate)
         {
             const T omega = std::numbers::pi_v<T> * 2 * freq / sampleRate;
-            const T alpha = std::sin(omega) * std::sinh(std::log(T{ 2 }) / 2 * bandWidth * omega / std::sin(omega));
+            const T alpha = std::sin(omega) * std::sinh(std::log(T{ 2 }) / 2 * q * omega / std::sin(omega));
             const T A = std::pow(T{ 10 }, gain / 40);
 
             const T cosOmega = std::cos(omega);

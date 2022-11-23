@@ -38,6 +38,10 @@ void MusicGame::Audio::BGM::emplaceAudioEffectImpl(bool isFX, const std::string&
 	case kson::AudioEffectType::Echo:
 		pAudioEffectBus->emplaceAudioEffect<ksmaudio::Echo>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
 		break;
+
+	case kson::AudioEffectType::PeakingFilter:
+		pAudioEffectBus->emplaceAudioEffect<ksmaudio::PeakingFilter>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+		break;
 	}
 }
 

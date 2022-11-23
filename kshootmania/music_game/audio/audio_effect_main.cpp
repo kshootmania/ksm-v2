@@ -75,6 +75,10 @@ namespace MusicGame::Audio
 				const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
 				bgm.emplaceAudioEffectFX("echo", def, updateTriggerTiming);
 			}
+			{
+				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::PeakingFilter };
+				bgm.emplaceAudioEffectLaser("peaking_filter", def);
+			}
 		}
 
 		kson::FXLane<AudioEffectInvocation> CreateLongFXNoteAudioEffectInvocations(BGM& bgm, const kson::ChartData& chartData)
