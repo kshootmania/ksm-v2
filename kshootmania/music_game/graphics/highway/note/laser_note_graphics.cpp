@@ -14,7 +14,8 @@ namespace MusicGame::Graphics
 		constexpr Size kLaserTextureSize = { 48, 48 };
 		constexpr double kLaserLineWidth = static_cast<double>(kLaserTextureSize.x);
 		constexpr Size kLaserStartTextureSize = { 44, 200 };
-		constexpr double kLaserShiftY = -10;
+		constexpr double kLaserShiftY = -10.0;
+		constexpr double kLaserTailHeight = 80.0;
 
 		constexpr double kLaserCriticalBlinkIntervalSec = 0.12;
 
@@ -102,7 +103,7 @@ namespace MusicGame::Graphics
 				point.vf * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
 				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
 			};
-			const Quad quad = LaserLineQuad(positionStart + Vec2{ 0.0, -kLaserTextureSize.y }, positionStart + Vec2{ 0.0, -kLaserTextureSize.y - 80.0 });
+			const Quad quad = LaserLineQuad(positionStart + Vec2{ 0.0, -kLaserTextureSize.y }, positionStart + Vec2{ 0.0, -kLaserTextureSize.y - kLaserTailHeight });
 			quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y * laserNoteTextureRow + kLaserTextureSize.y - 1 + kOnePixelTextureSourceOffset, kLaserTextureSize.x, kOnePixelTextureSourceSize)).draw();
 		}
 
@@ -126,13 +127,6 @@ namespace MusicGame::Graphics
 
 		void DrawLaserSection(int32 laneIdx, kson::RelPulse relPulse, const kson::LaserSection& laserSection, const RenderTexture& target, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const TextureRegion& laserStartTexture)
 		{
-			const double positionSectionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY;
-			if (positionSectionStartY + kLaserStartTextureSize.y < 0)
-			{
-				// レーザーのセクション全体が描画範囲より上にある場合は描画しない
-				return;
-			}
-
 			const ScopedRenderTarget2D renderTarget(target);
 
 			for (auto itr = laserSection.v.begin(); itr != laserSection.v.end(); ++itr)
@@ -179,7 +173,7 @@ namespace MusicGame::Graphics
 				// レーザーの2つの点をもとに線を描画
 				{
 					const auto& [nextRy, nextPoint] = *nextItr;
-					if (relPulse + nextRy < -kson::kResolution)
+					if (relPulse + nextRy < -kson::kResolution4)
 					{
 						continue;
 					}
@@ -234,14 +228,31 @@ namespace MusicGame::Graphics
 		{
 			const auto& lane = chartData.note.laser[laneIdx];
 			const auto& laneStatus = gameStatus.laserLaneStatus[laneIdx];
-			for (const auto& [y, laserSection] : lane)
+
+			for (auto itr = kson::ValueItrAt(lane, gameStatus.currentPulse); itr != lane.end(); ++itr)
 			{
+				const auto& [y, laserSection] = *itr;
+				const kson::RelPulse relPulse = y - gameStatus.currentPulse;
+
+				const double positionSectionEndY = -static_cast<double>(relPulse + laserSection.v.rbegin()->first) * 480 / kson::kResolution + kLaserShiftY - kLaserTailHeight;
+				if (positionSectionEndY > 0)
+				{
+					// レーザーのセクション全体が描画範囲より下にある場合は描画しない
+					continue;
+				}
+
+				const double positionSectionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY;
+				if (positionSectionStartY + kLaserStartTextureSize.y < 0)
+				{
+					// レーザーのセクション全体が描画範囲より上にある場合は描画しない
+					break;
+				}
+
 				// LASERセクションの判定状況をもとに描画すべきテクスチャの行を取得
 				const JudgmentStatus judgmentStatus = GetLaserSectionJudgmentStatus(laneStatus, y);
 				const int32 textureRow = LaserTextureRow(judgmentStatus, gameStatus.currentTimeSec);
 
 				// LASERセクションを描画
-				const kson::RelPulse relPulse = y - gameStatus.currentPulse;
 				DrawLaserSection(laneIdx, relPulse, laserSection, additiveTarget, m_laserNoteTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnAdditive));
 				DrawLaserSection(laneIdx, relPulse, laserSection, invMultiplyTarget, m_laserNoteMaskTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnInvMultiply));
 			}
