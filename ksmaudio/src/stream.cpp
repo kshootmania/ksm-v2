@@ -1,4 +1,5 @@
 #include "ksmaudio/stream.hpp"
+#include "ksmaudio/ksmaudio.hpp"
 
 namespace
 {
@@ -24,7 +25,6 @@ namespace
 
 namespace ksmaudio
 {
-
 	Stream::Stream(const std::string& filePath)
 		: m_hStream(LoadStream(filePath))
 		, m_info(GetChannelInfo(m_hStream))
@@ -93,12 +93,13 @@ namespace ksmaudio
 
 	double Stream::latencySec() const
 	{
-		DWORD playbuf = BASS_ChannelGetData(m_hStream, NULL, BASS_DATA_AVAILABLE);
+		/*DWORD playbuf = BASS_ChannelGetData(m_hStream, NULL, BASS_DATA_AVAILABLE);
 		if (playbuf != (DWORD)-1)
 		{
 			return BASS_ChannelBytes2Seconds(m_hStream, playbuf);
-		}
-		return 0.0; // TODO: return kBufferSizeMs
-	}
+		}*/
 
+		// 上記でも大抵バッファサイズと同じになるが変動するので、そのままバッファサイズを返した方が音声エフェクトのタイミング計算が安定する
+		return kBufferSizeMs / 1000.0f;
+	}
 }
