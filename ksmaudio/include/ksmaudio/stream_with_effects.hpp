@@ -22,6 +22,8 @@ namespace ksmaudio
 
 		void stop() const;
 
+		void updateManually() const;
+
 		double posSec() const;
 
 		void seekPosSec(double timeSec) const;
