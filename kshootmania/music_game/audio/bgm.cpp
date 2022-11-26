@@ -98,6 +98,14 @@ void MusicGame::Audio::BGM::updateAudioEffectFX(bool bypass, const ksmaudio::Aud
 		activeAudioEffects);
 }
 
+void MusicGame::Audio::BGM::updateAudioEffectLaser(bool bypass, const ksmaudio::AudioEffect::Status& status, const std::optional<std::size_t>& activeAudioEffectIdx)
+{
+	m_pAudioEffectBusLaser->setBypass(bypass);
+	m_pAudioEffectBusLaser->update(
+		status,
+		activeAudioEffectIdx);
+}
+
 void MusicGame::Audio::BGM::play()
 {
 	m_stopwatch.start();

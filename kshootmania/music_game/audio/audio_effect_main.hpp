@@ -23,6 +23,7 @@ namespace MusicGame::Audio
 	{
 	private:
 		const kson::FXLane<AudioEffectInvocation> m_longFXNoteInvocations;
+		const kson::ByPulse<Optional<AudioEffectInvocation>> m_laserPulseInvocations;
 
 		std::array<bool, kson::kNumFXLanesSZ> m_longFXPressedPrev = { false, false };
 
@@ -31,6 +32,9 @@ namespace MusicGame::Audio
 		ksmaudio::AudioEffect::ActiveAudioEffectDict m_activeAudioEffectDictFX;
 
 		void updateActiveAudioEffectDictFX(const std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ>& currentLongNoteOfLanes, kson::Pulse currentPulseForAudio);
+
+		// Siv3D非依存のksmaudioに渡す必要があるため、ここではOptionalではなくstd::optionalを使用(これらは暗黙変換されない)
+		std::optional<std::size_t> getActiveLaserAudioEffectIdx(kson::Pulse currentPulseForAudio);
 		
 	public:
 		AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache);

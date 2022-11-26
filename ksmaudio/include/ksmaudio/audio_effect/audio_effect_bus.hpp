@@ -40,7 +40,11 @@ namespace ksmaudio::AudioEffect
 
 		~AudioEffectBus();
 
+		// オーバーライドパラメータ付き・複数指定でアクティブなエフェクトを指定して更新(ロングFX向け)
 		void update(const AudioEffect::Status& status, const ActiveAudioEffectDict& activeAudioEffectDict);
+
+		// オーバーライドパラメータなし・単一指定でアクティブなエフェクトを指定して更新(LASER向け)
+		void update(const AudioEffect::Status& status, std::optional<std::size_t> activeAudioEffectIdx);
 
 		template <typename T>
 		void emplaceAudioEffect(const std::string& name,

@@ -102,8 +102,25 @@ namespace MusicGame
 		{
 			longFXPressed[i] = m_gameStatus.fxLaneStatus[i].longNotePressed;
 		}
+		std::array<Optional<float>, kson::kNumLaserLanesSZ> laserValues;
+		for (std::size_t i = 0U; i < kson::kNumLaserLanesSZ; ++i)
+		{
+			// TODO: 音声エフェクト用にタイミングをずらして取得、CRITICAL判定範囲内でのみエフェクトをかける
+			const auto& cursorX = m_gameStatus.laserLaneStatus[i].cursorX;
+			if (cursorX.has_value())
+			{
+				const float v = static_cast<float>(cursorX.value());
+				static_assert(kson::kNumLaserLanesSZ == 2U); // 以下はLASERレーンが2個であることを前提にしている
+				laserValues[i] = (i == 0U) ? v : (1.0f - v);
+			}
+			else
+			{
+				laserValues[i] = none;
+			}
+		}
 		m_audioEffectMain.update(m_bgm, m_chartData, m_timingCache, {
 			.longFXPressed = longFXPressed,
+			.laserValues = laserValues,
 		});
 
 		// 効果音の更新

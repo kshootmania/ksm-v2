@@ -57,6 +57,48 @@ namespace ksmaudio::AudioEffect
 		}
 	}
 
+	void AudioEffectBus::update(const AudioEffect::Status& status, std::optional<std::size_t> activeAudioEffectIdx)
+	{
+		// Update override params
+		{
+			// "Active -> Inactive"
+			for (const std::size_t& idx : m_activeAudioEffectIdxs)
+			{
+				if (idx != activeAudioEffectIdx)
+				{
+					assert(m_paramControllers.size() > idx);
+					m_paramControllers[idx].clearOverrideParams();
+				}
+			}
+
+			// "Inactive -> Active" or "Active -> Active"
+			m_activeAudioEffectIdxs.clear();
+			if (activeAudioEffectIdx.has_value())
+			{
+				const std::size_t activeAudioEffectIdxValue = activeAudioEffectIdx.value();
+				m_activeAudioEffectIdxs.insert(activeAudioEffectIdxValue);
+				assert(m_paramControllers.size() > activeAudioEffectIdxValue);
+				m_paramControllers[activeAudioEffectIdxValue].clearOverrideParams();
+			}
+		}
+
+		// Update all audio effects
+		for (std::size_t i = 0U; i < m_audioEffects.size(); ++i)
+		{
+			if (m_paramControllers[i].update(status.sec))
+			{
+				// When the parameter value set is updated, pass it to the audio effect
+				for (const auto& [paramID, valueSet] : m_paramControllers[i].currentParams())
+				{
+					m_audioEffects[i]->setParamValueSet(paramID, valueSet);
+				}
+			}
+
+			const bool isOn = activeAudioEffectIdx == i;
+			m_audioEffects[i]->updateStatus(status, isOn ? std::make_optional(0/*LASERはエフェクトに関してレーン番号を考慮しないので0決め打ちにする*/) : std::nullopt);
+		}
+	}
+
 	void AudioEffectBus::setBypass(bool bypass)
 	{
 		for (const auto& audioEffect : m_audioEffects)

@@ -8,6 +8,8 @@ namespace MusicGame::Audio
 	{
 		constexpr double kLongFXNoteAudioEffectAutoPlaySec = 0.03;
 
+		constexpr std::string_view kDefaultLaserAudioEffectName = "peaking_filter";
+
 		void RegisterAudioEffects(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
 		{
 			using AudioEffectUtils::PrecalculateUpdateTriggerTiming;
@@ -84,6 +86,7 @@ namespace MusicGame::Audio
 		kson::FXLane<AudioEffectInvocation> CreateLongFXNoteAudioEffectInvocations(BGM& bgm, const kson::ChartData& chartData)
 		{
 			const auto& longEvent = chartData.audio.audioEffect.fx.longEvent;
+			const auto& audioEffectBus = bgm.audioEffectBusFX();
 			kson::FXLane<AudioEffectInvocation> convertedLongEvent;
 			for (const auto& [audioEffectName, lanes] : longEvent)
 			{
@@ -91,20 +94,63 @@ namespace MusicGame::Audio
 				{
 					for (const auto& [y, dict] : lanes[i])
 					{
-						if (!bgm.audioEffectBusFX().audioEffectContainsName(audioEffectName))
+						if (!audioEffectBus.audioEffectContainsName(audioEffectName))
 						{
 							// FXノーツに定義されていないエフェクト名が指定されている場合は無視
 							continue;
 						}
 
-						convertedLongEvent[i].emplace(y, AudioEffectInvocation{
-							.audioEffectIdx = bgm.audioEffectBusFX().audioEffectNameToIdx(audioEffectName),
+						convertedLongEvent[i].insert_or_assign(y, AudioEffectInvocation{
+							.audioEffectIdx = audioEffectBus.audioEffectNameToIdx(audioEffectName),
 							.overrideParams = ksmaudio::AudioEffect::StrDictToParamValueSetDict(dict),
 						});
 					}
 				}
 			}
 			return convertedLongEvent;
+		}
+
+		kson::ByPulse<Optional<AudioEffectInvocation>> CreateLaserPulseAudioEffectInvocations(BGM& bgm, const kson::ChartData& chartData)
+		{
+			const auto& pulseEvent = chartData.audio.audioEffect.laser.pulseEvent;
+			const auto& audioEffectBus = bgm.audioEffectBusLaser();
+			kson::ByPulse< Optional<AudioEffectInvocation>> convertedPulseEvent;
+			for (const auto& [audioEffectName, pulses] : pulseEvent)
+			{
+				for (const auto& y : pulses)
+				{
+					if (audioEffectBus.audioEffectContainsName(audioEffectName))
+					{
+						convertedPulseEvent.insert_or_assign(y, AudioEffectInvocation{
+							.audioEffectIdx = audioEffectBus.audioEffectNameToIdx(audioEffectName),
+						});
+					}
+					else
+					{
+						// LASERに定義されていないエフェクト名が指定されている場合はエフェクトなしにする
+						convertedPulseEvent.insert_or_assign(y, none);
+					}
+				}
+			}
+
+			// LASERエフェクト呼び出しがない、または、初回のLASERエフェクト呼び出しがゼロ地点より後ろの場合は、ゼロ地点にデフォルト値を挿入
+			if (convertedPulseEvent.empty() || convertedPulseEvent.begin()->first > kson::Pulse{ 0 })
+			{
+				const std::string defaultAudioEffectName{ kDefaultLaserAudioEffectName };
+				if (audioEffectBus.audioEffectContainsName(defaultAudioEffectName))
+				{
+					convertedPulseEvent.insert_or_assign(kson::Pulse{ 0 }, AudioEffectInvocation{
+						.audioEffectIdx = audioEffectBus.audioEffectNameToIdx(defaultAudioEffectName),
+					});
+				}
+				else
+				{
+					// LASERにデフォルト値の音声エフェクトが定義されていない場合はエフェクトなしにする
+					convertedPulseEvent.insert_or_assign(kson::Pulse{ 0 }, none);
+				}
+			}
+
+			return convertedPulseEvent;
 		}
 
 		Optional<std::pair<kson::Pulse, kson::Interval>> CurrentLongNoteByTime(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse)
@@ -122,9 +168,6 @@ namespace MusicGame::Audio
 		}
 	}
 
-	// TODO:
-	// 現状"updateTrigger=off>on"がFX-L/Rに交互に降ってきた時に両方トリガできないので、戻り値の形式を変更してどちらのボタンで押したかの情報を入れる
-	// もしくはoff→onへの切り替わりフレームかどうかをここで判定するようにして、その結果を入れる
 	void AudioEffectMain::updateActiveAudioEffectDictFX(
 		const std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ>& currentLongNoteOfLanes, kson::Pulse currentPulseForAudio)
 	{
@@ -166,8 +209,24 @@ namespace MusicGame::Audio
 		}
 	}
 
+	std::optional<std::size_t> AudioEffectMain::getActiveLaserAudioEffectIdx(kson::Pulse currentPulseForAudio)
+	{
+		assert(!m_laserPulseInvocations.empty()); // ゼロ地点にデフォルト値が挿入されるのでここでは空ではないはず
+
+		const auto& [y, audioEffectInvocation] = *kson::ValueItrAt(m_laserPulseInvocations, currentPulseForAudio);
+		if (audioEffectInvocation.has_value())
+		{
+			return audioEffectInvocation->audioEffectIdx;
+		}
+		else
+		{
+			return std::nullopt;
+		}
+	}
+
 	AudioEffectMain::AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
 		: m_longFXNoteInvocations((RegisterAudioEffects(bgm, chartData, timingCache), CreateLongFXNoteAudioEffectInvocations(bgm, chartData))) // 先に登録しておく必要があるので、分かりにくいがカンマ演算子を使用している(TODO: もうちょっとどうにかする)
+		, m_laserPulseInvocations(CreateLaserPulseAudioEffectInvocations(bgm, chartData))
 	{
 	}
 
@@ -219,6 +278,29 @@ namespace MusicGame::Audio
 			},
 			m_activeAudioEffectDictFX);
 
-		// TODO: laser
+		// LASERノーツの音声エフェクト
+		bool bypassLaser = true;
+		float laserValue = 0.0f;
+		for (std::size_t i = 0; i < kson::kNumLaserLanesSZ; ++i)
+		{
+			const auto& laneLaserValue = inputStatus.laserValues[i];
+			if (laneLaserValue.has_value())
+			{
+				// 音声エフェクトにはLASERの左右レーンのうち値が大きい方を採用する
+				if (laserValue < laneLaserValue.value())
+				{
+					laserValue = laneLaserValue.value();
+				}
+				bypassLaser = false;
+			}
+		}
+		bgm.updateAudioEffectLaser(
+			bypassLaser,
+			{
+				.v = laserValue,
+				.bpm = static_cast<float>(currentBPMForAudio),
+				.sec = static_cast<float>(currentTimeSecForAudio),
+			},
+			getActiveLaserAudioEffectIdx(currentPulseForAudio));
 	}
 }
