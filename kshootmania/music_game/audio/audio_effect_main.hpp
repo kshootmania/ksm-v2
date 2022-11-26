@@ -9,7 +9,11 @@ namespace MusicGame::Audio
 	{
 		std::array<Optional<bool>, kson::kNumFXLanesSZ> longFXPressed;
 
-		std::array<Optional<float>, kson::kNumLaserLanesSZ> laserValues;
+		// LASERが音声エフェクト有効の前提条件を満たしているかどうか
+		// (LASERがCRITICAL判定中、または、判定中のLASERノーツが存在しない場合にtrueになる)
+		//
+		// 判定中のLASERノーツが存在しない場合を加える必要があるのは、バッファサイズ分だけ先行したタイミングでエフェクトをかけ始める必要があるため
+		std::array<bool, kson::kNumLaserLanesSZ> laserIsOnOrNone;
 	};
 
 	struct AudioEffectInvocation

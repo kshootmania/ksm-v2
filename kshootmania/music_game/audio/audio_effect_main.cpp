@@ -1,6 +1,7 @@
 ﻿#include "audio_effect_main.hpp"
 #include "audio_effect_utils.hpp"
 #include "ksmaudio/audio_effect/audio_effect_bus.hpp"
+#include "kson/util/graph_utils.hpp"
 
 namespace MusicGame::Audio
 {
@@ -279,17 +280,29 @@ namespace MusicGame::Audio
 			m_activeAudioEffectDictFX);
 
 		// LASERノーツの音声エフェクト
+		// TODO: 直角時のクリッピングを抑える
 		bool bypassLaser = true;
 		float laserValue = 0.0f;
 		for (std::size_t i = 0; i < kson::kNumLaserLanesSZ; ++i)
 		{
-			const auto& laneLaserValue = inputStatus.laserValues[i];
+			if (!inputStatus.laserIsOnOrNone[i])
+			{
+				continue;
+			}
+
+			const auto& laneLaserValue = kson::GraphSectionValueAt(chartData.note.laser[i], currentPulseForAudio);
 			if (laneLaserValue.has_value())
 			{
+				const float fLaneLaserValue = static_cast<float>(laneLaserValue.value());
+
+				// 表示上のX座標の値(0.0:左、1.0:右)を、音声エフェクトで使うためのレーンに依存しない値(0.0～1.0)に変換
+				static_assert(kson::kNumLaserLanesSZ == 2U); // 以下の処理はLASERのレーン数が2であることを前提にしている
+				const float v = (i == 0U) ? fLaneLaserValue : (1.0f - fLaneLaserValue); // 右レーンの値を反転
+
 				// 音声エフェクトにはLASERの左右レーンのうち値が大きい方を採用する
-				if (laserValue < laneLaserValue.value())
+				if (laserValue < v)
 				{
-					laserValue = laneLaserValue.value();
+					laserValue = v;
 				}
 				bypassLaser = false;
 			}
