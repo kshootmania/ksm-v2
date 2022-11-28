@@ -101,7 +101,7 @@ namespace ksmaudio::AudioEffect::detail
         void setPeakingFilter(T freq, T q, T gain, T sampleRate)
         {
             const T omega = std::numbers::pi_v<T> * 2 * freq / sampleRate;
-            const T alpha = std::sin(omega) * std::sinh(std::log(T{ 2 }) / 2 * q * omega / std::sin(omega));
+            const T alpha = std::sin(omega) / (q * 2);
             const T A = std::pow(T{ 10 }, gain / 40);
 
             const T cosOmega = std::cos(omega);
