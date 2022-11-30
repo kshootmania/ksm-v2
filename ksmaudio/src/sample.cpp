@@ -22,9 +22,10 @@ namespace ksmaudio
 		BASS_SampleFree(m_hSample);
 	}
 
-	void Sample::play() const
+	void Sample::play(double volume) const
 	{
-		const HCHANNEL hChannel = BASS_SampleGetChannel(m_hSample, 0);
-		BASS_ChannelPlay(hChannel, FALSE);
+		const HCHANNEL hChannel = BASS_SampleGetChannel(m_hSample, FALSE);
+		BASS_ChannelSetAttribute(hChannel, BASS_ATTRIB_VOL, static_cast<float>(volume));
+		BASS_ChannelPlay(hChannel, TRUE);
 	}
 }

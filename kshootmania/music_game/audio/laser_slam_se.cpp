@@ -12,12 +12,12 @@ namespace MusicGame::Audio
 		}
 	}
 
-	LaserSlamSE::LaserSlamSE(const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+	LaserSlamSE::LaserSlamSE(const kson::ChartData& chartData)
 		: m_sample("se/chokkaku.wav", GetMaxPolyphony(chartData)) // TODO: 直角音の種類
 	{
 	}
 
-	void LaserSlamSE::update(const GameStatus& gameStatus)
+	void LaserSlamSE::update(const kson::ChartData& chartData, const GameStatus& gameStatus)
 	{
 		for (std::size_t i = 0U; i < kson::kNumLaserLanesSZ; ++i)
 		{
@@ -45,9 +45,13 @@ namespace MusicGame::Audio
 				continue;
 			}
 
+			// 直角音の音量を取得
+			// TODO: chokkakuautovol
+			const auto& volByPulse = chartData.audio.keySound.laser.vol;
+			const double volume = volByPulse.empty() ? kLaserSlamDefaultVolume : kson::ValueItrAt(volByPulse, laneStatus.lastJudgedLaserSlamPulse)->second;
+
 			// 直角音を再生
-			// TODO: 直角音の音量
-			m_sample.play();
+			m_sample.play(volume);
 			m_lastPlayedTimeSecs[i] = laneStatus.lastLaserSlamJudgedTimeSec;
 		}
 	}

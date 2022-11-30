@@ -16,7 +16,7 @@ namespace ksmaudio
 
 		~Sample();
 
-		void play() const;
+		void play(double volume = 1.0) const;
 	};
 
 }

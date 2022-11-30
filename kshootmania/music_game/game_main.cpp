@@ -80,7 +80,7 @@ namespace MusicGame
 		, m_scoreFactorMax(SumScoreFactorMax(m_btLaneJudgments) + SumScoreFactorMax(m_fxLaneJudgments) + SumScoreFactorMax(m_laserLaneJudgments))
 		, m_bgm(m_parentPath + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
 		, m_assistTick(gameCreateInfo.enableAssistTick)
-		, m_laserSlamSE(m_chartData, m_timingCache)
+		, m_laserSlamSE(m_chartData)
 		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)
 		, m_graphicsMain(m_chartData, m_parentPath)
 	{
@@ -117,7 +117,7 @@ namespace MusicGame
 		// 効果音の更新
 		const double currentTimeSec = m_bgm.posSec();
 		m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
-		m_laserSlamSE.update(m_gameStatus);
+		m_laserSlamSE.update(m_chartData, m_gameStatus);
 
 		// グラフィックスの更新
 		m_graphicsMain.update(m_chartData, m_gameStatus);

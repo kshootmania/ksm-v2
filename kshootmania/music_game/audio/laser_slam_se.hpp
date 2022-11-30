@@ -15,8 +15,8 @@ namespace MusicGame::Audio
 		std::array<double, kson::kNumLaserLanesSZ> m_lastPlayedTimeSecs = { kPastTimeSec, kPastTimeSec };
 
 	public:
-		explicit LaserSlamSE(const kson::ChartData& chartData, const kson::TimingCache& timingCache);
+		explicit LaserSlamSE(const kson::ChartData& chartData);
 
-		void update(const GameStatus& gameStatus);
+		void update(const kson::ChartData& chartData, const GameStatus& gameStatus);
 	};
 }
