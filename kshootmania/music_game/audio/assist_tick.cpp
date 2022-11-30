@@ -20,8 +20,8 @@ namespace
 
 MusicGame::Audio::AssistTick::AssistTick(bool enabled)
 	: m_enabled(enabled)
-	, m_btTickSound(U"se/tick.wav")
-	, m_fxTickSound(U"se/tick2.wav")
+	, m_btTickSound("se/tick.wav", 1)
+	, m_fxTickSound("se/tick2.wav", 1)
 {
 }
 
@@ -41,7 +41,6 @@ void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, cons
 		if (currentNotePulse > m_btPlayedPulses[i])
 		{
 			// BTの場合はチップノーツとロングノーツの両方で鳴らす
-			m_btTickSound.stop();
 			m_btTickSound.play();
 			m_btPlayedPulses[i] = currentNotePulse;
 		}
@@ -56,7 +55,6 @@ void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, cons
 			if (chartData.note.fx[i].contains(currentNotePulse) && chartData.note.fx[i].at(currentNotePulse).length == 0)
 			{
 				// FXの場合はチップノーツのみ鳴らす
-				m_fxTickSound.stop();
 				m_fxTickSound.play();
 			}
 			m_fxPlayedPulses[i] = currentNotePulse;

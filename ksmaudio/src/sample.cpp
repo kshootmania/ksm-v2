@@ -6,13 +6,12 @@ namespace
 	HSAMPLE LoadSample(const std::string& filePath, DWORD maxPolyphony)
 	{
 		assert(1 <= maxPolyphony && maxPolyphony <= 65535);
-		return BASS_SampleLoad(FALSE, filePath.c_str(), 0, 0, maxPolyphony, 0);
+		return BASS_SampleLoad(FALSE, filePath.c_str(), 0, 0, maxPolyphony, BASS_SAMPLE_OVER_POS);
 	}
 }
 
 namespace ksmaudio
 {
-
 	Sample::Sample(const std::string& filePath, DWORD maxPolyphony)
 		: m_hSample(LoadSample(filePath, maxPolyphony))
 	{
@@ -25,8 +24,7 @@ namespace ksmaudio
 
 	void Sample::play() const
 	{
-		const HCHANNEL hChannel = BASS_SampleGetChannel(m_hSample, BASS_SAMPLE_OVER_POS);
+		const HCHANNEL hChannel = BASS_SampleGetChannel(m_hSample, 0);
 		BASS_ChannelPlay(hChannel, FALSE);
 	}
-
 }
