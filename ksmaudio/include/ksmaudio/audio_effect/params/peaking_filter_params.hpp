@@ -8,6 +8,7 @@ namespace ksmaudio::AudioEffect
 {
 	struct PeakingFilterDSPParams
 	{
+		float v = 0.0f;
 		float freq = 1000.0f;
 		float gain = 6.0f;
 		float bandwidth = 1.2f;
@@ -70,6 +71,7 @@ namespace ksmaudio::AudioEffect
 			const bool isOn = laneIdx.has_value();
 			const float vValue = GetValue(v, status, isOn);
 			return {
+				.v = vValue,
 				.freq = detail::GetPeakingFilterFreqValue(vValue),
 				.gain = detail::GetPeakingFilterGainValue(vValue, GetValue(gain, status, isOn)),
 				.bandwidth = GetValue(bandwidth, status, isOn),

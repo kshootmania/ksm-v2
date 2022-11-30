@@ -21,6 +21,7 @@ namespace ksmaudio::AudioEffect
 		}
 
 		const bool isBypassed = bypass || params.mix == 0.0f; // Ø‚è‘Ö‚¦Žž‚ÌƒmƒCƒY‰ñ”ð‚Ì‚½‚ß‚Ébypassó‘Ô‚Å‚àˆ—Ž©‘Ì‚Í‚·‚é
+		const bool isSkipped = std::abs(params.v - m_prevV) > 0.5f || params.freq < 60.0f; // ƒmƒCƒY‰ñ”ð‚Ì‚½‚ßA’¼Šp“™‚Å’l‚ª”ò‚ñ‚¾uŠÔ‚âA’áŽü”g”‚É‘Î‚µ‚Ä‚Í“K—p‚µ‚È‚¢
 
 		assert(dataSize % m_info.numChannels == 0);
 		const std::size_t frameSize = dataSize / m_info.numChannels;
@@ -29,12 +30,14 @@ namespace ksmaudio::AudioEffect
 			for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
 			{
 				const float wet = m_peakingFilters[ch].process(*pData);
-				if (!isBypassed)
+				if (!isBypassed && !isSkipped)
 				{
 					*pData = std::lerp(*pData, wet, params.mix);
 				}
 				++pData;
 			}
 		}
+
+		m_prevV = params.v;
 	}
 }
