@@ -393,6 +393,9 @@
     <ClCompile Include="music_game\graphics\jdgline\laser_cursor_3d_graphics.cpp">
       <Filter>Source Files\music_game\graphics\jdgline</Filter>
     </ClCompile>
+    <ClCompile Include="music_game\audio\laser_slam_se.cpp">
+      <Filter>Source Files\music_game\audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1203,6 +1206,12 @@
     </ClInclude>
     <ClInclude Include="music_game\graphics\jdgline\laser_cursor_3d_graphics.hpp">
       <Filter>Header Files\music_game\graphics\jdgline</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\audio\laser_slam_se.hpp">
+      <Filter>Header Files\music_game\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="music_game\audio\audio_defines.hpp">
+      <Filter>Header Files\music_game\audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

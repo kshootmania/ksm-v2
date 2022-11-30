@@ -130,6 +130,7 @@
     <ClCompile Include="music_game\audio\audio_effect_main.cpp" />
     <ClCompile Include="music_game\audio\audio_effect_utils.cpp" />
     <ClCompile Include="music_game\audio\bgm.cpp" />
+    <ClCompile Include="music_game\audio\laser_slam_se.cpp" />
     <ClCompile Include="music_game\game_main.cpp" />
     <ClCompile Include="music_game\graphics\graphics_main.cpp" />
     <ClCompile Include="music_game\graphics\highway\highway_3d_graphics.cpp" />
@@ -368,9 +369,11 @@
     <ClInclude Include="ini\ksm_ini_data.hpp" />
     <ClInclude Include="input\key_config.hpp" />
     <ClInclude Include="music_game\audio\assist_tick.hpp" />
+    <ClInclude Include="music_game\audio\audio_defines.hpp" />
     <ClInclude Include="music_game\audio\audio_effect_main.hpp" />
     <ClInclude Include="music_game\audio\audio_effect_utils.hpp" />
     <ClInclude Include="music_game\audio\bgm.hpp" />
+    <ClInclude Include="music_game\audio\laser_slam_se.hpp" />
     <ClInclude Include="music_game\graphics\graphics_defines.hpp" />
     <ClInclude Include="music_game\graphics\graphics_main.hpp" />
     <ClInclude Include="music_game\graphics\highway\highway_3d_graphics.hpp" />

@@ -5,6 +5,7 @@
 #include "music_game/graphics/graphics_main.hpp"
 #include "music_game/audio/bgm.hpp"
 #include "music_game/audio/assist_tick.hpp"
+#include "music_game/audio/laser_slam_se.hpp"
 #include "music_game/audio/audio_effect_main.hpp"
 #include "kson/util/timing_utils.hpp"
 
@@ -37,6 +38,7 @@ namespace MusicGame
 		// 音声
 		Audio::BGM m_bgm;
 		Audio::AssistTick m_assistTick;
+		Audio::LaserSlamSE m_laserSlamSE;
 
 		// 音声エフェクト
 		Audio::AudioEffectMain m_audioEffectMain;

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "kson/chart_data.hpp"
+#include "game_defines.hpp"
 #include "judgment/judgment_defines.hpp"
 #include "graphics/graphics_defines.hpp"
 
@@ -51,10 +52,10 @@ namespace MusicGame
 
 		// 最後に直角LASERを判定した時間
 		// (先行判定の場合は直角LASERの時間、後で判定した場合は判定した時間が入る)
-		Optional<double> lastLaserSlamJudgedTimeSec = none;
+		double lastLaserSlamJudgedTimeSec = kPastTimeSec;
 
 		// 最後に判定した直角LASERのPulse値
-		Optional<kson::Pulse> lastJudgedLaserSlamPulse = none;
+		kson::Pulse lastJudgedLaserSlamPulse = kPastPulse;
 
 		bool isCursorInCriticalJudgmentRange() const
 		{

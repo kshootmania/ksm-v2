@@ -12,7 +12,7 @@ namespace ksmaudio
 
 	public:
 		// Note: filePath must be in UTF-8
-		Sample(const std::string& filePath, DWORD maxPolyphony);
+		Sample(const std::string& filePath, DWORD maxPolyphony = 1U);
 
 		~Sample();
 

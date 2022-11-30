@@ -287,7 +287,7 @@ namespace MusicGame::Judgment
 				// TODO: コンボ数加算
 				m_scoreValue += kScoreValueCritical;
 
-				// 判定した時間を記録(補正に使用)
+				// 判定した時間を記録(補正および効果音再生に使用)
 				laneStatusRef.lastLaserSlamJudgedTimeSec = Max(currentTimeSec, laserSlamJudgmentRef.sec());
 				laneStatusRef.lastJudgedLaserSlamPulse = laserSlamPulse;
 			}
@@ -340,19 +340,13 @@ namespace MusicGame::Judgment
 			return;
 		}
 
-		if (!laneStatusRef.lastLaserSlamJudgedTimeSec.has_value())
-		{
-			// 直角LASERをまだ一度も判定していない場合は何もしない
-			return;
-		}
-
-		if (laneStatusRef.currentLaserSectionPulse.value() > laneStatusRef.lastJudgedLaserSlamPulse.value())
+		if (laneStatusRef.currentLaserSectionPulse.value() > laneStatusRef.lastJudgedLaserSlamPulse)
 		{
 			// 判定した直角LASERより後ろのLASERセクションを判定中の場合は補正しない
 			return;
 		}
 
-		const double lastLaserSlamJudgedTimeSec = laneStatusRef.lastLaserSlamJudgedTimeSec.value();
+		const double lastLaserSlamJudgedTimeSec = laneStatusRef.lastLaserSlamJudgedTimeSec;
 		if (lastLaserSlamJudgedTimeSec <= currentTimeSec && currentTimeSec < lastLaserSlamJudgedTimeSec + kLaserAutoSecAfterSlamJudgment)
 		{
 			// 直角判定後の補正時間内であれば、カーソルを理想位置へ吸い付かせる

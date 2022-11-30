@@ -1,10 +1,8 @@
 ﻿#include "assist_tick.hpp"
+#include "audio_defines.hpp"
 
 namespace
 {
-	// Assist Tickは30ms早めのタイミングで再生する
-	constexpr double kLatencySec = 0.03;
-
 	// Note: ByPulse<Interval>はstd::map<Pulse, Interval>の型エイリアス
 	kson::Pulse CurrentNotePulse(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse)
 	{
@@ -20,8 +18,8 @@ namespace
 
 MusicGame::Audio::AssistTick::AssistTick(bool enabled)
 	: m_enabled(enabled)
-	, m_btTickSound("se/tick.wav", 1)
-	, m_fxTickSound("se/tick2.wav", 1)
+	, m_btTickSound("se/tick.wav")
+	, m_fxTickSound("se/tick2.wav")
 {
 }
 
@@ -32,7 +30,7 @@ void MusicGame::Audio::AssistTick::update(const kson::ChartData& chartData, cons
 		return;
 	}
 
-	const kson::Pulse currentPulseForAssistTick = kson::SecToPulse(currentTimeSec + kLatencySec, chartData.beat, timingCache);
+	const kson::Pulse currentPulseForAssistTick = kson::SecToPulse(currentTimeSec + kSELatencySec, chartData.beat, timingCache);
 
 	// BT
 	for (std::size_t i = 0; i < kson::kNumBTLanesSZ; ++i)
