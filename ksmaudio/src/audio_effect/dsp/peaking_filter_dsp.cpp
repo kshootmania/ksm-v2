@@ -17,7 +17,7 @@ namespace ksmaudio::AudioEffect
 		const float fSampleRate = static_cast<float>(m_info.sampleRate);
 		for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
 		{
-			m_peakingFilters[ch].setPeakingFilter(params.freq, params.q, params.gain, fSampleRate);
+			m_peakingFilters[ch].setPeakingFilter(params.freq, params.bandwidth, params.gain, fSampleRate);
 		}
 
 		const bool isBypassed = bypass || params.mix == 0.0f; // Ø‚è‘Ö‚¦Žž‚ÌƒmƒCƒY‰ñ”ð‚Ì‚½‚ß‚Ébypassó‘Ô‚Å‚àˆ—Ž©‘Ì‚Í‚·‚é

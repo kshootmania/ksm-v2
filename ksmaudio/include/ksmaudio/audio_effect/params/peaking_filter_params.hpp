@@ -10,7 +10,7 @@ namespace ksmaudio::AudioEffect
 	{
 		float freq = 1000.0f;
 		float gain = 6.0f;
-		float q = 1.2f;
+		float bandwidth = 1.2f;
 		float mix = 1.0f;
 	};
 
@@ -53,7 +53,7 @@ namespace ksmaudio::AudioEffect
 		//Param freq = DefineParam(Type::kRate, "50Hz");
 		//Param freqMax = DefineParam(Type::kRate, "13000Hz");
 		Param gain = DefineParam(Type::kRate, "50%");
-		Param q = DefineParam(Type::kFloat, "1.2");
+		Param bandwidth = DefineParam(Type::kFloat, "1.2");
 		Param mix = DefineParam(Type::kRate, "0%>100%");
 
 		const std::unordered_map<ParamID, Param*> dict = {
@@ -61,7 +61,7 @@ namespace ksmaudio::AudioEffect
 			//{ ParamID::kFreq, &freq },
 			//{ ParamID::kFreqMax, &freqMax },
 			{ ParamID::kGain, &gain },
-			{ ParamID::kQ, &q },
+			{ ParamID::kBandwidth, &bandwidth },
 			{ ParamID::kMix, &mix },
 		};
 
@@ -72,7 +72,7 @@ namespace ksmaudio::AudioEffect
 			return {
 				.freq = detail::GetPeakingFilterFreqValue(vValue),
 				.gain = detail::GetPeakingFilterGainValue(vValue, GetValue(gain, status, isOn)),
-				.q = GetValue(q, status, isOn),
+				.bandwidth = GetValue(bandwidth, status, isOn),
 				.mix = GetValue(mix, status, isOn),
 			};
 		}

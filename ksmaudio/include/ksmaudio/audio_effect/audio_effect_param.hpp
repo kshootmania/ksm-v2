@@ -124,6 +124,7 @@ namespace ksmaudio::AudioEffect
 		kFreq,
 		kFreqMax,
 		kGain,
+		kBandwidth,
 	};
 
 	inline const std::unordered_map<std::string, ParamID> kStrToParamID{
