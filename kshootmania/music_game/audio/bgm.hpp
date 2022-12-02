@@ -24,7 +24,7 @@ namespace MusicGame::Audio
 			const std::set<float>& updateTriggerTiming);
 
 	public:
-		explicit BGM(FilePathView filePath);
+		BGM(FilePathView filePath, double volume);
 
 		void update();
 

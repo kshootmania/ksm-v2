@@ -25,10 +25,12 @@ namespace
 
 namespace ksmaudio
 {
-	Stream::Stream(const std::string& filePath)
+	Stream::Stream(const std::string& filePath, double volume)
 		: m_hStream(LoadStream(filePath))
 		, m_info(GetChannelInfo(m_hStream))
 	{
+		// âπó Çê›íË
+		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(volume));
 	}
 
 	Stream::~Stream()

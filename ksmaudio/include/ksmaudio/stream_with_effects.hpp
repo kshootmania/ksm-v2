@@ -14,7 +14,7 @@ namespace ksmaudio
 
 	public:
 		// TODO: filePath encoding problem
-		explicit StreamWithEffects(const std::string& filePath);
+		explicit StreamWithEffects(const std::string& filePath, double volume = 1.0);
 
 		void play() const;
 

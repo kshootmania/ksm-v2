@@ -78,7 +78,7 @@ namespace MusicGame
 			Judgment::LaserLaneJudgment(kLaserButtons[0][0], kLaserButtons[0][1], m_chartData.note.laser[0], m_chartData.beat, m_timingCache),
 			Judgment::LaserLaneJudgment(kLaserButtons[1][0], kLaserButtons[1][1], m_chartData.note.laser[1], m_chartData.beat, m_timingCache) }
 		, m_scoreFactorMax(SumScoreFactorMax(m_btLaneJudgments) + SumScoreFactorMax(m_fxLaneJudgments) + SumScoreFactorMax(m_laserLaneJudgments))
-		, m_bgm(m_parentPath + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename))
+		, m_bgm(m_parentPath + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename), m_chartData.audio.bgm.vol)
 		, m_assistTick(gameCreateInfo.enableAssistTick)
 		, m_laserSlamSE(m_chartData)
 		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)

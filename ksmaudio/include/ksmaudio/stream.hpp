@@ -13,7 +13,7 @@ namespace ksmaudio
 
 	public:
 		// TODO: filePath encoding problem
-		explicit Stream(const std::string& filePath);
+		explicit Stream(const std::string& filePath, double volume = 1.0);
 
 		~Stream();
 
