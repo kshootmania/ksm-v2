@@ -15,6 +15,6 @@ namespace ksmaudio::AudioEffect
 	public:
 		explicit RetriggerEchoDSP(const DSPCommonInfo& info);
 
-		void process(float* pData, std::size_t dataSize, bool bypass, const RetriggerEchoDSPParams& params);
+		void process(float* pData, std::size_t dataSize, bool bypass, const RetriggerEchoDSPParams& params, bool isParamUpdated);
 	};
 }

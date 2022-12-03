@@ -10,28 +10,35 @@ namespace ksmaudio::AudioEffect
     {
     }
 
-    void RetriggerEchoDSP::process(float* pData, std::size_t dataSize, bool bypass, const RetriggerEchoDSPParams& params)
+    void RetriggerEchoDSP::process(float* pData, std::size_t dataSize, bool bypass, const RetriggerEchoDSPParams& params, bool isParamUpdated)
     {
         assert(dataSize % m_info.numChannels == 0);
 
-        if (params.secUntilTrigger >= 0.0) // Negative value is ignored
+        if (isParamUpdated) // secUntilTriggerおよびupdateTriggerの値はパラメータ更新後の初回実行時のみ有効
         {
-            m_framesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * static_cast<float>(m_info.sampleRate));
-        }
+            // トリガ更新までのフレーム数を計算
+            if (params.secUntilTrigger >= 0.0f) // 負の値は無視
+            {
+                m_framesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * static_cast<float>(m_info.sampleRate));
+            }
 
-        // updateTriggerによるトリガ更新
-        // ("update_trigger"を"off>on"や"off-on"などにした場合のノーツ判定による更新)
-        if (params.updateTrigger)
-        {
-            m_linearBuffer.resetReadWriteCursors();
+            // updateTriggerによるトリガ更新
+            // ("update_trigger"を"off>on"や"off-on"などにした場合のノーツ判定による更新)
+            if (params.updateTrigger)
+            {
+                m_linearBuffer.resetReadWriteCursors();
+            }
         }
 
         const bool active = !bypass && params.mix > 0.0f;
         const std::size_t frameSize = dataSize / m_info.numChannels;
         const std::size_t numLoopFrames = static_cast<std::size_t>(params.waveLength * static_cast<float>(m_info.sampleRate));
         const std::size_t numNonZeroFrames = static_cast<std::size_t>(static_cast<float>(numLoopFrames) * params.rate);
-        if (0 <= m_framesUntilTrigger && std::cmp_less(m_framesUntilTrigger, frameSize))
+        if (0 <= m_framesUntilTrigger && std::cmp_less(m_framesUntilTrigger, frameSize)) // m_framesUntilTrigger < frameSize
         {
+            // 今回の処理フレーム中にトリガ更新タイミングが含まれている場合、トリガ更新の前後2つに分けて処理
+
+            // トリガ更新より前
             const std::size_t formerSize = static_cast<std::size_t>(m_framesUntilTrigger) * m_info.numChannels;
             m_linearBuffer.write(pData, formerSize);
             if (active)
@@ -44,6 +51,7 @@ namespace ksmaudio::AudioEffect
             m_linearBuffer.resetReadWriteCursors();
             m_framesUntilTrigger = -1;
 
+            // トリガ更新より後ろ
             const std::size_t latterSize = dataSize - formerSize;
             m_linearBuffer.write(pData + formerSize, latterSize);
             if (active)
@@ -57,6 +65,8 @@ namespace ksmaudio::AudioEffect
         }
         else
         {
+            // 今回の処理フレーム中にトリガ更新タイミングが含まれていない場合、一度に処理
+
             m_linearBuffer.write(pData, dataSize);
             if (active)
             {
@@ -65,6 +75,12 @@ namespace ksmaudio::AudioEffect
             else
             {
                 m_linearBuffer.resetFadeOutScale();
+            }
+
+            // 次回トリガ更新タイミングまでの残り時間を減らす
+            if (std::cmp_greater_equal(m_framesUntilTrigger, frameSize)) // m_framesUntilTrigger >= frameSize
+            {
+                m_framesUntilTrigger -= frameSize;
             }
         }
     }

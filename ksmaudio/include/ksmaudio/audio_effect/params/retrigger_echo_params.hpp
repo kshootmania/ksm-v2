@@ -5,7 +5,7 @@ namespace ksmaudio::AudioEffect
 {
 	struct RetriggerEchoDSPParams
 	{
-		float secUntilTrigger = -1.0f; // Note: Negative value will be just ignored
+		float secUntilTrigger = -1.0f; // Note: •‰‚Ì’l‚É‚·‚é‚Æ–³Ž‹‚³‚ê‚é
 		bool updateTrigger = false;
 		float waveLength = 0.0f;
 		float rate = 0.7f;

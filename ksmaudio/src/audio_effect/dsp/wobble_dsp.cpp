@@ -34,11 +34,14 @@ namespace ksmaudio::AudioEffect
     {
     }
 
-    void WobbleDSP::process(float* pData, std::size_t dataSize, bool bypass, const WobbleDSPParams& params)
+    void WobbleDSP::process(float* pData, std::size_t dataSize, bool bypass, const WobbleDSPParams& params, bool isParamUpdated)
     {
         assert(dataSize % m_info.numChannels == 0);
 
-        m_triggerHandler.setFramesUntilTrigger(params.secUntilTrigger, m_info.sampleRate);
+        if (isParamUpdated) // secUntilTriggerの値はパラメータ更新後の初回実行時のみ有効
+        {
+            m_triggerHandler.setFramesUntilTrigger(params.secUntilTrigger, m_info.sampleRate);
+        }
 
         const std::size_t frameSize = dataSize / m_info.numChannels;
         const std::size_t numPeriodFrames = static_cast<std::size_t>(params.waveLength * m_info.sampleRate);

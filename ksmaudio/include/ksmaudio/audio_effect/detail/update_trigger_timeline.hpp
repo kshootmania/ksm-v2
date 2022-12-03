@@ -6,7 +6,7 @@ namespace ksmaudio::AudioEffect::detail
     class UpdateTriggerTimeline
     {
 	private:
-		std::set<float> m_updateTriggerTiming;
+		const std::set<float> m_updateTriggerTiming;
 		std::set<float>::const_iterator m_updateTriggerTimingCursor;
 		float m_secUntilTrigger = -1.0f;
 
@@ -17,29 +17,22 @@ namespace ksmaudio::AudioEffect::detail
 		{
 		}
 
-		void update(float currentSec)
+		void update(float currentTimeSec)
 		{
-			if (m_updateTriggerTiming.empty() || m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
-			{
-				// 負の値はDSP側で無視される
-				m_secUntilTrigger = -1.0f;
-				return;
-			}
-
 			// カーソルを現在時間まで進める
-			if (*m_updateTriggerTimingCursor < currentSec)
+			while (m_updateTriggerTimingCursor != m_updateTriggerTiming.end() && *m_updateTriggerTimingCursor < currentTimeSec)
 			{
-				do
-				{
-					++m_updateTriggerTimingCursor;
-				} while (m_updateTriggerTimingCursor != m_updateTriggerTiming.end() && *m_updateTriggerTimingCursor < currentSec);
+				++m_updateTriggerTimingCursor;
+			}
 
+			if (m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
+			{
 				// 負の値はDSP側で無視される
 				m_secUntilTrigger = -1.0f;
 				return;
 			}
 
-			m_secUntilTrigger = *m_updateTriggerTimingCursor - currentSec;
+			m_secUntilTrigger = *m_updateTriggerTimingCursor - currentTimeSec;
 		}
 
 		float secUntilTrigger() const

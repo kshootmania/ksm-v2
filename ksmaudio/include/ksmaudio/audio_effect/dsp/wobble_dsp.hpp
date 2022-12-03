@@ -16,6 +16,6 @@ namespace ksmaudio::AudioEffect
 	public:
 		explicit WobbleDSP(const DSPCommonInfo& info);
 
-		void process(float* pData, std::size_t dataSize, bool bypass, const WobbleDSPParams& params);
+		void process(float* pData, std::size_t dataSize, bool bypass, const WobbleDSPParams& params, bool isParamUpdated);
 	};
 }
