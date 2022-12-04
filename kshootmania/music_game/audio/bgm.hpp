@@ -9,6 +9,7 @@ namespace MusicGame::Audio
 	private:
 		ksmaudio::StreamWithEffects m_stream;
 		const double m_durationSec;
+		const double m_offsetSec;
 		double m_timeSec = 0.0;
 		bool m_isStreamStarted = false;
 		bool m_isPaused = true;
@@ -24,7 +25,7 @@ namespace MusicGame::Audio
 			const std::set<float>& updateTriggerTiming);
 
 	public:
-		BGM(FilePathView filePath, double volume);
+		BGM(FilePathView filePath, double volume, double offsetSec);
 
 		void update();
 

@@ -47,9 +47,10 @@ namespace MusicGame::Audio
 		}
 	}
 
-	BGM::BGM(FilePathView filePath, double volume)
+	BGM::BGM(FilePathView filePath, double volume, double offsetSec)
 		: m_stream(filePath.toUTF8(), volume, true)
 		, m_durationSec(m_stream.durationSec())
+		, m_offsetSec(offsetSec)
 		, m_pAudioEffectBusFX(m_stream.emplaceAudioEffectBus())
 		, m_pAudioEffectBusLaser(m_stream.emplaceAudioEffectBus())
 		, m_stopwatch(StartImmediately::No)
@@ -71,9 +72,9 @@ namespace MusicGame::Audio
 				m_stream.updateManually();
 				m_manualUpdateStopwatch.restart();
 			}
-			m_timeSec = m_stream.posSec();
+			m_timeSec = m_stream.posSec() - m_offsetSec;
 
-			if (m_timeSec < m_durationSec - kBlendTimeSec)
+			if (m_timeSec + m_offsetSec < m_durationSec - kBlendTimeSec)
 			{
 				// ストップウォッチの時間を同期
 				m_stopwatch.set(SecondsF{ m_timeSec });
@@ -83,9 +84,9 @@ namespace MusicGame::Audio
 		{
 			m_timeSec = m_stopwatch.sF();
 
-			if (m_timeSec >= 0.0)
+			if (m_timeSec + m_offsetSec >= 0.0)
 			{
-				m_stream.seekPosSec(m_timeSec);
+				m_stream.seekPosSec(m_timeSec + m_offsetSec);
 				m_stream.play();
 				m_isStreamStarted = true;
 			}
@@ -145,17 +146,18 @@ namespace MusicGame::Audio
 		// TODO: うまく効いていないようなので見直す
 		if (m_isStreamStarted)
 		{
-			if (0.0 <= m_timeSec && m_timeSec < kBlendTimeSec)
+			const double timeSecWithOffset = m_timeSec + m_offsetSec;
+			if (0.0 <= timeSecWithOffset && timeSecWithOffset < kBlendTimeSec)
 			{
-				const double lerpRate = m_timeSec / kBlendTimeSec;
+				const double lerpRate = timeSecWithOffset / kBlendTimeSec;
 				return Math::Lerp(m_stopwatch.sF(), m_timeSec, lerpRate);
 			}
-			else if (m_durationSec - kBlendTimeSec <= m_timeSec && m_timeSec < m_durationSec)
+			else if (m_durationSec - kBlendTimeSec <= timeSecWithOffset && timeSecWithOffset < m_durationSec)
 			{
-				const double lerpRate = (m_timeSec - (m_durationSec - kBlendTimeSec)) / kBlendTimeSec;
+				const double lerpRate = (timeSecWithOffset - (m_durationSec - kBlendTimeSec)) / kBlendTimeSec;
 				return Math::Lerp(m_timeSec, m_stopwatch.sF(), lerpRate);
 			}
-			else if (m_durationSec <= m_stopwatch.sF())
+			else if (m_durationSec - m_offsetSec <= m_stopwatch.sF())
 			{
 				return m_stopwatch.sF();
 			}
