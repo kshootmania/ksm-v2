@@ -8,6 +8,7 @@
 namespace ksmaudio::AudioEffect
 {
 	// Implementation in HSP: https://github.com/m4saka/kshootmania-v1-hsp/blob/19bfb6acbec8abd304b2e7dae6009df8e8e1f66f/src/scene/play/play_utils.hsp#L405
+	// TODO: ³í‚È•¶Žš—ñ‚©‚Ç‚¤‚©ŒŸØ‚·‚é‚½‚ß‚ÌŠÖ”‚ð•Ê“rÝ‚¯‚é
 	float StrToValue(Type type, const std::string& str)
 	{
 		try
@@ -29,7 +30,7 @@ namespace ksmaudio::AudioEffect
 				}
 				else if (str.starts_with("1/"))
 				{
-					const int d = std::stoi(str.substr(2)); // 2 = strlen("1/")
+					const int d = std::stoi(str.substr(2U)); // 2 = strlen("1/")
 					if (d > 0)
 					{
 						return 1.0f / d;
@@ -117,11 +118,12 @@ namespace ksmaudio::AudioEffect
 	ValueSet StrToValueSet(Type type, const std::string& str, bool* pSuccess)
 	{
 		const std::size_t pos1 = str.find('>');
-		const std::size_t pos2 = str.find('-', pos1 + 2); // 2 = strlen(">" + negative value sign "-")
+		const std::size_t pos2FindStart = ((pos1 == std::string::npos) ? 0U : pos1 + 1U/*'>'*/) + 1U/*negative sign '-'*/;
+		const std::size_t pos2 = str.find('-', pos2FindStart);
 
-		const std::string offStr = str.substr(0, pos1);
-		const std::string onMinStr = (pos1 == std::string::npos) ? offStr : str.substr(pos1 + 1, pos2);
-		const std::string onMaxStr = (pos2 == std::string::npos) ? onMinStr : str.substr(pos2 + 1);
+		const std::string offStr = str.substr(0U, pos1);
+		const std::string onMinStr = (pos1 == std::string::npos) ? offStr : str.substr(pos1 + 1U/*'>'*/, pos2);
+		const std::string onMaxStr = (pos2 == std::string::npos) ? onMinStr : str.substr(pos2 + 1U/*'-'*/);
 
 		ValueSet valueSet = {
 			.off = StrToValue(type, offStr),
@@ -131,7 +133,7 @@ namespace ksmaudio::AudioEffect
 
 		// For length parameters, the min and max values must have the same sign.
 		// Otherwise, a value set of 0 is returned.
-		if (type == Type::kLength && ((valueSet.onMin < 0) != (valueSet.onMax < 0)))
+		if (type == Type::kLength && ((valueSet.onMin < 0.0f) != (valueSet.onMax < 0.0f)))
 		{
 			if (pSuccess != nullptr)
 			{
@@ -147,7 +149,7 @@ namespace ksmaudio::AudioEffect
 
 		// For pitch parameters, the min and max values must have the same sign.
 		// Otherwise, quantization is disabled (i.e., "0.0-12" is replaced by "0.0-12.0").
-		if (type == Type::kPitch && ((valueSet.onMin < 0) != (valueSet.onMax < 0)))
+		if (type == Type::kPitch && ((valueSet.onMin < 0.0f) != (valueSet.onMax < 0.0f)))
 		{
 			return {
 				.off = valueSet.off,
