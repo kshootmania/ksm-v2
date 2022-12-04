@@ -82,6 +82,10 @@ namespace MusicGame::Audio
 				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::PeakingFilter };
 				bgm.emplaceAudioEffectLaser("peaking_filter", def);
 			}
+			{
+				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Bitcrusher };
+				bgm.emplaceAudioEffectLaser("bitcrusher", def);
+			}
 		}
 
 		kson::FXLane<AudioEffectInvocation> CreateLongFXNoteAudioEffectInvocations(BGM& bgm, const kson::ChartData& chartData)
