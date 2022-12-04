@@ -3,6 +3,30 @@
 
 namespace
 {
+	// コンプレッサーのパラメータ値
+	// (設定値が極端なので改善した方が良いが、ひとまずHSP版と同じ値にしている)
+	// HSP版: https://github.com/m4saka/kshootmania-v1-hsp/blob/461901f1e925cb8cb474fd02726084cfca9ec3d4/kshootmania.hsp#L792
+	constexpr BASS_BFX_COMPRESSOR2 kCompressorFXParams
+	{
+		.fGain = 18.0f,
+		.fThreshold = -24.0f,
+		.fRatio = 1000.0f,
+		.fAttack = 0.01f,
+		.fRelease = 0.01f,
+		.lChannel = BASS_BFX_CHANALL,
+	};
+
+	// コンプレッサーの前段の音量変更のパラメータ値
+	constexpr BASS_BFX_VOLUME kVolumeFXParams
+	{
+		.lChannel = BASS_BFX_CHANALL,
+		.fVolume = 0.1f,
+	};
+
+	// 各エフェクトの優先順位
+	constexpr int kCompressorFXPriority = 0;
+	constexpr int kVolumeFXPriority = 10;
+
 	HSTREAM LoadStream(const std::string& filePath)
 	{
 		return BASS_StreamCreateFile(FALSE, filePath.c_str(), 0, 0, BASS_SAMPLE_FLOAT | BASS_STREAM_PRESCAN);
@@ -25,12 +49,22 @@ namespace
 
 namespace ksmaudio
 {
-	Stream::Stream(const std::string& filePath, double volume)
+	Stream::Stream(const std::string& filePath, double volume, bool enableCompressor)
 		: m_hStream(LoadStream(filePath))
 		, m_info(GetChannelInfo(m_hStream))
 	{
 		// 音量を設定
 		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(volume));
+
+		// コンプレッサーを適用
+		if (enableCompressor)
+		{
+			const HFX hCompressorFX = BASS_ChannelSetFX(m_hStream, BASS_FX_BFX_COMPRESSOR2, kCompressorFXPriority);
+			BASS_FXSetParameters(hCompressorFX, &kCompressorFXParams);
+
+			const HFX hVolumeFX = BASS_ChannelSetFX(m_hStream, BASS_FX_BFX_VOLUME, kVolumeFXPriority);
+			BASS_FXSetParameters(hVolumeFX, &kVolumeFXParams);
+		}
 	}
 
 	Stream::~Stream()

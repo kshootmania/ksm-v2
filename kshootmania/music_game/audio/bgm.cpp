@@ -48,7 +48,7 @@ namespace MusicGame::Audio
 	}
 
 	BGM::BGM(FilePathView filePath, double volume)
-		: m_stream(filePath.toUTF8(), volume)
+		: m_stream(filePath.toUTF8(), volume, true)
 		, m_durationSec(m_stream.durationSec())
 		, m_pAudioEffectBusFX(m_stream.emplaceAudioEffectBus())
 		, m_pAudioEffectBusLaser(m_stream.emplaceAudioEffectBus())

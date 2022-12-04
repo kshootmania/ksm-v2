@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "bass.h"
+#include "bass_fx.h"
 #include "ksmaudio/audio_effect/audio_effect.hpp"
 
 namespace ksmaudio
@@ -13,7 +14,7 @@ namespace ksmaudio
 
 	public:
 		// TODO: filePath encoding problem
-		explicit Stream(const std::string& filePath, double volume = 1.0);
+		explicit Stream(const std::string& filePath, double volume = 1.0, bool enableCompressor = false);
 
 		~Stream();
 
