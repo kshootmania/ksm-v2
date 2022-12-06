@@ -44,6 +44,10 @@ namespace MusicGame::Audio
 		case kson::AudioEffectType::PeakingFilter:
 			pAudioEffectBus->emplaceAudioEffect<ksmaudio::PeakingFilter>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
 			break;
+
+		case kson::AudioEffectType::LowPassFilter:
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::LowPassFilter>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			break;
 		}
 	}
 

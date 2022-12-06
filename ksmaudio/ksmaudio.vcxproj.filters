@@ -122,6 +122,12 @@
     <ClInclude Include="include\ksmaudio\audio_effect\params\peaking_filter_params.hpp">
       <Filter>Header Files\audio_effect\params</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\dsp\low_pass_filter_dsp.hpp">
+      <Filter>Header Files\audio_effect\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\params\low_pass_filter_params.hpp">
+      <Filter>Header Files\audio_effect\params</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ksmaudio.cpp">
@@ -164,6 +170,9 @@
       <Filter>Source Files\audio_effect\dsp</Filter>
     </ClCompile>
     <ClCompile Include="src\audio_effect\dsp\peaking_filter_dsp.cpp">
+      <Filter>Source Files\audio_effect\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio_effect\dsp\low_pass_filter_dsp.cpp">
       <Filter>Source Files\audio_effect\dsp</Filter>
     </ClCompile>
   </ItemGroup>
