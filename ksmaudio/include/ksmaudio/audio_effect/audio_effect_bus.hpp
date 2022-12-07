@@ -77,7 +77,7 @@ namespace ksmaudio::AudioEffect
 
 			m_nameIdxDict.emplace(name, m_audioEffects.size() - 1U);
 
-			const HDSP hDSP = m_pStream->addAudioEffect(audioEffect.get(), 0); // TODO: priority
+			const HDSP hDSP = m_pStream->addAudioEffect(audioEffect.get(), 100); // TODO: priority
 			m_hDSPs.push_back(hDSP);
 
 			m_paramControllers.emplace_back(params, paramChanges);
