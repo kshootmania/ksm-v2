@@ -165,6 +165,7 @@
     <ClInclude Include="include\ksmaudio\audio_effect\all.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\biquad_filter.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\linear_buffer.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\linear_easing.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\math_utils.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\ring_buffer.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\detail\dsp_simple_trigger_handler.hpp" />

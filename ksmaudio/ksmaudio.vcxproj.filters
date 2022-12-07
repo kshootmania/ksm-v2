@@ -128,6 +128,9 @@
     <ClInclude Include="include\ksmaudio\audio_effect\params\low_pass_filter_params.hpp">
       <Filter>Header Files\audio_effect\params</Filter>
     </ClInclude>
+    <ClInclude Include="include\ksmaudio\audio_effect\detail\linear_easing.hpp">
+      <Filter>Header Files\audio_effect\detail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ksmaudio.cpp">
