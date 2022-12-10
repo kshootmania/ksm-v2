@@ -70,9 +70,14 @@ namespace ksmaudio::AudioEffect::detail
                 numNonZeroFrames = numLoopFrames;
             }
 
+            if (numLoopFrames == 0U)
+            {
+                return;
+            }
+
             if (m_readCursorFrame >= numLoopFrames)
             {
-                m_readCursorFrame = 0U;
+                m_readCursorFrame = m_readCursorFrame % numLoopFrames;
                 m_currentFadeOutScale *= fadeOutFeedbackLevel;
             }
 
@@ -114,7 +119,7 @@ namespace ksmaudio::AudioEffect::detail
 
                 if (++m_readCursorFrame >= numLoopFrames)
                 {
-                    m_readCursorFrame = 0U;
+                    m_readCursorFrame = m_readCursorFrame % numLoopFrames;
                     m_currentFadeOutScale *= fadeOutFeedbackLevel;
                 }
             }
