@@ -41,10 +41,7 @@ namespace ksmaudio::AudioEffect
             // トリガ更新より前
             const std::size_t formerSize = static_cast<std::size_t>(m_framesUntilTrigger) * m_info.numChannels;
             m_linearBuffer.write(pData, formerSize);
-            if (active)
-            {
-                m_linearBuffer.read(pData, formerSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, params.mix);
-            }
+            m_linearBuffer.read(pData, formerSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, active ? params.mix : 0.0f);
 
             // framesUntilTriggerによるトリガ更新
             // ("update_period"や、"update_trigger"を"param_change"で"on"に変更した場合の更新)
@@ -54,11 +51,8 @@ namespace ksmaudio::AudioEffect
             // トリガ更新より後ろ
             const std::size_t latterSize = dataSize - formerSize;
             m_linearBuffer.write(pData + formerSize, latterSize);
-            if (active)
-            {
-                m_linearBuffer.read(pData + formerSize, latterSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, params.mix);
-            }
-            else
+            m_linearBuffer.read(pData + formerSize, latterSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, active ? params.mix : 0.0f);
+            if (!active)
             {
                 m_linearBuffer.resetFadeOutScale();
             }
@@ -68,11 +62,8 @@ namespace ksmaudio::AudioEffect
             // 今回の処理フレーム中にトリガ更新タイミングが含まれていない場合、一度に処理
 
             m_linearBuffer.write(pData, dataSize);
-            if (active)
-            {
-                m_linearBuffer.read(pData, dataSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, params.mix);
-            }
-            else
+            m_linearBuffer.read(pData, dataSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, active ? params.mix : 0.0f);
+            if (!active)
             {
                 m_linearBuffer.resetFadeOutScale();
             }
