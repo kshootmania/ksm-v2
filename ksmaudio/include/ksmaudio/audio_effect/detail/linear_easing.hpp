@@ -3,22 +3,22 @@
 
 namespace ksmaudio::AudioEffect::detail
 {
-    template <typename T>
-    class LinearEasing
-    {
-    private:
-        const T m_speed;
-        T m_value = T{ 0 };
-        bool m_isFirst = true;
+	template <typename T>
+	class LinearEasing
+	{
+	private:
+		const T m_speed;
+		T m_value = T{ 0 };
+		bool m_isFirst = true;
 
-    public:
-        explicit LinearEasing(T speed)
-            : m_speed(speed)
-        {
-        }
+	public:
+		explicit LinearEasing(T speed)
+			: m_speed(speed)
+		{
+		}
 
-        bool update(T targetValue, T deltaTime = 1.0f)
-        {
+		bool update(T targetValue, T deltaTime = 1.0f)
+		{
 			if (m_isFirst)
 			{
 				m_value = targetValue;
@@ -39,11 +39,11 @@ namespace ksmaudio::AudioEffect::detail
 			}
 
 			return false;
-        }
+		}
 
 		T value() const
 		{
 			return m_value;
 		}
-    };
+	};
 }

@@ -52,10 +52,10 @@ namespace ksmaudio::AudioEffect::detail
             m_b2 = (T{ 1 } - cosOmega) / 2;
         }
 
-        void setLowShelfFilter(T freq, T q, T gain, T sampleRate)
+        void setLowShelfFilter(T freq, T q, T gainDb, T sampleRate)
         {
             const T omega = std::numbers::pi_v<T> * 2 * freq / sampleRate;
-            const T A = std::pow(T{ 10 }, gain / 40);
+            const T A = std::pow(T{ 10 }, gainDb / 40);
             const T beta = std::sqrt(A) / q;
 
             const T sinOmega = std::sin(omega);
@@ -82,10 +82,10 @@ namespace ksmaudio::AudioEffect::detail
             m_b2 = (T{ 1 } - cosOmega) / 2;
         }
 
-        void setHighShelfFilter(T freq, T q, T gain, T sampleRate)
+        void setHighShelfFilter(T freq, T q, T gainDb, T sampleRate)
         {
             const T omega = std::numbers::pi_v<T> * 2 * freq / sampleRate;
-            const T A = std::pow(T{ 10 }, gain / 40);
+            const T A = std::pow(T{ 10 }, gainDb / 40);
             const T beta = std::sqrt(A) / q;
 
             const T sinOmega = std::sin(omega);
@@ -98,11 +98,11 @@ namespace ksmaudio::AudioEffect::detail
             m_b2 = A * ((A + T{ 1 }) + (A - T{ 1 }) * cosOmega - beta * sinOmega);
         }
 
-        void setPeakingFilter(T freq, T bandwidth, T gain, T sampleRate)
+        void setPeakingFilter(T freq, T bandwidth, T gainDb, T sampleRate)
         {
             const T omega = std::numbers::pi_v<T> * 2 * freq / sampleRate;
             const T alpha = std::sin(omega) * std::sinh(std::log(T{ 2 }) / 2 * bandwidth * omega / std::sin(omega));
-            const T A = std::pow(T{ 10 }, gain / 40);
+            const T A = std::pow(T{ 10 }, gainDb / 40);
 
             const T cosOmega = std::cos(omega);
             m_a0 = T{ 1 } + alpha / A;
