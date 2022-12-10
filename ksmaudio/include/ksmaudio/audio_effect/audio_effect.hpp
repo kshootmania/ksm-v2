@@ -19,6 +19,8 @@ namespace ksmaudio::AudioEffect
 
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSetStr) = 0;
 
+		virtual std::unordered_map<ParamID, ValueSet> paramValueSetDict() const = 0;
+
 		virtual void setBypass(bool bypass) = 0;
 	};
 
@@ -80,6 +82,16 @@ namespace ksmaudio::AudioEffect
 			}
 		}
 
+		virtual std::unordered_map<ParamID, ValueSet> paramValueSetDict() const override
+		{
+			std::unordered_map<ParamID, ValueSet> dict;
+			for (const auto& [paramID, pParam] : m_params.dict)
+			{
+				dict.emplace(paramID, pParam->valueSet);
+			}
+			return dict;
+		}
+
 		virtual void setBypass(bool bypass) override
 		{
 			m_bypass = bypass;
@@ -138,6 +150,16 @@ namespace ksmaudio::AudioEffect
 			{
 				m_params.dict.at(paramID)->valueSet = valueSet;
 			}
+		}
+
+		virtual std::unordered_map<ParamID, ValueSet> paramValueSetDict() const override
+		{
+			std::unordered_map<ParamID, ValueSet> dict;
+			for (const auto& [paramID, pParam] : m_params.dict)
+			{
+				dict.emplace(paramID, pParam->valueSet);
+			}
+			return dict;
 		}
 
 		virtual void setBypass(bool bypass) override

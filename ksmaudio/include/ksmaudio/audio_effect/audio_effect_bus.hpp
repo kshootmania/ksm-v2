@@ -80,7 +80,7 @@ namespace ksmaudio::AudioEffect
 			const HDSP hDSP = m_pStream->addAudioEffect(audioEffect.get(), 100); // TODO: priority
 			m_hDSPs.push_back(hDSP);
 
-			m_paramControllers.emplace_back(params, paramChanges);
+			m_paramControllers.emplace_back(audioEffect->paramValueSetDict(), paramChanges);
 		}
 
 		template <typename T>
