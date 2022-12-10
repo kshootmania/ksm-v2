@@ -83,6 +83,10 @@ namespace MusicGame::Audio
 				bgm.emplaceAudioEffectLaser("peaking_filter", def);
 			}
 			{
+				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::HighPassFilter };
+				bgm.emplaceAudioEffectLaser("high_pass_filter", def);
+			}
+			{
 				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::LowPassFilter };
 				bgm.emplaceAudioEffectLaser("low_pass_filter", def);
 			}

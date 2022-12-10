@@ -77,9 +77,9 @@ namespace ksmaudio::AudioEffect::detail
             m_a0 = T{ 1 } + alpha;
             m_a1 = -T{ 2 } * cosOmega;
             m_a2 = T{ 1 } - alpha;
-            m_b0 = (T{ 1 } - cosOmega) / 2;
+            m_b0 = (T{ 1 } + cosOmega) / 2;
             m_b1 = -T{ 1 } - cosOmega;
-            m_b2 = (T{ 1 } - cosOmega) / 2;
+            m_b2 = (T{ 1 } + cosOmega) / 2;
         }
 
         void setHighShelfFilter(T freq, T q, T gainDb, T sampleRate)

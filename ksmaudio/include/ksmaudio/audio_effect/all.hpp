@@ -22,6 +22,9 @@
 #include "dsp/peaking_filter_dsp.hpp"
 #include "params/peaking_filter_params.hpp"
 
+#include "dsp/high_pass_filter_dsp.hpp"
+#include "params/high_pass_filter_params.hpp"
+
 #include "dsp/low_pass_filter_dsp.hpp"
 #include "params/low_pass_filter_params.hpp"
 
@@ -42,6 +45,8 @@ namespace ksmaudio
 	using Echo = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::EchoParams, AudioEffect::RetriggerEchoDSP, AudioEffect::RetriggerEchoDSPParams>;
 
 	using PeakingFilter = AudioEffect::BasicAudioEffect<AudioEffect::PeakingFilterParams, AudioEffect::PeakingFilterDSP, AudioEffect::PeakingFilterDSPParams>;
+
+	using HighPassFilter = AudioEffect::BasicAudioEffect<AudioEffect::HighPassFilterParams, AudioEffect::HighPassFilterDSP, AudioEffect::HighPassFilterDSPParams>;
 
 	using LowPassFilter = AudioEffect::BasicAudioEffect<AudioEffect::LowPassFilterParams, AudioEffect::LowPassFilterDSP, AudioEffect::LowPassFilterDSPParams>;
 }

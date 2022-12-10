@@ -63,16 +63,15 @@ namespace ksmaudio::AudioEffect
 		assert(dataSize % m_info.numChannels == 0U);
 		const std::size_t frameSize = dataSize / m_info.numChannels;
 		float freq = GetPeakingFilterFreqValue(m_vEasing.value());
-		bool mixSkipped = isBypassed || freq < kFreqThresholdMin; // ノイズ回避のため、低周波数に対しては適用しない
+		bool mixSkipped = isBypassed || freq < kFreqThresholdMin; // 低周波数に対しては適用しない
 		for (std::size_t i = 0U; i < frameSize; ++i)
 		{
 			// 値が飛ぶことでノイズが入らないようvの値に対して線形のイージングを入れる
-			// TODO: 別クラスに切り出す
 			const bool vUpdated = m_vEasing.update(params.v);
 			if (vUpdated)
 			{
 				freq = GetPeakingFilterFreqValue(m_vEasing.value());
-				mixSkipped = isBypassed || freq < kFreqThresholdMin;
+				mixSkipped = isBypassed || freq < kFreqThresholdMin; // 低周波数に対しては適用しない
 			}
 
 			// 各チャンネルにフィルタを適用
