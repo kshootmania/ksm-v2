@@ -78,10 +78,11 @@ namespace ksmaudio::AudioEffect
 			for (std::size_t i = 0U; i < frameSize; ++i)
 			{
 				const float playSpeed = m_speedController.nextSpeed(params, m_info.sampleRateScale);
+				const float fadeOutScale = FadeOutScale(playSpeed);
 				m_timeModulator.update(playSpeed);
 				for (std::size_t ch = 0; ch < m_info.numChannels; ++ch)
 				{
-					const float wet = m_timeModulator.readWrite(*pData, ch);
+					const float wet = m_timeModulator.readWrite(*pData, ch) * fadeOutScale;
 					*pData = std::lerp(*pData, wet, params.mix);
 					++pData;
 				}
