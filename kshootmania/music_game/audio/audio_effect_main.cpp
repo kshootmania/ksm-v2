@@ -127,7 +127,7 @@ namespace MusicGame::Audio
 		{
 			const auto& pulseEvent = chartData.audio.audioEffect.laser.pulseEvent;
 			const auto& audioEffectBus = bgm.audioEffectBusLaser();
-			kson::ByPulse< Optional<AudioEffectInvocation>> convertedPulseEvent;
+			kson::ByPulse<Optional<AudioEffectInvocation>> convertedPulseEvent;
 			for (const auto& [audioEffectName, pulses] : pulseEvent)
 			{
 				for (const auto& y : pulses)
