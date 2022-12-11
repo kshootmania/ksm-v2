@@ -103,7 +103,7 @@ namespace ksmaudio::AudioEffect::detail
                 m_currentFadeOutScale *= fadeOutFeedbackLevel;
             }
 
-            const bool canDeclick = numNonZeroFrames > kLinearBufferDeclickFrames;
+            const bool canDeclick = numNonZeroFrames > kLinearBufferDeclickFrames && numNonZeroFrames != numLoopFrames;
             for (std::size_t frameIdx = 0U; frameIdx < frameSize; ++frameIdx)
             {
                 for (std::size_t ch = 0U; ch < m_numChannels; ++ch)
