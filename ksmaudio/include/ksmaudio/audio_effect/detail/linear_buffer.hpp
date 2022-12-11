@@ -46,6 +46,11 @@ namespace ksmaudio::AudioEffect::detail
         {
             assert(size % m_numChannels == 0U);
 
+            if (m_numFrames == 0U)
+            {
+                return;
+            }
+
             const std::size_t frameSize = size / m_numChannels;
             const std::size_t numWriteFrames = (std::min)(frameSize, m_numFrames - m_writeCursorFrame);
             if (numWriteFrames == 0U)
@@ -60,7 +65,7 @@ namespace ksmaudio::AudioEffect::detail
         {
             assert(size % m_numChannels == 0U);
 
-            if (numLoopFrames > m_numFrames) [[unlikely]]
+            if (m_numFrames == 0U || numLoopFrames == 0U || numLoopFrames > m_numFrames)
             {
                 return;
             }
@@ -68,11 +73,6 @@ namespace ksmaudio::AudioEffect::detail
             if (numNonZeroFrames > numLoopFrames) [[unlikely]]
             {
                 numNonZeroFrames = numLoopFrames;
-            }
-
-            if (numLoopFrames == 0U)
-            {
-                return;
             }
 
             if (m_readCursorFrame >= numLoopFrames)
@@ -142,6 +142,11 @@ namespace ksmaudio::AudioEffect::detail
         void read(T* pData, std::size_t size)
         {
             assert(size % m_numChannels == 0U);
+
+            if (m_numFrames == 0U)
+            {
+                return;
+            }
 
             const std::size_t frameSize = size / m_numChannels;
             if (m_writeCursorFrame <= m_readCursorFrame)
