@@ -1,5 +1,4 @@
 #include "ksmaudio/stream_with_effects.hpp"
-#include <stdexcept>
 
 namespace ksmaudio
 {

@@ -199,6 +199,7 @@
   <ItemGroup>
     <ClCompile Include="src\audio_effect\audio_effect_bus.cpp" />
     <ClCompile Include="src\audio_effect\audio_effect_param.cpp" />
+    <ClCompile Include="src\audio_effect\detail\wave_length_utils.cpp" />
     <ClCompile Include="src\audio_effect\dsp\bitcrusher_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\flanger_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\gate_dsp.cpp" />

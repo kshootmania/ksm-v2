@@ -4,7 +4,6 @@
 
 namespace ksmaudio
 {
-
 	class Sample
 	{
 	private:
@@ -18,5 +17,4 @@ namespace ksmaudio
 
 		void play(double volume = 1.0) const;
 	};
-
 }

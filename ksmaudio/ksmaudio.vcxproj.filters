@@ -27,6 +27,9 @@
     <Filter Include="Header Files\audio_effect\params">
       <UniqueIdentifier>{e705ee3f-0c63-4fe9-8c3d-b0a271560e85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\audio_effect\detail">
+      <UniqueIdentifier>{50d0f99c-eed0-42fb-a3ac-494f250c208f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ksmaudio\ksmaudio.hpp">
@@ -186,6 +189,9 @@
     </ClCompile>
     <ClCompile Include="src\audio_effect\dsp\high_pass_filter_dsp.cpp">
       <Filter>Source Files\audio_effect\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio_effect\detail\wave_length_utils.cpp">
+      <Filter>Source Files\audio_effect\detail</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,7 +3,6 @@
 
 namespace ksmaudio::AudioEffect::detail
 {
-
     template <typename T>
     constexpr T DecimalPart(T a)
     {
@@ -22,5 +21,4 @@ namespace ksmaudio::AudioEffect::detail
 			return T{ 2 } - timeRate * 2;
 		}
 	}
-
 }
