@@ -211,7 +211,7 @@ namespace MusicGame::Audio
 			// 1本のロングFXノーツの途中で他の種類の音声エフェクトに変更される場合がある。
 			// そのため、イベントが現在のロングノーツに属するかを調べるには、ロングノーツの開始点との一致判定ではなく、ロングノーツの範囲(開始～終了)の中にあるかを調べる必要がある。
 			const auto& [longEventY, audioEffectInvocation] = *itr;
-			if (longEventY < longNoteY || longNoteY + longNote.length <= longEventY)
+			if (longEventY > currentPulseForAudio || longEventY < longNoteY || longNoteY + longNote.length <= longEventY)
 			{
 				continue;
 			}

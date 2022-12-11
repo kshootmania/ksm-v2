@@ -1,5 +1,4 @@
 #include "ksmaudio/audio_effect/dsp/retrigger_echo_dsp.hpp"
-#include <iostream>
 
 namespace ksmaudio::AudioEffect
 {
@@ -30,7 +29,6 @@ namespace ksmaudio::AudioEffect
                 m_linearBuffer.resetReadWriteCursors();
             }
         }
-        //std::cout << (long long)this << ": " << (isParamUpdated ? "o" : "x") << params.secUntilTrigger << ", " << m_framesUntilTrigger << '\n';
 
         const std::size_t frameSize = dataSize / m_info.numChannels;
         const std::size_t numLoopFrames = static_cast<std::size_t>(params.waveLength * static_cast<float>(m_info.sampleRate));
