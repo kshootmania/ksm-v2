@@ -48,6 +48,7 @@ namespace ksmaudio::AudioEffect::detail
 
             if (m_numFrames == 0U)
             {
+                // åˆæœŸåŒ–ã«å¤±æ•—ã—ãŸå ´åˆã¯ä½•ã‚‚ã—ãªã„
                 return;
             }
 
@@ -69,22 +70,22 @@ namespace ksmaudio::AudioEffect::detail
 
             if (m_numFrames == 0U)
             {
-                // ‰Šú‰»‚É¸”s‚µ‚½ê‡‚Í‰½‚à‚µ‚È‚¢
+                // åˆæœŸåŒ–ã«å¤±æ•—ã—ãŸå ´åˆã¯ä½•ã‚‚ã—ãªã„
                 return;
             }
 
             if (numLoopFrames == 0U || numLoopFrames > m_numFrames)
             {
-                // numLoopFrames‚ªˆ—‚Å‚«‚È‚¢’l‚Å—ˆ‚éê‡‚ª‚ ‚é(Retrigger‚Ìwave_length‚ª–¢İ’è‚Ì‚È‚Ç)‚ªA‚»‚Ìê‡‚àÄ¶ƒ^ƒCƒ~ƒ“ƒO‚ª‚¸‚ê‚È‚¢‚æ‚¤“Ç‚İo‚µƒJ[ƒ\ƒ‹‚¾‚¯‚Íi‚ß‚é•K—v‚ª‚ ‚é
-                m_readCursorFrame += (std::min)(m_readCursorFrame + frameSize, m_numFrames); // ¦m_readCursorFrame‚ÌÅ‘å’l‚Ím_numFrames‚Å–â‘è‚È‚¢
+                // numLoopFramesãŒå‡¦ç†ã§ããªã„å€¤ã§æ¥ã‚‹å ´åˆãŒã‚ã‚‹(Retriggerã®wave_lengthãŒæœªè¨­å®šã®æ™‚ãªã©)ãŒã€ãã®å ´åˆã‚‚å†ç”Ÿã‚¿ã‚¤ãƒŸãƒ³ã‚°ãŒãšã‚Œãªã„ã‚ˆã†èª­ã¿å‡ºã—ã‚«ãƒ¼ã‚½ãƒ«ã ã‘ã¯é€²ã‚ã‚‹å¿…è¦ãŒã‚ã‚‹
+                m_readCursorFrame += frameSize; // â€»m_readCursorFrameã¯ä½¿ç”¨æ™‚ã«å‰°ä½™ã‚’ä½¿ã†ã®ã§ä¸Šé™ãªã—ã§å•é¡Œãªã„
                 return;
             }
 
             if (bypass || mix == 0.0f)
             {
-                // bypass‚Å‚àÄ¶ƒ^ƒCƒ~ƒ“ƒO‚ª‚¸‚ê‚È‚¢‚æ‚¤“Ç‚İo‚µƒJ[ƒ\ƒ‹‚¾‚¯‚Íi‚ß‚é•K—v‚ª‚ ‚é
-                const std::size_t loopTimingCount = (m_readCursorFrame + frameSize) / numLoopFrames; // ’Ê‚è‰z‚µ‚½ƒ‹[ƒvƒ^ƒCƒ~ƒ“ƒO‚ÌŒÂ”(’Êí‚Í0‚©1‚¾‚ªAframeSize‚ª”ñí‚É‘å‚«‚¢ê‡‚àl—¶‚µ‚ÄŒÂ”‚É‚µ‚Ä‚ ‚é)
-                m_readCursorFrame = (m_readCursorFrame + frameSize) % numLoopFrames;
+                // bypassæ™‚ã§ã‚‚å†ç”Ÿã‚¿ã‚¤ãƒŸãƒ³ã‚°ãŒãšã‚Œãªã„ã‚ˆã†èª­ã¿å‡ºã—ã‚«ãƒ¼ã‚½ãƒ«ã ã‘ã¯é€²ã‚ã‚‹å¿…è¦ãŒã‚ã‚‹
+                const std::size_t loopTimingCount = (m_readCursorFrame + frameSize) / numLoopFrames - m_readCursorFrame / numLoopFrames; // é€šã‚Šè¶Šã—ãŸãƒ«ãƒ¼ãƒ—ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã®å€‹æ•°(é€šå¸¸ã¯0ã‹1ã ãŒã€frameSizeãŒnumLoopFramesã‚ˆã‚Šå¤§ãã„å ´åˆã‚‚è€ƒæ…®ã—ã¦å€‹æ•°ã«ã—ã¦ã‚ã‚‹)
+                m_readCursorFrame += frameSize; // â€»m_readCursorFrameã¯ä½¿ç”¨æ™‚ã«å‰°ä½™ã‚’ä½¿ã†ã®ã§ä¸Šé™ãªã—ã§å•é¡Œãªã„
                 for (std::size_t i = 0U; i < loopTimingCount; ++i)
                 {
                     m_currentFadeOutScale *= fadeOutFeedbackLevel;
@@ -97,33 +98,29 @@ namespace ksmaudio::AudioEffect::detail
                 numNonZeroFrames = numLoopFrames;
             }
 
-            if (m_readCursorFrame >= numLoopFrames)
-            {
-                m_readCursorFrame = m_readCursorFrame % numLoopFrames;
-                m_currentFadeOutScale *= fadeOutFeedbackLevel;
-            }
-
             const bool canDeclick = numNonZeroFrames > kLinearBufferDeclickFrames && numNonZeroFrames != numLoopFrames;
             for (std::size_t frameIdx = 0U; frameIdx < frameSize; ++frameIdx)
             {
+                const std::size_t readCursorFrameWithLoop = m_readCursorFrame % numLoopFrames;
+
                 for (std::size_t ch = 0U; ch < m_numChannels; ++ch)
                 {
                     float wet;
-                    if (canDeclick && m_readCursorFrame < kLinearBufferDeclickFrames)
+                    if (canDeclick && readCursorFrameWithLoop < kLinearBufferDeclickFrames)
                     {
                         // Declick (start)
-                        const float rate = static_cast<float>(m_readCursorFrame + 1U) / (kLinearBufferDeclickFrames + 1U);
-                        wet = m_buffer[m_readCursorFrame * m_numChannels + ch] * rate;
+                        const float rate = static_cast<float>(readCursorFrameWithLoop + 1U) / (kLinearBufferDeclickFrames + 1U);
+                        wet = m_buffer[readCursorFrameWithLoop * m_numChannels + ch] * rate;
                     }
-                    else if (m_readCursorFrame < numNonZeroFrames)
+                    else if (readCursorFrameWithLoop < numNonZeroFrames)
                     {
-                        wet = m_buffer[m_readCursorFrame * m_numChannels + ch];
+                        wet = m_buffer[readCursorFrameWithLoop * m_numChannels + ch];
                     }
-                    else if (canDeclick && m_readCursorFrame < numNonZeroFrames + kLinearBufferDeclickFrames)
+                    else if (canDeclick && readCursorFrameWithLoop < numNonZeroFrames + kLinearBufferDeclickFrames)
                     {
                         // Declick (end)
-                        const float rate = static_cast<float>(kLinearBufferDeclickFrames - (m_readCursorFrame - numNonZeroFrames)) / (kLinearBufferDeclickFrames + 1U);
-                        wet = m_buffer[m_readCursorFrame * m_numChannels + ch] * rate;
+                        const float rate = static_cast<float>(kLinearBufferDeclickFrames - (readCursorFrameWithLoop - numNonZeroFrames)) / (kLinearBufferDeclickFrames + 1U);
+                        wet = m_buffer[readCursorFrameWithLoop * m_numChannels + ch] * rate;
                     }
                     else
                     {
@@ -132,17 +129,17 @@ namespace ksmaudio::AudioEffect::detail
 
                     if (fadesOut)
                     {
-                        const float fadeOutScale = static_cast<float>(numLoopFrames - m_readCursorFrame) / numLoopFrames * m_currentFadeOutScale;
+                        const float fadeOutScale = static_cast<float>(numLoopFrames - readCursorFrameWithLoop) / numLoopFrames * m_currentFadeOutScale;
                         wet *= fadeOutScale;
                     }
 
                     *pData = std::lerp(*pData, wet, mix);
                     ++pData;
                 }
+                ++m_readCursorFrame;
 
-                if (++m_readCursorFrame >= numLoopFrames)
+                if (m_readCursorFrame % numLoopFrames == 0U)
                 {
-                    m_readCursorFrame = m_readCursorFrame % numLoopFrames;
                     m_currentFadeOutScale *= fadeOutFeedbackLevel;
                 }
             }
@@ -159,6 +156,7 @@ namespace ksmaudio::AudioEffect::detail
 
             if (m_numFrames == 0U)
             {
+                // åˆæœŸåŒ–ã«å¤±æ•—ã—ãŸå ´åˆã¯ä½•ã‚‚ã—ãªã„
                 return;
             }
 
