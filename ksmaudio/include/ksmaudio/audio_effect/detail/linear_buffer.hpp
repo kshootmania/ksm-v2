@@ -65,8 +65,30 @@ namespace ksmaudio::AudioEffect::detail
         {
             assert(size % m_numChannels == 0U);
 
-            if (m_numFrames == 0U || numLoopFrames == 0U || numLoopFrames > m_numFrames)
+            const std::size_t frameSize = size / m_numChannels;
+
+            if (m_numFrames == 0U)
             {
+                // 初期化に失敗した場合は何もしない
+                return;
+            }
+
+            if (numLoopFrames == 0U || numLoopFrames > m_numFrames)
+            {
+                // numLoopFramesが処理できない値で来る場合がある(Retriggerのwave_lengthが未設定の時など)が、その場合も再生タイミングがずれないよう読み出しカーソルだけは進める必要がある
+                m_readCursorFrame += (std::min)(m_readCursorFrame + frameSize, m_numFrames); // ※m_readCursorFrameの最大値はm_numFramesで問題ない
+                return;
+            }
+
+            if (bypass || mix == 0.0f)
+            {
+                // bypass時でも再生タイミングがずれないよう読み出しカーソルだけは進める必要がある
+                const std::size_t loopTimingCount = (m_readCursorFrame + frameSize) / numLoopFrames; // 通り越したループタイミングの個数(通常は0か1だが、frameSizeが非常に大きい場合も考慮して個数にしてある)
+                m_readCursorFrame = (m_readCursorFrame + frameSize) % numLoopFrames;
+                for (std::size_t i = 0U; i < loopTimingCount; ++i)
+                {
+                    m_currentFadeOutScale *= fadeOutFeedbackLevel;
+                }
                 return;
             }
 
@@ -81,50 +103,41 @@ namespace ksmaudio::AudioEffect::detail
                 m_currentFadeOutScale *= fadeOutFeedbackLevel;
             }
 
-            const bool isBypassed = bypass || mix == 0.0f;
-            const std::size_t frameSize = size / m_numChannels;
             const bool canDeclick = numNonZeroFrames > kLinearBufferDeclickFrames;
             for (std::size_t frameIdx = 0U; frameIdx < frameSize; ++frameIdx)
             {
-                if (isBypassed)
+                for (std::size_t ch = 0U; ch < m_numChannels; ++ch)
                 {
-                    pData += m_numChannels;
-                }
-                else
-                {
-                    for (std::size_t ch = 0U; ch < m_numChannels; ++ch)
+                    float wet;
+                    if (canDeclick && m_readCursorFrame < kLinearBufferDeclickFrames)
                     {
-                        float wet;
-                        if (canDeclick && m_readCursorFrame < kLinearBufferDeclickFrames)
-                        {
-                            // Declick (start)
-                            const float rate = static_cast<float>(m_readCursorFrame + 1U) / (kLinearBufferDeclickFrames + 1U);
-                            wet = m_buffer[m_readCursorFrame * m_numChannels + ch] * rate;
-                        }
-                        else if (m_readCursorFrame < numNonZeroFrames)
-                        {
-                            wet = m_buffer[m_readCursorFrame * m_numChannels + ch];
-                        }
-                        else if (canDeclick && m_readCursorFrame < numNonZeroFrames + kLinearBufferDeclickFrames)
-                        {
-                            // Declick (end)
-                            const float rate = static_cast<float>(kLinearBufferDeclickFrames - (m_readCursorFrame - numNonZeroFrames)) / (kLinearBufferDeclickFrames + 1U);
-                            wet = m_buffer[m_readCursorFrame * m_numChannels + ch] * rate;
-                        }
-                        else
-                        {
-                            wet = T{ 0 };
-                        }
-
-                        if (fadesOut)
-                        {
-                            const float fadeOutScale = static_cast<float>(numLoopFrames - m_readCursorFrame) / numLoopFrames * m_currentFadeOutScale;
-                            wet *= fadeOutScale;
-                        }
-
-                        *pData = std::lerp(*pData, wet, mix);
-                        ++pData;
+                        // Declick (start)
+                        const float rate = static_cast<float>(m_readCursorFrame + 1U) / (kLinearBufferDeclickFrames + 1U);
+                        wet = m_buffer[m_readCursorFrame * m_numChannels + ch] * rate;
                     }
+                    else if (m_readCursorFrame < numNonZeroFrames)
+                    {
+                        wet = m_buffer[m_readCursorFrame * m_numChannels + ch];
+                    }
+                    else if (canDeclick && m_readCursorFrame < numNonZeroFrames + kLinearBufferDeclickFrames)
+                    {
+                        // Declick (end)
+                        const float rate = static_cast<float>(kLinearBufferDeclickFrames - (m_readCursorFrame - numNonZeroFrames)) / (kLinearBufferDeclickFrames + 1U);
+                        wet = m_buffer[m_readCursorFrame * m_numChannels + ch] * rate;
+                    }
+                    else
+                    {
+                        wet = T{ 0 };
+                    }
+
+                    if (fadesOut)
+                    {
+                        const float fadeOutScale = static_cast<float>(numLoopFrames - m_readCursorFrame) / numLoopFrames * m_currentFadeOutScale;
+                        wet *= fadeOutScale;
+                    }
+
+                    *pData = std::lerp(*pData, wet, mix);
+                    ++pData;
                 }
 
                 if (++m_readCursorFrame >= numLoopFrames)
