@@ -30,7 +30,6 @@ namespace ksmaudio::AudioEffect
             }
         }
 
-        const bool active = !bypass && params.mix > 0.0f;
         const std::size_t frameSize = dataSize / m_info.numChannels;
         const std::size_t numLoopFrames = static_cast<std::size_t>(params.waveLength * static_cast<float>(m_info.sampleRate));
         const std::size_t numNonZeroFrames = static_cast<std::size_t>(static_cast<float>(numLoopFrames) * params.rate);
@@ -41,7 +40,7 @@ namespace ksmaudio::AudioEffect
             // トリガ更新より前
             const std::size_t formerSize = static_cast<std::size_t>(m_framesUntilTrigger) * m_info.numChannels;
             m_linearBuffer.write(pData, formerSize);
-            m_linearBuffer.read(pData, formerSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, active ? params.mix : 0.0f);
+            m_linearBuffer.read(pData, formerSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, params.mix, bypass);
 
             // framesUntilTriggerによるトリガ更新
             // ("update_period"や、"update_trigger"を"param_change"で"on"に変更した場合の更新)
@@ -51,22 +50,14 @@ namespace ksmaudio::AudioEffect
             // トリガ更新より後ろ
             const std::size_t latterSize = dataSize - formerSize;
             m_linearBuffer.write(pData + formerSize, latterSize);
-            m_linearBuffer.read(pData + formerSize, latterSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, active ? params.mix : 0.0f);
-            if (!active)
-            {
-                m_linearBuffer.resetFadeOutScale();
-            }
+            m_linearBuffer.read(pData + formerSize, latterSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, params.mix, bypass);
         }
         else
         {
             // 今回の処理フレーム中にトリガ更新タイミングが含まれていない場合、一度に処理
 
             m_linearBuffer.write(pData, dataSize);
-            m_linearBuffer.read(pData, dataSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, active ? params.mix : 0.0f);
-            if (!active)
-            {
-                m_linearBuffer.resetFadeOutScale();
-            }
+            m_linearBuffer.read(pData, dataSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, params.mix, bypass);
 
             // 次回トリガ更新タイミングまでの残り時間を減らす
             if (std::cmp_greater_equal(m_framesUntilTrigger, frameSize)) // m_framesUntilTrigger >= frameSize
