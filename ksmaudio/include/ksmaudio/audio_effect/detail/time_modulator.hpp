@@ -28,7 +28,7 @@ namespace ksmaudio::AudioEffect::detail
         }
 
         // 1チャンネルについて値を読み込み/書き込み
-        // (updateを呼んだ後で使用すること)
+        // (updateまたはresetDelayTimeを呼んだ後で使用すること)
         float readWrite(float value, std::size_t channel)
         {
             // バッファにサンプルを記録
@@ -59,9 +59,10 @@ namespace ksmaudio::AudioEffect::detail
         }
 
         // 全チャンネルについてまとめて値を書き込み
-        // (updateを呼んだ後で使用すること)
+        // (updateまたはresetDelayTimeを呼んだ後で使用すること)
         void writeAndAdvanceCursor(const float* pData, std::size_t size)
         {
+            assert(size % m_ringBuffer.numChannels() == 0U);
             m_ringBuffer.write(pData, size);
             m_ringBuffer.advanceCursor(size / m_ringBuffer.numChannels());
         }

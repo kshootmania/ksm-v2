@@ -37,7 +37,7 @@ namespace ksmaudio::AudioEffect
 			{
 				const float lfoValue = (channel == 0U) ? detail::Triangle(m_lfoTimeRate) : detail::Triangle(detail::DecimalPart(m_lfoTimeRate + params.stereoWidth / 2));
 				const float delayFrames = (params.delay + lfoValue * params.depth) * m_info.sampleRateScale;
-				const float wet = (*pData + m_ringBuffer.lerpedDelay(delayFrames, channel)) * params.vol;
+				const float wet = (*pData + m_ringBuffer.lerpedDelay((std::max)(delayFrames - 1.0f, 0.0f), channel)) * params.vol; // write‚æ‚èæ‚Éread‚·‚é‚Ì‚Å1ƒtƒŒ[ƒ€ˆø‚¢‚Ä‚¢‚é
 				m_ringBuffer.write(m_lowShelfFilters[channel].process(std::lerp(*pData, wet, params.feedback) * std::lerp(1.0f, params.vol, params.mix)), channel);
 				*pData = std::lerp(*pData, wet, params.mix);
 				++pData;

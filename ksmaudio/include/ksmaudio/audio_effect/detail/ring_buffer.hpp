@@ -42,12 +42,12 @@ namespace ksmaudio::AudioEffect::detail
 
         std::size_t delayCursor(std::size_t delayFrames) const
         {
-            return (m_cursorFrame - (delayFrames + 1) % m_numFrames + m_numFrames) % m_numFrames;
+            return (m_cursorFrame + m_numFrames - delayFrames % m_numFrames) % m_numFrames;
         }
 
         void writeImpl(const T* pData, std::size_t size, std::size_t cursorFrame)
         {
-            assert(size % m_numChannels == 0);
+            assert(size % m_numChannels == 0U);
 
             const std::size_t frameSize = size / m_numChannels;
             if (cursorFrame + frameSize < m_numFrames)
@@ -72,8 +72,8 @@ namespace ksmaudio::AudioEffect::detail
             , m_numFrames(size / numChannels)
             , m_numChannels(numChannels)
         {
-            assert(m_numChannels > 0);
-            assert(size % m_numChannels == 0);
+            assert(m_numChannels > 0U);
+            assert(size % m_numChannels == 0U);
             m_buffer.shrink_to_fit();
         }
 
@@ -121,7 +121,7 @@ namespace ksmaudio::AudioEffect::detail
             const std::size_t delayFrames = static_cast<std::size_t>(floatDelayFrames);
             return std::lerp(
                 m_buffer[delayCursor(delayFrames) * m_numChannels + channel],
-                m_buffer[delayCursor(delayFrames + 1) * m_numChannels + channel],
+                m_buffer[delayCursor(delayFrames + 1U) * m_numChannels + channel],
                 DecimalPart(floatDelayFrames));
         }
 
@@ -130,11 +130,11 @@ namespace ksmaudio::AudioEffect::detail
         {
             const std::size_t delayFrames = static_cast<std::size_t>(floatDelayFrames);
             const std::size_t firstIdx = delayCursor(delayFrames) * m_numChannels;
-            const std::size_t secondIdx = delayCursor(delayFrames + 1) * m_numChannels;
+            const std::size_t secondIdx = delayCursor(delayFrames + 1U) * m_numChannels;
             const U lerpRate = DecimalPart(floatDelayFrames);
-            for (std::size_t channel = 0; channel < m_numChannels; ++channel)
+            for (std::size_t ch = 0U; ch < m_numChannels; ++ch)
             {
-                pDest[channel] = std::lerp(m_buffer[firstIdx + channel], m_buffer[secondIdx + channel], lerpRate);
+                pDest[ch] = std::lerp(m_buffer[firstIdx + ch], m_buffer[secondIdx + ch], lerpRate);
             }
         }
 
