@@ -91,6 +91,7 @@ namespace ksmaudio::AudioEffect
 		}
 		else
 		{
+			m_timeModulator.resetDelayTime();
 			m_speedController.reset();
 			m_timeModulator.writeAndAdvanceCursor(pData, dataSize);
 		}
