@@ -21,6 +21,10 @@ namespace MusicGame::Audio
 		std::size_t audioEffectIdx;
 
 		ksmaudio::AudioEffect::ParamValueSetDict overrideParams;
+
+		// LASER音声エフェクトの種類がpeaking_filterかどうか
+		// (FXでは不使用。LASER音声エフェクトでのpeaking_filter_delayを適用するかどうかに使用)
+		bool isPeakingFilterLaser = false;
 	};
 
 	class AudioEffectMain
@@ -37,8 +41,7 @@ namespace MusicGame::Audio
 
 		void updateActiveAudioEffectDictFX(const std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ>& currentLongNoteOfLanes, kson::Pulse currentPulseForAudio);
 
-		// Siv3D非依存のksmaudioに渡す必要があるため、ここではOptionalではなくstd::optionalを使用(これらは暗黙変換されない)
-		std::optional<std::size_t> getActiveLaserAudioEffectIdx(kson::Pulse currentPulseForAudio);
+		const Optional<AudioEffectInvocation>& getActiveLaserAudioEffectInvocation(kson::Pulse currentPulseForAudio) const;
 		
 	public:
 		AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache);

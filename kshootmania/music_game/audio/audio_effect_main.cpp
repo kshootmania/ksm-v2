@@ -9,7 +9,8 @@ namespace MusicGame::Audio
 	{
 		constexpr double kLongFXNoteAudioEffectAutoPlaySec = 0.03;
 
-		constexpr std::string_view kDefaultLaserAudioEffectName = "peaking_filter";
+		constexpr std::string_view kPeakingFilterAudioEffectName = "peaking_filter";
+		constexpr std::string_view kDefaultLaserAudioEffectName = kPeakingFilterAudioEffectName;
 
 		void RegisterAudioEffects(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
 		{
@@ -126,6 +127,20 @@ namespace MusicGame::Audio
 		kson::ByPulse<Optional<AudioEffectInvocation>> CreateLaserPulseAudioEffectInvocations(BGM& bgm, const kson::ChartData& chartData)
 		{
 			const auto& pulseEvent = chartData.audio.audioEffect.laser.pulseEvent;
+			const auto& def = chartData.audio.audioEffect.laser.def;
+			const auto fnIsPeakingFilter = [&def](const std::string& audioEffectName) -> bool
+			{
+				if (def.contains(audioEffectName))
+				{
+					// ユーザー定義のpeaking_filterの場合
+					return def.at(audioEffectName).type == kson::AudioEffectType::PeakingFilter;
+				}
+				else
+				{
+					// 暗黙に定義されているpeaking_filterの場合
+					return audioEffectName == kPeakingFilterAudioEffectName;
+				}
+			};
 			const auto& audioEffectBus = bgm.audioEffectBusLaser();
 			kson::ByPulse<Optional<AudioEffectInvocation>> convertedPulseEvent;
 			for (const auto& [audioEffectName, pulses] : pulseEvent)
@@ -136,6 +151,7 @@ namespace MusicGame::Audio
 					{
 						convertedPulseEvent.insert_or_assign(y, AudioEffectInvocation{
 							.audioEffectIdx = audioEffectBus.audioEffectNameToIdx(audioEffectName),
+							.isPeakingFilterLaser = fnIsPeakingFilter(audioEffectName),
 						});
 					}
 					else
@@ -154,6 +170,7 @@ namespace MusicGame::Audio
 				{
 					convertedPulseEvent.insert_or_assign(kson::Pulse{ 0 }, AudioEffectInvocation{
 						.audioEffectIdx = audioEffectBus.audioEffectNameToIdx(defaultAudioEffectName),
+						.isPeakingFilterLaser = fnIsPeakingFilter(defaultAudioEffectName),
 					});
 				}
 				else
@@ -222,19 +239,12 @@ namespace MusicGame::Audio
 		}
 	}
 
-	std::optional<std::size_t> AudioEffectMain::getActiveLaserAudioEffectIdx(kson::Pulse currentPulseForAudio)
+	const Optional<AudioEffectInvocation>& AudioEffectMain::getActiveLaserAudioEffectInvocation(kson::Pulse currentPulseForAudio) const
 	{
 		assert(!m_laserPulseInvocations.empty()); // ゼロ地点にデフォルト値が挿入されるのでここでは空ではないはず
 
 		const auto& [y, audioEffectInvocation] = *kson::ValueItrAt(m_laserPulseInvocations, currentPulseForAudio);
-		if (audioEffectInvocation.has_value())
-		{
-			return audioEffectInvocation->audioEffectIdx;
-		}
-		else
-		{
-			return std::nullopt;
-		}
+		return audioEffectInvocation;
 	}
 
 	AudioEffectMain::AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
@@ -251,63 +261,84 @@ namespace MusicGame::Audio
 		const double currentBPMForAudio = kson::TempoAt(currentPulseForAudio, chartData.beat);
 
 		// ロングFXノーツの音声エフェクト
-		bool bypassFX = true;
-		std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ> currentLongNoteOfLanes;
-		for (std::size_t i = 0; i < kson::kNumFXLanesSZ; ++i)
 		{
-			const auto currentLongNoteByTime = CurrentLongNoteByTime(chartData.note.fx[i], currentPulseForAudio);
-
-			// 音声エフェクトはバッファサイズによる遅延を回避するため、バッファサイズ分だけ早めに適用し始める必要がある。
-			// これはプレイヤーのキー入力に関係なく実施する必要があるため、下記の「～.value_or(true)」で、longFXPressed[i]がnoneである(つまり判定中のロングFXノーツがまだ存在しない)場合でも、
-			// あたかもロングFXが押されている(trueである)かのように扱っている。
-			// 
-			// それに加えて、キー入力がやや遅れた場合でも音声エフェクトが途切れないように、(バッファサイズとは別に)最初の30ms分はプレイヤーのキー入力に関係なく音声エフェクトを有効にしている。
-			// 
-			// HSP版での対応箇所: https://github.com/m4saka/kshootmania-v1-hsp/blob/19bfb6acbec8abd304b2e7dae6009df8e8e1f66f/src/scene/play/play_audio_effects.hsp#L488
-			if (currentLongNoteByTime.has_value()
-				&& (inputStatus.longFXPressed[i].value_or(true)
-					|| (currentTimeSec - kson::PulseToSec(currentLongNoteByTime->first, chartData.beat, timingCache)) < kLongFXNoteAudioEffectAutoPlaySec))
+			bool bypassFX = true;
+			std::array<Optional<std::pair<kson::Pulse, kson::Interval>>, kson::kNumFXLanesSZ> currentLongNoteOfLanes;
+			for (std::size_t i = 0; i < kson::kNumFXLanesSZ; ++i)
 			{
-				currentLongNoteOfLanes[i] = currentLongNoteByTime;
-				bypassFX = false;
-				if (!m_longFXPressedPrev[i])
+				const auto currentLongNoteByTime = CurrentLongNoteByTime(chartData.note.fx[i], currentPulseForAudio);
+
+				// 音声エフェクトはバッファサイズによる遅延を回避するため、バッファサイズ分だけ早めに適用し始める必要がある。
+				// これはプレイヤーのキー入力に関係なく実施する必要があるため、下記の「～.value_or(true)」で、longFXPressed[i]がnoneである(つまり判定中のロングFXノーツがまだ存在しない)場合でも、
+				// あたかもロングFXが押されている(trueである)かのように扱っている。
+				// 
+				// それに加えて、キー入力がやや遅れた場合でも音声エフェクトが途切れないように、(バッファサイズとは別に)最初の30ms分はプレイヤーのキー入力に関係なく音声エフェクトを有効にしている。
+				// 
+				// HSP版での対応箇所: https://github.com/m4saka/kshootmania-v1-hsp/blob/19bfb6acbec8abd304b2e7dae6009df8e8e1f66f/src/scene/play/play_audio_effects.hsp#L488
+				if (currentLongNoteByTime.has_value()
+					&& (inputStatus.longFXPressed[i].value_or(true)
+						|| (currentTimeSec - kson::PulseToSec(currentLongNoteByTime->first, chartData.beat, timingCache)) < kLongFXNoteAudioEffectAutoPlaySec))
 				{
-					m_lastPressedLongFXNoteLaneIdx = i;
-					m_longFXPressedPrev[i] = true;
+					currentLongNoteOfLanes[i] = currentLongNoteByTime;
+					bypassFX = false;
+					if (!m_longFXPressedPrev[i])
+					{
+						m_lastPressedLongFXNoteLaneIdx = i;
+						m_longFXPressedPrev[i] = true;
+					}
 				}
+				else
+				{
+					currentLongNoteOfLanes[i] = none;
+					m_longFXPressedPrev[i] = false;
+				}
+			}
+			updateActiveAudioEffectDictFX(currentLongNoteOfLanes, currentPulseForAudio);
+			bgm.updateAudioEffectFX(
+				bypassFX,
+				{
+					.bpm = static_cast<float>(currentBPMForAudio),
+					.sec = static_cast<float>(currentTimeSecForAudio),
+				},
+				m_activeAudioEffectDictFX);
+		}
+
+		// LASERノーツの音声エフェクト
+		{
+			const Optional<AudioEffectInvocation>& activeInvocation = getActiveLaserAudioEffectInvocation(currentPulseForAudio);
+			const bool isPeakingFilter = activeInvocation.has_value() && activeInvocation->isPeakingFilterLaser;
+			kson::Pulse currentPulseForLaserAudio;
+			if (isPeakingFilter && chartData.audio.audioEffect.laser.peakingFilterDelay != 0)
+			{
+				// peaking_filterの場合は遅延時間を適用
+				const double currentTimeSecForLaserAudio = currentTimeSecForAudio - static_cast<double>(chartData.audio.audioEffect.laser.peakingFilterDelay) / 1000;
+				currentPulseForLaserAudio = kson::SecToPulse(currentTimeSecForLaserAudio, chartData.beat, timingCache);
 			}
 			else
 			{
-				currentLongNoteOfLanes[i] = none;
-				m_longFXPressedPrev[i] = false;
-			}
-		}
-		updateActiveAudioEffectDictFX(currentLongNoteOfLanes, currentPulseForAudio);
-		bgm.updateAudioEffectFX(
-			bypassFX,
-			{
-				.bpm = static_cast<float>(currentBPMForAudio),
-				.sec = static_cast<float>(currentTimeSecForAudio),
-			},
-			m_activeAudioEffectDictFX);
-
-		// LASERノーツの音声エフェクト
-		// TODO: 直角時のクリッピングを抑える
-		bool bypassLaser = true;
-		float laserValue = 0.0f;
-		for (std::size_t i = 0; i < kson::kNumLaserLanesSZ; ++i)
-		{
-			if (!inputStatus.laserIsOnOrNone[i])
-			{
-				continue;
+				// peaking_filterでない場合はそのままの時間を使用
+				currentPulseForLaserAudio = currentPulseForAudio;
 			}
 
-			const auto& laneLaserValue = kson::GraphSectionValueAt(chartData.note.laser[i], currentPulseForAudio);
-			if (laneLaserValue.has_value())
+			bool bypassLaser = true;
+			float laserValue = 0.0f;
+			for (std::size_t i = 0; i < kson::kNumLaserLanesSZ; ++i)
 			{
-				const float fLaneLaserValue = static_cast<float>(laneLaserValue.value());
+				if (!inputStatus.laserIsOnOrNone[i])
+				{
+					// LASER判定中でOffの状態の場合(カーソルがノーツから外れている場合)はエフェクトを適用しない
+					continue;
+				}
+
+				const auto& laneLaserValue = kson::GraphSectionValueAt(chartData.note.laser[i], currentPulseForLaserAudio);
+				if (!laneLaserValue.has_value())
+				{
+					// 現在時間(currentPulseForLaserAudio)の時点にLASERノーツがない場合はエフェクトを適用しない
+					continue;
+				}
 
 				// 表示上のX座標の値(0.0:左、1.0:右)を、音声エフェクトで使うためのレーンに依存しない値(0.0～1.0)に変換
+				const float fLaneLaserValue = static_cast<float>(laneLaserValue.value());
 				static_assert(kson::kNumLaserLanesSZ == 2U); // 以下の処理はLASERのレーン数が2であることを前提にしている
 				const float v = (i == 0U) ? fLaneLaserValue : (1.0f - fLaneLaserValue); // 右レーンの値を反転
 
@@ -318,14 +349,14 @@ namespace MusicGame::Audio
 				}
 				bypassLaser = false;
 			}
+			bgm.updateAudioEffectLaser(
+				bypassLaser,
+				{
+					.v = laserValue,
+					.bpm = static_cast<float>(currentBPMForAudio),
+					.sec = static_cast<float>(currentTimeSecForAudio),
+				},
+				activeInvocation.has_value() ? std::make_optional(activeInvocation->audioEffectIdx) : std::nullopt);
 		}
-		bgm.updateAudioEffectLaser(
-			bypassLaser,
-			{
-				.v = laserValue,
-				.bpm = static_cast<float>(currentBPMForAudio),
-				.sec = static_cast<float>(currentTimeSecForAudio),
-			},
-			getActiveLaserAudioEffectIdx(currentPulseForAudio));
 	}
 }
