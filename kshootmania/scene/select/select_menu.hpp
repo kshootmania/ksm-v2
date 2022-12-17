@@ -32,6 +32,8 @@ private:
 	// Note: フォルダを閉じる場合はdirectoryPath引数に空文字列を指定すること
 	bool openDirectory(FilePathView directoryPath);
 
+	void setCursorToItemByFullPath(FilePathView fullPath);
+
 	void refreshGraphics(SelectMenuGraphics::RefreshType type);
 
 public:

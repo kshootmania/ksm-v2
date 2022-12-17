@@ -55,6 +55,8 @@ void SelectMenu::decideDirectoryFolderItem()
 	// Note: openDirectory()の実行中にm_menu.cursorValue().fullPathの中身は破棄されるので、ここでは新しいFilePathとしてコピーしてから渡している
 	const FilePath directoryPath = m_menu.cursorValue().fullPath;
 	openDirectory(directoryPath);
+
+	refreshGraphics(SelectMenuGraphics::kAll);
 }
 
 bool SelectMenu::openDirectory(FilePathView directoryPath)
@@ -259,9 +261,20 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 		}
 	}
 
-	refreshGraphics(SelectMenuGraphics::kAll);
-
 	return true;
+}
+
+void SelectMenu::setCursorToItemByFullPath(FilePathView fullPath)
+{
+	// 大した数ではないので線形探索
+	for (std::size_t i = 0U; i < m_menu.size(); ++i)
+	{
+		if (fullPath == m_menu[i].fullPath)
+		{
+			m_menu.setCursor(i);
+			break;
+		}
+	}
 }
 
 void SelectMenu::refreshGraphics(SelectMenuGraphics::RefreshType type)
@@ -300,6 +313,8 @@ SelectMenu::SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc)
 
 	// TODO: Delete this debug code
 	openDirectory(U"songs/K-Shoot MANIA");
+
+	refreshGraphics(SelectMenuGraphics::kAll);
 }
 
 void SelectMenu::update()
@@ -387,6 +402,10 @@ void SelectMenu::decide()
 		decideDirectoryFolderItem();
 		break;
 
+	case SelectMenuItem::kCurrentFolder:
+		closeFolder();
+		break;
+
 	default:
 		Print << U"Not implemented!";
 		break;
@@ -400,7 +419,16 @@ bool SelectMenu::isFolderOpen() const
 
 void SelectMenu::closeFolder()
 {
-	m_folderState.folderType = SelectFolderState::kNone;
+	// 元のパスを取得しておく
+	const String originalFullPath = m_folderState.fullPath;
+
+	// ルートディレクトリを開く
+	openDirectory(U"");
+
+	// カーソルを元々開いていたフォルダに合わせる
+	setCursorToItemByFullPath(originalFullPath);
+
+	refreshGraphics(SelectMenuGraphics::kAll);
 }
 
 const SelectMenuItem& SelectMenu::cursorMenuItem() const
