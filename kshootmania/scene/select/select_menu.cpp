@@ -236,15 +236,6 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 		for (std::size_t i = 0; i < directories.size(); ++i)
 		{
 			const std::size_t rotatedIdx = (i + currentDirectoryIdx) % directories.size();
-			if (rotatedIdx == 0)
-			{
-				// "All"フォルダの項目を追加
-				m_menu.push_back({
-					.itemType = SelectMenuItem::kAllFolder,
-				});
-
-				// TODO: "Courses"フォルダの項目を追加
-			}
 
 			if (found && i == 0)
 			{
@@ -258,6 +249,16 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 				.fullPath = FileSystem::FullPath(directory),
 				.info = std::make_unique<SelectMenuFolderItemInfo>(FileSystem::FileName(directory)),
 			});
+
+			if (rotatedIdx == directories.size() - 1)
+			{
+				// "All"フォルダの項目を追加
+				m_menu.push_back({
+					.itemType = SelectMenuItem::kAllFolder,
+				});
+
+				// TODO: "Courses"フォルダの項目を追加
+			}
 		}
 	}
 
