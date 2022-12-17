@@ -401,3 +401,4 @@ FodyWeavers.xsd
 !**/App/songs/K-Shoot MANIA/
 **/App/songs/K-Shoot MANIA/*
 !**/App/songs/K-Shoot MANIA/.gitkeep
+**/App/config.ini
