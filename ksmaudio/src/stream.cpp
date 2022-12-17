@@ -16,8 +16,16 @@ namespace
 		.lChannel = BASS_BFX_CHANALL,
 	};
 
-	// コンプレッサーの優先順位
+	// コンプレッサーの前段の音量変更のパラメータ値
+	constexpr BASS_BFX_VOLUME kVolumeFXParams
+	{
+		.lChannel = BASS_BFX_CHANALL,
+		.fVolume = 0.1f,
+	};
+
+	// 各エフェクトの優先順位
 	constexpr int kCompressorFXPriority = 0;
+	constexpr int kVolumeFXPriority = 10;
 
 	HSTREAM LoadStream(const std::string& filePath)
 	{
@@ -53,6 +61,9 @@ namespace ksmaudio
 		{
 			const HFX hCompressorFX = BASS_ChannelSetFX(m_hStream, BASS_FX_BFX_COMPRESSOR2, kCompressorFXPriority);
 			BASS_FXSetParameters(hCompressorFX, &kCompressorFXParams);
+
+			const HFX hVolumeFX = BASS_ChannelSetFX(m_hStream, BASS_FX_BFX_VOLUME, kVolumeFXPriority);
+			BASS_FXSetParameters(hVolumeFX, &kVolumeFXParams);
 		}
 	}
 
