@@ -19,7 +19,13 @@ namespace ksmaudio::AudioEffect
             // トリガ更新までのフレーム数を計算
             if (params.secUntilTrigger >= 0.0f) // 負の値は無視
             {
-                m_framesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * static_cast<float>(m_info.sampleRate));
+                const std::ptrdiff_t newFramesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * static_cast<float>(m_info.sampleRate));
+
+                // 前回より小さい場合のみ反映(トリガ発生寸前に次の時間が入ることでトリガが抜ける現象を回避するため)
+                if (m_framesUntilTrigger < 0 || m_framesUntilTrigger > newFramesUntilTrigger)
+                {
+                    m_framesUntilTrigger = newFramesUntilTrigger;
+                }
             }
 
             // updateTriggerによるトリガ更新

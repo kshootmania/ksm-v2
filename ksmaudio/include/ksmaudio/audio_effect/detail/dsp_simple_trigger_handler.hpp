@@ -52,11 +52,16 @@ namespace ksmaudio::AudioEffect::detail
         {
             if (secUntilTrigger >= 0.0f) // Negative value is ignored
             {
-                const float fFramesUntilTrigger = secUntilTrigger * static_cast<float>(sampleRate);
-                m_framesUntilTrigger = static_cast<std::ptrdiff_t>(fFramesUntilTrigger);
-                if (m_framesUntilTrigger == 0)
+                const std::ptrdiff_t newFramesUntilTrigger = static_cast<std::ptrdiff_t>(secUntilTrigger * static_cast<float>(sampleRate));
+
+                // ‘O‰ñ‚æ‚è¬‚³‚¢ê‡‚Ì‚İ”½‰f(ƒgƒŠƒK”­¶¡‘O‚ÉŸ‚ÌŠÔ‚ª“ü‚é‚±‚Æ‚ÅƒgƒŠƒK‚ª”²‚¯‚éŒ»Û‚ğ‰ñ”ğ‚·‚é‚½‚ß)
+                if (m_framesUntilTrigger < 0 || m_framesUntilTrigger > newFramesUntilTrigger)
                 {
-                    m_framesSincePrevTrigger = 0U;
+                    m_framesUntilTrigger = newFramesUntilTrigger;
+                    if (m_framesUntilTrigger == 0)
+                    {
+                        m_framesSincePrevTrigger = 0U;
+                    }
                 }
             }
         }
