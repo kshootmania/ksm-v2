@@ -1,4 +1,4 @@
-#include "ksmaudio/ksmaudio.hpp"
+﻿#include "ksmaudio/ksmaudio.hpp"
 #include "bass.h"
 
 namespace ksmaudio
@@ -10,6 +10,8 @@ namespace ksmaudio
 		BASS_SetConfig(BASS_CONFIG_UPDATEPERIOD, kUpdatePeriodMs);
 		BASS_SetConfig(BASS_CONFIG_FLOATDSP, TRUE);
 		BASS_SetConfig(BASS_CONFIG_UPDATETHREADS, kUpdateThreads);
+
+		BASS_FX_GetVersion(); // bass_fx.dllをロードするために呼ぶ必要あり
 	}
 
 	void Terminate()
