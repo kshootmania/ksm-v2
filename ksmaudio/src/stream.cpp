@@ -29,7 +29,7 @@ namespace
 
 	HSTREAM LoadStream(const std::string& filePath)
 	{
-		return BASS_StreamCreateFile(FALSE, filePath.c_str(), 0, 0, BASS_SAMPLE_FLOAT | BASS_STREAM_PRESCAN);
+		return BASS_StreamCreateFile(FALSE, filePath.c_str(), 0, 0, BASS_STREAM_PRESCAN);
 	}
 
 	BASS_CHANNELINFO GetChannelInfo(HSTREAM hStream)
