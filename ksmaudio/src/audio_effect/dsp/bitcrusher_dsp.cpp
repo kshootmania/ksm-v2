@@ -8,7 +8,7 @@ namespace ksmaudio::AudioEffect
 	{
 	}
 
-	void BitcrusherDSP::process(float* pData, std::size_t dataSize, bool bypass, const BitcrusherDSPParams& params)
+	void BitcrusherDSP::process(float* pData, std::size_t dataSize, bool bypass, const BitcrusherDSPParams& params, bool isParamUpdated)
 	{
 		if (m_info.isUnsupported || bypass || params.mix == 0.0f)
 		{

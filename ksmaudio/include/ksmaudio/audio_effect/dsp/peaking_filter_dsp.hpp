@@ -17,6 +17,6 @@ namespace ksmaudio::AudioEffect
 	public:
 		explicit PeakingFilterDSP(const DSPCommonInfo& info);
 
-		void process(float* pData, std::size_t dataSize, bool bypass, const PeakingFilterDSPParams& params);
+		void process(float* pData, std::size_t dataSize, bool bypass, const PeakingFilterDSPParams& params, bool isParamUpdated);
 	};
 }

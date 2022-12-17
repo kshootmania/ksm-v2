@@ -48,7 +48,7 @@ namespace ksmaudio::AudioEffect
 	{
 	}
 
-	void PeakingFilterDSP::process(float* pData, std::size_t dataSize, bool bypass, const PeakingFilterDSPParams& params)
+	void PeakingFilterDSP::process(float* pData, std::size_t dataSize, bool bypass, const PeakingFilterDSPParams& params, bool isParamUpdated)
 	{
 		if (m_info.isUnsupported)
 		{

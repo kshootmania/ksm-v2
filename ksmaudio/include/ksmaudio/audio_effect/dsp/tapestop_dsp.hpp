@@ -30,6 +30,6 @@ namespace ksmaudio::AudioEffect
 	public:
 		explicit TapestopDSP(const DSPCommonInfo& info);
 
-		void process(float* pData, std::size_t dataSize, bool bypass, const TapestopDSPParams& params);
+		void process(float* pData, std::size_t dataSize, bool bypass, const TapestopDSPParams& params, bool isParamUpdated);
 	};
 }

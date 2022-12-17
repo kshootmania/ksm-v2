@@ -58,7 +58,44 @@ namespace ksmaudio::AudioEffect
 
 	Param DefineParam(Type type, const std::string& valueSetStr);
 
-	struct UpdateTriggerParam : public Param
+	struct TapestopTriggerParam : public Param // TODO: スライシングが起き得るのを修正
+	{
+		explicit TapestopTriggerParam(const ValueSet& valueSet)
+			: Param{ .type = Type::kSwitch, .valueSet = valueSet }
+		{
+		}
+
+		bool render(const Status& status, std::optional<std::size_t> laneIdx)
+		{
+			const bool isOn = laneIdx.has_value();
+
+			// DSPパラメータ上のtrigger自体は通常のパラメータと同じ
+			const bool trigger = GetValueAsBool(*this, status, isOn);
+
+			// triggerがfalseからtrueに変わったとき、または
+			// ノーツ中に別のレーンのノーツを追加で押してupdateTriggerがoff→onになったときは、resetの値をtrueにする
+			m_reset = trigger && (!m_prevTrigger || laneIdx != m_prevLaneIdx);
+
+			m_prevTrigger = trigger;
+			m_prevLaneIdx = laneIdx;
+
+			return trigger;
+		}
+
+		bool getResetValue() const
+		{
+			return m_reset;
+		}
+
+	private:
+		bool m_prevTrigger = false;
+
+		std::optional<std::size_t> m_prevLaneIdx = std::nullopt;
+
+		bool m_reset = false;
+	};
+
+	struct UpdateTriggerParam : public Param // TODO: スライシングが起き得るのを修正
 	{
 		explicit UpdateTriggerParam(const ValueSet& valueSet)
 			: Param{ .type = Type::kSwitch, .valueSet = valueSet }
@@ -87,6 +124,8 @@ namespace ksmaudio::AudioEffect
 
 		std::optional<std::size_t> m_prevLaneIdx = std::nullopt;
 	};
+
+	TapestopTriggerParam DefineTapestopTriggerParam(const std::string& valueSetStr);
 
 	UpdateTriggerParam DefineUpdateTriggerParam(const std::string& valueSetStr);
 

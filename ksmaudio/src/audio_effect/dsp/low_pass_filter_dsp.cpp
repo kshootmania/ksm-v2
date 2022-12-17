@@ -27,7 +27,7 @@ namespace ksmaudio::AudioEffect
 	{
 	}
 
-	void LowPassFilterDSP::process(float* pData, std::size_t dataSize, bool bypass, const LowPassFilterDSPParams& params)
+	void LowPassFilterDSP::process(float* pData, std::size_t dataSize, bool bypass, const LowPassFilterDSPParams& params, bool isParamUpdated)
 	{
 		if (m_info.isUnsupported)
 		{

@@ -14,7 +14,7 @@ namespace ksmaudio::AudioEffect
 		}
 	}
 
-	void FlangerDSP::process(float* pData, std::size_t dataSize, bool bypass, const FlangerDSPParams& params)
+	void FlangerDSP::process(float* pData, std::size_t dataSize, bool bypass, const FlangerDSPParams& params, bool isParamUpdated)
 	{
 		if (m_info.isUnsupported || dataSize > m_ringBuffer.size())
 		{

@@ -52,6 +52,10 @@ namespace ksmaudio::AudioEffect
 		DSPParams m_dspParams;
 		DSP m_dsp;
 
+		// isParamUpdated決定用の更新回数カウンタ
+		int m_statusUpdateCount = 0;
+		int m_prevStatusUpdateCountInProcessThread = 0;
+
 	public:
 		static constexpr bool kIsWithTrigger = false;
 
@@ -66,12 +70,18 @@ namespace ksmaudio::AudioEffect
 		// この関数のみ他の関数とは別のスレッドから呼ばれるので注意
 		virtual void process(float* pData, std::size_t dataSize) override
 		{
-			m_dsp.process(pData, dataSize, m_bypass, m_dspParams);
+			// updateStatusが呼ばれた後の初回のみトリガ更新可能
+			const bool isParamUpdated = m_statusUpdateCount != m_prevStatusUpdateCountInProcessThread;
+			m_prevStatusUpdateCountInProcessThread = m_statusUpdateCount;
+
+			m_dsp.process(pData, dataSize, m_bypass, m_dspParams, isParamUpdated);
 		}
 
 		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) override
 		{
 			m_dspParams = m_params.render(status, laneIdx);
+
+			++m_statusUpdateCount;
 		}
 
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSet) override

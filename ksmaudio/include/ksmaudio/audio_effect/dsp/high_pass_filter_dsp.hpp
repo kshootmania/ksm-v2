@@ -16,6 +16,6 @@ namespace ksmaudio::AudioEffect
 	public:
 		explicit HighPassFilterDSP(const DSPCommonInfo& info);
 
-		void process(float* pData, std::size_t dataSize, bool bypass, const HighPassFilterDSPParams& params);
+		void process(float* pData, std::size_t dataSize, bool bypass, const HighPassFilterDSPParams& params, bool isParamUpdated);
 	};
 }
