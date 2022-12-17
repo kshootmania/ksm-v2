@@ -10,7 +10,7 @@ namespace ksmaudio::AudioEffect
 
 		// フィルタ適用可能な最低周波数
 		// (低周波を強調すると波形の振幅が過剰に大きくなるためしきい値を設けている)
-		constexpr float kFreqThresholdMin = 60.0f;
+		constexpr float kFreqThresholdMin = 100.0f;
 
 		// TODO: freq、freq_maxの値を変更可能にする
 		float GetPeakingFilterFreqValue(float v)
