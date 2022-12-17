@@ -29,6 +29,8 @@ public:
 
 	int32 cursor() const;
 
+	void setCursor(int32 cursor);
+
 	int32 rawCursor() const;
 
 	bool isCursorChanged() const;

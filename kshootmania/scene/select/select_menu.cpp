@@ -56,6 +56,9 @@ void SelectMenu::decideDirectoryFolderItem()
 	const FilePath directoryPath = m_menu.cursorValue().fullPath;
 	openDirectory(directoryPath);
 
+	ConfigIni::SetString(ConfigIni::Key::kSelectDirectory, directoryPath);
+	ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, 0);
+
 	refreshGraphics(SelectMenuGraphics::kAll);
 }
 
@@ -265,6 +268,12 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 	return true;
 }
 
+void SelectMenu::setCursorAndSave(int32 cursor)
+{
+	m_menu.setCursor(cursor);
+	ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, cursor);
+}
+
 void SelectMenu::setCursorToItemByFullPath(FilePathView fullPath)
 {
 	// 大した数ではないので線形探索
@@ -272,7 +281,7 @@ void SelectMenu::setCursorToItemByFullPath(FilePathView fullPath)
 	{
 		if (fullPath == m_menu[i].fullPath)
 		{
-			m_menu.setCursor(i);
+			setCursorAndSave(static_cast<int32>(i));
 			break;
 		}
 	}
@@ -307,13 +316,17 @@ SelectMenu::SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc)
 	, m_moveToPlaySceneFunc(std::move(moveToPlaySceneFunc))
 	, m_debugFont(12)
 {
+	// 前回開いていたフォルダを復元
 	if (!openDirectory(ConfigIni::GetString(ConfigIni::Key::kSelectDirectory)))
 	{
 		openDirectory(U"");
 	}
 
-	// TODO: Delete this debug code
-	openDirectory(U"songs/K-Shoot MANIA");
+	// 前回選択していたインデックスを復元
+	m_menu.setCursor(ConfigIni::GetInt(ConfigIni::Key::kSelectSongIndex));
+
+	// 前回選択していた難易度を復元
+	m_difficultyMenu.setCursor(ConfigIni::GetInt(ConfigIni::Key::kSelectDifficulty));
 
 	refreshGraphics(SelectMenuGraphics::kAll);
 }
@@ -323,12 +336,14 @@ void SelectMenu::update()
 	m_menu.update();
 	if (m_menu.isCursorChanged())
 	{
+		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, m_menu.cursor());
 		refreshGraphics(m_menu.isCursorIncremented() ? SelectMenuGraphics::kCursorDown : SelectMenuGraphics::kCursorUp);
 	}
 
 	m_difficultyMenu.update();
 	if (m_difficultyMenu.isCursorChanged())
 	{
+		ConfigIni::SetInt(ConfigIni::Key::kSelectDifficulty, m_difficultyMenu.cursor());
 		refreshGraphics(SelectMenuGraphics::kAll);
 	}
 
@@ -428,6 +443,9 @@ void SelectMenu::closeFolder()
 
 	// カーソルを元々開いていたフォルダに合わせる
 	setCursorToItemByFullPath(originalFullPath);
+
+	ConfigIni::SetString(ConfigIni::Key::kSelectDirectory, U"");
+	ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, m_menu.cursor());
 
 	refreshGraphics(SelectMenuGraphics::kAll);
 }

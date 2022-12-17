@@ -29,8 +29,9 @@ private:
 
 	void decideDirectoryFolderItem();
 
-	// Note: フォルダを閉じる場合はdirectoryPath引数に空文字列を指定すること
 	bool openDirectory(FilePathView directoryPath);
+
+	void setCursorAndSave(int32 cursor);
 
 	void setCursorToItemByFullPath(FilePathView fullPath);
 

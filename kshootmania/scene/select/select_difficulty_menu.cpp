@@ -144,6 +144,11 @@ int32 SelectDifficultyMenu::cursor() const
 	return altCursor;
 }
 
+void SelectDifficultyMenu::setCursor(int32 cursor)
+{
+	m_menu.setCursor(cursor);
+}
+
 int32 SelectDifficultyMenu::rawCursor() const
 {
 	return m_menu.cursor();
