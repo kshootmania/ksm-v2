@@ -19,7 +19,7 @@ namespace ksmaudio::AudioEffect
 
 		const std::unordered_map<ParamID, Param*> dict = {
 			{ ParamID::kSpeed, &speed },
-			{ ParamID::kTrigger, &trigger },
+			{ ParamID::kTrigger, trigger.innerParamPtr() },
 			{ ParamID::kMix, &mix },
 		};
 

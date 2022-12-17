@@ -26,7 +26,7 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kUpdatePeriod, &updatePeriod },
 			{ ParamID::kWaveLength, &waveLength },
 			{ ParamID::kRate, &rate },
-			{ ParamID::kUpdateTrigger, &updateTrigger },
+			{ ParamID::kUpdateTrigger, updateTrigger.innerParamPtr() },
 			{ ParamID::kMix, &mix },
 		};
 
@@ -56,7 +56,7 @@ namespace ksmaudio::AudioEffect
 		const std::unordered_map<ParamID, Param*> dict = {
 			{ ParamID::kUpdatePeriod, &updatePeriod },
 			{ ParamID::kWaveLength, &waveLength },
-			{ ParamID::kUpdateTrigger, &updateTrigger },
+			{ ParamID::kUpdateTrigger, updateTrigger.innerParamPtr() },
 			{ ParamID::kFeedbackLevel, &feedbackLevel },
 			{ ParamID::kMix, &mix },
 		};

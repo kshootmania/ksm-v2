@@ -58,10 +58,20 @@ namespace ksmaudio::AudioEffect
 
 	Param DefineParam(Type type, const std::string& valueSetStr);
 
-	struct TapestopTriggerParam : public Param // TODO: スライシングが起き得るのを修正
+	class TapestopTriggerParam
 	{
+	private:
+		Param m_innerParam;
+
+		bool m_prevTrigger = false;
+
+		std::optional<std::size_t> m_prevLaneIdx = std::nullopt;
+
+		bool m_reset = false;
+
+	public:
 		explicit TapestopTriggerParam(const ValueSet& valueSet)
-			: Param{ .type = Type::kSwitch, .valueSet = valueSet }
+			: m_innerParam{ .type = Type::kSwitch, .valueSet = valueSet }
 		{
 		}
 
@@ -70,7 +80,7 @@ namespace ksmaudio::AudioEffect
 			const bool isOn = laneIdx.has_value();
 
 			// DSPパラメータ上のtrigger自体は通常のパラメータと同じ
-			const bool trigger = GetValueAsBool(*this, status, isOn);
+			const bool trigger = GetValueAsBool(m_innerParam, status, isOn);
 
 			// triggerがfalseからtrueに変わったとき、または
 			// ノーツ中に別のレーンのノーツを追加で押してupdateTriggerがoff→onになったときは、resetの値をtrueにする
@@ -87,18 +97,24 @@ namespace ksmaudio::AudioEffect
 			return m_reset;
 		}
 
+		Param* innerParamPtr()
+		{
+			return &m_innerParam;
+		}
+	};
+
+	struct UpdateTriggerParam
+	{
 	private:
-		bool m_prevTrigger = false;
+		Param m_innerParam;
+
+		bool m_prevRawUpdateTrigger = false;
 
 		std::optional<std::size_t> m_prevLaneIdx = std::nullopt;
 
-		bool m_reset = false;
-	};
-
-	struct UpdateTriggerParam : public Param // TODO: スライシングが起き得るのを修正
-	{
+	public:
 		explicit UpdateTriggerParam(const ValueSet& valueSet)
-			: Param{ .type = Type::kSwitch, .valueSet = valueSet }
+			: m_innerParam{ .type = Type::kSwitch, .valueSet = valueSet }
 		{
 		}
 
@@ -108,10 +124,10 @@ namespace ksmaudio::AudioEffect
 
 			// updateTriggerの"Off>OnMin-OnMax"のOffのトリガタイミングは事前に計算済みで別途secUntilTrigger側で処理されるため無視する
 			// (ただし、"on>off-on"や"on-off"の場合はプレイ中にoff→onになりうるので無視せず、3つすべて"on"の場合のみ無視する。secUntilTriggerの方と多重に更新される場合もあることになるが実用上大した問題はない)
-			const bool ignoreUpdateTrigger = valueSet.off && valueSet.onMin && valueSet.onMax;
+			const bool ignoreUpdateTrigger = m_innerParam.valueSet.off && m_innerParam.valueSet.onMin && m_innerParam.valueSet.onMax;
 
 			// DSPパラメータ上のupdateTriggerはoff→onに変わった瞬間だけtrueにする
-			const bool rawUpdateTrigger = GetValueAsBool(*this, status, isOn) && !ignoreUpdateTrigger;
+			const bool rawUpdateTrigger = GetValueAsBool(m_innerParam, status, isOn) && !ignoreUpdateTrigger;
 			const bool updateTriggerValue = rawUpdateTrigger && (!m_prevRawUpdateTrigger || laneIdx != m_prevLaneIdx); // ノーツ中に別のレーンのノーツを追加で押してupdateTriggerがoff→onになる場合もあるので、laneIdxの変化もOR条件に入れる
 			m_prevRawUpdateTrigger = rawUpdateTrigger;
 			m_prevLaneIdx = laneIdx;
@@ -119,10 +135,10 @@ namespace ksmaudio::AudioEffect
 			return updateTriggerValue;
 		}
 
-	private:
-		bool m_prevRawUpdateTrigger = false;
-
-		std::optional<std::size_t> m_prevLaneIdx = std::nullopt;
+		Param* innerParamPtr()
+		{
+			return &m_innerParam;
+		}
 	};
 
 	TapestopTriggerParam DefineTapestopTriggerParam(const std::string& valueSetStr);
