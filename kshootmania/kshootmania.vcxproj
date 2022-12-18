@@ -73,8 +73,9 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalOptions>/Zc:__cplusplus /Zm500 /MP3 %(AdditionalOptions)</AdditionalOptions>
-      <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)kson\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\third_party\bass;$(SolutionDir)ksmaudio\third_party\bass_fx;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ProjectDir)src\stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(SolutionDir)kson\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\third_party\bass;$(SolutionDir)ksmaudio\third_party\bass_fx;$(ProjectDir)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>$(ProjectDir)src\stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -99,8 +100,9 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>26451;26812;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <AdditionalOptions>/Zc:__cplusplus /Zm500 /MP7 %(AdditionalOptions)</AdditionalOptions>
-      <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)kson\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\third_party\bass;$(SolutionDir)ksmaudio\third_party\bass_fx;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ProjectDir)src\stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(SolutionDir)kson\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\third_party\bass;$(SolutionDir)ksmaudio\third_party\bass_fx;$(ProjectDir)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>$(ProjectDir)src\stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -115,53 +117,53 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="common\asset_management.cpp" />
-    <ClCompile Include="common\math_utils.cpp" />
-    <ClCompile Include="graphics\number_font_texture.cpp" />
-    <ClCompile Include="graphics\screen_utils.cpp" />
-    <ClCompile Include="graphics\tiled_texture.cpp" />
-    <ClCompile Include="i18n\i18n.cpp" />
-    <ClCompile Include="ini\config_ini.cpp" />
-    <ClCompile Include="ini\ksm_ini_data.cpp" />
-    <ClCompile Include="input\key_config.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="music_game\audio\assist_tick.cpp" />
-    <ClCompile Include="music_game\audio\audio_effect_main.cpp" />
-    <ClCompile Include="music_game\audio\audio_effect_utils.cpp" />
-    <ClCompile Include="music_game\audio\bgm.cpp" />
-    <ClCompile Include="music_game\audio\laser_slam_se.cpp" />
-    <ClCompile Include="music_game\game_main.cpp" />
-    <ClCompile Include="music_game\graphics\graphics_main.cpp" />
-    <ClCompile Include="music_game\graphics\highway\highway_3d_graphics.cpp" />
-    <ClCompile Include="music_game\graphics\highway\highway_tilt.cpp" />
-    <ClCompile Include="music_game\graphics\highway\key_beam_graphics.cpp" />
-    <ClCompile Include="music_game\graphics\highway\note\button_note_graphics.cpp" />
-    <ClCompile Include="music_game\graphics\highway\note\laser_note_graphics.cpp" />
-    <ClCompile Include="music_game\graphics\highway\note\note_graphics_utils.cpp" />
-    <ClCompile Include="music_game\graphics\hud\frame_rate_monitor.cpp" />
-    <ClCompile Include="music_game\graphics\hud\gauge_panel.cpp" />
-    <ClCompile Include="music_game\graphics\hud\score_panel.cpp" />
-    <ClCompile Include="music_game\graphics\hud\song_info_panel.cpp" />
-    <ClCompile Include="music_game\graphics\jdgline\jdgline_3d_graphics.cpp" />
-    <ClCompile Include="music_game\graphics\jdgline\jdgoverlay_3d_graphics.cpp" />
-    <ClCompile Include="music_game\graphics\jdgline\laser_cursor_3d_graphics.cpp" />
-    <ClCompile Include="music_game\judgment\button_lane_judgment.cpp" />
-    <ClCompile Include="music_game\judgment\laser_lane_judgment.cpp" />
-    <ClCompile Include="scene\option\option_menu.cpp" />
-    <ClCompile Include="scene\option\option_menu_field.cpp" />
-    <ClCompile Include="scene\option\option_top_menu.cpp" />
-    <ClCompile Include="scene\option\option_scene.cpp" />
-    <ClCompile Include="scene\play\play_scene.cpp" />
-    <ClCompile Include="scene\select\select_bg_anim.cpp" />
-    <ClCompile Include="scene\select\select_difficulty_menu.cpp" />
-    <ClCompile Include="scene\select\select_menu.cpp" />
-    <ClCompile Include="scene\select\select_menu_graphics.cpp" />
-    <ClCompile Include="scene\select\select_scene.cpp" />
-    <ClCompile Include="scene\title\title_menu.cpp" />
-    <ClCompile Include="scene\title\title_scene.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="ui\linear_menu.cpp" />
-    <ClCompile Include="ui\menu_helper.cpp" />
+    <ClCompile Include="src\common\asset_management.cpp" />
+    <ClCompile Include="src\common\math_utils.cpp" />
+    <ClCompile Include="src\graphics\number_font_texture.cpp" />
+    <ClCompile Include="src\graphics\screen_utils.cpp" />
+    <ClCompile Include="src\graphics\tiled_texture.cpp" />
+    <ClCompile Include="src\i18n\i18n.cpp" />
+    <ClCompile Include="src\ini\config_ini.cpp" />
+    <ClCompile Include="src\ini\ksm_ini_data.cpp" />
+    <ClCompile Include="src\input\key_config.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\music_game\audio\assist_tick.cpp" />
+    <ClCompile Include="src\music_game\audio\audio_effect_main.cpp" />
+    <ClCompile Include="src\music_game\audio\audio_effect_utils.cpp" />
+    <ClCompile Include="src\music_game\audio\bgm.cpp" />
+    <ClCompile Include="src\music_game\audio\laser_slam_se.cpp" />
+    <ClCompile Include="src\music_game\game_main.cpp" />
+    <ClCompile Include="src\music_game\graphics\graphics_main.cpp" />
+    <ClCompile Include="src\music_game\graphics\highway\highway_3d_graphics.cpp" />
+    <ClCompile Include="src\music_game\graphics\highway\highway_tilt.cpp" />
+    <ClCompile Include="src\music_game\graphics\highway\key_beam_graphics.cpp" />
+    <ClCompile Include="src\music_game\graphics\highway\note\button_note_graphics.cpp" />
+    <ClCompile Include="src\music_game\graphics\highway\note\laser_note_graphics.cpp" />
+    <ClCompile Include="src\music_game\graphics\highway\note\note_graphics_utils.cpp" />
+    <ClCompile Include="src\music_game\graphics\hud\frame_rate_monitor.cpp" />
+    <ClCompile Include="src\music_game\graphics\hud\gauge_panel.cpp" />
+    <ClCompile Include="src\music_game\graphics\hud\score_panel.cpp" />
+    <ClCompile Include="src\music_game\graphics\hud\song_info_panel.cpp" />
+    <ClCompile Include="src\music_game\graphics\jdgline\jdgline_3d_graphics.cpp" />
+    <ClCompile Include="src\music_game\graphics\jdgline\jdgoverlay_3d_graphics.cpp" />
+    <ClCompile Include="src\music_game\graphics\jdgline\laser_cursor_3d_graphics.cpp" />
+    <ClCompile Include="src\music_game\judgment\button_lane_judgment.cpp" />
+    <ClCompile Include="src\music_game\judgment\laser_lane_judgment.cpp" />
+    <ClCompile Include="src\scene\option\option_menu.cpp" />
+    <ClCompile Include="src\scene\option\option_menu_field.cpp" />
+    <ClCompile Include="src\scene\option\option_top_menu.cpp" />
+    <ClCompile Include="src\scene\option\option_scene.cpp" />
+    <ClCompile Include="src\scene\play\play_scene.cpp" />
+    <ClCompile Include="src\scene\select\select_bg_anim.cpp" />
+    <ClCompile Include="src\scene\select\select_difficulty_menu.cpp" />
+    <ClCompile Include="src\scene\select\select_menu.cpp" />
+    <ClCompile Include="src\scene\select\select_menu_graphics.cpp" />
+    <ClCompile Include="src\scene\select\select_scene.cpp" />
+    <ClCompile Include="src\scene\title\title_menu.cpp" />
+    <ClCompile Include="src\scene\title\title_scene.cpp" />
+    <ClCompile Include="src\stdafx.cpp" />
+    <ClCompile Include="src\ui\linear_menu.cpp" />
+    <ClCompile Include="src\ui\menu_helper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -357,68 +359,68 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common\asset_management.hpp" />
-    <ClInclude Include="common\common_defines.hpp" />
-    <ClInclude Include="common\math_utils.hpp" />
-    <ClInclude Include="graphics\number_font_texture.hpp" />
-    <ClInclude Include="graphics\screen_utils.hpp" />
-    <ClInclude Include="graphics\tiled_texture.hpp" />
-    <ClInclude Include="i18n\i18n.hpp" />
-    <ClInclude Include="ini\config_ini.hpp" />
-    <ClInclude Include="ini\ksm_ini_data.hpp" />
-    <ClInclude Include="input\key_config.hpp" />
-    <ClInclude Include="music_game\audio\assist_tick.hpp" />
-    <ClInclude Include="music_game\audio\audio_defines.hpp" />
-    <ClInclude Include="music_game\audio\audio_effect_main.hpp" />
-    <ClInclude Include="music_game\audio\audio_effect_utils.hpp" />
-    <ClInclude Include="music_game\audio\bgm.hpp" />
-    <ClInclude Include="music_game\audio\laser_slam_se.hpp" />
-    <ClInclude Include="music_game\graphics\graphics_defines.hpp" />
-    <ClInclude Include="music_game\graphics\graphics_main.hpp" />
-    <ClInclude Include="music_game\graphics\highway\highway_3d_graphics.hpp" />
-    <ClInclude Include="music_game\graphics\highway\highway_tilt.hpp" />
-    <ClInclude Include="music_game\graphics\highway\key_beam_graphics.hpp" />
-    <ClInclude Include="music_game\graphics\highway\note\button_note_graphics.hpp" />
-    <ClInclude Include="music_game\graphics\highway\note\laser_note_graphics.hpp" />
-    <ClInclude Include="music_game\graphics\highway\note\note_graphics_utils.hpp" />
-    <ClInclude Include="music_game\graphics\hud\frame_rate_monitor.hpp" />
-    <ClInclude Include="music_game\graphics\hud\gauge_panel.hpp" />
-    <ClInclude Include="music_game\graphics\hud\score_panel.hpp" />
-    <ClInclude Include="music_game\graphics\hud\song_info_panel.hpp" />
-    <ClInclude Include="music_game\graphics\jdgline\jdgline_3d_graphics.hpp" />
-    <ClInclude Include="music_game\graphics\jdgline\jdgoverlay_3d_graphics.hpp" />
-    <ClInclude Include="music_game\graphics\jdgline\laser_cursor_3d_graphics.hpp" />
-    <ClInclude Include="music_game\judgment\button_lane_judgment.hpp" />
-    <ClInclude Include="music_game\judgment\judgment_defines.hpp" />
-    <ClInclude Include="music_game\game_defines.hpp" />
-    <ClInclude Include="music_game\game_main.hpp" />
-    <ClInclude Include="music_game\game_status.hpp" />
-    <ClInclude Include="music_game\judgment\laser_lane_judgment.hpp" />
-    <ClInclude Include="music_game\timeline.hpp" />
-    <ClInclude Include="scene\option\option_assets.hpp" />
-    <ClInclude Include="scene\option\option_menu.hpp" />
-    <ClInclude Include="scene\option\option_menu_field.hpp" />
-    <ClInclude Include="scene\option\option_scene.hpp" />
-    <ClInclude Include="scene\option\option_top_menu.hpp" />
-    <ClInclude Include="scene\play\play_scene.hpp" />
-    <ClInclude Include="scene\play\play_scene_args.hpp" />
-    <ClInclude Include="scene\scene.hpp" />
-    <ClInclude Include="scene\select\select_assets.hpp" />
-    <ClInclude Include="scene\select\select_bg_anim.hpp" />
-    <ClInclude Include="scene\select\select_difficulty_menu.hpp" />
-    <ClInclude Include="scene\select\select_folder_state.hpp" />
-    <ClInclude Include="scene\select\select_menu.hpp" />
-    <ClInclude Include="scene\select\select_menu_graphics.hpp" />
-    <ClInclude Include="scene\select\select_menu_item.hpp" />
-    <ClInclude Include="scene\select\select_scene.hpp" />
-    <ClInclude Include="scene\title\title_assets.hpp" />
-    <ClInclude Include="scene\title\title_menu.hpp" />
-    <ClInclude Include="scene\title\title_scene.hpp" />
-    <ClInclude Include="scoring\high_score_info.hpp" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="ui\array_with_linear_menu.hpp" />
-    <ClInclude Include="ui\linear_menu.hpp" />
-    <ClInclude Include="ui\menu_helper.hpp" />
+    <ClInclude Include="src\common\asset_management.hpp" />
+    <ClInclude Include="src\common\common_defines.hpp" />
+    <ClInclude Include="src\common\math_utils.hpp" />
+    <ClInclude Include="src\graphics\number_font_texture.hpp" />
+    <ClInclude Include="src\graphics\screen_utils.hpp" />
+    <ClInclude Include="src\graphics\tiled_texture.hpp" />
+    <ClInclude Include="src\i18n\i18n.hpp" />
+    <ClInclude Include="src\ini\config_ini.hpp" />
+    <ClInclude Include="src\ini\ksm_ini_data.hpp" />
+    <ClInclude Include="src\input\key_config.hpp" />
+    <ClInclude Include="src\music_game\audio\assist_tick.hpp" />
+    <ClInclude Include="src\music_game\audio\audio_defines.hpp" />
+    <ClInclude Include="src\music_game\audio\audio_effect_main.hpp" />
+    <ClInclude Include="src\music_game\audio\audio_effect_utils.hpp" />
+    <ClInclude Include="src\music_game\audio\bgm.hpp" />
+    <ClInclude Include="src\music_game\audio\laser_slam_se.hpp" />
+    <ClInclude Include="src\music_game\graphics\graphics_defines.hpp" />
+    <ClInclude Include="src\music_game\graphics\graphics_main.hpp" />
+    <ClInclude Include="src\music_game\graphics\highway\highway_3d_graphics.hpp" />
+    <ClInclude Include="src\music_game\graphics\highway\highway_tilt.hpp" />
+    <ClInclude Include="src\music_game\graphics\highway\key_beam_graphics.hpp" />
+    <ClInclude Include="src\music_game\graphics\highway\note\button_note_graphics.hpp" />
+    <ClInclude Include="src\music_game\graphics\highway\note\laser_note_graphics.hpp" />
+    <ClInclude Include="src\music_game\graphics\highway\note\note_graphics_utils.hpp" />
+    <ClInclude Include="src\music_game\graphics\hud\frame_rate_monitor.hpp" />
+    <ClInclude Include="src\music_game\graphics\hud\gauge_panel.hpp" />
+    <ClInclude Include="src\music_game\graphics\hud\score_panel.hpp" />
+    <ClInclude Include="src\music_game\graphics\hud\song_info_panel.hpp" />
+    <ClInclude Include="src\music_game\graphics\jdgline\jdgline_3d_graphics.hpp" />
+    <ClInclude Include="src\music_game\graphics\jdgline\jdgoverlay_3d_graphics.hpp" />
+    <ClInclude Include="src\music_game\graphics\jdgline\laser_cursor_3d_graphics.hpp" />
+    <ClInclude Include="src\music_game\judgment\button_lane_judgment.hpp" />
+    <ClInclude Include="src\music_game\judgment\judgment_defines.hpp" />
+    <ClInclude Include="src\music_game\game_defines.hpp" />
+    <ClInclude Include="src\music_game\game_main.hpp" />
+    <ClInclude Include="src\music_game\game_status.hpp" />
+    <ClInclude Include="src\music_game\judgment\laser_lane_judgment.hpp" />
+    <ClInclude Include="src\music_game\timeline.hpp" />
+    <ClInclude Include="src\scene\option\option_assets.hpp" />
+    <ClInclude Include="src\scene\option\option_menu.hpp" />
+    <ClInclude Include="src\scene\option\option_menu_field.hpp" />
+    <ClInclude Include="src\scene\option\option_scene.hpp" />
+    <ClInclude Include="src\scene\option\option_top_menu.hpp" />
+    <ClInclude Include="src\scene\play\play_scene.hpp" />
+    <ClInclude Include="src\scene\play\play_scene_args.hpp" />
+    <ClInclude Include="src\scene\scene.hpp" />
+    <ClInclude Include="src\scene\select\select_assets.hpp" />
+    <ClInclude Include="src\scene\select\select_bg_anim.hpp" />
+    <ClInclude Include="src\scene\select\select_difficulty_menu.hpp" />
+    <ClInclude Include="src\scene\select\select_folder_state.hpp" />
+    <ClInclude Include="src\scene\select\select_menu.hpp" />
+    <ClInclude Include="src\scene\select\select_menu_graphics.hpp" />
+    <ClInclude Include="src\scene\select\select_menu_item.hpp" />
+    <ClInclude Include="src\scene\select\select_scene.hpp" />
+    <ClInclude Include="src\scene\title\title_assets.hpp" />
+    <ClInclude Include="src\scene\title\title_menu.hpp" />
+    <ClInclude Include="src\scene\title\title_scene.hpp" />
+    <ClInclude Include="src\scoring\high_score_info.hpp" />
+    <ClInclude Include="src\stdafx.h" />
+    <ClInclude Include="src\ui\array_with_linear_menu.hpp" />
+    <ClInclude Include="src\ui\linear_menu.hpp" />
+    <ClInclude Include="src\ui\menu_helper.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">
