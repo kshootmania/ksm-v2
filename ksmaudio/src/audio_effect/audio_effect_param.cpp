@@ -82,7 +82,7 @@ namespace ksmaudio::AudioEffect
 					const float value = std::stof(str);
 					if ((value >= -48.0f) && (value <= 48.0f))
 					{
-						if (str.contains('.'))
+						if (str.find('.') != std::string::npos)
 						{
 							return value + 48.0f;
 						}
