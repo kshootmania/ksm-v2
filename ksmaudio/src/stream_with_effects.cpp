@@ -2,8 +2,8 @@
 
 namespace ksmaudio
 {
-	StreamWithEffects::StreamWithEffects(const std::string& filePath, double volume, bool enableCompressor)
-		: m_stream(filePath, volume, enableCompressor)
+	StreamWithEffects::StreamWithEffects(const std::string& filePath, double volume, bool enableCompressor, bool preload)
+		: m_stream(filePath, volume, enableCompressor, preload)
 	{
 	}
 

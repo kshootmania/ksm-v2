@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+#include <vector>
 #include <string>
 #include "bass.h"
 #include "bass_fx.h"
@@ -9,12 +11,13 @@ namespace ksmaudio
 	class Stream
 	{
 	private:
+		const std::unique_ptr<std::vector<char>> m_preloadedBinary;
 		const HSTREAM m_hStream;
 		const BASS_CHANNELINFO m_info;
 
 	public:
 		// TODO: filePath encoding problem
-		explicit Stream(const std::string& filePath, double volume = 1.0, bool enableCompressor = false);
+		explicit Stream(const std::string& filePath, double volume = 1.0, bool enableCompressor = false, bool preload = false);
 
 		~Stream();
 

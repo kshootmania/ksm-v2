@@ -1,4 +1,5 @@
 #include "ksmaudio/stream.hpp"
+#include <fstream>
 #include "ksmaudio/ksmaudio.hpp"
 
 namespace
@@ -27,9 +28,31 @@ namespace
 	constexpr int kCompressorFXPriority = 0;
 	constexpr int kVolumeFXPriority = 10;
 
-	HSTREAM LoadStream(const std::string& filePath)
+	std::unique_ptr<std::vector<char>> Preload(const std::string& filePath)
 	{
-		return BASS_StreamCreateFile(FALSE, filePath.c_str(), 0, 0, BASS_STREAM_PRESCAN);
+		std::ifstream ifs(filePath, std::ios::in | std::ios::binary);
+		if (!ifs)
+		{
+			return nullptr;
+		}
+		ifs.seekg(0, std::ios::end);
+		const std::size_t fileSize = static_cast<std::size_t>(ifs.tellg());
+		auto binary = std::make_unique<std::vector<char>>(fileSize);
+		ifs.seekg(0, std::ios::beg);
+		ifs.read(binary->data(), fileSize);
+		return binary;
+	}
+
+	HSTREAM LoadStream(const std::string& filePath, const std::vector<char>* pPreloadedBinary)
+	{
+		if (pPreloadedBinary == nullptr)
+		{
+			return BASS_StreamCreateFile(FALSE, filePath.c_str(), 0, 0, BASS_STREAM_PRESCAN);
+		}
+		else
+		{
+			return BASS_StreamCreateFile(TRUE, pPreloadedBinary->data(), 0, static_cast<QWORD>(pPreloadedBinary->size()), BASS_STREAM_PRESCAN);
+		}
 	}
 
 	BASS_CHANNELINFO GetChannelInfo(HSTREAM hStream)
@@ -49,8 +72,9 @@ namespace
 
 namespace ksmaudio
 {
-	Stream::Stream(const std::string& filePath, double volume, bool enableCompressor)
-		: m_hStream(LoadStream(filePath))
+	Stream::Stream(const std::string& filePath, double volume, bool enableCompressor, bool preload)
+		: m_preloadedBinary(preload ? Preload(filePath) : nullptr)
+		, m_hStream(LoadStream(filePath, m_preloadedBinary.get()))
 		, m_info(GetChannelInfo(m_hStream))
 	{
 		// âπó Çê›íË
