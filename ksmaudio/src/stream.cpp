@@ -5,15 +5,15 @@
 namespace
 {
 	// コンプレッサーのパラメータ値
-	// (設定値が極端なので改善した方が良いが、ひとまずHSP版と同じ値にしている)
 	// HSP版: https://github.com/m4saka/kshootmania-v1-hsp/blob/461901f1e925cb8cb474fd02726084cfca9ec3d4/kshootmania.hsp#L792
+	// (音割れ改善のためにHSP版から変更している)
 	constexpr BASS_BFX_COMPRESSOR2 kCompressorFXParams
 	{
 		.fGain = 18.0f,
 		.fThreshold = -24.0f,
-		.fRatio = 1000.0f,
-		.fAttack = 0.01f,
-		.fRelease = 0.01f,
+		.fRatio = 5.0f,
+		.fAttack = 1.0f, // ※ms単位(44サンプル)
+		.fRelease = 20.0f, // ※ms単位(882サンプル)
 		.lChannel = BASS_BFX_CHANALL,
 	};
 
