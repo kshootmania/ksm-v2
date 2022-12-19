@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "stream.hpp"
 #include "stream_with_effects.hpp"
 #include "sample.hpp"

@@ -1,4 +1,4 @@
-#include "ksmaudio/audio_effect/dsp/retrigger_echo_dsp.hpp"
+ï»¿#include "ksmaudio/audio_effect/dsp/retrigger_echo_dsp.hpp"
 
 namespace ksmaudio::AudioEffect
 {
@@ -14,22 +14,22 @@ namespace ksmaudio::AudioEffect
     {
         assert(dataSize % m_info.numChannels == 0);
 
-        if (isParamUpdated) // secUntilTrigger‚¨‚æ‚ÑupdateTrigger‚Ì’l‚Íƒpƒ‰ƒ[ƒ^XVŒã‚Ì‰‰ñÀs‚Ì‚İ—LŒø
+        if (isParamUpdated) // secUntilTriggerãŠã‚ˆã³updateTriggerã®å€¤ã¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ›´æ–°å¾Œã®åˆå›å®Ÿè¡Œæ™‚ã®ã¿æœ‰åŠ¹
         {
-            // ƒgƒŠƒKXV‚Ü‚Å‚ÌƒtƒŒ[ƒ€”‚ğŒvZ
-            if (params.secUntilTrigger >= 0.0f) // •‰‚Ì’l‚Í–³‹
+            // ãƒˆãƒªã‚¬æ›´æ–°ã¾ã§ã®ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã‚’è¨ˆç®—
+            if (params.secUntilTrigger >= 0.0f) // è² ã®å€¤ã¯ç„¡è¦–
             {
                 const std::ptrdiff_t newFramesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * static_cast<float>(m_info.sampleRate));
 
-                // ‘O‰ñ‚æ‚è¬‚³‚¢ê‡‚Ì‚İ”½‰f(ƒgƒŠƒK”­¶¡‘O‚ÉŸ‚ÌŠÔ‚ª“ü‚é‚±‚Æ‚ÅƒgƒŠƒK‚ª”²‚¯‚éŒ»Û‚ğ‰ñ”ğ‚·‚é‚½‚ß)
+                // å‰å›ã‚ˆã‚Šå°ã•ã„å ´åˆã®ã¿åæ˜ (ãƒˆãƒªã‚¬ç™ºç”Ÿå¯¸å‰ã«æ¬¡ã®æ™‚é–“ãŒå…¥ã‚‹ã“ã¨ã§ãƒˆãƒªã‚¬ãŒæŠœã‘ã‚‹ç¾è±¡ã‚’å›é¿ã™ã‚‹ãŸã‚)
                 if (m_framesUntilTrigger < 0 || m_framesUntilTrigger > newFramesUntilTrigger)
                 {
                     m_framesUntilTrigger = newFramesUntilTrigger;
                 }
             }
 
-            // updateTrigger‚É‚æ‚éƒgƒŠƒKXV
-            // ("update_trigger"‚ğ"off>on"‚â"off-on"‚È‚Ç‚É‚µ‚½ê‡‚Ìƒm[ƒc”»’è‚É‚æ‚éXV)
+            // updateTriggerã«ã‚ˆã‚‹ãƒˆãƒªã‚¬æ›´æ–°
+            // ("update_trigger"ã‚’"off>on"ã‚„"off-on"ãªã©ã«ã—ãŸå ´åˆã®ãƒãƒ¼ãƒ„åˆ¤å®šã«ã‚ˆã‚‹æ›´æ–°)
             if (params.updateTrigger)
             {
                 m_linearBuffer.resetReadWriteCursors();
@@ -41,31 +41,31 @@ namespace ksmaudio::AudioEffect
         const std::size_t numNonZeroFrames = static_cast<std::size_t>(static_cast<float>(numLoopFrames) * params.rate);
         if (0 <= m_framesUntilTrigger && std::cmp_less(m_framesUntilTrigger, frameSize)) // m_framesUntilTrigger < frameSize
         {
-            // ¡‰ñ‚Ìˆ—ƒtƒŒ[ƒ€’†‚ÉƒgƒŠƒKXVƒ^ƒCƒ~ƒ“ƒO‚ªŠÜ‚Ü‚ê‚Ä‚¢‚éê‡AƒgƒŠƒKXV‚Ì‘OŒã2‚Â‚É•ª‚¯‚Äˆ—
+            // ä»Šå›ã®å‡¦ç†ãƒ•ãƒ¬ãƒ¼ãƒ ä¸­ã«ãƒˆãƒªã‚¬æ›´æ–°ã‚¿ã‚¤ãƒŸãƒ³ã‚°ãŒå«ã¾ã‚Œã¦ã„ã‚‹å ´åˆã€ãƒˆãƒªã‚¬æ›´æ–°ã®å‰å¾Œ2ã¤ã«åˆ†ã‘ã¦å‡¦ç†
 
-            // ƒgƒŠƒKXV‚æ‚è‘O
+            // ãƒˆãƒªã‚¬æ›´æ–°ã‚ˆã‚Šå‰
             const std::size_t formerSize = static_cast<std::size_t>(m_framesUntilTrigger) * m_info.numChannels;
             m_linearBuffer.write(pData, formerSize);
             m_linearBuffer.read(pData, formerSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, params.mix, bypass);
 
-            // framesUntilTrigger‚É‚æ‚éƒgƒŠƒKXV
-            // ("update_period"‚âA"update_trigger"‚ğ"param_change"‚Å"on"‚É•ÏX‚µ‚½ê‡‚ÌXV)
+            // framesUntilTriggerã«ã‚ˆã‚‹ãƒˆãƒªã‚¬æ›´æ–°
+            // ("update_period"ã‚„ã€"update_trigger"ã‚’"param_change"ã§"on"ã«å¤‰æ›´ã—ãŸå ´åˆã®æ›´æ–°)
             m_linearBuffer.resetReadWriteCursors();
             m_framesUntilTrigger = -1;
 
-            // ƒgƒŠƒKXV‚æ‚èŒã‚ë
+            // ãƒˆãƒªã‚¬æ›´æ–°ã‚ˆã‚Šå¾Œã‚
             const std::size_t latterSize = dataSize - formerSize;
             m_linearBuffer.write(pData + formerSize, latterSize);
             m_linearBuffer.read(pData + formerSize, latterSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, params.mix, bypass);
         }
         else
         {
-            // ¡‰ñ‚Ìˆ—ƒtƒŒ[ƒ€’†‚ÉƒgƒŠƒKXVƒ^ƒCƒ~ƒ“ƒO‚ªŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢ê‡Aˆê“x‚Éˆ—
+            // ä»Šå›ã®å‡¦ç†ãƒ•ãƒ¬ãƒ¼ãƒ ä¸­ã«ãƒˆãƒªã‚¬æ›´æ–°ã‚¿ã‚¤ãƒŸãƒ³ã‚°ãŒå«ã¾ã‚Œã¦ã„ãªã„å ´åˆã€ä¸€åº¦ã«å‡¦ç†
 
             m_linearBuffer.write(pData, dataSize);
             m_linearBuffer.read(pData, dataSize, numLoopFrames, numNonZeroFrames, params.fadesOut, params.feedbackLevel, params.mix, bypass);
 
-            // Ÿ‰ñƒgƒŠƒKXVƒ^ƒCƒ~ƒ“ƒO‚Ü‚Å‚Ìc‚èŠÔ‚ğŒ¸‚ç‚·
+            // æ¬¡å›ãƒˆãƒªã‚¬æ›´æ–°ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã¾ã§ã®æ®‹ã‚Šæ™‚é–“ã‚’æ¸›ã‚‰ã™
             if (std::cmp_greater_equal(m_framesUntilTrigger, frameSize)) // m_framesUntilTrigger >= frameSize
             {
                 m_framesUntilTrigger -= frameSize;

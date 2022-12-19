@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <memory>
 #include <array>
 #include <set>
@@ -15,10 +15,10 @@ namespace ksmaudio::AudioEffect
 {
 	struct ActiveAudioEffectInvocation
 	{
-		// ã‘‚«ƒpƒ‰ƒ[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
+		// ä¸Šæ›¸ããƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 		const ParamValueSetDict* pOverrideParams;
 
-		// ‰¹ºƒGƒtƒFƒNƒg‚ğŒÄ‚Ño‚µ‚½ƒm[ƒc‚ÌƒŒ[ƒ“ƒCƒ“ƒfƒbƒNƒX
+		// éŸ³å£°ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’å‘¼ã³å‡ºã—ãŸãƒãƒ¼ãƒ„ã®ãƒ¬ãƒ¼ãƒ³ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		std::size_t laneIdx;
 	};
 	using ActiveAudioEffectDict = std::unordered_map<std::size_t, ActiveAudioEffectInvocation>;
@@ -40,10 +40,10 @@ namespace ksmaudio::AudioEffect
 
 		~AudioEffectBus();
 
-		// ƒI[ƒo[ƒ‰ƒCƒhƒpƒ‰ƒ[ƒ^•t‚«E•¡”w’è‚ÅƒAƒNƒeƒBƒu‚ÈƒGƒtƒFƒNƒg‚ğw’è‚µ‚ÄXV(ƒƒ“ƒOFXŒü‚¯)
+		// ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ä»˜ããƒ»è¤‡æ•°æŒ‡å®šã§ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’æŒ‡å®šã—ã¦æ›´æ–°(ãƒ­ãƒ³ã‚°FXå‘ã‘)
 		void update(const AudioEffect::Status& status, const ActiveAudioEffectDict& activeAudioEffectDict);
 
-		// ƒI[ƒo[ƒ‰ƒCƒhƒpƒ‰ƒ[ƒ^‚È‚µE’Pˆêw’è‚ÅƒAƒNƒeƒBƒu‚ÈƒGƒtƒFƒNƒg‚ğw’è‚µ‚ÄXV(LASERŒü‚¯)
+		// ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãªã—ãƒ»å˜ä¸€æŒ‡å®šã§ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’æŒ‡å®šã—ã¦æ›´æ–°(LASERå‘ã‘)
 		void update(const AudioEffect::Status& status, std::optional<std::size_t> activeAudioEffectIdx);
 
 		template <typename T>

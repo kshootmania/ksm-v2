@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ksmaudio/audio_effect/audio_effect.hpp"
 #include "ksmaudio/audio_effect/params/tapestop_params.hpp"
 #include "ksmaudio/audio_effect/detail/time_modulator.hpp"

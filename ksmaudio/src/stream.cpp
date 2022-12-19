@@ -1,30 +1,30 @@
-#include "ksmaudio/stream.hpp"
+ï»¿#include "ksmaudio/stream.hpp"
 #include <fstream>
 #include "ksmaudio/ksmaudio.hpp"
 
 namespace
 {
-	// ƒRƒ“ƒvƒŒƒbƒT[‚Ìƒpƒ‰ƒ[ƒ^’l
-	// HSP”Å: https://github.com/m4saka/kshootmania-v1-hsp/blob/461901f1e925cb8cb474fd02726084cfca9ec3d4/kshootmania.hsp#L792
-	// (‰¹Š„‚ê‰ü‘P‚Ì‚½‚ß‚ÉHSP”Å‚©‚ç•ÏX‚µ‚Ä‚¢‚é)
+	// ã‚³ãƒ³ãƒ—ãƒ¬ãƒƒã‚µãƒ¼ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å€¤
+	// HSPç‰ˆ: https://github.com/m4saka/kshootmania-v1-hsp/blob/461901f1e925cb8cb474fd02726084cfca9ec3d4/kshootmania.hsp#L792
+	// (éŸ³å‰²ã‚Œæ”¹å–„ã®ãŸã‚ã«HSPç‰ˆã‹ã‚‰å¤‰æ›´ã—ã¦ã„ã‚‹)
 	constexpr BASS_BFX_COMPRESSOR2 kCompressorFXParams
 	{
 		.fGain = 18.0f,
 		.fThreshold = -24.0f,
 		.fRatio = 5.0f,
-		.fAttack = 1.0f, // ¦ms’PˆÊ(44ƒTƒ“ƒvƒ‹)
-		.fRelease = 20.0f, // ¦ms’PˆÊ(882ƒTƒ“ƒvƒ‹)
+		.fAttack = 1.0f, // â€»mså˜ä½(44ã‚µãƒ³ãƒ—ãƒ«)
+		.fRelease = 20.0f, // â€»mså˜ä½(882ã‚µãƒ³ãƒ—ãƒ«)
 		.lChannel = BASS_BFX_CHANALL,
 	};
 
-	// ƒRƒ“ƒvƒŒƒbƒT[‚Ì‘O’i‚Ì‰¹—Ê•ÏX‚Ìƒpƒ‰ƒ[ƒ^’l
+	// ã‚³ãƒ³ãƒ—ãƒ¬ãƒƒã‚µãƒ¼ã®å‰æ®µã®éŸ³é‡å¤‰æ›´ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å€¤
 	constexpr BASS_BFX_VOLUME kVolumeFXParams
 	{
 		.lChannel = BASS_BFX_CHANALL,
 		.fVolume = 0.1f,
 	};
 
-	// ŠeƒGƒtƒFƒNƒg‚Ì—Dæ‡ˆÊ
+	// å„ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®å„ªå…ˆé †ä½
 	constexpr int kCompressorFXPriority = 0;
 	constexpr int kVolumeFXPriority = 10;
 
@@ -77,10 +77,10 @@ namespace ksmaudio
 		, m_hStream(LoadStream(filePath, m_preloadedBinary.get()))
 		, m_info(GetChannelInfo(m_hStream))
 	{
-		// ‰¹—Ê‚ğİ’è
+		// éŸ³é‡ã‚’è¨­å®š
 		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(volume));
 
-		// ƒRƒ“ƒvƒŒƒbƒT[‚ğ“K—p
+		// ã‚³ãƒ³ãƒ—ãƒ¬ãƒƒã‚µãƒ¼ã‚’é©ç”¨
 		if (enableCompressor)
 		{
 			const HFX hCompressorFX = BASS_ChannelSetFX(m_hStream, BASS_FX_BFX_COMPRESSOR2, kCompressorFXPriority);
@@ -159,7 +159,7 @@ namespace ksmaudio
 			return BASS_ChannelBytes2Seconds(m_hStream, playbuf);
 		}*/
 
-		// ã‹L‚Å‚à‘å’ïƒoƒbƒtƒ@ƒTƒCƒY‚Æ“¯‚¶‚É‚È‚é‚ª•Ï“®‚·‚é‚Ì‚ÅA‚»‚Ì‚Ü‚Üƒoƒbƒtƒ@ƒTƒCƒY‚ğ•Ô‚µ‚½•û‚ª‰¹ºƒGƒtƒFƒNƒg‚Ìƒ^ƒCƒ~ƒ“ƒOŒvZ‚ªˆÀ’è‚·‚é
+		// ä¸Šè¨˜ã§ã‚‚å¤§æŠµãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã¨åŒã˜ã«ãªã‚‹ãŒå¤‰å‹•ã™ã‚‹ã®ã§ã€ãã®ã¾ã¾ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã‚’è¿”ã—ãŸæ–¹ãŒéŸ³å£°ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°è¨ˆç®—ãŒå®‰å®šã™ã‚‹
 		return kBufferSizeMs / 1000.0f;
 	}
 }

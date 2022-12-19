@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <algorithm>
 #include "ring_buffer.hpp"
 
@@ -20,21 +20,21 @@ namespace ksmaudio::AudioEffect::detail
 
         void update(float playSpeed)
         {
-            // Ä¶‘¬“x‚ğ‚à‚Æ‚ÉƒfƒBƒŒƒCƒ^ƒCƒ€‚ğXV
+            // å†ç”Ÿé€Ÿåº¦ã‚’ã‚‚ã¨ã«ãƒ‡ã‚£ãƒ¬ã‚¤ã‚¿ã‚¤ãƒ ã‚’æ›´æ–°
             if (playSpeed != 1.0f)
             {
                 m_delaySample = std::clamp(m_delaySample + 1.0f - playSpeed, 0.0f, m_maxDelayFrames);
             }
         }
 
-        // 1ƒ`ƒƒƒ“ƒlƒ‹‚É‚Â‚¢‚Ä’l‚ğ“Ç‚İ‚İ/‘‚«‚İ
-        // (update‚Ü‚½‚ÍresetDelayTime‚ğŒÄ‚ñ‚¾Œã‚Åg—p‚·‚é‚±‚Æ)
+        // 1ãƒãƒ£ãƒ³ãƒãƒ«ã«ã¤ã„ã¦å€¤ã‚’èª­ã¿è¾¼ã¿/æ›¸ãè¾¼ã¿
+        // (updateã¾ãŸã¯resetDelayTimeã‚’å‘¼ã‚“ã å¾Œã§ä½¿ç”¨ã™ã‚‹ã“ã¨)
         float readWrite(float value, std::size_t channel)
         {
-            // ƒoƒbƒtƒ@‚ÉƒTƒ“ƒvƒ‹‚ğ‹L˜^
+            // ãƒãƒƒãƒ•ã‚¡ã«ã‚µãƒ³ãƒ—ãƒ«ã‚’è¨˜éŒ²
             m_ringBuffer.write(value, channel);
 
-            // ƒfƒBƒŒƒCƒTƒ“ƒvƒ‹‚ğƒoƒbƒtƒ@‚©‚çæ“¾
+            // ãƒ‡ã‚£ãƒ¬ã‚¤ã‚µãƒ³ãƒ—ãƒ«ã‚’ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰å–å¾—
             float wet;
             if (m_delaySample > 0.0f)
             {
@@ -58,8 +58,8 @@ namespace ksmaudio::AudioEffect::detail
             m_ringBuffer.advanceCursor(frameCount);
         }
 
-        // ‘Sƒ`ƒƒƒ“ƒlƒ‹‚É‚Â‚¢‚Ä‚Ü‚Æ‚ß‚Ä’l‚ğ‘‚«‚İ
-        // (update‚Ü‚½‚ÍresetDelayTime‚ğŒÄ‚ñ‚¾Œã‚Åg—p‚·‚é‚±‚Æ)
+        // å…¨ãƒãƒ£ãƒ³ãƒãƒ«ã«ã¤ã„ã¦ã¾ã¨ã‚ã¦å€¤ã‚’æ›¸ãè¾¼ã¿
+        // (updateã¾ãŸã¯resetDelayTimeã‚’å‘¼ã‚“ã å¾Œã§ä½¿ç”¨ã™ã‚‹ã“ã¨)
         void writeAndAdvanceCursor(const float* pData, std::size_t size)
         {
             assert(size % m_ringBuffer.numChannels() == 0U);
@@ -67,8 +67,8 @@ namespace ksmaudio::AudioEffect::detail
             m_ringBuffer.advanceCursor(size / m_ringBuffer.numChannels());
         }
 
-        // ƒfƒBƒŒƒCƒ^ƒCƒ€‚ğƒŠƒZƒbƒg‚µ‚Ä0‚É‚·‚é
-        // (Ä¶‘¬“x‚ğLFO‚Å—h‚ç‚·ê‡‚ÉAüŠú‚²‚Æ‚É‚±‚ê‚ğŒÄ‚Ô‚Æ•‚“®¬”“_”‚ÌŒvZŒë·‚Ì’~Ï‚ğ–h~‚Å‚«‚é)
+        // ãƒ‡ã‚£ãƒ¬ã‚¤ã‚¿ã‚¤ãƒ ã‚’ãƒªã‚»ãƒƒãƒˆã—ã¦0ã«ã™ã‚‹
+        // (å†ç”Ÿé€Ÿåº¦ã‚’LFOã§æºã‚‰ã™å ´åˆã«ã€å‘¨æœŸã”ã¨ã«ã“ã‚Œã‚’å‘¼ã¶ã¨æµ®å‹•å°æ•°ç‚¹æ•°ã®è¨ˆç®—èª¤å·®ã®è“„ç©ã‚’é˜²æ­¢ã§ãã‚‹)
         void resetDelayTime()
         {
             m_delaySample = 0.0f;

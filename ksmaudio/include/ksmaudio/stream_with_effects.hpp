@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <unordered_map>
 #include "audio_effect/audio_effect_bus.hpp"
 

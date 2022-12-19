@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <array>
 #include <memory>
 #include <cassert>
@@ -52,7 +52,7 @@ namespace ksmaudio::AudioEffect
 		DSPParams m_dspParams;
 		DSP m_dsp;
 
-		// isParamUpdatedŒˆ’è—p‚ÌXV‰ñ”ƒJƒEƒ“ƒ^
+		// isParamUpdatedæ±ºå®šç”¨ã®æ›´æ–°å›æ•°ã‚«ã‚¦ãƒ³ã‚¿
 		int m_statusUpdateCount = 0;
 		int m_prevStatusUpdateCountInProcessThread = 0;
 
@@ -67,10 +67,10 @@ namespace ksmaudio::AudioEffect
 
 		virtual ~BasicAudioEffect() = default;
 
-		// ‚±‚ÌŠÖ”‚Ì‚İ‘¼‚ÌŠÖ”‚Æ‚Í•Ê‚ÌƒXƒŒƒbƒh‚©‚çŒÄ‚Î‚ê‚é‚Ì‚Å’ˆÓ
+		// ã“ã®é–¢æ•°ã®ã¿ä»–ã®é–¢æ•°ã¨ã¯åˆ¥ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã‹ã‚‰å‘¼ã°ã‚Œã‚‹ã®ã§æ³¨æ„
 		virtual void process(float* pData, std::size_t dataSize) override
 		{
-			// updateStatus‚ªŒÄ‚Î‚ê‚½Œã‚Ì‰‰ñ‚Ì‚İƒgƒŠƒKXV‰Â”\
+			// updateStatusãŒå‘¼ã°ã‚ŒãŸå¾Œã®åˆå›ã®ã¿ãƒˆãƒªã‚¬æ›´æ–°å¯èƒ½
 			const bool isParamUpdated = m_statusUpdateCount != m_prevStatusUpdateCountInProcessThread;
 			m_prevStatusUpdateCountInProcessThread = m_statusUpdateCount;
 
@@ -118,7 +118,7 @@ namespace ksmaudio::AudioEffect
 		DSP m_dsp;
 		detail::UpdateTriggerTimeline m_updateTriggerTimeline;
 
-		// isParamUpdatedŒˆ’è—p‚ÌXV‰ñ”ƒJƒEƒ“ƒ^
+		// isParamUpdatedæ±ºå®šç”¨ã®æ›´æ–°å›æ•°ã‚«ã‚¦ãƒ³ã‚¿
 		int m_statusUpdateCount = 0;
 		int m_prevStatusUpdateCountInProcessThread = 0;
 
@@ -134,10 +134,10 @@ namespace ksmaudio::AudioEffect
 
 		virtual ~BasicAudioEffectWithTrigger() = default;
 
-		// ‚±‚ÌŠÖ”‚Ì‚İ‘¼‚ÌŠÖ”‚Æ‚Í•Ê‚ÌƒXƒŒƒbƒh‚©‚çŒÄ‚Î‚ê‚é‚Ì‚Å’ˆÓ
+		// ã“ã®é–¢æ•°ã®ã¿ä»–ã®é–¢æ•°ã¨ã¯åˆ¥ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã‹ã‚‰å‘¼ã°ã‚Œã‚‹ã®ã§æ³¨æ„
 		virtual void process(float* pData, std::size_t dataSize) override
 		{
-			// updateStatus‚ªŒÄ‚Î‚ê‚½Œã‚Ì‰‰ñ‚Ì‚İƒgƒŠƒKXV‰Â”\
+			// updateStatusãŒå‘¼ã°ã‚ŒãŸå¾Œã®åˆå›ã®ã¿ãƒˆãƒªã‚¬æ›´æ–°å¯èƒ½
 			const bool isParamUpdated = m_statusUpdateCount != m_prevStatusUpdateCountInProcessThread;
 			m_prevStatusUpdateCountInProcessThread = m_statusUpdateCount;
 

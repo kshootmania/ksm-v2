@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <algorithm>
 #include <cmath>
 #include <cassert>
@@ -15,7 +15,7 @@ namespace ksmaudio::AudioEffect
 
 	struct HighPassFilterParams
 	{
-		// TODO: freqAfreq_max‚Ì’l‚ğ•ÏX‰Â”\‚É‚·‚é
+		// TODO: freqã€freq_maxã®å€¤ã‚’å¤‰æ›´å¯èƒ½ã«ã™ã‚‹
 		Param v = DefineParam(Type::kRate, "0%-100%");
 		//Param freq = DefineParam(Type::kFreq, "100Hz");
 		//Param freqMax = DefineParam(Type::kFreq, "4600Hz");

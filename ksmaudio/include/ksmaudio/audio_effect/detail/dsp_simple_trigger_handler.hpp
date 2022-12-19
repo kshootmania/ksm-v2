@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <cstddef>
 
 namespace ksmaudio::AudioEffect::detail
@@ -54,7 +54,7 @@ namespace ksmaudio::AudioEffect::detail
             {
                 const std::ptrdiff_t newFramesUntilTrigger = static_cast<std::ptrdiff_t>(secUntilTrigger * static_cast<float>(sampleRate));
 
-                // ‘O‰ñ‚æ‚è¬‚³‚¢ê‡‚Ì‚İ”½‰f(ƒgƒŠƒK”­¶¡‘O‚ÉŸ‚ÌŠÔ‚ª“ü‚é‚±‚Æ‚ÅƒgƒŠƒK‚ª”²‚¯‚éŒ»Û‚ğ‰ñ”ğ‚·‚é‚½‚ß)
+                // å‰å›ã‚ˆã‚Šå°ã•ã„å ´åˆã®ã¿åæ˜ (ãƒˆãƒªã‚¬ç™ºç”Ÿå¯¸å‰ã«æ¬¡ã®æ™‚é–“ãŒå…¥ã‚‹ã“ã¨ã§ãƒˆãƒªã‚¬ãŒæŠœã‘ã‚‹ç¾è±¡ã‚’å›é¿ã™ã‚‹ãŸã‚)
                 if (m_framesUntilTrigger < 0 || m_framesUntilTrigger > newFramesUntilTrigger)
                 {
                     m_framesUntilTrigger = newFramesUntilTrigger;

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <set>
 #include <optional>
@@ -79,11 +79,11 @@ namespace ksmaudio::AudioEffect
 		{
 			const bool isOn = laneIdx.has_value();
 
-			// DSPƒpƒ‰ƒ[ƒ^ã‚Ìtrigger©‘Ì‚Í’Êí‚Ìƒpƒ‰ƒ[ƒ^‚Æ“¯‚¶
+			// DSPãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ä¸Šã®triggerè‡ªä½“ã¯é€šå¸¸ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¨åŒã˜
 			const bool trigger = GetValueAsBool(m_innerParam, status, isOn);
 
-			// trigger‚ªfalse‚©‚çtrue‚É•Ï‚í‚Á‚½‚Æ‚«A‚Ü‚½‚Í
-			// ƒm[ƒc’†‚É•Ê‚ÌƒŒ[ƒ“‚Ìƒm[ƒc‚ğ’Ç‰Á‚Å‰Ÿ‚µ‚ÄupdateTrigger‚ªoff¨on‚É‚È‚Á‚½‚Æ‚«‚ÍAreset‚Ì’l‚ğtrue‚É‚·‚é
+			// triggerãŒfalseã‹ã‚‰trueã«å¤‰ã‚ã£ãŸã¨ãã€ã¾ãŸã¯
+			// ãƒãƒ¼ãƒ„ä¸­ã«åˆ¥ã®ãƒ¬ãƒ¼ãƒ³ã®ãƒãƒ¼ãƒ„ã‚’è¿½åŠ ã§æŠ¼ã—ã¦updateTriggerãŒoffâ†’onã«ãªã£ãŸã¨ãã¯ã€resetã®å€¤ã‚’trueã«ã™ã‚‹
 			m_reset = trigger && (!m_prevTrigger || laneIdx != m_prevLaneIdx);
 
 			m_prevTrigger = trigger;
@@ -122,13 +122,13 @@ namespace ksmaudio::AudioEffect
 		{
 			const bool isOn = laneIdx.has_value();
 
-			// updateTrigger‚Ì"Off>OnMin-OnMax"‚ÌOff‚ÌƒgƒŠƒKƒ^ƒCƒ~ƒ“ƒO‚Í–‘O‚ÉŒvZÏ‚İ‚Å•Ê“rsecUntilTrigger‘¤‚Åˆ—‚³‚ê‚é‚½‚ß–³‹‚·‚é
-			// (‚½‚¾‚µA"on>off-on"‚â"on-off"‚Ìê‡‚ÍƒvƒŒƒC’†‚Éoff¨on‚É‚È‚è‚¤‚é‚Ì‚Å–³‹‚¹‚¸A3‚Â‚·‚×‚Ä"on"‚Ìê‡‚Ì‚İ–³‹‚·‚éBsecUntilTrigger‚Ì•û‚Æ‘½d‚ÉXV‚³‚ê‚éê‡‚à‚ ‚é‚±‚Æ‚É‚È‚é‚ªÀ—pã‘å‚µ‚½–â‘è‚Í‚È‚¢)
+			// updateTriggerã®"Off>OnMin-OnMax"ã®Offã®ãƒˆãƒªã‚¬ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã¯äº‹å‰ã«è¨ˆç®—æ¸ˆã¿ã§åˆ¥é€”secUntilTriggerå´ã§å‡¦ç†ã•ã‚Œã‚‹ãŸã‚ç„¡è¦–ã™ã‚‹
+			// (ãŸã ã—ã€"on>off-on"ã‚„"on-off"ã®å ´åˆã¯ãƒ—ãƒ¬ã‚¤ä¸­ã«offâ†’onã«ãªã‚Šã†ã‚‹ã®ã§ç„¡è¦–ã›ãšã€3ã¤ã™ã¹ã¦"on"ã®å ´åˆã®ã¿ç„¡è¦–ã™ã‚‹ã€‚secUntilTriggerã®æ–¹ã¨å¤šé‡ã«æ›´æ–°ã•ã‚Œã‚‹å ´åˆã‚‚ã‚ã‚‹ã“ã¨ã«ãªã‚‹ãŒå®Ÿç”¨ä¸Šå¤§ã—ãŸå•é¡Œã¯ãªã„)
 			const bool ignoreUpdateTrigger = m_innerParam.valueSet.off && m_innerParam.valueSet.onMin && m_innerParam.valueSet.onMax;
 
-			// DSPƒpƒ‰ƒ[ƒ^ã‚ÌupdateTrigger‚Íoff¨on‚É•Ï‚í‚Á‚½uŠÔ‚¾‚¯true‚É‚·‚é
+			// DSPãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ä¸Šã®updateTriggerã¯offâ†’onã«å¤‰ã‚ã£ãŸç¬é–“ã ã‘trueã«ã™ã‚‹
 			const bool rawUpdateTrigger = GetValueAsBool(m_innerParam, status, isOn) && !ignoreUpdateTrigger;
-			const bool updateTriggerValue = rawUpdateTrigger && (!m_prevRawUpdateTrigger || laneIdx != m_prevLaneIdx); // ƒm[ƒc’†‚É•Ê‚ÌƒŒ[ƒ“‚Ìƒm[ƒc‚ğ’Ç‰Á‚Å‰Ÿ‚µ‚ÄupdateTrigger‚ªoff¨on‚É‚È‚éê‡‚à‚ ‚é‚Ì‚ÅAlaneIdx‚Ì•Ï‰»‚àORğŒ‚É“ü‚ê‚é
+			const bool updateTriggerValue = rawUpdateTrigger && (!m_prevRawUpdateTrigger || laneIdx != m_prevLaneIdx); // ãƒãƒ¼ãƒ„ä¸­ã«åˆ¥ã®ãƒ¬ãƒ¼ãƒ³ã®ãƒãƒ¼ãƒ„ã‚’è¿½åŠ ã§æŠ¼ã—ã¦updateTriggerãŒoffâ†’onã«ãªã‚‹å ´åˆã‚‚ã‚ã‚‹ã®ã§ã€laneIdxã®å¤‰åŒ–ã‚‚ORæ¡ä»¶ã«å…¥ã‚Œã‚‹
 			m_prevRawUpdateTrigger = rawUpdateTrigger;
 			m_prevLaneIdx = laneIdx;
 
@@ -145,8 +145,8 @@ namespace ksmaudio::AudioEffect
 
 	UpdateTriggerParam DefineUpdateTriggerParam(const std::string& valueSetStr);
 
-	// ƒpƒ‰ƒ[ƒ^‚ÌID
-	// (Às‚ÌŠÇ—‚É‚µ‚©g—p‚µ‚È‚¢‚Ì‚ÅAŒã‚©‚ç––”öˆÈŠO‚Ö—ñ‹“q‚ğ’Ç‰Á‚µ‚Ä‚à–â‘è‚È‚¢)
+	// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ID
+	// (å®Ÿè¡Œæ™‚ã®ç®¡ç†ã«ã—ã‹ä½¿ç”¨ã—ãªã„ã®ã§ã€å¾Œã‹ã‚‰æœ«å°¾ä»¥å¤–ã¸åˆ—æŒ™å­ã‚’è¿½åŠ ã—ã¦ã‚‚å•é¡Œãªã„)
 	enum class ParamID
 	{
 		kUnknown,

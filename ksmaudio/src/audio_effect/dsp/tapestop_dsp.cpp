@@ -1,12 +1,12 @@
-#include "ksmaudio/audio_effect/dsp/tapestop_dsp.hpp"
+ï»¿#include "ksmaudio/audio_effect/dsp/tapestop_dsp.hpp"
 #include <cmath>
 
 namespace ksmaudio::AudioEffect
 {
 	namespace
 	{
-		// 1ƒtƒŒ[ƒ€‚ ‚½‚è‚ÌÄ¶‘¬“x‚ÌŒ¸Š—Ê
-		// TODO: pow‚ÌŒvZƒRƒXƒg‚ª‚‚¢‚©‚à’m‚ê‚È‚¢Bƒe[ƒuƒ‹‰»‚·‚éH
+		// 1ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ãŸã‚Šã®å†ç”Ÿé€Ÿåº¦ã®æ¸›è¡°é‡
+		// TODO: powã®è¨ˆç®—ã‚³ã‚¹ãƒˆãŒé«˜ã„ã‹ã‚‚çŸ¥ã‚Œãªã„ã€‚ãƒ†ãƒ¼ãƒ–ãƒ«åŒ–ã™ã‚‹ï¼Ÿ
 		float SlowDownFactor(float speedParam, std::size_t framesSinceTrigger, float sampleRateScale)
 		{
 			const float scale = (std::max)(speedParam * 100, 0.0f) + 1.0f;
@@ -14,7 +14,7 @@ namespace ksmaudio::AudioEffect
 			return scale * rate / 500000.0f;
 		}
 
-		// Ä¶‘¬“x‚ğ‚à‚Æ‚ÉƒtƒF[ƒhƒAƒEƒg—p‚ÌU•”{—¦‚ğ‹‚ß‚é
+		// å†ç”Ÿé€Ÿåº¦ã‚’ã‚‚ã¨ã«ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆç”¨ã®æŒ¯å¹…å€ç‡ã‚’æ±‚ã‚ã‚‹
 		constexpr float FadeOutScale(float playSpeed)
 		{
 			if (0.0f <= playSpeed && playSpeed < 0.25f)
@@ -25,7 +25,7 @@ namespace ksmaudio::AudioEffect
 			return 1.0f;
 		}
 
-		// ƒfƒBƒŒƒCƒ^ƒCƒ€‚ÌÅ‘å•b”(ƒŠƒ“ƒOƒoƒbƒtƒ@‚ÌƒTƒCƒY)
+		// ãƒ‡ã‚£ãƒ¬ã‚¤ã‚¿ã‚¤ãƒ ã®æœ€å¤§ç§’æ•°(ãƒªãƒ³ã‚°ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º)
 		constexpr std::size_t kMaxDelayTimeSec = 10U;
 	}
 
@@ -72,7 +72,7 @@ namespace ksmaudio::AudioEffect
 
 		assert(dataSize % m_info.numChannels == 0);
 		
-		if (params.reset && isParamUpdated) // reset‚Ì’l‚Íƒpƒ‰ƒ[ƒ^XVŒã‚Ì‰‰ñÀs‚Ì‚İ—LŒø
+		if (params.reset && isParamUpdated) // resetã®å€¤ã¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ›´æ–°å¾Œã®åˆå›å®Ÿè¡Œæ™‚ã®ã¿æœ‰åŠ¹
 		{
 			m_timeModulator.resetDelayTime();
 			m_speedController.reset();

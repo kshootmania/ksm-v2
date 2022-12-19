@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <set>
 
 namespace ksmaudio::AudioEffect::detail
@@ -19,7 +19,7 @@ namespace ksmaudio::AudioEffect::detail
 
 		void update(float currentTimeSec)
 		{
-			// ƒJ[ƒ\ƒ‹‚ğŒ»İŠÔ‚Ü‚Åi‚ß‚é
+			// ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç¾åœ¨æ™‚é–“ã¾ã§é€²ã‚ã‚‹
 			while (m_updateTriggerTimingCursor != m_updateTriggerTiming.end() && *m_updateTriggerTimingCursor < currentTimeSec)
 			{
 				++m_updateTriggerTimingCursor;
@@ -27,7 +27,7 @@ namespace ksmaudio::AudioEffect::detail
 
 			if (m_updateTriggerTimingCursor == m_updateTriggerTiming.end())
 			{
-				// •‰‚Ì’l‚ÍDSP‘¤‚Å–³‹‚³‚ê‚é
+				// è² ã®å€¤ã¯DSPå´ã§ç„¡è¦–ã•ã‚Œã‚‹
 				m_secUntilTrigger = -1.0f;
 				return;
 			}

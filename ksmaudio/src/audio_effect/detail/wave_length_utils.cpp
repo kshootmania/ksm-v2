@@ -1,4 +1,4 @@
-#include "ksmaudio/audio_effect/detail/wave_length_utils.hpp"
+﻿#include "ksmaudio/audio_effect/detail/wave_length_utils.hpp"
 #include <array>
 #include <algorithm>
 #include <cmath>

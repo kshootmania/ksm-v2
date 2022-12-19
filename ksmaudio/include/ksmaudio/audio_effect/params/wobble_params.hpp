@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ksmaudio/audio_effect/audio_effect_param.hpp"
 
 namespace ksmaudio::AudioEffect

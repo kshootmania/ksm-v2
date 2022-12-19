@@ -1,4 +1,4 @@
-#include "ksmaudio/audio_effect/audio_effect_bus.hpp"
+ï»¿#include "ksmaudio/audio_effect/audio_effect_bus.hpp"
 
 namespace ksmaudio::AudioEffect
 {
@@ -95,7 +95,7 @@ namespace ksmaudio::AudioEffect
 			}
 
 			const bool isOn = activeAudioEffectIdx == i;
-			m_audioEffects[i]->updateStatus(status, isOn ? std::make_optional(0/*LASER‚ÍƒGƒtƒFƒNƒg‚ÉŠÖ‚µ‚ÄƒŒ[ƒ“”Ô†‚ğl—¶‚µ‚È‚¢‚Ì‚Å0Œˆ‚ß‘Å‚¿‚É‚·‚é*/) : std::nullopt);
+			m_audioEffects[i]->updateStatus(status, isOn ? std::make_optional(0/*LASERã¯ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã«é–¢ã—ã¦ãƒ¬ãƒ¼ãƒ³ç•ªå·ã‚’è€ƒæ…®ã—ãªã„ã®ã§0æ±ºã‚æ‰“ã¡ã«ã™ã‚‹*/) : std::nullopt);
 		}
 	}
 

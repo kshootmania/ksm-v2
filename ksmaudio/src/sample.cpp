@@ -1,4 +1,4 @@
-#include "ksmaudio/sample.hpp"
+﻿#include "ksmaudio/sample.hpp"
 #include <cassert>
 
 namespace

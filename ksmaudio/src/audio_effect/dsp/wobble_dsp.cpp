@@ -1,4 +1,4 @@
-#include "ksmaudio/audio_effect/dsp/wobble_dsp.hpp"
+ï»¿#include "ksmaudio/audio_effect/dsp/wobble_dsp.hpp"
 
 namespace ksmaudio::AudioEffect
 {
@@ -38,7 +38,7 @@ namespace ksmaudio::AudioEffect
     {
         assert(dataSize % m_info.numChannels == 0);
 
-        if (isParamUpdated) // secUntilTrigger‚Ì’l‚Íƒpƒ‰ƒ[ƒ^XVŒã‚Ì‰‰ñÀs‚Ì‚İ—LŒø
+        if (isParamUpdated) // secUntilTriggerã®å€¤ã¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ›´æ–°å¾Œã®åˆå›å®Ÿè¡Œæ™‚ã®ã¿æœ‰åŠ¹
         {
             m_triggerHandler.setFramesUntilTrigger(params.secUntilTrigger, m_info.sampleRate);
         }

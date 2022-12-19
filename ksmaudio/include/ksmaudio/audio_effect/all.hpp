@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "audio_effect.hpp"
 
 #include "dsp/retrigger_echo_dsp.hpp"

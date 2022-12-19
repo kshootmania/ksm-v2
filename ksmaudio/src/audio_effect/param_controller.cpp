@@ -1,4 +1,4 @@
-#include "ksmaudio/audio_effect/param_controller.hpp"
+ï»¿#include "ksmaudio/audio_effect/param_controller.hpp"
 
 namespace ksmaudio::AudioEffect
 {
@@ -61,7 +61,7 @@ namespace ksmaudio::AudioEffect
 
 	void ParamController::setOverrideParams(const ParamValueSetDict& overrideParams)
 	{
-		m_overrideParams = overrideParams; // TODO: ‚Å‚«‚é‚¾‚¯ƒRƒs[‚ğ”ğ‚¯‚½‚¢(ƒpƒtƒH[ƒ}ƒ“ƒX‚Ì‚½‚ß)
+		m_overrideParams = overrideParams; // TODO: ã§ãã‚‹ã ã‘ã‚³ãƒ”ãƒ¼ã‚’é¿ã‘ãŸã„(ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã®ãŸã‚)
 		refreshCurrentParams(m_timeSec);
 	}
 

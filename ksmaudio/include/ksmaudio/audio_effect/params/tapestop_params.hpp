@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "ksmaudio/audio_effect/audio_effect_param.hpp"
 
 namespace ksmaudio::AudioEffect
@@ -7,7 +7,7 @@ namespace ksmaudio::AudioEffect
 	{
 		float speed = 0.5f;
 		bool trigger = false;
-		bool reset = false; // trigger‚ªoff‚©‚çon‚É‚È‚Á‚½uŠÔ‚Ì‚İtrue‚É‚È‚é
+		bool reset = false; // triggerãŒoffã‹ã‚‰onã«ãªã£ãŸç¬é–“ã®ã¿trueã«ãªã‚‹
 		float mix = 1.0f;
 	};
 

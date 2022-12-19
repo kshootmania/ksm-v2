@@ -1,4 +1,4 @@
-#include "ksmaudio/audio_effect/audio_effect_param.hpp"
+ï»¿#include "ksmaudio/audio_effect/audio_effect_param.hpp"
 #include <string>
 #include <algorithm>
 #include <stdexcept>
@@ -8,7 +8,7 @@
 namespace ksmaudio::AudioEffect
 {
 	// Implementation in HSP: https://github.com/m4saka/kshootmania-v1-hsp/blob/19bfb6acbec8abd304b2e7dae6009df8e8e1f66f/src/scene/play/play_utils.hsp#L405
-	// TODO: ³í‚È•¶š—ñ‚©‚Ç‚¤‚©ŒŸØ‚·‚é‚½‚ß‚ÌŠÖ”‚ğ•Ê“rİ‚¯‚é
+	// TODO: æ­£å¸¸ãªæ–‡å­—åˆ—ã‹ã©ã†ã‹æ¤œè¨¼ã™ã‚‹ãŸã‚ã®é–¢æ•°ã‚’åˆ¥é€”è¨­ã‘ã‚‹
 	float StrToValue(Type type, const std::string& str)
 	{
 		try

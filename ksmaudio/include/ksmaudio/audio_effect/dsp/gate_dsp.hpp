@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ksmaudio/audio_effect/audio_effect.hpp"
 #include "ksmaudio/audio_effect/params/gate_params.hpp"
 #include "ksmaudio/audio_effect/detail/dsp_simple_trigger_handler.hpp"

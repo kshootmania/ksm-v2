@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <optional>
 #include "ksmaudio/audio_effect/audio_effect.hpp"
 #include "ksmaudio/audio_effect/params/peaking_filter_params.hpp"

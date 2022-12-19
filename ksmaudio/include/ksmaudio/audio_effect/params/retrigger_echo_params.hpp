@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "ksmaudio/audio_effect/audio_effect_param.hpp"
 
 namespace ksmaudio::AudioEffect
 {
 	struct RetriggerEchoDSPParams
 	{
-		float secUntilTrigger = -1.0f; // Note: •‰‚Ì’l‚É‚·‚é‚Æ–³‹‚³‚ê‚é
+		float secUntilTrigger = -1.0f; // Note: è² ã®å€¤ã«ã™ã‚‹ã¨ç„¡è¦–ã•ã‚Œã‚‹
 		bool updateTrigger = false;
 		float waveLength = 0.0f;
 		float rate = 0.7f;
@@ -37,10 +37,10 @@ namespace ksmaudio::AudioEffect
 				.updateTrigger = updateTrigger.render(status, laneIdx),
 				.waveLength = GetValue(waveLength, status, isOn),
 				.rate = GetValue(rate, status, isOn),
-				.fadesOut = false, // Retrigger‚Å‚ÍfalseŒÅ’è
-				.feedbackLevel = 1.0f, // Retrigger‚Å‚Í1ŒÅ’è
+				.fadesOut = false, // Retriggerã§ã¯falseå›ºå®š
+				.feedbackLevel = 1.0f, // Retriggerã§ã¯1å›ºå®š
 				.mix = GetValue(mix, status, isOn),
-				// secUntilTrigger‚Í—˜—p‘¤(BasicAudioEffectWithTrigger::updateStatus())‚Åİ’è‚³‚ê‚é‚Ì‚Å‚±‚±‚Å‚Íw’è‚µ‚È‚¢
+				// secUntilTriggerã¯åˆ©ç”¨å´(BasicAudioEffectWithTrigger::updateStatus())ã§è¨­å®šã•ã‚Œã‚‹ã®ã§ã“ã“ã§ã¯æŒ‡å®šã—ãªã„
 			};
 		}
 	};
@@ -67,11 +67,11 @@ namespace ksmaudio::AudioEffect
 			return {
 				.updateTrigger = updateTrigger.render(status, laneIdx),
 				.waveLength = GetValue(waveLength, status, isOn),
-				.rate = 1.0f, // Echo‚Å‚Í1ŒÅ’è
-				.fadesOut = true, // Echo‚Å‚ÍtrueŒÅ’è
+				.rate = 1.0f, // Echoã§ã¯1å›ºå®š
+				.fadesOut = true, // Echoã§ã¯trueå›ºå®š
 				.feedbackLevel = GetValue(feedbackLevel, status, isOn),
 				.mix = GetValue(mix, status, isOn),
-				// secUntilTrigger‚Í—˜—p‘¤(BasicAudioEffectWithTrigger::updateStatus())‚Åİ’è‚³‚ê‚é‚Ì‚Å‚±‚±‚Å‚Íw’è‚µ‚È‚¢
+				// secUntilTriggerã¯åˆ©ç”¨å´(BasicAudioEffectWithTrigger::updateStatus())ã§è¨­å®šã•ã‚Œã‚‹ã®ã§ã“ã“ã§ã¯æŒ‡å®šã—ãªã„
 			};
 		}
 	};

@@ -1,20 +1,20 @@
-#include "ksmaudio/audio_effect/dsp/low_pass_filter_dsp.hpp"
+ï»¿#include "ksmaudio/audio_effect/dsp/low_pass_filter_dsp.hpp"
 
 namespace ksmaudio::AudioEffect
 {
 	namespace
 	{
-		// 1ƒtƒŒ[ƒ€(1/44100•b)‚ ‚½‚è‚Ìv‚ÌüŒ`ƒC[ƒWƒ“ƒO‚Ì‘¬‚³(Å‘å•Ï‰»—Ê)
+		// 1ãƒ•ãƒ¬ãƒ¼ãƒ (1/44100ç§’)ã‚ãŸã‚Šã®vã®ç·šå½¢ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®é€Ÿã•(æœ€å¤§å¤‰åŒ–é‡)
 		constexpr float kVEasingSpeed = 0.01f;
 
-		// ƒtƒBƒ‹ƒ^“K—p‰Â”\‚ÈÅ’áü”g”
-		// (‚ü”g‚ğ‹­’²‚·‚é‚Æ¨á‚è‚É‚È‚é‚½‚ß‚µ‚«‚¢’l‚ğİ‚¯‚Ä‚¢‚é)
+		// ãƒ•ã‚£ãƒ«ã‚¿é©ç”¨å¯èƒ½ãªæœ€ä½å‘¨æ³¢æ•°
+		// (é«˜å‘¨æ³¢ã‚’å¼·èª¿ã™ã‚‹ã¨è€³éšœã‚Šã«ãªã‚‹ãŸã‚ã—ãã„å€¤ã‚’è¨­ã‘ã¦ã„ã‚‹)
 		constexpr float kFreqThresholdMax = 14800.0f;
 
-		// TODO: freqAfreq_max‚Ì’l‚ğ•ÏX‰Â”\‚É‚·‚é
+		// TODO: freqã€freq_maxã®å€¤ã‚’å¤‰æ›´å¯èƒ½ã«ã™ã‚‹
 		float GetLowPassFilterFreqValue(float v)
 		{
-			// HSP”Å‚Å‚ÌŒvZ®‚ğÄŒ»‚µ‚½‚à‚Ì:
+			// HSPç‰ˆã§ã®è¨ˆç®—å¼ã‚’å†ç¾ã—ãŸã‚‚ã®:
 			// https://github.com/m4saka/kshootmania-v1-hsp/blob/08275836547c7792a6d4f59037e56e947f2979c3/src/scene/play/play_audio_effects.hsp#L957
 
 			return 15000.0f - 14200.0f * std::sin(std::sin(v * 1.25f) / std::sin(1.25f) * 1.5f) / std::sin(1.5f);
@@ -36,23 +36,23 @@ namespace ksmaudio::AudioEffect
 
 		const float fSampleRate = static_cast<float>(m_info.sampleRate);
 		const float targetFreq = GetLowPassFilterFreqValue(params.v);
-		const bool isBypassed = bypass || params.mix == 0.0f; // Ø‚è‘Ö‚¦‚ÌƒmƒCƒY‰ñ”ğ‚Ì‚½‚ß‚Ébypassó‘Ô‚Å‚àˆ—©‘Ì‚Í‚·‚é
+		const bool isBypassed = bypass || params.mix == 0.0f; // åˆ‡ã‚Šæ›¿ãˆæ™‚ã®ãƒã‚¤ã‚ºå›é¿ã®ãŸã‚ã«bypassçŠ¶æ…‹ã§ã‚‚å‡¦ç†è‡ªä½“ã¯ã™ã‚‹
 
 		assert(dataSize % m_info.numChannels == 0U);
 		const std::size_t frameSize = dataSize / m_info.numChannels;
 		float freq = GetLowPassFilterFreqValue(m_vEasing.value());
-		bool mixSkipped = isBypassed || freq > kFreqThresholdMax; // ‚ü”g”‚É‘Î‚µ‚Ä‚Í“K—p‚µ‚È‚¢
+		bool mixSkipped = isBypassed || freq > kFreqThresholdMax; // é«˜å‘¨æ³¢æ•°ã«å¯¾ã—ã¦ã¯é©ç”¨ã—ãªã„
 		for (std::size_t i = 0U; i < frameSize; ++i)
 		{
-			// ’l‚ª”ò‚Ô‚±‚Æ‚ÅƒmƒCƒY‚ª“ü‚ç‚È‚¢‚æ‚¤v‚Ì’l‚É‘Î‚µ‚ÄüŒ`‚ÌƒC[ƒWƒ“ƒO‚ğ“ü‚ê‚é
+			// å€¤ãŒé£›ã¶ã“ã¨ã§ãƒã‚¤ã‚ºãŒå…¥ã‚‰ãªã„ã‚ˆã†vã®å€¤ã«å¯¾ã—ã¦ç·šå½¢ã®ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã‚’å…¥ã‚Œã‚‹
 			const bool vUpdated = m_vEasing.update(params.v);
 			if (vUpdated)
 			{
 				freq = GetLowPassFilterFreqValue(m_vEasing.value());
-				mixSkipped = isBypassed || freq > kFreqThresholdMax; // ‚ü”g”‚É‘Î‚µ‚Ä‚Í“K—p‚µ‚È‚¢
+				mixSkipped = isBypassed || freq > kFreqThresholdMax; // é«˜å‘¨æ³¢æ•°ã«å¯¾ã—ã¦ã¯é©ç”¨ã—ãªã„
 			}
 
-			// Šeƒ`ƒƒƒ“ƒlƒ‹‚ÉƒtƒBƒ‹ƒ^‚ğ“K—p
+			// å„ãƒãƒ£ãƒ³ãƒãƒ«ã«ãƒ•ã‚£ãƒ«ã‚¿ã‚’é©ç”¨
 			for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
 			{
 				if (vUpdated)
