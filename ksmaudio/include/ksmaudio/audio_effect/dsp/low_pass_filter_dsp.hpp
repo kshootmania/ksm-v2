@@ -16,6 +16,8 @@ namespace ksmaudio::AudioEffect
 	public:
 		explicit LowPassFilterDSP(const DSPCommonInfo& info);
 
-		void process(float* pData, std::size_t dataSize, bool bypass, const LowPassFilterDSPParams& params, bool isParamUpdated);
+		void process(float* pData, std::size_t dataSize, bool bypass, const LowPassFilterDSPParams& params);
+
+		void updateParams(const LowPassFilterDSPParams& params);
 	};
 }

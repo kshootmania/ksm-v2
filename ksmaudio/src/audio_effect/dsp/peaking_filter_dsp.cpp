@@ -48,7 +48,7 @@ namespace ksmaudio::AudioEffect
 	{
 	}
 
-	void PeakingFilterDSP::process(float* pData, std::size_t dataSize, bool bypass, const PeakingFilterDSPParams& params, bool isParamUpdated)
+	void PeakingFilterDSP::process(float* pData, std::size_t dataSize, bool bypass, const PeakingFilterDSPParams& params)
 	{
 		if (m_info.isUnsupported)
 		{
@@ -56,7 +56,6 @@ namespace ksmaudio::AudioEffect
 		}
 
 		const float fSampleRate = static_cast<float>(m_info.sampleRate);
-		const float targetFreq = GetPeakingFilterFreqValue(params.v);
 		const float gainDb = GetPeakingFilterGainDb(params.v, params.gainRate);
 		const bool isBypassed = bypass || params.mix == 0.0f; // 切り替え時のノイズ回避のためにbypass状態でも処理自体はする
 
@@ -90,5 +89,10 @@ namespace ksmaudio::AudioEffect
 				++pData;
 			}
 		}
+	}
+
+	void PeakingFilterDSP::updateParams(const PeakingFilterDSPParams& params)
+	{
+		// 特に何もしない
 	}
 }

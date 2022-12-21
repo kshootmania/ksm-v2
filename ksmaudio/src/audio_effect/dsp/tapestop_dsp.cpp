@@ -63,7 +63,7 @@ namespace ksmaudio::AudioEffect
 	{
 	}
 
-	void TapestopDSP::process(float* pData, std::size_t dataSize, bool bypass, const TapestopDSPParams& params, bool isParamUpdated)
+	void TapestopDSP::process(float* pData, std::size_t dataSize, bool bypass, const TapestopDSPParams& params)
 	{
 		if (m_info.isUnsupported)
 		{
@@ -72,12 +72,6 @@ namespace ksmaudio::AudioEffect
 
 		assert(dataSize % m_info.numChannels == 0);
 		
-		if (params.reset && isParamUpdated) // resetの値はパラメータ更新後の初回実行時のみ有効
-		{
-			m_timeModulator.resetDelayTime();
-			m_speedController.reset();
-		}
-
 		if (!bypass && params.trigger && params.mix > 0.0f)
 		{
 			const std::size_t frameSize = dataSize / m_info.numChannels;
@@ -98,6 +92,15 @@ namespace ksmaudio::AudioEffect
 		else
 		{
 			m_timeModulator.writeAndAdvanceCursor(pData, dataSize);
+		}
+	}
+
+	void TapestopDSP::updateParams(const TapestopDSPParams& params)
+	{
+		if (params.reset)
+		{
+			m_timeModulator.resetDelayTime();
+			m_speedController.reset();
 		}
 	}
 }

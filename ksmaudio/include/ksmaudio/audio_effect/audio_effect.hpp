@@ -52,7 +52,6 @@ namespace ksmaudio::AudioEffect
 		Params m_params;
 		DSPParams m_dspParams;
 		DSP m_dsp;
-		bool m_isParamUpdated;
 		std::mutex m_mutex;
 
 	public:
@@ -71,7 +70,7 @@ namespace ksmaudio::AudioEffect
 		{
 			std::lock_guard<std::mutex> lock(m_mutex);
 
-			m_dsp.process(pData, dataSize, m_bypass, m_dspParams, std::exchange(m_isParamUpdated, false));
+			m_dsp.process(pData, dataSize, m_bypass, m_dspParams);
 		}
 
 		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) override
@@ -79,8 +78,7 @@ namespace ksmaudio::AudioEffect
 			std::lock_guard<std::mutex> lock(m_mutex);
 
 			m_dspParams = m_params.render(status, laneIdx);
-
-			m_isParamUpdated = true;
+			m_dsp.updateParams(m_dspParams);
 		}
 
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSet) override
@@ -125,7 +123,6 @@ namespace ksmaudio::AudioEffect
 		DSPParams m_dspParams;
 		DSP m_dsp;
 		detail::UpdateTriggerTimeline m_updateTriggerTimeline;
-		bool m_isParamUpdated = true;
 		std::mutex m_mutex;
 
 	public:
@@ -145,7 +142,7 @@ namespace ksmaudio::AudioEffect
 		{
 			std::lock_guard<std::mutex> lock(m_mutex);
 
-			m_dsp.process(pData, dataSize, m_bypass, m_dspParams, std::exchange(m_isParamUpdated, false));
+			m_dsp.process(pData, dataSize, m_bypass, m_dspParams);
 		}
 
 		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) override
@@ -157,7 +154,7 @@ namespace ksmaudio::AudioEffect
 			m_updateTriggerTimeline.update(status.sec);
 			m_dspParams.secUntilTrigger = m_updateTriggerTimeline.secUntilTrigger();
 
-			m_isParamUpdated = true;
+			m_dsp.updateParams(m_dspParams);
 		}
 
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSet) override

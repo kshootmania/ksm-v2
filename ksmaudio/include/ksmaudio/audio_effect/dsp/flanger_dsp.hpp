@@ -17,6 +17,8 @@ namespace ksmaudio::AudioEffect
 	public:
 		explicit FlangerDSP(const DSPCommonInfo& info);
 
-		void process(float* pData, std::size_t dataSize, bool bypass, const FlangerDSPParams& params, bool isParamUpdated);
+		void process(float* pData, std::size_t dataSize, bool bypass, const FlangerDSPParams& params);
+
+		void updateParams(const FlangerDSPParams& params);
 	};
 }

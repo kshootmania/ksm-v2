@@ -14,6 +14,8 @@ namespace ksmaudio::AudioEffect
 	public:
 		explicit BitcrusherDSP(const DSPCommonInfo& info);
 
-		void process(float* pData, std::size_t dataSize, bool bypass, const BitcrusherDSPParams& params, bool isParamUpdated);
+		void process(float* pData, std::size_t dataSize, bool bypass, const BitcrusherDSPParams& params);
+
+		void updateParams(const BitcrusherDSPParams& params);
 	};
 }

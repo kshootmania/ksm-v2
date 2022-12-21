@@ -34,14 +34,9 @@ namespace ksmaudio::AudioEffect
     {
     }
 
-    void GateDSP::process(float* pData, std::size_t dataSize, bool bypass, const GateDSPParams& params, bool isParamUpdated)
+    void GateDSP::process(float* pData, std::size_t dataSize, bool bypass, const GateDSPParams& params)
     {
         assert(dataSize % m_info.numChannels == 0);
-
-        if (isParamUpdated) // secUntilTriggerの値はパラメータ更新後の初回実行時のみ有効
-        {
-            m_triggerHandler.setFramesUntilTrigger(params.secUntilTrigger, m_info.sampleRate);
-        }
 
         const std::size_t frameSize = dataSize / m_info.numChannels;
         
@@ -64,5 +59,10 @@ namespace ksmaudio::AudioEffect
             }
             m_triggerHandler.advance();
         }
+    }
+
+    void GateDSP::updateParams(const GateDSPParams& params)
+    {
+        m_triggerHandler.setFramesUntilTrigger(params.secUntilTrigger, m_info.sampleRate);
     }
 }

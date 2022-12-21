@@ -10,31 +10,9 @@ namespace ksmaudio::AudioEffect
     {
     }
 
-    void RetriggerEchoDSP::process(float* pData, std::size_t dataSize, bool bypass, const RetriggerEchoDSPParams& params, bool isParamUpdated)
+    void RetriggerEchoDSP::process(float* pData, std::size_t dataSize, bool bypass, const RetriggerEchoDSPParams& params)
     {
         assert(dataSize % m_info.numChannels == 0);
-
-        if (isParamUpdated) // secUntilTriggerおよびupdateTriggerの値はパラメータ更新後の初回実行時のみ有効
-        {
-            // トリガ更新までのフレーム数を計算
-            if (params.secUntilTrigger >= 0.0f) // 負の値は無視
-            {
-                const std::ptrdiff_t newFramesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * static_cast<float>(m_info.sampleRate));
-
-                // 前回より小さい場合のみ反映(トリガ発生寸前に次の時間が入ることでトリガが抜ける現象を回避するため)
-                if (m_framesUntilTrigger < 0 || m_framesUntilTrigger > newFramesUntilTrigger)
-                {
-                    m_framesUntilTrigger = newFramesUntilTrigger;
-                }
-            }
-
-            // updateTriggerによるトリガ更新
-            // ("update_trigger"を"off>on"や"off-on"などにした場合のノーツ判定による更新)
-            if (params.updateTrigger)
-            {
-                m_linearBuffer.resetReadWriteCursors();
-            }
-        }
 
         const std::size_t frameSize = dataSize / m_info.numChannels;
         const std::size_t numLoopFrames = static_cast<std::size_t>(params.waveLength * static_cast<float>(m_info.sampleRate));
@@ -70,6 +48,28 @@ namespace ksmaudio::AudioEffect
             {
                 m_framesUntilTrigger -= frameSize;
             }
+        }
+    }
+
+    void RetriggerEchoDSP::updateParams(const RetriggerEchoDSPParams& params)
+    {
+        // トリガ更新までのフレーム数を計算
+        if (params.secUntilTrigger >= 0.0f) // 負の値は無視
+        {
+            const std::ptrdiff_t newFramesUntilTrigger = static_cast<std::ptrdiff_t>(params.secUntilTrigger * static_cast<float>(m_info.sampleRate));
+
+            // 前回より小さい場合のみ反映(トリガ発生寸前に次の時間が入ることでトリガが抜ける現象を回避するため)
+            if (m_framesUntilTrigger < 0 || m_framesUntilTrigger > newFramesUntilTrigger)
+            {
+                m_framesUntilTrigger = newFramesUntilTrigger;
+            }
+        }
+
+        // updateTriggerによるトリガ更新
+        // ("update_trigger"を"off>on"や"off-on"などにした場合のノーツ判定による更新)
+        if (params.updateTrigger)
+        {
+            m_linearBuffer.resetReadWriteCursors();
         }
     }
 }

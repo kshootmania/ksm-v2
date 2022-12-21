@@ -27,7 +27,7 @@ namespace ksmaudio::AudioEffect
 	{
 	}
 
-	void LowPassFilterDSP::process(float* pData, std::size_t dataSize, bool bypass, const LowPassFilterDSPParams& params, bool isParamUpdated)
+	void LowPassFilterDSP::process(float* pData, std::size_t dataSize, bool bypass, const LowPassFilterDSPParams& params)
 	{
 		if (m_info.isUnsupported)
 		{
@@ -35,7 +35,6 @@ namespace ksmaudio::AudioEffect
 		}
 
 		const float fSampleRate = static_cast<float>(m_info.sampleRate);
-		const float targetFreq = GetLowPassFilterFreqValue(params.v);
 		const bool isBypassed = bypass || params.mix == 0.0f; // 切り替え時のノイズ回避のためにbypass状態でも処理自体はする
 
 		assert(dataSize % m_info.numChannels == 0U);
@@ -68,5 +67,10 @@ namespace ksmaudio::AudioEffect
 				++pData;
 			}
 		}
+	}
+
+	void LowPassFilterDSP::updateParams(const LowPassFilterDSPParams& params)
+	{
+		// 特に何もしない
 	}
 }

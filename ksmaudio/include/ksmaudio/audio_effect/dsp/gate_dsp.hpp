@@ -14,6 +14,8 @@ namespace ksmaudio::AudioEffect
 	public:
 		explicit GateDSP(const DSPCommonInfo& info);
 
-		void process(float* pData, std::size_t dataSize, bool bypass, const GateDSPParams& params, bool isParamUpdated);
+		void process(float* pData, std::size_t dataSize, bool bypass, const GateDSPParams& params);
+
+		void updateParams(const GateDSPParams& params);
 	};
 }
