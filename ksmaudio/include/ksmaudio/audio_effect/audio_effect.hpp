@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <array>
 #include <memory>
+#include <mutex>
 #include <cassert>
 #include "bass.h"
 #include "audio_effect_param.hpp"
@@ -51,10 +52,8 @@ namespace ksmaudio::AudioEffect
 		Params m_params;
 		DSPParams m_dspParams;
 		DSP m_dsp;
-
-		// isParamUpdated決定用の更新回数カウンタ
-		int m_statusUpdateCount = 0;
-		int m_prevStatusUpdateCountInProcessThread = 0;
+		bool m_isParamUpdated;
+		std::mutex m_mutex;
 
 	public:
 		static constexpr bool kIsWithTrigger = false;
@@ -67,25 +66,27 @@ namespace ksmaudio::AudioEffect
 
 		virtual ~BasicAudioEffect() = default;
 
-		// この関数のみ他の関数とは別のスレッドから呼ばれるので注意
+		// この関数のみ他の関数とは別のスレッドからも呼ばれるので注意
 		virtual void process(float* pData, std::size_t dataSize) override
 		{
-			// updateStatusが呼ばれた後の初回のみトリガ更新可能
-			const bool isParamUpdated = m_statusUpdateCount != m_prevStatusUpdateCountInProcessThread;
-			m_prevStatusUpdateCountInProcessThread = m_statusUpdateCount;
+			std::lock_guard<std::mutex> lock(m_mutex);
 
-			m_dsp.process(pData, dataSize, m_bypass, m_dspParams, isParamUpdated);
+			m_dsp.process(pData, dataSize, m_bypass, m_dspParams, std::exchange(m_isParamUpdated, false));
 		}
 
 		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) override
 		{
+			std::lock_guard<std::mutex> lock(m_mutex);
+
 			m_dspParams = m_params.render(status, laneIdx);
 
-			++m_statusUpdateCount;
+			m_isParamUpdated = true;
 		}
 
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSet) override
 		{
+			// updateStatusと同じスレッドで実行され、processとの同一変数操作もないのでlock_guard不要
+
 			if (m_params.dict.contains(paramID))
 			{
 				m_params.dict.at(paramID)->valueSet = valueSet;
@@ -94,6 +95,8 @@ namespace ksmaudio::AudioEffect
 
 		virtual std::unordered_map<ParamID, ValueSet> paramValueSetDict() const override
 		{
+			// updateStatusと同じスレッドで実行され、processとの同一変数操作もないのでlock_guard不要
+
 			std::unordered_map<ParamID, ValueSet> dict;
 			for (const auto& [paramID, pParam] : m_params.dict)
 			{
@@ -104,7 +107,12 @@ namespace ksmaudio::AudioEffect
 
 		virtual void setBypass(bool bypass) override
 		{
-			m_bypass = bypass;
+			if (m_bypass != bypass)
+			{
+				std::lock_guard<std::mutex> lock(m_mutex);
+
+				m_bypass = bypass;
+			}
 		}
 	};
 
@@ -117,10 +125,8 @@ namespace ksmaudio::AudioEffect
 		DSPParams m_dspParams;
 		DSP m_dsp;
 		detail::UpdateTriggerTimeline m_updateTriggerTimeline;
-
-		// isParamUpdated決定用の更新回数カウンタ
-		int m_statusUpdateCount = 0;
-		int m_prevStatusUpdateCountInProcessThread = 0;
+		bool m_isParamUpdated = true;
+		std::mutex m_mutex;
 
 	public:
 		static constexpr bool kIsWithTrigger = true;
@@ -134,28 +140,30 @@ namespace ksmaudio::AudioEffect
 
 		virtual ~BasicAudioEffectWithTrigger() = default;
 
-		// この関数のみ他の関数とは別のスレッドから呼ばれるので注意
+		// この関数のみ他の関数とは別のスレッドからも呼ばれるので注意
 		virtual void process(float* pData, std::size_t dataSize) override
 		{
-			// updateStatusが呼ばれた後の初回のみトリガ更新可能
-			const bool isParamUpdated = m_statusUpdateCount != m_prevStatusUpdateCountInProcessThread;
-			m_prevStatusUpdateCountInProcessThread = m_statusUpdateCount;
+			std::lock_guard<std::mutex> lock(m_mutex);
 
-			m_dsp.process(pData, dataSize, m_bypass, m_dspParams, isParamUpdated);
+			m_dsp.process(pData, dataSize, m_bypass, m_dspParams, std::exchange(m_isParamUpdated, false));
 		}
 
 		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) override
 		{
+			std::lock_guard<std::mutex> lock(m_mutex);
+
 			m_dspParams = m_params.render(status, laneIdx);
 
 			m_updateTriggerTimeline.update(status.sec);
 			m_dspParams.secUntilTrigger = m_updateTriggerTimeline.secUntilTrigger();
 
-			++m_statusUpdateCount;
+			m_isParamUpdated = true;
 		}
 
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSet) override
 		{
+			// updateStatusと同じスレッドで実行され、processとの同一変数操作もないのでlock_guard不要
+
 			if (m_params.dict.contains(paramID))
 			{
 				m_params.dict.at(paramID)->valueSet = valueSet;
@@ -164,6 +172,8 @@ namespace ksmaudio::AudioEffect
 
 		virtual std::unordered_map<ParamID, ValueSet> paramValueSetDict() const override
 		{
+			// updateStatusと同じスレッドで実行され、processとの同一変数操作もないのでlock_guard不要
+
 			std::unordered_map<ParamID, ValueSet> dict;
 			for (const auto& [paramID, pParam] : m_params.dict)
 			{
@@ -174,7 +184,12 @@ namespace ksmaudio::AudioEffect
 
 		virtual void setBypass(bool bypass) override
 		{
-			m_bypass = bypass;
+			if (m_bypass != bypass)
+			{
+				std::lock_guard<std::mutex> lock(m_mutex);
+
+				m_bypass = bypass;
+			}
 		}
 	};
 }
