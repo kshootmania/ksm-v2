@@ -23,12 +23,22 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-		TapestopDSPParams render(const Status& status, std::optional<std::size_t> laneIdx)
+		TapestopDSPParams renderByFX(const Status& status, std::optional<std::size_t> laneIdx)
 		{
 			const bool isOn = laneIdx.has_value();
 			return {
 				.speed = GetValue(speed, status, isOn),
-				.trigger = trigger.render(status, laneIdx),
+				.trigger = trigger.renderByFX(status, laneIdx),
+				.reset = trigger.getResetValue(),
+				.mix = GetValue(mix, status, isOn),
+			};
+		}
+
+		TapestopDSPParams renderByLaser(const Status& status, bool isOn)
+		{
+			return {
+				.speed = GetValue(speed, status, isOn),
+				.trigger = trigger.renderByLaser(status, isOn),
 				.reset = trigger.getResetValue(),
 				.mix = GetValue(mix, status, isOn),
 			};

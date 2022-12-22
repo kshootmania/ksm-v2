@@ -70,7 +70,7 @@ namespace ksmaudio::AudioEffect
 		const DSPCommonInfo m_info;
 		std::array<detail::BiquadFilter<float>, 2> m_peakingFilters;
 		detail::PeakingFilterValueController m_valueController;
-		detail::PeakingFilterRelease m_release; // TODO: FXでは使用しないようにする
+		detail::PeakingFilterRelease m_release;
 
 	public:
 		explicit PeakingFilterDSP(const DSPCommonInfo& info);

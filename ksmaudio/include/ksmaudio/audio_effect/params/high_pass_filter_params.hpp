@@ -30,14 +30,24 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-		HighPassFilterDSPParams render(const Status& status, std::optional<std::size_t> laneIdx)
+		HighPassFilterDSPParams render(const Status& status, bool isOn)
 		{
-			const bool isOn = laneIdx.has_value();
 			return {
 				.v = GetValue(v, status, isOn),
 				.q = GetValue(q, status, isOn),
 				.mix = GetValue(mix, status, isOn),
 			};
+		}
+
+		HighPassFilterDSPParams renderByFX(const Status& status, std::optional<std::size_t> laneIdx)
+		{
+			const bool isOn = laneIdx.has_value();
+			return render(status, isOn);
+		}
+
+		HighPassFilterDSPParams renderByLaser(const Status& status, bool isOn)
+		{
+			return render(status, isOn);
 		}
 	};
 }

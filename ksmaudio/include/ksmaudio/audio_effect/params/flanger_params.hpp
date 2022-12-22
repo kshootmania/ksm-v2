@@ -35,9 +35,8 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-		FlangerDSPParams render(const Status& status, std::optional<std::size_t> laneIdx)
+		FlangerDSPParams render(const Status& status, bool isOn)
 		{
-			const bool isOn = laneIdx.has_value();
 			return {
 				.period = GetValue(period, status, isOn),
 				.delay = GetValue(delay, status, isOn),
@@ -47,6 +46,17 @@ namespace ksmaudio::AudioEffect
 				.vol = GetValue(vol, status, isOn),
 				.mix = GetValue(mix, status, isOn),
 			};
+		}
+
+		FlangerDSPParams renderByFX(const Status& status, std::optional<std::size_t> laneIdx)
+		{
+			const bool isOn = laneIdx.has_value();
+			return render(status, isOn);
+		}
+
+		FlangerDSPParams renderByLaser(const Status& status, bool isOn)
+		{
+			return render(status, isOn);
 		}
 	};
 }

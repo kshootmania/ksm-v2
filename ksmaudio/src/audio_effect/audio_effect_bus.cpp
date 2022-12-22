@@ -2,8 +2,9 @@
 
 namespace ksmaudio::AudioEffect
 {
-	AudioEffectBus::AudioEffectBus(Stream* pStream)
-		: m_pStream(pStream)
+	AudioEffectBus::AudioEffectBus(bool isLaser, Stream* pStream)
+		: m_isLaser(isLaser)
+		, m_pStream(pStream)
 	{
 	}
 
@@ -15,8 +16,10 @@ namespace ksmaudio::AudioEffect
 		}
     }
 
-	void AudioEffectBus::update(const AudioEffect::Status& status, const ActiveAudioEffectDict& activeAudioEffectDict)
+	void AudioEffectBus::updateByFX(const AudioEffect::Status& status, const ActiveAudioEffectDict& activeAudioEffectDict)
 	{
+		assert(!m_isLaser);
+
 		// Update override params
 		{
 			// "Active -> Inactive"
@@ -53,12 +56,14 @@ namespace ksmaudio::AudioEffect
 			}
 
 			const bool isOn = activeAudioEffectDict.contains(i);
-			m_audioEffects[i]->updateStatus(status, isOn ? std::make_optional(activeAudioEffectDict.at(i).laneIdx) : std::nullopt);
+			m_audioEffects[i]->updateStatusByFX(status, isOn ? std::make_optional(activeAudioEffectDict.at(i).laneIdx) : std::nullopt);
 		}
 	}
 
-	void AudioEffectBus::update(const AudioEffect::Status& status, std::optional<std::size_t> activeAudioEffectIdx)
+	void AudioEffectBus::updateByLaser(const AudioEffect::Status& status, std::optional<std::size_t> activeAudioEffectIdx)
 	{
+		assert(m_isLaser);
+
 		// Update override params
 		{
 			// "Active -> Inactive"
@@ -95,7 +100,7 @@ namespace ksmaudio::AudioEffect
 			}
 
 			const bool isOn = activeAudioEffectIdx == i;
-			m_audioEffects[i]->updateStatus(status, isOn ? std::make_optional(0/*LASERはエフェクトに関してレーン番号を考慮しないので0決め打ちにする*/) : std::nullopt);
+			m_audioEffects[i]->updateStatusByLaser(status, isOn);
 		}
 	}
 

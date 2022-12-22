@@ -2,6 +2,13 @@
 
 namespace ksmaudio
 {
+	AudioEffect::AudioEffectBus* StreamWithEffects::emplaceAudioEffectBusImpl(bool isLaser)
+	{
+		// Note: It is intentional to return the internal raw pointer of unique_ptr here.
+		//       Management of the returned pointer is the responsibility of the caller.
+		return m_audioEffectBuses.emplace_back(std::make_unique<AudioEffect::AudioEffectBus>(isLaser, &m_stream)).get();
+	}
+
 	StreamWithEffects::StreamWithEffects(const std::string& filePath, double volume, bool enableCompressor, bool preload)
 		: m_stream(filePath, volume, enableCompressor, preload)
 	{
@@ -57,10 +64,13 @@ namespace ksmaudio
 		return m_stream.latencySec();
 	}
 
-	AudioEffect::AudioEffectBus* StreamWithEffects::emplaceAudioEffectBus()
+	AudioEffect::AudioEffectBus* StreamWithEffects::emplaceAudioEffectBusFX()
 	{
-		// Note: It is intentional to return the internal raw pointer of unique_ptr here.
-		//       Management of the returned pointer is the responsibility of the caller.
-		return m_audioEffectBuses.emplace_back(std::make_unique<AudioEffect::AudioEffectBus>(&m_stream)).get();
+		return emplaceAudioEffectBusImpl(false);
+	}
+
+	AudioEffect::AudioEffectBus* StreamWithEffects::emplaceAudioEffectBusLaser()
+	{
+		return emplaceAudioEffectBusImpl(true);
 	}
 }

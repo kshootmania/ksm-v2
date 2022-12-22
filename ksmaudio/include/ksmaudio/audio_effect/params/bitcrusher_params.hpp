@@ -19,13 +19,23 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-		BitcrusherDSPParams render(const Status& status, std::optional<std::size_t> laneIdx)
+		BitcrusherDSPParams render(const Status& status, bool isOn)
 		{
-			const bool isOn = laneIdx.has_value();
 			return {
 				.reduction = GetValue(reduction, status, isOn),
 				.mix = GetValue(mix, status, isOn),
 			};
+		}
+
+		BitcrusherDSPParams renderByFX(const Status& status, std::optional<std::size_t> laneIdx)
+		{
+			const bool isOn = laneIdx.has_value();
+			return render(status, isOn);
+		}
+
+		BitcrusherDSPParams renderByLaser(const Status& status, bool isOn)
+		{
+			return render(status, isOn);
 		}
 	};
 }

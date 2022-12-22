@@ -163,7 +163,7 @@ namespace ksmaudio::AudioEffect
 		{
 			m_valueController.updateFreq(params.v);
 			const bool mixSkipped = isBypassed || m_valueController.mixSkipped();
-			const bool shouldUseRelease = mixSkipped && m_release.hasValue();
+			const bool shouldUseRelease = mixSkipped && params.releaseEnabled && m_release.hasValue();
 			if (shouldUseRelease)
 			{
 				// 余韻を適用する必要がある場合はフィルタ係数を毎回更新

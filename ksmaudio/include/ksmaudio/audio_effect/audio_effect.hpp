@@ -16,7 +16,9 @@ namespace ksmaudio::AudioEffect
 
 		virtual void process(float* pData, std::size_t dataSize) = 0;
 
-		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) = 0;
+		virtual void updateStatusByFX(const Status& status, std::optional<std::size_t> laneIdx) = 0;
+
+		virtual void updateStatusByLaser(const Status& status, bool isOn) = 0;
 
 		virtual void setParamValueSet(ParamID paramID, const ValueSet& valueSetStr) = 0;
 
@@ -45,9 +47,10 @@ namespace ksmaudio::AudioEffect
 	};
 
 	template <typename Params, typename DSP, typename DSPParams>
-	class BasicAudioEffect : public IAudioEffect
+	class BasicAudioEffect final : public IAudioEffect
 	{
 	protected:
+		const bool m_isLaser;
 		bool m_bypass = false;
 		Params m_params;
 		DSPParams m_dspParams;
@@ -57,10 +60,18 @@ namespace ksmaudio::AudioEffect
 	public:
 		static constexpr bool kIsWithTrigger = false;
 
-		BasicAudioEffect(std::size_t sampleRate, std::size_t numChannels)
-			: m_dsp(DSPCommonInfo{ sampleRate, numChannels })
-			, m_dspParams(m_params.render(Status{}, std::nullopt))
+		BasicAudioEffect(std::size_t sampleRate, std::size_t numChannels, bool isLaser)
+			: m_isLaser(isLaser)
+			, m_dsp(DSPCommonInfo{ sampleRate, numChannels })
 		{
+			if (isLaser)
+			{
+				updateStatusByLaser(Status{}, false);
+			}
+			else
+			{
+				updateStatusByFX(Status{}, std::nullopt);
+			}
 		}
 
 		virtual ~BasicAudioEffect() = default;
@@ -73,11 +84,23 @@ namespace ksmaudio::AudioEffect
 			m_dsp.process(pData, dataSize, m_bypass, m_dspParams);
 		}
 
-		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) override
+		virtual void updateStatusByFX(const Status& status, std::optional<std::size_t> laneIdx) override
 		{
 			std::lock_guard<std::mutex> lock(m_mutex);
 
-			m_dspParams = m_params.render(status, laneIdx);
+			assert(!m_isLaser);
+
+			m_dspParams = m_params.renderByFX(status, laneIdx);
+			m_dsp.updateParams(m_dspParams);
+		}
+
+		virtual void updateStatusByLaser(const Status& status, bool isOn) override
+		{
+			std::lock_guard<std::mutex> lock(m_mutex);
+
+			assert(m_isLaser);
+
+			m_dspParams = m_params.renderByLaser(status, isOn);
 			m_dsp.updateParams(m_dspParams);
 		}
 
@@ -115,9 +138,10 @@ namespace ksmaudio::AudioEffect
 	};
 
 	template <typename Params, typename DSP, typename DSPParams>
-	class BasicAudioEffectWithTrigger : public IAudioEffect
+	class BasicAudioEffectWithTrigger final : public IAudioEffect
 	{
 	protected:
+		const bool m_isLaser;
 		bool m_bypass = false;
 		Params m_params;
 		DSPParams m_dspParams;
@@ -128,11 +152,19 @@ namespace ksmaudio::AudioEffect
 	public:
 		static constexpr bool kIsWithTrigger = true;
 
-		BasicAudioEffectWithTrigger(std::size_t sampleRate, std::size_t numChannels, const std::set<float>& updateTriggerTiming)
-			: m_dsp(DSPCommonInfo{ sampleRate, numChannels })
-			, m_dspParams(m_params.render(Status{}, std::nullopt))
+		BasicAudioEffectWithTrigger(std::size_t sampleRate, std::size_t numChannels, bool isLaser, const std::set<float>& updateTriggerTiming)
+			: m_isLaser(isLaser)
+			, m_dsp(DSPCommonInfo{ sampleRate, numChannels })
 			, m_updateTriggerTimeline(updateTriggerTiming)
 		{
+			if (isLaser)
+			{
+				updateStatusByLaser(Status{}, false);
+			}
+			else
+			{
+				updateStatusByFX(Status{}, std::nullopt);
+			}
 		}
 
 		virtual ~BasicAudioEffectWithTrigger() = default;
@@ -145,11 +177,27 @@ namespace ksmaudio::AudioEffect
 			m_dsp.process(pData, dataSize, m_bypass, m_dspParams);
 		}
 
-		virtual void updateStatus(const Status& status, std::optional<std::size_t> laneIdx) override
+		virtual void updateStatusByFX(const Status& status, std::optional<std::size_t> laneIdx) override
 		{
 			std::lock_guard<std::mutex> lock(m_mutex);
 
-			m_dspParams = m_params.render(status, laneIdx);
+			assert(!m_isLaser);
+
+			m_dspParams = m_params.renderByFX(status, laneIdx);
+
+			m_updateTriggerTimeline.update(status.sec);
+			m_dspParams.secUntilTrigger = m_updateTriggerTimeline.secUntilTrigger();
+
+			m_dsp.updateParams(m_dspParams);
+		}
+
+		virtual void updateStatusByLaser(const Status& status, bool isOn) override
+		{
+			std::lock_guard<std::mutex> lock(m_mutex);
+
+			assert(m_isLaser);
+
+			m_dspParams = m_params.renderByLaser(status, isOn);
 
 			m_updateTriggerTimeline.update(status.sec);
 			m_dspParams.secUntilTrigger = m_updateTriggerTimeline.secUntilTrigger();

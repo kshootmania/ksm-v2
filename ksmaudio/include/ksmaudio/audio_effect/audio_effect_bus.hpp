@@ -26,7 +26,8 @@ namespace ksmaudio::AudioEffect
     class AudioEffectBus
     {
 	private:
-		Stream* m_pStream;
+		const bool m_isLaser; // TODO: なるべく型で区別したい
+		Stream* const m_pStream;
 		std::vector<std::unique_ptr<AudioEffect::IAudioEffect>> m_audioEffects;
 		std::vector<HDSP> m_hDSPs;
 		std::vector<ParamController> m_paramControllers;
@@ -34,17 +35,15 @@ namespace ksmaudio::AudioEffect
 		std::unordered_set<std::size_t> m_activeAudioEffectIdxs;
 
 	public:
-		AudioEffectBus() = default;
-
-		explicit AudioEffectBus(Stream* pStream);
+		AudioEffectBus(bool isLaser, Stream* pStream);
 
 		~AudioEffectBus();
 
-		// オーバーライドパラメータ付き・複数指定でアクティブなエフェクトを指定して更新(ロングFX向け)
-		void update(const AudioEffect::Status& status, const ActiveAudioEffectDict& activeAudioEffectDict);
+		// ロングFXによる更新
+		void updateByFX(const AudioEffect::Status& status, const ActiveAudioEffectDict& activeAudioEffectDict);
 
-		// オーバーライドパラメータなし・単一指定でアクティブなエフェクトを指定して更新(LASER向け)
-		void update(const AudioEffect::Status& status, std::optional<std::size_t> activeAudioEffectIdx);
+		// LASERによる更新
+		void updateByLaser(const AudioEffect::Status& status, std::optional<std::size_t> activeAudioEffectIdx);
 
 		template <typename T>
 		void emplaceAudioEffect(const std::string& name,
@@ -61,11 +60,11 @@ namespace ksmaudio::AudioEffect
 
 			if constexpr (T::kIsWithTrigger)
 			{
-				m_audioEffects.push_back(std::make_unique<T>(m_pStream->sampleRate(), m_pStream->numChannels(), updateTriggerTiming));
+				m_audioEffects.push_back(std::make_unique<T>(m_pStream->sampleRate(), m_pStream->numChannels(), m_isLaser, updateTriggerTiming));
 			}
 			else
 			{
-				m_audioEffects.push_back(std::make_unique<T>(m_pStream->sampleRate(), m_pStream->numChannels()));
+				m_audioEffects.push_back(std::make_unique<T>(m_pStream->sampleRate(), m_pStream->numChannels(), m_isLaser));
 			}
 			const auto& audioEffect = m_audioEffects.back();
 
@@ -73,13 +72,13 @@ namespace ksmaudio::AudioEffect
 			{
 				audioEffect->setParamValueSet(paramID, valueSet);
 			}
-			audioEffect->updateStatus(AudioEffect::Status{}, std::nullopt);
 
 			m_nameIdxDict.emplace(name, m_audioEffects.size() - 1U);
 
 			const HDSP hDSP = m_pStream->addAudioEffect(audioEffect.get(), 100); // TODO: priority
 			m_hDSPs.push_back(hDSP);
 
+			// ここで、paramsを渡すのではなくparamValueSetDict()で改めて取得しているのは、Dict内に暗黙に定義されるデフォルト値も入れる必要があるため
 			m_paramControllers.emplace_back(audioEffect->paramValueSetDict(), paramChanges);
 		}
 

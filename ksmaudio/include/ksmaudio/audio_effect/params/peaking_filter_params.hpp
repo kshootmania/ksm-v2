@@ -14,6 +14,7 @@ namespace ksmaudio::AudioEffect
 		float gainRate = 0.5f;
 		float bandwidth = 1.2f;
 		float mix = 1.0f;
+		bool releaseEnabled = false;
 	};
 
 	struct PeakingFilterParams
@@ -35,7 +36,7 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-		PeakingFilterDSPParams render(const Status& status, std::optional<std::size_t> laneIdx)
+		PeakingFilterDSPParams renderByFX(const Status& status, std::optional<std::size_t> laneIdx)
 		{
 			const bool isOn = laneIdx.has_value();
 			return {
@@ -43,6 +44,18 @@ namespace ksmaudio::AudioEffect
 				.gainRate = GetValue(gain, status, isOn),
 				.bandwidth = GetValue(bandwidth, status, isOn),
 				.mix = GetValue(mix, status, isOn),
+				.releaseEnabled = false, // FXでは余韻を無効にする
+			};
+		}
+
+		PeakingFilterDSPParams renderByLaser(const Status& status, bool isOn)
+		{
+			return {
+				.v = GetValue(v, status, isOn),
+				.gainRate = GetValue(gain, status, isOn),
+				.bandwidth = GetValue(bandwidth, status, isOn),
+				.mix = GetValue(mix, status, isOn),
+				.releaseEnabled = true, // LASERでは余韻を有効にする TODO: p/fp音源が指定されていてp/fp音源の音声ファイルが存在せず自動エフェクトになった場合は余韻を入れない
 			};
 		}
 	};

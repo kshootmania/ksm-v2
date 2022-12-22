@@ -59,8 +59,8 @@ namespace MusicGame::Audio
 		: m_stream(filePath.toUTF8(), volume, true, true)
 		, m_durationSec(m_stream.durationSec())
 		, m_offsetSec(offsetSec)
-		, m_pAudioEffectBusFX(m_stream.emplaceAudioEffectBus())
-		, m_pAudioEffectBusLaser(m_stream.emplaceAudioEffectBus())
+		, m_pAudioEffectBusFX(m_stream.emplaceAudioEffectBusFX())
+		, m_pAudioEffectBusLaser(m_stream.emplaceAudioEffectBusLaser())
 		, m_stopwatch(StartImmediately::No)
 		, m_manualUpdateStopwatch(StartImmediately::Yes)
 	{
@@ -104,7 +104,7 @@ namespace MusicGame::Audio
 	void BGM::updateAudioEffectFX(bool bypass, const ksmaudio::AudioEffect::Status& status, const ksmaudio::AudioEffect::ActiveAudioEffectDict& activeAudioEffects)
 	{
 		m_pAudioEffectBusFX->setBypass(bypass);
-		m_pAudioEffectBusFX->update(
+		m_pAudioEffectBusFX->updateByFX(
 			status,
 			activeAudioEffects);
 	}
@@ -112,7 +112,7 @@ namespace MusicGame::Audio
 	void BGM::updateAudioEffectLaser(bool bypass, const ksmaudio::AudioEffect::Status& status, const std::optional<std::size_t>& activeAudioEffectIdx)
 	{
 		m_pAudioEffectBusLaser->setBypass(bypass);
-		m_pAudioEffectBusLaser->update(
+		m_pAudioEffectBusLaser->updateByLaser(
 			status,
 			activeAudioEffectIdx);
 	}

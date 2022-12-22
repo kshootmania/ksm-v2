@@ -29,9 +29,8 @@ namespace ksmaudio::AudioEffect
 			{ ParamID::kMix, &mix },
 		};
 
-		WobbleDSPParams render(const Status& status, std::optional<std::size_t> laneIdx)
+		WobbleDSPParams render(const Status& status, bool isOn)
 		{
-			const bool isOn = laneIdx.has_value();
 			return {
 				.waveLength = GetValue(waveLength, status, isOn),
 				.freq1 = GetValue(freq1, status, isOn),
@@ -39,6 +38,17 @@ namespace ksmaudio::AudioEffect
 				.q = GetValue(q, status, isOn),
 				.mix = GetValue(mix, status, isOn),
 			};
+		}
+
+		WobbleDSPParams renderByFX(const Status& status, std::optional<std::size_t> laneIdx)
+		{
+			const bool isOn = laneIdx.has_value();
+			return render(status, isOn);
+		}
+
+		WobbleDSPParams renderByLaser(const Status& status, bool isOn)
+		{
+			return render(status, isOn);
 		}
 	};
 }
