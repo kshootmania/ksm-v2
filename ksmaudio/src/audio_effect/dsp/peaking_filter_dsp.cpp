@@ -12,6 +12,9 @@ namespace ksmaudio::AudioEffect
 		// (低周波を強調すると波形の振幅が過剰に大きくなるためしきい値を設けている)
 		constexpr float kFreqThresholdMin = 100.0f;
 
+		// 余韻の長さ(秒)
+		constexpr float kFilterReleaseSec = 0.05f;
+
 		// TODO: freq、freq_maxの値を変更可能にする
 		float GetPeakingFilterFreqValue(float v)
 		{
@@ -93,10 +96,53 @@ namespace ksmaudio::AudioEffect
 			// 低周波数に対しては適用しない
 			return m_freq < kFreqThresholdMin;
 		}
+
+		PeakingFilterRelease::PeakingFilterRelease(std::size_t sampleRate)
+			: m_filterReleaseFrames(static_cast<std::size_t>(static_cast<float>(sampleRate) * kFilterReleaseSec))
+			, m_mixSkippedFrames(m_filterReleaseFrames) // 最初に余韻が入らないよう閾値以上から始める
+		{
+		}
+
+		void PeakingFilterRelease::update(float freq, float baseGainDb, float mix, bool mixSkipped)
+		{
+			if (mixSkipped)
+			{
+				++m_mixSkippedFrames;
+			}
+			else
+			{
+				m_freq = freq;
+				m_baseGainDb = baseGainDb;
+				m_mix = mix;
+				m_mixSkippedFrames = 0U;
+			}
+		}
+
+		bool PeakingFilterRelease::hasValue() const
+		{
+			return m_mixSkippedFrames < m_filterReleaseFrames;
+		}
+
+		float PeakingFilterRelease::freq() const
+		{
+			return m_freq;
+		}
+
+		float PeakingFilterRelease::baseGainDb() const
+		{
+			const float scale = std::clamp(1.0f - static_cast<float>(m_mixSkippedFrames) / m_filterReleaseFrames, 0.0f, 1.0f);
+			return m_baseGainDb * scale;
+		}
+
+		float PeakingFilterRelease::mix() const
+		{
+			return m_mix;
+		}
 	}
 
 	PeakingFilterDSP::PeakingFilterDSP(const DSPCommonInfo& info)
 		: m_info(info)
+		, m_release(info.sampleRate)
 	{
 	}
 
@@ -117,23 +163,44 @@ namespace ksmaudio::AudioEffect
 		{
 			m_valueController.updateFreq(params.v);
 			const bool mixSkipped = isBypassed || m_valueController.mixSkipped();
-			const bool valueUpdated = m_valueController.popUpdated();
+			const bool shouldUseRelease = mixSkipped && m_release.hasValue();
+			if (shouldUseRelease)
+			{
+				// 余韻を適用する必要がある場合はフィルタ係数を毎回更新
+				for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
+				{
+					m_peakingFilters[ch].setPeakingFilter(m_release.freq(), params.bandwidth, m_release.baseGainDb() * params.gainRate, fSampleRate);
+				}
+			}
+			else
+			{
+				const bool valueUpdated = m_valueController.popUpdated();
+				if (valueUpdated)
+				{
+					// 値が更新された場合はフィルタ係数を更新
+					for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
+					{
+						m_peakingFilters[ch].setPeakingFilter(m_valueController.freq(), params.bandwidth, m_valueController.baseGainDb() * params.gainRate, fSampleRate);
+					}
+				}
+			}
 
 			// 各チャンネルにフィルタを適用
 			for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
 			{
-				if (valueUpdated)
-				{
-					m_peakingFilters[ch].setPeakingFilter(m_valueController.freq(), params.bandwidth, m_valueController.baseGainDb() * params.gainRate, fSampleRate);
-				}
-
 				const float wet = m_peakingFilters[ch].process(*pData);
-				if (!mixSkipped)
+				if (shouldUseRelease)
+				{
+					*pData = std::lerp(*pData, wet, m_release.mix());
+				}
+				else if (!mixSkipped)
 				{
 					*pData = std::lerp(*pData, wet, params.mix);
 				}
 				++pData;
 			}
+
+			m_release.update(m_valueController.freq(), m_valueController.baseGainDb(), params.mix, mixSkipped);
 		}
 	}
 
