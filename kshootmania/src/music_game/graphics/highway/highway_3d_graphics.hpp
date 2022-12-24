@@ -1,19 +1,18 @@
 ﻿#pragma once
 #include "music_game/game_status.hpp"
+#include "highway_render_texture.hpp"
+#include "key_beam_graphics.hpp"
 #include "note/button_note_graphics.hpp"
 #include "note/laser_note_graphics.hpp"
-#include "key_beam_graphics.hpp"
 
 namespace MusicGame::Graphics
 {
 	class Highway3DGraphics
 	{
 	private:
-		const Texture m_baseTexture;
 		const Texture m_shineEffectTexture;
 
-		RenderTexture m_additiveRenderTexture;
-		RenderTexture m_invMultiplyRenderTexture;
+		const HighwayRenderTexture m_renderTexture;
 
 		ButtonNoteGraphics m_buttonNoteGraphics;
 		LaserNoteGraphics m_laserNoteGraphics;

@@ -125,9 +125,10 @@ namespace MusicGame::Graphics
 			return JudgmentStatus::kError;
 		}
 
-		void DrawLaserSection(int32 laneIdx, kson::RelPulse relPulse, const kson::LaserSection& laserSection, const RenderTexture& target, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const TextureRegion& laserStartTexture)
+		void DrawLaserSection(int32 laneIdx, kson::RelPulse relPulse, const kson::LaserSection& laserSection, const RenderTexture& target, const Point& offsetPosition, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const TextureRegion& laserStartTexture)
 		{
 			const ScopedRenderTarget2D renderTarget(target);
+			const Transformer2D transformer(Mat3x2::Translate(offsetPosition));
 
 			for (auto itr = laserSection.v.begin(); itr != laserSection.v.end(); ++itr)
 			{
@@ -218,7 +219,7 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void LaserNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const RenderTexture& additiveTarget, const RenderTexture& invMultiplyTarget) const
+	void LaserNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
 	{
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 		const ScopedRenderStates2D renderState(BlendState::Additive);
@@ -253,8 +254,8 @@ namespace MusicGame::Graphics
 				const int32 textureRow = LaserTextureRow(judgmentStatus, gameStatus.currentTimeSec);
 
 				// LASERセクションを描画
-				DrawLaserSection(laneIdx, relPulse, laserSection, additiveTarget, m_laserNoteTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnAdditive));
-				DrawLaserSection(laneIdx, relPulse, laserSection, invMultiplyTarget, m_laserNoteMaskTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnInvMultiply));
+				DrawLaserSection(laneIdx, relPulse, laserSection, target.additiveTexture(), target.offsetPosition(), m_laserNoteTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnAdditive));
+				DrawLaserSection(laneIdx, relPulse, laserSection, target.invMultiplyTexture(), target.offsetPosition(), m_laserNoteMaskTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnInvMultiply));
 			}
 		}
 	}

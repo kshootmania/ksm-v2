@@ -5,6 +5,9 @@ namespace MusicGame::Graphics
 	constexpr Size kHighwayTextureSize = { 256, 1024 };
 	constexpr Float2 kHighwayPlaneSize = { 304.0f * 2 / 13, 936.0f * 13 / 20 };
 
+	constexpr Size kHighwayTextureSizeWide = { kHighwayTextureSize.x * 2, kHighwayTextureSize.y };
+	constexpr Float2 kHighwayPlaneSizeWide = { kHighwayPlaneSize.x * 2, kHighwayPlaneSize.y };
+
 	constexpr Vec2 kLanePositionOffset = { 44.0, 0.0 };
 	constexpr Vec2 kBTLanePositionDiff = { 42.0, 0.0 };
 	constexpr Vec2 kFXLanePositionDiff = { 84.0, 0.0 };

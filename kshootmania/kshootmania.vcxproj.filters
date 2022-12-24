@@ -396,6 +396,9 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\music_game\graphics\highway\highway_render_texture.cpp">
+      <Filter>Source Files\music_game\graphics\highway</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1212,6 +1215,9 @@
     </ClInclude>
     <ClInclude Include="src\music_game\audio\audio_defines.hpp">
       <Filter>Header Files\music_game\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\graphics\highway\highway_render_texture.hpp">
+      <Filter>Header Files\music_game\graphics\highway</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
