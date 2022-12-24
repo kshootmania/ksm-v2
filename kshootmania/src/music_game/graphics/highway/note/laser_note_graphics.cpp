@@ -19,12 +19,6 @@ namespace MusicGame::Graphics
 
 		constexpr double kLaserCriticalBlinkIntervalSec = 0.12;
 
-		enum : int32
-		{
-			kLaserNoteStartTextureColumnAdditive = 0,
-			kLaserNoteStartTextureColumnInvMultiply,
-		};
-
 		enum class JudgmentStatus
 		{
 			kNormal,
@@ -212,13 +206,13 @@ namespace MusicGame::Graphics
 			TiledTexture(
 				kLaserNoteLeftStartTextureFilename,
 				{
-					.column = 2,
+					.column = kNumTextureColumnsMainSub,
 					.sourceSize = kLaserStartTextureSize,
 				}),
 			TiledTexture(
 				kLaserNoteRightStartTextureFilename,
 				{
-					.column = 2,
+					.column = kNumTextureColumnsMainSub,
 					.sourceSize = kLaserStartTextureSize,
 				}) }
 	{
@@ -259,8 +253,8 @@ namespace MusicGame::Graphics
 				const int32 textureRow = LaserTextureRow(judgmentStatus, gameStatus.currentTimeSec);
 
 				// LASERセクションを描画
-				DrawLaserSection(laneIdx, relPulse, laserSection, target.additiveTexture(), m_laserNoteTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnAdditive));
-				DrawLaserSection(laneIdx, relPulse, laserSection, target.invMultiplyTexture(), m_laserNoteMaskTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnInvMultiply));
+				DrawLaserSection(laneIdx, relPulse, laserSection, target.additiveTexture(), m_laserNoteTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kTextureColumnMain));
+				DrawLaserSection(laneIdx, relPulse, laserSection, target.invMultiplyTexture(), m_laserNoteMaskTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kTextureColumnSub));
 			}
 		}
 	}

@@ -6,8 +6,6 @@ namespace MusicGame::Graphics
 	namespace
 	{
 		constexpr StringView kBaseTextureFilename = U"base.gif";
-		constexpr int32 kBaseTextureAdditiveColumn = 0;
-		constexpr int32 kBaseTextureInvMultiplyColumn = 1;
 
 		RenderTexture CreateBaseTexture(int32 column, const Color& clearColor)
 		{
@@ -30,8 +28,8 @@ namespace MusicGame::Graphics
 	HighwayRenderTexture::HighwayRenderTexture()
 		: m_additiveTexture(kHighwayTextureSizeWide)
 		, m_invMultiplyTexture(kHighwayTextureSizeWide)
-		, m_additiveBaseTexture(CreateBaseTexture(kBaseTextureAdditiveColumn, Palette::Black))
-		, m_invMultiplyBaseTexture(CreateBaseTexture(kBaseTextureInvMultiplyColumn, Palette::Black))
+		, m_additiveBaseTexture(CreateBaseTexture(kTextureColumnMain, Palette::Black))
+		, m_invMultiplyBaseTexture(CreateBaseTexture(kTextureColumnSub, Palette::Black))
 	{
 	}
 

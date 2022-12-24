@@ -95,7 +95,8 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const kson::Ch
 			if (note.length > 0)
 			{
 				const double positionEndY = highwayTextureHeight - static_cast<double>(y + note.length - gameStatus.currentPulse) * 480 / kson::kResolution;
-				for (int32 i = 0; i < (isBT ? 2 : 1); ++i) // Note: Long BT note has additional texture for invMultiplyTarget
+				const int32 numColumns = isBT ? kNumTextureColumnsMainSub : 1; // ロングBTノーツの場合はinvMultiply用のテクスチャ列が追加で存在する
+				for (int32 i = 0; i < numColumns; ++i)
 				{
 					const ScopedRenderTarget2D renderTarget((i == 0) ? target.additiveTexture() : target.invMultiplyTexture());
 					const ScopedRenderStates2D blendState((i == 0) ? (isBT ? BlendState::Additive : BlendState::Default2D) : BlendState::Subtractive);
@@ -141,13 +142,13 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongFXNotes(const kson::ChartD
 MusicGame::Graphics::ButtonNoteGraphics::ButtonNoteGraphics()
 	: m_chipBTNoteTexture(NoteGraphicsUtils::ApplyAlphaToNoteTexture(TextureAsset(kChipBTNoteTextureFilename),
 		{
-			.column = 9 * 2,
+			.column = 9 * kNumTextureColumnsMainSub,
 			.sourceSize = { 40, 14 },
 		}))
 	, m_longBTNoteTexture(TextureAsset(kLongBTNoteTextureFilename))
 	, m_chipFXNoteTexture(NoteGraphicsUtils::ApplyAlphaToNoteTexture(TextureAsset(kChipFXNoteTextureFilename),
 		{
-			.column = 2,
+			.column = kNumTextureColumnsMainSub,
 			.sourceSize = { 82, 14 },
 		}))
 	, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))

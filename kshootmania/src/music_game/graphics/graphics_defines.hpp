@@ -2,6 +2,10 @@
 
 namespace MusicGame::Graphics
 {
+	constexpr int32 kTextureColumnMain = 0;
+	constexpr int32 kTextureColumnSub = 1;
+	constexpr int32 kNumTextureColumnsMainSub = 2;
+
 	constexpr int32 kLaserXScaleNormal = 1;
 	constexpr int32 kLaserXScaleWide = 2;
 
