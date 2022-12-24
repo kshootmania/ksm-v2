@@ -26,7 +26,7 @@ namespace MusicGame::Graphics
 			kError,
 		};
 
-		Quad LaserLineQuad(const Vec2& positionStart, const Vec2& positionEnd)
+		constexpr Quad LaserLineQuad(const Vec2& positionStart, const Vec2& positionEnd)
 		{
 			return {
 				positionStart + Vec2{ kLaserLineWidth / 2, 0.0 },
@@ -36,15 +36,20 @@ namespace MusicGame::Graphics
 			};
 		}
 
+		constexpr double LaserPointX(double v, int32 xScale)
+		{
+			return (v * (kHighwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2) * xScale;
+		}
+
 		void DrawLaserLine(int32 laneIdx, kson::RelPulse relPulse1, const kson::GraphValue& point1, kson::RelPulse relPulse2, const kson::GraphValue& point2, const Texture& laserNoteTexture, int32 laserNoteTextureRow, int32 xScale)
 		{
 			const Vec2 positionStart = {
-				point1.vf * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+				LaserPointX(point1.vf, xScale),
 				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse1) * 480 / kson::kResolution + kLaserShiftY - ((point1.v != point1.vf) ? kLaserTextureSize.y : 0.0)
 			};
 
 			const Vec2 positionEnd = {
-				point2.v * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+				LaserPointX(point2.v, xScale),
 				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse2) * 480 / kson::kResolution + kLaserShiftY
 			};
 
@@ -52,7 +57,7 @@ namespace MusicGame::Graphics
 			quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y * laserNoteTextureRow + kLaserTextureSize.y - 1 + kOnePixelTextureSourceOffset, kLaserTextureSize.x, kOnePixelTextureSourceSize)).draw();
 		}
 
-		Quad LaserSlamLineQuad(const Vec2& positionStart, const Vec2& positionEnd)
+		constexpr Quad LaserSlamLineQuad(const Vec2& positionStart, const Vec2& positionEnd)
 		{
 			if (Abs(positionEnd.x - positionStart.x) <= kLaserLineWidth)
 			{
@@ -72,12 +77,12 @@ namespace MusicGame::Graphics
 		void DrawLaserSlam(int32 laneIdx, kson::RelPulse relPulse, const kson::GraphValue& point, const Texture& laserNoteTexture, int32 laserNoteTextureRow, int32 xScale)
 		{
 			const Vec2 positionStart = {
-				point.v * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+				LaserPointX(point.v, xScale),
 				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
 			};
 
 			const Vec2 positionEnd = {
-				point.vf * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+				LaserPointX(point.vf, xScale),
 				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
 			};
 
@@ -94,7 +99,7 @@ namespace MusicGame::Graphics
 		void DrawLaserSlamTail(int32 laneIdx, kson::RelPulse relPulse, const kson::GraphValue& point, const Texture& laserNoteTexture, int32 laserNoteTextureRow, int32 xScale)
 		{
 			const Vec2 positionStart = {
-				point.vf * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+				LaserPointX(point.vf, xScale),
 				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
 			};
 			const Quad quad = LaserLineQuad(positionStart + Vec2{ 0.0, -kLaserTextureSize.y }, positionStart + Vec2{ 0.0, -kLaserTextureSize.y - kLaserTailHeight });
@@ -137,7 +142,7 @@ namespace MusicGame::Graphics
 				if (itr == laserSection.v.begin())
 				{
 					const Vec2 positionStart = {
-						point.v * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+						LaserPointX(point.v, xScale),
 						static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse + ry) * 480 / kson::kResolution + kLaserShiftY
 					};
 					laserStartTexture.draw(Arg::topCenter = positionStart);
