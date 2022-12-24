@@ -392,7 +392,10 @@ namespace MusicGame::Judgment
 			const double laserSlamSec = laserSlamJudgment.sec();
 			if (laserSlamSec <= currentTimeSec)
 			{
-				++m_laserLineDirectionChangeSecArrayCursor;
+				if (m_laserLineDirectionChangeSecArrayCursor != m_laserLineDirectionChangeSecArray.end())
+				{
+					++m_laserLineDirectionChangeSecArrayCursor;
+				}
 				return;
 			}
 		}
