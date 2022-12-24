@@ -126,7 +126,7 @@ namespace MusicGame::Judgment
 			return judgmentArray;
 		}
 
-		Optional<double> GetPregeneratedCursorValue(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse)
+		Optional<std::pair<double, bool>> GetPregeneratedCursorValue(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse)
 		{
 			// 直近1小節以内にレーザーセクションの始点が存在すればカーソルが出ている
 			const auto itr = kson::FirstInRange(lane, currentPulse, currentPulse + kson::kResolution4);
@@ -136,7 +136,7 @@ namespace MusicGame::Judgment
 				if (!sec.v.empty())
 				{
 					const auto& [_, v] = *sec.v.begin();
-					return v.v;
+					return std::pair<double, bool>{ v.v, sec.wide() };
 				}
 			}
 
@@ -515,7 +515,8 @@ namespace MusicGame::Judgment
 		// 現在判定対象になっているLASERセクションの始点Pulse値を取得
 		if (laneStatusRef.noteCursorX.has_value())
 		{
-			laneStatusRef.currentLaserSectionPulse = kson::ValueItrAt(lane, currentPulse)->first;
+			const auto& [y, laserSection] = *kson::ValueItrAt(lane, currentPulse);
+			laneStatusRef.currentLaserSectionPulse = y;
 		}
 		else
 		{
@@ -536,7 +537,9 @@ namespace MusicGame::Judgment
 			{
 				// カーソルを出現させ、LASERセクションの始点の値に合わせる
 				// (※現在の理想位置に合わせるのではない理由は、始点が直角の場合に直角の移動先にカーソルが合ってしまうため)
-				laneStatusRef.cursorX = lane.at(laneStatusRef.currentLaserSectionPulse.value()).v.begin()->second.v;
+				const auto& laserSection = lane.at(laneStatusRef.currentLaserSectionPulse.value());
+				laneStatusRef.cursorX = laserSection.v.begin()->second.v;
+				laneStatusRef.cursorWide = laserSection.wide();
 			}
 		}
 		else
@@ -544,12 +547,15 @@ namespace MusicGame::Judgment
 			if (pregeneratedCursorValue.has_value())
 			{
 				// カーソルをLASERノーツの手前で事前生成し、次のLASERセクションの始点の値に合わせる
-				laneStatusRef.cursorX = pregeneratedCursorValue;
+				const auto& [cursorX, cursorWide] = pregeneratedCursorValue.value();
+				laneStatusRef.cursorX = cursorX;
+				laneStatusRef.cursorWide = cursorWide;
 			}
 			else
 			{
 				// カーソルが消滅
 				laneStatusRef.cursorX = none;
+				laneStatusRef.cursorWide = false;
 			}
 
 			// 補正時間をリセット

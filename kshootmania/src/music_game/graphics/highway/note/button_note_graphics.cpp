@@ -31,7 +31,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawChipNotesCommon(const kson::Ch
 	for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ); ++laneIdx)
 	{
 		const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
-		const Vec2 offsetPosition = target.offsetPosition() + kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * static_cast<double>(laneIdx);
+		const Vec2 offsetPosition = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * static_cast<double>(laneIdx);
 		for (const auto& [y, note] : lane)
 		{
 			if (y + note.length < gameStatus.currentPulse - kson::kResolution)
@@ -78,7 +78,7 @@ void MusicGame::Graphics::ButtonNoteGraphics::drawLongNotesCommon(const kson::Ch
 	for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ); ++laneIdx)
 	{
 		const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
-		const Vec2 offsetPosition = target.offsetPosition() + kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * static_cast<double>(laneIdx);
+		const Vec2 offsetPosition = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * static_cast<double>(laneIdx);
 		for (const auto& [y, note] : lane)
 		{
 			if (y + note.length < gameStatus.currentPulse - kson::kResolution)

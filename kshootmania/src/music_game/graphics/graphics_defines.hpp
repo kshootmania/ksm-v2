@@ -2,15 +2,23 @@
 
 namespace MusicGame::Graphics
 {
+	constexpr int32 kLaserXScaleNormal = 1;
+	constexpr int32 kLaserXScaleWide = 2;
+
 	constexpr Size kHighwayTextureSize = { 256, 1024 };
 	constexpr Float2 kHighwayPlaneSize = { 304.0f * 2 / 13, 936.0f * 13 / 20 };
 
-	constexpr Size kHighwayTextureSizeWide = { kHighwayTextureSize.x * 2, kHighwayTextureSize.y };
-	constexpr Float2 kHighwayPlaneSizeWide = { kHighwayPlaneSize.x * 2, kHighwayPlaneSize.y };
+	constexpr Size kHighwayTextureSizeWide = { kHighwayTextureSize.x * kLaserXScaleWide, kHighwayTextureSize.y };
+	constexpr Float2 kHighwayPlaneSizeWide = { kHighwayPlaneSize.x * kLaserXScaleWide, kHighwayPlaneSize.y };
 
-	constexpr Vec2 kLanePositionOffset = { 44.0, 0.0 };
+	constexpr int32 kHighwayTextureOffsetX = (kHighwayTextureSizeWide.x - kHighwayTextureSize.x) / 2;
+
+	constexpr Vec2 kLanePositionOffset = { kHighwayTextureOffsetX + 44.0, 0.0 };
 	constexpr Vec2 kBTLanePositionDiff = { 42.0, 0.0 };
 	constexpr Vec2 kFXLanePositionDiff = { 84.0, 0.0 };
+
+	constexpr Vec2 kLaserPositionOffsetNormal = { kHighwayTextureOffsetX, 0 };
+	constexpr Vec2 kLaserPositionOffsetWide = { 0, 0 };
 
 	// アルファブレンド有効で描画
 	// (描画先テクスチャはあらかじめ不透明にしておく必要があるので注意。不透明でない場合、見た目が暗くなる)

@@ -5,44 +5,33 @@ namespace MusicGame::Graphics
 {
 	namespace
 	{
-		constexpr Size RenderTextureSize(bool wide)
-		{
-			return wide ? kHighwayTextureSizeWide : kHighwayTextureSize;
-		}
-
-		constexpr Point RenderTextureOffsetPosition(bool wide)
-		{
-			return wide ? Point{ (kHighwayTextureSizeWide.x - kHighwayTextureSize.x) / 2, 0 } : Point::Zero();
-		}
-
 		constexpr StringView kBaseTextureFilename = U"base.gif";
 		constexpr int32 kBaseTextureAdditiveColumn = 0;
 		constexpr int32 kBaseTextureInvMultiplyColumn = 1;
 
-		RenderTexture CreateBaseTexture(int32 column, const Size& size, const Color& clearColor)
+		RenderTexture CreateBaseTexture(int32 column, const Color& clearColor)
 		{
 			const Texture textureAsset = TextureAsset(kBaseTextureFilename);
 
-			RenderTexture texture(size);
+			RenderTexture texture(kHighwayTextureSizeWide);
 			texture.clear(clearColor);
 
 			// 中央へ描画
 			{
 				const ScopedRenderTarget2D renderTarget(texture);
 				const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
-				textureAsset(kHighwayTextureSize.x * column, 0, kHighwayTextureSize).drawAt(size / 2);
+				textureAsset(kHighwayTextureSize.x * column, 0, kHighwayTextureSize).draw(kHighwayTextureOffsetX, 0);
 			}
 
 			return texture;
 		}
 	}
 
-	HighwayRenderTexture::HighwayRenderTexture(bool wide)
-		: m_additiveTexture(RenderTextureSize(wide))
-		, m_invMultiplyTexture(RenderTextureSize(wide))
-		, m_additiveBaseTexture(CreateBaseTexture(kBaseTextureAdditiveColumn, RenderTextureSize(wide), Palette::Black))
-		, m_invMultiplyBaseTexture(CreateBaseTexture(kBaseTextureInvMultiplyColumn, RenderTextureSize(wide), Palette::Black))
-		, m_offsetPosition(RenderTextureOffsetPosition(wide))
+	HighwayRenderTexture::HighwayRenderTexture()
+		: m_additiveTexture(kHighwayTextureSizeWide)
+		, m_invMultiplyTexture(kHighwayTextureSizeWide)
+		, m_additiveBaseTexture(CreateBaseTexture(kBaseTextureAdditiveColumn, Palette::Black))
+		, m_invMultiplyBaseTexture(CreateBaseTexture(kBaseTextureInvMultiplyColumn, Palette::Black))
 	{
 	}
 
@@ -67,11 +56,6 @@ namespace MusicGame::Graphics
 	const RenderTexture& HighwayRenderTexture::invMultiplyTexture() const
 	{
 		return m_invMultiplyTexture;
-	}
-
-	const Point& HighwayRenderTexture::offsetPosition() const
-	{
-		return m_offsetPosition;
 	}
 
 	void HighwayRenderTexture::clearByBaseTexture() const

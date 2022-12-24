@@ -40,6 +40,9 @@ namespace MusicGame
 		// ノーツ側の理想カーソル横位置(0.0～1.0)
 		Optional<double> noteCursorX = none;
 
+		// カーソル横位置がはみ出しLASER用のものか
+		bool cursorWide = false;
+
 		// ノーツ側の表示用理想カーソル横位置(0.0～1.0)
 		// 
 		// LASERの判定タイミングをずらした際にカーソルが表示ノーツからずれないように別途設けている。

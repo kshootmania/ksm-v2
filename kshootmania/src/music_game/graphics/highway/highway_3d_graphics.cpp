@@ -22,14 +22,13 @@ namespace MusicGame::Graphics
 		constexpr float kUVShrinkY = 0.005f;
 
 		constexpr int32 kNumShineEffects = 4;
-		constexpr Vec2 kShineEffectPositionOffset = { 40.0, 0.0 };
+		constexpr Vec2 kShineEffectPositionOffset = kLanePositionOffset - Vec2{ 4.0, 0.0 };
 		constexpr Vec2 kShineEffectPositionDiff = { 0.0, 300.0 };
 		constexpr double kShineEffectLoopSec = 0.2;
 	}
 
 	Highway3DGraphics::Highway3DGraphics()
 		: m_shineEffectTexture(TextureAsset(kShineEffectTextureFilename))
-		, m_renderTexture(true)
 		, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, kHighwayPlaneSizeWide, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
 		, m_mesh(m_meshData) // DynamicMesh::fill()で頂点データの配列サイズが動的に変更される訳ではないのでこの初期化は必須
 	{
@@ -45,7 +44,7 @@ namespace MusicGame::Graphics
 			const ScopedRenderStates2D renderState(BlendState::Additive);
 
 			const double rate = MathUtils::WrappedFmod(gameStatus.currentTimeSec, kShineEffectLoopSec) / kShineEffectLoopSec;
-			const Vec2 position = m_renderTexture.offsetPosition() + kShineEffectPositionOffset + kShineEffectPositionDiff * rate;
+			const Vec2 position = kShineEffectPositionOffset + kShineEffectPositionDiff * rate;
 			for (int32 i = 0; i < kNumShineEffects; ++i)
 			{
 				m_shineEffectTexture.draw(position + kShineEffectPositionDiff * i);

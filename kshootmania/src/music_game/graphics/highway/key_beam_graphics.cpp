@@ -25,7 +25,6 @@ namespace MusicGame::Graphics
 		const ScopedRenderTarget2D renderTarget(target.additiveTexture());
 		const ScopedRenderStates2D renderState(BlendState::Additive);
 
-		const Vec2 offsetPosition = target.offsetPosition() + kKeyBeamPositionOffset;
 		for (std::size_t i = 0; i < kson::kNumBTLanesSZ + kson::kNumFXLanesSZ; ++i)
 		{
 			const bool isBT = (i < kson::kNumBTLanesSZ);
@@ -60,13 +59,13 @@ namespace MusicGame::Graphics
 			if (isBT)
 			{
 				beamTextureRegion
-					.draw(offsetPosition + kBTLanePositionDiff * (dLaneIdx + 0.5 - widthRate / 2), ColorF{ 1.0, alpha });
+					.draw(kKeyBeamPositionOffset + kBTLanePositionDiff * (dLaneIdx + 0.5 - widthRate / 2), ColorF{ 1.0, alpha });
 			}
 			else
 			{
 				beamTextureRegion
 					.resized(kFXKeyBeamTextureSize.x * widthRate, kFXKeyBeamTextureSize.y)
-					.draw(offsetPosition + kFXLanePositionDiff * dLaneIdx + kFXKeyBeamTextureSize * (0.5 - widthRate / 2), ColorF{ 1.0, alpha });
+					.draw(kKeyBeamPositionOffset + kFXLanePositionDiff * dLaneIdx + kFXKeyBeamTextureSize * (0.5 - widthRate / 2), ColorF{ 1.0, alpha });
 			}
 		}
 	}

@@ -42,16 +42,16 @@ namespace MusicGame::Graphics
 			};
 		}
 
-		void DrawLaserLine(int32 laneIdx, kson::RelPulse relPulse1, const kson::GraphValue& point1, kson::RelPulse relPulse2, const kson::GraphValue& point2, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const Size& highwayTextureSize)
+		void DrawLaserLine(int32 laneIdx, kson::RelPulse relPulse1, const kson::GraphValue& point1, kson::RelPulse relPulse2, const kson::GraphValue& point2, const Texture& laserNoteTexture, int32 laserNoteTextureRow, int32 xScale)
 		{
 			const Vec2 positionStart = {
-				point1.vf * (highwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-				static_cast<double>(highwayTextureSize.y) - static_cast<double>(relPulse1) * 480 / kson::kResolution + kLaserShiftY - ((point1.v != point1.vf) ? kLaserTextureSize.y : 0.0)
+				point1.vf * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse1) * 480 / kson::kResolution + kLaserShiftY - ((point1.v != point1.vf) ? kLaserTextureSize.y : 0.0)
 			};
 
 			const Vec2 positionEnd = {
-				point2.v * (highwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-				static_cast<double>(highwayTextureSize.y) - static_cast<double>(relPulse2) * 480 / kson::kResolution + kLaserShiftY
+				point2.v * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse2) * 480 / kson::kResolution + kLaserShiftY
 			};
 
 			const Quad quad = LaserLineQuad(positionStart, positionEnd);
@@ -75,16 +75,16 @@ namespace MusicGame::Graphics
 			};
 		}
 
-		void DrawLaserSlam(int32 laneIdx, kson::RelPulse relPulse, const kson::GraphValue& point, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const Size& highwayTextureSize)
+		void DrawLaserSlam(int32 laneIdx, kson::RelPulse relPulse, const kson::GraphValue& point, const Texture& laserNoteTexture, int32 laserNoteTextureRow, int32 xScale)
 		{
 			const Vec2 positionStart = {
-				point.v * (highwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-				static_cast<double>(highwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
+				point.v * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
 			};
 
 			const Vec2 positionEnd = {
-				point.vf * (highwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-				static_cast<double>(highwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
+				point.vf * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
 			};
 
 			// 直角レーザーの角のテクスチャを描画
@@ -97,11 +97,11 @@ namespace MusicGame::Graphics
 			quad(laserNoteTexture(kLaserTextureSize.x * laneIdx + kOnePixelTextureSourceOffset, kLaserTextureSize.y * laserNoteTextureRow, kOnePixelTextureSourceSize, kLaserTextureSize.y)).draw();
 		}
 
-		void DrawLaserSlamTail(int32 laneIdx, kson::RelPulse relPulse, const kson::GraphValue& point, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const Size& highwayTextureSize)
+		void DrawLaserSlamTail(int32 laneIdx, kson::RelPulse relPulse, const kson::GraphValue& point, const Texture& laserNoteTexture, int32 laserNoteTextureRow, int32 xScale)
 		{
 			const Vec2 positionStart = {
-				point.vf * (highwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-				static_cast<double>(highwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
+				point.vf * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+				static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse) * 480 / kson::kResolution + kLaserShiftY
 			};
 			const Quad quad = LaserLineQuad(positionStart + Vec2{ 0.0, -kLaserTextureSize.y }, positionStart + Vec2{ 0.0, -kLaserTextureSize.y - kLaserTailHeight });
 			quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y * laserNoteTextureRow + kLaserTextureSize.y - 1 + kOnePixelTextureSourceOffset, kLaserTextureSize.x, kOnePixelTextureSourceSize)).draw();
@@ -125,15 +125,14 @@ namespace MusicGame::Graphics
 			return JudgmentStatus::kError;
 		}
 
-		void DrawLaserSection(int32 laneIdx, kson::RelPulse relPulse, const kson::LaserSection& laserSection, const RenderTexture& target, const Point& offsetPosition, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const TextureRegion& laserStartTexture)
+		void DrawLaserSection(int32 laneIdx, kson::RelPulse relPulse, const kson::LaserSection& laserSection, const RenderTexture& target, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const TextureRegion& laserStartTexture)
 		{
 			const ScopedRenderTarget2D renderTarget(target);
 
 			// はみ出しLASERの場合は描画領域を横幅2倍として扱う
-			assert(laserSection.w == 1 || laserSection.w == 2);
-			const bool wide = laserSection.w == 2;
-			const Size highwayTextureSize = wide ? kHighwayTextureSizeWide : kHighwayTextureSize;
-			const Transformer2D transformer(wide ? Mat3x2::Identity() : Mat3x2::Translate(offsetPosition));
+			const bool wide = laserSection.wide();
+			const int32 xScale = wide ? kLaserXScaleWide : kLaserXScaleNormal;
+			const Transformer2D transformer(Mat3x2::Translate(wide ? kLaserPositionOffsetWide : kLaserPositionOffsetNormal));
 
 			// LASERセクション内の各点をもとに描画
 			for (auto itr = laserSection.v.begin(); itr != laserSection.v.end(); ++itr)
@@ -144,13 +143,13 @@ namespace MusicGame::Graphics
 				if (itr == laserSection.v.begin())
 				{
 					const Vec2 positionStart = {
-						point.v * (highwayTextureSize.x - kLaserLineWidth) + kLaserLineWidth / 2,
-						static_cast<double>(highwayTextureSize.y) - static_cast<double>(relPulse + ry) * 480 / kson::kResolution + kLaserShiftY
+						point.v * (kHighwayTextureSize.x * xScale - kLaserLineWidth) + kLaserLineWidth / 2,
+						static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse + ry) * 480 / kson::kResolution + kLaserShiftY
 					};
 					laserStartTexture.draw(Arg::topCenter = positionStart);
 				}
 
-				const double positionStartY = static_cast<double>(highwayTextureSize.y) - static_cast<double>(relPulse + ry) * 480 / kson::kResolution + kLaserShiftY;
+				const double positionStartY = static_cast<double>(kHighwayTextureSize.y) - static_cast<double>(relPulse + ry) * 480 / kson::kResolution + kLaserShiftY;
 				if (positionStartY < 0)
 				{
 					// レーザーの線を構成する2つの点(始点・終点)のうち始点が描画範囲より上にある場合は描画しない
@@ -161,7 +160,7 @@ namespace MusicGame::Graphics
 				// 直角レーザーを描画
 				if (point.v != point.vf)
 				{
-					DrawLaserSlam(laneIdx, relPulse + ry, point, laserNoteTexture, laserNoteTextureRow, highwayTextureSize);
+					DrawLaserSlam(laneIdx, relPulse + ry, point, laserNoteTexture, laserNoteTextureRow, xScale);
 				}
 
 				// レーザー終端の点の場合は線を描画しない
@@ -171,7 +170,7 @@ namespace MusicGame::Graphics
 					// 終端が直角の場合は終端を伸ばす
 					if (point.v != point.vf)
 					{
-						DrawLaserSlamTail(laneIdx, relPulse + ry, point, laserNoteTexture, laserNoteTextureRow, highwayTextureSize);
+						DrawLaserSlamTail(laneIdx, relPulse + ry, point, laserNoteTexture, laserNoteTextureRow, xScale);
 					}
 
 					break;
@@ -184,7 +183,7 @@ namespace MusicGame::Graphics
 					{
 						continue;
 					}
-					DrawLaserLine(laneIdx, relPulse + ry, point, relPulse + nextRy, nextPoint, laserNoteTexture, laserNoteTextureRow, highwayTextureSize);
+					DrawLaserLine(laneIdx, relPulse + ry, point, relPulse + nextRy, nextPoint, laserNoteTexture, laserNoteTextureRow, xScale);
 				}
 			}
 		}
@@ -260,8 +259,8 @@ namespace MusicGame::Graphics
 				const int32 textureRow = LaserTextureRow(judgmentStatus, gameStatus.currentTimeSec);
 
 				// LASERセクションを描画
-				DrawLaserSection(laneIdx, relPulse, laserSection, target.additiveTexture(), target.offsetPosition(), m_laserNoteTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnAdditive));
-				DrawLaserSection(laneIdx, relPulse, laserSection, target.invMultiplyTexture(), target.offsetPosition(), m_laserNoteMaskTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnInvMultiply));
+				DrawLaserSection(laneIdx, relPulse, laserSection, target.additiveTexture(), m_laserNoteTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnAdditive));
+				DrawLaserSection(laneIdx, relPulse, laserSection, target.invMultiplyTexture(), m_laserNoteMaskTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kLaserNoteStartTextureColumnInvMultiply));
 			}
 		}
 	}
