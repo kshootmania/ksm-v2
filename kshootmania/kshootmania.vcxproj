@@ -135,6 +135,7 @@
     <ClCompile Include="src\music_game\game_main.cpp" />
     <ClCompile Include="src\music_game\graphics\graphics_main.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\highway_3d_graphics.cpp" />
+    <ClCompile Include="src\music_game\graphics\highway\highway_render_texture.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\highway_tilt.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\key_beam_graphics.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\note\button_note_graphics.cpp" />
@@ -378,6 +379,7 @@
     <ClInclude Include="src\music_game\graphics\graphics_defines.hpp" />
     <ClInclude Include="src\music_game\graphics\graphics_main.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\highway_3d_graphics.hpp" />
+    <ClInclude Include="src\music_game\graphics\highway\highway_render_texture.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\highway_tilt.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\key_beam_graphics.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\note\button_note_graphics.hpp" />

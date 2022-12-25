@@ -151,7 +151,8 @@ namespace MusicGame::Graphics
 				// カーソルがクリティカル判定の範囲内でない
 				continue;
 			}
-			const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 28 + static_cast<int32>(295 * laneStatus.cursorX.value()), 17);
+			const double cursorX = laneStatus.cursorWide ? ((laneStatus.cursorX.value() - 0.5) * 2 + 0.5) : laneStatus.cursorX.value();
+			const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 28 + static_cast<int32>(295 * cursorX), 17);
 			m_laserAnimTexture(frameIdx, i).resized(size).draw(position);
 		}
 	}

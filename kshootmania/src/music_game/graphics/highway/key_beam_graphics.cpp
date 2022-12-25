@@ -20,9 +20,9 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void KeyBeamGraphics::draw(const GameStatus& gameStatus, const RenderTexture& additiveTarget) const
+	void KeyBeamGraphics::draw(const GameStatus& gameStatus, const HighwayRenderTexture& target) const
 	{
-		const ScopedRenderTarget2D renderTarget(additiveTarget);
+		const ScopedRenderTarget2D renderTarget(target.additiveTexture());
 		const ScopedRenderStates2D renderState(BlendState::Additive);
 
 		for (std::size_t i = 0; i < kson::kNumBTLanesSZ + kson::kNumFXLanesSZ; ++i)

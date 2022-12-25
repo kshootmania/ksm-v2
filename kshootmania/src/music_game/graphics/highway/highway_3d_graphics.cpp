@@ -6,7 +6,6 @@ namespace MusicGame::Graphics
 {
 	namespace
 	{
-		constexpr StringView kHighwayBaseTextureFilename = U"base.gif";
 		constexpr StringView kShineEffectTextureFilename = U"lanelight.gif";
 
 		// カメラ座標と判定ラインを線で結んだ場合の垂直からの角度
@@ -23,60 +22,49 @@ namespace MusicGame::Graphics
 		constexpr float kUVShrinkY = 0.005f;
 
 		constexpr int32 kNumShineEffects = 4;
-		constexpr Vec2 kShineEffectPositionOffset = { 40.0, 0.0 };
+		constexpr Vec2 kShineEffectPositionOffset = kLanePositionOffset - Vec2{ 4.0, 0.0 };
 		constexpr Vec2 kShineEffectPositionDiff = { 0.0, 300.0 };
+		constexpr double kShineEffectLoopSec = 0.2;
 	}
 
 	Highway3DGraphics::Highway3DGraphics()
-		: m_baseTexture(TextureAsset(kHighwayBaseTextureFilename))
-		, m_shineEffectTexture(TextureAsset(kShineEffectTextureFilename))
-		, m_additiveRenderTexture(kHighwayTextureSize)
-		, m_invMultiplyRenderTexture(kHighwayTextureSize)
-		, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, kHighwayPlaneSize, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
+		: m_shineEffectTexture(TextureAsset(kShineEffectTextureFilename))
+		, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, kHighwayPlaneSizeWide, 2, 2, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
 		, m_mesh(m_meshData) // DynamicMesh::fill()で頂点データの配列サイズが動的に変更される訳ではないのでこの初期化は必須
 	{
 	}
 
 	void Highway3DGraphics::draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus) const
 	{
-		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
-		Shader::Copy(m_baseTexture(0, 0, kHighwayTextureSize), m_additiveRenderTexture);
-		Shader::Copy(m_baseTexture(kHighwayTextureSize.x, 0, kHighwayTextureSize), m_invMultiplyRenderTexture);
+		m_renderTexture.clearByBaseTexture();
 
 		// Draw shine effect
 		{
-			const ScopedRenderTarget2D renderTarget(m_additiveRenderTexture);
+			const ScopedRenderTarget2D renderTarget(m_renderTexture.additiveTexture());
 			const ScopedRenderStates2D renderState(BlendState::Additive);
 
+			const double rate = MathUtils::WrappedFmod(gameStatus.currentTimeSec, kShineEffectLoopSec) / kShineEffectLoopSec;
+			const Vec2 position = kShineEffectPositionOffset + kShineEffectPositionDiff * rate;
 			for (int32 i = 0; i < kNumShineEffects; ++i)
 			{
-				m_shineEffectTexture.draw(kShineEffectPositionOffset + kShineEffectPositionDiff * i + kShineEffectPositionDiff * MathUtils::WrappedFmod(gameStatus.currentTimeSec, 0.2) / 0.2);
+				m_shineEffectTexture.draw(position + kShineEffectPositionDiff * i);
 			}
 		}
 
 		// BT/FXノーツの描画
-		m_buttonNoteGraphics.draw(chartData, gameStatus, m_additiveRenderTexture, m_invMultiplyRenderTexture);
+		m_buttonNoteGraphics.draw(chartData, gameStatus, m_renderTexture);
 
 		// キービームの描画
-		m_keyBeamGraphics.draw(gameStatus, m_additiveRenderTexture);
+		m_keyBeamGraphics.draw(gameStatus, m_renderTexture);
 
 		// レーザーノーツの描画
-		m_laserNoteGraphics.draw(chartData, gameStatus, m_additiveRenderTexture, m_invMultiplyRenderTexture);
+		m_laserNoteGraphics.draw(chartData, gameStatus, m_renderTexture);
 	}
 
 	void Highway3DGraphics::draw3D(double tiltRadians) const
 	{
 		// レンダーテクスチャを3D空間上へ描画
 		const Transformer3D transform(TiltTransformMatrix(tiltRadians));
-
-		{
-			const ScopedRenderStates3D renderState(kInvMultiply);
-			m_mesh.draw(m_invMultiplyRenderTexture);
-		}
-
-		{
-			const ScopedRenderStates3D renderState(BlendState::Additive);
-			m_mesh.draw(m_additiveRenderTexture);
-		}
+		m_renderTexture.draw3D(m_mesh);
 	}
 }
