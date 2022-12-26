@@ -17,7 +17,7 @@ namespace MusicGame
 		double keyBeamTimeSec = kPastTimeSec;
 		Judgment::KeyBeamType keyBeamType = Judgment::KeyBeamType::kDefault;
 
-		std::array<ChipAnimStatus, Graphics::kChipAnimMax> chipAnimStatusRingBuffer;
+		std::array<ChipAnimStatus, Graphics::kChipAnimMaxPlaying> chipAnimStatusRingBuffer;
 		std::size_t chipAnimStateRingBufferCursor = 0U;
 
 		// 現在ロングノートが押されているかどうか

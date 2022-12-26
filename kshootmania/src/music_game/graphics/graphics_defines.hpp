@@ -64,5 +64,5 @@ namespace MusicGame::Graphics
 		return Mat4x4::Rotate(Float3::Right(), -60_deg, planeCenter) * TiltTransformMatrix(tiltRadians);
 	}
 
-	constexpr std::size_t kChipAnimMax = 5U;
+	constexpr std::size_t kChipAnimMaxPlaying = 5U;
 }

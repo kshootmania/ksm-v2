@@ -14,10 +14,10 @@ namespace MusicGame::Graphics
 
 		const HighwayRenderTexture m_renderTexture;
 
-		ButtonNoteGraphics m_buttonNoteGraphics;
-		LaserNoteGraphics m_laserNoteGraphics;
+		const ButtonNoteGraphics m_buttonNoteGraphics;
+		const LaserNoteGraphics m_laserNoteGraphics;
 
-		KeyBeamGraphics m_keyBeamGraphics;
+		const KeyBeamGraphics m_keyBeamGraphics;
 
 		MeshData m_meshData;
 		DynamicMesh m_mesh;

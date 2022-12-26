@@ -171,12 +171,12 @@ namespace MusicGame::Judgment
 
 			if (chipAnimType.has_value())
 			{
-				assert(laneStatusRef.chipAnimStateRingBufferCursor < Graphics::kChipAnimMax);
+				assert(laneStatusRef.chipAnimStateRingBufferCursor < Graphics::kChipAnimMaxPlaying);
 				laneStatusRef.chipAnimStatusRingBuffer[laneStatusRef.chipAnimStateRingBufferCursor] = {
 					.startTimeSec = currentTimeSec,
 					.type = *chipAnimType,
 				};
-				laneStatusRef.chipAnimStateRingBufferCursor = (laneStatusRef.chipAnimStateRingBufferCursor + 1U) % Graphics::kChipAnimMax;
+				laneStatusRef.chipAnimStateRingBufferCursor = (laneStatusRef.chipAnimStateRingBufferCursor + 1U) % Graphics::kChipAnimMaxPlaying;
 			}
 		}
 	}
