@@ -1,4 +1,4 @@
-K-Shoot MANIA v1 Remastered
+K-Shoot MANIA v2 (v1 Remastered)
 ========================
 
 ## 開発状況
