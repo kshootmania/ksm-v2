@@ -1,6 +1,5 @@
 ﻿#include "option_menu.hpp"
 #include "option_assets.hpp"
-#include "ui/menu_helper.hpp"
 
 namespace
 {
@@ -9,11 +8,11 @@ namespace
 
 	constexpr int32 kFieldDiffY = 30;
 
-	Array<OptionMenuField> MakeFields(const TiledTexture& fieldKeyTexture, const Array<OptionMenuFieldCreateInfo>& fieldCreateInfos)
+	Array<OptionMenuField> MakeFields(const TiledTexture& fieldKeyTexture, const Array<OptionMenuField::CreateInfo>& fieldCreateInfos)
 	{
 		int32 i = 0;
-		return fieldCreateInfos.map([&i, &fieldKeyTexture](const OptionMenuFieldCreateInfo& createInfo) {
-			const int32 keyTextureIdx = (createInfo.keyTextureIdx == OptionMenuFieldCreateInfo::kKeyTextureIdxAutoSet) ? i : createInfo.keyTextureIdx;
+		return fieldCreateInfos.map([&i, &fieldKeyTexture](const OptionMenuField::CreateInfo& createInfo) {
+			const int32 keyTextureIdx = (createInfo.keyTextureIdx == OptionMenuField::CreateInfo::kKeyTextureIdxAutoSet) ? i : createInfo.keyTextureIdx;
 			i++;
 			return OptionMenuField(fieldKeyTexture(keyTextureIdx), createInfo);
 		});
@@ -29,8 +28,17 @@ namespace
 	}
 }
 
-OptionMenu::OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMenuFieldCreateInfo>& fieldCreateInfos)
-	: m_menu(MenuHelper::MakeVerticalMenu(static_cast<int32>(fieldCreateInfos.size()), MenuHelper::ButtonFlags::kArrowOrBTOrLaser))
+OptionMenu::OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMenuField::CreateInfo>& fieldCreateInfos)
+	: m_menu(
+		LinearMenu::CreateInfoWithEnumCount{
+			.cursorInputCreateInfo = {
+				.type = CursorInput::Type::Vertical,
+				.buttonFlags = CursorButtonFlags::kArrowOrBTOrLaser,
+				.buttonIntervalSec = 0.1,
+				.buttonIntervalSecFirst = 0.5,
+			},
+			.enumCount = static_cast<int32>(fieldCreateInfos.size()),
+		})
 	, m_fieldKeyTexture(fieldKeyTextureAssetKey,
 		{
 			.row = TiledTextureSizeInfo::kAutoDetect,

@@ -253,6 +253,12 @@
     <Filter Include="Source Files\music_game\judgment">
       <UniqueIdentifier>{42900bc0-ffe3-4d14-85b1-9ce5c2f0b3a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\input\cursor">
+      <UniqueIdentifier>{3783397c-bfeb-4339-8367-9322a9884aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input\cursor">
+      <UniqueIdentifier>{7fa8dd34-52e9-4e01-a5c2-8caaef7c24af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\scene\title\title_scene.cpp">
@@ -302,9 +308,6 @@
     </ClCompile>
     <ClCompile Include="src\scene\select\select_menu.cpp">
       <Filter>Source Files\scene\select</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ui\menu_helper.cpp">
-      <Filter>Source Files\ui</Filter>
     </ClCompile>
     <ClCompile Include="src\scene\select\select_difficulty_menu.cpp">
       <Filter>Source Files\scene\select</Filter>
@@ -398,6 +401,12 @@
     </ClCompile>
     <ClCompile Include="src\music_game\graphics\highway\highway_render_texture.cpp">
       <Filter>Source Files\music_game\graphics\highway</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\cursor\button_cursor_input_device.cpp">
+      <Filter>Source Files\input\cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\cursor\cursor_input.cpp">
+      <Filter>Source Files\input\cursor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1033,9 +1042,6 @@
     <ClInclude Include="src\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ui\menu_helper.hpp">
-      <Filter>Header Files\ui</Filter>
-    </ClInclude>
     <ClInclude Include="src\scene\title\title_menu.hpp">
       <Filter>Header Files\scene\title</Filter>
     </ClInclude>
@@ -1218,6 +1224,15 @@
     </ClInclude>
     <ClInclude Include="src\music_game\graphics\highway\highway_render_texture.hpp">
       <Filter>Header Files\music_game\graphics\highway</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\cursor\button_cursor_input_device.hpp">
+      <Filter>Header Files\input\cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\cursor\icursor_input_device.hpp">
+      <Filter>Header Files\input\cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\cursor\cursor_input.hpp">
+      <Filter>Header Files\input\cursor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

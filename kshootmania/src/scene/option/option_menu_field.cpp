@@ -1,5 +1,4 @@
 ﻿#include "option_menu_field.hpp"
-#include "ui/menu_helper.hpp"
 #include "ini/config_ini.hpp"
 
 namespace
@@ -32,14 +31,35 @@ namespace
 		return pairs;
 	}
 
-	LinearMenu MakeMenuInt(int32 valueMin, int32 valueMax, int32 valueDefault, int32 valueStep)
+	LinearMenu::CreateInfoWithCursorMinMax MakeMenuInt(int32 valueMin, int32 valueMax, int32 valueDefault, int32 valueStep)
 	{
-		return MenuHelper::MakeHorizontalMenuWithMinMax(valueMin, valueMax, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser, IsCyclicMenu::No, 0.0, 0.0, valueDefault, valueStep);
+		return LinearMenu::CreateInfoWithCursorMinMax{
+			.cursorInputCreateInfo = {
+				.type = CursorInput::Type::Horizontal,
+				.buttonFlags = CursorButtonFlags::kArrowOrBTOrFXOrLaser,
+				.buttonIntervalSec = 0.1,
+				.buttonIntervalSecFirst = 0.5,
+			},
+			.cursorMin = valueMin,
+			.cursorMax = valueMax,
+			.cursorStep = valueStep,
+			.defaultCursor = valueDefault,
+		};
 	}
 
-	LinearMenu MakeMenuEnum(int32 enumCount, int32 valueDefault)
+	LinearMenu::CreateInfoWithCursorMinMax MakeMenuEnum(int32 enumCount, int32 valueDefault)
 	{
-		return MenuHelper::MakeHorizontalMenu(enumCount, MenuHelper::ButtonFlags::kArrowOrBTOrFXOrLaser, IsCyclicMenu::No, 0.0, 0.0, valueDefault);
+		return LinearMenu::CreateInfoWithCursorMinMax{
+			.cursorInputCreateInfo = {
+				.type = CursorInput::Type::Horizontal,
+				.buttonFlags = CursorButtonFlags::kArrowOrBTOrFXOrLaser,
+				.buttonIntervalSec = 0.1,
+				.buttonIntervalSecFirst = 0.5,
+			},
+			.cursorMin = 0,
+			.cursorMax = Max(enumCount - 1, 0),
+			.defaultCursor = valueDefault,
+		};
 	}
 
 	OptionMenuField::ArrowType GetMenuFieldValueArrowType(const LinearMenu& menu)
@@ -90,43 +110,43 @@ namespace
 	}
 }
 
-OptionMenuFieldCreateInfo OptionMenuFieldCreateInfo::Enum(StringView configIniKey, const Array<String>& valueDisplayNames)
+OptionMenuField::CreateInfo OptionMenuField::CreateInfo::Enum(StringView configIniKey, const Array<String>& valueDisplayNames)
 {
 	return Enum(configIniKey, ConvertValueDisplayNamePairs(valueDisplayNames));
 }
 
-OptionMenuFieldCreateInfo OptionMenuFieldCreateInfo::Enum(StringView configIniKey, const Array<StringView>& valueDisplayNames)
+OptionMenuField::CreateInfo OptionMenuField::CreateInfo::Enum(StringView configIniKey, const Array<StringView>& valueDisplayNames)
 {
 	return Enum(configIniKey, ConvertValueDisplayNamePairs(valueDisplayNames));
 }
 
-OptionMenuFieldCreateInfo OptionMenuFieldCreateInfo::Enum(StringView configIniKey, const Array<std::pair<String, String>>& valueDisplayNamePairs)
+OptionMenuField::CreateInfo OptionMenuField::CreateInfo::Enum(StringView configIniKey, const Array<std::pair<String, String>>& valueDisplayNamePairs)
 {
-	return OptionMenuFieldCreateInfo{
+	return CreateInfo{
 		.configIniKey = String(configIniKey),
 		.valueDisplayNamePairs = valueDisplayNamePairs,
 	};
 }
 
-OptionMenuFieldCreateInfo OptionMenuFieldCreateInfo::Enum(StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs)
+OptionMenuField::CreateInfo OptionMenuField::CreateInfo::Enum(StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs)
 {
 	return Enum(configIniKey, ConvertValueDisplayNamePairs(valueDisplayNamePairs));
 }
 
-OptionMenuFieldCreateInfo OptionMenuFieldCreateInfo::Enum(StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs)
+OptionMenuField::CreateInfo OptionMenuField::CreateInfo::Enum(StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs)
 {
 	return Enum(configIniKey, ConvertValueDisplayNamePairs(valueDisplayNamePairs));
 }
 
-OptionMenuFieldCreateInfo OptionMenuFieldCreateInfo::Int(StringView configIniKey, int32 valueMin, int32 valueMax, int32 valueDefault, StringView suffixStr, int32 valueStep)
+OptionMenuField::CreateInfo OptionMenuField::CreateInfo::Int(StringView configIniKey, int32 valueMin, int32 valueMax, int32 valueDefault, StringView suffixStr, int32 valueStep)
 {
 	if (valueStep == 0)
 	{
 		// CreateInfo having zero valueStep is misrecognized as an enum field, so throw an exception.
-		throw Error(U"OptionMenuFieldCreateInfo::Int(): valueStep must not be zero!");
+		throw Error(U"CreateInfo::Int(): valueStep must not be zero!");
 	}
 
-	return OptionMenuFieldCreateInfo{
+	return OptionMenuField::CreateInfo{
 		.configIniKey = String(configIniKey),
 		.valueMin = valueMin,
 		.valueMax = valueMax,
@@ -136,19 +156,19 @@ OptionMenuFieldCreateInfo OptionMenuFieldCreateInfo::Int(StringView configIniKey
 	};
 }
 
-OptionMenuFieldCreateInfo& OptionMenuFieldCreateInfo::setKeyTextureIdx(int32 idx)&
+OptionMenuField::CreateInfo& OptionMenuField::CreateInfo::setKeyTextureIdx(int32 idx)&
 {
 	keyTextureIdx = idx;
 	return *this;
 }
 
-OptionMenuFieldCreateInfo&& OptionMenuFieldCreateInfo::setKeyTextureIdx(int32 idx)&&
+OptionMenuField::CreateInfo&& OptionMenuField::CreateInfo::setKeyTextureIdx(int32 idx)&&
 {
 	keyTextureIdx = idx;
 	return std::move(*this);
 }
 
-OptionMenuField::OptionMenuField(const TextureRegion& keyTextureRegion, const OptionMenuFieldCreateInfo& createInfo)
+OptionMenuField::OptionMenuField(const TextureRegion& keyTextureRegion, const CreateInfo& createInfo)
 	: m_configIniKey(createInfo.configIniKey)
 	, m_isEnum(createInfo.valueStep == 0)
 	, m_suffixStr(createInfo.suffixStr)

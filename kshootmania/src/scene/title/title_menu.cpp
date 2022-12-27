@@ -30,14 +30,15 @@ namespace
 
 TitleMenu::TitleMenu(TitleScene* pTitleScene)
 	: m_pTitleScene(pTitleScene)
-	, m_menu(MenuHelper::MakeVerticalMenu(
-		Item::kItemEnumCount,
-		MenuHelper::ButtonFlags::kArrow |
-		MenuHelper::ButtonFlags::kBT |
-		MenuHelper::ButtonFlags::kBTOpposite |
-		MenuHelper::ButtonFlags::kLaser |
-		MenuHelper::ButtonFlags::kLaserOpposite,
-		IsCyclicMenu::No))
+	, m_menu(
+		LinearMenu::CreateInfoWithEnumCount{
+			.cursorInputCreateInfo = {
+				.type = CursorInput::Type::Vertical,
+				.buttonFlags = CursorButtonFlags::kArrowOrBTAllOrLaserAll,
+			},
+			.enumCount = Item::kItemEnumCount,
+			.cyclic = IsCyclicMenu::No,
+		})
 	, m_menuItemTexture(TitleTexture::kMenuItem,
 		{
 			.row = kItemEnumCount,

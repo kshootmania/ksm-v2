@@ -21,7 +21,7 @@ private:
 	Stopwatch m_stopwatch;
 
 public:
-	OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMenuFieldCreateInfo>& fieldCreateInfos);
+	OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMenuField::CreateInfo>& fieldCreateInfos);
 
 	void update();
 

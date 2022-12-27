@@ -33,7 +33,7 @@ public:
 
 	int32 rawCursor() const;
 
-	bool isCursorChanged() const;
+	int32 deltaCursor() const;
 
 	static int32 GetAlternativeCursor(int32 rawCursor, std::function<bool(int32)> difficultyExistsFunc);
 };

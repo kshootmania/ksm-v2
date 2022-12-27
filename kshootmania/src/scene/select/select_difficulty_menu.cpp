@@ -2,7 +2,17 @@
 #include "select_menu.hpp"
 
 SelectDifficultyMenu::SelectDifficultyMenu(const SelectMenu* pSelectMenu)
-	: m_menu(MenuHelper::MakeHorizontalMenu(kNumDifficulties, MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::No, 0.12, 0.12, kDifficultyIdxLight))
+	: m_menu(
+		LinearMenu::CreateInfoWithEnumCount{
+			.cursorInputCreateInfo = {
+				.type = CursorInput::Type::Horizontal,
+				.buttonFlags = CursorButtonFlags::kArrowOrLaser,
+				.buttonIntervalSec = 0.12,
+				.buttonIntervalSecFirst = 0.12,
+			},
+			.enumCount = kNumDifficulties,
+			.defaultCursor = kDifficultyIdxLight,
+		})
 	, m_pSelectMenu(pSelectMenu)
 	, m_difficultyTexture(SelectTexture::kSongDifficulty,
 		{
@@ -33,8 +43,10 @@ void SelectDifficultyMenu::update()
 
 	m_menu.update();
 
+	const int32 deltaCursor = m_menu.deltaCursor();
+
 	// カーソルが変更なしの場合は特に何もしなくてOK
-	if (!m_menu.isCursorChanged())
+	if (deltaCursor == 0)
 	{
 		return;
 	}
@@ -57,7 +69,7 @@ void SelectDifficultyMenu::update()
 
 	// カーソルが存在しない難易度に変更された場合は、他の難易度への変更を試みる
 	int32 newCursor = cursorPrev;
-	if (m_menu.isCursorIncremented())
+	if (deltaCursor > 0)
 	{
 		for (int idx = cursor + 1; idx < kNumDifficulties; ++idx)
 		{
@@ -68,7 +80,7 @@ void SelectDifficultyMenu::update()
 			}
 		}
 	}
-	else if (m_menu.isCursorDecremented())
+	else if (deltaCursor < 0)
 	{
 		for (int idx = cursor - 1; idx >= 0; --idx)
 		{
@@ -154,9 +166,9 @@ int32 SelectDifficultyMenu::rawCursor() const
 	return m_menu.cursor();
 }
 
-bool SelectDifficultyMenu::isCursorChanged() const
+int32 SelectDifficultyMenu::deltaCursor() const
 {
-	return m_menu.isCursorChanged();
+	return m_menu.deltaCursor();
 }
 
 // 選択中の曲にカーソルの難易度が存在するとは限らないので、存在する難易度のうちカーソルに最も近いものを代替カーソル値(alternative cursor)として返す

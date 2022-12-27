@@ -23,9 +23,16 @@ namespace
 }
 
 OptionTopMenu::OptionTopMenu()
-	: m_menu(MenuHelper::MakeVerticalMenu(
-		kItemEnumCount,
-		MenuHelper::ButtonFlags::kArrow | MenuHelper::ButtonFlags::kBT | MenuHelper::ButtonFlags::kBTOpposite))
+	: m_menu(
+		LinearMenu::CreateInfoWithEnumCount{
+			.cursorInputCreateInfo = {
+				.type = CursorInput::Type::Vertical,
+				.buttonFlags = CursorButtonFlags::kArrowOrBTOrLaser,
+				.buttonIntervalSec = 0.1,
+				.buttonIntervalSecFirst = 0.5,
+			},
+			.enumCount = kItemEnumCount,
+		})
 	, m_itemTiledTexture(OptionTexture::kTopMenuItem,
 		{
 			.row = kItemEnumCount,

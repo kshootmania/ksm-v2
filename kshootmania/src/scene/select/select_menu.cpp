@@ -1,8 +1,6 @@
 ﻿#include "select_menu.hpp"
 #include <cassert>
-
-#include "ui/menu_helper.hpp"
-#include "kson/io/ksh_io.hpp"
+#include "kson/kson.hpp"
 
 namespace
 {
@@ -310,7 +308,16 @@ void SelectMenu::refreshGraphics(SelectMenuGraphics::RefreshType type)
 }
 
 SelectMenu::SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc)
-	: m_menu(MenuHelper::MakeArrayWithVerticalMenu<SelectMenuItem>(MenuHelper::ButtonFlags::kArrowOrLaser, IsCyclicMenu::Yes, 0.05, 0.3))
+	: m_menu(
+		LinearMenu::CreateInfoWithCursorMinMax{
+			.cursorInputCreateInfo = {
+				.type = CursorInput::Type::Vertical,
+				.buttonFlags = CursorButtonFlags::kArrowOrLaser,
+				.buttonIntervalSec = 0.05,
+				.buttonIntervalSecFirst = 0.3,
+			},
+			.cyclic = IsCyclicMenu::Yes,
+		})
 	, m_difficultyMenu(this)
 	, m_shakeStopwatch(StartImmediately::No)
 	, m_moveToPlaySceneFunc(std::move(moveToPlaySceneFunc))
@@ -334,14 +341,14 @@ SelectMenu::SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc)
 void SelectMenu::update()
 {
 	m_menu.update();
-	if (m_menu.isCursorChanged())
+	if (const int32 deltaCursor = m_menu.deltaCursor(); deltaCursor != 0)
 	{
 		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, m_menu.cursor());
-		refreshGraphics(m_menu.isCursorIncremented() ? SelectMenuGraphics::kCursorDown : SelectMenuGraphics::kCursorUp);
+		refreshGraphics(deltaCursor < 0 ? SelectMenuGraphics::kCursorDown : SelectMenuGraphics::kCursorUp);
 	}
 
 	m_difficultyMenu.update();
-	if (m_difficultyMenu.isCursorChanged())
+	if (m_difficultyMenu.deltaCursor() != 0)
 	{
 		ConfigIni::SetInt(ConfigIni::Key::kSelectDifficulty, m_difficultyMenu.cursor());
 		refreshGraphics(SelectMenuGraphics::kAll);

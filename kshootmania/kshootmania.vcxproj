@@ -125,6 +125,8 @@
     <ClCompile Include="src\i18n\i18n.cpp" />
     <ClCompile Include="src\ini\config_ini.cpp" />
     <ClCompile Include="src\ini\ksm_ini_data.cpp" />
+    <ClCompile Include="src\input\cursor\button_cursor_input_device.cpp" />
+    <ClCompile Include="src\input\cursor\cursor_input.cpp" />
     <ClCompile Include="src\input\key_config.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\music_game\audio\assist_tick.cpp" />
@@ -164,7 +166,6 @@
     <ClCompile Include="src\scene\title\title_scene.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
     <ClCompile Include="src\ui\linear_menu.cpp" />
-    <ClCompile Include="src\ui\menu_helper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -369,6 +370,9 @@
     <ClInclude Include="src\i18n\i18n.hpp" />
     <ClInclude Include="src\ini\config_ini.hpp" />
     <ClInclude Include="src\ini\ksm_ini_data.hpp" />
+    <ClInclude Include="src\input\cursor\button_cursor_input_device.hpp" />
+    <ClInclude Include="src\input\cursor\cursor_input.hpp" />
+    <ClInclude Include="src\input\cursor\icursor_input_device.hpp" />
     <ClInclude Include="src\input\key_config.hpp" />
     <ClInclude Include="src\music_game\audio\assist_tick.hpp" />
     <ClInclude Include="src\music_game\audio\audio_defines.hpp" />
@@ -422,7 +426,6 @@
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\ui\array_with_linear_menu.hpp" />
     <ClInclude Include="src\ui\linear_menu.hpp" />
-    <ClInclude Include="src\ui\menu_helper.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">

@@ -5,30 +5,19 @@ template <typename T>
 class ArrayWithLinearMenu
 {
 private:
+	static LinearMenu::CreateInfoWithCursorMinMax FixLinearMenuCreateInfo(const Array<T>& array, LinearMenu::CreateInfoWithCursorMinMax createInfo);
+
 	Array<T> m_array;
 	LinearMenu m_linearMenu;
 
 	void updateLinearMenuCursorMax();
 
 public:
-	ArrayWithLinearMenu(
-		const Array<KeyConfig::Button>& incrementButtons,
-		const Array<KeyConfig::Button>& decrementButtons,
-		IsCyclicMenu cyclic,
-		double intervalSec,
-		double intervalSecFirst,
-		int32 defaultCursor,
-		int32 cursorStep);
+	explicit ArrayWithLinearMenu(const LinearMenu::CreateInfoWithCursorMinMax& createInfo);
 
-	ArrayWithLinearMenu(
-		const Array<T>& array,
-		const Array<KeyConfig::Button>& incrementButtons,
-		const Array<KeyConfig::Button>& decrementButtons,
-		IsCyclicMenu cyclic,
-		double intervalSec,
-		double intervalSecFirst,
-		int32 defaultCursor,
-		int32 cursorStep);
+	explicit ArrayWithLinearMenu(const Array<T>& array, const LinearMenu::CreateInfoWithCursorMinMax& createInfo);
+
+	explicit ArrayWithLinearMenu(Array<T>&& array, const LinearMenu::CreateInfoWithCursorMinMax& createInfo);
 
 	template <typename U = int32>
 	U cursor() const;
@@ -42,11 +31,7 @@ public:
 
 	bool isCursorMax() const;
 
-	bool isCursorChanged() const;
-
-	bool isCursorIncremented() const;
-
-	bool isCursorDecremented() const;
+	int32 deltaCursor() const;
 
 	T& cursorValue();
 
@@ -110,50 +95,13 @@ public:
 	auto empty() const;
 };
 
-template <typename T>
-ArrayWithLinearMenu<T>::ArrayWithLinearMenu(
-		const Array<KeyConfig::Button>& incrementButtons,
-		const Array<KeyConfig::Button>& decrementButtons,
-		IsCyclicMenu cyclic,
-		double intervalSec,
-		double intervalSecFirst,
-		int32 defaultCursor,
-		int32 cursorStep)
-	: m_linearMenu(
-		0,
-		0,
-		incrementButtons,
-		decrementButtons,
-		cyclic,
-		intervalSec,
-		intervalSecFirst,
-		defaultCursor,
-		cursorStep)
+template<typename T>
+LinearMenu::CreateInfoWithCursorMinMax ArrayWithLinearMenu<T>::FixLinearMenuCreateInfo(const Array<T>& array, LinearMenu::CreateInfoWithCursorMinMax createInfo)
 {
-}
-
-template <typename T>
-ArrayWithLinearMenu<T>::ArrayWithLinearMenu(
-		const Array<T>& array,
-		const Array<KeyConfig::Button>& incrementButtons,
-		const Array<KeyConfig::Button>& decrementButtons,
-		IsCyclicMenu cyclic,
-		double intervalSec,
-		double intervalSecFirst,
-		int32 defaultCursor,
-		int32 cursorStep)
-	: m_array(array)
-	, m_linearMenu(
-		0,
-		static_cast<int32>(array.size()),
-		incrementButtons,
-		decrementButtons,
-		cyclic,
-		intervalSec,
-		intervalSecFirst,
-		defaultCursor,
-		cursorStep)
-{
+	// cursorMinとcursorMaxは配列のサイズをもとに決まる
+	createInfo.cursorMin = 0;
+	createInfo.cursorMax = Max(static_cast<int32>(array.size()) - 1, 0);
+	return createInfo;
 }
 
 template <typename T>
@@ -176,6 +124,26 @@ void ArrayWithLinearMenu<T>::updateLinearMenuCursorMax()
 	m_linearMenu.setCursorMax(std::max(static_cast<int32>(m_array.size()) - 1, 0));
 }
 
+template<typename T>
+ArrayWithLinearMenu<T>::ArrayWithLinearMenu(const LinearMenu::CreateInfoWithCursorMinMax& createInfo)
+	: m_linearMenu(FixLinearMenuCreateInfo(m_array, createInfo)) // m_arrayの宣言はm_linearMenuより先なのでここで使用するのは問題なし
+{
+}
+
+template<typename T>
+ArrayWithLinearMenu<T>::ArrayWithLinearMenu(const Array<T>& array, const LinearMenu::CreateInfoWithCursorMinMax& createInfo)
+	: m_array(array)
+	, m_linearMenu(FixLinearMenuCreateInfo(m_array, createInfo))
+{
+}
+
+template<typename T>
+ArrayWithLinearMenu<T>::ArrayWithLinearMenu(Array<T>&& array, const LinearMenu::CreateInfoWithCursorMinMax& createInfo)
+	: m_array(std::move(array))
+	, m_linearMenu(FixLinearMenuCreateInfo(m_array, createInfo))
+{
+}
+
 template <typename T>
 void ArrayWithLinearMenu<T>::update()
 {
@@ -195,21 +163,9 @@ bool ArrayWithLinearMenu<T>::isCursorMax() const
 }
 
 template<typename T>
-bool ArrayWithLinearMenu<T>::isCursorChanged() const
+int32 ArrayWithLinearMenu<T>::deltaCursor() const
 {
-	return m_linearMenu.isCursorChanged();
-}
-
-template<typename T>
-bool ArrayWithLinearMenu<T>::isCursorIncremented() const
-{
-	return m_linearMenu.isCursorIncremented();
-}
-
-template<typename T>
-bool ArrayWithLinearMenu<T>::isCursorDecremented() const
-{
-	return m_linearMenu.isCursorDecremented();
+	return m_linearMenu.deltaCursor();
 }
 
 template <typename T>
