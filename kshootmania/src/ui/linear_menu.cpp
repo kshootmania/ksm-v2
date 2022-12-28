@@ -41,21 +41,21 @@ void LinearMenu::decrement(int32 absDeltaCursor)
 }
 
 LinearMenu::LinearMenu(const CreateInfoWithEnumCount& createInfo)
-	: m_cursorStep(1)
-	, m_cursorInput(createInfo.cursorInputCreateInfo)
+	: m_cursorInput(createInfo.cursorInputCreateInfo)
 	, m_cursorMin(0)
 	, m_cursorMax(createInfo.enumCount - 1)
 	, m_cursor(Clamp(createInfo.defaultCursor, 0, createInfo.enumCount - 1))
+	, m_cursorStep(1)
 	, m_cyclic(createInfo.cyclic)
 {
 }
 
 LinearMenu::LinearMenu(const CreateInfoWithCursorMinMax& createInfo)
-	: m_cursorStep(createInfo.cursorStep)
-	, m_cursorInput(createInfo.cursorInputCreateInfo)
+	: m_cursorInput(createInfo.cursorInputCreateInfo)
 	, m_cursorMin(createInfo.cursorMin)
 	, m_cursorMax(createInfo.cursorMax)
 	, m_cursor(Clamp(createInfo.defaultCursor, createInfo.cursorMin, createInfo.cursorMax))
+	, m_cursorStep(createInfo.cursorStep)
 	, m_cyclic(createInfo.cyclic)
 {
 }
@@ -80,6 +80,11 @@ void LinearMenu::update()
 			decrement(absDeltaCursor);
 		}
 	}
+}
+
+void LinearMenu::setCursorStep(int32 step)
+{
+	m_cursorStep = step;
 }
 
 bool LinearMenu::isCursorMin() const

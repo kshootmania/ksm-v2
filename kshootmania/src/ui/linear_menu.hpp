@@ -9,11 +9,11 @@ using IsCyclicMenu = YesNo<struct IsCyclicMenu_tag>;
 class LinearMenu
 {
 private:
-	const int32 m_cursorStep;
 	CursorInput m_cursorInput;
 	int32 m_cursorMin;
 	int32 m_cursorMax;
 	int32 m_cursor;
+	int32 m_cursorStep;
 	IsCyclicMenu m_cyclic;
 	int32 m_deltaCursor = 0;
 
@@ -72,6 +72,17 @@ public:
 	/// @param value カーソルの最大値
 	template <typename T>
 	void setCursorMax(T value);
+
+	/// @brief カーソルの最大値を設定
+	/// @tparam T enumをキャストなしで指定するためのテンプレートパラメータ(指定不要)
+	/// @param valueMin カーソルの最小値
+	/// @param valueMax カーソルの最大値
+	template <typename T>
+	void setCursorMinMax(T valueMin, T valueMax);
+
+	/// @brief カーソル移動の1回あたりの変化量を設定
+	/// @param step 1回あたりの変化量
+	void setCursorStep(int32 step);
 
 	/// @brief カーソルの値が最小値かどうか返す
 	/// @return 最小値であればtrue、違えばfalse
@@ -144,4 +155,11 @@ void LinearMenu::setCursorMax(T value)
 
 	m_cursorMax = value;
 	m_cursor = Clamp(m_cursor, m_cursorMin, m_cursorMax);
+}
+
+template<typename T>
+void LinearMenu::setCursorMinMax(T valueMin, T valueMax)
+{
+	setCursorMin(valueMin);
+	setCursorMax(valueMax);
 }

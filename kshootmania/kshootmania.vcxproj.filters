@@ -408,6 +408,9 @@
     <ClCompile Include="src\input\cursor\cursor_input.cpp">
       <Filter>Source Files\input\cursor</Filter>
     </ClCompile>
+    <ClCompile Include="src\ui\hispeed_setting_menu.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1233,6 +1236,9 @@
     </ClInclude>
     <ClInclude Include="src\input\cursor\cursor_input.hpp">
       <Filter>Header Files\input\cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\hispeed_setting_menu.hpp">
+      <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

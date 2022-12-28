@@ -1,11 +1,12 @@
 ﻿#include "button_cursor_input_device.hpp"
 
-ButtonCursorInputDevice::ButtonCursorInputDevice(const Array<KeyConfig::Button>& incrementButtons, const Array<KeyConfig::Button>& decrementButtons, double intervalSec, double intervalSecFirst)
+ButtonCursorInputDevice::ButtonCursorInputDevice(const Array<KeyConfig::Button>& incrementButtons, const Array<KeyConfig::Button>& decrementButtons, double intervalSec, double intervalSecFirst, StartRequiredForBTFXLaser startRequiredForBTFXLaser)
 	: m_incrementButtons(incrementButtons)
 	, m_decrementButtons(decrementButtons)
 	, m_intervalSec(intervalSec)
 	, m_intervalSecFirst(intervalSecFirst == 0.0 ? intervalSec : intervalSecFirst)
 	, m_pressedTimeStopwatch(intervalSec == 0.0 ? none : MakeOptional<Stopwatch>(StartImmediately::No))
+	, m_startRequiredForBTFXLaser(startRequiredForBTFXLaser)
 {
 }
 
@@ -15,8 +16,8 @@ void ButtonCursorInputDevice::update()
 {
 	m_deltaCursor = 0;
 
-	const bool decrementKeyDown = KeyConfig::AnyButtonDown(m_decrementButtons);
-	const bool incrementKeyDown = KeyConfig::AnyButtonDown(m_incrementButtons);
+	const bool decrementKeyDown = KeyConfig::AnyButtonDown(m_decrementButtons, m_startRequiredForBTFXLaser);
+	const bool incrementKeyDown = KeyConfig::AnyButtonDown(m_incrementButtons, m_startRequiredForBTFXLaser);
 
 	if (m_pressedTimeStopwatch.has_value()) // 押し続けてカーソル移動可能な場合
 	{
@@ -35,8 +36,8 @@ void ButtonCursorInputDevice::update()
 			moveCursor = true;
 		}
 
-		const bool decrementKeyPressed = KeyConfig::AnyButtonPressed(m_decrementButtons);
-		const bool incrementKeyPressed = KeyConfig::AnyButtonPressed(m_incrementButtons);
+		const bool decrementKeyPressed = KeyConfig::AnyButtonPressed(m_decrementButtons, m_startRequiredForBTFXLaser);
+		const bool incrementKeyPressed = KeyConfig::AnyButtonPressed(m_incrementButtons, m_startRequiredForBTFXLaser);
 		const bool onlyDecrementKeyPressed = decrementKeyPressed && !incrementKeyPressed;
 		const bool onlyIncrementKeyPressed = incrementKeyPressed && !decrementKeyPressed;
 

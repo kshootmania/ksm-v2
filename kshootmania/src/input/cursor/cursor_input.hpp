@@ -54,6 +54,9 @@ public:
 
 		/// @brief 1回目のカーソル移動までの所要押下時間(0の場合、buttonIntervalSecと同じ値に設定される)
 		double buttonIntervalSecFirst = 0.0;
+
+		/// @brief BT/FX/LASER入力にStartボタン(Enterキー)との同時押しを必要とするか(プレイ中のハイスピード設定用)
+		StartRequiredForBTFXLaser startRequiredForBTFXLaser = StartRequiredForBTFXLaser::No;
 	};
 
 	/// @brief コンストラクタ

@@ -165,6 +165,7 @@
     <ClCompile Include="src\scene\title\title_menu.cpp" />
     <ClCompile Include="src\scene\title\title_scene.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
+    <ClCompile Include="src\ui\hispeed_setting_menu.cpp" />
     <ClCompile Include="src\ui\linear_menu.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -425,6 +426,7 @@
     <ClInclude Include="src\scoring\high_score_info.hpp" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\ui\array_with_linear_menu.hpp" />
+    <ClInclude Include="src\ui\hispeed_setting_menu.hpp" />
     <ClInclude Include="src\ui\linear_menu.hpp" />
   </ItemGroup>
   <ItemGroup>

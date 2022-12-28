@@ -8,6 +8,7 @@ private:
 	const Array<KeyConfig::Button> m_decrementButtons;
 	const double m_intervalSec;
 	const double m_intervalSecFirst;
+	const StartRequiredForBTFXLaser m_startRequiredForBTFXLaser;
 	int32 m_deltaCursor = 0;
 	Optional<Stopwatch> m_pressedTimeStopwatch;
 	double m_pressedTimeSecPrev = 0.0;
@@ -22,7 +23,8 @@ public:
 		const Array<KeyConfig::Button>& incrementButtons,
 		const Array<KeyConfig::Button>& decrementButtons,
 		double intervalSec = 0.0,
-		double intervalSecFirst = 0.0);
+		double intervalSecFirst = 0.0,
+		StartRequiredForBTFXLaser startRequiredForBTFXLaser = StartRequiredForBTFXLaser::No);
 
 	virtual ~ButtonCursorInputDevice();
 
