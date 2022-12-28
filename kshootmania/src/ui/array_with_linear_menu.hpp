@@ -105,14 +105,14 @@ LinearMenu::CreateInfoWithCursorMinMax ArrayWithLinearMenu<T>::FixLinearMenuCrea
 }
 
 template <typename T>
-template<typename U>
+template <typename U>
 U ArrayWithLinearMenu<T>::cursor() const
 {
-	return m_linearMenu.cursor();
+	return m_linearMenu.template cursor<U>();
 }
 
 template <typename T>
-template<typename U>
+template <typename U>
 void ArrayWithLinearMenu<T>::setCursor(U value)
 {
 	m_linearMenu.setCursor(value);

@@ -11,6 +11,27 @@ namespace
 	constexpr int32 kHispeedXModValueDefault = 10; // x1.0
 	constexpr int32 kHispeedXModValueStep = 1;
 
+	Array<HispeedType> LoadAvailableTypesFromConfigIni()
+	{
+		Array<HispeedType> availableTypes;
+		availableTypes.reserve(static_cast<std::size_t>(HispeedType::EnumCount));
+
+		if (ConfigIni::GetBool(ConfigIni::Key::kHispeedShowXMod, true))
+		{
+			availableTypes.push_back(HispeedType::XMod);
+		}
+		if (ConfigIni::GetBool(ConfigIni::Key::kHispeedShowOMod, true))
+		{
+			availableTypes.push_back(HispeedType::OMod);
+		}
+		if (ConfigIni::GetBool(ConfigIni::Key::kHispeedShowCMod, false)) // C-modのみデフォルトでは非表示のためfalse
+		{
+			availableTypes.push_back(HispeedType::CMod);
+		}
+
+		return availableTypes;
+	}
+
 	HispeedSetting LoadFromConfigIni()
 	{
 		return HispeedSetting::Parse(ConfigIni::GetString(ConfigIni::Key::kHispeed));
@@ -113,14 +134,14 @@ void HispeedSettingMenu::setHispeedSetting(const HispeedSetting& hispeedSetting)
 
 HispeedSettingMenu::HispeedSettingMenu()
 	: m_typeMenu(
-		LinearMenu::CreateInfoWithEnumCount{
+		LoadAvailableTypesFromConfigIni(),
+		LinearMenu::CreateInfoWithCursorMinMax{
 			.cursorInputCreateInfo = {
 				.type = CursorInput::Type::Horizontal,
 				.buttonFlags = CursorButtonFlags::kArrowOrFX,
 				.buttonIntervalSec = 0.12,
 				.startRequiredForBTFXLaser = StartRequiredForBTFXLaser::Yes,
 			},
-			.enumCount = static_cast<int32>(HispeedType::EnumCount),
 			.cyclic = IsCyclicMenu::Yes,
 		})
 	, m_valueMenu(
@@ -141,7 +162,7 @@ HispeedSettingMenu::HispeedSettingMenu()
 
 void HispeedSettingMenu::update()
 {
-	m_typeMenu.update(); // TODO: 非表示になっているハイスピードの種類は飛ばす必要がある
+	m_typeMenu.update();
 	m_valueMenu.update();
 
 	if (m_typeMenu.deltaCursor() != 0)

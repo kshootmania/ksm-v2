@@ -35,7 +35,7 @@ struct HispeedSetting
 class HispeedSettingMenu
 {
 private:
-	LinearMenu m_typeMenu;
+	ArrayWithLinearMenu<HispeedType> m_typeMenu;
 	LinearMenu m_valueMenu;
 
 	void refreshValueMenuConstraints();
@@ -46,13 +46,14 @@ private:
 
 public:
 	/// @brief コンストラクタ
-	/// @remarks 内部でloadFromConfigIniを呼んでいるため、ConfigIniが初期化済みである必要がある
+	/// @remarks 内部でConfigIniを参照するため、ConfigIniが初期化済みである必要がある
 	HispeedSettingMenu();
 
 	/// @brief 毎フレームの更新
 	void update();
 
 	/// @brief ConfigIniから読み込んでメニューに反映
+	/// @remarks ハイスピード設定の表示/非表示設定に更新があっても反映されない点に注意
 	void loadFromConfigIni();
 
 	/// @brief ConfigIniへメニューの状態を保存
