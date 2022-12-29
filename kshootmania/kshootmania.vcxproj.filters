@@ -1240,5 +1240,8 @@
     <ClInclude Include="src\ui\hispeed_setting_menu.hpp">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
+    <ClInclude Include="src\music_game\hispeed.hpp">
+      <Filter>Header Files\music_game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

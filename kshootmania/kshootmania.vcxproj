@@ -397,6 +397,7 @@
     <ClInclude Include="src\music_game\graphics\jdgline\jdgline_3d_graphics.hpp" />
     <ClInclude Include="src\music_game\graphics\jdgline\jdgoverlay_3d_graphics.hpp" />
     <ClInclude Include="src\music_game\graphics\jdgline\laser_cursor_3d_graphics.hpp" />
+    <ClInclude Include="src\music_game\hispeed.hpp" />
     <ClInclude Include="src\music_game\judgment\button_lane_judgment.hpp" />
     <ClInclude Include="src\music_game\judgment\judgment_defines.hpp" />
     <ClInclude Include="src\music_game\game_defines.hpp" />

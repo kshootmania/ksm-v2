@@ -23,7 +23,7 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target, bool isBT) const
+	void ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target, bool isBT) const
 	{
 		const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
 
@@ -61,17 +61,17 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
 	{
-		drawChipNotesCommon(chartData, gameStatus, target, true);
+		drawChipNotesCommon(chartData, gameStatus, hispeedSetting, target, true);
 	}
 
-	void ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
 	{
-		drawChipNotesCommon(chartData, gameStatus, target, false);
+		drawChipNotesCommon(chartData, gameStatus, hispeedSetting, target, false);
 	}
 
-	void ButtonNoteGraphics::drawLongNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target, bool isBT) const
+	void ButtonNoteGraphics::drawLongNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target, bool isBT) const
 	{
 		const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
 
@@ -131,14 +131,14 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawLongBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawLongBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
 	{
-		drawLongNotesCommon(chartData, gameStatus, target, true);
+		drawLongNotesCommon(chartData, gameStatus, hispeedSetting, target, true);
 	}
 
-	void ButtonNoteGraphics::drawLongFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawLongFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
 	{
-		drawLongNotesCommon(chartData, gameStatus, target, false);
+		drawLongNotesCommon(chartData, gameStatus, hispeedSetting, target, false);
 	}
 
 	ButtonNoteGraphics::ButtonNoteGraphics()
@@ -153,15 +153,15 @@ namespace MusicGame::Graphics
 				.column = kNumTextureColumnsMainSub,
 				.sourceSize = { 82, 14 },
 			}))
-			, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
+		, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
 	{
 	}
 
-	void ButtonNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
 	{
-		drawLongFXNotes(chartData, gameStatus, target);
-		drawLongBTNotes(chartData, gameStatus, target);
-		drawChipFXNotes(chartData, gameStatus, target);
-		drawChipBTNotes(chartData, gameStatus, target);
+		drawLongFXNotes(chartData, gameStatus, hispeedSetting, target);
+		drawLongBTNotes(chartData, gameStatus, hispeedSetting, target);
+		drawChipFXNotes(chartData, gameStatus, hispeedSetting, target);
+		drawChipBTNotes(chartData, gameStatus, hispeedSetting, target);
 	}
 }

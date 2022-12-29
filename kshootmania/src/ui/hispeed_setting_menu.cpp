@@ -2,6 +2,9 @@
 
 namespace
 {
+	using MusicGame::HispeedType;
+	using MusicGame::HispeedSetting;
+
 	constexpr int32 kHispeedMin = 25;
 	constexpr int32 kHispeedMax = 2000;
 	constexpr int32 kHispeedDefault = 400;
@@ -32,67 +35,67 @@ namespace
 		return availableTypes;
 	}
 
+	String HispeedSettingToString(const HispeedSetting& hispeedSetting)
+	{
+		switch (hispeedSetting.type)
+		{
+		case HispeedType::XMod:
+			return U"x{:0>2}"_fmt(hispeedSetting.value);
+
+		case HispeedType::OMod:
+			return U"{}"_fmt(hispeedSetting.value);
+
+		case HispeedType::CMod:
+			return U"C{}"_fmt(hispeedSetting.value);
+
+		default:
+			assert(false && "Unknown hispeed type");
+			return String{};
+		}
+	}
+
+	HispeedSetting ParseHispeedSetting(StringView sv)
+	{
+		// OpenSiv3Dでゼロ始まりの整数がParseできることを念のため確認
+		// (OpenSiv3Dのバージョン変更で挙動が変わった場合に検知できるよう残しておく)
+		assert(ParseOr<int32>(U"05", 0) == 5);
+
+		if (sv.length() <= 1U)
+		{
+			// 最低文字数の2文字に満たない場合はデフォルト値を返す
+			return HispeedSetting{};
+		}
+
+		switch (sv[0])
+		{
+		case U'x':
+			return HispeedSetting{
+				.type = HispeedType::XMod,
+				.value = Clamp(ParseOr<int32>(sv.substr(1U), 0), kHispeedXModValueMin, kHispeedXModValueMax),
+			};
+
+		case U'C':
+			return HispeedSetting{
+				.type = HispeedType::CMod,
+				.value = Clamp(ParseOr<int32>(sv.substr(1U), 0), kHispeedMin, kHispeedMax),
+			};
+
+		default: // o-modは数字のみ
+			return HispeedSetting{
+				.type = HispeedType::OMod,
+				.value = Clamp(ParseOr<int32>(sv, 0), kHispeedMin, kHispeedMax),
+			};
+		}
+	}
+
 	HispeedSetting LoadFromConfigIni()
 	{
-		return HispeedSetting::Parse(ConfigIni::GetString(ConfigIni::Key::kHispeed));
+		return ParseHispeedSetting(ConfigIni::GetString(ConfigIni::Key::kHispeed));
 	}
 
 	void SaveToConfigIni(const HispeedSetting& hispeedSetting)
 	{
-		ConfigIni::SetString(ConfigIni::Key::kHispeed, hispeedSetting.ToString());
-	}
-}
-
-String HispeedSetting::ToString() const
-{
-	switch (type)
-	{
-	case HispeedType::XMod:
-		return U"x{:0>2}"_fmt(value);
-
-	case HispeedType::OMod:
-		return U"{}"_fmt(value);
-
-	case HispeedType::CMod:
-		return U"C{}"_fmt(value);
-
-	default:
-		assert(false && "Unknown hispeed type");
-		return String{};
-	}
-}
-
-HispeedSetting HispeedSetting::Parse(StringView sv)
-{
-	// OpenSiv3Dでゼロ始まりの整数がParseできることを念のため確認
-	// (OpenSiv3Dのバージョン変更で挙動が変わった場合に検知できるよう残しておく)
-	assert(ParseOr<int32>(U"05", 0) == 5);
-
-	if (sv.length() <= 1U)
-	{
-		// 最低文字数の2文字に満たない場合はデフォルト値を返す
-		return HispeedSetting{};
-	}
-
-	switch (sv[0])
-	{
-	case U'x':
-		return HispeedSetting{
-			.type = HispeedType::XMod,
-			.value = Clamp(ParseOr<int32>(sv.substr(1U), 0), kHispeedXModValueMin, kHispeedXModValueMax),
-		};
-
-	case U'C':
-		return HispeedSetting{
-			.type = HispeedType::CMod,
-			.value = Clamp(ParseOr<int32>(sv.substr(1U), 0), kHispeedMin, kHispeedMax),
-		};
-
-	default: // o-modは数字のみ
-		return HispeedSetting{
-			.type = HispeedType::OMod,
-			.value = Clamp(ParseOr<int32>(sv, 0), kHispeedMin, kHispeedMax),
-		};
+		ConfigIni::SetString(ConfigIni::Key::kHispeed, HispeedSettingToString(hispeedSetting));
 	}
 }
 
@@ -115,14 +118,6 @@ void HispeedSettingMenu::refreshValueMenuConstraints()
 		assert(false && "Unknown hispeed type");
 		break;
 	}
-}
-
-HispeedSetting HispeedSettingMenu::hispeedSetting() const
-{
-	return HispeedSetting{
-		.type = m_typeMenu.cursor<HispeedType>(),
-		.value = m_valueMenu.cursor(),
-	};
 }
 
 void HispeedSettingMenu::setHispeedSetting(const HispeedSetting& hispeedSetting)
@@ -152,7 +147,7 @@ HispeedSettingMenu::HispeedSettingMenu()
 				.buttonIntervalSec = 0.06,
 				.startRequiredForBTFXLaser = StartRequiredForBTFXLaser::Yes,
 			},
-			.cursorMin = 0, // refreshValueMenuConstraintsで入るのでこの時点では両方0でOK
+			.cursorMin = 0, // このあとすぐrefreshValueMenuConstraintsで値が入るのでここでは両方0でOK
 			.cursorMax = 0,
 			.cyclic = IsCyclicMenu::No,
 		})
@@ -179,4 +174,12 @@ void HispeedSettingMenu::loadFromConfigIni()
 void HispeedSettingMenu::saveToConfigIni() const
 {
 	SaveToConfigIni(hispeedSetting());
+}
+
+HispeedSetting HispeedSettingMenu::hispeedSetting() const
+{
+	return HispeedSetting{
+		.type = m_typeMenu.cursor<HispeedType>(),
+		.value = m_valueMenu.cursor(),
+	};
 }

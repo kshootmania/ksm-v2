@@ -1,48 +1,17 @@
 ﻿#pragma once
 #include "linear_menu.hpp"
-
-/// @brief ハイスピードの種類
-enum class HispeedType : int32
-{
-	XMod, // x-mod (倍率指定)
-	OMod, // o-mod (最頻BPM基準での指定)
-	CMod, // C-mod (定数指定)
-	// KSMv1(HSP版)のa-mod、m-modは廃止
-	EnumCount,
-};
-
-/// @brief ハイスピード設定
-struct HispeedSetting
-{
-	/// @brief ハイスピードの種類
-	HispeedType type = HispeedType::XMod;
-
-	/// @brief ハイスピード値
-	/// @remarks typeがXModの場合は倍率を10倍した値(1以上99以下の整数)。それ以外の場合はBPMに倍率をかけた後のハイスピード値(25以上2000以下)
-	int32 value = 10;
-
-	/// @brief config.iniのハイスピード値の文字列に変換
-	/// @return ハイスピード値の文字列(例: "x05", "750", "C750")
-	String ToString() const;
-
-	/// @brief config.iniのハイスピード値の文字列をパース
-	/// @param sv ハイスピード値の文字列(例: "x05", "750", "C750")
-	/// @return HispeedSetting構造体
-	static HispeedSetting Parse(StringView sv);
-};
+#include "music_game/hispeed.hpp"
 
 /// @brief ハイスピード設定のメニュー
 class HispeedSettingMenu
 {
 private:
-	ArrayWithLinearMenu<HispeedType> m_typeMenu;
+	ArrayWithLinearMenu<MusicGame::HispeedType> m_typeMenu;
 	LinearMenu m_valueMenu;
 
 	void refreshValueMenuConstraints();
 
-	HispeedSetting hispeedSetting() const;
-
-	void setHispeedSetting(const HispeedSetting& hispeedSetting);
+	void setHispeedSetting(const MusicGame::HispeedSetting& hispeedSetting);
 
 public:
 	/// @brief コンストラクタ
@@ -58,4 +27,8 @@ public:
 
 	/// @brief ConfigIniへメニューの状態を保存
 	void saveToConfigIni() const;
+
+	/// @brief 現在の値をHispeedSetting構造体として取得
+	/// @return HispeedSetting構造体
+	MusicGame::HispeedSetting hispeedSetting() const;
 };

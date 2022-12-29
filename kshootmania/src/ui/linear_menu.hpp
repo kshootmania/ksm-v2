@@ -160,6 +160,13 @@ void LinearMenu::setCursorMax(T value)
 template<typename T>
 void LinearMenu::setCursorMinMax(T valueMin, T valueMax)
 {
-	setCursorMin(valueMin);
-	setCursorMax(valueMax);
+	if (valueMin > valueMax)
+	{
+		assert(false && "LinearMenu::setCursorMinMax(): valueMin must be smaller than or equal to valueMax");
+		std::swap(valueMin, valueMax);
+	}
+
+	m_cursorMin = valueMin;
+	m_cursorMax = valueMax;
+	m_cursor = Clamp(m_cursor, m_cursorMin, m_cursorMax);
 }

@@ -223,7 +223,7 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void LaserNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
+	void LaserNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
 	{
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 		const ScopedRenderStates2D renderState(BlendState::Additive);

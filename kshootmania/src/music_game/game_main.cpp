@@ -62,9 +62,9 @@ namespace MusicGame
 		// TODO: Calculate camera values
 	}
 
-	GameMain::GameMain(const GameCreateInfo& gameCreateInfo)
-		: m_parentPath(FileSystem::ParentPath(gameCreateInfo.chartFilePath))
-		, m_chartData(kson::LoadKSHChartData(gameCreateInfo.chartFilePath.narrow()))
+	GameMain::GameMain(const GameCreateInfo& createInfo)
+		: m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
+		, m_chartData(kson::LoadKSHChartData(createInfo.chartFilePath.narrow()))
 		, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
 		, m_btLaneJudgments{
 			Judgment::ButtonLaneJudgment(kBTButtons[0], m_chartData.note.bt[0], m_chartData.beat, m_timingCache),
@@ -79,7 +79,7 @@ namespace MusicGame
 			Judgment::LaserLaneJudgment(kLaserButtons[1][0], kLaserButtons[1][1], m_chartData.note.laser[1], m_chartData.beat, m_timingCache) }
 		, m_scoreFactorMax(SumScoreFactorMax(m_btLaneJudgments) + SumScoreFactorMax(m_fxLaneJudgments) + SumScoreFactorMax(m_laserLaneJudgments))
 		, m_bgm(m_parentPath + U"/" + Unicode::FromUTF8(m_chartData.audio.bgm.filename), m_chartData.audio.bgm.vol, static_cast<double>(m_chartData.audio.bgm.offset) / 1000)
-		, m_assistTick(gameCreateInfo.enableAssistTick)
+		, m_assistTick(createInfo.assistTickEnabled)
 		, m_laserSlamSE(m_chartData)
 		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)
 		, m_graphicsMain(m_chartData, m_parentPath)
@@ -123,8 +123,8 @@ namespace MusicGame
 		m_graphicsMain.update(m_chartData, m_gameStatus);
 	}
 
-	void GameMain::draw() const
+	void GameMain::draw(const GameDrawInfo& drawInfo) const
 	{
-		m_graphicsMain.draw(m_chartData, m_gameStatus);
+		m_graphicsMain.draw(m_chartData, m_gameStatus, drawInfo.hispeedSetting);
 	}
 }

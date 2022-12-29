@@ -9,6 +9,7 @@
 #include "hud/gauge_panel.hpp"
 #include "hud/frame_rate_monitor.hpp"
 #include "music_game/game_status.hpp"
+#include "music_game/hispeed.hpp"
 #include "kson/util/timing_utils.hpp"
 
 namespace MusicGame::Graphics
@@ -46,6 +47,6 @@ namespace MusicGame::Graphics
 
 		void update(const kson::ChartData& chartData, const GameStatus& gameStatus);
 
-		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus) const;
+		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting) const;
 	};
 }

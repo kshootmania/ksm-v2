@@ -6,7 +6,7 @@ namespace
 	{
 		return {
 			.chartFilePath = args.chartFilePath,
-			.enableAssistTick = ConfigIni::GetBool(ConfigIni::Key::kAssistTick),
+			.assistTickEnabled = ConfigIni::GetBool(ConfigIni::Key::kAssistTick),
 		};
 	}
 }
@@ -21,6 +21,8 @@ void PlayScene::update()
 {
 	m_gameMain.update();
 
+	m_hispeedSettingMenu.update();
+
 	// Escキーで楽曲選択画面に戻る
 	if (KeyConfig::Down(KeyConfig::kBack))
 	{
@@ -30,7 +32,9 @@ void PlayScene::update()
 
 void PlayScene::draw() const
 {
-	m_gameMain.draw();
+	m_gameMain.draw(MusicGame::GameDrawInfo{
+		.hispeedSetting = m_hispeedSettingMenu.hispeedSetting(),
+	});
 }
 
 void PlayScene::updateFadeIn([[maybe_unused]] double t)

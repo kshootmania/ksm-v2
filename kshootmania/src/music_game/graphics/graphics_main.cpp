@@ -121,10 +121,10 @@ namespace MusicGame::Graphics
 		m_highwayTilt.update(tiltFactor);
 	}
 
-	void GraphicsMain::draw(const kson::ChartData& chartData, const GameStatus& gameStatus) const
+	void GraphicsMain::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting) const
 	{
 		// 各レンダーテクスチャを用意
-		m_highway3DGraphics.draw2D(chartData, gameStatus);
+		m_highway3DGraphics.draw2D(chartData, gameStatus, hispeedSetting);
 		m_jdgoverlay3DGraphics.draw2D(gameStatus);
 		Graphics2D::Flush();
 
