@@ -411,6 +411,9 @@
     <ClCompile Include="src\ui\hispeed_setting_menu.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
+    <ClCompile Include="src\music_game\graphics\highway\highway_scroll.cpp">
+      <Filter>Source Files\music_game\graphics\highway</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1240,8 +1243,11 @@
     <ClInclude Include="src\ui\hispeed_setting_menu.hpp">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
-    <ClInclude Include="src\music_game\hispeed.hpp">
+    <ClInclude Include="src\music_game\hispeed_setting.hpp">
       <Filter>Header Files\music_game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\graphics\highway\highway_scroll.hpp">
+      <Filter>Header Files\music_game\graphics\highway</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

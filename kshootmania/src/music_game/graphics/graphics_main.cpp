@@ -107,24 +107,27 @@ namespace MusicGame::Graphics
 		, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
 		, m_layerFrameTextures(SplitLayerTexture(LayerFilePath(chartData)))
 		, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
+		, m_highwayScroll(chartData)
 		, m_jdgoverlay3DGraphics(m_camera)
 		, m_songInfoPanel(chartData, parentPath)
 		, m_gaugePanel(kNormalGauge/* TODO: gauge type */)
 	{
 	}
 
-	void GraphicsMain::update(const kson::ChartData& chartData, const GameStatus& gameStatus)
+	void GraphicsMain::update(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting)
 	{
 		const double leftLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laser[0], gameStatus.currentPulse, 0.0); // range: [0, +1]
 		const double rightLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laser[1], gameStatus.currentPulse, 1.0) - 1.0; // range: [-1, 0]
 		const double tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
 		m_highwayTilt.update(tiltFactor);
+
+		m_highwayScroll.update(hispeedSetting);
 	}
 
-	void GraphicsMain::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting) const
+	void GraphicsMain::draw(const kson::ChartData& chartData, const GameStatus& gameStatus) const
 	{
 		// 各レンダーテクスチャを用意
-		m_highway3DGraphics.draw2D(chartData, gameStatus, hispeedSetting);
+		m_highway3DGraphics.draw2D(chartData, gameStatus, m_highwayScroll);
 		m_jdgoverlay3DGraphics.draw2D(gameStatus);
 		Graphics2D::Flush();
 

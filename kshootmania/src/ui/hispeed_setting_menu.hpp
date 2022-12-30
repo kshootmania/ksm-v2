@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "linear_menu.hpp"
-#include "music_game/hispeed.hpp"
+#include "music_game/hispeed_setting.hpp"
 
 /// @brief ハイスピード設定のメニュー
 class HispeedSettingMenu

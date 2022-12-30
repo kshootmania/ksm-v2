@@ -23,7 +23,7 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target, bool isBT) const
+	void ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll, const HighwayRenderTexture& target, bool isBT) const
 	{
 		const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
 
@@ -61,17 +61,17 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll, const HighwayRenderTexture& target) const
 	{
-		drawChipNotesCommon(chartData, gameStatus, hispeedSetting, target, true);
+		drawChipNotesCommon(chartData, gameStatus, highwayScroll, target, true);
 	}
 
-	void ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll, const HighwayRenderTexture& target) const
 	{
-		drawChipNotesCommon(chartData, gameStatus, hispeedSetting, target, false);
+		drawChipNotesCommon(chartData, gameStatus, highwayScroll, target, false);
 	}
 
-	void ButtonNoteGraphics::drawLongNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target, bool isBT) const
+	void ButtonNoteGraphics::drawLongNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll, const HighwayRenderTexture& target, bool isBT) const
 	{
 		const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
 
@@ -131,14 +131,14 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawLongBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawLongBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll, const HighwayRenderTexture& target) const
 	{
-		drawLongNotesCommon(chartData, gameStatus, hispeedSetting, target, true);
+		drawLongNotesCommon(chartData, gameStatus, highwayScroll, target, true);
 	}
 
-	void ButtonNoteGraphics::drawLongFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawLongFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll, const HighwayRenderTexture& target) const
 	{
-		drawLongNotesCommon(chartData, gameStatus, hispeedSetting, target, false);
+		drawLongNotesCommon(chartData, gameStatus, highwayScroll, target, false);
 	}
 
 	ButtonNoteGraphics::ButtonNoteGraphics()
@@ -157,11 +157,11 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void ButtonNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll, const HighwayRenderTexture& target) const
 	{
-		drawLongFXNotes(chartData, gameStatus, hispeedSetting, target);
-		drawLongBTNotes(chartData, gameStatus, hispeedSetting, target);
-		drawChipFXNotes(chartData, gameStatus, hispeedSetting, target);
-		drawChipBTNotes(chartData, gameStatus, hispeedSetting, target);
+		drawLongFXNotes(chartData, gameStatus, highwayScroll, target);
+		drawLongBTNotes(chartData, gameStatus, highwayScroll, target);
+		drawChipFXNotes(chartData, gameStatus, highwayScroll, target);
+		drawChipBTNotes(chartData, gameStatus, highwayScroll, target);
 	}
 }

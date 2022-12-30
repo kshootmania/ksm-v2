@@ -8,9 +8,9 @@ namespace MathUtils
 	template <typename T>
 	T WrappedFmod(T a, T b) requires std::is_floating_point_v<T>
 	{
-		assert(b > std::numeric_limits<T>::epsilon());
 		if (b <= std::numeric_limits<T>::epsilon())
 		{
+			assert(false && "WrappedFmod: zero division detected");
 			return T{ 0.0 };
 		}
 
@@ -29,9 +29,9 @@ namespace MathUtils
 	template <typename T>
 	T WrappedMod(T a, T b) requires std::is_integral_v<T>
 	{
-		assert(b != T{ 0 });
 		if (b == T{ 0 })
 		{
+			assert(false && "WrappedMod: zero division detected");
 			return T{ 0 };
 		}
 
@@ -47,4 +47,10 @@ namespace MathUtils
 	}
 
 	int32 NumDigits(int32 number);
+
+	template <typename T = int32, typename U>
+	T RoundToInt(U value) requires std::is_floating_point_v<U>
+	{
+		return static_cast<T>(value + U{ 0.5 });
+	}
 }

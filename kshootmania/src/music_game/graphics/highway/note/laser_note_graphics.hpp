@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "music_game/game_status.hpp"
-#include "music_game/hispeed.hpp"
+#include "music_game/graphics/highway/highway_scroll.hpp"
 #include "music_game/graphics/highway/highway_render_texture.hpp"
 
 namespace MusicGame::Graphics
@@ -15,6 +15,6 @@ namespace MusicGame::Graphics
 	public:
 		LaserNoteGraphics();
 
-		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting, const HighwayRenderTexture& target) const;
+		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll, const HighwayRenderTexture& target) const;
 	};
 }

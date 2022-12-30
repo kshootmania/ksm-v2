@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "game_status.hpp"
-#include "hispeed.hpp"
+#include "hispeed_setting.hpp"
 #include "music_game/judgment/button_lane_judgment.hpp"
 #include "music_game/judgment/laser_lane_judgment.hpp"
 #include "music_game/graphics/graphics_main.hpp"
@@ -19,7 +19,7 @@ namespace MusicGame
 		bool assistTickEnabled = false;
 	};
 
-	struct GameDrawInfo
+	struct GameUpdateInfo
 	{
 		HispeedSetting hispeedSetting;
 	};
@@ -57,8 +57,8 @@ namespace MusicGame
 	public:
 		explicit GameMain(const GameCreateInfo& createInfo);
 
-		void update();
+		void update(const GameUpdateInfo& updateInfo);
 
-		void draw(const GameDrawInfo& drawInfo) const;
+		void draw() const;
 	};
 }

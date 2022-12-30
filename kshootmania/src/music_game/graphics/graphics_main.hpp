@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "highway/highway_3d_graphics.hpp"
 #include "highway/highway_tilt.hpp"
+#include "highway/highway_scroll.hpp"
 #include "jdgline/jdgline_3d_graphics.hpp"
 #include "jdgline/jdgoverlay_3d_graphics.hpp"
 #include "jdgline/laser_cursor_3d_graphics.hpp"
@@ -9,7 +10,7 @@
 #include "hud/gauge_panel.hpp"
 #include "hud/frame_rate_monitor.hpp"
 #include "music_game/game_status.hpp"
-#include "music_game/hispeed.hpp"
+#include "music_game/hispeed_setting.hpp"
 #include "kson/util/timing_utils.hpp"
 
 namespace MusicGame::Graphics
@@ -27,6 +28,7 @@ namespace MusicGame::Graphics
 		const Mat4x4 m_layerTransform;
 
 		HighwayTilt m_highwayTilt;
+		HighwayScroll m_highwayScroll;
 		Highway3DGraphics m_highway3DGraphics;
 
 		Jdgline3DGraphics m_jdgline3DGraphics;
@@ -45,8 +47,8 @@ namespace MusicGame::Graphics
 	public:
 		explicit GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath);
 
-		void update(const kson::ChartData& chartData, const GameStatus& gameStatus);
+		void update(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting);
 
-		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting) const;
+		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus) const;
 	};
 }

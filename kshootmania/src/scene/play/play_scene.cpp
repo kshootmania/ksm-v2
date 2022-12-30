@@ -19,9 +19,11 @@ PlayScene::PlayScene(const InitData& initData)
 
 void PlayScene::update()
 {
-	m_gameMain.update();
-
 	m_hispeedSettingMenu.update();
+
+	m_gameMain.update(MusicGame::GameUpdateInfo{
+		.hispeedSetting = m_hispeedSettingMenu.hispeedSetting(),
+	});
 
 	// Escキーで楽曲選択画面に戻る
 	if (KeyConfig::Down(KeyConfig::kBack))
@@ -32,9 +34,7 @@ void PlayScene::update()
 
 void PlayScene::draw() const
 {
-	m_gameMain.draw(MusicGame::GameDrawInfo{
-		.hispeedSetting = m_hispeedSettingMenu.hispeedSetting(),
-	});
+	m_gameMain.draw();
 }
 
 void PlayScene::updateFadeIn([[maybe_unused]] double t)

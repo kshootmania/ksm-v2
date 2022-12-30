@@ -34,7 +34,7 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void Highway3DGraphics::draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting) const
+	void Highway3DGraphics::draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll) const
 	{
 		m_renderTexture.clearByBaseTexture();
 
@@ -52,13 +52,13 @@ namespace MusicGame::Graphics
 		}
 
 		// BT/FXノーツの描画
-		m_buttonNoteGraphics.draw(chartData, gameStatus, hispeedSetting, m_renderTexture);
+		m_buttonNoteGraphics.draw(chartData, gameStatus, highwayScroll, m_renderTexture);
 
 		// キービームの描画
 		m_keyBeamGraphics.draw(gameStatus, m_renderTexture);
 
 		// レーザーノーツの描画
-		m_laserNoteGraphics.draw(chartData, gameStatus, hispeedSetting, m_renderTexture);
+		m_laserNoteGraphics.draw(chartData, gameStatus, highwayScroll, m_renderTexture);
 	}
 
 	void Highway3DGraphics::draw3D(double tiltRadians) const

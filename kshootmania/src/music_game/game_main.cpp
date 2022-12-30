@@ -90,7 +90,7 @@ namespace MusicGame
 		kson::SaveKSONChartData("hogehoge.kson", m_chartData);
 	}
 
-	void GameMain::update()
+	void GameMain::update(const GameUpdateInfo& updateInfo)
 	{
 		m_bgm.update();
 
@@ -120,11 +120,11 @@ namespace MusicGame
 		m_laserSlamSE.update(m_chartData, m_gameStatus);
 
 		// グラフィックスの更新
-		m_graphicsMain.update(m_chartData, m_gameStatus);
+		m_graphicsMain.update(m_chartData, m_gameStatus, updateInfo.hispeedSetting);
 	}
 
-	void GameMain::draw(const GameDrawInfo& drawInfo) const
+	void GameMain::draw() const
 	{
-		m_graphicsMain.draw(m_chartData, m_gameStatus, drawInfo.hispeedSetting);
+		m_graphicsMain.draw(m_chartData, m_gameStatus);
 	}
 }
