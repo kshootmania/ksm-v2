@@ -26,7 +26,7 @@ namespace MusicGame::Graphics
 	public:
 		Highway3DGraphics();
 
-		void draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll) const;
+		void draw2D(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const GameStatus& gameStatus, const HighwayScroll& highwayScroll) const;
 
 		void draw3D(double tiltRadians) const;
 	};

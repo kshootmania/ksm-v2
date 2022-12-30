@@ -49,6 +49,6 @@ namespace MusicGame::Graphics
 
 		void update(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting);
 
-		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus) const;
+		void draw(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const;
 	};
 }

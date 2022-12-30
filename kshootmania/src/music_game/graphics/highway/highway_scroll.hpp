@@ -7,6 +7,33 @@
 
 namespace MusicGame::Graphics
 {
+	class HighwayScroll;
+
+	/// @brief HighwayScrollのコンテキスト
+	class HighwayScrollContext
+	{
+	private:
+		const HighwayScroll* const m_pHighwayScroll;
+		const kson::BeatInfo* const m_pBeatInfo;
+		const kson::TimingCache* const m_pTimingCache;
+		const GameStatus* const m_pGameStatus;
+
+	public:
+		/// @brief コンストラクタ
+		/// @param pHighwayScroll HighwayScrollのポインタ(getPositionY呼出時点で有効なポインタであること)
+		/// @param pBeatInfo kson.beatのポインタ(getPositionY呼出時点で有効なポインタであること)
+		/// @param pTimingCache TimingCacheのポインタ(getPositionY呼出時点で有効なポインタであること)
+		/// @param pGameStatus GameStatusのポインタ(getPositionY呼出時点で有効なポインタであること)
+		explicit HighwayScrollContext(const HighwayScroll* pHighwayScroll, const kson::BeatInfo* pBeatInfo, const kson::TimingCache* pTimingCache, const GameStatus* pGameStatus);
+
+		~HighwayScrollContext();
+
+		/// @brief Pulse値をもとにHighway上のY座標を求める
+		/// @param pulse Pulse値
+		/// @return Y座標
+		int32 getPositionY(kson::Pulse pulse) const;
+	};
+
 	/// @brief Highway上のスクロール計算(ハイスピードおよびscroll_speedの計算)
 	class HighwayScroll
 	{

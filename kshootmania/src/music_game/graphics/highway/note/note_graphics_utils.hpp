@@ -7,6 +7,6 @@ namespace MusicGame::Graphics
 	{
 		TiledTexture ApplyAlphaToNoteTexture(const Texture& texture, const TiledTextureSizeInfo& sizeInfo);
 
-		double ChipNoteHeight(double yRate);
+		int32 ChipNoteHeight(double yRate);
 	}
 }

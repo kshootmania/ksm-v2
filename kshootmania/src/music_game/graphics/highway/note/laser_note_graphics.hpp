@@ -15,6 +15,6 @@ namespace MusicGame::Graphics
 	public:
 		LaserNoteGraphics();
 
-		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScroll& highwayScroll, const HighwayRenderTexture& target) const;
+		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const;
 	};
 }

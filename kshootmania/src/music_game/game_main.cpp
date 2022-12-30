@@ -125,6 +125,6 @@ namespace MusicGame
 
 	void GameMain::draw() const
 	{
-		m_graphicsMain.draw(m_chartData, m_gameStatus);
+		m_graphicsMain.draw(m_chartData, m_timingCache, m_gameStatus);
 	}
 }

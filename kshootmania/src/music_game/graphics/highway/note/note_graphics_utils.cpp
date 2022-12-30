@@ -57,10 +57,10 @@ namespace MusicGame::Graphics::NoteGraphicsUtils
 		return TiledTexture(renderTextureMerged, sizeInfoHalfColumn);
 	}
 
-	double ChipNoteHeight(double yRate)
+	int32 ChipNoteHeight(double yRate)
 	{
 		constexpr int32 kTableSize = 8;
-		constexpr std::array<double, kTableSize> kHeightTable = {
+		constexpr std::array<int32, kTableSize> kHeightTable = {
 			14, 19, 23, 26, 28, 30, 32, 35
 		};
 

@@ -124,10 +124,10 @@ namespace MusicGame::Graphics
 		m_highwayScroll.update(hispeedSetting);
 	}
 
-	void GraphicsMain::draw(const kson::ChartData& chartData, const GameStatus& gameStatus) const
+	void GraphicsMain::draw(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const
 	{
 		// 各レンダーテクスチャを用意
-		m_highway3DGraphics.draw2D(chartData, gameStatus, m_highwayScroll);
+		m_highway3DGraphics.draw2D(chartData, timingCache, gameStatus, m_highwayScroll);
 		m_jdgoverlay3DGraphics.draw2D(gameStatus);
 		Graphics2D::Flush();
 

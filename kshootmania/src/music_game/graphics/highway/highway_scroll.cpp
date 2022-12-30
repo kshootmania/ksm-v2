@@ -172,6 +172,21 @@ namespace MusicGame::Graphics
 		}
 	}
 
+	HighwayScrollContext::HighwayScrollContext(const HighwayScroll* pHighwayScroll, const kson::BeatInfo* pBeatInfo, const kson::TimingCache* pTimingCache, const GameStatus* pGameStatus)
+		: m_pHighwayScroll(pHighwayScroll)
+		, m_pBeatInfo(pBeatInfo)
+		, m_pTimingCache(pTimingCache)
+		, m_pGameStatus(pGameStatus)
+	{
+	}
+
+	HighwayScrollContext::~HighwayScrollContext() = default;
+
+	int32 HighwayScrollContext::getPositionY(kson::Pulse pulse) const
+	{
+		return m_pHighwayScroll->getPositionY(pulse, *m_pBeatInfo, *m_pTimingCache, *m_pGameStatus);
+	}
+
 	double HighwayScroll::pulseToSec(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache) const
 	{
 		// mutableな変数を操作するのでロック
