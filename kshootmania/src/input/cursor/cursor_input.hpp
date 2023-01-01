@@ -2,6 +2,8 @@
 #include <memory>
 #include "button_cursor_input_device.hpp"
 
+using FlipArrowKeyDirection = YesNo<struct FlipArrowKeyDirection_tag>;
+
 namespace CursorButtonFlags
 {
 	enum CursorButtonFlags : int32
@@ -48,6 +50,9 @@ public:
 		/// @brief 使用するボタンのビットフラグ
 		/// @note 型がint32になっているのは、ビットフラグを|で重ねてint32になった場合にも、enumへのキャストの省略は許容したいため
 		int32 buttonFlags = CursorButtonFlags::kNone;
+
+		/// @brief 矢印キーのカーソルの向きを反転するかどうか
+		FlipArrowKeyDirection flipArrowKeyDirection = FlipArrowKeyDirection::No;
 
 		/// @brief カーソル移動の所要押下時間(0の場合、押下し続けても連続でカーソル移動しない)
 		double buttonIntervalSec = 0.0;

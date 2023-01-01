@@ -144,6 +144,7 @@ HispeedSettingMenu::HispeedSettingMenu()
 			.cursorInputCreateInfo = {
 				.type = CursorInput::Type::Vertical,
 				.buttonFlags = CursorButtonFlags::kArrowOrLaserAll,
+				.flipArrowKeyDirection = FlipArrowKeyDirection::Yes, // 上向きで増加、下向きで減少なので、上下逆にする
 				.buttonIntervalSec = 0.06,
 				.startRequiredForBTFXLaser = StartRequiredForBTFXLaser::Yes,
 			},

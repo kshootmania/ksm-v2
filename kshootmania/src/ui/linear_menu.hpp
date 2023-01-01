@@ -27,6 +27,7 @@ public:
 	{
 		CursorInput::CreateInfo cursorInputCreateInfo;
 		int32 enumCount = 0;
+		int32 cursorStep = 1; // 1回のカーソル移動による変化量。逆方向にする場合は負の値にすれば良い
 		IsCyclicMenu cyclic = IsCyclicMenu::No;
 		int32 defaultCursor = 0;
 	};
@@ -37,7 +38,7 @@ public:
 		CursorInput::CreateInfo cursorInputCreateInfo;
 		int32 cursorMin = 0;
 		int32 cursorMax = 0;
-		int32 cursorStep = 1;
+		int32 cursorStep = 1; // 1回のカーソル移動による変化量。逆方向にする場合は負の値にすれば良い
 		IsCyclicMenu cyclic = IsCyclicMenu::No;
 		int32 defaultCursor = std::numeric_limits<int32>::min(); // cursorMinが負の値の場合にも未指定時にcursorMinの値へClampされるよう最小値を指定
 	};

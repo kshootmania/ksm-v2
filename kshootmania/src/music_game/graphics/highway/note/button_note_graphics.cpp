@@ -128,6 +128,7 @@ namespace MusicGame::Graphics
 						// 現在判定対象でないロングノーツ
 						sourceY = kLongNoteSourceYDefault;
 					}
+					// TODO: 始点テクスチャの描画
 					const Texture& sourceTexture = isBT ? m_longBTNoteTexture : m_longFXNoteTexture;
 					const int32 width = isBT ? 40 : 82;
 					const Vec2 position = offsetPosition + Vec2::Down(positionEndY);

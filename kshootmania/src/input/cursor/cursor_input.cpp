@@ -10,13 +10,13 @@ namespace
 		return (buttonFlags & static_cast<int32>(flag)) != 0;
 	}
 
-	Array<KeyConfig::Button> IncrementButtonsForHorizontalMenu(int32 buttonFlags)
+	Array<KeyConfig::Button> IncrementButtonsForHorizontalMenu(int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
 	{
 		Array<KeyConfig::Button> incrementButtons;
 
 		if (HasFlag(buttonFlags, CursorButtonFlags::kArrow))
 		{
-			incrementButtons.push_back(KeyConfig::kRight);
+			incrementButtons.push_back(flipArrowKeyDirection ? KeyConfig::kLeft : KeyConfig::kRight);
 		}
 
 		if (HasFlag(buttonFlags, CursorButtonFlags::kBT))
@@ -47,13 +47,13 @@ namespace
 		return incrementButtons;
 	}
 
-	Array<KeyConfig::Button> DecrementButtonsForHorizontalMenu(int32 buttonFlags)
+	Array<KeyConfig::Button> DecrementButtonsForHorizontalMenu(int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
 	{
 		Array<KeyConfig::Button> decrementButtons;
 
 		if (HasFlag(buttonFlags, CursorButtonFlags::kArrow))
 		{
-			decrementButtons.push_back(KeyConfig::kLeft);
+			decrementButtons.push_back(flipArrowKeyDirection ? KeyConfig::kRight : KeyConfig::kLeft);
 		}
 		
 		if (HasFlag(buttonFlags, CursorButtonFlags::kBT))
@@ -84,13 +84,13 @@ namespace
 		return decrementButtons;
 	}
 
-	Array<KeyConfig::Button> IncrementButtonsForVerticalMenu(int32 buttonFlags)
+	Array<KeyConfig::Button> IncrementButtonsForVerticalMenu(int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
 	{
 		Array<KeyConfig::Button> incrementButtons;
 
 		if (HasFlag(buttonFlags, CursorButtonFlags::kArrow))
 		{
-			incrementButtons.push_back(KeyConfig::kDown);
+			incrementButtons.push_back(flipArrowKeyDirection ? KeyConfig::kUp : KeyConfig::kDown);
 		}
 
 		if (HasFlag(buttonFlags, CursorButtonFlags::kBT))
@@ -121,13 +121,13 @@ namespace
 		return incrementButtons;
 	}
 
-	Array<KeyConfig::Button> DecrementButtonsForVerticalMenu(int32 buttonFlags)
+	Array<KeyConfig::Button> DecrementButtonsForVerticalMenu(int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
 	{
 		Array<KeyConfig::Button> decrementButtons;
 
 		if (HasFlag(buttonFlags, CursorButtonFlags::kArrow))
 		{
-			decrementButtons.push_back(KeyConfig::kUp);
+			decrementButtons.push_back(flipArrowKeyDirection ? KeyConfig::kDown : KeyConfig::kUp);
 		}
 
 		if (HasFlag(buttonFlags, CursorButtonFlags::kBT))
@@ -158,15 +158,15 @@ namespace
 		return decrementButtons;
 	}
 
-	Array<KeyConfig::Button> IncrementButtons(Type type, int32 buttonFlags)
+	Array<KeyConfig::Button> IncrementButtons(Type type, int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
 	{
 		switch (type)
 		{
 		case Type::Horizontal:
-			return IncrementButtonsForHorizontalMenu(buttonFlags);
+			return IncrementButtonsForHorizontalMenu(buttonFlags, flipArrowKeyDirection);
 
 		case Type::Vertical:
-			return IncrementButtonsForVerticalMenu(buttonFlags);
+			return IncrementButtonsForVerticalMenu(buttonFlags, flipArrowKeyDirection);
 
 		default:
 			assert(false && "Unknown cursor input type");
@@ -174,15 +174,15 @@ namespace
 		}
 	}
 
-	Array<KeyConfig::Button> DecrementButtons(Type type, int32 buttonFlags)
+	Array<KeyConfig::Button> DecrementButtons(Type type, int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
 	{
 		switch (type)
 		{
 		case Type::Horizontal:
-			return DecrementButtonsForHorizontalMenu(buttonFlags);
+			return DecrementButtonsForHorizontalMenu(buttonFlags, flipArrowKeyDirection);
 
 		case Type::Vertical:
-			return DecrementButtonsForVerticalMenu(buttonFlags);
+			return DecrementButtonsForVerticalMenu(buttonFlags, flipArrowKeyDirection);
 
 		default:
 			assert(false && "Unknown cursor input type");
@@ -193,8 +193,8 @@ namespace
 
 CursorInput::CursorInput(const CreateInfo& createInfo)
 	: m_buttonDevice(
-		IncrementButtons(createInfo.type, createInfo.buttonFlags),
-		DecrementButtons(createInfo.type, createInfo.buttonFlags),
+		IncrementButtons(createInfo.type, createInfo.buttonFlags, createInfo.flipArrowKeyDirection),
+		DecrementButtons(createInfo.type, createInfo.buttonFlags, createInfo.flipArrowKeyDirection),
 		createInfo.buttonIntervalSec,
 		createInfo.buttonIntervalSecFirst)
 {
