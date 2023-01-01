@@ -22,9 +22,9 @@ public:
 	explicit ButtonCursorInputDevice(
 		const Array<KeyConfig::Button>& incrementButtons,
 		const Array<KeyConfig::Button>& decrementButtons,
-		double intervalSec = 0.0,
-		double intervalSecFirst = 0.0,
-		StartRequiredForBTFXLaser startRequiredForBTFXLaser = StartRequiredForBTFXLaser::No);
+		double intervalSec,
+		double intervalSecFirst,
+		StartRequiredForBTFXLaser startRequiredForBTFXLaser);
 
 	virtual ~ButtonCursorInputDevice();
 

@@ -95,7 +95,7 @@ namespace KeyConfig
 		const bool btFXLaserAccepted = !startRequiredForBTFXLaser || KeyConfig::Pressed(kStart);
 		for (const auto& button : buttons)
 		{
-			const bool accepted = btFXLaserAccepted || IsButtonBTFXLaser(button);
+			const bool accepted = btFXLaserAccepted || !IsButtonBTFXLaser(button);
 			if (accepted && KeyConfig::Pressed(button))
 			{
 				return true;
@@ -107,10 +107,10 @@ namespace KeyConfig
 	template <class C>
 	bool AnyButtonDown(const C& buttons, StartRequiredForBTFXLaser startRequiredForBTFXLaser = StartRequiredForBTFXLaser::No)
 	{
-		const bool btFXLaserAccepted = !startRequiredForBTFXLaser || KeyConfig::Pressed(kStart); // Startボタン判定は長押しなのでPressedで正しい
+		const bool btFXLaserAccepted = !startRequiredForBTFXLaser || KeyConfig::Pressed(kStart); // Startボタン判定側は押しっぱなしかの判定なのでPressedで正しい
 		for (const auto& button : buttons)
 		{
-			const bool accepted = btFXLaserAccepted || IsButtonBTFXLaser(button);
+			const bool accepted = btFXLaserAccepted || !IsButtonBTFXLaser(button);
 			if (accepted && KeyConfig::Down(button))
 			{
 				return true;

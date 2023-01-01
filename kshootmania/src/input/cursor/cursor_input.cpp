@@ -196,7 +196,8 @@ CursorInput::CursorInput(const CreateInfo& createInfo)
 		IncrementButtons(createInfo.type, createInfo.buttonFlags, createInfo.flipArrowKeyDirection),
 		DecrementButtons(createInfo.type, createInfo.buttonFlags, createInfo.flipArrowKeyDirection),
 		createInfo.buttonIntervalSec,
-		createInfo.buttonIntervalSecFirst)
+		createInfo.buttonIntervalSecFirst,
+		createInfo.startRequiredForBTFXLaser)
 {
 }
 
