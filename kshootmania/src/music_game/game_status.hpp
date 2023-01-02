@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "kson/chart_data.hpp"
 #include "game_defines.hpp"
+#include "hispeed_setting.hpp"
 #include "judgment/judgment_defines.hpp"
 #include "graphics/graphics_defines.hpp"
 
@@ -81,6 +82,8 @@ namespace MusicGame
 		double currentTimeSec = 0.0;
 		kson::Pulse currentPulse = 0;
 		double currentBPM = 120.0;
+
+		HispeedSetting hispeedSetting;
 		
 		std::array<ButtonLaneStatus, kson::kNumBTLanesSZ> btLaneStatus;
 		std::array<ButtonLaneStatus, kson::kNumFXLanesSZ> fxLaneStatus;

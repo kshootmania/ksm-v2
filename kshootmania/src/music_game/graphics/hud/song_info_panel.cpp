@@ -79,7 +79,7 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void SongInfoPanel::draw(double currentBPM) const
+	void SongInfoPanel::draw(double currentBPM, const HighwayScroll& highwayScroll) const
 	{
 		using namespace ScreenUtils;
 
@@ -94,5 +94,8 @@ namespace MusicGame::Graphics
 		// BPM
 		// TODO: BPMの小数部分を表示
 		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(currentBPM), 0, false, NumberFontTexture::kLeftAlign);
+
+		// ハイスピード設定
+		m_hispeedSettingPanel.draw(m_detailPanelPosition + Scaled(131, 27), highwayScroll);
 	}
 }

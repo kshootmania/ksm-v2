@@ -13,7 +13,7 @@ public:
 		kRightAlign,
 	};
 
-	NumberFontTexture(StringView textureAssetKey, const SizeF& scaledSize, const Size& sourceSize = TiledTextureSizeInfo::kAutoDetectSize);
+	explicit NumberFontTexture(StringView textureAssetKey, const SizeF& scaledSize, const Size& sourceSize = TiledTextureSizeInfo::kAutoDetectSize, const Point& offset = Point::Zero());
 
 	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, bool zeroPadding, Align align = kRightAlign) const;
 

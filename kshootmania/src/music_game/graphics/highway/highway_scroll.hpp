@@ -44,8 +44,11 @@ namespace MusicGame::Graphics
 		/// @brief ハイスピード設定
 		HispeedSetting m_hispeedSetting;
 
-		/// @brief ハイスピード因数
+		/// @brief ハイスピード係数
 		double m_hispeedFactor = 0.0;
+
+		/// @brief 現在のハイスピード値
+		int32 m_currentHispeed = 0;
 
 		/// @brief キャッシュの排他処理用mutex(M&M rule)
 		mutable std::mutex m_mutex;
@@ -69,14 +72,14 @@ namespace MusicGame::Graphics
 		/// @param hispeedSetting ハイスピード設定
 		/// @return 相対Pulse数換算値
 		/// @note HSP版: https://github.com/m4saka/kshootmania-v1-hsp/blob/1c75880b545d1232eeffc4bb3fc19704a3622f73/src/scene/play/play_utils.hsp#L246-L269
-		kson::RelPulse getRelPulseEquvalent(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const;
+		double getRelPulseEquvalent(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const;
 
 	public:
 		explicit HighwayScroll(const kson::ChartData& chartData);
 
 		/// @brief 毎フレームの更新
-		/// @param hispeedSetting ハイスピード設定
-		void update(const HispeedSetting& hispeedSetting);
+		/// @param gameStatus ゲーム状態
+		void update(const GameStatus& gameStatus);
 
 		/// @brief Pulse値をもとにHighway上のY座標を求める
 		/// @param pulse Pulse値
@@ -86,5 +89,13 @@ namespace MusicGame::Graphics
 		/// @param hispeedSetting ハイスピード設定
 		/// @return Y座標
 		int32 getPositionY(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const;
+
+		/// @brief ハイスピード設定を返す
+		/// @return ハイスピード設定
+		const HispeedSetting& hispeedSetting() const;
+
+		/// @brief 現在のハイスピード値を返す
+		/// @return ハイスピード値
+		int32 currentHispeed() const;
 	};
 }

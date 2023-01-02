@@ -52,7 +52,7 @@ namespace MusicGame
 		// グラフィックス
 		Graphics::GraphicsMain m_graphicsMain;
 
-		void updateGameStatus();
+		void updateGameStatus(const GameUpdateInfo& updateInfo);
 
 	public:
 		explicit GameMain(const GameCreateInfo& createInfo);

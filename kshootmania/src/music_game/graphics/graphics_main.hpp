@@ -47,7 +47,7 @@ namespace MusicGame::Graphics
 	public:
 		explicit GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath);
 
-		void update(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting);
+		void update(const kson::ChartData& chartData, const GameStatus& gameStatus);
 
 		void draw(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const;
 	};

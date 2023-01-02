@@ -4,12 +4,12 @@ namespace MusicGame::Graphics
 {
 	namespace
 	{
-		// ハイスピード因数の基準値
+		// ハイスピードの基準ピクセル数
 		// HSP版:
 		//     https://github.com/m4saka/kshootmania-v1-hsp/blob/08275836547c7792a6d4f59037e56e947f2979c3/src/scene/play/play_key_input.hsp#L429-L440
 		//     https://github.com/m4saka/kshootmania-v1-hsp/blob/d2811a09e2d75dad5cc152d7c4073897061addb7/src/scene/play/play_draw_frame.hsp#L96
 		// 上記の「108/2」と「10」を乗算した値にあたる
-		constexpr double kBaseFactor = 540.0;
+		constexpr double kBasePixels = 540.0;
 
 		kson::Pulse LastNoteEndPulseButtonLane(const kson::ByPulse<kson::Interval>& lane)
 		{
@@ -148,26 +148,51 @@ namespace MusicGame::Graphics
 			return static_cast<double>(modeBPM);
 		}
 
-		/// @brief ハイスピード因数(座標を求めるために小節数(4/4拍子基準)に乗算すべき値)を求める
+		/// @brief ハイスピード係数を求める
 		/// @param hispeedSetting ハイスピード設定
 		/// @param stdBPM 基準BPM
-		/// @return ハイスピード因数
+		/// @return ハイスピード係数
 		double HispeedFactor(const HispeedSetting& hispeedSetting, double stdBPM)
 		{
 			switch (hispeedSetting.type)
 			{
 			case HispeedType::XMod:
-				return kBaseFactor * hispeedSetting.value / 10;
+				return static_cast<double>(hispeedSetting.value) / 10;
 
 			case HispeedType::OMod:
-				return kBaseFactor * hispeedSetting.value / stdBPM / 10;
+				return static_cast<double>(hispeedSetting.value) / stdBPM;
 
 			case HispeedType::CMod:
-				return kBaseFactor;
+				return static_cast<double>(hispeedSetting.value);
 
 			default:
 				assert(false && "Unknown hispeed type");
-				return kBaseFactor;
+				return static_cast<double>(hispeedSetting.value);
+			}
+		}
+
+		/// @brief ハイスピード値を求める
+		/// @param currentBPM 現在のBPM
+		/// @param hispeedSetting ハイスピード設定
+		/// @param stdBPM 基準BPM
+		/// @return ハイスピード係数
+		/// @note HispeedFactorにBPMをかけた値と基本的に同じだが、C-modで設定値をそのまま返す点、整数のまま計算する点が異なる
+		int32 CurrentHispeed(double currentBPM, const HispeedSetting& hispeedSetting, double stdBPM)
+		{
+			switch (hispeedSetting.type)
+			{
+			case HispeedType::XMod:
+				return static_cast<int32>(currentBPM) * hispeedSetting.value / 10;
+
+			case HispeedType::OMod:
+				return static_cast<int32>(currentBPM * hispeedSetting.value / stdBPM);
+
+			case HispeedType::CMod:
+				return hispeedSetting.value;
+
+			default:
+				assert(false && "Unknown hispeed type");
+				return static_cast<int32>(currentBPM);
 			}
 		}
 	}
@@ -204,17 +229,17 @@ namespace MusicGame::Graphics
 		return sec;
 	}
 
-	kson::RelPulse HighwayScroll::getRelPulseEquvalent(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const
+	double HighwayScroll::getRelPulseEquvalent(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const
 	{
 		if (m_hispeedSetting.type == HispeedType::CMod)
 		{
 			const double sec = pulseToSec(pulse, beatInfo, timingCache);
 			const double relTimeSec = sec - gameStatus.currentTimeSec;
-			return MathUtils::RoundToInt<kson::RelPulse>(relTimeSec * m_hispeedSetting.value / 24);
+			return relTimeSec / 60 * kson::kResolution;
 		}
 		else
 		{
-			return pulse - gameStatus.currentPulse;
+			return static_cast<double>(pulse - gameStatus.currentPulse);
 		}
 	}
 
@@ -223,17 +248,29 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void HighwayScroll::update(const HispeedSetting& hispeedSetting)
+	void HighwayScroll::update(const GameStatus& gameStatus)
 	{
-		m_hispeedSetting = hispeedSetting;
-		m_hispeedFactor = HispeedFactor(hispeedSetting, m_stdBPM);
+		// TODO: GameStatusと重複しているので、scroll_speed実装後に再検討
+		m_hispeedSetting = gameStatus.hispeedSetting;
+		m_hispeedFactor = HispeedFactor(gameStatus.hispeedSetting, m_stdBPM);
+		m_currentHispeed = CurrentHispeed(gameStatus.currentBPM, gameStatus.hispeedSetting, m_stdBPM);
 	}
 
 	int32 HighwayScroll::getPositionY(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const
 	{
 		assert(m_hispeedFactor != 0.0 && "HighwayScroll::update() must be called at least once before HighwayScroll::getPositionY()");
 
-		const kson::RelPulse relPulseEquivalent = getRelPulseEquvalent(pulse, beatInfo, timingCache, gameStatus);
-		return kHighwayTextureSize.y - static_cast<int32>(relPulseEquivalent * m_hispeedFactor / kson::kResolution4);
+		const double relPulseEquivalent = getRelPulseEquvalent(pulse, beatInfo, timingCache, gameStatus);
+		return kHighwayTextureSize.y - static_cast<int32>(relPulseEquivalent * kBasePixels * m_hispeedFactor / kson::kResolution4);
+	}
+
+	const HispeedSetting& HighwayScroll::hispeedSetting() const
+	{
+		return m_hispeedSetting;
+	}
+
+	int32 HighwayScroll::currentHispeed() const
+	{
+		return m_currentHispeed;
 	}
 }

@@ -146,6 +146,7 @@
     <ClCompile Include="src\music_game\graphics\highway\note\note_graphics_utils.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\frame_rate_monitor.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\gauge_panel.cpp" />
+    <ClCompile Include="src\music_game\graphics\hud\hispeed_setting_panel.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\score_panel.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\song_info_panel.cpp" />
     <ClCompile Include="src\music_game\graphics\jdgline\jdgline_3d_graphics.cpp" />
@@ -394,6 +395,7 @@
     <ClInclude Include="src\music_game\graphics\highway\note\note_graphics_utils.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\frame_rate_monitor.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\gauge_panel.hpp" />
+    <ClInclude Include="src\music_game\graphics\hud\hispeed_setting_panel.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\score_panel.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\song_info_panel.hpp" />
     <ClInclude Include="src\music_game\graphics\jdgline\jdgline_3d_graphics.hpp" />

@@ -30,7 +30,7 @@ namespace MusicGame
 		}
 	}
 
-	void GameMain::updateGameStatus()
+	void GameMain::updateGameStatus(const GameUpdateInfo& updateInfo)
 	{
 		const double currentTimeSec = m_bgm.posSec();
 		const kson::Pulse currentPulse = kson::SecToPulse(currentTimeSec, m_chartData.beat, m_timingCache);
@@ -60,6 +60,8 @@ namespace MusicGame
 		m_gameStatus.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreFactor(m_btLaneJudgments) + SumScoreFactor(m_fxLaneJudgments) + SumScoreFactor(m_laserLaneJudgments)) / m_scoreFactorMax);
 
 		// TODO: Calculate camera values
+
+		m_gameStatus.hispeedSetting = updateInfo.hispeedSetting;
 	}
 
 	GameMain::GameMain(const GameCreateInfo& createInfo)
@@ -95,7 +97,7 @@ namespace MusicGame
 		m_bgm.update();
 
 		// ゲームステータスの更新とノーツ判定
-		updateGameStatus();
+		updateGameStatus(updateInfo);
 
 		// 音声エフェクトの更新
 		std::array<Optional<bool>, kson::kNumFXLanesSZ> longFXPressed;
@@ -120,7 +122,7 @@ namespace MusicGame
 		m_laserSlamSE.update(m_chartData, m_gameStatus);
 
 		// グラフィックスの更新
-		m_graphicsMain.update(m_chartData, m_gameStatus, updateInfo.hispeedSetting);
+		m_graphicsMain.update(m_chartData, m_gameStatus);
 	}
 
 	void GameMain::draw() const

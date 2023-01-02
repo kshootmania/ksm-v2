@@ -114,14 +114,14 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void GraphicsMain::update(const kson::ChartData& chartData, const GameStatus& gameStatus, const HispeedSetting& hispeedSetting)
+	void GraphicsMain::update(const kson::ChartData& chartData, const GameStatus& gameStatus)
 	{
 		const double leftLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laser[0], gameStatus.currentPulse, 0.0); // range: [0, +1]
 		const double rightLaserValue = kson::GraphSectionValueAtWithDefault(chartData.note.laser[1], gameStatus.currentPulse, 1.0) - 1.0; // range: [-1, 0]
 		const double tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
 		m_highwayTilt.update(tiltFactor);
 
-		m_highwayScroll.update(hispeedSetting);
+		m_highwayScroll.update(gameStatus);
 	}
 
 	void GraphicsMain::draw(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const
@@ -142,7 +142,7 @@ namespace MusicGame::Graphics
 		m_laserCursor3DGraphics.draw3D(tiltRadians, gameStatus);
 
 		// 手前に表示する2DのHUDを描画
-		m_songInfoPanel.draw(gameStatus.currentBPM);
+		m_songInfoPanel.draw(gameStatus.currentBPM, m_highwayScroll);
 		m_scorePanel.draw(gameStatus.score);
 		m_gaugePanel.draw(100.0/* TODO: Percentage */, gameStatus.currentPulse);
 		m_frameRateMonitor.draw();

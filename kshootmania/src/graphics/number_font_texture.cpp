@@ -1,9 +1,10 @@
 ﻿#include "number_font_texture.hpp"
 
-NumberFontTexture::NumberFontTexture(StringView textureAssetKey, const SizeF& scaledSize, const Size& sourceSize)
+NumberFontTexture::NumberFontTexture(StringView textureAssetKey, const SizeF& scaledSize, const Size& sourceSize, const Point& offset)
 	: m_tiledTexture(TextureAsset(textureAssetKey),
 		{
 			.row = 10,
+			.offset = offset,
 			.sourceSize = sourceSize,
 		})
 	, m_scaledSize(scaledSize)
