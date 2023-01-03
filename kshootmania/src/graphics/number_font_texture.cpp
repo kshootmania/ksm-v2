@@ -20,8 +20,8 @@ void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numPaddin
 {
 	// 注意:
 	//   positionより左側にも描画される場合がある。
-	//   具体的には、alignがkRightAlignで、かつ桁数がnumDigitsを上回った場合に、上回った分の桁がpositionより左側に描画される。
-	const int32 numDigits = (align == kLeftAlign) ? Max(MathUtils::NumDigits(number), numPaddingDigits) : numPaddingDigits;
+	//   具体的には、alignがRightで、かつ桁数がnumDigitsを上回った場合に、上回った分の桁がpositionより左側に描画される。
+	const int32 numDigits = (align == Align::Left) ? Max(MathUtils::NumDigits(number), numPaddingDigits) : numPaddingDigits;
 	int32 digitCount = 0;
 	do
 	{

@@ -7,15 +7,15 @@ private:
 	const SizeF m_scaledSize;
 
 public:
-	enum Align
+	enum class Align
 	{
-		kLeftAlign,
-		kRightAlign,
+		Left,
+		Right,
 	};
 
 	explicit NumberFontTexture(StringView textureAssetKey, const SizeF& scaledSize, const Size& sourceSize = TiledTextureSizeInfo::kAutoDetectSize, const Point& offset = Point::Zero());
 
-	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, bool zeroPadding, Align align = kRightAlign) const;
+	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, bool zeroPadding, Align align = Align::Right) const;
 
-	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, double diffX, bool zeroPadding, Align align = kRightAlign) const;
+	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, double diffX, bool zeroPadding, Align align = Align::Right) const;
 };
