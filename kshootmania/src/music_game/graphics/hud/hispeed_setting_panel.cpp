@@ -20,7 +20,7 @@ namespace MusicGame::Graphics
 		const ScopedRenderStates2D samplerState(SamplerState::ClampLinear);
 
 		const HispeedSetting& hispeedSetting = highwayScroll.hispeedSetting();
-		m_targetValueNumberFontTexture.draw(position + Scaled(10, 0), hispeedSetting.value, 0, ZeroPaddingYN::No);
-		m_currentValueNumberFontTexture.draw(position + Scaled(70, 0), highwayScroll.currentHispeed(), 0, ZeroPaddingYN::No);
+		m_targetValueNumberFontTexture.draw(position - Scaled(29, 0), hispeedSetting.value, 0, ZeroPaddingYN::No, NumberFontTexture::Align::Center);
+		m_currentValueNumberFontTexture.draw(position + Scaled(29, 0), highwayScroll.currentHispeed(), 0, ZeroPaddingYN::No, NumberFontTexture::Align::Center);
 	}
 }

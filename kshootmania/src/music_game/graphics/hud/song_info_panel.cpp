@@ -96,6 +96,6 @@ namespace MusicGame::Graphics
 		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(currentBPM), 0, ZeroPaddingYN::No, NumberFontTexture::Align::Left);
 
 		// ハイスピード設定
-		m_hispeedSettingPanel.draw(m_detailPanelPosition + Scaled(131, 27), highwayScroll);
+		m_hispeedSettingPanel.draw(m_detailPanelPosition + Scaled(159, 27), highwayScroll);
 	}
 }

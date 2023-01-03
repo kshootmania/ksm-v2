@@ -11,6 +11,7 @@ private:
 public:
 	enum class Align
 	{
+		Center,
 		Left,
 		Right,
 	};
@@ -19,5 +20,5 @@ public:
 
 	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, ZeroPaddingYN zeroPadding, Align align = Align::Right) const;
 
-	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, double diffX, ZeroPaddingYN zeroPadding, Align align = Align::Right) const;
+	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, double scanX, ZeroPaddingYN zeroPadding, Align align = Align::Right) const;
 };
