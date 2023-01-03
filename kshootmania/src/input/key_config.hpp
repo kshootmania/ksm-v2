@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-using StartRequiredForBTFXLaser = YesNo<struct StartRequiredForBTFXLaser_tag>;
+using StartRequiredForBTFXLaserYN = YesNo<struct StartRequiredForBTFXLaserYN_tag>;
 
 namespace KeyConfig
 {
@@ -90,7 +90,7 @@ namespace KeyConfig
 	bool Up(Button button);
 
 	template <class C>
-	bool AnyButtonPressed(const C& buttons, StartRequiredForBTFXLaser startRequiredForBTFXLaser = StartRequiredForBTFXLaser::No)
+	bool AnyButtonPressed(const C& buttons, StartRequiredForBTFXLaserYN startRequiredForBTFXLaser = StartRequiredForBTFXLaserYN::No)
 	{
 		const bool btFXLaserAccepted = !startRequiredForBTFXLaser || KeyConfig::Pressed(kStart);
 		for (const auto& button : buttons)
@@ -105,7 +105,7 @@ namespace KeyConfig
 	}
 
 	template <class C>
-	bool AnyButtonDown(const C& buttons, StartRequiredForBTFXLaser startRequiredForBTFXLaser = StartRequiredForBTFXLaser::No)
+	bool AnyButtonDown(const C& buttons, StartRequiredForBTFXLaserYN startRequiredForBTFXLaser = StartRequiredForBTFXLaserYN::No)
 	{
 		const bool btFXLaserAccepted = !startRequiredForBTFXLaser || KeyConfig::Pressed(kStart); // Startボタン判定側は押しっぱなしかの判定なのでPressedで正しい
 		for (const auto& button : buttons)

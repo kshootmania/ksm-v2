@@ -89,11 +89,11 @@ namespace MusicGame::Graphics
 		m_difficultyTextureRegion.draw(m_detailPanelPosition + Scaled(13, 3));
 
 		// Level
-		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(79, 4), m_level, 0, false, NumberFontTexture::Align::Left);
+		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(79, 4), m_level, 0, ZeroPaddingYN::No, NumberFontTexture::Align::Left);
 
 		// BPM
 		// TODO: BPMの小数部分を表示
-		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(currentBPM), 0, false, NumberFontTexture::Align::Left);
+		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(currentBPM), 0, ZeroPaddingYN::No, NumberFontTexture::Align::Left);
 
 		// ハイスピード設定
 		m_hispeedSettingPanel.draw(m_detailPanelPosition + Scaled(131, 27), highwayScroll);

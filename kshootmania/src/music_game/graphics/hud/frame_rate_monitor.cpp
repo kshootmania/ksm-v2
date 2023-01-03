@@ -20,6 +20,6 @@ namespace MusicGame::Graphics
 		const ScopedRenderStates2D samplerState(SamplerState::ClampLinear);
 
 		m_fpsTexture.resized(Scaled(30, 9)).draw(Scene::Width() - Scaled(38), Scaled(460));
-		m_numberFontTexture.draw({ Scene::Width() - Scaled(40), Scaled(460) }, Profiler::FPS(), 0, false);
+		m_numberFontTexture.draw({ Scene::Width() - Scaled(40), Scaled(460) }, Profiler::FPS(), 0, ZeroPaddingYN::No);
 	}
 }

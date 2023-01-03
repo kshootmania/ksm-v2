@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+using ZeroPaddingYN = YesNo<struct ZeroPaddingYN_tag>;
+
 class NumberFontTexture
 {
 private:
@@ -15,7 +17,7 @@ public:
 
 	explicit NumberFontTexture(StringView textureAssetKey, const SizeF& scaledSize, const Size& sourceSize = TiledTextureSizeInfo::kAutoDetectSize, const Point& offset = Point::Zero());
 
-	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, bool zeroPadding, Align align = Align::Right) const;
+	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, ZeroPaddingYN zeroPadding, Align align = Align::Right) const;
 
-	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, double diffX, bool zeroPadding, Align align = Align::Right) const;
+	void draw(const Vec2& position, int32 number, int32 numPaddingDigits, double diffX, ZeroPaddingYN zeroPadding, Align align = Align::Right) const;
 };

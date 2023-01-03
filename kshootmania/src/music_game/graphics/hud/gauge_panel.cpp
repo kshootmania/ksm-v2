@@ -73,6 +73,6 @@ namespace MusicGame::Graphics
 		Scaled2x(m_percentBaseTexture).draw(percentBasePosition);
 
 		const Vec2 percentNumberBasePosition = percentBasePosition + Scaled2x(Vec2{ 72, 13 });
-		m_percentNumberFontTexture.draw(percentNumberBasePosition, static_cast<int>(percent), 0, false);
+		m_percentNumberFontTexture.draw(percentNumberBasePosition, static_cast<int>(percent), 0, ZeroPaddingYN::No);
 	}
 }

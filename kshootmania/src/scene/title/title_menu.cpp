@@ -37,7 +37,7 @@ TitleMenu::TitleMenu(TitleScene* pTitleScene)
 				.buttonFlags = CursorButtonFlags::kArrowOrBTAllOrLaserAll,
 			},
 			.enumCount = Item::kItemEnumCount,
-			.cyclic = IsCyclicMenu::No,
+			.cyclic = IsCyclicMenuYN::No,
 		})
 	, m_menuItemTexture(TitleTexture::kMenuItem,
 		{

@@ -316,7 +316,7 @@ SelectMenu::SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc)
 				.buttonIntervalSec = 0.05,
 				.buttonIntervalSecFirst = 0.3,
 			},
-			.cyclic = IsCyclicMenu::Yes,
+			.cyclic = IsCyclicMenuYN::Yes,
 		})
 	, m_difficultyMenu(this)
 	, m_shakeStopwatch(StartImmediately::No)

@@ -3,7 +3,7 @@
 #include "input/key_config.hpp"
 #include "input/cursor/cursor_input.hpp"
 
-using IsCyclicMenu = YesNo<struct IsCyclicMenu_tag>;
+using IsCyclicMenuYN = YesNo<struct IsCyclicMenuYN_tag>;
 
 /// @brief 線形メニュー
 class LinearMenu
@@ -14,7 +14,7 @@ private:
 	int32 m_cursorMax;
 	int32 m_cursor;
 	int32 m_cursorStep;
-	IsCyclicMenu m_cyclic;
+	IsCyclicMenuYN m_cyclic;
 	int32 m_deltaCursor = 0;
 
 	void increment(int32 absDeltaCursor);
@@ -28,7 +28,7 @@ public:
 		CursorInput::CreateInfo cursorInputCreateInfo;
 		int32 enumCount = 0;
 		int32 cursorStep = 1; // 1回のカーソル移動による変化量。逆方向にする場合は負の値にすれば良い
-		IsCyclicMenu cyclic = IsCyclicMenu::No;
+		IsCyclicMenuYN cyclic = IsCyclicMenuYN::No;
 		int32 defaultCursor = 0;
 	};
 
@@ -39,7 +39,7 @@ public:
 		int32 cursorMin = 0;
 		int32 cursorMax = 0;
 		int32 cursorStep = 1; // 1回のカーソル移動による変化量。逆方向にする場合は負の値にすれば良い
-		IsCyclicMenu cyclic = IsCyclicMenu::No;
+		IsCyclicMenuYN cyclic = IsCyclicMenuYN::No;
 		int32 defaultCursor = std::numeric_limits<int32>::min(); // cursorMinが負の値の場合にも未指定時にcursorMinの値へClampされるよう最小値を指定
 	};
 

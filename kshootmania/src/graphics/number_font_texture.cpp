@@ -11,12 +11,12 @@ NumberFontTexture::NumberFontTexture(StringView textureAssetKey, const SizeF& sc
 {
 }
 
-void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numPaddingDigits, bool zeroPadding, Align align) const
+void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numPaddingDigits, ZeroPaddingYN zeroPadding, Align align) const
 {
 	draw(position, number, numPaddingDigits, m_scaledSize.x, zeroPadding, align);
 }
 
-void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numPaddingDigits, double diffX, bool zeroPadding, Align align) const
+void NumberFontTexture::draw(const Vec2& position, int32 number, int32 numPaddingDigits, double diffX, ZeroPaddingYN zeroPadding, Align align) const
 {
 	// 注意:
 	//   positionより左側にも描画される場合がある。

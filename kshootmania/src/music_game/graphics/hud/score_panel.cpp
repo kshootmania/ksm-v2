@@ -20,6 +20,6 @@ namespace MusicGame::Graphics
 		using namespace ScreenUtils;
 
 		m_captionTexture.resized(Scaled(240, 24)).draw(Scene::Width() / 2 + Scaled(60), Scaled(16));
-		m_numberFontTexture.draw({ Scene::Width() / 2 + Scaled(92), Scaled(42) }, score, 8, Scaled(22), true);
+		m_numberFontTexture.draw({ Scene::Width() / 2 + Scaled(92), Scaled(42) }, score, 8, Scaled(22), ZeroPaddingYN::Yes);
 	}
 }

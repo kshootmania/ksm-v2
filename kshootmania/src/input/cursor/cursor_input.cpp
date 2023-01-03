@@ -10,7 +10,7 @@ namespace
 		return (buttonFlags & static_cast<int32>(flag)) != 0;
 	}
 
-	Array<KeyConfig::Button> IncrementButtonsForHorizontalMenu(int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
+	Array<KeyConfig::Button> IncrementButtonsForHorizontalMenu(int32 buttonFlags, FlipArrowKeyDirectionYN flipArrowKeyDirection)
 	{
 		Array<KeyConfig::Button> incrementButtons;
 
@@ -47,7 +47,7 @@ namespace
 		return incrementButtons;
 	}
 
-	Array<KeyConfig::Button> DecrementButtonsForHorizontalMenu(int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
+	Array<KeyConfig::Button> DecrementButtonsForHorizontalMenu(int32 buttonFlags, FlipArrowKeyDirectionYN flipArrowKeyDirection)
 	{
 		Array<KeyConfig::Button> decrementButtons;
 
@@ -84,7 +84,7 @@ namespace
 		return decrementButtons;
 	}
 
-	Array<KeyConfig::Button> IncrementButtonsForVerticalMenu(int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
+	Array<KeyConfig::Button> IncrementButtonsForVerticalMenu(int32 buttonFlags, FlipArrowKeyDirectionYN flipArrowKeyDirection)
 	{
 		Array<KeyConfig::Button> incrementButtons;
 
@@ -121,7 +121,7 @@ namespace
 		return incrementButtons;
 	}
 
-	Array<KeyConfig::Button> DecrementButtonsForVerticalMenu(int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
+	Array<KeyConfig::Button> DecrementButtonsForVerticalMenu(int32 buttonFlags, FlipArrowKeyDirectionYN flipArrowKeyDirection)
 	{
 		Array<KeyConfig::Button> decrementButtons;
 
@@ -158,7 +158,7 @@ namespace
 		return decrementButtons;
 	}
 
-	Array<KeyConfig::Button> IncrementButtons(Type type, int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
+	Array<KeyConfig::Button> IncrementButtons(Type type, int32 buttonFlags, FlipArrowKeyDirectionYN flipArrowKeyDirection)
 	{
 		switch (type)
 		{
@@ -174,7 +174,7 @@ namespace
 		}
 	}
 
-	Array<KeyConfig::Button> DecrementButtons(Type type, int32 buttonFlags, FlipArrowKeyDirection flipArrowKeyDirection)
+	Array<KeyConfig::Button> DecrementButtons(Type type, int32 buttonFlags, FlipArrowKeyDirectionYN flipArrowKeyDirection)
 	{
 		switch (type)
 		{

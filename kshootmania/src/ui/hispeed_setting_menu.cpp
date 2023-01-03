@@ -135,22 +135,22 @@ HispeedSettingMenu::HispeedSettingMenu()
 				.type = CursorInput::Type::Horizontal,
 				.buttonFlags = CursorButtonFlags::kArrowOrFX,
 				.buttonIntervalSec = 0.12,
-				.startRequiredForBTFXLaser = StartRequiredForBTFXLaser::Yes,
+				.startRequiredForBTFXLaser = StartRequiredForBTFXLaserYN::Yes,
 			},
-			.cyclic = IsCyclicMenu::Yes,
+			.cyclic = IsCyclicMenuYN::Yes,
 		})
 	, m_valueMenu(
 		LinearMenu::CreateInfoWithCursorMinMax{
 			.cursorInputCreateInfo = {
 				.type = CursorInput::Type::Vertical,
 				.buttonFlags = CursorButtonFlags::kArrowOrLaserAll,
-				.flipArrowKeyDirection = FlipArrowKeyDirection::Yes, // 上向きで増加、下向きで減少なので、上下逆にする
+				.flipArrowKeyDirection = FlipArrowKeyDirectionYN::Yes, // 上向きで増加、下向きで減少なので、上下逆にする
 				.buttonIntervalSec = 0.06,
-				.startRequiredForBTFXLaser = StartRequiredForBTFXLaser::Yes,
+				.startRequiredForBTFXLaser = StartRequiredForBTFXLaserYN::Yes,
 			},
 			.cursorMin = 0, // このあとすぐrefreshValueMenuConstraintsで値が入るのでここでは両方0でOK
 			.cursorMax = 0,
-			.cyclic = IsCyclicMenu::No,
+			.cyclic = IsCyclicMenuYN::No,
 		})
 {
 	loadFromConfigIni();
