@@ -106,6 +106,10 @@ namespace MusicGame
 		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)
 		, m_graphicsMain(m_chartData, m_parentPath)
 	{
+	}
+
+	void GameMain::start()
+	{
 		m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 		m_bgm.play();
 
@@ -154,5 +158,10 @@ namespace MusicGame
 
 		// 描画実行
 		m_graphicsMain.draw(m_chartData, m_gameStatus, m_viewStatus, highwayScrollContext);
+	}
+
+	void GameMain::terminate()
+	{
+		m_hispeedSettingMenu.saveToConfigIni();
 	}
 }

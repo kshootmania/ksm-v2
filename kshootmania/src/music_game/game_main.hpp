@@ -69,8 +69,12 @@ namespace MusicGame
 	public:
 		explicit GameMain(const GameCreateInfo& createInfo);
 
+		void start();
+
 		void update();
 
 		void draw() const;
+
+		void terminate();
 	};
 }

@@ -10,6 +10,8 @@ private:
 public:
 	explicit PlayScene(const InitData& initData);
 
+	virtual ~PlayScene();
+
 	virtual void update() override;
 
 	virtual void draw() const override;
