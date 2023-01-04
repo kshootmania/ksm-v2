@@ -265,6 +265,18 @@
     <Filter Include="Source Files\music_game\ui">
       <UniqueIdentifier>{8632cdf7-24db-40e7-921c-2ed542a78238}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\music_game\scroll">
+      <UniqueIdentifier>{60619336-9ffc-4f86-bc83-2b009d308952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\music_game\scroll">
+      <UniqueIdentifier>{33319c41-ca18-4831-867d-2ae4194f85ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\music_game\camera">
+      <UniqueIdentifier>{9fde8af6-d89f-46be-98e8-75f3a09fcd78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\music_game\camera">
+      <UniqueIdentifier>{6538d29c-d191-44d8-97b5-f95ad4703077}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\scene\title\title_scene.cpp">
@@ -339,9 +351,6 @@
     <ClCompile Include="src\music_game\audio\assist_tick.cpp">
       <Filter>Source Files\music_game\audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\music_game\graphics\highway\highway_tilt.cpp">
-      <Filter>Source Files\music_game\graphics\highway</Filter>
-    </ClCompile>
     <ClCompile Include="src\music_game\graphics\highway\highway_3d_graphics.cpp">
       <Filter>Source Files\music_game\graphics\highway</Filter>
     </ClCompile>
@@ -414,14 +423,17 @@
     <ClCompile Include="src\input\cursor\cursor_input.cpp">
       <Filter>Source Files\input\cursor</Filter>
     </ClCompile>
-    <ClCompile Include="src\music_game\graphics\highway\highway_scroll.cpp">
-      <Filter>Source Files\music_game\graphics\highway</Filter>
-    </ClCompile>
     <ClCompile Include="src\music_game\graphics\hud\hispeed_setting_panel.cpp">
       <Filter>Source Files\music_game\graphics\hud</Filter>
     </ClCompile>
     <ClCompile Include="src\music_game\ui\hispeed_setting_menu.cpp">
       <Filter>Source Files\music_game\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\scroll\highway_scroll.cpp">
+      <Filter>Source Files\music_game\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\camera\highway_tilt.cpp">
+      <Filter>Source Files\music_game\camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1168,9 +1180,6 @@
     <ClInclude Include="src\music_game\graphics\graphics_defines.hpp">
       <Filter>Header Files\music_game\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\music_game\graphics\highway\highway_tilt.hpp">
-      <Filter>Header Files\music_game\graphics\highway</Filter>
-    </ClInclude>
     <ClInclude Include="src\music_game\graphics\highway\highway_3d_graphics.hpp">
       <Filter>Header Files\music_game\graphics\highway</Filter>
     </ClInclude>
@@ -1249,17 +1258,23 @@
     <ClInclude Include="src\input\cursor\cursor_input.hpp">
       <Filter>Header Files\input\cursor</Filter>
     </ClInclude>
-    <ClInclude Include="src\music_game\hispeed_setting.hpp">
-      <Filter>Header Files\music_game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\music_game\graphics\highway\highway_scroll.hpp">
-      <Filter>Header Files\music_game\graphics\highway</Filter>
-    </ClInclude>
     <ClInclude Include="src\music_game\graphics\hud\hispeed_setting_panel.hpp">
       <Filter>Header Files\music_game\graphics\hud</Filter>
     </ClInclude>
     <ClInclude Include="src\music_game\ui\hispeed_setting_menu.hpp">
       <Filter>Header Files\music_game\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\scroll\hispeed_setting.hpp">
+      <Filter>Header Files\music_game\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\scroll\highway_scroll.hpp">
+      <Filter>Header Files\music_game\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\camera\highway_tilt.hpp">
+      <Filter>Header Files\music_game\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\view_status.hpp">
+      <Filter>Header Files\music_game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

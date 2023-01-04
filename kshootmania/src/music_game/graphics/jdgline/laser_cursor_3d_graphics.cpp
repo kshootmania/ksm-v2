@@ -31,11 +31,11 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void LaserCursor3DGraphics::draw3D(double tiltRadians, const GameStatus& gameStatus) const
+	void LaserCursor3DGraphics::draw3D(const GameStatus& gameStatus, const ViewStatus& viewStatus) const
 	{
 		// LASERカーソルを3D空間上に描画
 		const ScopedRenderStates3D blendState(kEnableAlphaBlend);
-		const Transformer3D baseTransform(JudgmentPlaneTransformMatrix(tiltRadians, kPlaneCenter));
+		const Transformer3D baseTransform(JudgmentPlaneTransformMatrix(viewStatus.tiltRadians, kPlaneCenter));
 		for (int32 i = 0; i < kson::kNumLaserLanes; ++i)
 		{
 			const auto& laneStatus = gameStatus.laserLaneStatus[i];

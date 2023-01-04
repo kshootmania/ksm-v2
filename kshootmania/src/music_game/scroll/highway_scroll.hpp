@@ -1,11 +1,11 @@
 ﻿#pragma once
 #include <mutex>
 #include "music_game/game_status.hpp"
-#include "music_game/hispeed_setting.hpp"
 #include "music_game/graphics/graphics_defines.hpp"
+#include "hispeed_setting.hpp"
 #include "kson/kson.hpp"
 
-namespace MusicGame::Graphics
+namespace MusicGame::Scroll
 {
 	class HighwayScroll;
 
@@ -20,10 +20,10 @@ namespace MusicGame::Graphics
 
 	public:
 		/// @brief コンストラクタ
-		/// @param pHighwayScroll HighwayScrollのポインタ(getPositionY呼出時点で有効なポインタであること)
-		/// @param pBeatInfo kson.beatのポインタ(getPositionY呼出時点で有効なポインタであること)
-		/// @param pTimingCache TimingCacheのポインタ(getPositionY呼出時点で有効なポインタであること)
-		/// @param pGameStatus GameStatusのポインタ(getPositionY呼出時点で有効なポインタであること)
+		/// @param pHighwayScroll HighwayScrollのポインタ(メンバ関数呼出時点で有効なポインタであること)
+		/// @param pBeatInfo kson.beatのポインタ(メンバ関数呼出時点で有効なポインタであること)
+		/// @param pTimingCache TimingCacheのポインタ(メンバ関数呼出時点で有効なポインタであること)
+		/// @param pGameStatus GameStatusのポインタ(メンバ関数呼出時点で有効なポインタであること)
 		explicit HighwayScrollContext(const HighwayScroll* pHighwayScroll, const kson::BeatInfo* pBeatInfo, const kson::TimingCache* pTimingCache, const GameStatus* pGameStatus);
 
 		~HighwayScrollContext();
@@ -32,6 +32,10 @@ namespace MusicGame::Graphics
 		/// @param pulse Pulse値
 		/// @return Y座標
 		int32 getPositionY(kson::Pulse pulse) const;
+
+		/// @brief HighwayScrollへの参照を返す
+		/// @return HighwayScrollへの参照
+		const HighwayScroll& highwayScroll() const;
 	};
 
 	/// @brief Highway上のスクロール計算(ハイスピードおよびscroll_speedの計算)
@@ -78,8 +82,9 @@ namespace MusicGame::Graphics
 		explicit HighwayScroll(const kson::ChartData& chartData);
 
 		/// @brief 毎フレームの更新
-		/// @param gameStatus ゲーム状態
-		void update(const GameStatus& gameStatus);
+		/// @param hispeedSetting ハイスピード設定
+		/// @param currentBPM 現在のBPM
+		void update(const HispeedSetting& hispeedSetting, double currentBPM);
 
 		/// @brief Pulse値をもとにHighway上のY座標を求める
 		/// @param pulse Pulse値

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "music_game/game_status.hpp"
+#include "music_game/view_status.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -40,6 +41,6 @@ namespace MusicGame::Graphics
 
 		void draw2D(const GameStatus& gameStatus) const;
 
-		void draw3D(double tiltRadians) const;
+		void draw3D(const ViewStatus& viewStatus) const;
 	};
 }

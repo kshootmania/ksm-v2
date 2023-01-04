@@ -79,7 +79,7 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void SongInfoPanel::draw(double currentBPM, const HighwayScroll& highwayScroll) const
+	void SongInfoPanel::draw(double currentBPM, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
 		using namespace ScreenUtils;
 
@@ -96,6 +96,6 @@ namespace MusicGame::Graphics
 		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(currentBPM), 0, ZeroPaddingYN::No, NumberFontTexture::Align::Left);
 
 		// ハイスピード設定
-		m_hispeedSettingPanel.draw(m_detailPanelPosition + Scaled(159, 27), highwayScroll);
+		m_hispeedSettingPanel.draw(m_detailPanelPosition + Scaled(159, 27), highwayScrollContext);
 	}
 }

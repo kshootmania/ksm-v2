@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "music_game/hispeed_setting.hpp"
+#include "music_game/scroll/hispeed_setting.hpp"
 
 namespace MusicGame
 {

@@ -1,6 +1,6 @@
 ﻿#include "highway_scroll.hpp"
 
-namespace MusicGame::Graphics
+namespace MusicGame::Scroll
 {
 	namespace
 	{
@@ -172,12 +172,12 @@ namespace MusicGame::Graphics
 		}
 
 		/// @brief ハイスピード値を求める
-		/// @param currentBPM 現在のBPM
 		/// @param hispeedSetting ハイスピード設定
+		/// @param currentBPM 現在のBPM
 		/// @param stdBPM 基準BPM
 		/// @return ハイスピード係数
 		/// @note HispeedFactorにBPMをかけた値と基本的に同じだが、C-modで設定値をそのまま返す点、整数のまま計算する点が異なる
-		int32 CurrentHispeed(double currentBPM, const HispeedSetting& hispeedSetting, double stdBPM)
+		int32 CurrentHispeed(const HispeedSetting& hispeedSetting, double currentBPM, double stdBPM)
 		{
 			switch (hispeedSetting.type)
 			{
@@ -210,6 +210,11 @@ namespace MusicGame::Graphics
 	int32 HighwayScrollContext::getPositionY(kson::Pulse pulse) const
 	{
 		return m_pHighwayScroll->getPositionY(pulse, *m_pBeatInfo, *m_pTimingCache, *m_pGameStatus);
+	}
+
+	const HighwayScroll& HighwayScrollContext::highwayScroll() const
+	{
+		return *m_pHighwayScroll;
 	}
 
 	double HighwayScroll::pulseToSec(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache) const
@@ -248,12 +253,11 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void HighwayScroll::update(const GameStatus& gameStatus)
+	void HighwayScroll::update(const HispeedSetting& hispeedSetting, double currentBPM)
 	{
-		// TODO: GameStatusと重複しているので、scroll_speed実装後に再検討
-		m_hispeedSetting = gameStatus.hispeedSetting;
-		m_hispeedFactor = HispeedFactor(gameStatus.hispeedSetting, m_stdBPM);
-		m_currentHispeed = CurrentHispeed(gameStatus.currentBPM, gameStatus.hispeedSetting, m_stdBPM);
+		m_hispeedSetting = hispeedSetting;
+		m_hispeedFactor = HispeedFactor(hispeedSetting, m_stdBPM);
+		m_currentHispeed = CurrentHispeed(hispeedSetting, currentBPM, m_stdBPM);
 	}
 
 	int32 HighwayScroll::getPositionY(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const
@@ -261,7 +265,7 @@ namespace MusicGame::Graphics
 		assert(m_hispeedFactor != 0.0 && "HighwayScroll::update() must be called at least once before HighwayScroll::getPositionY()");
 
 		const double relPulseEquivalent = getRelPulseEquvalent(pulse, beatInfo, timingCache, gameStatus);
-		return kHighwayTextureSize.y - static_cast<int32>(relPulseEquivalent * kBasePixels * m_hispeedFactor / kson::kResolution4);
+		return Graphics::kHighwayTextureSize.y - static_cast<int32>(relPulseEquivalent * kBasePixels * m_hispeedFactor / kson::kResolution4);
 	}
 
 	const HispeedSetting& HighwayScroll::hispeedSetting() const

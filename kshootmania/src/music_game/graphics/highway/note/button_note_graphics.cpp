@@ -23,7 +23,7 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const
+	void ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const
 	{
 		const ScopedRenderTarget2D renderTarget(target.additiveTexture());
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
@@ -61,17 +61,17 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
-		drawChipNotesCommon(chartData, gameStatus, highwayScrollContext, target, true);
+		drawChipNotesCommon(chartData, highwayScrollContext, target, true);
 	}
 
-	void ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
-		drawChipNotesCommon(chartData, gameStatus, highwayScrollContext, target, false);
+		drawChipNotesCommon(chartData, highwayScrollContext, target, false);
 	}
 
-	void ButtonNoteGraphics::drawLongNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const
+	void ButtonNoteGraphics::drawLongNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const
 	{
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
@@ -140,12 +140,12 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawLongBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawLongBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
 		drawLongNotesCommon(chartData, gameStatus, highwayScrollContext, target, true);
 	}
 
-	void ButtonNoteGraphics::drawLongFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawLongFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
 		drawLongNotesCommon(chartData, gameStatus, highwayScrollContext, target, false);
 	}
@@ -166,11 +166,11 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void ButtonNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
 		drawLongFXNotes(chartData, gameStatus, highwayScrollContext, target);
 		drawLongBTNotes(chartData, gameStatus, highwayScrollContext, target);
-		drawChipFXNotes(chartData, gameStatus, highwayScrollContext, target);
-		drawChipBTNotes(chartData, gameStatus, highwayScrollContext, target);
+		drawChipFXNotes(chartData, highwayScrollContext, target);
+		drawChipBTNotes(chartData, highwayScrollContext, target);
 	}
 }

@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "kson/chart_data.hpp"
 #include "game_defines.hpp"
-#include "hispeed_setting.hpp"
 #include "judgment/judgment_defines.hpp"
 #include "graphics/graphics_defines.hpp"
 
@@ -67,31 +66,19 @@ namespace MusicGame
 		}
 	};
 
-	struct CamStatus
-	{
-		double zoom = 0.0;
-		double shiftX = 0.0;
-		double rotationX = 0.0;
-		double rotationZ = 0.0;
-		double rotationZLane = 0.0;
-		double rotationZJdgLine = 0.0;
-	};
-
+	/// @brief ゲームステータス
+	/// @note ゲームプレイに関与する状態を入れる。表示にしか関与しないものはGameStatusではなくViewStatusへ入れる。
 	struct GameStatus
 	{
 		double currentTimeSec = 0.0;
 		kson::Pulse currentPulse = 0;
 		double currentBPM = 120.0;
-
-		HispeedSetting hispeedSetting;
 		
 		std::array<ButtonLaneStatus, kson::kNumBTLanesSZ> btLaneStatus;
 		std::array<ButtonLaneStatus, kson::kNumFXLanesSZ> fxLaneStatus;
 		std::array<LaserLaneStatus, kson::kNumLaserLanesSZ> laserLaneStatus;
 
 		std::size_t lastPressedLongFXNoteLaneIdx = 0U; // For audio effect parameter priority
-
-		CamStatus camStatus;
 
 		int32 score = 0;
 	};

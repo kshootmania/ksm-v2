@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "graphics/number_font_texture.hpp"
-#include "music_game/graphics/highway/highway_scroll.hpp"
+#include "music_game/scroll/highway_scroll.hpp"
 #include "hispeed_setting_panel.hpp"
 #include "kson/chart_data.hpp"
 
@@ -30,6 +30,6 @@ namespace MusicGame::Graphics
 	public:
 		explicit SongInfoPanel(const kson::ChartData& chartData, FilePathView parentPath);
 
-		void draw(double currentBPM, const HighwayScroll& highwayScroll) const;
+		void draw(double currentBPM, const Scroll::HighwayScrollContext& highwayScrollContext) const;
 	};
 }

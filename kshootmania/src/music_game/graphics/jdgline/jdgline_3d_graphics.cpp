@@ -16,11 +16,11 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void Jdgline3DGraphics::draw3D(double tiltRadians) const
+	void Jdgline3DGraphics::draw3D(const ViewStatus& viewStatus) const
 	{
 		// 3Dの板に判定ラインのテクスチャを描画
 		const ScopedRenderStates3D blendState(BlendState::NonPremultiplied);
-		const Transformer3D transform(JudgmentPlaneTransformMatrix(tiltRadians, kPlaneCenter));
+		const Transformer3D transform(JudgmentPlaneTransformMatrix(viewStatus.tiltRadians, kPlaneCenter));
 		m_mesh.draw(m_jdglineTexture);
 	}
 }

@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "graphics/number_font_texture.hpp"
-#include "music_game/hispeed_setting.hpp"
-#include "music_game/graphics/highway/highway_scroll.hpp"
+#include "music_game/scroll/highway_scroll.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -14,6 +13,6 @@ namespace MusicGame::Graphics
 	public:
 		HispeedSettingPanel();
 
-		void draw(const Vec2& position, const HighwayScroll& highwayScroll) const;
+		void draw(const Vec2& position, const Scroll::HighwayScrollContext& highwayScrollContext) const;
 	};
 }

@@ -124,7 +124,7 @@ namespace MusicGame::Graphics
 			return JudgmentStatus::kError;
 		}
 
-		void DrawLaserSection(int32 laneIdx, kson::Pulse y, const kson::LaserSection& laserSection, const HighwayScrollContext& highwayScrollContext, const RenderTexture& target, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const TextureRegion& laserStartTexture)
+		void DrawLaserSection(int32 laneIdx, kson::Pulse y, const kson::LaserSection& laserSection, const Scroll::HighwayScrollContext& highwayScrollContext, const RenderTexture& target, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const TextureRegion& laserStartTexture)
 		{
 			const ScopedRenderTarget2D renderTarget(target);
 
@@ -226,7 +226,7 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void LaserNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
+	void LaserNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 		const ScopedRenderStates2D renderState(BlendState::Additive);

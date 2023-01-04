@@ -14,11 +14,12 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void HispeedSettingPanel::draw(const Vec2& position, const HighwayScroll& highwayScroll) const
+	void HispeedSettingPanel::draw(const Vec2& position, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
 		using namespace ScreenUtils;
 		const ScopedRenderStates2D samplerState(SamplerState::ClampLinear);
 
+		const Scroll::HighwayScroll& highwayScroll = highwayScrollContext.highwayScroll();
 		const HispeedSetting& hispeedSetting = highwayScroll.hispeedSetting();
 		m_targetValueNumberFontTexture.draw(position - Scaled(29, 0), hispeedSetting.value, 0, ZeroPaddingYN::No, NumberFontTexture::Align::Center);
 		m_currentValueNumberFontTexture.draw(position + Scaled(29, 0), highwayScroll.currentHispeed(), 0, ZeroPaddingYN::No, NumberFontTexture::Align::Center);
