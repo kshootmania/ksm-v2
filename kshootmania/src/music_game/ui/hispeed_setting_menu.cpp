@@ -31,6 +31,13 @@ namespace MusicGame
 				availableTypes.push_back(HispeedType::CMod);
 			}
 
+			// 1つも有効でない場合はデフォルトのもの(x-mod、o-mod)を追加
+			if (availableTypes.empty())
+			{
+				availableTypes.push_back(HispeedType::XMod);
+				availableTypes.push_back(HispeedType::OMod);
+			}
+
 			return availableTypes;
 		}
 
@@ -100,7 +107,7 @@ namespace MusicGame
 
 	void HispeedSettingMenu::refreshValueMenuConstraints()
 	{
-		switch (m_typeMenu.cursor<HispeedType>())
+		switch (m_typeMenu.cursorValue())
 		{
 		case HispeedType::XMod:
 			m_valueMenu.setCursorMinMax(kHispeedXModValueMin, kHispeedXModValueMax);
@@ -179,7 +186,7 @@ namespace MusicGame
 	HispeedSetting HispeedSettingMenu::hispeedSetting() const
 	{
 		return HispeedSetting{
-			.type = m_typeMenu.cursor<HispeedType>(),
+			.type = m_typeMenu.cursorValue(),
 			.value = m_valueMenu.cursor(),
 		};
 	}

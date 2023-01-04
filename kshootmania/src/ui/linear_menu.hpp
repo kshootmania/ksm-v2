@@ -109,8 +109,10 @@ void LinearMenu::setCursor(T value)
 {
 	int32 cursor = static_cast<int32>(value);
 
+	// カーソルを範囲内に収める
 	if (m_cyclic && m_cursorMin < m_cursorMax)
 	{
+		// カーソル循環が有効の場合に範囲外の値になった場合は循環計算する
 		const int32 range = m_cursorMax + 1 - m_cursorMin;
 		if (cursor < m_cursorMin)
 		{
@@ -127,8 +129,8 @@ void LinearMenu::setCursor(T value)
 			}
 		}
 	}
-
 	m_cursor = Clamp(cursor, m_cursorMin, m_cursorMax);
+
 	m_deltaCursor = 0;
 }
 
