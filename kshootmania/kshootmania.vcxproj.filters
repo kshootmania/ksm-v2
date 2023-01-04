@@ -259,6 +259,12 @@
     <Filter Include="Source Files\input\cursor">
       <UniqueIdentifier>{7fa8dd34-52e9-4e01-a5c2-8caaef7c24af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\music_game\ui">
+      <UniqueIdentifier>{6fa9fe2f-cb93-4db2-b456-ace4a8c2cb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\music_game\ui">
+      <UniqueIdentifier>{8632cdf7-24db-40e7-921c-2ed542a78238}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\scene\title\title_scene.cpp">
@@ -408,14 +414,14 @@
     <ClCompile Include="src\input\cursor\cursor_input.cpp">
       <Filter>Source Files\input\cursor</Filter>
     </ClCompile>
-    <ClCompile Include="src\ui\hispeed_setting_menu.cpp">
-      <Filter>Source Files\ui</Filter>
-    </ClCompile>
     <ClCompile Include="src\music_game\graphics\highway\highway_scroll.cpp">
       <Filter>Source Files\music_game\graphics\highway</Filter>
     </ClCompile>
     <ClCompile Include="src\music_game\graphics\hud\hispeed_setting_panel.cpp">
       <Filter>Source Files\music_game\graphics\hud</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\ui\hispeed_setting_menu.cpp">
+      <Filter>Source Files\music_game\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1243,9 +1249,6 @@
     <ClInclude Include="src\input\cursor\cursor_input.hpp">
       <Filter>Header Files\input\cursor</Filter>
     </ClInclude>
-    <ClInclude Include="src\ui\hispeed_setting_menu.hpp">
-      <Filter>Header Files\ui</Filter>
-    </ClInclude>
     <ClInclude Include="src\music_game\hispeed_setting.hpp">
       <Filter>Header Files\music_game</Filter>
     </ClInclude>
@@ -1254,6 +1257,9 @@
     </ClInclude>
     <ClInclude Include="src\music_game\graphics\hud\hispeed_setting_panel.hpp">
       <Filter>Header Files\music_game\graphics\hud</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\ui\hispeed_setting_menu.hpp">
+      <Filter>Header Files\music_game\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

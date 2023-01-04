@@ -3,11 +3,12 @@
 #include "hispeed_setting.hpp"
 #include "music_game/judgment/button_lane_judgment.hpp"
 #include "music_game/judgment/laser_lane_judgment.hpp"
-#include "music_game/graphics/graphics_main.hpp"
 #include "music_game/audio/bgm.hpp"
 #include "music_game/audio/assist_tick.hpp"
 #include "music_game/audio/laser_slam_se.hpp"
 #include "music_game/audio/audio_effect_main.hpp"
+#include "music_game/ui/hispeed_setting_menu.hpp"
+#include "music_game/graphics/graphics_main.hpp"
 #include "kson/util/timing_utils.hpp"
 
 namespace MusicGame
@@ -17,11 +18,6 @@ namespace MusicGame
 		FilePath chartFilePath;
 
 		bool assistTickEnabled = false;
-	};
-
-	struct GameUpdateInfo
-	{
-		HispeedSetting hispeedSetting;
 	};
 
 	class GameMain
@@ -49,15 +45,18 @@ namespace MusicGame
 		// 音声エフェクト
 		Audio::AudioEffectMain m_audioEffectMain;
 
+		// UI
+		HispeedSettingMenu m_hispeedSettingMenu; // ハイスピード設定メニュー
+
 		// グラフィックス
 		Graphics::GraphicsMain m_graphicsMain;
 
-		void updateGameStatus(const GameUpdateInfo& updateInfo);
+		void updateGameStatus();
 
 	public:
 		explicit GameMain(const GameCreateInfo& createInfo);
 
-		void update(const GameUpdateInfo& updateInfo);
+		void update();
 
 		void draw() const;
 	};

@@ -19,11 +19,7 @@ PlayScene::PlayScene(const InitData& initData)
 
 void PlayScene::update()
 {
-	m_hispeedSettingMenu.update();
-
-	m_gameMain.update(MusicGame::GameUpdateInfo{
-		.hispeedSetting = m_hispeedSettingMenu.hispeedSetting(),
-	});
+	m_gameMain.update();
 
 	// Escキーで楽曲選択画面に戻る
 	if (KeyConfig::Down(KeyConfig::kBack))

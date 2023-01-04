@@ -30,8 +30,12 @@ namespace MusicGame
 		}
 	}
 
-	void GameMain::updateGameStatus(const GameUpdateInfo& updateInfo)
+	void GameMain::updateGameStatus()
 	{
+		// 曲の音声の更新
+		m_bgm.update();
+
+		// 再生時間と現在のBPMを取得
 		const double currentTimeSec = m_bgm.posSec();
 		const kson::Pulse currentPulse = kson::SecToPulse(currentTimeSec, m_chartData.beat, m_timingCache);
 		const double currentBPM = kson::TempoAt(currentPulse, m_chartData.beat);
@@ -57,11 +61,14 @@ namespace MusicGame
 			m_laserLaneJudgments[i].update(m_chartData.note.laser[i], currentPulse, currentTimeSec, m_gameStatus.laserLaneStatus[i]);
 		}
 
+		// スコアを計算
 		m_gameStatus.score = static_cast<int32>(static_cast<int64>(kScoreMax) * (SumScoreFactor(m_btLaneJudgments) + SumScoreFactor(m_fxLaneJudgments) + SumScoreFactor(m_laserLaneJudgments)) / m_scoreFactorMax);
 
 		// TODO: Calculate camera values
 
-		m_gameStatus.hispeedSetting = updateInfo.hispeedSetting;
+		// ハイスピード設定を更新
+		m_hispeedSettingMenu.update();
+		m_gameStatus.hispeedSetting = m_hispeedSettingMenu.hispeedSetting();
 	}
 
 	GameMain::GameMain(const GameCreateInfo& createInfo)
@@ -92,12 +99,10 @@ namespace MusicGame
 		kson::SaveKSONChartData("hogehoge.kson", m_chartData);
 	}
 
-	void GameMain::update(const GameUpdateInfo& updateInfo)
+	void GameMain::update()
 	{
-		m_bgm.update();
-
 		// ゲームステータスの更新とノーツ判定
-		updateGameStatus(updateInfo);
+		updateGameStatus();
 
 		// 音声エフェクトの更新
 		std::array<Optional<bool>, kson::kNumFXLanesSZ> longFXPressed;
