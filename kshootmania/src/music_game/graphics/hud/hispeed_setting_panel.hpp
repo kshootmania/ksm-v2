@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "graphics/number_font_texture.hpp"
+#include "graphics/number_texture_font.hpp"
 #include "music_game/scroll/highway_scroll.hpp"
 
 namespace MusicGame::Graphics
@@ -7,8 +7,9 @@ namespace MusicGame::Graphics
 	class HispeedSettingPanel
 	{
 	private:
-		const NumberFontTexture m_targetValueNumberFontTexture;
-		const NumberFontTexture m_currentValueNumberFontTexture;
+		const NumberTextureFont m_targetValueNumberTextureFont;
+		const NumberTextureFont m_currentValueNumberTextureFont;
+		const TextureFontTextLayout m_numberLayout;
 
 	public:
 		HispeedSettingPanel();

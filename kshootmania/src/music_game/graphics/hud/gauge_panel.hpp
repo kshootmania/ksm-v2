@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "music_game/game_defines.hpp"
-#include "graphics/number_font_texture.hpp"
+#include "graphics/number_texture_font.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -12,7 +12,8 @@ namespace MusicGame::Graphics
 		const TiledTexture m_barTexture;
 		const TiledTexture m_barAnimTexture;
 		const Texture m_percentBaseTexture;
-		const NumberFontTexture m_percentNumberFontTexture;
+		const NumberTextureFont m_percentNumberTextureFont;
+		const TextureFontTextLayout m_percentNumberLayout;
 
 	public:
 		explicit GaugePanel(GaugeType gaugeType);

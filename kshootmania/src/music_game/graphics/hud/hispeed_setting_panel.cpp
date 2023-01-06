@@ -4,13 +4,14 @@ namespace MusicGame::Graphics
 {
 	namespace
 	{
-		constexpr StringView kNumberFontTextureFilename = U"num2.png";
+		constexpr StringView kNumberTextureFontFilename = U"num2.png";
 		constexpr StringView kFPSTextureFilename = U"fps.png";
 	}
 
 	HispeedSettingPanel::HispeedSettingPanel()
-		: m_targetValueNumberFontTexture(kNumberFontTextureFilename, ScreenUtils::Scaled(10, 9), { 20, 18 }, { 0, 0 })
-		, m_currentValueNumberFontTexture(kNumberFontTextureFilename, ScreenUtils::Scaled(10, 9), { 20, 18 }, { 20, 0 })
+		: m_targetValueNumberTextureFont(kNumberTextureFontFilename, { 20, 18 }, { 0, 0 })
+		, m_currentValueNumberTextureFont(kNumberTextureFontFilename, { 20, 18 }, { 20, 0 })
+		, m_numberLayout(ScreenUtils::Scaled(10, 9), TextureFontTextLayout::Align::Center)
 	{
 	}
 
@@ -21,7 +22,7 @@ namespace MusicGame::Graphics
 
 		const Scroll::HighwayScroll& highwayScroll = highwayScrollContext.highwayScroll();
 		const HispeedSetting& hispeedSetting = highwayScroll.hispeedSetting();
-		m_targetValueNumberFontTexture.draw(position - Scaled(29, 0), hispeedSetting.value, 0, ZeroPaddingYN::No, NumberFontTexture::Align::Center);
-		m_currentValueNumberFontTexture.draw(position + Scaled(29, 0), highwayScroll.currentHispeed(), 0, ZeroPaddingYN::No, NumberFontTexture::Align::Center);
+		m_targetValueNumberTextureFont.draw(m_numberLayout, position - Scaled(29, 0), hispeedSetting.value, ZeroPaddingYN::No);
+		m_currentValueNumberTextureFont.draw(m_numberLayout, position + Scaled(29, 0), highwayScroll.currentHispeed(), ZeroPaddingYN::No);
 	}
 }

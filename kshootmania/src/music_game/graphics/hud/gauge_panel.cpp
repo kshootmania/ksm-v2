@@ -8,7 +8,7 @@ namespace MusicGame::Graphics
 		constexpr StringView kBarTextureFilename = U"er_g.gif";
 		constexpr StringView kBarAnimTextureFilename = U"er_g_pattern.gif";
 		constexpr StringView kPercentBaseTextureFilename = U"er_p.png";
-		constexpr StringView kPercentNumberFontTextureFilename = U"num2.png";
+		constexpr StringView kPercentNumberTextureFontFilename = U"num2.png";
 
 		constexpr SizeF kBarSize = { 47.25, 434.0 };
 		constexpr SizeF kBarAnimSize = { kBarSize.x, kBarSize.y * 2 };
@@ -41,7 +41,8 @@ namespace MusicGame::Graphics
 				.sourceSize = { 48, 868 },
 			})
 		, m_percentBaseTexture(TextureAsset(kPercentBaseTextureFilename))
-		, m_percentNumberFontTexture(kPercentNumberFontTextureFilename, ScreenUtils::Scaled2x(20, 18), { 20, 18 })
+		, m_percentNumberTextureFont(kPercentNumberTextureFontFilename, { 20, 18 })
+		, m_percentNumberLayout(ScreenUtils::Scaled2x(20, 18), TextureFontTextLayout::Align::Right)
 	{
 	}
 
@@ -73,6 +74,6 @@ namespace MusicGame::Graphics
 		Scaled2x(m_percentBaseTexture).draw(percentBasePosition);
 
 		const Vec2 percentNumberBasePosition = percentBasePosition + Scaled2x(Vec2{ 72, 13 });
-		m_percentNumberFontTexture.draw(percentNumberBasePosition, static_cast<int>(percent), 0, ZeroPaddingYN::No);
+		m_percentNumberTextureFont.draw(m_percentNumberLayout, percentNumberBasePosition, static_cast<int>(percent), ZeroPaddingYN::No);
 	}
 }

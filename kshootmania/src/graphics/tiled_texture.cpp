@@ -4,31 +4,33 @@ namespace
 {
 	TiledTextureSizeInfo AutoDetectSizeIfZero(TiledTextureSizeInfo sizeInfo, const Size& textureSize)
 	{
-		// Note: ゼロ除算回避であることをわかりやすくするため、ここではあえてkAutoDetectを0として記載
+		// kAutoDetectの判定はゼロ除算回避の判定を兼ねている
+		constexpr int32 kAutoDetect = TiledTextureSizeInfo::kAutoDetect;
+		static_assert(kAutoDetect == 0);
 
-		if ((sizeInfo.row == 0 && sizeInfo.sourceSize.y == 0) || (sizeInfo.column == 0 && sizeInfo.sourceSize.x == 0))
+		if ((sizeInfo.row == kAutoDetect && sizeInfo.sourceSize.y == kAutoDetect) || (sizeInfo.column == kAutoDetect && sizeInfo.sourceSize.x == kAutoDetect))
 		{
 			Print << U"Warning[ AutoDetectSizeIfZero() ]: Could not auto-detect size because row & column & sourceSize are all zero!";
 			sizeInfo.row = 1;
 			sizeInfo.column = 1;
 		}
 
-		if (sizeInfo.row == 0 && sizeInfo.sourceSize.y != 0)
+		if (sizeInfo.row == kAutoDetect && sizeInfo.sourceSize.y != kAutoDetect)
 		{
 			sizeInfo.row = textureSize.y / sizeInfo.sourceSize.y;
 		}
 
-		if (sizeInfo.column == 0 && sizeInfo.sourceSize.x != 0)
+		if (sizeInfo.column == kAutoDetect && sizeInfo.sourceSize.x != kAutoDetect)
 		{
 			sizeInfo.column = textureSize.x / sizeInfo.sourceSize.x;
 		}
 
-		if (sizeInfo.sourceSize.x == 0 && sizeInfo.column != 0)
+		if (sizeInfo.sourceSize.x == kAutoDetect && sizeInfo.column != kAutoDetect)
 		{
 			sizeInfo.sourceSize.x = textureSize.x / sizeInfo.column;
 		}
 
-		if (sizeInfo.sourceSize.y == 0 && sizeInfo.row != 0)
+		if (sizeInfo.sourceSize.y == kAutoDetect && sizeInfo.row != kAutoDetect)
 		{
 			sizeInfo.sourceSize.y = textureSize.y / sizeInfo.row;
 		}
@@ -104,7 +106,7 @@ TextureRegion TiledTexture::operator()(int32 row, int32 column) const
 		return TextureRegion{};
 	}
 
-	const double x = m_sizeInfo.offset.x + m_sizeInfo.sourceSize.x * column;
-	const double y = m_sizeInfo.offset.y + m_sizeInfo.sourceSize.y * row;
+	const double x = m_sizeInfo.sourceOffset.x + m_sizeInfo.sourceSize.x * column;
+	const double y = m_sizeInfo.sourceOffset.y + m_sizeInfo.sourceSize.y * row;
 	return m_texture(x, y, m_sizeInfo.sourceSize).resized(m_scaledSize);
 }

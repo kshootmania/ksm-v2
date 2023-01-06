@@ -11,7 +11,7 @@ namespace MusicGame::Graphics
 		constexpr StringView kDetailPanelBaseTextureFilename = U"minfo_detail.png";
 		constexpr Size kDetailPanelSize = { 240, 66 };
 
-		constexpr StringView kNumberFontTextureFilename = U"num2.png";
+		constexpr StringView kNumberTextureFontFilename = U"num2.png";
 
 		constexpr StringView kDifficultyTextureFilename = U"result_difficulty.png";
 
@@ -50,8 +50,10 @@ namespace MusicGame::Graphics
 				.sourceSize = { 84, 24 },
 			})
 		, m_difficultyTextureRegion(m_difficultyTexture(chartData.meta.difficulty.idx))
-		, m_numberFontTexture(kNumberFontTextureFilename, ScreenUtils::Scaled(10, 9), { 20, 18 })
 		, m_level(chartData.meta.level)
+		, m_numberTextureFont(kNumberTextureFontFilename, { 20, 18 })
+		, m_levelNumberLayout(ScreenUtils::Scaled(10, 9), TextureFontTextLayout::Align::Left)
+		, m_bpmNumberLayout(ScreenUtils::Scaled(10, 9), TextureFontTextLayout::Align::Left)
 	{
 		using namespace ScreenUtils;
 
@@ -89,11 +91,11 @@ namespace MusicGame::Graphics
 		m_difficultyTextureRegion.draw(m_detailPanelPosition + Scaled(13, 3));
 
 		// Level
-		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(79, 4), m_level, 0, ZeroPaddingYN::No, NumberFontTexture::Align::Left);
+		m_numberTextureFont.draw(m_levelNumberLayout, m_detailPanelPosition + Scaled(79, 4), m_level, ZeroPaddingYN::No);
 
 		// BPM
 		// TODO: BPMの小数部分を表示
-		m_numberFontTexture.draw(m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(currentBPM), 0, ZeroPaddingYN::No, NumberFontTexture::Align::Left);
+		m_numberTextureFont.draw(m_bpmNumberLayout, m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(currentBPM), ZeroPaddingYN::No);
 
 		// ハイスピード設定
 		m_hispeedSettingPanel.draw(m_detailPanelPosition + Scaled(159, 27), highwayScrollContext);
