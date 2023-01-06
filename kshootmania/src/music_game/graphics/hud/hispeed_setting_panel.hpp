@@ -9,6 +9,7 @@ namespace MusicGame::Graphics
 	private:
 		const NumberTextureFont m_targetValueNumberTextureFont;
 		const NumberTextureFont m_currentValueNumberTextureFont;
+		const TiledTexture m_hispeedLetterTexture;
 		const TextureFontTextLayout m_numberLayout;
 
 	public:

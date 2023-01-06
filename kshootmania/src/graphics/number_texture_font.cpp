@@ -1,7 +1,7 @@
 ﻿#include "number_texture_font.hpp"
 
 NumberTextureFont::NumberTextureFont(StringView textureAssetKey, const Size& sourceSize, const Point& sourceOffset)
-	: m_tiledTexture(TextureAsset(textureAssetKey),
+	: m_tiledTexture(textureAssetKey,
 		{
 			.row = 10,
 			.sourceOffset = sourceOffset,
@@ -10,7 +10,7 @@ NumberTextureFont::NumberTextureFont(StringView textureAssetKey, const Size& sou
 {
 }
 
-int32 NumberTextureFont::draw(const TextureFontTextLayout& textLayout, const Vec2& position, int32 number, ZeroPaddingYN zeroPadding) const
+void NumberTextureFont::draw(const TextureFontTextLayout& textLayout, const Vec2& position, int32 number, ZeroPaddingYN zeroPadding) const
 {
 	// 桁数
 	const int32 numDigits = MathUtils::NumDigits(number);
@@ -28,11 +28,9 @@ int32 NumberTextureFont::draw(const TextureFontTextLayout& textLayout, const Vec
 		m_tiledTexture(number % 10).resized(rect.size).draw(rect.pos);
 		number /= 10;
 	}
-
-	return numDigitsToDraw;
 }
 
-int32 NumberTextureFont::draw(const TextureFontTextLayout::Grid& grid, int32 offsetIndex, int32 number) const
+void NumberTextureFont::draw(const TextureFontTextLayout::Grid& grid, int32 offsetIndex, int32 number) const
 {
 	// 描画すべき桁数
 	const int32 numDigitsToDraw = MathUtils::NumDigits(number);
@@ -44,6 +42,4 @@ int32 NumberTextureFont::draw(const TextureFontTextLayout::Grid& grid, int32 off
 		m_tiledTexture(number % 10).resized(rect.size).draw(rect.pos);
 		number /= 10;
 	}
-
-	return numDigitsToDraw;
 }

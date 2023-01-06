@@ -23,15 +23,13 @@ public:
 	/// @param position 描画先のアンカー座標
 	/// @param number 描画する数字
 	/// @param zeroPadding ゼロパディング(0埋め)するかどうか
-	/// @return 描画された桁数
-	int32 draw(const TextureFontTextLayout& textLayout, const Vec2& position, int32 number, ZeroPaddingYN zeroPadding) const;
+	void draw(const TextureFontTextLayout& textLayout, const Vec2& position, int32 number, ZeroPaddingYN zeroPadding) const;
 
 	/// @brief 描画
 	/// @param grid グリッド
 	/// @param offsetIndexFromBack 起点インデックス(末尾を起点とした先頭方向へのインデックスで指定)
 	/// @param position 描画先のアンカー座標
 	/// @param number 描画する数字
-	/// @return 描画された桁数
 	/// @remarks こちらの関数はグリッド内の一部のみに数字を描画したい場合に使う。ゼロパディング使用不可
-	int32 draw(const TextureFontTextLayout::Grid& grid, int32 offsetIndexFromBack, int32 number) const;
+	void draw(const TextureFontTextLayout::Grid& grid, int32 offsetIndexFromBack, int32 number) const;
 };
