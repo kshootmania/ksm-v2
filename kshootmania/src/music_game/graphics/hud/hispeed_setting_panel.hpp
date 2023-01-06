@@ -11,6 +11,7 @@ namespace MusicGame::Graphics
 		const NumberTextureFont m_currentValueNumberTextureFont;
 		const TiledTexture m_hispeedLetterTexture;
 		const TextureFontTextLayout m_numberLayout;
+		const TextureFontTextLayout m_numberLayoutHalf;
 
 	public:
 		HispeedSettingPanel();

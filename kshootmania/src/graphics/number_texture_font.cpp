@@ -43,3 +43,17 @@ void NumberTextureFont::draw(const TextureFontTextLayout::Grid& grid, int32 offs
 		number /= 10;
 	}
 }
+
+void NumberTextureFont::drawHalfGrid(const TextureFontTextLayout::Grid& halfGrid, int32 doubledOffsetIndexFromBack, int32 number) const
+{
+	// 描画すべき桁数
+	const int32 numDigitsToDraw = MathUtils::NumDigits(number);
+
+	// 下の桁から順番に描画
+	for (int32 i = 0; i < numDigitsToDraw; ++i)
+	{
+		const RectF rect = halfGrid.fromBack(doubledOffsetIndexFromBack + i * 2);
+		m_tiledTexture(number % 10).resized(rect.w * 2, rect.h).draw(rect.pos);
+		number /= 10;
+	}
+}
