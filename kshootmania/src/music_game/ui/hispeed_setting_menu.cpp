@@ -62,10 +62,6 @@ namespace MusicGame
 
 		HispeedSetting ParseHispeedSetting(StringView sv)
 		{
-			// OpenSiv3Dでゼロ始まりの整数がParseできることを念のため確認
-			// (OpenSiv3Dのバージョン変更で挙動が変わった場合に検知できるよう残しておく)
-			assert(ParseOr<int32>(U"05", 0) == 5);
-
 			if (sv.length() <= 1U)
 			{
 				// 最低文字数の2文字に満たない場合はデフォルト値を返す
@@ -75,10 +71,14 @@ namespace MusicGame
 			switch (sv[0])
 			{
 			case U'x':
+			{
+				// 0始まりだと8進数扱いにされて"09"がパース失敗になってしまうため、先頭のゼロを除去している
+				const int32 value = ParseOr<int32>(sv.substr(sv.starts_with(U"x0") ? 2U : 1U), 0);
 				return HispeedSetting{
 					.type = HispeedType::XMod,
-					.value = Clamp(ParseOr<int32>(sv.substr(1U), 0), kHispeedXModValueMin, kHispeedXModValueMax),
+					.value = Clamp(value, kHispeedXModValueMin, kHispeedXModValueMax),
 				};
+			}
 
 			case U'C':
 				return HispeedSetting{
