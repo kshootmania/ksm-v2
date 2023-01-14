@@ -1,6 +1,6 @@
 ﻿#include "highway_tilt.hpp"
 
-namespace MusicGame::Graphics
+namespace MusicGame::Camera
 {
 	namespace
 	{

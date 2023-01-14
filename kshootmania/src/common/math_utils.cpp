@@ -2,5 +2,9 @@
 
 int32 MathUtils::NumDigits(int32 number)
 {
-	return static_cast<int32>(Log10(number) + 1.0);
+	if (number == 0)
+	{
+		return 1;
+	}
+	return static_cast<int32>(Log10(Abs(number))) + 1;
 }

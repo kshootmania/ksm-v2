@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "music_game/game_status.hpp"
+#include "music_game/view_status.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -13,6 +14,6 @@ namespace MusicGame::Graphics
 	public:
 		LaserCursor3DGraphics();
 
-		void draw3D(double tiltRadians, const GameStatus& gameStatus) const;
+		void draw3D(const GameStatus& gameStatus, const ViewStatus& viewStatus) const;
 	};
 }

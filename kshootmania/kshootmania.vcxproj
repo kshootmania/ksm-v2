@@ -119,12 +119,15 @@
   <ItemGroup>
     <ClCompile Include="src\common\asset_management.cpp" />
     <ClCompile Include="src\common\math_utils.cpp" />
-    <ClCompile Include="src\graphics\number_font_texture.cpp" />
+    <ClCompile Include="src\graphics\texture_font_text_layout.cpp" />
+    <ClCompile Include="src\graphics\number_texture_font.cpp" />
     <ClCompile Include="src\graphics\screen_utils.cpp" />
     <ClCompile Include="src\graphics\tiled_texture.cpp" />
     <ClCompile Include="src\i18n\i18n.cpp" />
     <ClCompile Include="src\ini\config_ini.cpp" />
     <ClCompile Include="src\ini\ksm_ini_data.cpp" />
+    <ClCompile Include="src\input\cursor\button_cursor_input_device.cpp" />
+    <ClCompile Include="src\input\cursor\cursor_input.cpp" />
     <ClCompile Include="src\input\key_config.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\music_game\audio\assist_tick.cpp" />
@@ -132,17 +135,18 @@
     <ClCompile Include="src\music_game\audio\audio_effect_utils.cpp" />
     <ClCompile Include="src\music_game\audio\bgm.cpp" />
     <ClCompile Include="src\music_game\audio\laser_slam_se.cpp" />
+    <ClCompile Include="src\music_game\camera\highway_tilt.cpp" />
     <ClCompile Include="src\music_game\game_main.cpp" />
     <ClCompile Include="src\music_game\graphics\graphics_main.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\highway_3d_graphics.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\highway_render_texture.cpp" />
-    <ClCompile Include="src\music_game\graphics\highway\highway_tilt.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\key_beam_graphics.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\note\button_note_graphics.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\note\laser_note_graphics.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\note\note_graphics_utils.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\frame_rate_monitor.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\gauge_panel.cpp" />
+    <ClCompile Include="src\music_game\graphics\hud\hispeed_setting_panel.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\score_panel.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\song_info_panel.cpp" />
     <ClCompile Include="src\music_game\graphics\jdgline\jdgline_3d_graphics.cpp" />
@@ -150,6 +154,8 @@
     <ClCompile Include="src\music_game\graphics\jdgline\laser_cursor_3d_graphics.cpp" />
     <ClCompile Include="src\music_game\judgment\button_lane_judgment.cpp" />
     <ClCompile Include="src\music_game\judgment\laser_lane_judgment.cpp" />
+    <ClCompile Include="src\music_game\scroll\highway_scroll.cpp" />
+    <ClCompile Include="src\music_game\ui\hispeed_setting_menu.cpp" />
     <ClCompile Include="src\scene\option\option_menu.cpp" />
     <ClCompile Include="src\scene\option\option_menu_field.cpp" />
     <ClCompile Include="src\scene\option\option_top_menu.cpp" />
@@ -164,7 +170,6 @@
     <ClCompile Include="src\scene\title\title_scene.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
     <ClCompile Include="src\ui\linear_menu.cpp" />
-    <ClCompile Include="src\ui\menu_helper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -363,12 +368,16 @@
     <ClInclude Include="src\common\asset_management.hpp" />
     <ClInclude Include="src\common\common_defines.hpp" />
     <ClInclude Include="src\common\math_utils.hpp" />
-    <ClInclude Include="src\graphics\number_font_texture.hpp" />
+    <ClInclude Include="src\graphics\texture_font_text_layout.hpp" />
+    <ClInclude Include="src\graphics\number_texture_font.hpp" />
     <ClInclude Include="src\graphics\screen_utils.hpp" />
     <ClInclude Include="src\graphics\tiled_texture.hpp" />
     <ClInclude Include="src\i18n\i18n.hpp" />
     <ClInclude Include="src\ini\config_ini.hpp" />
     <ClInclude Include="src\ini\ksm_ini_data.hpp" />
+    <ClInclude Include="src\input\cursor\button_cursor_input_device.hpp" />
+    <ClInclude Include="src\input\cursor\cursor_input.hpp" />
+    <ClInclude Include="src\input\cursor\icursor_input_device.hpp" />
     <ClInclude Include="src\input\key_config.hpp" />
     <ClInclude Include="src\music_game\audio\assist_tick.hpp" />
     <ClInclude Include="src\music_game\audio\audio_defines.hpp" />
@@ -376,17 +385,18 @@
     <ClInclude Include="src\music_game\audio\audio_effect_utils.hpp" />
     <ClInclude Include="src\music_game\audio\bgm.hpp" />
     <ClInclude Include="src\music_game\audio\laser_slam_se.hpp" />
+    <ClInclude Include="src\music_game\camera\highway_tilt.hpp" />
     <ClInclude Include="src\music_game\graphics\graphics_defines.hpp" />
     <ClInclude Include="src\music_game\graphics\graphics_main.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\highway_3d_graphics.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\highway_render_texture.hpp" />
-    <ClInclude Include="src\music_game\graphics\highway\highway_tilt.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\key_beam_graphics.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\note\button_note_graphics.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\note\laser_note_graphics.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\note\note_graphics_utils.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\frame_rate_monitor.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\gauge_panel.hpp" />
+    <ClInclude Include="src\music_game\graphics\hud\hispeed_setting_panel.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\score_panel.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\song_info_panel.hpp" />
     <ClInclude Include="src\music_game\graphics\jdgline\jdgline_3d_graphics.hpp" />
@@ -398,7 +408,11 @@
     <ClInclude Include="src\music_game\game_main.hpp" />
     <ClInclude Include="src\music_game\game_status.hpp" />
     <ClInclude Include="src\music_game\judgment\laser_lane_judgment.hpp" />
+    <ClInclude Include="src\music_game\scroll\highway_scroll.hpp" />
+    <ClInclude Include="src\music_game\scroll\hispeed_setting.hpp" />
     <ClInclude Include="src\music_game\timeline.hpp" />
+    <ClInclude Include="src\music_game\ui\hispeed_setting_menu.hpp" />
+    <ClInclude Include="src\music_game\view_status.hpp" />
     <ClInclude Include="src\scene\option\option_assets.hpp" />
     <ClInclude Include="src\scene\option\option_menu.hpp" />
     <ClInclude Include="src\scene\option\option_menu_field.hpp" />
@@ -422,7 +436,6 @@
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\ui\array_with_linear_menu.hpp" />
     <ClInclude Include="src\ui\linear_menu.hpp" />
-    <ClInclude Include="src\ui\menu_helper.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">

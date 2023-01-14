@@ -1,8 +1,9 @@
 ﻿#pragma once
 
+using StartRequiredForBTFXLaserYN = YesNo<struct StartRequiredForBTFXLaserYN_tag>;
+
 namespace KeyConfig
 {
-
 	enum ConfigSet : int32
 	{
 		kKeyboard1 = 0,
@@ -57,6 +58,27 @@ namespace KeyConfig
 		kButtonEnumCount,
 	};
 
+	constexpr bool IsButtonBTFXLaser(Button button)
+	{
+		switch (button)
+		{
+		case kBT_A:
+		case kBT_B:
+		case kBT_C:
+		case kBT_D:
+		case kFX_L:
+		case kFX_R:
+		case kLeftLaserL:
+		case kLeftLaserR:
+		case kRightLaserL:
+		case kRightLaserR:
+			return true;
+
+		default:
+			return false;
+		}
+	}
+
 	void SetConfigValue(ConfigSet targetConfigSet, StringView configValue);
 
 	bool Pressed(Button button);
@@ -68,11 +90,13 @@ namespace KeyConfig
 	bool Up(Button button);
 
 	template <class C>
-	bool AnyButtonPressed(const C& buttons)
+	bool AnyButtonPressed(const C& buttons, StartRequiredForBTFXLaserYN startRequiredForBTFXLaser = StartRequiredForBTFXLaserYN::No)
 	{
+		const bool btFXLaserAccepted = !startRequiredForBTFXLaser || KeyConfig::Pressed(kStart);
 		for (const auto& button : buttons)
 		{
-			if (KeyConfig::Pressed(button))
+			const bool accepted = btFXLaserAccepted || !IsButtonBTFXLaser(button);
+			if (accepted && KeyConfig::Pressed(button))
 			{
 				return true;
 			}
@@ -81,24 +105,13 @@ namespace KeyConfig
 	}
 
 	template <class C>
-	bool AnyButtonDown(const C& buttons)
+	bool AnyButtonDown(const C& buttons, StartRequiredForBTFXLaserYN startRequiredForBTFXLaser = StartRequiredForBTFXLaserYN::No)
 	{
+		const bool btFXLaserAccepted = !startRequiredForBTFXLaser || KeyConfig::Pressed(kStart); // Startボタン判定側は押しっぱなしかの判定なのでPressedで正しい
 		for (const auto& button : buttons)
 		{
-			if (KeyConfig::Down(button))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	template <class C>
-	bool AnyButtonUp(const C& buttons)
-	{
-		for (const auto& button : buttons)
-		{
-			if (KeyConfig::Up(button))
+			const bool accepted = btFXLaserAccepted || !IsButtonBTFXLaser(button);
+			if (accepted && KeyConfig::Down(button))
 			{
 				return true;
 			}

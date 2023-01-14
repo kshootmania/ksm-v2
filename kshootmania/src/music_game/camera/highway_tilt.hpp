@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace MusicGame::Graphics
+namespace MusicGame::Camera
 {
 	class HighwayTilt
 	{

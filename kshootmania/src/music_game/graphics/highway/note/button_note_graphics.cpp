@@ -23,10 +23,8 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target, bool isBT) const
+	void ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const
 	{
-		const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
-
 		const ScopedRenderTarget2D renderTarget(target.additiveTexture());
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
@@ -36,109 +34,120 @@ namespace MusicGame::Graphics
 			const Vec2 offsetPosition = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * static_cast<double>(laneIdx);
 			for (const auto& [y, note] : lane)
 			{
-				if (y + note.length < gameStatus.currentPulse - kson::kResolution)
+				const int32 positionStartY = highwayScrollContext.getPositionY(y);
+				if (positionStartY < 0)
+				{
+					break;
+				}
+				if (positionStartY >= kHighwayTextureSize.y)
 				{
 					continue;
 				}
 
-				const double positionStartY = highwayTextureHeight - static_cast<double>(y - gameStatus.currentPulse) * 480 / kson::kResolution;
+				if (note.length != 0)
+				{
+					// ここではチップノーツ以外は描画しない
+					continue;
+				}
+
+				const double yRate = static_cast<double>(kHighwayTextureSize.y - positionStartY) / kHighwayTextureSize.y;
+				const int32 height = NoteGraphicsUtils::ChipNoteHeight(yRate);
+				const TiledTexture& sourceTexture = isBT ? m_chipBTNoteTexture : m_chipFXNoteTexture;
+				const Vec2 position = offsetPosition + Vec2::Down(positionStartY - height / 2);
+				sourceTexture() // TODO: Chip BT color
+					.resized(isBT ? 40 : 82, height)
+					.draw(position);
+			}
+		}
+	}
+
+	void ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
+	{
+		drawChipNotesCommon(chartData, highwayScrollContext, target, true);
+	}
+
+	void ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
+	{
+		drawChipNotesCommon(chartData, highwayScrollContext, target, false);
+	}
+
+	void ButtonNoteGraphics::drawLongNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const
+	{
+		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
+
+		for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ); ++laneIdx)
+		{
+			const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
+			const Vec2 offsetPosition = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * laneIdx;
+			for (const auto& [y, note] : lane)
+			{
+				const int32 positionStartY = highwayScrollContext.getPositionY(y);
 				if (positionStartY < 0)
 				{
 					break;
 				}
 
-				if (note.length == 0)
+				const int32 positionEndY = note.length == 0 ? positionStartY : highwayScrollContext.getPositionY(y + note.length);
+				if (positionEndY >= kHighwayTextureSize.y)
 				{
-					const double yRate = (highwayTextureHeight - positionStartY) / highwayTextureHeight;
-					const double height = NoteGraphicsUtils::ChipNoteHeight(yRate);
-					const TiledTexture& sourceTexture = isBT ? m_chipBTNoteTexture : m_chipFXNoteTexture;
-					const Vec2 position = offsetPosition + Vec2::Down(positionStartY - height / 2);
-					sourceTexture() // TODO: Chip BT color
-						.resized(isBT ? 40 : 82, NoteGraphicsUtils::ChipNoteHeight(yRate))
+					continue;
+				}
+
+				if (note.length <= 0)
+				{
+					// ここではロングノーツ以外は描画しない
+					continue;
+				}
+
+				const int32 height = positionStartY - positionEndY;
+				if (height <= 0)
+				{
+					// TODO: scroll_speedに逆再生を実装すると負の高さを考慮する必要が出てくる
+					continue;
+				}
+
+				const int32 numColumns = isBT ? kNumTextureColumnsMainSub : 1; // ロングBTノーツの場合はinvMultiply用のテクスチャ列が追加で存在する
+				for (int32 i = 0; i < numColumns; ++i)
+				{
+					const ScopedRenderTarget2D renderTarget((i == 0) ? target.additiveTexture() : target.invMultiplyTexture());
+					const ScopedRenderStates2D blendState((i == 0) ? (isBT ? BlendState::Additive : BlendState::Default2D) : BlendState::Subtractive);
+					const ButtonLaneStatus& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
+					double sourceY;
+					if (laneStatus.currentLongNotePulse == y)
+					{
+						// 現在判定対象の押下中のロングノーツ
+						sourceY = PressedLongNoteSourceY(gameStatus.currentTimeSec);
+					}
+					else if (y <= gameStatus.currentPulse && gameStatus.currentPulse < y + note.length)
+					{
+						// 現在判定対象だが押していないロングノーツ
+						sourceY = kLongNoteSourceYNotPressed;
+					}
+					else
+					{
+						// 現在判定対象でないロングノーツ
+						sourceY = kLongNoteSourceYDefault;
+					}
+					// TODO: 始点テクスチャの描画
+					const Texture& sourceTexture = isBT ? m_longBTNoteTexture : m_longFXNoteTexture;
+					const int32 width = isBT ? 40 : 82;
+					const Vec2 position = offsetPosition + Vec2::Down(positionEndY);
+					sourceTexture(width * i, sourceY + kOnePixelTextureSourceOffset, width, kOnePixelTextureSourceSize)
+						.resized(width, height)
 						.draw(position);
 				}
 			}
 		}
 	}
 
-	void ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawLongBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
-		drawChipNotesCommon(chartData, gameStatus, target, true);
+		drawLongNotesCommon(chartData, gameStatus, highwayScrollContext, target, true);
 	}
 
-	void ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawLongFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
-		drawChipNotesCommon(chartData, gameStatus, target, false);
-	}
-
-	void ButtonNoteGraphics::drawLongNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target, bool isBT) const
-	{
-		const double highwayTextureHeight = static_cast<double>(kHighwayTextureSize.y);
-
-		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
-
-		for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ); ++laneIdx)
-		{
-			const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
-			const Vec2 offsetPosition = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * static_cast<double>(laneIdx);
-			for (const auto& [y, note] : lane)
-			{
-				if (y + note.length < gameStatus.currentPulse - kson::kResolution)
-				{
-					continue;
-				}
-
-				const double positionStartY = highwayTextureHeight - static_cast<double>(y - gameStatus.currentPulse) * 480 / kson::kResolution;
-				if (positionStartY < 0)
-				{
-					break;
-				}
-
-				if (note.length > 0)
-				{
-					const double positionEndY = highwayTextureHeight - static_cast<double>(y + note.length - gameStatus.currentPulse) * 480 / kson::kResolution;
-					const int32 numColumns = isBT ? kNumTextureColumnsMainSub : 1; // ロングBTノーツの場合はinvMultiply用のテクスチャ列が追加で存在する
-					for (int32 i = 0; i < numColumns; ++i)
-					{
-						const ScopedRenderTarget2D renderTarget((i == 0) ? target.additiveTexture() : target.invMultiplyTexture());
-						const ScopedRenderStates2D blendState((i == 0) ? (isBT ? BlendState::Additive : BlendState::Default2D) : BlendState::Subtractive);
-						const ButtonLaneStatus& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
-						double sourceY;
-						if (laneStatus.currentLongNotePulse == y)
-						{
-							// 現在判定対象の押下中のロングノーツ
-							sourceY = PressedLongNoteSourceY(gameStatus.currentTimeSec);
-						}
-						else if (y <= gameStatus.currentPulse && gameStatus.currentPulse < y + note.length)
-						{
-							// 現在判定対象だが押していないロングノーツ
-							sourceY = kLongNoteSourceYNotPressed;
-						}
-						else
-						{
-							// 現在判定対象でないロングノーツ
-							sourceY = kLongNoteSourceYDefault;
-						}
-						const Texture& sourceTexture = isBT ? m_longBTNoteTexture : m_longFXNoteTexture;
-						const int32 width = isBT ? 40 : 82;
-						const Vec2 position = offsetPosition + Vec2::Down(positionEndY);
-						sourceTexture(width * i, sourceY + kOnePixelTextureSourceOffset, width, kOnePixelTextureSourceSize)
-							.resized(width, static_cast<double>(note.length) * 480 / kson::kResolution)
-							.draw(position);
-					}
-				}
-			}
-		}
-	}
-
-	void ButtonNoteGraphics::drawLongBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
-	{
-		drawLongNotesCommon(chartData, gameStatus, target, true);
-	}
-
-	void ButtonNoteGraphics::drawLongFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
-	{
-		drawLongNotesCommon(chartData, gameStatus, target, false);
+		drawLongNotesCommon(chartData, gameStatus, highwayScrollContext, target, false);
 	}
 
 	ButtonNoteGraphics::ButtonNoteGraphics()
@@ -153,15 +162,15 @@ namespace MusicGame::Graphics
 				.column = kNumTextureColumnsMainSub,
 				.sourceSize = { 82, 14 },
 			}))
-			, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
+		, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
 	{
 	}
 
-	void ButtonNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
-		drawLongFXNotes(chartData, gameStatus, target);
-		drawLongBTNotes(chartData, gameStatus, target);
-		drawChipFXNotes(chartData, gameStatus, target);
-		drawChipBTNotes(chartData, gameStatus, target);
+		drawLongFXNotes(chartData, gameStatus, highwayScrollContext, target);
+		drawLongBTNotes(chartData, gameStatus, highwayScrollContext, target);
+		drawChipFXNotes(chartData, highwayScrollContext, target);
+		drawChipBTNotes(chartData, highwayScrollContext, target);
 	}
 }

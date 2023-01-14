@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "highway/highway_3d_graphics.hpp"
-#include "highway/highway_tilt.hpp"
 #include "jdgline/jdgline_3d_graphics.hpp"
 #include "jdgline/jdgoverlay_3d_graphics.hpp"
 #include "jdgline/laser_cursor_3d_graphics.hpp"
@@ -9,6 +8,8 @@
 #include "hud/gauge_panel.hpp"
 #include "hud/frame_rate_monitor.hpp"
 #include "music_game/game_status.hpp"
+#include "music_game/view_status.hpp"
+#include "music_game/scroll/highway_scroll.hpp"
 #include "kson/util/timing_utils.hpp"
 
 namespace MusicGame::Graphics
@@ -25,7 +26,6 @@ namespace MusicGame::Graphics
 		std::array<Array<RenderTexture>, 2> m_layerFrameTextures;
 		const Mat4x4 m_layerTransform;
 
-		HighwayTilt m_highwayTilt;
 		Highway3DGraphics m_highway3DGraphics;
 
 		Jdgline3DGraphics m_jdgline3DGraphics;
@@ -37,15 +37,13 @@ namespace MusicGame::Graphics
 		GaugePanel m_gaugePanel;
 		FrameRateMonitor m_frameRateMonitor;
 
-		void drawBG() const;
+		void drawBG(const ViewStatus& viewStatus) const;
 
-		void drawLayer(const kson::ChartData& chartData, const GameStatus& gameStatus) const;
+		void drawLayer(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus) const;
 
 	public:
 		explicit GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath);
 
-		void update(const kson::ChartData& chartData, const GameStatus& gameStatus);
-
-		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus) const;
+		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const;
 	};
 }

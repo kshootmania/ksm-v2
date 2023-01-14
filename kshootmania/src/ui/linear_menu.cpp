@@ -1,10 +1,8 @@
-﻿#include "ui/linear_menu.hpp"
+﻿#include "linear_menu.hpp"
 
-void LinearMenu::increment()
+void LinearMenu::increment(int32 absDeltaCursor)
 {
-	const int32 cursorPrev = m_cursor;
-
-	m_cursor += m_cursorStep;
+	m_cursor += absDeltaCursor;
 
 	const int32 range = m_cursorMax + 1 - m_cursorMin;
 	if (m_cyclic && range > 0)
@@ -18,18 +16,11 @@ void LinearMenu::increment()
 	{
 		m_cursor = Min(m_cursor, m_cursorMax);
 	}
-
-	if (m_cursor != cursorPrev || (m_cyclic && m_cursorMin == m_cursorMax))
-	{
-		m_isCursorIncremented = true;
-	}
 }
 
-void LinearMenu::decrement()
+void LinearMenu::decrement(int32 absDeltaCursor)
 {
-	const int32 cursorPrev = m_cursor;
-
-	m_cursor -= m_cursorStep;
+	m_cursor -= absDeltaCursor;
 
 	const int32 range = m_cursorMax + 1 - m_cursorMin;
 	if (m_cyclic && range > 0)
@@ -43,79 +34,47 @@ void LinearMenu::decrement()
 	{
 		m_cursor = Max(m_cursor, m_cursorMin);
 	}
+}
 
-	if (m_cursor != cursorPrev || (m_cyclic && m_cursorMin == m_cursorMax))
-	{
-		m_isCursorDecremented = true;
-	}
+LinearMenu::LinearMenu(const CreateInfoWithEnumCount& createInfo)
+	: m_cursorInput(createInfo.cursorInputCreateInfo)
+	, m_cursorMin(0)
+	, m_cursorMax(createInfo.enumCount - 1)
+	, m_cursor(Clamp(createInfo.defaultCursor, 0, createInfo.enumCount - 1))
+	, m_cursorStep(1)
+	, m_cyclic(createInfo.cyclic)
+{
+}
+
+LinearMenu::LinearMenu(const CreateInfoWithCursorMinMax& createInfo)
+	: m_cursorInput(createInfo.cursorInputCreateInfo)
+	, m_cursorMin(createInfo.cursorMin)
+	, m_cursorMax(createInfo.cursorMax)
+	, m_cursor(Clamp(createInfo.defaultCursor, createInfo.cursorMin, createInfo.cursorMax))
+	, m_cursorStep(createInfo.cursorStep)
+	, m_cyclic(createInfo.cyclic)
+{
 }
 
 void LinearMenu::update()
 {
-	m_isCursorIncremented = false;
-	m_isCursorDecremented = false;
+	m_cursorInput.update();
+	m_deltaCursor = m_cursorInput.deltaCursor();
 
-	const bool decrementKeyDown = KeyConfig::AnyButtonDown(m_decrementButtons);
-	const bool incrementKeyDown = KeyConfig::AnyButtonDown(m_incrementButtons);
-
-	if (m_pressedTimeStopwatch.has_value()) // Menu accepting hold-down
+	const int32 absDeltaCursor = Abs(m_deltaCursor) * m_cursorStep;
+	if (m_deltaCursor > 0)
 	{
-		bool moveCursor = false;
-
-		if (decrementKeyDown || incrementKeyDown)
-		{
-			if (!m_pressedTimeStopwatch->isStarted())
-			{
-				m_pressedTimeStopwatch->start();
-			}
-			else
-			{
-				m_pressedTimeStopwatch->restart();
-			}
-			moveCursor = true;
-		}
-
-		const bool decrementKeyPressed = KeyConfig::AnyButtonPressed(m_decrementButtons);
-		const bool incrementKeyPressed = KeyConfig::AnyButtonPressed(m_incrementButtons);
-		const bool onlyDecrementKeyPressed = decrementKeyPressed && !incrementKeyPressed;
-		const bool onlyIncrementKeyPressed = incrementKeyPressed && !decrementKeyPressed;
-
-		const double pressedTimeSec = m_pressedTimeStopwatch->sF();
-		if (!moveCursor && (onlyDecrementKeyPressed || onlyIncrementKeyPressed))
-		{
-			const int32 tickCount = std::max(static_cast<int>((pressedTimeSec - m_intervalSecFirst + m_intervalSec) / m_intervalSec), 0);
-			const int32 tickCountPrev = std::max(static_cast<int>((m_pressedTimeSecPrev - m_intervalSecFirst + m_intervalSec) / m_intervalSec), 0);
-			if (tickCount > tickCountPrev)
-			{
-				moveCursor = true;
-			}
-		}
-
-		if (moveCursor)
-		{
-			if (onlyDecrementKeyPressed)
-			{
-				decrement();
-			}
-			else if (onlyIncrementKeyPressed)
-			{
-				increment();
-			}
-		}
-
-		m_pressedTimeSecPrev = pressedTimeSec;
+		increment(absDeltaCursor);
 	}
-	else // Menu not accepting hold-down
+	else if (m_deltaCursor < 0)
 	{
-		if (decrementKeyDown && !incrementKeyDown)
-		{
-			decrement();
-		}
-		else if (incrementKeyDown && !decrementKeyDown)
-		{
-			increment();
-		}
+		decrement(absDeltaCursor);
 	}
+}
+
+void LinearMenu::setCursorStep(int32 step)
+{
+	m_cursorStep = step;
 }
 
 bool LinearMenu::isCursorMin() const
@@ -128,17 +87,7 @@ bool LinearMenu::isCursorMax() const
 	return m_cursor >= m_cursorMax;
 }
 
-bool LinearMenu::isCursorChanged() const
+int32 LinearMenu::deltaCursor() const
 {
-	return m_isCursorIncremented || m_isCursorDecremented;
-}
-
-bool LinearMenu::isCursorIncremented() const
-{
-	return m_isCursorIncremented;
-}
-
-bool LinearMenu::isCursorDecremented() const
-{
-	return m_isCursorDecremented;
+	return m_deltaCursor;
 }

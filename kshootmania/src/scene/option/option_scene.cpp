@@ -27,6 +27,7 @@ namespace
 		using StrPair = std::pair<String, String>;
 		using IntStrPair = std::pair<int32, String>;
 		using DoubleStrPair = std::pair<double, String>;
+		using CreateInfo = OptionMenuField::CreateInfo;
 
 		Array<StrPair> availableLanguageStrPairs;
 		for (const auto& language : I18n::GetAvailableLanguageList())
@@ -36,11 +37,11 @@ namespace
 
 		return {
 			OptionMenu(OptionTexture::kMenuKeyValueDisplaySound, {
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kFullScreen, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kFullScreen, Array<StringView>{
 					I18n::Get(I18n::Option::kFullscreenOff),
 					I18n::Get(I18n::Option::kFullscreenOn),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kWindowResolution, Array<StrPair>{
+				CreateInfo::Enum(ConfigIni::Key::kWindowResolution, Array<StrPair>{
 					StrPair{ U"320,240", U"320x240" },
 					StrPair{ U"480,320", U"480x320" },
 					StrPair{ U"480,360", U"480x360" },
@@ -52,7 +53,7 @@ namespace
 					StrPair{ U"1280,720", U"1280x720" },
 					StrPair{ U"1280,1024", U"1280x1024" },
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kFullScreenResolution, Array<StrPair>{
+				CreateInfo::Enum(ConfigIni::Key::kFullScreenResolution, Array<StrPair>{
 					StrPair{ U"640,480", U"640x480" },
 					StrPair{ U"800,600", U"800x600" },
 					StrPair{ U"1024,600", U"1024x600" },
@@ -64,108 +65,108 @@ namespace
 					StrPair{ U"1920,1080", U"1920x1080" },
 					StrPair{ U"1920,1200", U"1920x1200" },
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kLanguage, availableLanguageStrPairs),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kTextureSize, Array<IntStrPair>{
+				CreateInfo::Enum(ConfigIni::Key::kLanguage, availableLanguageStrPairs),
+				CreateInfo::Enum(ConfigIni::Key::kTextureSize, Array<IntStrPair>{
 					IntStrPair{ ConfigIni::Value::TextureSize::kSmall, I18n::Get(I18n::Option::kTextureSizeSmall) },
 					IntStrPair{ ConfigIni::Value::TextureSize::kMedium, I18n::Get(I18n::Option::kTextureSizeMedium) },
 					IntStrPair{ ConfigIni::Value::TextureSize::kLarge, I18n::Get(I18n::Option::kTextureSizeLarge) },
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kBGDisplayMode, Array<IntStrPair>{
+				CreateInfo::Enum(ConfigIni::Key::kBGDisplayMode, Array<IntStrPair>{
 					IntStrPair{ ConfigIni::Value::BGDisplayMode::kHide, I18n::Get(I18n::Option::kBGDisplayModeHide) },
 					IntStrPair{ ConfigIni::Value::BGDisplayMode::kShowNoAnim, I18n::Get(I18n::Option::kBGDisplayModeShowNoAnim) },
 					IntStrPair{ ConfigIni::Value::BGDisplayMode::kShowAnim, I18n::Get(I18n::Option::kBGDisplayModeShowAnim) },
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kAlwaysShowOtherFolders, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kAlwaysShowOtherFolders, Array<StringView>{
 					I18n::Get(I18n::Option::kAlwaysShowOtherFoldersOff),
 					I18n::Get(I18n::Option::kAlwaysShowOtherFoldersOn),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kHideAllFolder, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kHideAllFolder, Array<StringView>{
 					I18n::Get(I18n::Option::kHideAllFolderOff),
 					I18n::Get(I18n::Option::kHideAllFolderOn),
 				}),
-				OptionMenuFieldCreateInfo::Int(ConfigIni::Key::kMasterVolume, kMasterVolumeMin, kMasterVolumeMax, kMasterVolumeDefault, I18n::Get(I18n::Option::kMasterVolumePercent), 5),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kVsync, Array<StringView>{
+				CreateInfo::Int(ConfigIni::Key::kMasterVolume, kMasterVolumeMin, kMasterVolumeMax, kMasterVolumeDefault, I18n::Get(I18n::Option::kMasterVolumePercent), 5),
+				CreateInfo::Enum(ConfigIni::Key::kVsync, Array<StringView>{
 					I18n::Get(I18n::Option::kVsyncOff),
 					I18n::Get(I18n::Option::kVsyncOn),
 				}),
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueInputJudgment, {
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kJudgmentModeBT, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kJudgmentModeBT, Array<StringView>{
 					I18n::Get(I18n::Option::kJudgmentOn),
 					I18n::Get(I18n::Option::kJudgmentOff),
 					I18n::Get(I18n::Option::kJudgmentAuto),
 					I18n::Get(I18n::Option::kJudgmentHide),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kJudgmentModeFX, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kJudgmentModeFX, Array<StringView>{
 					I18n::Get(I18n::Option::kJudgmentOn),
 					I18n::Get(I18n::Option::kJudgmentOff),
 					I18n::Get(I18n::Option::kJudgmentAuto),
 					I18n::Get(I18n::Option::kJudgmentHide),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kJudgmentModeLaser, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kJudgmentModeLaser, Array<StringView>{
 					I18n::Get(I18n::Option::kJudgmentOn),
 					I18n::Get(I18n::Option::kJudgmentOff),
 					I18n::Get(I18n::Option::kJudgmentAuto),
 					I18n::Get(I18n::Option::kJudgmentHide),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kLaserInputType, Array<IntStrPair>{
+				CreateInfo::Enum(ConfigIni::Key::kLaserInputType, Array<IntStrPair>{
 					IntStrPair{ ConfigIni::Value::LaserInputType::kKeyboard, I18n::Get(I18n::Option::kLaserInputTypeKeyboard) },
 					IntStrPair{ ConfigIni::Value::LaserInputType::kSlider, I18n::Get(I18n::Option::kLaserInputTypeSlider) },
 					IntStrPair{ ConfigIni::Value::LaserInputType::kMouseXY, I18n::Get(I18n::Option::kLaserInputTypeMouseXY) },
 					IntStrPair{ ConfigIni::Value::LaserInputType::kAnalogStickXY, I18n::Get(I18n::Option::kLaserInputTypeAnalogStickXY) },
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kAssistTick, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kAssistTick, Array<StringView>{
 					I18n::Get(I18n::Option::kAssistTickOff),
 					I18n::Get(I18n::Option::kAssistTickOn),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kDisableIME, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kDisableIME, Array<StringView>{
 					I18n::Get(I18n::Option::kDisableIMEOff),
 					I18n::Get(I18n::Option::kDisableIMEOnLow),
 					I18n::Get(I18n::Option::kDisableIMEOnMid),
 					I18n::Get(I18n::Option::kDisableIMEOnHigh),
 				}),
-				OptionMenuFieldCreateInfo::Int(ConfigIni::Key::kTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)), // TODO: additional suffix
-				OptionMenuFieldCreateInfo::Int(ConfigIni::Key::kLaserTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
+				CreateInfo::Int(ConfigIni::Key::kTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)), // TODO: additional suffix
+				CreateInfo::Int(ConfigIni::Key::kLaserTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)),
+				CreateInfo::Enum(ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
 					I18n::Get(I18n::Option::kLaserMouseDirectionLeftThenRight),
 					I18n::Get(I18n::Option::kLaserMouseDirectionRightThenRight),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kLaserMouseDirectionY, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kLaserMouseDirectionY, Array<StringView>{
 					I18n::Get(I18n::Option::kLaserMouseDirectionUpThenRight),
 					I18n::Get(I18n::Option::kLaserMouseDirectionDownThenRight),
 				}),
-				OptionMenuFieldCreateInfo::Int(ConfigIni::Key::kLaserSignalSensitivity, kLaserSignalSensitivityMin, kLaserSignalSensitivityMax, kLaserSignalSensitivityDefault), // TODO: additional suffix for zero value
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kSwapLaserLR, Array<StringView>{
+				CreateInfo::Int(ConfigIni::Key::kLaserSignalSensitivity, kLaserSignalSensitivityMin, kLaserSignalSensitivityMax, kLaserSignalSensitivityDefault), // TODO: additional suffix for zero value
+				CreateInfo::Enum(ConfigIni::Key::kSwapLaserLR, Array<StringView>{
 					I18n::Get(I18n::Option::kDisabled),
 					I18n::Get(I18n::Option::kEnabled),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kSelectCloseFolderKey, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kSelectCloseFolderKey, Array<StringView>{
 					I18n::Get(I18n::Option::kSelectCloseFolderKeyBackspace),
 					I18n::Get(I18n::Option::kSelectCloseFolderKeyEsc),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kUse3BTsPlusStartAsBack, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kUse3BTsPlusStartAsBack, Array<StringView>{
 					I18n::Get(I18n::Option::kDisabled),
 					I18n::Get(I18n::Option::kEnabled),
 				}),
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueOther, {
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kHispeedShowXMod, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kHispeedShowXMod, Array<StringView>{
 					I18n::Get(I18n::Option::kHispeedTypeHide),
 					I18n::Get(I18n::Option::kHispeedTypeShow),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kHispeedShowOMod, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kHispeedShowOMod, Array<StringView>{
 					I18n::Get(I18n::Option::kHispeedTypeHide),
 					I18n::Get(I18n::Option::kHispeedTypeShow),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kHispeedShowCMod, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kHispeedShowCMod, Array<StringView>{
 					I18n::Get(I18n::Option::kHispeedTypeHide),
 					I18n::Get(I18n::Option::kHispeedTypeShow),
 				}),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kHideMouseCursor, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kHideMouseCursor, Array<StringView>{
 					I18n::Get(I18n::Option::kHideMouseCursorOff),
 					I18n::Get(I18n::Option::kHideMouseCursorOn),
 				}).setKeyTextureIdx(5),
-				OptionMenuFieldCreateInfo::Enum(ConfigIni::Key::kUseNumpadAsArrowKeys, Array<StringView>{
+				CreateInfo::Enum(ConfigIni::Key::kUseNumpadAsArrowKeys, Array<StringView>{
 					I18n::Get(I18n::Option::kUseNumpadAsArrowKeysOff),
 					I18n::Get(I18n::Option::kUseNumpadAsArrowKeysOnKeyboard),
 					I18n::Get(I18n::Option::kUseNumpadAsArrowKeysOnController),

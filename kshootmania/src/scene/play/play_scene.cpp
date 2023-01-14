@@ -6,7 +6,7 @@ namespace
 	{
 		return {
 			.chartFilePath = args.chartFilePath,
-			.enableAssistTick = ConfigIni::GetBool(ConfigIni::Key::kAssistTick),
+			.assistTickEnabled = ConfigIni::GetBool(ConfigIni::Key::kAssistTick),
 		};
 	}
 }
@@ -15,6 +15,12 @@ PlayScene::PlayScene(const InitData& initData)
 	: MyScene(initData)
 	, m_gameMain(MakeGameCreateInfo(getData().playSceneArgs))
 {
+	m_gameMain.start();
+}
+
+PlayScene::~PlayScene()
+{
+	m_gameMain.terminate();
 }
 
 void PlayScene::update()

@@ -208,11 +208,11 @@ namespace MusicGame::Graphics
 		drawLaserAnim(gameStatus);
 	}
 
-	void Jdgoverlay3DGraphics::draw3D(double tiltRadians) const
+	void Jdgoverlay3DGraphics::draw3D(const ViewStatus& viewStatus) const
 	{
 		// レンダーテクスチャを3D空間上に描画
 		const ScopedRenderStates3D blendState(BlendState::Additive);
-		const Transformer3D transform(TiltTransformMatrix(tiltRadians));
+		const Transformer3D transform(TiltTransformMatrix(viewStatus.tiltRadians));
 		m_mesh.draw(m_transform, m_renderTexture);
 	}
 }

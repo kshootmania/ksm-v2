@@ -2,40 +2,6 @@
 #include "ui/linear_menu.hpp"
 #include "graphics/tiled_texture.hpp"
 
-struct OptionMenuFieldCreateInfo
-{
-	String configIniKey;
-
-	// 数値オプション用
-	int32 valueMin = 0;
-	int32 valueMax = 0;
-	int32 valueDefault = 0;
-	int32 valueStep = 0;
-	String suffixStr;
-
-	// 選択肢オプション用
-	Array<std::pair<String, String>> valueDisplayNamePairs;
-
-	static constexpr int32 kKeyTextureIdxAutoSet = -1;
-	int32 keyTextureIdx = kKeyTextureIdxAutoSet;
-
-	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<String>& valueDisplayNames);
-
-	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<StringView>& valueDisplayNames);
-
-	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<std::pair<String, String>>& valueDisplayNamePairs);
-
-	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs);
-
-	static OptionMenuFieldCreateInfo Enum(StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs);
-
-	static OptionMenuFieldCreateInfo Int(StringView configIniKey, int32 valueMin = std::numeric_limits<int32>::min(), int32 valueMax = std::numeric_limits<int32>::max(), int32 valueDefault = 0, StringView suffixStr = U"", int32 valueStep = 1);
-
-	OptionMenuFieldCreateInfo& setKeyTextureIdx(int32 idx)&;
-
-	OptionMenuFieldCreateInfo&& setKeyTextureIdx(int32 idx)&&;
-};
-
 class OptionMenuField
 {
 private:
@@ -54,7 +20,41 @@ private:
 	TextureRegion m_keyTextureRegion;
 
 public:
-	OptionMenuField(const TextureRegion& keyTextureRegion, const OptionMenuFieldCreateInfo& createInfo);
+	struct CreateInfo
+	{
+		String configIniKey;
+
+		// 数値オプション用
+		int32 valueMin = 0;
+		int32 valueMax = 0;
+		int32 valueDefault = 0;
+		int32 valueStep = 0;
+		String suffixStr;
+
+		// 選択肢オプション用
+		Array<std::pair<String, String>> valueDisplayNamePairs;
+
+		static constexpr int32 kKeyTextureIdxAutoSet = -1;
+		int32 keyTextureIdx = kKeyTextureIdxAutoSet;
+
+		static CreateInfo Enum(StringView configIniKey, const Array<String>& valueDisplayNames);
+
+		static CreateInfo Enum(StringView configIniKey, const Array<StringView>& valueDisplayNames);
+
+		static CreateInfo Enum(StringView configIniKey, const Array<std::pair<String, String>>& valueDisplayNamePairs);
+
+		static CreateInfo Enum(StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs);
+
+		static CreateInfo Enum(StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs);
+
+		static CreateInfo Int(StringView configIniKey, int32 valueMin = std::numeric_limits<int32>::min(), int32 valueMax = std::numeric_limits<int32>::max(), int32 valueDefault = 0, StringView suffixStr = U"", int32 valueStep = 1);
+
+		CreateInfo& setKeyTextureIdx(int32 idx)&;
+
+		CreateInfo&& setKeyTextureIdx(int32 idx)&&;
+	};
+
+	OptionMenuField(const TextureRegion& keyTextureRegion, const CreateInfo& createInfo);
 
 	void update();
 

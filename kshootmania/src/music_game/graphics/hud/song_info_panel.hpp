@@ -1,5 +1,7 @@
 ﻿#pragma once
-#include "graphics/number_font_texture.hpp"
+#include "graphics/number_texture_font.hpp"
+#include "music_game/scroll/highway_scroll.hpp"
+#include "hispeed_setting_panel.hpp"
 #include "kson/chart_data.hpp"
 
 namespace MusicGame::Graphics
@@ -20,12 +22,17 @@ namespace MusicGame::Graphics
 		const TiledTexture m_difficultyTexture;
 		const TextureRegion m_difficultyTextureRegion;
 
-		const NumberFontTexture m_numberFontTexture;
 		const int32 m_level;
 
-	public:
-		SongInfoPanel(const kson::ChartData& chartData, FilePathView parentPath);
+		const NumberTextureFont m_numberTextureFont;
+		const TextureFontTextLayout m_levelNumberLayout;
+		const TextureFontTextLayout m_bpmNumberLayout;
 
-		void draw(double currentBPM) const;
+		const HispeedSettingPanel m_hispeedSettingPanel;
+
+	public:
+		explicit SongInfoPanel(const kson::ChartData& chartData, FilePathView parentPath);
+
+		void draw(double currentBPM, const Scroll::HighwayScrollContext& highwayScrollContext) const;
 	};
 }
