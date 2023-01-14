@@ -256,6 +256,7 @@ namespace MusicGame::Scroll
 	void HighwayScroll::update(const HispeedSetting& hispeedSetting, double currentBPM)
 	{
 		m_hispeedSetting = hispeedSetting;
+		m_currentBPM = currentBPM;
 		m_hispeedFactor = HispeedFactor(hispeedSetting, m_stdBPM);
 		m_currentHispeed = CurrentHispeed(hispeedSetting, currentBPM, m_stdBPM);
 	}
@@ -271,6 +272,25 @@ namespace MusicGame::Scroll
 	const HispeedSetting& HighwayScroll::hispeedSetting() const
 	{
 		return m_hispeedSetting;
+	}
+
+	int32 HighwayScroll::nearestHispeedSettingValue(HispeedType targetHispeedType) const
+	{
+		switch (targetHispeedType)
+		{
+		case HispeedType::XMod:
+			return m_currentHispeed * 10 / Max(static_cast<int32>(m_currentBPM), 1);
+
+		case HispeedType::OMod:
+			return m_currentHispeed * m_stdBPM / Max(static_cast<int32>(m_currentBPM), 1);
+
+		case HispeedType::CMod:
+			return m_currentHispeed;
+
+		default:
+			assert(false && "Unknown hispeed type");
+			return 0;
+		}
 	}
 
 	int32 HighwayScroll::currentHispeed() const

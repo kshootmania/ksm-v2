@@ -30,6 +30,10 @@ namespace MusicGame
 
 		FilePath m_parentPath;
 
+		// 初回更新かどうか
+		// TODO: 消したい
+		bool m_isFirstUpdate = true;
+
 		// 譜面情報
 		const kson::ChartData m_chartData;
 		const kson::TimingCache m_timingCache;

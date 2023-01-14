@@ -41,6 +41,69 @@ namespace MusicGame
 			return availableTypes;
 		}
 
+		int32 CursorMin(HispeedType hispeedType)
+		{
+			switch (hispeedType)
+			{
+			case HispeedType::XMod:
+				return kHispeedXModValueMin;
+
+			case HispeedType::OMod:
+			case HispeedType::CMod:
+				return kHispeedMin;
+
+			default:
+				assert(false && "Unknown hispeed type");
+				return kHispeedMin;
+			}
+		}
+
+		int32 CursorMax(HispeedType hispeedType)
+		{
+			switch (hispeedType)
+			{
+			case HispeedType::XMod:
+				return kHispeedXModValueMax;
+
+			case HispeedType::OMod:
+			case HispeedType::CMod:
+				return kHispeedMax;
+
+			default:
+				assert(false && "Unknown hispeed type");
+				return kHispeedMax;
+			}
+		}
+
+		int32 CursorStep(HispeedType hispeedType)
+		{
+			switch (hispeedType)
+			{
+			case HispeedType::XMod:
+				return kHispeedXModValueStep;
+
+			case HispeedType::OMod:
+			case HispeedType::CMod:
+				return kHispeedStep;
+
+			default:
+				assert(false && "Unknown hispeed type");
+				return kHispeedStep;
+			}
+		}
+
+		/// @brief ハイスピード設定値の制約を適用
+		/// @param value 元の値
+		/// @param hispeedType ハイスピードの種類
+		/// @return ハイスピード設定値
+		int32 ApplyConstraints(int32 value, HispeedType hispeedType)
+		{
+			const int32 cursorMin = CursorMin(hispeedType);
+			const int32 cursorMax = CursorMax(hispeedType);
+			const int32 cursorStep = CursorStep(hispeedType);
+			return Clamp(MathUtils::RoundToInt(static_cast<double>(value) / cursorStep) * cursorStep, cursorMin, cursorMax);
+		}
+
 		String HispeedSettingToString(const HispeedSetting& hispeedSetting)
 		{
 			switch (hispeedSetting.type)
@@ -76,20 +139,20 @@ namespace MusicGame
 				const int32 value = ParseOr<int32>(sv.substr(sv.starts_with(U"x0") ? 2U : 1U), 0);
 				return HispeedSetting{
 					.type = HispeedType::XMod,
-					.value = Clamp(value, kHispeedXModValueMin, kHispeedXModValueMax),
+					.value = ApplyConstraints(value, HispeedType::XMod),
 				};
 			}
 
 			case U'C':
 				return HispeedSetting{
 					.type = HispeedType::CMod,
-					.value = Clamp(ParseOr<int32>(sv.substr(1U), 0), kHispeedMin, kHispeedMax),
+					.value = ApplyConstraints(ParseOr<int32>(sv.substr(1U), 0), HispeedType::CMod),
 				};
 
 			default: // o-modは数字のみ
 				return HispeedSetting{
 					.type = HispeedType::OMod,
-					.value = Clamp(ParseOr<int32>(sv, 0), kHispeedMin, kHispeedMax),
+					.value = ApplyConstraints(ParseOr<int32>(sv, 0), HispeedType::OMod),
 				};
 			}
 		}
@@ -107,23 +170,9 @@ namespace MusicGame
 
 	void HispeedSettingMenu::refreshValueMenuConstraints()
 	{
-		switch (m_typeMenu.cursorValue())
-		{
-		case HispeedType::XMod:
-			m_valueMenu.setCursorMinMax(kHispeedXModValueMin, kHispeedXModValueMax);
-			m_valueMenu.setCursorStep(kHispeedXModValueStep);
-			break;
-
-		case HispeedType::OMod:
-		case HispeedType::CMod:
-			m_valueMenu.setCursorMinMax(kHispeedMin, kHispeedMax);
-			m_valueMenu.setCursorStep(kHispeedStep);
-			break;
-
-		default:
-			assert(false && "Unknown hispeed type");
-			break;
-		}
+		const HispeedType hispeedType = m_typeMenu.cursorValue();
+		m_valueMenu.setCursorMinMax(CursorMin(hispeedType), CursorMax(hispeedType));
+		m_valueMenu.setCursorStep(CursorStep(hispeedType));
 	}
 
 	void HispeedSettingMenu::setHispeedSetting(const HispeedSetting& hispeedSetting)
@@ -162,7 +211,7 @@ namespace MusicGame
 		loadFromConfigIni();
 	}
 
-	void HispeedSettingMenu::update()
+	bool HispeedSettingMenu::update(const Scroll::HighwayScroll& highwayScroll)
 	{
 		m_typeMenu.update();
 		m_valueMenu.update();
@@ -170,7 +219,15 @@ namespace MusicGame
 		if (m_typeMenu.deltaCursor() != 0)
 		{
 			refreshValueMenuConstraints();
+
+			// 新しいハイスピードの種類で現在の値に最も近いハイスピード設定値を調べて設定
+			const HispeedType hispeedType = m_typeMenu.cursorValue();
+			const int32 nearestValue = highwayScroll.nearestHispeedSettingValue(hispeedType);
+			m_valueMenu.setCursor(ApplyConstraints(nearestValue, hispeedType));
 		}
+
+		// 値に変更があったか返す
+		return m_valueMenu.deltaCursor() != 0 || m_typeMenu.deltaCursor() != 0;
 	}
 
 	void HispeedSettingMenu::loadFromConfigIni()

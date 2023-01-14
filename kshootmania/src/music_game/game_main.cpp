@@ -79,7 +79,13 @@ namespace MusicGame
 	void GameMain::updateHighwayScroll()
 	{
 		// ハイスピードを更新
-		m_hispeedSettingMenu.update();
+		if (m_isFirstUpdate)
+		{
+			// HighwayScrollはHispeedSettingMenuの更新に必要だが、事前に一度は更新しておかないとBPMが入らないので、初回は追加で先に更新
+			// TODO: 消したい
+			m_highwayScroll.update(m_hispeedSettingMenu.hispeedSetting(), m_gameStatus.currentBPM);
+		}
+		m_hispeedSettingMenu.update(m_highwayScroll);
 		m_highwayScroll.update(m_hispeedSettingMenu.hispeedSetting(), m_gameStatus.currentBPM);
 	}
 
@@ -148,6 +154,8 @@ namespace MusicGame
 		const double currentTimeSec = m_bgm.posSec();
 		m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
 		m_laserSlamSE.update(m_chartData, m_gameStatus);
+
+		m_isFirstUpdate = false;
 	}
 
 	void GameMain::draw() const

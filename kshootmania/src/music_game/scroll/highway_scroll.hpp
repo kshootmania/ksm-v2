@@ -48,6 +48,9 @@ namespace MusicGame::Scroll
 		/// @brief ハイスピード設定
 		HispeedSetting m_hispeedSetting;
 
+		/// @brief 現在のハイスピード値
+		double m_currentBPM = 120.0;
+
 		/// @brief ハイスピード係数
 		double m_hispeedFactor = 0.0;
 
@@ -102,5 +105,11 @@ namespace MusicGame::Scroll
 		/// @brief 現在のハイスピード値を返す
 		/// @return ハイスピード値
 		int32 currentHispeed() const;
+
+		/// @brief 現在のハイスピード値に最も近いハイスピード値が得られるハイスピード設定値を返す(ハイスピードの種類変更時に前の種類での値に最も近い設定にするために使用)
+		/// @param targetHispeedType 対象とするハイスピードの種類
+		/// @return ハイスピード設定値
+		/// @remarks 戻り値は範囲外の値を丸めたり25刻みにしたりしないので、使用側で適用すること
+		int32 nearestHispeedSettingValue(HispeedType targetHispeedType) const;
 	};
 }
