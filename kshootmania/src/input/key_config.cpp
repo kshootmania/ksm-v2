@@ -77,6 +77,7 @@ void KeyConfig::SetConfigValue(ConfigSet targetConfigSet, StringView configValue
 		s_configSetArray[kKeyboard1][kDown] = KeyDown;
 		s_configSetArray[kKeyboard1][kLeft] = KeyLeft;
 		s_configSetArray[kKeyboard1][kRight] = KeyRight;
+		s_configSetArray[kKeyboard1][kBackspace] = KeyBackspace;
 	}
 }
 
