@@ -88,8 +88,8 @@ namespace MusicGame::Graphics
 
 			// 直角レーザーの角のテクスチャを描画
 			const bool isLeftToRight = (point.v < point.vf);
-			laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(isLeftToRight).drawAt(positionStart + Vec2{ 0, -kLaserLineWidth / 2 });
-			laserNoteTexture(kLaserTextureSize.x * laneIdx, 0, kLaserTextureSize).mirrored(!isLeftToRight).flipped().drawAt(positionEnd + Vec2{ 0, -kLaserLineWidth / 2 });
+			laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y * laserNoteTextureRow, kLaserTextureSize).mirrored(isLeftToRight).drawAt(positionStart + Vec2{ 0, -kLaserLineWidth / 2 });
+			laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y * laserNoteTextureRow, kLaserTextureSize).mirrored(!isLeftToRight).flipped().drawAt(positionEnd + Vec2{ 0, -kLaserLineWidth / 2 });
 
 			// 直角レーザーの横線を描画
 			const Quad quad = LaserSlamLineQuad(positionStart, positionEnd);
