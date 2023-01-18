@@ -51,6 +51,7 @@ void Main()
 		// メインループ
 		while (System::Update())
 		{
+			KeyConfig::Update();
 			if (!sceneManager.update())
 			{
 				break;

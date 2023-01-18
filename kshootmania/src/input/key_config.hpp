@@ -81,11 +81,13 @@ namespace KeyConfig
 
 	void SetConfigValue(ConfigSet targetConfigSet, StringView configValue);
 
+	void Update();
+
 	bool Pressed(Button button);
 
 	Optional<KeyConfig::Button> LastPressed(Button button1, Button button2);
 
-	bool Down(Button button);
+	bool Down(Button button, int32* pDiffMillisecond = nullptr);
 
 	bool Up(Button button);
 

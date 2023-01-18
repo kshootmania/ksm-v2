@@ -2,6 +2,8 @@
 
 namespace
 {
+	std::array<int32, 256> s_diffMilliseconds;
+
 	// キーコンフィグの設定画面や保存時などに配列サイズが固定のほうが都合が良いのでs3d::InputGroupは不使用
 	using ConfigSet = std::array<Input, KeyConfig::kButtonEnumCount>;
 	std::array<ConfigSet, KeyConfig::kConfigSetEnumCount> s_configSetArray;
@@ -81,6 +83,21 @@ void KeyConfig::SetConfigValue(ConfigSet targetConfigSet, StringView configValue
 	}
 }
 
+void KeyConfig::Update()
+{
+	static uint64 eventIndex = 0;
+	s_diffMilliseconds.fill(0);
+	for (const auto& event : Platform::Windows::Keyboard::GetEvents())
+	{
+		if (eventIndex < event.eventIndex)
+		{
+			s_diffMilliseconds[event.code] = Time::GetMillisec() - event.timeMillisec;
+
+			eventIndex = event.eventIndex;
+		}
+	}
+}
+
 bool KeyConfig::Pressed(Button button)
 {
 	if (button == KeyConfig::kUnspecifiedButton)
@@ -123,7 +140,7 @@ Optional<KeyConfig::Button> KeyConfig::LastPressed(Button button1, Button button
 	return lastButton;
 }
 
-bool KeyConfig::Down(Button button)
+bool KeyConfig::Down(Button button, int32* pDiffMillisecond)
 {
 	if (button == KeyConfig::kUnspecifiedButton)
 	{
@@ -134,6 +151,10 @@ bool KeyConfig::Down(Button button)
 	{
 		if (configSet[button].down())
 		{
+			if (pDiffMillisecond != nullptr)
+			{
+				*pDiffMillisecond = s_diffMilliseconds[configSet[button].code()];
+			}
 			return true;
 		}
 	}

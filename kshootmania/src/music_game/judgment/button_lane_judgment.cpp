@@ -5,6 +5,7 @@ namespace MusicGame::Judgment
 {
 	namespace
 	{
+		uint64 eventIndex = 0;
 		std::map<kson::Pulse, double> CreatePulseToSec(const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 		{
 			std::map<kson::Pulse, double> pulseToSec;
@@ -97,6 +98,7 @@ namespace MusicGame::Judgment
 		// レーン上で最も現在時間に近いノーツを調べる
 		bool found = false;
 		double minDistance = 0.0;
+		double minDistanceWithSgn = 0.0;
 		kson::Pulse nearestNotePulse;
 		for (auto itr = lane.upper_bound(m_passedNotePulse); itr != lane.end(); ++itr)
 		{
@@ -120,6 +122,7 @@ namespace MusicGame::Judgment
 				{
 					nearestNotePulse = y;
 					minDistance = Abs(sec - currentTimeSec);
+					minDistanceWithSgn = sec - currentTimeSec;
 					found = true;
 				}
 				else if (found && Abs(sec - currentTimeSec) >= minDistance && y > currentPulse)
@@ -154,6 +157,8 @@ namespace MusicGame::Judgment
 				m_scoreValue += kScoreValueCritical;
 				laneStatusRef.keyBeamType = KeyBeamType::kCritical;
 				chipAnimType = JudgmentResult::kCritical;
+				Print << U"CRIT:" << MathUtils::RoundToInt(minDistanceWithSgn * 1000);
+				std::cout << MathUtils::RoundToInt(minDistanceWithSgn * 1000) << '\n';
 			}
 			else if (minDistance < ChipNote::kWindowSecNear)
 			{
@@ -161,6 +166,7 @@ namespace MusicGame::Judgment
 				m_scoreValue += kScoreValueNear;
 				laneStatusRef.keyBeamType = KeyBeamType::kNear; // TODO: fast/slow
 				chipAnimType = JudgmentResult::kNear; // TODO: fast/slow
+				Print << U"NEAR:" << MathUtils::RoundToInt(minDistanceWithSgn * 1000);
 			}
 			else if (minDistance < ChipNote::kWindowSecError) // TODO: easy gauge, fast/slow
 			{
@@ -218,9 +224,11 @@ namespace MusicGame::Judgment
 	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef)
 	{
 		// チップノーツとロングノーツの始点の判定処理
-		if (KeyConfig::Down(m_keyConfigButton))
+		int32 diffMilliseconds;
+		if (KeyConfig::Down(m_keyConfigButton, &diffMilliseconds))
 		{
-			processKeyDown(lane, currentPulse, currentTimeSec, laneStatusRef);
+			Print << diffMilliseconds;
+			processKeyDown(lane, currentPulse, currentTimeSec - diffMilliseconds / 1000.0, laneStatusRef);
 		}
 
 		// ロングノーツ押下中の判定処理
