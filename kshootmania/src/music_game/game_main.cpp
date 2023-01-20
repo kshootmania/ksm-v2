@@ -37,9 +37,11 @@ namespace MusicGame
 		// 再生時間と現在のBPMを取得
 		const double currentTimeSec = m_bgm.posSec();
 		const kson::Pulse currentPulse = kson::SecToPulse(currentTimeSec, m_chartData.beat, m_timingCache);
+		const double currentPulseDouble = kson::SecToPulseDouble(currentTimeSec, m_chartData.beat, m_timingCache);
 		const double currentBPM = kson::TempoAt(currentPulse, m_chartData.beat);
 		m_gameStatus.currentTimeSec = currentTimeSec;
 		m_gameStatus.currentPulse = currentPulse;
+		m_gameStatus.currentPulseDouble = currentPulseDouble;
 		m_gameStatus.currentBPM = currentBPM;
 
 		// BTレーンの判定

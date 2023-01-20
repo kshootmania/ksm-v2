@@ -244,7 +244,7 @@ namespace MusicGame::Scroll
 		}
 		else
 		{
-			return static_cast<double>(pulse - gameStatus.currentPulse);
+			return static_cast<double>(pulse) - gameStatus.currentPulseDouble;
 		}
 	}
 
@@ -268,7 +268,7 @@ namespace MusicGame::Scroll
 		const double relPulseEquivalent = getRelPulseEquvalent(pulse, beatInfo, timingCache, gameStatus);
 		return Graphics::kHighwayTextureSize.y - static_cast<int32>(relPulseEquivalent * kBasePixels * m_hispeedFactor / kson::kResolution4);
 	}
-
+	
 	const HispeedSetting& HighwayScroll::hispeedSetting() const
 	{
 		return m_hispeedSetting;
@@ -279,10 +279,10 @@ namespace MusicGame::Scroll
 		switch (targetHispeedType)
 		{
 		case HispeedType::XMod:
-			return m_currentHispeed * 10 / Max(static_cast<int32>(m_currentBPM), 1);
+			return MathUtils::RoundToInt(m_currentHispeed * 10 / Max(m_currentBPM, 1.0));
 
 		case HispeedType::OMod:
-			return m_currentHispeed * m_stdBPM / Max(static_cast<int32>(m_currentBPM), 1);
+			return MathUtils::RoundToInt(m_currentHispeed * m_stdBPM / Max(m_currentBPM, 1.0));
 
 		case HispeedType::CMod:
 			return m_currentHispeed;

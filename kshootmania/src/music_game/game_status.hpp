@@ -72,6 +72,7 @@ namespace MusicGame
 	{
 		double currentTimeSec = 0.0;
 		kson::Pulse currentPulse = 0;
+		double currentPulseDouble = 0.0;
 		double currentBPM = 120.0;
 		
 		std::array<ButtonLaneStatus, kson::kNumBTLanesSZ> btLaneStatus;

@@ -75,7 +75,7 @@ namespace MusicGame::Graphics
 	{
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
-		for (std::size_t laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ); ++laneIdx)
+		for (int32 laneIdx = 0; laneIdx < (isBT ? kson::kNumBTLanes : kson::kNumFXLanes); ++laneIdx)
 		{
 			const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
 			const Vec2 offsetPosition = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * laneIdx;
