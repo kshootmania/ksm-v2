@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "common/simple_moving_average.hpp"
 #include "game_status.hpp"
 #include "judgment/button_lane_judgment.hpp"
 #include "judgment/laser_lane_judgment.hpp"
@@ -33,6 +34,9 @@ namespace MusicGame
 		// 初回更新かどうか
 		// TODO: 消したい
 		bool m_isFirstUpdate = true;
+
+		// smoothDeltaTimeSecを出すための移動平均
+		SimpleMovingAverage<double> m_smoothDeltaTimeSecSMA;
 
 		// 譜面情報
 		const kson::ChartData m_chartData;

@@ -1282,5 +1282,8 @@
     <ClInclude Include="src\graphics\texture_font_text_layout.hpp">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="src\common\simple_moving_average.hpp">
+      <Filter>Header Files\common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

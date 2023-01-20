@@ -88,15 +88,34 @@ namespace MusicGame::Judgment
 			}
 			return false;
 		}
+
+		double AlignTiming(double absTimeDiff, double smoothDeltaTimeSec)
+		{
+			if (smoothDeltaTimeSec <= 1.0 / 1000)
+			{
+				// 1000fps以上は補正しない(補正の効果がない＆ゼロ除算防止のため)
+				return absTimeDiff;
+			}
+
+			if (smoothDeltaTimeSec > 1.0 / 45)
+			{
+				// 45fps以下は補正しない(判定が緩くなるのを防ぐため)
+				return absTimeDiff;
+			}
+
+			Print << (int32)(absTimeDiff * 1000) << U" => " << (int32)(Round(absTimeDiff / smoothDeltaTimeSec) * smoothDeltaTimeSec * 1000);
+
+			return Round(absTimeDiff / smoothDeltaTimeSec) * smoothDeltaTimeSec;
+		}
 	}
 
-	void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef)
+	void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, double smoothDeltaTimeSec, ButtonLaneStatus& laneStatusRef)
 	{
 		using namespace TimingWindow;
 
 		// レーン上で最も現在時間に近いノーツを調べる
 		bool found = false;
-		double minDistance = 0.0;
+		double minAbsTimeDiff = 0.0;
 		kson::Pulse nearestNotePulse;
 		for (auto itr = lane.upper_bound(m_passedNotePulse); itr != lane.end(); ++itr)
 		{
@@ -109,6 +128,8 @@ namespace MusicGame::Judgment
 				continue;
 			}
 
+			const double timeDiff = sec - currentTimeSec;
+			const double absTimeDiff = Abs(timeDiff);
 			if (note.length == 0) // Chip note
 			{
 				if (m_chipJudgmentArray.at(y) != JudgmentResult::kUnspecified)
@@ -116,26 +137,26 @@ namespace MusicGame::Judgment
 					continue;
 				}
 
-				if (!found || Abs(sec - currentTimeSec) < minDistance)
+				if (!found || absTimeDiff < minAbsTimeDiff)
 				{
 					nearestNotePulse = y;
-					minDistance = Abs(sec - currentTimeSec);
+					minAbsTimeDiff = absTimeDiff;
 					found = true;
 				}
-				else if (found && Abs(sec - currentTimeSec) >= minDistance && y > currentPulse)
+				else if (found && absTimeDiff >= minAbsTimeDiff && y > currentPulse)
 				{
 					break;
 				}
 			}
 			else // Long note
 			{
-				if ((!found || Abs(sec - currentTimeSec) < minDistance) && sec - currentTimeSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
+				if ((!found || absTimeDiff < minAbsTimeDiff) && timeDiff <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
 				{
 					laneStatusRef.currentLongNotePulse = y;
 					laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
 					return;
 				}
-				else if (found && sec - currentTimeSec > LongNote::kWindowSecPreHold && y > currentPulse)
+				else if (found && timeDiff > LongNote::kWindowSecPreHold && y > currentPulse)
 				{
 					break;
 				}
@@ -148,21 +169,22 @@ namespace MusicGame::Judgment
 		if (found)
 		{
 			Optional<JudgmentResult> chipAnimType = none;
-			if (minDistance < ChipNote::kWindowSecCritical)
+			const double alignedAbsTimeDiff = AlignTiming(minAbsTimeDiff, smoothDeltaTimeSec);
+			if (alignedAbsTimeDiff < ChipNote::kWindowSecCritical)
 			{
 				m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kCritical;
 				m_scoreValue += kScoreValueCritical;
 				laneStatusRef.keyBeamType = KeyBeamType::kCritical;
 				chipAnimType = JudgmentResult::kCritical;
 			}
-			else if (minDistance < ChipNote::kWindowSecNear)
+			else if (alignedAbsTimeDiff < ChipNote::kWindowSecNear)
 			{
 				m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kNear;
 				m_scoreValue += kScoreValueNear;
 				laneStatusRef.keyBeamType = KeyBeamType::kNear; // TODO: fast/slow
 				chipAnimType = JudgmentResult::kNear; // TODO: fast/slow
 			}
-			else if (minDistance < ChipNote::kWindowSecError) // TODO: easy gauge, fast/slow
+			else if (alignedAbsTimeDiff < ChipNote::kWindowSecError) // TODO: easy gauge, fast/slow
 			{
 				m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kError;
 				laneStatusRef.keyBeamType = KeyBeamType::kDefault;
@@ -215,12 +237,12 @@ namespace MusicGame::Judgment
 	{
 	}
 
-	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef)
+	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, double smoothDeltaTimeSec, ButtonLaneStatus& laneStatusRef)
 	{
 		// チップノーツとロングノーツの始点の判定処理
 		if (KeyConfig::Down(m_keyConfigButton))
 		{
-			processKeyDown(lane, currentPulse, currentTimeSec, laneStatusRef);
+			processKeyDown(lane, currentPulse, currentTimeSec, smoothDeltaTimeSec, laneStatusRef);
 		}
 
 		// ロングノーツ押下中の判定処理

@@ -368,6 +368,7 @@
     <ClInclude Include="src\common\asset_management.hpp" />
     <ClInclude Include="src\common\common_defines.hpp" />
     <ClInclude Include="src\common\math_utils.hpp" />
+    <ClInclude Include="src\common\simple_moving_average.hpp" />
     <ClInclude Include="src\graphics\texture_font_text_layout.hpp" />
     <ClInclude Include="src\graphics\number_texture_font.hpp" />
     <ClInclude Include="src\graphics\screen_utils.hpp" />

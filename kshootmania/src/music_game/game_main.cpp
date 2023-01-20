@@ -6,6 +6,8 @@ namespace MusicGame
 {
 	namespace
 	{
+		constexpr std::size_t kSmoothDeltaTimeSecSMAOrder = 60U;
+
 		template <class LaneJudgment, std::size_t N>
 		int32 SumScoreFactor(const std::array<LaneJudgment, N>& laneJudgements)
 		{
@@ -38,20 +40,23 @@ namespace MusicGame
 		const double currentTimeSec = m_bgm.posSec();
 		const kson::Pulse currentPulse = kson::SecToPulse(currentTimeSec, m_chartData.beat, m_timingCache);
 		const double currentBPM = kson::TempoAt(currentPulse, m_chartData.beat);
+		const double deltaTimeSec = m_isFirstUpdate ? 0.0 : currentTimeSec - m_gameStatus.currentTimeSec;
+		const double smoothDeltaTimeSec = m_smoothDeltaTimeSecSMA.update(deltaTimeSec);
 		m_gameStatus.currentTimeSec = currentTimeSec;
 		m_gameStatus.currentPulse = currentPulse;
 		m_gameStatus.currentBPM = currentBPM;
 
+
 		// BTレーンの判定
 		for (std::size_t i = 0U; i < kson::kNumBTLanesSZ; ++i)
 		{
-			m_btLaneJudgments[i].update(m_chartData.note.bt[i], currentPulse, currentTimeSec, m_gameStatus.btLaneStatus[i]);
+			m_btLaneJudgments[i].update(m_chartData.note.bt[i], currentPulse, currentTimeSec, smoothDeltaTimeSec, m_gameStatus.btLaneStatus[i]);
 		}
 
 		// FXレーンの判定
 		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 		{
-			m_fxLaneJudgments[i].update(m_chartData.note.fx[i], currentPulse, currentTimeSec, m_gameStatus.fxLaneStatus[i]);
+			m_fxLaneJudgments[i].update(m_chartData.note.fx[i], currentPulse, currentTimeSec, smoothDeltaTimeSec, m_gameStatus.fxLaneStatus[i]);
 		}
 
 		// LASERレーンの判定
@@ -93,6 +98,7 @@ namespace MusicGame
 		: m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
 		, m_chartData(kson::LoadKSHChartData(createInfo.chartFilePath.narrow()))
 		, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
+		, m_smoothDeltaTimeSecSMA(kSmoothDeltaTimeSecSMAOrder)
 		, m_btLaneJudgments{
 			Judgment::ButtonLaneJudgment(kBTButtons[0], m_chartData.note.bt[0], m_chartData.beat, m_timingCache),
 			Judgment::ButtonLaneJudgment(kBTButtons[1], m_chartData.note.bt[1], m_chartData.beat, m_timingCache),
