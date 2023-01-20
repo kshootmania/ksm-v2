@@ -60,10 +60,13 @@ namespace MusicGame::Graphics::NoteGraphicsUtils
 	int32 ChipNoteHeight(double yRate)
 	{
 		constexpr int32 kTableSize = 8;
-		constexpr std::array<int32, kTableSize> kHeightTable = {
-			14, 19, 23, 26, 28, 30, 32, 35
+		constexpr std::array<double, kTableSize> kHeightTable = {
+			14.0, 19.0, 23.0, 26.0, 28.0, 30.0, 32.0, 35.0
 		};
 
-		return kHeightTable[Clamp(static_cast<int32>(yRate * kTableSize), 0, kTableSize - 1)];
+		const double dIdx = yRate * kTableSize;
+		const int32 idx = static_cast<int32>(dIdx);
+		const double lerpRate = dIdx - idx;
+		return MathUtils::RoundToInt(std::lerp(kHeightTable[Clamp(idx, 0, kTableSize - 1)], kHeightTable[Clamp(idx + 1, 0, kTableSize - 1)], lerpRate));
 	}
 }
