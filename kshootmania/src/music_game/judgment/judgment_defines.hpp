@@ -26,8 +26,8 @@ namespace MusicGame::Judgment
 	{
 		namespace ChipNote
 		{
-			constexpr double kWindowSecCritical = 0.043;
-			constexpr double kWindowSecNear = 0.113;
+			constexpr double kWindowSecCritical = 0.044;
+			constexpr double kWindowSecNear = 0.114;
 			constexpr double kWindowSecError = 0.260;
 			constexpr double kWindowSecErrorEasy = 0.160;
 
