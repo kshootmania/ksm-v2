@@ -5,6 +5,20 @@
 #include "scene/play/play_scene.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
+namespace
+{
+	// 最大300fpsに制限
+	constexpr double kFrameRateLimitFPS = 300.0;
+
+	template <class Clock, class Duration>
+	void FrameRateLimit(std::chrono::time_point<Clock, Duration> time)
+	{
+		const auto nextFrameTime = time + 1000ms / kFrameRateLimitFPS;
+		std::this_thread::sleep_until(nextFrameTime - 2ms);
+		while (nextFrameTime >= Clock::now());
+	}
+}
+
 void Main()
 {
 	// Escキーによるプログラム終了を無効化
@@ -31,7 +45,7 @@ void Main()
 	// アセット一覧を登録
 	AssetManagement::RegisterAssets();
 
-	//Graphics::SetVSyncEnabled(false);
+	Graphics::SetVSyncEnabled(false);
 
 #if defined(_WIN32) && defined(_DEBUG)
 	AllocConsole();
@@ -48,6 +62,8 @@ void Main()
 		sceneManager.add<PlayScene>(SceneName::kPlay);
 		sceneManager.changeScene(SceneName::kTitle, kDefaultTransitionMs);
 
+		auto time = std::chrono::steady_clock::now();
+
 		// メインループ
 		while (System::Update())
 		{
@@ -55,6 +71,11 @@ void Main()
 			{
 				break;
 			}
+
+			// フレームレート制限
+			// (これだと描画反映が1フレーム分遅れてしまうので、本来はSystem::Update内のRenderer::presentより後ろで呼びたい)
+			FrameRateLimit(time);
+			time = std::chrono::steady_clock::now();
 		}
 	}
 
