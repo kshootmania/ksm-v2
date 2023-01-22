@@ -23,7 +23,7 @@ namespace
 
 	double EaseValue(double currentValue, double targetValue, double relaxationTime)
 	{
-		const double blendRate = Max(relaxationTime - Scene::DeltaTime(), 0.0) / relaxationTime;
+		const double blendRate = 1.0 - Max(relaxationTime - Scene::DeltaTime(), 0.0) / relaxationTime;
 		return Math::Lerp(currentValue, targetValue, blendRate);
 	}
 }
