@@ -5,19 +5,41 @@
 #include "scene/play/play_scene.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
-namespace
+class FrameRateLimit : public IAddon
 {
-	// 最大300fpsに制限
-	constexpr double kFrameRateLimitFPS = 300.0;
+private:
+	int32 m_targetFPS;
 
-	template <class Clock, class Duration>
-	void FrameRateLimit(std::chrono::time_point<Clock, Duration> time)
+	std::chrono::time_point<std::chrono::steady_clock> m_sleepUntil;
+
+public:
+	explicit FrameRateLimit(int32 targetFPS)
+		: m_targetFPS(targetFPS)
+		, m_sleepUntil(std::chrono::steady_clock::now())
 	{
-		const auto nextFrameTime = time + 1000ms / kFrameRateLimitFPS;
-		std::this_thread::sleep_until(nextFrameTime - 2ms);
-		while (nextFrameTime >= Clock::now());
 	}
-}
+
+	virtual void postPresent() override
+	{
+		// 次フレームまでのsleepの終了時間を決める
+		m_sleepUntil += std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(1)) / m_targetFPS;
+
+		// 目標フレームレートに届かなかったときにm_sleepUntilが現在時間より過去に離れていかないよう現在時間以降にする
+		const auto sleepUntilMin = std::chrono::steady_clock::now();
+		if (m_sleepUntil < sleepUntilMin)
+		{
+			m_sleepUntil = sleepUntilMin;
+		}
+
+		// sleepを実行
+		std::this_thread::sleep_until(m_sleepUntil);
+	}
+
+	void setTargetFPS(int32 targetFPS)
+	{
+		m_targetFPS = targetFPS;
+	}
+};
 
 void Main()
 {
@@ -46,6 +68,7 @@ void Main()
 	AssetManagement::RegisterAssets();
 
 	Graphics::SetVSyncEnabled(false);
+	Addon::Register(U"FrameRateLimit", std::make_unique<FrameRateLimit>(300));
 
 #if defined(_WIN32) && defined(_DEBUG)
 	AllocConsole();
@@ -62,8 +85,6 @@ void Main()
 		sceneManager.add<PlayScene>(SceneName::kPlay);
 		sceneManager.changeScene(SceneName::kTitle, kDefaultTransitionMs);
 
-		auto time = std::chrono::steady_clock::now();
-
 		// メインループ
 		while (System::Update())
 		{
@@ -71,11 +92,6 @@ void Main()
 			{
 				break;
 			}
-
-			// フレームレート制限
-			// (これだと描画反映が1フレーム分遅れてしまうので、本来はSystem::Update内のRenderer::presentより後ろで呼びたい)
-			FrameRateLimit(time);
-			time = std::chrono::steady_clock::now();
 		}
 	}
 
