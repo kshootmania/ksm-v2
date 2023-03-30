@@ -7,17 +7,73 @@
 
 namespace
 {
-	// 最大300fpsに制限
-	constexpr double kFrameRateLimitFPS = 300.0;
+	constexpr double kSecToMs = 1000.0;
+	constexpr double kMsToNs = 1000.0 * 1000.0;
+	constexpr auto kMaxDrift = 10ms;
 
-	template <class Clock, class Duration>
-	void FrameRateLimit(std::chrono::time_point<Clock, Duration> time)
+	constexpr double OneFrameMs(int32 fps)
 	{
-		const auto nextFrameTime = time + 1000ms / kFrameRateLimitFPS;
-		std::this_thread::sleep_until(nextFrameTime - 2ms);
-		while (nextFrameTime >= Clock::now());
+		return kSecToMs / fps;
+	}
+
+	constexpr double DeltaMs(auto now, auto prevTime)
+	{
+		const double ns = static_cast<double>((now - prevTime).count());
+		return ns / kMsToNs;
 	}
 }
+
+class FrameRateLimit : public IAddon
+{
+private:
+	int32 m_targetFPS;
+
+	std::optional<std::chrono::time_point<std::chrono::steady_clock, std::chrono::duration<double, std::nano>>> m_sleepUntil;
+
+	void outputLog(double sleepDurationMs) const
+	{
+		const int32 fps = Profiler::FPS();
+		const double deltaTimeMs = Scene::DeltaTime() * kSecToMs;
+		Print << U"{}fps (sleepDt:{:.2f}ms, actualDt:{:.2f}ms)"_fmt(fps, sleepDurationMs, deltaTimeMs);
+	}
+
+public:
+	explicit FrameRateLimit(int32 targetFPS)
+		: m_targetFPS(targetFPS)
+	{
+	}
+
+	virtual bool update() override // 本来はSystem::Update内のRendererのpresentの後ろで待つべき
+	{
+		if (!m_sleepUntil.has_value())
+		{
+			m_sleepUntil = std::chrono::steady_clock::now();
+			return true;
+		}
+
+		// TODO: doubleを介さずにdurationのまま計算する
+		*m_sleepUntil += std::chrono::duration<double, std::milli>(::OneFrameMs(m_targetFPS));
+
+		// 目標フレームレートに届かなかったときにm_sleepUntilが現在時間より過去に離れていかないよう最小値でおさえる
+		const auto sleepUntilMin = std::chrono::steady_clock::now() - kMaxDrift;
+		if (*m_sleepUntil < sleepUntilMin)
+		{
+			*m_sleepUntil = sleepUntilMin;
+		}
+
+		//outputLog(DeltaMs(*m_sleepUntil, std::chrono::steady_clock::now()));
+
+		std::this_thread::sleep_until(*m_sleepUntil);
+
+		return true;
+	}
+
+	void setTargetFPS(int32 targetFPS)
+	{
+		m_targetFPS = targetFPS;
+	}
+};
+
 
 void Main()
 {
@@ -45,6 +101,8 @@ void Main()
 	// アセット一覧を登録
 	AssetManagement::RegisterAssets();
 
+	Window::Resize(1024, 768);
+
 	Graphics::SetVSyncEnabled(false);
 
 #if defined(_WIN32) && defined(_DEBUG)
@@ -52,6 +110,8 @@ void Main()
 	FILE* fp = NULL;
 	freopen_s(&fp, "CONOUT$", "w", stdout);
 #endif
+
+	Addon::Register(U"FrameRateLimit", std::make_unique<FrameRateLimit>(300));
 
 	{
 		// 各シーンを作成
@@ -71,11 +131,6 @@ void Main()
 			{
 				break;
 			}
-
-			// フレームレート制限
-			// (これだと描画反映が1フレーム分遅れてしまうので、本来はSystem::Update内のRenderer::presentより後ろで呼びたい)
-			FrameRateLimit(time);
-			time = std::chrono::steady_clock::now();
 		}
 	}
 
