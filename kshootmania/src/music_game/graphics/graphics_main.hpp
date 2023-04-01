@@ -6,6 +6,7 @@
 #include "hud/song_info_panel.hpp"
 #include "hud/score_panel.hpp"
 #include "hud/gauge_panel.hpp"
+#include "hud/combo_overlay.hpp"
 #include "hud/frame_rate_monitor.hpp"
 #include "music_game/game_status.hpp"
 #include "music_game/view_status.hpp"
@@ -35,6 +36,7 @@ namespace MusicGame::Graphics
 		SongInfoPanel m_songInfoPanel;
 		ScorePanel m_scorePanel;
 		GaugePanel m_gaugePanel;
+		ComboOverlay m_comboOverlay;
 		FrameRateMonitor m_frameRateMonitor;
 
 		void drawBG(const ViewStatus& viewStatus) const;
@@ -43,6 +45,8 @@ namespace MusicGame::Graphics
 
 	public:
 		explicit GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath);
+
+		void update(const GameStatus& gameStatus);
 
 		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const;
 	};

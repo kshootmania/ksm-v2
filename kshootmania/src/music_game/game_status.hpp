@@ -82,5 +82,6 @@ namespace MusicGame
 		std::size_t lastPressedLongFXNoteLaneIdx = 0U; // For audio effect parameter priority
 
 		int32 score = 0;
+		int32 combo = 0;
 	};
 }
