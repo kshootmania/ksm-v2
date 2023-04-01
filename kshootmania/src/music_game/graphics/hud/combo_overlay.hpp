@@ -14,8 +14,8 @@ namespace MusicGame::Graphics
 		const TextureRegion m_comboTextureRegion;
 		const TextureRegion m_comboTextureRegionNoError;
 
-		// 現在のコンボ数
-		int32 m_combo = 0;
+		// 直近の更新時のComboStatusの値
+		ComboStatus m_comboStatus;
 
 		// 表示中かどうかのタイマー
 		Timer m_visibleTimer;
@@ -23,7 +23,7 @@ namespace MusicGame::Graphics
 	public:
 		ComboOverlay();
 
-		void update(int32 combo);
+		void update(const ComboStatus& comboStatus);
 
 		void draw() const;
 	};

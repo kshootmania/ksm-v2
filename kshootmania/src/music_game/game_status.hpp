@@ -66,6 +66,28 @@ namespace MusicGame
 		}
 	};
 
+	struct ComboStatus
+	{
+		// コンボ数
+		int32 combo = 0;
+
+		// ERROR判定を一度も出していない状態かどうか
+		bool isNoError = true;
+
+		/// @brief コンボ加算
+		void increment()
+		{
+			++combo;
+		}
+
+		/// @brief エラー判定によるコンボ数リセット
+		void resetByErrorJudgment()
+		{
+			combo = 0;
+			isNoError = false;
+		}
+	};
+
 	/// @brief ゲームステータス
 	/// @note ゲームプレイに関与する状態を入れる。表示にしか関与しないものはGameStatusではなくViewStatusへ入れる。
 	struct GameStatus
@@ -82,6 +104,7 @@ namespace MusicGame
 		std::size_t lastPressedLongFXNoteLaneIdx = 0U; // For audio effect parameter priority
 
 		int32 score = 0;
-		int32 combo = 0;
+
+		ComboStatus comboStatus;
 	};
 }

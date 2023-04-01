@@ -28,18 +28,18 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void ComboOverlay::update(int32 combo)
+	void ComboOverlay::update(const ComboStatus& comboStatus)
 	{
-		if (combo == 0)
+		if (comboStatus.combo == 0)
 		{
 			m_visibleTimer.reset(); // コンボが切れた時は非表示にする
 		}
-		else if (m_combo != combo)
+		else if (m_comboStatus.combo != comboStatus.combo)
 		{
 			m_visibleTimer.restart(); // コンボ数増加から一定時間表示
 		}
 
-		m_combo = combo;
+		m_comboStatus = comboStatus;
 	}
 
 	void ComboOverlay::draw() const
@@ -54,7 +54,10 @@ namespace MusicGame::Graphics
 		const ScopedRenderStates2D blendState(BlendState::Additive);
 		const ScopedRenderStates2D samplerState(SamplerState::ClampLinear);
 
-		m_comboTextureRegion.drawAt(Scene::Width() / 2, Scaled(300));
-		m_numberTextureFont.draw(m_numberLayout, { Scene::Width() / 2, Scaled(313) }, m_combo, ZeroPaddingYN::Yes);
+		const TextureRegion& comboTextureRegion = m_comboStatus.isNoError ? m_comboTextureRegionNoError : m_comboTextureRegion;
+		comboTextureRegion.drawAt(Scene::Width() / 2, Scaled(300));
+
+		const NumberTextureFont& numberTextureFont = m_comboStatus.isNoError ? m_numberTextureFontNoError : m_numberTextureFont;
+		numberTextureFont.draw(m_numberLayout, { Scene::Width() / 2, Scaled(313) }, m_comboStatus.combo, ZeroPaddingYN::Yes);
 	}
 }

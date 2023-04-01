@@ -47,19 +47,19 @@ namespace MusicGame
 		// BTレーンの判定
 		for (std::size_t i = 0U; i < kson::kNumBTLanesSZ; ++i)
 		{
-			m_btLaneJudgments[i].update(m_chartData.note.bt[i], currentPulse, currentTimeSec, m_gameStatus.btLaneStatus[i], &m_gameStatus.combo);
+			m_btLaneJudgments[i].update(m_chartData.note.bt[i], currentPulse, currentTimeSec, m_gameStatus.btLaneStatus[i], m_gameStatus.comboStatus);
 		}
 
 		// FXレーンの判定
 		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 		{
-			m_fxLaneJudgments[i].update(m_chartData.note.fx[i], currentPulse, currentTimeSec, m_gameStatus.fxLaneStatus[i], &m_gameStatus.combo);
+			m_fxLaneJudgments[i].update(m_chartData.note.fx[i], currentPulse, currentTimeSec, m_gameStatus.fxLaneStatus[i], m_gameStatus.comboStatus);
 		}
 
 		// LASERレーンの判定
 		for (std::size_t i = 0U; i < kson::kNumLaserLanesSZ; ++i)
 		{
-			m_laserLaneJudgments[i].update(m_chartData.note.laser[i], currentPulse, currentTimeSec, m_gameStatus.laserLaneStatus[i], &m_gameStatus.combo);
+			m_laserLaneJudgments[i].update(m_chartData.note.laser[i], currentPulse, currentTimeSec, m_gameStatus.laserLaneStatus[i], m_gameStatus.comboStatus);
 		}
 
 		// スコアを計算
