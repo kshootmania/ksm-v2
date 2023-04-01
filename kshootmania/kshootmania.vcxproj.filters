@@ -438,6 +438,9 @@
     <ClCompile Include="src\graphics\texture_font_text_layout.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\music_game\graphics\hud\combo_overlay.cpp">
+      <Filter>Source Files\music_game\graphics\hud</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1281,6 +1284,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\texture_font_text_layout.hpp">
       <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\graphics\hud\combo_overlay.hpp">
+      <Filter>Header Files\music_game\graphics\hud</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

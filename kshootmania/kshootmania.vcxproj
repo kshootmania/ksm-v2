@@ -144,6 +144,7 @@
     <ClCompile Include="src\music_game\graphics\highway\note\button_note_graphics.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\note\laser_note_graphics.cpp" />
     <ClCompile Include="src\music_game\graphics\highway\note\note_graphics_utils.cpp" />
+    <ClCompile Include="src\music_game\graphics\hud\combo_overlay.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\frame_rate_monitor.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\gauge_panel.cpp" />
     <ClCompile Include="src\music_game\graphics\hud\hispeed_setting_panel.cpp" />
@@ -394,6 +395,7 @@
     <ClInclude Include="src\music_game\graphics\highway\note\button_note_graphics.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\note\laser_note_graphics.hpp" />
     <ClInclude Include="src\music_game\graphics\highway\note\note_graphics_utils.hpp" />
+    <ClInclude Include="src\music_game\graphics\hud\combo_overlay.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\frame_rate_monitor.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\gauge_panel.hpp" />
     <ClInclude Include="src\music_game\graphics\hud\hispeed_setting_panel.hpp" />
