@@ -41,9 +41,11 @@ namespace MusicGame::Judgment
 			return judgmentArray;
 		}
 
-		kson::ByPulse<JudgmentResult> CreateLongNoteJudgmentArray(const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo)
+		using LongNoteJudgment = ButtonLaneJudgment::LongNoteJudgment;
+
+		kson::ByPulse<ButtonLaneJudgment::LongNoteJudgment> CreateLongNoteJudgmentArray(const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo)
 		{
-			kson::ByPulse<JudgmentResult> judgmentArray;
+			kson::ByPulse<LongNoteJudgment> judgmentArray;
 
 			for (const auto& [y, note] : lane) // TODO: merge two long notes if note1.y + note1.l == note2.y
 			{
@@ -57,7 +59,7 @@ namespace MusicGame::Judgment
 
 					if (note.length <= minPulseInterval)
 					{
-						judgmentArray.emplace(y, JudgmentResult::kUnspecified);
+						judgmentArray.emplace(y, LongNoteJudgment{ .length = note.length });
 					}
 					else
 					{
@@ -66,7 +68,7 @@ namespace MusicGame::Judgment
 
 						for (kson::Pulse pulse = start; pulse < end; pulse += pulseInterval)
 						{
-							judgmentArray.emplace(pulse, JudgmentResult::kUnspecified);
+							judgmentArray.emplace(pulse, LongNoteJudgment{ .length = pulseInterval });
 						}
 					}
 				}
@@ -98,14 +100,13 @@ namespace MusicGame::Judgment
 		bool found = false;
 		double minDistance = 0.0;
 		kson::Pulse nearestNotePulse;
-		for (auto itr = lane.upper_bound(m_passedNotePulse); itr != lane.end(); ++itr)
+		for (auto itr = m_passedNoteCursor; itr != lane.end(); ++itr)
 		{
 			const auto& [y, note] = *itr;
 			const double sec = m_pulseToSec.at(y);
 			const double endSec = (note.length == 0) ? sec : m_pulseToSec.at(y + note.length);
 			if (currentTimeSec - endSec >= ChipNote::kWindowSecError)
 			{
-				m_passedNotePulse = y;
 				continue;
 			}
 
@@ -198,22 +199,67 @@ namespace MusicGame::Judgment
 
 			for (auto itr = m_longJudgmentArray.upper_bound(Max(noteStartPulse, m_prevPulse) - 1); itr != m_longJudgmentArray.end(); ++itr)
 			{
-				auto& [y, result] = *itr;
+				auto& [y, judgment] = *itr;
 				if (y >= limitPulse)
 				{
 					break;
 				}
 
-				if (result != JudgmentResult::kUnspecified)
+				if (judgment.result != JudgmentResult::kUnspecified)
 				{
 					// 判定が既に決まっている場合はスキップ
 					continue;
 				}
 
 				// ロングノーツのCRITICAL判定
-				result = JudgmentResult::kCritical;
+				judgment.result = JudgmentResult::kCritical;
 				comboStatusRef.increment();
 				m_scoreValue += kScoreValueCritical;
+			}
+		}
+	}
+
+	void ButtonLaneJudgment::processPassedNoteJudgment(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	{
+		using namespace TimingWindow;
+
+		for (auto itr = m_passedNoteCursor; itr != lane.end(); ++itr)
+		{
+			const auto& [y, note] = *itr;
+			const double sec = m_pulseToSec.at(y);
+			if (currentTimeSec - sec >= ChipNote::kWindowSecError)
+			{
+				// 通過済みチップノーツのERROR判定
+				if (note.length == 0 && m_chipJudgmentArray.at(y) == JudgmentResult::kUnspecified)
+				{
+					m_chipJudgmentArray.at(y) = JudgmentResult::kError;
+					comboStatusRef.resetByErrorJudgment();
+
+					assert(laneStatusRef.chipAnimStateRingBufferCursor < Graphics::kChipAnimMaxPlaying);
+					laneStatusRef.chipAnimStatusRingBuffer[laneStatusRef.chipAnimStateRingBufferCursor] = {
+						.startTimeSec = currentTimeSec,
+						.type = JudgmentResult::kError,
+					};
+					laneStatusRef.chipAnimStateRingBufferCursor = (laneStatusRef.chipAnimStateRingBufferCursor + 1U) % Graphics::kChipAnimMaxPlaying;
+				}
+
+				m_passedNoteCursor = std::next(itr);
+			}
+		}
+
+		for (auto itr = m_passedLongJudgmentCursor; itr != m_longJudgmentArray.end(); ++itr)
+		{
+			auto& [y, judgment] = *itr;
+			if (y + judgment.length < currentPulse)
+			{
+				// 通過済みロングノーツのERROR判定
+				if (judgment.result == JudgmentResult::kUnspecified)
+				{
+					judgment.result = JudgmentResult::kError;
+					comboStatusRef.resetByErrorJudgment();
+				}
+
+				m_passedLongJudgmentCursor = std::next(itr);
 			}
 		}
 	}
@@ -223,6 +269,8 @@ namespace MusicGame::Judgment
 		, m_pulseToSec(CreatePulseToSec(lane, beatInfo, timingCache))
 		, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane))
 		, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatInfo))
+		, m_passedNoteCursor(lane.begin())
+		, m_passedLongJudgmentCursor(m_longJudgmentArray.begin())
 		, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size()) * kScoreValueCritical)
 	{
 	}
@@ -248,6 +296,9 @@ namespace MusicGame::Judgment
 			laneStatusRef.currentLongNotePulse = none;
 			laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
 		}
+
+		// 通り過ぎたノーツをERROR判定にする
+		processPassedNoteJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, comboStatusRef);
 
 		if (IsDuringLongNote(lane, currentPulse))
 		{

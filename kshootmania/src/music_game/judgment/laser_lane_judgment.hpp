@@ -32,6 +32,14 @@ namespace MusicGame::Judgment
 
 	class LaserLaneJudgment
 	{
+	public:
+		struct LineJudgment
+		{
+			kson::RelPulse length = kson::RelPulse{ 0 };
+
+			JudgmentResult result = JudgmentResult::kUnspecified;
+		};
+
 	private:
 		const KeyConfig::Button m_keyConfigButtonL;
 		const KeyConfig::Button m_keyConfigButtonR;
@@ -40,7 +48,8 @@ namespace MusicGame::Judgment
 		const Array<double> m_laserLineDirectionChangeSecArray;
 		Array<double>::const_iterator m_laserLineDirectionChangeSecArrayCursor;
 
-		kson::ByPulse<JudgmentResult> m_lineJudgmentArray;
+		kson::ByPulse<LineJudgment> m_lineJudgmentArray;
+		kson::ByPulse<LineJudgment>::iterator m_passedLineJudgmentCursor;
 
 		kson::ByPulse<LaserSlamJudgment> m_slamJudgmentArray;
 		kson::ByPulse<LaserSlamJudgment>::iterator m_slamJudgmentArrayCursor;
@@ -66,6 +75,8 @@ namespace MusicGame::Judgment
 		void processAutoCursorMovementAfterCorrectMovement(double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
 		void processLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef);
+
+		void processPassedLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef);
 
 	public:
 		LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);

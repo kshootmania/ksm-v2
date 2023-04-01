@@ -65,18 +65,20 @@ namespace MusicGame::Judgment
 			return directionChangeSecArray;
 		}
 
-		kson::ByPulse<JudgmentResult> CreateLineJudgmentResultArray(const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo)
-		{
-			kson::ByPulse<JudgmentResult> judgmentArray;
+		using LineJudgment = LaserLaneJudgment::LineJudgment;
 
-			for (const auto& [y, sec] : lane)
+		kson::ByPulse<LineJudgment> CreateLineJudgmentResultArray(const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo)
+		{
+			kson::ByPulse<LineJudgment> judgmentArray;
+
+			for (const auto& [y, section] : lane)
 			{
-				if (sec.v.empty())
+				if (section.v.empty())
 				{
 					continue;
 				}
 				
-				const kson::RelPulse lastRy = sec.v.rbegin()->first;
+				const kson::RelPulse lastRy = section.v.rbegin()->first;
 				if (lastRy > 0)
 				{
 					// BPMをもとにLASERノーツのコンボ数を半減させるかを決める
@@ -87,7 +89,7 @@ namespace MusicGame::Judgment
 
 					if (lastRy <= minPulseInterval)
 					{
-						judgmentArray.emplace(y, JudgmentResult::kUnspecified);
+						judgmentArray.emplace(y, LineJudgment{ .length = minPulseInterval });
 					}
 					else
 					{
@@ -96,7 +98,7 @@ namespace MusicGame::Judgment
 
 						for (kson::Pulse pulse = start; pulse < end; pulse += pulseInterval)
 						{
-							judgmentArray.emplace(pulse, JudgmentResult::kUnspecified);
+							judgmentArray.emplace(pulse, LineJudgment{ .length = pulseInterval });
 						}
 					}
 				}
@@ -109,9 +111,9 @@ namespace MusicGame::Judgment
 		{
 			kson::ByPulse<LaserSlamJudgment> judgmentArray;
 
-			for (const auto& [y, sec] : lane)
+			for (const auto& [y, section] : lane)
 			{
-				for (const auto& [ry, point] : sec.v)
+				for (const auto& [ry, point] : section.v)
 				{
 					const bool isSlam = !kson::AlmostEquals(point.v, point.vf);
 					if (isSlam)
@@ -480,19 +482,19 @@ namespace MusicGame::Judgment
 		const JudgmentResult currentResult = IsLaserCursorInCriticalJudgmentRange(cursorX, noteCursorX) ? JudgmentResult::kCritical : JudgmentResult::kError;
 		for (auto itr = m_lineJudgmentArray.upper_bound(Max(sectionStartPulse, m_prevPulse) - 1); itr != m_lineJudgmentArray.end(); ++itr)
 		{
-			auto& [y, result] = *itr;
+			auto& [y, judgment] = *itr;
 			if (y >= limitPulse)
 			{
 				break;
 			}
 
-			if (result != JudgmentResult::kUnspecified)
+			if (judgment.result != JudgmentResult::kUnspecified)
 			{
 				// 既に判定が決まっている場合はスキップ
 				continue;
 			}
 
-			result = currentResult;
+			judgment.result = currentResult;
 			if (currentResult == JudgmentResult::kCritical)
 			{
 				// CRITICAL判定の場合はコンボ・スコア加算
@@ -507,6 +509,25 @@ namespace MusicGame::Judgment
 		}
 	}
 
+	void LaserLaneJudgment::processPassedLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	{
+		for (auto itr = m_passedLineJudgmentCursor; itr != m_lineJudgmentArray.end(); ++itr)
+		{
+			auto& [y, judgment] = *itr;
+			if (y + judgment.length < currentPulse)
+			{
+				// 通過済みロングノーツのERROR判定
+				if (judgment.result == JudgmentResult::kUnspecified)
+				{
+					judgment.result = JudgmentResult::kError;
+					comboStatusRef.resetByErrorJudgment();
+				}
+
+				m_passedLineJudgmentCursor = std::next(itr);
+			}
+		}
+	}
+
 	LaserLaneJudgment::LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 		: m_keyConfigButtonL(keyConfigButtonL)
 		, m_keyConfigButtonR(keyConfigButtonR)
@@ -514,6 +535,7 @@ namespace MusicGame::Judgment
 		, m_laserLineDirectionChangeSecArray(CreateLaserLineDirectionChangeSecArray(lane, beatInfo, timingCache))
 		, m_laserLineDirectionChangeSecArrayCursor(m_laserLineDirectionChangeSecArray.begin())
 		, m_lineJudgmentArray(CreateLineJudgmentResultArray(lane, beatInfo))
+		, m_passedLineJudgmentCursor(m_lineJudgmentArray.begin())
 		, m_slamJudgmentArray(CreateSlamJudgmentArray(lane, beatInfo, timingCache))
 		, m_slamJudgmentArrayCursor(m_slamJudgmentArray.begin())
 		, m_scoreValueMax(static_cast<int32>(m_lineJudgmentArray.size() + m_slamJudgmentArray.size()) * kScoreValueCritical)
@@ -602,6 +624,9 @@ namespace MusicGame::Judgment
 
 		// カーソル位置をもとにLASERの判定を決定
 		processLineJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, comboStatusRef);
+
+		// 通過済みのLASER判定をERRORにする
+		processPassedLineJudgment(lane, currentPulse, laneStatusRef, comboStatusRef);
 
 		m_prevCurrentLaserSectionPulse = laneStatusRef.currentLaserSectionPulse;
 

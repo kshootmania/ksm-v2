@@ -8,16 +8,25 @@ namespace MusicGame::Judgment
 {
 	class ButtonLaneJudgment
 	{
+	public:
+		struct LongNoteJudgment
+		{
+			kson::RelPulse length = kson::RelPulse{ 0 };
+
+			JudgmentResult result = JudgmentResult::kUnspecified;
+		};
+
 	private:
 		const KeyConfig::Button m_keyConfigButton;
 		const std::map<kson::Pulse, double> m_pulseToSec;
 
 		kson::ByPulse<JudgmentResult> m_chipJudgmentArray;
-		kson::ByPulse<JudgmentResult> m_longJudgmentArray;
+		kson::ByPulse<LongNoteJudgment> m_longJudgmentArray;
 
 		kson::Pulse m_prevPulse = kPastPulse;
 
-		kson::Pulse m_passedNotePulse = kPastPulse;
+		kson::ByPulse<kson::Interval>::const_iterator m_passedNoteCursor;
+		kson::ByPulse<LongNoteJudgment>::iterator m_passedLongJudgmentCursor;
 
 		int32 m_scoreValue = 0;
 
@@ -26,6 +35,8 @@ namespace MusicGame::Judgment
 		void processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ComboStatus& comboStatusRef);
 
 		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const ButtonLaneStatus& laneStatusRef, ComboStatus& comboStatusRef);
+
+		void processPassedNoteJudgment(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ComboStatus& comboStatusRef);
 
 	public:
 		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
