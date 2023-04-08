@@ -1,45 +1,6 @@
 ﻿#include <Siv3D.hpp> // OpenSiv3D v0.6.3
-#include "scene/title/title_scene.hpp"
-#include "scene/option/option_scene.hpp"
-#include "scene/select/select_scene.hpp"
-#include "scene/play/play_scene.hpp"
+#include "common/frame_rate_limit.hpp"
 #include "ksmaudio/ksmaudio.hpp"
-
-class FrameRateLimit : public IAddon
-{
-private:
-	int32 m_targetFPS;
-
-	std::chrono::time_point<std::chrono::steady_clock> m_sleepUntil;
-
-public:
-	explicit FrameRateLimit(int32 targetFPS)
-		: m_targetFPS(targetFPS)
-		, m_sleepUntil(std::chrono::steady_clock::now())
-	{
-	}
-
-	virtual void postPresent() override
-	{
-		// 次フレームまでのsleepの終了時間を決める
-		m_sleepUntil += std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(1)) / m_targetFPS;
-
-		// 目標フレームレートに届かなかったときにm_sleepUntilが現在時間より過去に離れていかないよう現在時間以降にする
-		const auto sleepUntilMin = std::chrono::steady_clock::now();
-		if (m_sleepUntil < sleepUntilMin)
-		{
-			m_sleepUntil = sleepUntilMin;
-		}
-
-		// sleepを実行
-		std::this_thread::sleep_until(m_sleepUntil);
-	}
-
-	void setTargetFPS(int32 targetFPS)
-	{
-		m_targetFPS = targetFPS;
-	}
-};
 
 void Main()
 {
