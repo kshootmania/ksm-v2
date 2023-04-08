@@ -70,10 +70,9 @@ void Main()
 	Graphics::SetVSyncEnabled(false);
 	Addon::Register(U"FrameRateLimit", std::make_unique<FrameRateLimit>(300));
 
-#if defined(_WIN32) && defined(_DEBUG)
-	AllocConsole();
-	FILE* fp = NULL;
-	freopen_s(&fp, "CONOUT$", "w", stdout);
+#ifdef _DEBUG
+	// ライブラリ側のデバッグ用にコンソール表示(Debugビルドの場合のみ)
+	Console.open();
 #endif
 
 	{
