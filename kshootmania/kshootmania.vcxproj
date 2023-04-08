@@ -162,6 +162,7 @@
     <ClCompile Include="src\scene\option\option_top_menu.cpp" />
     <ClCompile Include="src\scene\option\option_scene.cpp" />
     <ClCompile Include="src\scene\play\play_scene.cpp" />
+    <ClCompile Include="src\scene\scene_manager_addon.cpp" />
     <ClCompile Include="src\scene\select\select_bg_anim.cpp" />
     <ClCompile Include="src\scene\select\select_difficulty_menu.cpp" />
     <ClCompile Include="src\scene\select\select_menu.cpp" />
@@ -422,7 +423,7 @@
     <ClInclude Include="src\scene\option\option_top_menu.hpp" />
     <ClInclude Include="src\scene\play\play_scene.hpp" />
     <ClInclude Include="src\scene\play\play_scene_args.hpp" />
-    <ClInclude Include="src\scene\scene.hpp" />
+    <ClInclude Include="src\scene\scene_manager_addon.hpp" />
     <ClInclude Include="src\scene\select\select_assets.hpp" />
     <ClInclude Include="src\scene\select\select_bg_anim.hpp" />
     <ClInclude Include="src\scene\select\select_difficulty_menu.hpp" />

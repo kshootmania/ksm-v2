@@ -441,6 +441,9 @@
     <ClCompile Include="src\music_game\graphics\hud\combo_overlay.cpp">
       <Filter>Source Files\music_game\graphics\hud</Filter>
     </ClCompile>
+    <ClCompile Include="src\scene\scene_manager_addon.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1120,9 +1123,6 @@
     <ClInclude Include="src\scene\title\title_scene.hpp">
       <Filter>Header Files\scene\title</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\scene.hpp">
-      <Filter>Header Files\scene</Filter>
-    </ClInclude>
     <ClInclude Include="src\scene\select\select_scene.hpp">
       <Filter>Header Files\scene\select</Filter>
     </ClInclude>
@@ -1287,6 +1287,9 @@
     </ClInclude>
     <ClInclude Include="src\music_game\graphics\hud\combo_overlay.hpp">
       <Filter>Header Files\music_game\graphics\hud</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\scene_manager_addon.hpp">
+      <Filter>Header Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

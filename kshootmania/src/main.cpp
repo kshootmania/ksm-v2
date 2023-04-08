@@ -67,31 +67,21 @@ void Main()
 	// アセット一覧を登録
 	AssetManagement::RegisterAssets();
 
+	// フレームレート制限
 	Graphics::SetVSyncEnabled(false);
 	Addon::Register(U"FrameRateLimit", std::make_unique<FrameRateLimit>(300));
+
+	// シーン管理
+	Addon::Register(U"SceneManager", std::make_unique<SceneManagerAddon>());
 
 #ifdef _DEBUG
 	// ライブラリ側のデバッグ用にコンソール表示(Debugビルドの場合のみ)
 	Console.open();
 #endif
 
+	// メインループ
+	while (System::Update())
 	{
-		// 各シーンを作成
-		MySceneManager sceneManager;
-		sceneManager.add<TitleScene>(SceneName::kTitle);
-		sceneManager.add<OptionScene>(SceneName::kOption);
-		sceneManager.add<SelectScene>(SceneName::kSelect);
-		sceneManager.add<PlayScene>(SceneName::kPlay);
-		sceneManager.changeScene(SceneName::kTitle, kDefaultTransitionMs);
-
-		// メインループ
-		while (System::Update())
-		{
-			if (!sceneManager.update())
-			{
-				break;
-			}
-		}
 	}
 
 	// config.iniを保存

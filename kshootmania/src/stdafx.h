@@ -8,6 +8,6 @@
 #include "graphics/tiled_texture.hpp"
 #include "ui/linear_menu.hpp"
 #include "ui/array_with_linear_menu.hpp"
-#include "scene/scene.hpp"
+#include "scene/scene_manager_addon.hpp"
 #include "i18n/i18n.hpp"
 #include "ini/config_ini.hpp"
