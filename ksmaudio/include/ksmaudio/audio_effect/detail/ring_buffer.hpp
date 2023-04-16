@@ -82,7 +82,7 @@ namespace ksmaudio::AudioEffect::detail
             writeImpl(pData, size, m_cursorFrame);
         }
 
-        void write(float data, std::size_t channel)
+        void write(T data, std::size_t channel)
         {
             m_buffer[m_cursorFrame * m_numChannels + channel] = data;
         }
