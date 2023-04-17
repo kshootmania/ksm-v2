@@ -17,6 +17,8 @@ namespace ksmaudio::AudioEffect::detail
             "Value type of RingBuffer is required to be arithmetic");
 
     private:
+        static constexpr std::size_t kSafeFadeoutFrames = 4U;
+
         std::vector<T> m_buffer;
 
         std::size_t m_cursorFrame = 0U;
@@ -66,6 +68,25 @@ namespace ksmaudio::AudioEffect::detail
             }
         }
 
+        T safeReadByDelayFrames(std::size_t delayFrames, std::size_t channel) const
+        {
+            if (delayFrames >= m_numFrames || channel >= m_numChannels)
+            {
+                return T{ 0 };
+            }
+            return m_buffer[delayCursor(delayFrames) * m_numChannels + channel];
+        }
+
+        void safeCopy(std::size_t index, std::size_t size, T* pDest) const
+        {
+            if (index + size > m_buffer.size())
+            {
+                std::memset(pDest, '\0', sizeof(T) * size);
+                return;
+            }
+            std::memcpy(pDest, &m_buffer[index], sizeof(T) * size);
+        }
+
     public:
         RingBuffer(std::size_t size, std::size_t numChannels)
             : m_buffer(size, T{ 0 })
@@ -100,19 +121,14 @@ namespace ksmaudio::AudioEffect::detail
             m_cursorFrame = (m_cursorFrame + frameCount) % m_numFrames;
         }
 
-        T& delay(std::size_t delayFrames, std::size_t channel)
+        T delay(std::size_t delayFrames, std::size_t channel)
         {
-            return m_buffer[delayCursor(delayFrames) * m_numChannels + channel];
-        }
-
-        const T& delay(std::size_t delayFrames, std::size_t channel) const
-        {
-            return m_buffer[delayCursor(delayFrames) * m_numChannels + channel];
+            return safeReadByDelayFrames(delayFrames, channel);
         }
 
         void delay(std::size_t delayFrames, T* pDest)
         {
-            std::memcpy(pDest, &m_buffer[delayCursor(delayFrames) * m_numChannels], sizeof(T) * m_numChannels);
+            safeCopy(delayCursor(delayFrames) * m_numChannels, m_numChannels, pDest);
         }
 
         template <typename U>
@@ -120,8 +136,8 @@ namespace ksmaudio::AudioEffect::detail
         {
             const std::size_t delayFrames = static_cast<std::size_t>(floatDelayFrames);
             return std::lerp(
-                m_buffer[delayCursor(delayFrames) * m_numChannels + channel],
-                m_buffer[delayCursor(delayFrames + 1U) * m_numChannels + channel],
+                safeReadByDelayFrames(delayFrames, channel),
+                safeReadByDelayFrames(delayFrames + 1, channel),
                 DecimalPart(floatDelayFrames));
         }
 
@@ -129,12 +145,12 @@ namespace ksmaudio::AudioEffect::detail
         void lerpedDelay(U floatDelayFrames, T* pDest) const
         {
             const std::size_t delayFrames = static_cast<std::size_t>(floatDelayFrames);
-            const std::size_t firstIdx = delayCursor(delayFrames) * m_numChannels;
-            const std::size_t secondIdx = delayCursor(delayFrames + 1U) * m_numChannels;
             const U lerpRate = DecimalPart(floatDelayFrames);
-            for (std::size_t ch = 0U; ch < m_numChannels; ++ch)
+            for (std::size_t channel = 0U; channel < m_numChannels; ++channel)
             {
-                pDest[ch] = std::lerp(m_buffer[firstIdx + ch], m_buffer[secondIdx + ch], lerpRate);
+                const T first = safeReadByDelayFrames(delayFrames, channel);
+                const T second = safeReadByDelayFrames(delayFrames + 1, channel);
+                pDest[channel] = std::lerp(first, second, lerpRate);
             }
         }
 

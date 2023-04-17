@@ -72,7 +72,7 @@ namespace ksmaudio::AudioEffect
 
 		assert(dataSize % m_info.numChannels == 0);
 		
-		if (!bypass && params.trigger && params.mix > 0.0f)
+		if (!bypass && params.trigger)
 		{
 			const std::size_t frameSize = dataSize / m_info.numChannels;
 			for (std::size_t i = 0U; i < frameSize; ++i)
