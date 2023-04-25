@@ -76,6 +76,10 @@ namespace MusicGame
 		const double tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
 		m_highwayTilt.update(tiltFactor);
 		m_viewStatus.tiltRadians = m_highwayTilt.radians();
+
+		// 視点変更を更新
+		m_camSystem.update(m_chartData, m_gameStatus.currentPulse);
+		m_viewStatus.camStatus = m_camSystem.status();
 	}
 
 	void GameMain::updateHighwayScroll()

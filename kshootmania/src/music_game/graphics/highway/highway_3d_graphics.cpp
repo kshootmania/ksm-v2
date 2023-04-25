@@ -64,7 +64,8 @@ namespace MusicGame::Graphics
 	void Highway3DGraphics::draw3D(const ViewStatus& viewStatus) const
 	{
 		// レンダーテクスチャを3D空間上へ描画
-		const Transformer3D transform(TiltTransformMatrix(viewStatus.tiltRadians));
+		const double radians = Math::ToRadians(viewStatus.camStatus.rotationX) + viewStatus.tiltRadians;
+		const Transformer3D transform(TiltTransformMatrix(radians));
 		m_renderTexture.draw3D(m_mesh);
 	}
 }

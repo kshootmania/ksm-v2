@@ -447,6 +447,9 @@
     <ClCompile Include="src\common\frame_rate_limit.cpp">
       <Filter>Source Files\common</Filter>
     </ClCompile>
+    <ClCompile Include="src\music_game\camera\cam_system.cpp">
+      <Filter>Source Files\music_game\camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1296,6 +1299,9 @@
     </ClInclude>
     <ClInclude Include="src\common\frame_rate_limit.hpp">
       <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\camera\cam_system.hpp">
+      <Filter>Header Files\music_game\camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
