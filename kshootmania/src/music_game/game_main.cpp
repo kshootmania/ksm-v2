@@ -162,7 +162,7 @@ namespace MusicGame
 		m_laserSlamSE.update(m_chartData, m_gameStatus);
 
 		// グラフィックの更新
-		m_graphicsMain.update(m_gameStatus);
+		m_graphicsMain.update(m_gameStatus, m_viewStatus);
 
 		m_isFirstUpdate = false;
 	}

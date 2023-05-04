@@ -113,9 +113,10 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void GraphicsMain::update(const GameStatus& gameStatus)
+	void GraphicsMain::update(const GameStatus& gameStatus, const ViewStatus& viewStatus)
 	{
 		m_comboOverlay.update(gameStatus.comboStatus);
+		m_highway3DGraphics.update(viewStatus);
 	}
 
 	void GraphicsMain::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const

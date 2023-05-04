@@ -23,9 +23,12 @@ namespace MusicGame::Graphics
 
 		MeshData m_meshData;
 		DynamicMesh m_mesh;
+		bool m_trianglesFlipped = false;
 
 	public:
 		Highway3DGraphics();
+
+		void update(const ViewStatus& viewStatus);
 
 		void draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const;
 
