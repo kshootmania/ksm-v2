@@ -39,4 +39,6 @@ namespace MusicGame
 	};
 
 	constexpr int32 kScoreMax = 10000000;
+
+	constexpr double kTiltRadians = 10_deg;
 }
