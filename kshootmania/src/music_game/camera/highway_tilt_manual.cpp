@@ -7,7 +7,6 @@ namespace MusicGame::Camera
 	void HighwayTiltManual::update(const kson::ByPulse<kson::GraphSection>& manual, kson::Pulse currentPulse)
 	{
 		const auto value = kson::GraphSectionValueAt(manual, currentPulse);
-		Print << value.value_or(0.0);
 		m_lerpRate = Clamp(m_lerpRate + Scene::DeltaTime() / 0.5 * (value.has_value() ? 1 : -1), 0.0, 1.0);
 		if (value.has_value())
 		{

@@ -133,7 +133,7 @@ namespace MusicGame::Graphics
 		m_highway3DGraphics.draw3D(viewStatus);
 		m_jdgline3DGraphics.draw3D(viewStatus);
 		m_jdgoverlay3DGraphics.draw3D(viewStatus);
-		m_laserCursor3DGraphics.draw3D(gameStatus, viewStatus);
+		m_laserCursor3DGraphics.draw3D(gameStatus, viewStatus, m_camera);
 
 		// 手前に表示する2DのHUDを描画
 		m_songInfoPanel.draw(gameStatus.currentBPM, highwayScrollContext);

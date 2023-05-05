@@ -392,6 +392,7 @@
     <ClInclude Include="src\music_game\audio\audio_effect_utils.hpp" />
     <ClInclude Include="src\music_game\audio\bgm.hpp" />
     <ClInclude Include="src\music_game\audio\laser_slam_se.hpp" />
+    <ClInclude Include="src\music_game\camera\camera_math.hpp" />
     <ClInclude Include="src\music_game\camera\cam_system.hpp" />
     <ClInclude Include="src\music_game\camera\highway_tilt.hpp" />
     <ClInclude Include="src\music_game\camera\highway_tilt_auto.hpp" />

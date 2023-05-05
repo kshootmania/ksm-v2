@@ -1,5 +1,6 @@
 ﻿#include "jdgoverlay_3d_graphics.hpp"
 #include "music_game/graphics/graphics_defines.hpp"
+#include "music_game/camera/camera_math.hpp"
 #include "kson/common/common.hpp"
 
 namespace MusicGame::Graphics
@@ -212,7 +213,8 @@ namespace MusicGame::Graphics
 	{
 		// レンダーテクスチャを3D空間上に描画
 		const ScopedRenderStates3D blendState(BlendState::Additive);
-		const Transformer3D transform(TiltTransformMatrix(viewStatus.tiltRadians));
+		const double scale = Camera::JdgoverlayScale(viewStatus.camStatus.zoom);
+		const Transformer3D transform(Mat4x4::Scale(scale, kPlaneCenter) * TiltTransformMatrix(viewStatus.tiltRadians));
 		m_mesh.draw(m_transform, m_renderTexture);
 	}
 }

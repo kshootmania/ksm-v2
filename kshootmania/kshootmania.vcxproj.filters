@@ -1315,5 +1315,8 @@
     <ClInclude Include="src\music_game\camera\highway_tilt_manual.hpp">
       <Filter>Header Files\music_game\camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\music_game\camera\camera_math.hpp">
+      <Filter>Header Files\music_game\camera</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

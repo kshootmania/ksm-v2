@@ -59,9 +59,9 @@ namespace MusicGame::Graphics
 		return Mat4x4::Rotate(Float3::Backward(), radians, center);
 	}
 
-	inline Mat4x4 JudgmentPlaneTransformMatrix(double tiltRadians, const Vec3& planeCenter)
+	inline Mat4x4 JudgmentPlaneTransformMatrix(double tiltRadians)
 	{
-		return Mat4x4::Rotate(Float3::Right(), -60_deg, planeCenter) * TiltTransformMatrix(tiltRadians);
+		return Mat4x4::Rotate(Float3::Right(), -60_deg) * TiltTransformMatrix(tiltRadians, kHighwayTiltCenter);
 	}
 
 	constexpr std::size_t kChipAnimMaxPlaying = 5U;
