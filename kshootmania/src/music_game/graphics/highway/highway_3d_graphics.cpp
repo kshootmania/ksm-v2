@@ -1,5 +1,6 @@
 ﻿#include "highway_3d_graphics.hpp"
 #include "music_game/graphics/graphics_defines.hpp"
+#include "music_game/camera/camera_math.hpp"
 #include "note/note_graphics_utils.hpp"
 
 namespace MusicGame::Graphics
@@ -43,18 +44,18 @@ namespace MusicGame::Graphics
 		// HSP版の該当箇所: https://github.com/m4saka/kshootmania-v1-hsp/blob/d2811a09e2d75dad5cc152d7c4073897061addb7/src/scene/play/play_draw_frame.hsp#L779-L821
 
 		const auto& camStatus = viewStatus.camStatus;
-		const double zoom = camStatus.zoom / (camStatus.zoom > 0.0 ? 4.5 : 1.8);
+		const double zoom = Camera::ScaledCamZoomValue(camStatus.zoom);
 		const double rotationX = ToRadians(camStatus.rotationX * 360 / 2400);
 		const double sinRotationX = Sin(rotationX);
 		const double cosRotationX = Cos(rotationX);
 
 		m_meshData.vertices[0].pos.y = kPlaneHeightAboveJdgline * sinRotationX / 2.5; // 奥の辺 上方向
 		m_meshData.vertices[1].pos.y = m_meshData.vertices[0].pos.y;
-		m_meshData.vertices[2].pos.y = -zoom * Sin(kCameraToJdglineRadians) * kPlaneHeight / kPlaneHeightAboveJdgline - kPlaneHeightBelowJdgline * sinRotationX / 2.5; // 手前の辺 上方向
+		m_meshData.vertices[2].pos.y = -zoom * 100 * Sin(kCameraToJdglineRadians) * kPlaneHeight / kPlaneHeightAboveJdgline - kPlaneHeightBelowJdgline * sinRotationX / 2.5; // 手前の辺 上方向
 		m_meshData.vertices[3].pos.y = m_meshData.vertices[2].pos.y;
 		m_meshData.vertices[0].pos.z = -kPlaneHeightAboveJdgline / 2 + kPlaneHeightAboveJdgline * cosRotationX; // 奥の辺 手前方向
 		m_meshData.vertices[1].pos.z = m_meshData.vertices[0].pos.z;
-		m_meshData.vertices[2].pos.z = -kPlaneHeightAboveJdgline / 2 - kPlaneHeightBelowJdgline / 2 * cosRotationX - zoom * Cos(kCameraToJdglineRadians) * kPlaneHeight / kPlaneHeightAboveJdgline; // 手前の辺 手前方向
+		m_meshData.vertices[2].pos.z = -kPlaneHeightAboveJdgline / 2 - kPlaneHeightBelowJdgline / 2 * cosRotationX - zoom * 100 * Cos(kCameraToJdglineRadians) * kPlaneHeight / kPlaneHeightAboveJdgline; // 手前の辺 手前方向
 		m_meshData.vertices[3].pos.z = m_meshData.vertices[2].pos.z;
 
 		const double rotationXMod = MathUtils::WrappedFmod(rotationX, Math::TwoPi);
