@@ -69,9 +69,9 @@ namespace MusicGame::Graphics
 		m_mesh.fill(m_meshData);
 	}
 
-	void Highway3DGraphics::draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const
+	void Highway3DGraphics::draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
-		m_renderTexture.clearByBaseTexture();
+		m_renderTexture.drawBaseTexture(viewStatus.camStatus.centerSplit);
 
 		// Draw shine effect
 		{
@@ -80,17 +80,32 @@ namespace MusicGame::Graphics
 
 			const double rate = MathUtils::WrappedFmod(gameStatus.currentTimeSec, kShineEffectLoopSec) / kShineEffectLoopSec;
 			const Vec2 position = kShineEffectPositionOffset + kShineEffectPositionDiff * rate;
-			for (int32 i = 0; i < kNumShineEffects; ++i)
+			if (MathUtils::AlmostEquals(viewStatus.camStatus.centerSplit, 0.0))
 			{
-				m_shineEffectTexture.draw(position + kShineEffectPositionDiff * i);
+				// center_split不使用時はそのまま描画
+				for (int32 i = 0; i < kNumShineEffects; ++i)
+				{
+					m_shineEffectTexture.draw(position + kShineEffectPositionDiff * i);
+				}
+			}
+			else
+			{
+				// center_split使用時は左右に分割して描画
+				const double centerSplitShiftX = Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit);
+				const Size halfSize = { m_shineEffectTexture.width() / 2, m_shineEffectTexture.height() };
+				for (int32 i = 0; i < kNumShineEffects; ++i)
+				{
+					m_shineEffectTexture(0, 0, halfSize).draw(Vec2::Right(-centerSplitShiftX) + position + kShineEffectPositionDiff * i);
+					m_shineEffectTexture(halfSize.x, 0, halfSize).draw(Vec2::Right(halfSize.x + centerSplitShiftX) + position + kShineEffectPositionDiff * i);
+				}
 			}
 		}
 
 		// BT/FXノーツの描画
-		m_buttonNoteGraphics.draw(chartData, gameStatus, highwayScrollContext, m_renderTexture);
+		m_buttonNoteGraphics.draw(chartData, gameStatus, viewStatus, highwayScrollContext, m_renderTexture);
 
 		// キービームの描画
-		m_keyBeamGraphics.draw(gameStatus, m_renderTexture);
+		m_keyBeamGraphics.draw(gameStatus, viewStatus, m_renderTexture);
 
 		// レーザーノーツの描画
 		m_laserNoteGraphics.draw(chartData, gameStatus, highwayScrollContext, m_renderTexture);

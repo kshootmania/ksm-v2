@@ -122,8 +122,8 @@ namespace MusicGame::Graphics
 	void GraphicsMain::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
 		// 各レンダーテクスチャを用意
-		m_highway3DGraphics.draw2D(chartData, gameStatus, highwayScrollContext);
-		m_jdgoverlay3DGraphics.draw2D(gameStatus);
+		m_highway3DGraphics.draw2D(chartData, gameStatus, viewStatus, highwayScrollContext);
+		m_jdgoverlay3DGraphics.draw2D(gameStatus, viewStatus);
 		Graphics2D::Flush();
 
 		// 3D空間を描画

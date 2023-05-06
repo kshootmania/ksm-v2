@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "kson/chart_data.hpp"
+#include "music_game/graphics/graphics_defines.hpp"
 
 namespace MusicGame::Camera
 {
@@ -50,5 +51,11 @@ namespace MusicGame::Camera
 			order += 10.0 * (scaled - ScaledCamZoomValue(200.0));
 		}
 		return (Pow(Max(scaled + scaled300, 0.0) / scaled300, order) + 0.4545 * Pow(1.1, Min((scaled - scaled300) / scaled300, 1.0))) / 1.5;
+	}
+
+	inline constexpr double CenterSplitShiftX(double centerSplit, double btLaneDiffX = Graphics::kBTLanePositionDiff.x)
+	{
+		constexpr double kOneLaneCenterSplit = 100.0;
+		return btLaneDiffX * centerSplit / kOneLaneCenterSplit / 2;
 	}
 }

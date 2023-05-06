@@ -10,5 +10,6 @@ namespace MusicGame::Camera
 		m_status.shiftX = kson::GraphValueAt(body.shiftX, currentPulse);
 		m_status.rotationX = kson::GraphValueAt(body.rotationX, currentPulse);
 		m_status.rotationZ = kson::GraphValueAt(body.rotationZ, currentPulse);
+		m_status.centerSplit = kson::GraphValueAt(body.centerSplit, currentPulse);
 	}
 }

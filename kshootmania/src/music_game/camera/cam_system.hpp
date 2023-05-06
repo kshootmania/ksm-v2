@@ -11,6 +11,7 @@ namespace MusicGame::Camera
 		double rotationZ = 0.0;
 		double rotationZLane = 0.0;
 		double rotationZJdgLine = 0.0;
+		double centerSplit;
 	};
 
 	class CamSystem

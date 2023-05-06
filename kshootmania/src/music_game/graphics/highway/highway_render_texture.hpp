@@ -19,6 +19,6 @@ namespace MusicGame::Graphics
 
 		const RenderTexture& invMultiplyTexture() const;
 
-		void clearByBaseTexture() const;
+		void drawBaseTexture(double centerSplit) const;
 	};
 }

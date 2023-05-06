@@ -12,6 +12,9 @@ namespace MusicGame::Graphics
 		constexpr Float3 kPlaneCenter = { 0.0f, 3.5f, -kHighwayPlaneSize.y / 2 - 1.8f };
 		constexpr Float2 kPlaneSize = { kTextureSize.x * 0.95f / 8, kTextureSize.y * 0.95f / 8 };
 
+		constexpr int32 kBTLaneDiffX = 60;
+		constexpr int32 kFXLaneDiffX = 120;
+
 		constexpr StringView kChipCriticalAnimTextureFilename = U"judge1.gif";
 		constexpr StringView kChipNearAnimTextureFilename = U"judge2.gif";
 		constexpr StringView kChipErrorAnimTextureFilename = U"judge3.gif";
@@ -62,43 +65,45 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void Jdgoverlay3DGraphics::drawChipAnimCommon(const GameStatus& gameStatus, bool isBT) const
+	void Jdgoverlay3DGraphics::drawChipAnimCommon(const GameStatus& gameStatus, const ViewStatus& viewStatus, bool isBT) const
 	{
 		const int32 numLanes = isBT ? kson::kNumBTLanes : kson::kNumFXLanes;
-		for (int32 i = 0; i < numLanes; ++i)
+		for (int32 laneIdx = 0; laneIdx < numLanes; ++laneIdx)
 		{
-			const auto& laneStatus = isBT ? gameStatus.btLaneStatus[i] : gameStatus.fxLaneStatus[i];
+			const auto& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
+			const int32 centerSplitShiftX = static_cast<int32>(Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit, static_cast<double>(kBTLaneDiffX)) * ((laneIdx >= numLanes / 2) ? 1 : -1));
 			for (const auto& chipAnimState : laneStatus.chipAnimStatusRingBuffer)
 			{
 				const double sec = gameStatus.currentTimeSec - chipAnimState.startTimeSec;
 				if (0.0 <= sec && sec < kChipAnimDurationSec && chipAnimState.type != Judgment::JudgmentResult::kUnspecified)
 				{
 					const int32 frameIdx = static_cast<int32>(sec / kChipAnimDurationSec * kChipAnimFrames);
-					const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + (isBT ? 0 : 30) + (isBT ? 60 : 120) * i, 17);
+					const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + (isBT ? 0 : 30) + (isBT ? kBTLaneDiffX : kFXLaneDiffX) * laneIdx + centerSplitShiftX, 17);
 					chipAnimTexture(chipAnimState.type)(frameIdx).resized(ScreenUtils::Scaled(kChipAnimSize)).draw(position);
 				}
 			}
 		}
 	}
 
-	void Jdgoverlay3DGraphics::drawChipAnimBT(const GameStatus& gameStatus) const
+	void Jdgoverlay3DGraphics::drawChipAnimBT(const GameStatus& gameStatus, const ViewStatus& viewStatus) const
 	{
-		drawChipAnimCommon(gameStatus, true);
+		drawChipAnimCommon(gameStatus, viewStatus, true);
 	}
 
-	void Jdgoverlay3DGraphics::drawChipAnimFX(const GameStatus& gameStatus) const
+	void Jdgoverlay3DGraphics::drawChipAnimFX(const GameStatus& gameStatus, const ViewStatus& viewStatus) const
 	{
-		drawChipAnimCommon(gameStatus, false);
+		drawChipAnimCommon(gameStatus, viewStatus, false);
 	}
 
-	void Jdgoverlay3DGraphics::drawLongAnimCommon(const GameStatus& gameStatus, bool isBT) const
+	void Jdgoverlay3DGraphics::drawLongAnimCommon(const GameStatus& gameStatus, const ViewStatus& viewStatus, bool isBT) const
 	{
 		const int32 numLanes = isBT ? kson::kNumBTLanes : kson::kNumFXLanes;
-		for (int32 i = 0; i < numLanes; ++i)
+		for (int32 laneIdx = 0; laneIdx < numLanes; ++laneIdx)
 		{
-			const auto& laneStatus = isBT ? gameStatus.btLaneStatus[i] : gameStatus.fxLaneStatus[i];
+			const auto& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
+			const int32 centerSplitShiftX = static_cast<int32>(Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit, static_cast<double>(kBTLaneDiffX)) * ((laneIdx >= numLanes / 2) ? 1 : -1));
 			const double sec = gameStatus.currentTimeSec - laneStatus.currentLongNoteAnimOffsetTimeSec;
-			const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + (isBT ? 75 : 96) + (isBT ? 60 : 120) * i, isBT ? 10 : 0);
+			const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + (isBT ? 75 : 96) + (isBT ? kBTLaneDiffX : kFXLaneDiffX) * laneIdx + centerSplitShiftX, isBT ? 10 : 0);
 			const SizeF size = ScreenUtils::Scaled(isBT ? kLongAnimSizeBT : kLongAnimSizeFX);
 
 			int32 frameIdx;
@@ -130,14 +135,14 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void Jdgoverlay3DGraphics::drawLongAnimBT(const GameStatus& gameStatus) const
+	void Jdgoverlay3DGraphics::drawLongAnimBT(const GameStatus& gameStatus, const ViewStatus& viewStatus) const
 	{
-		drawLongAnimCommon(gameStatus, true);
+		drawLongAnimCommon(gameStatus, viewStatus, true);
 	}
 
-	void Jdgoverlay3DGraphics::drawLongAnimFX(const GameStatus& gameStatus) const
+	void Jdgoverlay3DGraphics::drawLongAnimFX(const GameStatus& gameStatus, const ViewStatus& viewStatus) const
 	{
-		drawLongAnimCommon(gameStatus, false);
+		drawLongAnimCommon(gameStatus, viewStatus, false);
 	}
 
 	void Jdgoverlay3DGraphics::drawLaserAnim(const GameStatus& gameStatus) const
@@ -197,15 +202,15 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void Jdgoverlay3DGraphics::draw2D(const GameStatus& gameStatus) const
+	void Jdgoverlay3DGraphics::draw2D(const GameStatus& gameStatus, const ViewStatus& viewStatus) const
 	{
 		// 描画するレンダーテクスチャを用意
 		const ScopedRenderTarget2D renderTarget(m_renderTexture.clear(Palette::Black));
 		const ScopedRenderStates2D blendState(BlendState::Additive);
-		drawChipAnimBT(gameStatus);
-		drawChipAnimFX(gameStatus);
-		drawLongAnimBT(gameStatus);
-		drawLongAnimFX(gameStatus);
+		drawChipAnimBT(gameStatus, viewStatus);
+		drawChipAnimFX(gameStatus, viewStatus);
+		drawLongAnimBT(gameStatus, viewStatus);
+		drawLongAnimFX(gameStatus, viewStatus);
 		drawLaserAnim(gameStatus);
 	}
 

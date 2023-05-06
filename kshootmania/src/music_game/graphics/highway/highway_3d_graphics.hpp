@@ -30,7 +30,7 @@ namespace MusicGame::Graphics
 
 		void update(const ViewStatus& viewStatus);
 
-		void draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const;
+		void draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const;
 
 		void draw3D(const ViewStatus& viewStatus) const;
 	};
