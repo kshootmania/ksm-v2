@@ -219,7 +219,8 @@ namespace MusicGame::Graphics
 		// レンダーテクスチャを3D空間上に描画
 		const ScopedRenderStates3D blendState(BlendState::Additive);
 		const double scale = Camera::JdgoverlayScale(viewStatus.camStatus.zoom);
-		const Transformer3D transform(Mat4x4::Scale(scale, kPlaneCenter) * TiltTransformMatrix(viewStatus.tiltRadians));
+		const Vec3 shiftXVec = Vec3::Right(Camera::ScaledCamShiftXValue(viewStatus.camStatus.shiftX));
+		const Transformer3D transform(Mat4x4::Translate(shiftXVec) * Mat4x4::Scale(scale, kPlaneCenter) * TiltTransformMatrix(viewStatus.tiltRadians));
 		m_mesh.draw(m_transform, m_renderTexture);
 	}
 }

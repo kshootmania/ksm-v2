@@ -21,8 +21,10 @@ namespace MusicGame::Graphics
 	{
 		// 3Dの板に判定ラインのテクスチャを描画
 		const ScopedRenderStates3D blendState(BlendState::NonPremultiplied);
-		const double scale = Camera::JdglineScale(viewStatus.camStatus.zoom);
-		const Transformer3D transform(Mat4x4::Scale(scale) * JudgmentPlaneTransformMatrix(viewStatus.tiltRadians) * Mat4x4::Translate(kPlaneCenter));
+		const double jdgoverlayScale = Camera::JdgoverlayScale(viewStatus.camStatus.zoom);
+		const double jdglineScale = Camera::JdglineScale(viewStatus.camStatus.zoom);
+		const Vec3 shiftXVec = Vec3::Right(Camera::ScaledCamShiftXValue(viewStatus.camStatus.shiftX) * jdgoverlayScale);
+		const Transformer3D transform(Mat4x4::Scale(jdglineScale) * Mat4x4::Translate(shiftXVec) * JudgmentPlaneTransformMatrix(viewStatus.tiltRadians) * Mat4x4::Translate(kPlaneCenter));
 		m_mesh.draw(m_jdglineTexture);
 	}
 }
