@@ -53,4 +53,9 @@ namespace MathUtils
 	{
 		return static_cast<T>(value + U{ 0.5 });
 	}
+
+	inline bool AlmostEquals(double a, double b)
+	{
+		return kson::AlmostEquals(a, b);
+	}
 }

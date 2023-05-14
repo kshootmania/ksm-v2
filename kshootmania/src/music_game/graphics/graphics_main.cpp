@@ -113,16 +113,17 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void GraphicsMain::update(const GameStatus& gameStatus)
+	void GraphicsMain::update(const GameStatus& gameStatus, const ViewStatus& viewStatus)
 	{
 		m_comboOverlay.update(gameStatus.comboStatus);
+		m_highway3DGraphics.update(viewStatus);
 	}
 
 	void GraphicsMain::draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
 		// 各レンダーテクスチャを用意
-		m_highway3DGraphics.draw2D(chartData, gameStatus, highwayScrollContext);
-		m_jdgoverlay3DGraphics.draw2D(gameStatus);
+		m_highway3DGraphics.draw2D(chartData, gameStatus, viewStatus, highwayScrollContext);
+		m_jdgoverlay3DGraphics.draw2D(gameStatus, viewStatus);
 		Graphics2D::Flush();
 
 		// 3D空間を描画
@@ -132,7 +133,7 @@ namespace MusicGame::Graphics
 		m_highway3DGraphics.draw3D(viewStatus);
 		m_jdgline3DGraphics.draw3D(viewStatus);
 		m_jdgoverlay3DGraphics.draw3D(viewStatus);
-		m_laserCursor3DGraphics.draw3D(gameStatus, viewStatus);
+		m_laserCursor3DGraphics.draw3D(gameStatus, viewStatus, m_camera);
 
 		// 手前に表示する2DのHUDを描画
 		m_songInfoPanel.draw(gameStatus.currentBPM, highwayScrollContext);

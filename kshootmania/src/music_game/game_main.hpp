@@ -46,6 +46,7 @@ namespace MusicGame
 
 		// 視点制御
 		Camera::HighwayTilt m_highwayTilt; // 傾き
+		Camera::CamSystem m_camSystem; // 視点変更
 
 		// スクロール(ハイスピード・scroll_speedの処理)
 		Scroll::HighwayScroll m_highwayScroll;

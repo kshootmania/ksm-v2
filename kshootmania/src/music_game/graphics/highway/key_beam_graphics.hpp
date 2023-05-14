@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "music_game/game_status.hpp"
+#include "music_game/view_status.hpp"
 #include "music_game/graphics/highway/highway_render_texture.hpp"
 
 namespace MusicGame::Graphics
@@ -12,6 +13,6 @@ namespace MusicGame::Graphics
 	public:
 		KeyBeamGraphics();
 
-		void draw(const GameStatus& gameStatus, const HighwayRenderTexture& target) const;
+		void draw(const GameStatus& gameStatus, const ViewStatus& viewStatus, const HighwayRenderTexture& target) const;
 	};
 }

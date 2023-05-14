@@ -74,8 +74,12 @@ namespace MusicGame
 		const double leftLaserValue = kson::GraphSectionValueAtWithDefault(m_chartData.note.laser[0], m_gameStatus.currentPulse, 0.0); // range: [0, +1]
 		const double rightLaserValue = kson::GraphSectionValueAtWithDefault(m_chartData.note.laser[1], m_gameStatus.currentPulse, 1.0) - 1.0; // range: [-1, 0]
 		const double tiltFactor = leftLaserValue + rightLaserValue; // range: [-1, +1]
-		m_highwayTilt.update(tiltFactor);
+		m_highwayTilt.update(tiltFactor, m_chartData, m_gameStatus.currentPulse);
 		m_viewStatus.tiltRadians = m_highwayTilt.radians();
+
+		// 視点変更を更新
+		m_camSystem.update(m_chartData, m_gameStatus.currentPulse);
+		m_viewStatus.camStatus = m_camSystem.status();
 	}
 
 	void GameMain::updateHighwayScroll()
@@ -158,7 +162,7 @@ namespace MusicGame
 		m_laserSlamSE.update(m_chartData, m_gameStatus);
 
 		// グラフィックの更新
-		m_graphicsMain.update(m_gameStatus);
+		m_graphicsMain.update(m_gameStatus, m_viewStatus);
 
 		m_isFirstUpdate = false;
 	}
