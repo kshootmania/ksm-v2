@@ -31,6 +31,53 @@ namespace MusicGame::Judgment
 			return directionMap;
 		}
 
+		kson::ByPulse<int32> CreateLaserLineDirectionMapForRippleEffect(const kson::ByPulse<int32>& laserLineDirectionMap, const kson::ByPulse<kson::LaserSection>& lane)
+		{
+			kson::ByPulse<int32> replacedDirectionMap;
+			replacedDirectionMap.emplace(kson::Pulse{ 0 }, 0);
+
+			// v1と挙動を同じにするため、エフェクト表示に使う方向については、方向0の扱いを「両端(0.0、1.0)は内側方向」「それ以外は前のLASERと同じ方向」とする
+			// そのため、方向0の場合の値を読み替えたものを作成する
+			int32 prevReplacedDirection = 0;
+			for (const auto& [y, direction] : laserLineDirectionMap)
+			{
+				int32 replacedDirection = direction;
+				if (direction == 0)
+				{
+					const auto pointOpt = kson::GraphPointAt(lane, y);
+					if (!pointOpt.has_value())
+					{
+						// yが0の場合のみここを通り得る想定
+						assert(y == 0 && "Out-of-range pulse detected in laserLineDirectionMap");
+						continue;
+					}
+					const auto& point = pointOpt.value();
+					if (MathUtils::AlmostEquals(point.vf, 0.0))
+					{
+						// 左端は右側方向として扱う
+						replacedDirection = 1;
+					}
+					else if (MathUtils::AlmostEquals(point.vf, 1.0))
+					{
+						// 右端は左側方向として扱う
+						replacedDirection = -1;
+					}
+					else
+					{
+						// それ以外は前のLASERと同じ方向として扱う
+						replacedDirection = prevReplacedDirection;
+					}
+				}
+
+				if (replacedDirection != prevReplacedDirection)
+				{
+					replacedDirectionMap.insert_or_assign(y, replacedDirection);
+				}
+			}
+
+			return replacedDirectionMap;
+		}
+
 		Array<double> CreateLaserLineDirectionChangeSecArray(const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 		{
 			Array<double> directionChangeSecArray;
@@ -259,20 +306,6 @@ namespace MusicGame::Judgment
 			nextCursorX = cursorX + deltaCursorX;
 		}
 		laneStatusRef.cursorX = Clamp(nextCursorX, 0.0, 1.0);
-
-		// 折り返し時のアニメーション
-		if (laneStatusRef.isCursorInCriticalJudgmentRange())
-		{
-			const int32 prevNoteDirection = kson::ValueItrAt(m_laserLineDirectionMap, m_prevPulse)->second;
-			if (prevNoteDirection != noteDirection && prevNoteDirection != 0)
-			{
-				laneStatusRef.rippleAnim.push({
-					.startTimeSec = currentTimeSec,
-					.wide = laneStatusRef.cursorWide,
-					.x = laneStatusRef.cursorX.value(),
-				});
-			}
-		}
 	}
 
 	void LaserLaneJudgment::processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
@@ -557,6 +590,7 @@ namespace MusicGame::Judgment
 		: m_keyConfigButtonL(keyConfigButtonL)
 		, m_keyConfigButtonR(keyConfigButtonR)
 		, m_laserLineDirectionMap(CreateLaserLineDirectionMap(lane))
+		, m_laserLineDirectionMapForRippleEffect(CreateLaserLineDirectionMapForRippleEffect(m_laserLineDirectionMap, lane))
 		, m_laserLineDirectionChangeSecArray(CreateLaserLineDirectionChangeSecArray(lane, beatInfo, timingCache))
 		, m_laserLineDirectionChangeSecArrayCursor(m_laserLineDirectionChangeSecArray.begin())
 		, m_lineJudgmentArray(CreateLineJudgmentResultArray(lane, beatInfo))
@@ -589,6 +623,7 @@ namespace MusicGame::Judgment
 		{
 			// 異なるLASERセクションに突入した初回フレームの場合、前回フレームでの判定状況を加味しない
 			m_prevIsCursorInAutoFitRange = false;
+			m_prevIsCursorInCriticalJudgmentRange = false;
 		}
 		if (laneStatusRef.noteCursorX.has_value())
 		{
@@ -653,12 +688,28 @@ namespace MusicGame::Judgment
 		// 通過済みのLASER判定をERRORにする
 		processPassedLineJudgment(lane, currentPulse, laneStatusRef, comboStatusRef);
 
+		// 折り返し時のアニメーション
+		if (m_prevIsCursorInCriticalJudgmentRange)
+		{
+			const int32 direction = kson::ValueItrAt(m_laserLineDirectionMapForRippleEffect, currentPulse)->second;
+			const int32 prevDirection = kson::ValueItrAt(m_laserLineDirectionMapForRippleEffect, m_prevPulse)->second;
+			if (direction != prevDirection && prevDirection != 0)
+			{
+				laneStatusRef.rippleAnim.push({
+					.startTimeSec = currentTimeSec,
+					.wide = laneStatusRef.cursorWide,
+					.x = laneStatusRef.cursorX.value(),
+				});
+			}
+		}
+
 		m_prevCurrentLaserSectionPulse = laneStatusRef.currentLaserSectionPulse;
 
 		m_prevIsCursorInAutoFitRange =
 			laneStatusRef.cursorX.has_value() &&
 			laneStatusRef.noteCursorX.has_value() &&
 			IsLaserCursorInAutoFitRange(laneStatusRef.cursorX.value(), laneStatusRef.noteCursorX.value());
+		m_prevIsCursorInCriticalJudgmentRange = laneStatusRef.isCursorInCriticalJudgmentRange();
 
 		m_prevPulse = currentPulse;
 	}

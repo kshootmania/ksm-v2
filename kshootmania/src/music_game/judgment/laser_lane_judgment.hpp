@@ -44,6 +44,7 @@ namespace MusicGame::Judgment
 		const KeyConfig::Button m_keyConfigButtonL;
 		const KeyConfig::Button m_keyConfigButtonR;
 		const kson::ByPulse<int32> m_laserLineDirectionMap;
+		const kson::ByPulse<int32> m_laserLineDirectionMapForRippleEffect;
 
 		const Array<double> m_laserLineDirectionChangeSecArray;
 		Array<double>::const_iterator m_laserLineDirectionChangeSecArrayCursor;
@@ -57,6 +58,7 @@ namespace MusicGame::Judgment
 		double m_lastCorrectMovementSec = kPastTimeSec;
 
 		Optional<kson::Pulse> m_prevCurrentLaserSectionPulse = none;
+		bool m_prevIsCursorInCriticalJudgmentRange = false;
 		bool m_prevIsCursorInAutoFitRange = false;
 		kson::Pulse m_prevPulse = kPastPulse;
 
