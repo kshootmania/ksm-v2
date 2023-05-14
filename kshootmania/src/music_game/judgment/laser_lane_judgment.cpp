@@ -621,6 +621,23 @@ namespace MusicGame::Judgment
 		const bool hasSectionChanged = laneStatusRef.currentLaserSectionPulse != m_prevCurrentLaserSectionPulse;
 		if (hasSectionChanged)
 		{
+			// LASERノーツ終点後のアニメーション
+			if (m_prevIsCursorInCriticalJudgmentRange && m_prevCurrentLaserSectionPulse.has_value() && !laneStatusRef.currentLaserSectionPulse.has_value())
+			{
+				const auto& section = lane.at(m_prevCurrentLaserSectionPulse.value());
+				assert(!section.v.empty() && "Laser section must not be empty");
+				const auto& [lastPointRy, lastPoint] = *section.v.rbegin();
+				const bool isLastPointSlam = !MathUtils::AlmostEquals(lastPoint.v, lastPoint.vf);
+				if (!isLastPointSlam) // 最後の点が直角LASERの場合、直角判定で別途アニメーションされるのでここでは不要
+				{
+					laneStatusRef.rippleAnim.push({
+						.startTimeSec = currentTimeSec,
+						.wide = section.wide(),
+						.x = lastPoint.vf,
+					});
+				}
+			}
+
 			// 異なるLASERセクションに突入した初回フレームの場合、前回フレームでの判定状況を加味しない
 			m_prevIsCursorInAutoFitRange = false;
 			m_prevIsCursorInCriticalJudgmentRange = false;
@@ -688,18 +705,21 @@ namespace MusicGame::Judgment
 		// 通過済みのLASER判定をERRORにする
 		processPassedLineJudgment(lane, currentPulse, laneStatusRef, comboStatusRef);
 
-		// 折り返し時のアニメーション
 		if (m_prevIsCursorInCriticalJudgmentRange)
 		{
 			const int32 direction = kson::ValueItrAt(m_laserLineDirectionMapForRippleEffect, currentPulse)->second;
 			const int32 prevDirection = kson::ValueItrAt(m_laserLineDirectionMapForRippleEffect, m_prevPulse)->second;
-			if (direction != prevDirection && prevDirection != 0)
+			if (laneStatusRef.cursorX.has_value())
 			{
-				laneStatusRef.rippleAnim.push({
-					.startTimeSec = currentTimeSec,
-					.wide = laneStatusRef.cursorWide,
-					.x = laneStatusRef.cursorX.value(),
-				});
+				// 折り返し時のアニメーション
+				if (direction != prevDirection && prevDirection != 0)
+				{
+					laneStatusRef.rippleAnim.push({
+						.startTimeSec = currentTimeSec,
+						.wide = laneStatusRef.cursorWide,
+						.x = laneStatusRef.cursorX.value(),
+					});
+				}
 			}
 		}
 
