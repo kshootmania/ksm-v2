@@ -110,6 +110,7 @@ namespace MusicGame::Judgment
 				continue;
 			}
 
+			const double diffSec = sec - currentTimeSec;
 			if (note.length == 0) // Chip note
 			{
 				if (m_chipJudgmentArray.at(y) != JudgmentResult::kUnspecified)
@@ -117,26 +118,26 @@ namespace MusicGame::Judgment
 					continue;
 				}
 
-				if (!found || Abs(sec - currentTimeSec) < minDistance)
+				if (!found || Abs(diffSec) < minDistance)
 				{
 					nearestNotePulse = y;
-					minDistance = Abs(sec - currentTimeSec);
+					minDistance = Abs(diffSec);
 					found = true;
 				}
-				else if (found && Abs(sec - currentTimeSec) >= minDistance && y > currentPulse)
+				else if (found && Abs(diffSec) >= minDistance && y > currentPulse)
 				{
 					break;
 				}
 			}
 			else // Long note
 			{
-				if ((!found || Abs(sec - currentTimeSec) < minDistance) && sec - currentTimeSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
+				if ((!found || Abs(diffSec) < minDistance) && diffSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
 				{
 					laneStatusRef.currentLongNotePulse = y;
 					laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
 					return;
 				}
-				else if (found && sec - currentTimeSec > LongNote::kWindowSecPreHold && y > currentPulse)
+				else if (found && diffSec > LongNote::kWindowSecPreHold && y > currentPulse)
 				{
 					break;
 				}
@@ -226,8 +227,8 @@ namespace MusicGame::Judgment
 		for (auto itr = m_passedNoteCursor; itr != lane.end(); ++itr)
 		{
 			const auto& [y, note] = *itr;
-			const double sec = m_pulseToSec.at(y);
-			if (currentTimeSec - sec >= ChipNote::kWindowSecError)
+			const double passSec = (note.length == 0) ? m_pulseToSec.at(y) + ChipNote::kWindowSecError : m_pulseToSec.at(y + note.length);
+			if (currentTimeSec >= passSec)
 			{
 				// 通過済みチップノーツのERROR判定
 				if (note.length == 0 && m_chipJudgmentArray.at(y) == JudgmentResult::kUnspecified)
