@@ -203,7 +203,8 @@ namespace MusicGame::Graphics
 				}
 
 				const SizeF size = ScreenUtils::Scaled(kLaserRippleAnimSize);
-				const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 28 + static_cast<int32>(295 * rippleAnimStatus.x), 17);
+				const double x = rippleAnimStatus.wide ? ((rippleAnimStatus.x - 0.5) * 2 + 0.5) : rippleAnimStatus.x;
+				const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 28 + static_cast<int32>(295 * x), 17);
 				m_laserRippleAnimTexture(frameIdx, i).resized(size).draw(position, ColorF{ kLaserRippleAnimAlpha });
 			}
 		}
