@@ -66,7 +66,7 @@ namespace MusicGame::Judgment
 
 		void processCursorMovement(double deltaCursorX, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
-		void processSlamJudgment(double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef);
+		void processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef);
 
 		void processAutoCursorMovementBySlamJudgment(double currentTimeSec, LaserLaneStatus& laneStatusRef);
 

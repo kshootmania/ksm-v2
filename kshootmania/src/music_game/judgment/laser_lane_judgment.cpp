@@ -120,7 +120,7 @@ namespace MusicGame::Judgment
 					{
 						const double slamTimeSec = kson::PulseToSec(y + ry, beatInfo, timingCache);
 						const int32 slamDirection = Sign(point.vf - point.v);
-						judgmentArray.emplace(y + ry, LaserSlamJudgment(slamTimeSec, slamDirection));
+						judgmentArray.emplace(y + ry, LaserSlamJudgment{ slamTimeSec, slamDirection });
 					}
 				}
 			}
@@ -275,7 +275,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void LaserLaneJudgment::processSlamJudgment(double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	void LaserLaneJudgment::processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
 	{
 		// 直角LASERはまだカーソルが出ていなくても先行判定するので、カーソルの存在チェックはしない
 
@@ -306,6 +306,17 @@ namespace MusicGame::Judgment
 				// 判定した時間を記録(補正および効果音再生に使用)
 				laneStatusRef.lastLaserSlamJudgedTimeSec = Max(currentTimeSec, laserSlamJudgmentRef.sec());
 				laneStatusRef.lastJudgedLaserSlamPulse = laserSlamPulse;
+
+				// アニメーション
+				const auto sectionItr = kson::GraphSectionAt(lane, laserSlamPulse);
+				assert(sectionItr != lane.end() && "Cannot find laser section of slam note");
+				const auto& [y, section] = *sectionItr;
+				const auto& point = section.v.at(laserSlamPulse - y);
+				laneStatusRef.rippleAnim.push({
+					.startTimeSec = Max(laserSlamJudgmentRef.sec(), currentTimeSec),
+					.wide = section.wide(),
+					.x = point.vf,
+				});
 			}
 			else
 			{
@@ -625,7 +636,7 @@ namespace MusicGame::Judgment
 			deltaCursorX = 0.0;
 		}
 		processCursorMovement(deltaCursorX, currentPulse, currentTimeSec, laneStatusRef);
-		processSlamJudgment(deltaCursorX, currentTimeSec, laneStatusRef, comboStatusRef);
+		processSlamJudgment(lane, deltaCursorX, currentTimeSec, laneStatusRef, comboStatusRef);
 
 		// 直角LASER判定直後のカーソル自動移動
 		processAutoCursorMovementBySlamJudgment(currentTimeSec, laneStatusRef);
