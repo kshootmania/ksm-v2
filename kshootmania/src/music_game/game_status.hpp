@@ -6,6 +6,29 @@
 
 namespace MusicGame
 {
+	template <typename T, std::size_t N>
+	class AnimRingBuffer
+	{
+	private:
+		std::array<T, N> m_array;
+
+		std::size_t m_cursor = 0U;
+
+	public:
+		AnimRingBuffer() = default;
+
+		void push(const T& value)
+		{
+			m_array[m_cursor] = value;
+			m_cursor = (m_cursor + 1U) % N;
+		}
+
+		const std::array<T, N>& array() const
+		{
+			return m_array;
+		}
+	};
+
 	struct ChipAnimStatus
 	{
 		double startTimeSec = kPastTimeSec;
@@ -17,15 +40,14 @@ namespace MusicGame
 		double keyBeamTimeSec = kPastTimeSec;
 		Judgment::KeyBeamType keyBeamType = Judgment::KeyBeamType::kDefault;
 
-		// 判定アニメーション
-		std::array<ChipAnimStatus, Graphics::kChipAnimMaxPlaying> chipAnimStatusRingBuffer;
-		std::size_t chipAnimStatusRingBufferCursor = 0U;
+		// チップノーツの判定アニメーション
+		AnimRingBuffer<ChipAnimStatus, Graphics::kChipAnimMaxPlaying> chipAnim;
 
-		// 現在ロングノートが押されているかどうか
+		// 現在ロングノーツが押されているかどうか
 		// (ロングノーツが判定ラインに到達するまではボタンを押していてもnoneになる。主に音声エフェクト用)
 		Optional<bool> longNotePressed = none;
 
-		// 現在押しているロングノートの始点のPulse値
+		// 現在押しているロングノーツの始点のPulse値
 		// (ロングノーツが判定ラインに到達するまでにボタンを押した場合でもnoneではなくPulse値になる。主に判定グラフィックス用)
 		Optional<kson::Pulse> currentLongNotePulse = none;
 
@@ -73,8 +95,7 @@ namespace MusicGame
 		kson::Pulse lastJudgedLaserSlamPulse = kPastPulse;
 
 		// 折り返し時・終了時・直角判定時のアニメーション
-		std::array<LaserAnimStatus, Graphics::kLaserRippleAnimMaxPlaying> rippleAnimStatusRingBuffer;
-		std::size_t rippleAnimStatusRingBufferCursor = 0U;
+		AnimRingBuffer<LaserAnimStatus, Graphics::kLaserRippleAnimMaxPlaying> rippleAnim;
 
 		bool isCursorInCriticalJudgmentRange() const
 		{

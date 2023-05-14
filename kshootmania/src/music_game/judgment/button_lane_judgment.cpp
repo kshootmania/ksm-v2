@@ -180,12 +180,10 @@ namespace MusicGame::Judgment
 
 			if (chipAnimType.has_value())
 			{
-				assert(laneStatusRef.chipAnimStatusRingBufferCursor < Graphics::kChipAnimMaxPlaying);
-				laneStatusRef.chipAnimStatusRingBuffer[laneStatusRef.chipAnimStatusRingBufferCursor] = {
+				laneStatusRef.chipAnim.push({
 					.startTimeSec = currentTimeSec,
 					.type = *chipAnimType,
-				};
-				laneStatusRef.chipAnimStatusRingBufferCursor = (laneStatusRef.chipAnimStatusRingBufferCursor + 1U) % Graphics::kChipAnimMaxPlaying;
+				});
 			}
 		}
 	}
@@ -236,12 +234,10 @@ namespace MusicGame::Judgment
 					m_chipJudgmentArray.at(y) = JudgmentResult::kError;
 					comboStatusRef.resetByErrorJudgment();
 
-					assert(laneStatusRef.chipAnimStatusRingBufferCursor < Graphics::kChipAnimMaxPlaying);
-					laneStatusRef.chipAnimStatusRingBuffer[laneStatusRef.chipAnimStatusRingBufferCursor] = {
+					laneStatusRef.chipAnim.push({
 						.startTimeSec = currentTimeSec,
 						.type = JudgmentResult::kError,
-					};
-					laneStatusRef.chipAnimStatusRingBufferCursor = (laneStatusRef.chipAnimStatusRingBufferCursor + 1U) % Graphics::kChipAnimMaxPlaying;
+					});
 				}
 
 				m_passedNoteCursor = std::next(itr);

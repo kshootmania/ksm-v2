@@ -83,7 +83,7 @@ namespace MusicGame::Graphics
 		{
 			const auto& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
 			const int32 centerSplitShiftX = static_cast<int32>(Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit, static_cast<double>(kBTLaneDiffX)) * ((laneIdx >= numLanes / 2) ? 1 : -1));
-			for (const auto& chipAnimState : laneStatus.chipAnimStatusRingBuffer) // 加算合成なので順番は気にしなくてOK
+			for (const auto& chipAnimState : laneStatus.chipAnim.array()) // 加算合成なので順番は気にしなくてOK
 			{
 				const double sec = gameStatus.currentTimeSec - chipAnimState.startTimeSec;
 				if (sec < 0.0 || kChipAnimDurationSec <= sec || chipAnimState.type == Judgment::JudgmentResult::kUnspecified)
@@ -181,7 +181,7 @@ namespace MusicGame::Graphics
 		for (int32 i = 0; i < kson::kNumLaserLanes; ++i)
 		{
 			const auto& laneStatus = gameStatus.laserLaneStatus[i];
-			for (const auto& rippleAnimStatus : laneStatus.rippleAnimStatusRingBuffer) // 加算合成なので順番は気にしなくてOK
+			for (const auto& rippleAnimStatus : laneStatus.rippleAnim.array()) // 加算合成なので順番は気にしなくてOK
 			{
 				const double sec = gameStatus.currentTimeSec - rippleAnimStatus.startTimeSec;
 				double timeRate;

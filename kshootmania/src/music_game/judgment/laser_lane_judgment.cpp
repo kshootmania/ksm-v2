@@ -266,13 +266,11 @@ namespace MusicGame::Judgment
 			const int32 prevNoteDirection = kson::ValueItrAt(m_laserLineDirectionMap, m_prevPulse)->second;
 			if (prevNoteDirection != noteDirection && prevNoteDirection != 0)
 			{
-				assert(laneStatusRef.rippleAnimStatusRingBufferCursor < Graphics::kLaserRippleAnimMaxPlaying);
-				laneStatusRef.rippleAnimStatusRingBuffer[laneStatusRef.rippleAnimStatusRingBufferCursor] = {
+				laneStatusRef.rippleAnim.push({
 					.startTimeSec = currentTimeSec,
 					.wide = laneStatusRef.cursorWide,
 					.x = laneStatusRef.cursorX.value(),
-				};
-				laneStatusRef.rippleAnimStatusRingBufferCursor = (laneStatusRef.rippleAnimStatusRingBufferCursor + 1) % Graphics::kLaserRippleAnimMaxPlaying;
+				});
 			}
 		}
 	}
