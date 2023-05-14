@@ -42,6 +42,17 @@ namespace MusicGame::Graphics
 		constexpr int32 kLaserAnimLoopFrames = 26;
 		constexpr Size kLaserAnimSourceSize = { 150, 150 };
 		constexpr Size kLaserAnimSize = { 100, 100 };
+
+		constexpr StringView kLaserRippleAnimTextureFilename = U"judgelaser_d.gif";
+		constexpr double kLaserRippleAnimDurationSecFirst = 0.09;
+		constexpr double kLaserRippleAnimDurationSecSecond = 0.08;
+		constexpr double kLaserRippleAnimDurationSec = kLaserRippleAnimDurationSecFirst + kLaserRippleAnimDurationSecSecond;
+		constexpr int32 kLaserRippleAnimFramesFirst = 3;
+		constexpr int32 kLaserRippleAnimFramesSecond = 3;
+		constexpr int32 kLaserRippleAnimFrames = kLaserRippleAnimFramesFirst + kLaserRippleAnimFramesSecond;
+		constexpr Size kLaserRippleAnimSourceSize = { 300, 150 };
+		constexpr Size kLaserRippleAnimSize = { 172, 86 };
+		constexpr double kLaserRippleAnimAlpha = 133.0 / 255;
 	}
 
 	const TiledTexture& Jdgoverlay3DGraphics::chipAnimTexture(Judgment::JudgmentResult type) const
@@ -72,15 +83,17 @@ namespace MusicGame::Graphics
 		{
 			const auto& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
 			const int32 centerSplitShiftX = static_cast<int32>(Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit, static_cast<double>(kBTLaneDiffX)) * ((laneIdx >= numLanes / 2) ? 1 : -1));
-			for (const auto& chipAnimState : laneStatus.chipAnimStatusRingBuffer)
+			for (const auto& chipAnimState : laneStatus.chipAnimStatusRingBuffer) // 加算合成なので順番は気にしなくてOK
 			{
 				const double sec = gameStatus.currentTimeSec - chipAnimState.startTimeSec;
-				if (0.0 <= sec && sec < kChipAnimDurationSec && chipAnimState.type != Judgment::JudgmentResult::kUnspecified)
+				if (sec < 0.0 || kChipAnimDurationSec <= sec || chipAnimState.type == Judgment::JudgmentResult::kUnspecified)
 				{
-					const int32 frameIdx = static_cast<int32>(sec / kChipAnimDurationSec * kChipAnimFrames);
-					const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + (isBT ? 0 : 30) + (isBT ? kBTLaneDiffX : kFXLaneDiffX) * laneIdx + centerSplitShiftX, 17);
-					chipAnimTexture(chipAnimState.type)(frameIdx).resized(ScreenUtils::Scaled(kChipAnimSize)).draw(position);
+					continue;
 				}
+
+				const int32 frameIdx = static_cast<int32>(sec / kChipAnimDurationSec * kChipAnimFrames);
+				const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + (isBT ? 0 : 30) + (isBT ? kBTLaneDiffX : kFXLaneDiffX) * laneIdx + centerSplitShiftX, 17);
+				chipAnimTexture(chipAnimState.type)(frameIdx).resized(ScreenUtils::Scaled(kChipAnimSize)).draw(position);
 			}
 		}
 	}
@@ -163,6 +176,39 @@ namespace MusicGame::Graphics
 		}
 	}
 
+	void Jdgoverlay3DGraphics::drawLaserRippleAnim(const GameStatus& gameStatus) const
+	{
+		for (int32 i = 0; i < kson::kNumLaserLanes; ++i)
+		{
+			const auto& laneStatus = gameStatus.laserLaneStatus[i];
+			for (const auto& rippleAnimStatus : laneStatus.rippleAnimStatusRingBuffer) // 加算合成なので順番は気にしなくてOK
+			{
+				const double sec = gameStatus.currentTimeSec - rippleAnimStatus.startTimeSec;
+				double timeRate;
+				int32 frameIdx;
+
+				if (0.0 <= sec && sec < kLaserRippleAnimDurationSecFirst)
+				{
+					timeRate = sec / kLaserRippleAnimDurationSecFirst;
+					frameIdx = static_cast<int32>(timeRate * kLaserRippleAnimFramesFirst);
+				}
+				else if (kLaserRippleAnimDurationSecFirst <= sec && sec < kLaserRippleAnimDurationSec)
+				{
+					timeRate = (sec - kLaserRippleAnimDurationSecFirst) / kLaserRippleAnimDurationSecSecond;
+					frameIdx = kLaserRippleAnimFramesFirst + static_cast<int32>(timeRate * kLaserRippleAnimFramesSecond);
+				}
+				else
+				{
+					continue;
+				}
+
+				const SizeF size = ScreenUtils::Scaled(kLaserRippleAnimSize);
+				const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 28 + static_cast<int32>(295 * rippleAnimStatus.x), 17);
+				m_laserRippleAnimTexture(frameIdx, i).resized(size).draw(position, ColorF{ kLaserRippleAnimAlpha });
+			}
+		}
+	}
+
 	Jdgoverlay3DGraphics::Jdgoverlay3DGraphics(const BasicCamera3D& camera)
 		: m_renderTexture(ScreenUtils::Scaled(kTextureSize.x), ScreenUtils::Scaled(kTextureSize.y))
 		, m_chipCriticalTexture(kChipCriticalAnimTextureFilename,
@@ -197,6 +243,13 @@ namespace MusicGame::Graphics
 				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
 				.sourceSize = kLaserAnimSourceSize,
 			})
+		, m_laserRippleAnimTexture(kLaserRippleAnimTextureFilename,
+			{
+				.row = kLaserRippleAnimFrames,
+				.column = kson::kNumLaserLanes,
+				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
+				.sourceSize = kLaserRippleAnimSourceSize,
+			})
 		, m_transform(camera.billboard(kPlaneCenter, kPlaneSize))
 		, m_mesh(MeshData::Billboard())
 	{
@@ -212,6 +265,7 @@ namespace MusicGame::Graphics
 		drawLongAnimBT(gameStatus, viewStatus);
 		drawLongAnimFX(gameStatus, viewStatus);
 		drawLaserAnim(gameStatus);
+		drawLaserRippleAnim(gameStatus);
 	}
 
 	void Jdgoverlay3DGraphics::draw3D(const ViewStatus& viewStatus) const

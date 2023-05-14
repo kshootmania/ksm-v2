@@ -65,4 +65,6 @@ namespace MusicGame::Graphics
 	}
 
 	constexpr std::size_t kChipAnimMaxPlaying = 5U;
+
+	constexpr std::size_t kLaserRippleAnimMaxPlaying = 10U;
 }

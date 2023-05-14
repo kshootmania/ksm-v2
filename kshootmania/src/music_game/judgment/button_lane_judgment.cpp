@@ -180,12 +180,12 @@ namespace MusicGame::Judgment
 
 			if (chipAnimType.has_value())
 			{
-				assert(laneStatusRef.chipAnimStateRingBufferCursor < Graphics::kChipAnimMaxPlaying);
-				laneStatusRef.chipAnimStatusRingBuffer[laneStatusRef.chipAnimStateRingBufferCursor] = {
+				assert(laneStatusRef.chipAnimStatusRingBufferCursor < Graphics::kChipAnimMaxPlaying);
+				laneStatusRef.chipAnimStatusRingBuffer[laneStatusRef.chipAnimStatusRingBufferCursor] = {
 					.startTimeSec = currentTimeSec,
 					.type = *chipAnimType,
 				};
-				laneStatusRef.chipAnimStateRingBufferCursor = (laneStatusRef.chipAnimStateRingBufferCursor + 1U) % Graphics::kChipAnimMaxPlaying;
+				laneStatusRef.chipAnimStatusRingBufferCursor = (laneStatusRef.chipAnimStatusRingBufferCursor + 1U) % Graphics::kChipAnimMaxPlaying;
 			}
 		}
 	}
@@ -236,12 +236,12 @@ namespace MusicGame::Judgment
 					m_chipJudgmentArray.at(y) = JudgmentResult::kError;
 					comboStatusRef.resetByErrorJudgment();
 
-					assert(laneStatusRef.chipAnimStateRingBufferCursor < Graphics::kChipAnimMaxPlaying);
-					laneStatusRef.chipAnimStatusRingBuffer[laneStatusRef.chipAnimStateRingBufferCursor] = {
+					assert(laneStatusRef.chipAnimStatusRingBufferCursor < Graphics::kChipAnimMaxPlaying);
+					laneStatusRef.chipAnimStatusRingBuffer[laneStatusRef.chipAnimStatusRingBufferCursor] = {
 						.startTimeSec = currentTimeSec,
 						.type = JudgmentResult::kError,
 					};
-					laneStatusRef.chipAnimStateRingBufferCursor = (laneStatusRef.chipAnimStateRingBufferCursor + 1U) % Graphics::kChipAnimMaxPlaying;
+					laneStatusRef.chipAnimStatusRingBufferCursor = (laneStatusRef.chipAnimStatusRingBufferCursor + 1U) % Graphics::kChipAnimMaxPlaying;
 				}
 
 				m_passedNoteCursor = std::next(itr);

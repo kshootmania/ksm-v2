@@ -17,6 +17,8 @@ namespace MusicGame::Graphics
 
 		const TiledTexture m_laserAnimTexture;
 
+		const TiledTexture m_laserRippleAnimTexture;
+
 		const Mat4x4 m_transform;
 		const Mesh m_mesh;
 
@@ -35,6 +37,8 @@ namespace MusicGame::Graphics
 		void drawLongAnimFX(const GameStatus& gameStatus, const ViewStatus& viewStatus) const;
 
 		void drawLaserAnim(const GameStatus& gameStatus) const;
+
+		void drawLaserRippleAnim(const GameStatus& gameStatus) const;
 
 	public:
 		explicit Jdgoverlay3DGraphics(const BasicCamera3D& camera);

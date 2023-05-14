@@ -17,8 +17,9 @@ namespace MusicGame
 		double keyBeamTimeSec = kPastTimeSec;
 		Judgment::KeyBeamType keyBeamType = Judgment::KeyBeamType::kDefault;
 
+		// 判定アニメーション
 		std::array<ChipAnimStatus, Graphics::kChipAnimMaxPlaying> chipAnimStatusRingBuffer;
-		std::size_t chipAnimStateRingBufferCursor = 0U;
+		std::size_t chipAnimStatusRingBufferCursor = 0U;
 
 		// 現在ロングノートが押されているかどうか
 		// (ロングノーツが判定ラインに到達するまではボタンを押していてもnoneになる。主に音声エフェクト用)
@@ -30,6 +31,17 @@ namespace MusicGame
 
 		// 直近でキーを押した、または離した時間(秒)
 		double currentLongNoteAnimOffsetTimeSec = kPastTimeSec;
+	};
+
+	struct LaserAnimStatus
+	{
+		double startTimeSec = kPastTimeSec;
+
+		// はみ出しLASERのアニメーションかどうか
+		bool wide = false;
+
+		// 横位置(0.0～1.0)
+		double x = 0.0;
 	};
 
 	struct LaserLaneStatus
@@ -59,6 +71,10 @@ namespace MusicGame
 
 		// 最後に判定した直角LASERのPulse値
 		kson::Pulse lastJudgedLaserSlamPulse = kPastPulse;
+
+		// 折り返し時・終了時・直角判定時のアニメーション
+		std::array<LaserAnimStatus, Graphics::kLaserRippleAnimMaxPlaying> rippleAnimStatusRingBuffer;
+		std::size_t rippleAnimStatusRingBufferCursor = 0U;
 
 		bool isCursorInCriticalJudgmentRange() const
 		{

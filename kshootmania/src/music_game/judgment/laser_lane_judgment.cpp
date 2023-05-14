@@ -259,6 +259,22 @@ namespace MusicGame::Judgment
 			nextCursorX = cursorX + deltaCursorX;
 		}
 		laneStatusRef.cursorX = Clamp(nextCursorX, 0.0, 1.0);
+
+		// 折り返し時のアニメーション
+		if (laneStatusRef.isCursorInCriticalJudgmentRange())
+		{
+			const int32 prevNoteDirection = kson::ValueItrAt(m_laserLineDirectionMap, m_prevPulse)->second;
+			if (prevNoteDirection != noteDirection && prevNoteDirection != 0)
+			{
+				assert(laneStatusRef.rippleAnimStatusRingBufferCursor < Graphics::kLaserRippleAnimMaxPlaying);
+				laneStatusRef.rippleAnimStatusRingBuffer[laneStatusRef.rippleAnimStatusRingBufferCursor] = {
+					.startTimeSec = currentTimeSec,
+					.wide = laneStatusRef.cursorWide,
+					.x = laneStatusRef.cursorX.value(),
+				};
+				laneStatusRef.rippleAnimStatusRingBufferCursor = (laneStatusRef.rippleAnimStatusRingBufferCursor + 1) % Graphics::kLaserRippleAnimMaxPlaying;
+			}
+		}
 	}
 
 	void LaserLaneJudgment::processSlamJudgment(double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
