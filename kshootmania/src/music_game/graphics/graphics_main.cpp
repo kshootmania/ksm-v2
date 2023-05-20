@@ -21,20 +21,20 @@ namespace MusicGame::Graphics
 		constexpr Float3 kLayerBillboardPosition = Float3{ 0, -41.0f, 0 };
 		constexpr Float2 kLayerBillboardSize = Float2{ 880.0f, 704.0f } * 0.65f;
 
-		FilePath BGFilePath(const kson::ChartData& chartData)
+		FilePath BGFilePath(const kson::ChartData& chartData, FilePathView parentPath)
 		{
-			const String bgFilename = Unicode::FromUTF8(chartData.bg.legacy.bg.at(0).filename);
+			const String bgFilename = Unicode::FromUTF8(chartData.bg.legacy.bg[0].filename);
 			if (FileSystem::Extension(bgFilename).empty())
 			{
 				// 標準の背景
 				return U"imgs/bg/{}0.jpg"_fmt(bgFilename);
 			}
 
-			// TODO: Convert to absolute path using chart file path parent directory
-			return bgFilename;
+			// 標準の背景でなければ、譜面ファイルと同じディレクトリのファイル名として参照
+			return FileSystem::PathAppend(parentPath, bgFilename);
 		}
 
-		FilePath LayerFilePath(const kson::ChartData& chartData)
+		FilePath LayerFilePath(const kson::ChartData& chartData, FilePathView parentPath)
 		{
 			const String layerFilename = Unicode::FromUTF8(chartData.bg.legacy.layer.filename);
 			if (FileSystem::Extension(layerFilename).empty())
@@ -43,8 +43,8 @@ namespace MusicGame::Graphics
 				return U"imgs/bg/{}.gif"_fmt(layerFilename);
 			}
 
-			// TODO: Convert to absolute path using chart file path parent directory
-			return layerFilename;
+			// 標準の背景でなければ、譜面ファイルと同じディレクトリのファイル名として参照
+			return FileSystem::PathAppend(parentPath, layerFilename);
 		}
 
 		std::array<Array<RenderTexture>, 2> SplitLayerTexture(FilePathView layerFilePath)
@@ -103,9 +103,9 @@ namespace MusicGame::Graphics
 	GraphicsMain::GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath)
 		: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 		, m_bgBillboardMesh(MeshData::Billboard())
-		, m_bgTexture(BGFilePath(chartData))
+		, m_bgTexture(BGFilePath(chartData, parentPath))
 		, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
-		, m_layerFrameTextures(SplitLayerTexture(LayerFilePath(chartData)))
+		, m_layerFrameTextures(SplitLayerTexture(LayerFilePath(chartData, parentPath)))
 		, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
 		, m_jdgoverlay3DGraphics(m_camera)
 		, m_songInfoPanel(chartData, parentPath)
