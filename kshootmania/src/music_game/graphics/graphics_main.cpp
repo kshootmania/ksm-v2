@@ -23,28 +23,40 @@ namespace MusicGame::Graphics
 
 		FilePath BGFilePath(const kson::ChartData& chartData, FilePathView parentPath)
 		{
-			const String bgFilename = Unicode::FromUTF8(chartData.bg.legacy.bg[0].filename);
-			if (FileSystem::Extension(bgFilename).empty())
+			const String filename = Unicode::FromUTF8(chartData.bg.legacy.bg[0].filename);
+			if (FileSystem::Extension(filename).empty())
 			{
 				// 標準の背景
-				return U"imgs/bg/{}0.jpg"_fmt(bgFilename);
+				return U"imgs/bg/{}0.jpg"_fmt(filename);
 			}
 
 			// 標準の背景でなければ、譜面ファイルと同じディレクトリのファイル名として参照
-			return FileSystem::PathAppend(parentPath, bgFilename);
+			const String filePath = FileSystem::PathAppend(parentPath, filename);
+			if (!FileSystem::Exists(filePath))
+			{
+				// 存在しない場合は、デフォルトの背景(desert)を返す
+				return U"imgs/bg/desert0.jpg";
+			}
+			return filePath;
 		}
 
 		FilePath LayerFilePath(const kson::ChartData& chartData, FilePathView parentPath)
 		{
-			const String layerFilename = Unicode::FromUTF8(chartData.bg.legacy.layer.filename);
-			if (FileSystem::Extension(layerFilename).empty())
+			const String filename = Unicode::FromUTF8(chartData.bg.legacy.layer.filename);
+			if (FileSystem::Extension(filename).empty())
 			{
 				// 標準のレイヤーアニメーション
-				return U"imgs/bg/{}.gif"_fmt(layerFilename);
+				return U"imgs/bg/{}.gif"_fmt(filename);
 			}
 
-			// 標準の背景でなければ、譜面ファイルと同じディレクトリのファイル名として参照
-			return FileSystem::PathAppend(parentPath, layerFilename);
+			// 標準のレイヤーアニメーションでなければ、譜面ファイルと同じディレクトリのファイル名として参照
+			const String filePath = FileSystem::PathAppend(parentPath, filename);
+			if (!FileSystem::Exists(filePath))
+			{
+				// 存在しない場合は、デフォルトのレイヤーアニメーション(arrow)を返す
+				return U"imgs/bg/arrow.gif";
+			}
+			return filePath;
 		}
 
 		std::array<Array<RenderTexture>, 2> SplitLayerTexture(FilePathView layerFilePath)
