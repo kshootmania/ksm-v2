@@ -83,7 +83,7 @@ namespace KeyConfig
 
 	bool Pressed(Button button);
 
-	Optional<KeyConfig::Button> LastPressed(Button button1, Button button2);
+	Optional<KeyConfig::Button> LastPressedLaserButton(Button button1, Button button2);
 
 	bool Down(Button button);
 

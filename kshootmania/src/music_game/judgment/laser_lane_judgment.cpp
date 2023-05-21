@@ -680,7 +680,7 @@ namespace MusicGame::Judgment
 
 		// キー押下中の判定処理
 		// (左向きキーと右向きキーを同時に押している場合、最後に押した方を優先する)
-		const Optional<KeyConfig::Button> lastPressedButton = KeyConfig::LastPressed(m_keyConfigButtonL, m_keyConfigButtonR);
+		const Optional<KeyConfig::Button> lastPressedButton = KeyConfig::LastPressedLaserButton(m_keyConfigButtonL, m_keyConfigButtonR);
 		double deltaCursorX;
 		if (lastPressedButton.has_value())
 		{

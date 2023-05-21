@@ -95,13 +95,26 @@ bool KeyConfig::Pressed(Button button)
 			return true;
 		}
 	}
+
+	// FXの場合はLR両押しキーの状態も反映
+	if (button == kFX_L || button == kFX_R)
+	{
+		for (const auto& configSet : s_configSetArray)
+		{
+			if (configSet[kFX_LR].pressed())
+			{
+				return true;
+			}
+		}
+	}
+	
 	return false;
 }
 
-Optional<KeyConfig::Button> KeyConfig::LastPressed(Button button1, Button button2)
+Optional<KeyConfig::Button> KeyConfig::LastPressedLaserButton(Button button1, Button button2)
 {
-	assert(button1 != KeyConfig::kUnspecifiedButton);
-	assert(button2 != KeyConfig::kUnspecifiedButton);
+	assert(button1 == kLeftLaserL || button1 == kLeftLaserR || button1 == kRightLaserL || button1 == kRightLaserR);
+	assert(button2 == kLeftLaserL || button2 == kLeftLaserR || button2 == kRightLaserL || button2 == kRightLaserR);
 
 	Optional<Button> lastButton = none;
 	Duration minDuration = Duration::zero();
@@ -120,6 +133,7 @@ Optional<KeyConfig::Button> KeyConfig::LastPressed(Button button1, Button button
 			}
 		}
 	}
+
 	return lastButton;
 }
 
@@ -137,6 +151,19 @@ bool KeyConfig::Down(Button button)
 			return true;
 		}
 	}
+
+	// FXの場合はLR両押しキーの状態も反映
+	if (button == kFX_L || button == kFX_R)
+	{
+		for (const auto& configSet : s_configSetArray)
+		{
+			if (configSet[kFX_LR].down())
+			{
+				return true;
+			}
+		}
+	}
+
 	return false;
 }
 
