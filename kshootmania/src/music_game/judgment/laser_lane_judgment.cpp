@@ -346,10 +346,6 @@ namespace MusicGame::Judgment
 
 			if (judgmentResult == JudgmentResult::kCritical)
 			{
-				// CRITICAL判定の場合はスコア加算
-				// TODO: 不要になる
-				m_scoreValue += kScoreValueCritical;
-
 				// 判定した時間を記録(補正および効果音再生に使用)
 				laneStatusRef.lastLaserSlamJudgedTimeSec = Max(currentTimeSec, laserSlamJudgmentRef.sec());
 				laneStatusRef.lastJudgedLaserSlamPulse = laserSlamPulse;
@@ -572,12 +568,6 @@ namespace MusicGame::Judgment
 			}
 
 			judgment.result = currentResult;
-			if (currentResult == JudgmentResult::kCritical)
-			{
-				// CRITICAL判定の場合はスコア加算
-				// TODO: 不要になる
-				m_scoreValue += kScoreValueCritical;
-			}
 			scoringStatusRef.doLongJudgment(currentResult);
 		}
 	}
@@ -612,7 +602,6 @@ namespace MusicGame::Judgment
 		, m_passedLineJudgmentCursor(m_lineJudgmentArray.begin())
 		, m_slamJudgmentArray(CreateSlamJudgmentArray(lane, beatInfo, timingCache))
 		, m_slamJudgmentArrayCursor(m_slamJudgmentArray.begin())
-		, m_scoreValueMax(static_cast<int32>(m_lineJudgmentArray.size() + m_slamJudgmentArray.size()) * kScoreValueCritical)
 	{
 	}
 
@@ -748,16 +737,6 @@ namespace MusicGame::Judgment
 
 		m_prevPulse = currentPulse;
 		m_prevTimeSec = currentTimeSec;
-	}
-
-	int32 LaserLaneJudgment::scoreValue() const
-	{
-		return m_scoreValue;
-	}
-
-	int32 LaserLaneJudgment::scoreValueMax() const
-	{
-		return m_scoreValueMax;
 	}
 
 	std::size_t LaserLaneJudgment::lineJudgmentCount() const

@@ -28,10 +28,6 @@ namespace MusicGame::Judgment
 		kson::ByPulse<kson::Interval>::const_iterator m_passedNoteCursor;
 		kson::ByPulse<LongNoteJudgment>::iterator m_passedLongJudgmentCursor;
 
-		int32 m_scoreValue = 0;
-
-		const int32 m_scoreValueMax;
-
 		void processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef);
 
 		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef);
@@ -42,10 +38,6 @@ namespace MusicGame::Judgment
 		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
 
 		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef);
-
-		int32 scoreValue() const;
-
-		int32 scoreValueMax() const;
 
 		std::size_t chipJudgmentCount() const;
 

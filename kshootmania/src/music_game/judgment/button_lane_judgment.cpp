@@ -162,7 +162,6 @@ namespace MusicGame::Judgment
 			{
 				// CRITICAL判定
 				m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kCritical;
-				m_scoreValue += kScoreValueCritical;
 				scoringStatusRef.doChipJudgment(JudgmentResult::kCritical);
 				laneStatusRef.keyBeamType = KeyBeamType::kCritical;
 				chipAnimType = JudgmentResult::kCritical;
@@ -171,7 +170,6 @@ namespace MusicGame::Judgment
 			{
 				// NEAR判定
 				m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kNear;
-				m_scoreValue += kScoreValueNear;
 				scoringStatusRef.doChipJudgment(JudgmentResult::kNear);
 				laneStatusRef.keyBeamType = KeyBeamType::kNear; // TODO: fast/slow
 				chipAnimType = JudgmentResult::kNear; // TODO: fast/slow
@@ -226,7 +224,6 @@ namespace MusicGame::Judgment
 				// ロングノーツのCRITICAL判定
 				judgment.result = JudgmentResult::kCritical;
 				scoringStatusRef.doLongJudgment(JudgmentResult::kCritical);
-				m_scoreValue += kScoreValueCritical;
 			}
 		}
 	}
@@ -281,7 +278,6 @@ namespace MusicGame::Judgment
 		, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatInfo))
 		, m_passedNoteCursor(lane.begin())
 		, m_passedLongJudgmentCursor(m_longJudgmentArray.begin())
-		, m_scoreValueMax(static_cast<int32>(m_chipJudgmentArray.size() + m_longJudgmentArray.size()) * kScoreValueCritical)
 	{
 	}
 
@@ -320,16 +316,6 @@ namespace MusicGame::Judgment
 		}
 
 		m_prevPulse = currentPulse;
-	}
-
-	int32 ButtonLaneJudgment::scoreValue() const
-	{
-		return m_scoreValue;
-	}
-
-	int32 ButtonLaneJudgment::scoreValueMax() const
-	{
-		return m_scoreValueMax;
 	}
 
 	std::size_t ButtonLaneJudgment::chipJudgmentCount() const

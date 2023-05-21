@@ -66,10 +66,6 @@ namespace MusicGame::Judgment
 		kson::Pulse m_prevPulse = kPastPulse;
 		double m_prevTimeSec = kPastTimeSec;
 
-		int32 m_scoreValue = 0;
-
-		const int32 m_scoreValueMax;
-
 		void processCursorMovement(double deltaCursorX, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
 		void processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, LaserSlamWiggleStatus& slamWiggleStatusRef);
@@ -88,10 +84,6 @@ namespace MusicGame::Judgment
 		LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
 
 		void update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, LaserSlamWiggleStatus& slamWiggleStatusRef);
-
-		int32 scoreValue() const;
-
-		int32 scoreValueMax() const;
 
 		std::size_t lineJudgmentCount() const;
 

@@ -6,28 +6,6 @@ namespace MusicGame
 {
 	namespace
 	{
-		template <class LaneJudgment, std::size_t N>
-		int32 SumLaneScoreFactor(const std::array<LaneJudgment, N>& laneJudgments)
-		{
-			int32 sum = 0;
-			for (const auto& laneJudgment : laneJudgments)
-			{
-				sum += laneJudgment.scoreValue();
-			}
-			return sum;
-		}
-
-		template <class LaneJudgment, std::size_t N>
-		int32 SumLaneScoreFactorMax(const std::array<LaneJudgment, N>& laneJudgments)
-		{
-			int32 sum = 0;
-			for (const auto& laneJudgment : laneJudgments)
-			{
-				sum += laneJudgment.scoreValueMax();
-			}
-			return sum;
-		}
-
 		template <typename Container, typename Func>
 		int32 ApplyAndSum(const Container& container, Func func)
 		{
@@ -196,7 +174,7 @@ namespace MusicGame
 		, m_gameStatus(
 			{
 				.scoringStatus = {
-					.scoreValueMax = SumLaneScoreFactorMax(m_btLaneJudgments) + SumLaneScoreFactorMax(m_fxLaneJudgments) + SumLaneScoreFactorMax(m_laserLaneJudgments),
+					.scoreValueMax = TotalGaugeValue(m_btLaneJudgments, m_fxLaneJudgments, m_laserLaneJudgments, Judgment::kScoreValueCritical, Judgment::kScoreValueCritical),
 					.gaugeValueMax = GaugeValueMax(m_chartData.gauge.total, m_btLaneJudgments, m_fxLaneJudgments, m_laserLaneJudgments),
 				}
 			})
