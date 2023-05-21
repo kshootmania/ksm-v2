@@ -308,7 +308,7 @@ namespace MusicGame::Judgment
 		laneStatusRef.cursorX = Clamp(nextCursorX, 0.0, 1.0);
 	}
 
-	void LaserLaneJudgment::processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	void LaserLaneJudgment::processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef)
 	{
 		// 直角LASERはまだカーソルが出ていなくても先行判定するので、カーソルの存在チェックはしない
 
@@ -330,10 +330,12 @@ namespace MusicGame::Judgment
 		const JudgmentResult judgmentResult = laserSlamJudgmentRef.judgmentResult(currentTimeSec);
 		if (judgmentResult != JudgmentResult::kUnspecified)
 		{
+			scoringStatusRef.doChipJudgment(judgmentResult);
+
 			if (judgmentResult == JudgmentResult::kCritical)
 			{
-				// CRITICAL判定の場合はコンボ・スコア加算
-				comboStatusRef.increment();
+				// CRITICAL判定の場合はスコア加算
+				// TODO: 不要になる
 				m_scoreValue += kScoreValueCritical;
 
 				// 判定した時間を記録(補正および効果音再生に使用)
@@ -355,9 +357,6 @@ namespace MusicGame::Judgment
 			{
 				// 直角LASERがERROR判定になった場合は補正を切る
 				m_lastCorrectMovementSec = kPastTimeSec;
-
-				// コンボ数リセット
-				comboStatusRef.resetByErrorJudgment();
 			}
 
 			// 判定対象を次の直角LASERへ進める
@@ -514,7 +513,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void LaserLaneJudgment::processLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	void LaserLaneJudgment::processLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef)
 	{
 		if (!laneStatusRef.cursorX.has_value())
 		{
@@ -555,19 +554,15 @@ namespace MusicGame::Judgment
 			judgment.result = currentResult;
 			if (currentResult == JudgmentResult::kCritical)
 			{
-				// CRITICAL判定の場合はコンボ・スコア加算
-				comboStatusRef.increment();
+				// CRITICAL判定の場合はスコア加算
+				// TODO: 不要になる
 				m_scoreValue += kScoreValueCritical;
 			}
-			else
-			{
-				// ERROR判定の場合はコンボ数リセット
-				comboStatusRef.resetByErrorJudgment();
-			}
+			scoringStatusRef.doLongJudgment(currentResult);
 		}
 	}
 
-	void LaserLaneJudgment::processPassedLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	void LaserLaneJudgment::processPassedLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef)
 	{
 		for (auto itr = m_passedLineJudgmentCursor; itr != m_lineJudgmentArray.end(); ++itr)
 		{
@@ -578,7 +573,7 @@ namespace MusicGame::Judgment
 				if (judgment.result == JudgmentResult::kUnspecified)
 				{
 					judgment.result = JudgmentResult::kError;
-					comboStatusRef.resetByErrorJudgment();
+					scoringStatusRef.doLongJudgment(JudgmentResult::kError);
 				}
 
 				m_passedLineJudgmentCursor = std::next(itr);
@@ -601,7 +596,7 @@ namespace MusicGame::Judgment
 	{
 	}
 
-	void LaserLaneJudgment::update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	void LaserLaneJudgment::update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef)
 	{
 		laneStatusRef.noteCursorX = kson::GraphSectionValueAt(lane, currentPulse);
 		laneStatusRef.noteVisualCursorX = laneStatusRef.noteCursorX; // TODO: タイミング調整に合わせてずらして取得
@@ -688,7 +683,7 @@ namespace MusicGame::Judgment
 			deltaCursorX = 0.0;
 		}
 		processCursorMovement(deltaCursorX, currentPulse, currentTimeSec, laneStatusRef);
-		processSlamJudgment(lane, deltaCursorX, currentTimeSec, laneStatusRef, comboStatusRef);
+		processSlamJudgment(lane, deltaCursorX, currentTimeSec, laneStatusRef, scoringStatusRef);
 
 		// 直角LASER判定直後のカーソル自動移動
 		processAutoCursorMovementBySlamJudgment(currentTimeSec, laneStatusRef);
@@ -700,10 +695,10 @@ namespace MusicGame::Judgment
 		processAutoCursorMovementAfterCorrectMovement(currentTimeSec, laneStatusRef);
 
 		// カーソル位置をもとにLASERの判定を決定
-		processLineJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, comboStatusRef);
+		processLineJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, scoringStatusRef);
 
 		// 通過済みのLASER判定をERRORにする
-		processPassedLineJudgment(lane, currentPulse, laneStatusRef, comboStatusRef);
+		processPassedLineJudgment(lane, currentPulse, laneStatusRef, scoringStatusRef);
 
 		if (m_prevIsCursorInCriticalJudgmentRange)
 		{
@@ -742,5 +737,15 @@ namespace MusicGame::Judgment
 	int32 LaserLaneJudgment::scoreValueMax() const
 	{
 		return m_scoreValueMax;
+	}
+
+	std::size_t LaserLaneJudgment::lineJudgmentCount() const
+	{
+		return m_lineJudgmentArray.size();
+	}
+
+	std::size_t LaserLaneJudgment::slamJudgmentCount() const
+	{
+		return m_slamJudgmentArray.size();
 	}
 }

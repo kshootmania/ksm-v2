@@ -25,9 +25,6 @@ namespace MusicGame
 	class GameMain
 	{
 	private:
-		GameStatus m_gameStatus;
-		ViewStatus m_viewStatus;
-
 		FilePath m_parentPath;
 
 		// 初回更新かどうか
@@ -42,7 +39,6 @@ namespace MusicGame
 		std::array<Judgment::ButtonLaneJudgment, kson::kNumBTLanesSZ> m_btLaneJudgments;
 		std::array<Judgment::ButtonLaneJudgment, kson::kNumFXLanesSZ> m_fxLaneJudgments;
 		std::array<Judgment::LaserLaneJudgment, kson::kNumLaserLanesSZ> m_laserLaneJudgments;
-		const int32 m_scoreFactorMax;
 
 		// 視点制御
 		Camera::HighwayTilt m_highwayTilt; // 傾き
@@ -64,6 +60,10 @@ namespace MusicGame
 
 		// グラフィックス
 		Graphics::GraphicsMain m_graphicsMain;
+
+		// 状態
+		GameStatus m_gameStatus;
+		ViewStatus m_viewStatus;
 
 		void updateGameStatus();
 

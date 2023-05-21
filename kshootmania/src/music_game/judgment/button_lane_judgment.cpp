@@ -92,7 +92,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef)
 	{
 		using namespace TimingWindow;
 
@@ -156,7 +156,7 @@ namespace MusicGame::Judgment
 				// CRITICAL判定
 				m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kCritical;
 				m_scoreValue += kScoreValueCritical;
-				comboStatusRef.increment();
+				scoringStatusRef.doChipJudgment(JudgmentResult::kCritical);
 				laneStatusRef.keyBeamType = KeyBeamType::kCritical;
 				chipAnimType = JudgmentResult::kCritical;
 			}
@@ -165,7 +165,7 @@ namespace MusicGame::Judgment
 				// NEAR判定
 				m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kNear;
 				m_scoreValue += kScoreValueNear;
-				comboStatusRef.increment();
+				scoringStatusRef.doChipJudgment(JudgmentResult::kNear);
 				laneStatusRef.keyBeamType = KeyBeamType::kNear; // TODO: fast/slow
 				chipAnimType = JudgmentResult::kNear; // TODO: fast/slow
 			}
@@ -173,7 +173,7 @@ namespace MusicGame::Judgment
 			{
 				// ERROR判定
 				m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kError;
-				comboStatusRef.resetByErrorJudgment();
+				scoringStatusRef.doChipJudgment(JudgmentResult::kError);
 				laneStatusRef.keyBeamType = KeyBeamType::kDefault;
 				chipAnimType = JudgmentResult::kError;
 			}
@@ -188,7 +188,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const ButtonLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	void ButtonLaneJudgment::processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef)
 	{
 		if (laneStatusRef.currentLongNotePulse.has_value())
 		{
@@ -212,13 +212,13 @@ namespace MusicGame::Judgment
 
 				// ロングノーツのCRITICAL判定
 				judgment.result = JudgmentResult::kCritical;
-				comboStatusRef.increment();
+				scoringStatusRef.doLongJudgment(JudgmentResult::kCritical);
 				m_scoreValue += kScoreValueCritical;
 			}
 		}
 	}
 
-	void ButtonLaneJudgment::processPassedNoteJudgment(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	void ButtonLaneJudgment::processPassedNoteJudgment(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef)
 	{
 		using namespace TimingWindow;
 
@@ -232,7 +232,7 @@ namespace MusicGame::Judgment
 				if (note.length == 0 && m_chipJudgmentArray.at(y) == JudgmentResult::kUnspecified)
 				{
 					m_chipJudgmentArray.at(y) = JudgmentResult::kError;
-					comboStatusRef.resetByErrorJudgment();
+					scoringStatusRef.doChipJudgment(JudgmentResult::kError);
 
 					laneStatusRef.chipAnim.push({
 						.startTimeSec = currentTimeSec,
@@ -253,7 +253,7 @@ namespace MusicGame::Judgment
 				if (judgment.result == JudgmentResult::kUnspecified)
 				{
 					judgment.result = JudgmentResult::kError;
-					comboStatusRef.resetByErrorJudgment();
+					scoringStatusRef.doLongJudgment(JudgmentResult::kError);
 				}
 
 				m_passedLongJudgmentCursor = std::next(itr);
@@ -272,18 +272,18 @@ namespace MusicGame::Judgment
 	{
 	}
 
-	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ComboStatus& comboStatusRef)
+	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef)
 	{
 		// チップノーツとロングノーツの始点の判定処理
 		if (KeyConfig::Down(m_keyConfigButton))
 		{
-			processKeyDown(lane, currentPulse, currentTimeSec, laneStatusRef, comboStatusRef);
+			processKeyDown(lane, currentPulse, currentTimeSec, laneStatusRef, scoringStatusRef);
 		}
 
 		// ロングノーツ押下中の判定処理
 		if (KeyConfig::Pressed(m_keyConfigButton))
 		{
-			processKeyPressed(lane, currentPulse, laneStatusRef, comboStatusRef);
+			processKeyPressed(lane, currentPulse, laneStatusRef, scoringStatusRef);
 		}
 
 		// ロングノーツを離したときの判定処理
@@ -295,7 +295,7 @@ namespace MusicGame::Judgment
 		}
 
 		// 通り過ぎたノーツをERROR判定にする
-		processPassedNoteJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, comboStatusRef);
+		processPassedNoteJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, scoringStatusRef);
 
 		if (IsDuringLongNote(lane, currentPulse))
 		{
@@ -317,5 +317,15 @@ namespace MusicGame::Judgment
 	int32 ButtonLaneJudgment::scoreValueMax() const
 	{
 		return m_scoreValueMax;
+	}
+
+	std::size_t ButtonLaneJudgment::chipJudgmentCount() const
+	{
+		return m_chipJudgmentArray.size();
+	}
+
+	std::size_t ButtonLaneJudgment::longJudgmentCount() const
+	{
+		return m_longJudgmentArray.size();
 	}
 }

@@ -125,6 +125,94 @@ namespace MusicGame
 		}
 	};
 
+	struct ScoringStatus
+	{
+		int32 scoreValue = 0;
+		int32 scoreValueMax = 0;
+
+		int32 gaugeValue = 0;
+		int32 gaugeValueMax = 0;
+
+		ComboStatus comboStatus;
+
+		void doChipJudgment(Judgment::JudgmentResult result)
+		{
+			switch (result)
+			{
+			case Judgment::JudgmentResult::kCritical:
+				scoreValue += Judgment::kScoreValueCritical;
+				addGaugeValue(kGaugeValueChip);
+				comboStatus.increment();
+				break;
+
+			case Judgment::JudgmentResult::kNear:
+				scoreValue += Judgment::kScoreValueNear;
+				addGaugeValue(kGaugeValueChipNear);
+				comboStatus.increment();
+				break;
+
+			case Judgment::JudgmentResult::kError:
+				subtractGaugeValue(static_cast<int32>(gaugeValueMax * kGaugeDecreasePercentByChipError / 100));
+				comboStatus.resetByErrorJudgment();
+				break;
+
+			default:
+				assert(false && "Invalid JudgmentResult in doChipJudgment");
+				break;
+			}
+		}
+
+		void doLongJudgment(Judgment::JudgmentResult result)
+		{
+			switch (result)
+			{
+			case Judgment::JudgmentResult::kCritical:
+				scoreValue += Judgment::kScoreValueCritical;
+				addGaugeValue(kGaugeValueLong);
+				comboStatus.increment();
+				break;
+
+			case Judgment::JudgmentResult::kError:
+				subtractGaugeValue(static_cast<int32>(gaugeValueMax * kGaugeDecreasePercentByLongError / 100));
+				comboStatus.resetByErrorJudgment();
+				break;
+
+			default:
+				assert(false && "Invalid JudgmentResult in doLongJudgment");
+				break;
+			}
+		}
+
+		int32 score() const
+		{
+			if (scoreValueMax == 0)
+			{
+				return 0;
+			}
+			return static_cast<int32>(static_cast<int64>(kScoreMax) * scoreValue / scoreValueMax);
+		}
+
+		double gaugePercentage() const
+		{
+			if (gaugeValueMax == 0)
+			{
+				return 0.0;
+			}
+			return 100.0 * gaugeValue / gaugeValueMax;
+		}
+
+	private:
+		void addGaugeValue(int32 add)
+		{
+			gaugeValue = Min(gaugeValue + add, gaugeValueMax);
+		}
+
+		void subtractGaugeValue(int32 sub)
+		{
+			gaugeValue = Max(gaugeValue - sub, 0);
+		}
+	};
+
 	/// @brief ゲームステータス
 	/// @note ゲームプレイに関与する状態を入れる。表示にしか関与しないものはGameStatusではなくViewStatusへ入れる。
 	struct GameStatus
@@ -140,8 +228,6 @@ namespace MusicGame
 
 		std::size_t lastPressedLongFXNoteLaneIdx = 0U; // For audio effect parameter priority
 
-		int32 score = 0;
-
-		ComboStatus comboStatus;
+		ScoringStatus scoringStatus;
 	};
 }

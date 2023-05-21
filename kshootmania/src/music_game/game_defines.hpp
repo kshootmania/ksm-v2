@@ -40,5 +40,12 @@ namespace MusicGame
 
 	constexpr int32 kScoreMax = 10000000;
 
+	constexpr int32 kGaugeValueChip = 200;
+	constexpr int32 kGaugeValueChipNear = 100;
+	constexpr int32 kGaugeValueLong = 50;
+
+	constexpr double kGaugeDecreasePercentByChipError = 2.0;
+	constexpr double kGaugeDecreasePercentByLongError = 0.5;
+
 	constexpr double kTiltRadians = 10_deg;
 }
