@@ -116,6 +116,8 @@ namespace MusicGame::Judgment
 
 		kson::ByPulse<LineJudgment> CreateLineJudgmentResultArray(const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo)
 		{
+			// button_lane_judgment.cppのCreateLongNoteJudgmentArray関数と同じやり方を採用
+
 			kson::ByPulse<LineJudgment> judgmentArray;
 
 			for (const auto& [y, section] : lane)
@@ -125,8 +127,8 @@ namespace MusicGame::Judgment
 					continue;
 				}
 				
-				const kson::RelPulse lastRy = section.v.rbegin()->first;
-				if (lastRy > 0)
+				const kson::RelPulse sectionLength = section.v.rbegin()->first;
+				if (sectionLength > 0)
 				{
 					// BPMをもとにLASERノーツのコンボ数を半減させるかを決める
 					// (セクション途中でのBPM変更は特に加味しない)
@@ -134,18 +136,23 @@ namespace MusicGame::Judgment
 					const kson::RelPulse minPulseInterval = halvesCombo ? (kson::kResolution4 * 3 / 8) : (kson::kResolution4 * 3 / 16);
 					const kson::RelPulse pulseInterval = halvesCombo ? (kson::kResolution4 / 8) : (kson::kResolution4 / 16);
 
-					if (lastRy <= minPulseInterval)
+					if (sectionLength < pulseInterval * 2)
 					{
-						judgmentArray.emplace(y, LineJudgment{ .length = minPulseInterval });
+						judgmentArray.emplace(y, LineJudgment{ .length = sectionLength });
+					}
+					else if (sectionLength <= minPulseInterval)
+					{
+						judgmentArray.emplace(y + pulseInterval, LineJudgment{ .length = pulseInterval });
 					}
 					else
 					{
 						const kson::Pulse start = ((y + pulseInterval - 1) / pulseInterval + 1) * pulseInterval;
-						const kson::Pulse end = y + lastRy - pulseInterval;
+						const kson::Pulse end = y + sectionLength - pulseInterval;
 
 						for (kson::Pulse pulse = start; pulse < end; pulse += pulseInterval)
 						{
-							judgmentArray.emplace(pulse, LineJudgment{ .length = pulseInterval });
+							const kson::RelPulse length = (pulse <= end - pulseInterval) ? pulseInterval : (pulseInterval * 2); // 末尾の判定のみ2倍の長さ
+							judgmentArray.emplace(pulse, LineJudgment{ .length = length });
 						}
 					}
 				}
@@ -532,14 +539,19 @@ namespace MusicGame::Judgment
 		const auto& sectionPoints = lane.at(sectionStartPulse).v;
 		assert(!sectionPoints.empty() && "Laser section must not be empty");
 		const kson::Pulse sectionEndPulse = sectionStartPulse + sectionPoints.rbegin()->first;
-		const kson::Pulse limitPulse = Min(currentPulse, sectionEndPulse);
+		const kson::Pulse limitPulse = Min(currentPulse + kson::RelPulse{ 1 }, sectionEndPulse);
 
 		const double cursorX = laneStatusRef.cursorX.value();
 		const double noteCursorX = laneStatusRef.noteCursorX.value();
 		const JudgmentResult currentResult = IsLaserCursorInCriticalJudgmentRange(cursorX, noteCursorX) ? JudgmentResult::kCritical : JudgmentResult::kError;
-		for (auto itr = m_lineJudgmentArray.upper_bound(Max(sectionStartPulse, m_prevPulse) - 1); itr != m_lineJudgmentArray.end(); ++itr)
+		for (auto itr = m_lineJudgmentArray.upper_bound(sectionStartPulse - 1); itr != m_lineJudgmentArray.end(); ++itr)
 		{
 			auto& [y, judgment] = *itr;
+			if (y + judgment.length <= m_prevPulse)
+			{
+				continue;
+			}
+
 			if (y >= limitPulse)
 			{
 				break;
