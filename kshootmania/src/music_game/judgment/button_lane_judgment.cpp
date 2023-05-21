@@ -45,9 +45,11 @@ namespace MusicGame::Judgment
 
 		kson::ByPulse<ButtonLaneJudgment::LongNoteJudgment> CreateLongNoteJudgmentArray(const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo)
 		{
+			// HSP版: https://github.com/kshootmania/ksm-v1/blob/8deaf1fd147f6e13ac6665731e1ff1e00c5b4176/src/scene/play/play_chart_load.hsp#L1707-L1761
+
 			kson::ByPulse<LongNoteJudgment> judgmentArray;
 
-			for (const auto& [y, note] : lane) // TODO: merge two long notes if note1.y + note1.l == note2.y
+			for (const auto& [y, note] : lane)
 			{
 				if (note.length > 0)
 				{
@@ -57,9 +59,13 @@ namespace MusicGame::Judgment
 					const kson::RelPulse minPulseInterval = halvesCombo ? (kson::kResolution4 * 3 / 8) : (kson::kResolution4 * 3 / 16);
 					const kson::RelPulse pulseInterval = halvesCombo ? (kson::kResolution4 / 8) : (kson::kResolution4 / 16);
 
-					if (note.length <= minPulseInterval)
+					if (note.length < pulseInterval * 2)
 					{
 						judgmentArray.emplace(y, LongNoteJudgment{ .length = note.length });
+					}
+					else if (note.length <= minPulseInterval)
+					{
+						judgmentArray.emplace(y + pulseInterval, LongNoteJudgment{ .length = pulseInterval });
 					}
 					else
 					{
@@ -68,7 +74,8 @@ namespace MusicGame::Judgment
 
 						for (kson::Pulse pulse = start; pulse < end; pulse += pulseInterval)
 						{
-							judgmentArray.emplace(pulse, LongNoteJudgment{ .length = pulseInterval });
+							const kson::RelPulse length = (pulse <= end - pulseInterval) ? pulseInterval : (pulseInterval * 2); // 末尾の判定のみ2倍の長さ
+							judgmentArray.emplace(pulse, LongNoteJudgment{ .length = length });
 						}
 					}
 				}
@@ -194,11 +201,17 @@ namespace MusicGame::Judgment
 		{
 			const kson::Pulse noteStartPulse = laneStatusRef.currentLongNotePulse.value();
 			const kson::Pulse noteEndPulse = noteStartPulse + lane.at(noteStartPulse).length;
-			const kson::Pulse limitPulse = Min(currentPulse, noteEndPulse);
+			const kson::Pulse limitPulse = Min(currentPulse + kson::RelPulse{ 1 }, noteEndPulse);
 
-			for (auto itr = m_longJudgmentArray.upper_bound(Max(noteStartPulse, m_prevPulse) - 1); itr != m_longJudgmentArray.end(); ++itr)
+			// 処理落ちした場合でも判定が漏れないように前回フレームからの判定を全て拾う
+			for (auto itr = m_longJudgmentArray.upper_bound(noteStartPulse - 1); itr != m_longJudgmentArray.end(); ++itr)
 			{
 				auto& [y, judgment] = *itr;
+				if (y + judgment.length <= m_prevPulse)
+				{
+					continue;
+				}
+
 				if (y >= limitPulse)
 				{
 					break;
