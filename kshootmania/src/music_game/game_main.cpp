@@ -139,7 +139,7 @@ namespace MusicGame
 		// LASERレーンの判定
 		for (std::size_t i = 0U; i < kson::kNumLaserLanesSZ; ++i)
 		{
-			m_laserLaneJudgments[i].update(m_chartData.note.laser[i], currentPulse, currentTimeSec, m_gameStatus.laserLaneStatus[i], m_gameStatus.scoringStatus);
+			m_laserLaneJudgments[i].update(m_chartData.note.laser[i], currentPulse, currentTimeSec, m_gameStatus.laserLaneStatus[i], m_gameStatus.scoringStatus, m_viewStatus.laserSlamWiggleStatus);
 		}
 
 		// TODO: Calculate camera values

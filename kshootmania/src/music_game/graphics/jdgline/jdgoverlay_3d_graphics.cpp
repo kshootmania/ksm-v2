@@ -269,12 +269,13 @@ namespace MusicGame::Graphics
 		drawLaserRippleAnim(gameStatus);
 	}
 
-	void Jdgoverlay3DGraphics::draw3D(const ViewStatus& viewStatus) const
+	void Jdgoverlay3DGraphics::draw3D(const GameStatus& gameStatus, const ViewStatus& viewStatus) const
 	{
 		// レンダーテクスチャを3D空間上に描画
 		const ScopedRenderStates3D blendState(BlendState::Additive);
 		const double scale = Camera::JdgoverlayScale(viewStatus.camStatus.zoom);
-		const Vec3 shiftXVec = Vec3::Right(Camera::ScaledCamShiftXValue(viewStatus.camStatus.shiftX));
+		const double shiftX = viewStatus.camStatus.shiftX + viewStatus.laserSlamWiggleStatus.shiftX(gameStatus.currentTimeSec);
+		const Vec3 shiftXVec = Vec3::Right(Camera::ScaledCamShiftXValue(shiftX));
 		const Transformer3D transform(Mat4x4::Translate(shiftXVec) * Mat4x4::Scale(scale, kPlaneCenter) * TiltTransformMatrix(viewStatus.tiltRadians));
 		m_mesh.draw(m_transform, m_renderTexture);
 	}

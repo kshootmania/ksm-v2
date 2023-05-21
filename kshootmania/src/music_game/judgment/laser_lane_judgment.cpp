@@ -211,6 +211,11 @@ namespace MusicGame::Judgment
 		return m_sec;
 	}
 
+	int32 LaserSlamJudgment::direction() const
+	{
+		return m_direction;
+	}
+
 	void LaserSlamJudgment::addDeltaCursorX(double deltaCursorX, double currentTimeSec)
 	{
 		if (Abs(currentTimeSec - m_sec) > TimingWindow::LaserNote::kWindowSecSlam)
@@ -315,7 +320,7 @@ namespace MusicGame::Judgment
 		laneStatusRef.cursorX = Clamp(nextCursorX, 0.0, 1.0);
 	}
 
-	void LaserLaneJudgment::processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef)
+	void LaserLaneJudgment::processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, LaserSlamWiggleStatus& slamWiggleStatusRef)
 	{
 		// 直角LASERはまだカーソルが出ていなくても先行判定するので、カーソルの存在チェックはしない
 
@@ -348,6 +353,9 @@ namespace MusicGame::Judgment
 				// 判定した時間を記録(補正および効果音再生に使用)
 				laneStatusRef.lastLaserSlamJudgedTimeSec = Max(currentTimeSec, laserSlamJudgmentRef.sec());
 				laneStatusRef.lastJudgedLaserSlamPulse = laserSlamPulse;
+
+				// 直角LASER判定後の振動
+				slamWiggleStatusRef.onLaserSlamJudged(m_prevTimeSec, laserSlamJudgmentRef.direction());
 
 				// アニメーション
 				const auto sectionItr = kson::GraphSectionAt(lane, laserSlamPulse);
@@ -608,7 +616,7 @@ namespace MusicGame::Judgment
 	{
 	}
 
-	void LaserLaneJudgment::update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef)
+	void LaserLaneJudgment::update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, LaserSlamWiggleStatus& slamWiggleStatusRef)
 	{
 		laneStatusRef.noteCursorX = kson::GraphSectionValueAt(lane, currentPulse);
 		laneStatusRef.noteVisualCursorX = laneStatusRef.noteCursorX; // TODO: タイミング調整に合わせてずらして取得
@@ -695,7 +703,7 @@ namespace MusicGame::Judgment
 			deltaCursorX = 0.0;
 		}
 		processCursorMovement(deltaCursorX, currentPulse, currentTimeSec, laneStatusRef);
-		processSlamJudgment(lane, deltaCursorX, currentTimeSec, laneStatusRef, scoringStatusRef);
+		processSlamJudgment(lane, deltaCursorX, currentTimeSec, laneStatusRef, scoringStatusRef, slamWiggleStatusRef);
 
 		// 直角LASER判定直後のカーソル自動移動
 		processAutoCursorMovementBySlamJudgment(currentTimeSec, laneStatusRef);
@@ -739,6 +747,7 @@ namespace MusicGame::Judgment
 		m_prevIsCursorInCriticalJudgmentRange = laneStatusRef.isCursorInCriticalJudgmentRange();
 
 		m_prevPulse = currentPulse;
+		m_prevTimeSec = currentTimeSec;
 	}
 
 	int32 LaserLaneJudgment::scoreValue() const

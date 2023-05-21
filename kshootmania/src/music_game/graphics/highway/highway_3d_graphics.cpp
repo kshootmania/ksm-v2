@@ -111,11 +111,12 @@ namespace MusicGame::Graphics
 		m_laserNoteGraphics.draw(chartData, gameStatus, highwayScrollContext, m_renderTexture);
 	}
 
-	void Highway3DGraphics::draw3D(const ViewStatus& viewStatus) const
+	void Highway3DGraphics::draw3D(const GameStatus& gameStatus, const ViewStatus& viewStatus) const
 	{
 		// レンダーテクスチャを3D空間上へ描画
 		const double radians = Math::ToRadians(viewStatus.camStatus.rotationZ) + viewStatus.tiltRadians;
-		const Transformer3D transform(Camera::CamShiftXMatrix(viewStatus.camStatus.shiftX) * TiltTransformMatrix(radians));
+		const double shiftX = viewStatus.camStatus.shiftX + viewStatus.laserSlamWiggleStatus.shiftX(gameStatus.currentTimeSec);
+		const Transformer3D transform(Camera::CamShiftXMatrix(shiftX) * TiltTransformMatrix(radians));
 		m_renderTexture.draw3D(m_mesh);
 	}
 }

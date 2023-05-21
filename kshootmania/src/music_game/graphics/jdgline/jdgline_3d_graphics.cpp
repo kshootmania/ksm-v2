@@ -17,13 +17,14 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void Jdgline3DGraphics::draw3D(const ViewStatus& viewStatus) const
+	void Jdgline3DGraphics::draw3D(const GameStatus& gameStatus, const ViewStatus& viewStatus) const
 	{
 		// 3Dの板に判定ラインのテクスチャを描画
 		const ScopedRenderStates3D blendState(BlendState::NonPremultiplied);
 		const double jdgoverlayScale = Camera::JdgoverlayScale(viewStatus.camStatus.zoom);
 		const double jdglineScale = Camera::JdglineScale(viewStatus.camStatus.zoom);
-		const Vec3 shiftXVec = Vec3::Right(Camera::ScaledCamShiftXValue(viewStatus.camStatus.shiftX) * jdgoverlayScale);
+		const double shiftX = viewStatus.camStatus.shiftX + viewStatus.laserSlamWiggleStatus.shiftX(gameStatus.currentTimeSec);
+		const Vec3 shiftXVec = Vec3::Right(Camera::ScaledCamShiftXValue(shiftX) * jdgoverlayScale);
 		const Transformer3D transform(Mat4x4::Scale(jdglineScale) * Mat4x4::Translate(shiftXVec) * JudgmentPlaneTransformMatrix(viewStatus.tiltRadians) * Mat4x4::Translate(kPlaneCenter));
 		m_mesh.draw(m_jdglineTexture);
 	}

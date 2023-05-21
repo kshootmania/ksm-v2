@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "music_game/game_defines.hpp"
 #include "music_game/game_status.hpp"
+#include "music_game/view_status.hpp"
 #include "kson/chart_data.hpp"
 #include "kson/util/timing_utils.hpp"
 
@@ -22,6 +23,8 @@ namespace MusicGame::Judgment
 		LaserSlamJudgment(double sec, int32 direction);
 
 		double sec() const;
+
+		int32 direction() const;
 
 		void addDeltaCursorX(double deltaCursorX, double currentTimeSec);
 
@@ -61,6 +64,7 @@ namespace MusicGame::Judgment
 		bool m_prevIsCursorInCriticalJudgmentRange = false;
 		bool m_prevIsCursorInAutoFitRange = false;
 		kson::Pulse m_prevPulse = kPastPulse;
+		double m_prevTimeSec = kPastTimeSec;
 
 		int32 m_scoreValue = 0;
 
@@ -68,7 +72,7 @@ namespace MusicGame::Judgment
 
 		void processCursorMovement(double deltaCursorX, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
-		void processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef);
+		void processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, LaserSlamWiggleStatus& slamWiggleStatusRef);
 
 		void processAutoCursorMovementBySlamJudgment(double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
@@ -83,7 +87,7 @@ namespace MusicGame::Judgment
 	public:
 		LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
 
-		void update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef);
+		void update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, LaserSlamWiggleStatus& slamWiggleStatusRef);
 
 		int32 scoreValue() const;
 
