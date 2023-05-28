@@ -18,7 +18,7 @@ bool SceneManagerAddon::update()
 	return m_sceneManager.updateScene();
 }
 
-inline void SceneManagerAddon::draw() const
+void SceneManagerAddon::draw() const
 {
 	m_sceneManager.drawScene();
 }
