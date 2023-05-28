@@ -69,7 +69,7 @@ namespace MusicGame::Judgment
 	constexpr double kHalveComboBPMThreshold = 256.0;
 
 	// キーボード入力での1秒あたりのLASERカーソル移動量
-	constexpr double kLaserKeyboardCursorXPerSec = 3.0;
+	constexpr double kLaserKeyboardCursorXPerSec = 5.0;
 
 	// LASERカーソル位置を理想カーソル位置と同一とみなす範囲
 	// (この範囲に入ったら理想位置に吸い付かせて表示し、カーソルは移動しない)
@@ -94,7 +94,7 @@ namespace MusicGame::Judgment
 	constexpr double kLaserCursorInputOvershootScale = 20.0;
 
 	// 直角LASERをCRITICAL判定するのに必要な累計カーソル移動量
-	constexpr double kLaserSlamCriticalDeltaCursorXThreshold = 0.015;
+	constexpr double kLaserSlamCriticalDeltaCursorXThreshold = 0.0005;
 
 	// 直角LASER判定後の判定補正時間(秒)
 	constexpr double kLaserAutoSecAfterSlamJudgment = 0.075;
