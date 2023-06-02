@@ -161,7 +161,7 @@ namespace MusicGame::Judgment
 			return judgmentArray;
 		}
 
-		kson::ByPulse<LaserSlamJudgment> CreateSlamJudgmentArray(const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
+		kson::ByPulse<LaserSlamJudgment> CreateSlamJudgmentArray(const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::CamPatternLaserInvokeList& camPatternLaserInvokeList, const kson::TimingCache& timingCache)
 		{
 			kson::ByPulse<LaserSlamJudgment> judgmentArray;
 
@@ -174,7 +174,8 @@ namespace MusicGame::Judgment
 					{
 						const double slamTimeSec = kson::PulseToSec(y + ry, beatInfo, timingCache);
 						const int32 slamDirection = Sign(point.vf - point.v);
-						judgmentArray.emplace(y + ry, LaserSlamJudgment{ slamTimeSec, slamDirection });
+						const Optional<kson::CamPatternInvokeSpin> invokeSpin = camPatternLaserInvokeList.spin.contains(y + ry) ? MakeOptional(camPatternLaserInvokeList.spin.at(y + ry)) : none;
+						judgmentArray.emplace(y + ry, LaserSlamJudgment{ slamTimeSec, slamDirection, invokeSpin });
 					}
 				}
 			}
@@ -200,9 +201,10 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	LaserSlamJudgment::LaserSlamJudgment(double sec, int32 direction)
+	LaserSlamJudgment::LaserSlamJudgment(double sec, int32 direction, const Optional<kson::CamPatternInvokeSpin>& invokeSpin)
 		: m_sec(sec)
 		, m_direction(direction)
+		, m_invokeSpin(invokeSpin)
 	{
 	}
 
@@ -320,7 +322,7 @@ namespace MusicGame::Judgment
 		laneStatusRef.cursorX = Clamp(nextCursorX, 0.0, 1.0);
 	}
 
-	void LaserLaneJudgment::processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, LaserSlamWiggleStatus& slamWiggleStatusRef)
+	void LaserLaneJudgment::processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, ViewStatus& viewStatusRef)
 	{
 		// 直角LASERはまだカーソルが出ていなくても先行判定するので、カーソルの存在チェックはしない
 
@@ -351,7 +353,7 @@ namespace MusicGame::Judgment
 				laneStatusRef.lastJudgedLaserSlamPulse = laserSlamPulse;
 
 				// 直角LASER判定後の振動
-				slamWiggleStatusRef.onLaserSlamJudged(m_prevTimeSec, laserSlamJudgmentRef.direction());
+				viewStatusRef.laserSlamWiggleStatus.onLaserSlamJudged(m_prevTimeSec, laserSlamJudgmentRef.direction());
 
 				// アニメーション
 				const auto sectionItr = kson::GraphSectionAt(lane, laserSlamPulse);
@@ -591,7 +593,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	LaserLaneJudgment::LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
+	LaserLaneJudgment::LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::CamPatternLaserInvokeList& camPatternLaserInvokeList, const kson::TimingCache& timingCache)
 		: m_keyConfigButtonL(keyConfigButtonL)
 		, m_keyConfigButtonR(keyConfigButtonR)
 		, m_laserLineDirectionMap(CreateLaserLineDirectionMap(lane))
@@ -600,12 +602,12 @@ namespace MusicGame::Judgment
 		, m_laserLineDirectionChangeSecArrayCursor(m_laserLineDirectionChangeSecArray.begin())
 		, m_lineJudgmentArray(CreateLineJudgmentResultArray(lane, beatInfo))
 		, m_passedLineJudgmentCursor(m_lineJudgmentArray.begin())
-		, m_slamJudgmentArray(CreateSlamJudgmentArray(lane, beatInfo, timingCache))
+		, m_slamJudgmentArray(CreateSlamJudgmentArray(lane, beatInfo, camPatternLaserInvokeList, timingCache))
 		, m_slamJudgmentArrayCursor(m_slamJudgmentArray.begin())
 	{
 	}
 
-	void LaserLaneJudgment::update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, LaserSlamWiggleStatus& slamWiggleStatusRef)
+	void LaserLaneJudgment::update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, ViewStatus& viewStatusRef)
 	{
 		laneStatusRef.noteCursorX = kson::GraphSectionValueAt(lane, currentPulse);
 		laneStatusRef.noteVisualCursorX = laneStatusRef.noteCursorX; // TODO: タイミング調整に合わせてずらして取得
@@ -692,7 +694,7 @@ namespace MusicGame::Judgment
 			deltaCursorX = 0.0;
 		}
 		processCursorMovement(deltaCursorX, currentPulse, currentTimeSec, laneStatusRef);
-		processSlamJudgment(lane, deltaCursorX, currentTimeSec, laneStatusRef, scoringStatusRef, slamWiggleStatusRef);
+		processSlamJudgment(lane, deltaCursorX, currentTimeSec, laneStatusRef, scoringStatusRef, viewStatusRef);
 
 		// 直角LASER判定直後のカーソル自動移動
 		processAutoCursorMovementBySlamJudgment(currentTimeSec, laneStatusRef);

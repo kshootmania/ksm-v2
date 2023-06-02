@@ -16,11 +16,14 @@ namespace MusicGame::Judgment
 		// 方向(-1:左, +1:右)
 		const int32 m_direction;
 
+		// 回転の呼出
+		const Optional<kson::CamPatternInvokeSpin>& m_invokeSpin;
+
 		// カーソルの累計移動量
 		double m_totalAbsDeltaCursorX = 0.0;
 
 	public:
-		LaserSlamJudgment(double sec, int32 direction);
+		LaserSlamJudgment(double sec, int32 direction, const Optional<kson::CamPatternInvokeSpin>& invokeSpin);
 
 		double sec() const;
 
@@ -31,6 +34,12 @@ namespace MusicGame::Judgment
 		bool isCriticalSatisfied() const;
 
 		JudgmentResult judgmentResult(double currentTimeSec) const;
+
+		void applyCamPatternInvoke(ViewStatus& viewStatusRef) const
+		{
+			m_invokeSpin
+			viewStatusRef.camStatus.(m_invokeSpin);
+		}
 	};
 
 	class LaserLaneJudgment
@@ -68,7 +77,7 @@ namespace MusicGame::Judgment
 
 		void processCursorMovement(double deltaCursorX, kson::Pulse currentPulse, double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
-		void processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, LaserSlamWiggleStatus& slamWiggleStatusRef);
+		void processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, ViewStatus& viewStatusRef);
 
 		void processAutoCursorMovementBySlamJudgment(double currentTimeSec, LaserLaneStatus& laneStatusRef);
 
@@ -81,9 +90,9 @@ namespace MusicGame::Judgment
 		void processPassedLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef);
 
 	public:
-		LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
+		LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::CamPatternLaserInvokeList& camPatternLaserInvokeList, const kson::TimingCache& timingCache);
 
-		void update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, LaserSlamWiggleStatus& slamWiggleStatusRef);
+		void update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentSec, LaserLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef, ViewStatus& viewStatusRef);
 
 		std::size_t lineJudgmentCount() const;
 
