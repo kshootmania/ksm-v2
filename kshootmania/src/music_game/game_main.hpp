@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "game_status.hpp"
-#include "judgment/button_lane_judgment.hpp"
-#include "judgment/laser_lane_judgment.hpp"
+#include "judgment/judgment_main.hpp"
 #include "camera/highway_tilt.hpp"
 #include "scroll/hispeed_setting.hpp"
 #include "scroll/highway_scroll.hpp"
@@ -36,9 +35,7 @@ namespace MusicGame
 		const kson::TimingCache m_timingCache;
 
 		// 判定
-		std::array<Judgment::ButtonLaneJudgment, kson::kNumBTLanesSZ> m_btLaneJudgments;
-		std::array<Judgment::ButtonLaneJudgment, kson::kNumFXLanesSZ> m_fxLaneJudgments;
-		std::array<Judgment::LaserLaneJudgment, kson::kNumLaserLanesSZ> m_laserLaneJudgments;
+		Judgment::JudgmentMain m_judgmentMain;
 
 		// 視点制御
 		Camera::HighwayTilt m_highwayTilt; // 傾き

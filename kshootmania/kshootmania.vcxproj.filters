@@ -456,6 +456,15 @@
     <ClCompile Include="src\music_game\camera\highway_tilt_manual.cpp">
       <Filter>Source Files\music_game\camera</Filter>
     </ClCompile>
+    <ClCompile Include="src\music_game\judgment\judgment_main.cpp">
+      <Filter>Source Files\music_game\judgment</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\judgment\scoring_status.cpp">
+      <Filter>Source Files\music_game\judgment</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\judgment\combo_status.cpp">
+      <Filter>Source Files\music_game\judgment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1317,6 +1326,15 @@
     </ClInclude>
     <ClInclude Include="src\music_game\camera\camera_math.hpp">
       <Filter>Header Files\music_game\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\judgment\judgment_main.hpp">
+      <Filter>Header Files\music_game\judgment</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\judgment\scoring_status.hpp">
+      <Filter>Header Files\music_game\judgment</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\judgment\combo_status.hpp">
+      <Filter>Header Files\music_game\judgment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

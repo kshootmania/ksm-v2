@@ -28,19 +28,20 @@ namespace MusicGame::Graphics
 	{
 	}
 
-	void ComboOverlay::update(const ComboStatus& comboStatus)
+	void ComboOverlay::update(const ViewStatus& viewStatus)
 	{
 		// TODO: 楽曲時間を使うべき？
-		if (comboStatus.combo == 0)
+		if (viewStatus.combo == 0)
 		{
 			m_visibleTimer.reset(); // コンボが切れた時は非表示にする
 		}
-		else if (m_comboStatus.combo != comboStatus.combo)
+		else if (m_combo != viewStatus.combo)
 		{
 			m_visibleTimer.restart(); // コンボ数増加から一定時間表示
 		}
 
-		m_comboStatus = comboStatus;
+		m_combo = viewStatus.combo;
+		m_isNoError = viewStatus.isNoError;
 	}
 
 	void ComboOverlay::draw() const
@@ -57,10 +58,10 @@ namespace MusicGame::Graphics
 
 		const double wiggleX = Scaled(1.0) * (Periodic::Square0_1(0.05s) - 0.5); // TODO: 楽曲時間を使うべき？
 
-		const TextureRegion& comboTextureRegion = m_comboStatus.isNoError ? m_comboTextureRegionNoError : m_comboTextureRegion;
+		const TextureRegion& comboTextureRegion = m_isNoError ? m_comboTextureRegionNoError : m_comboTextureRegion;
 		comboTextureRegion.drawAt(Scene::Width() / 2 + wiggleX, Scaled(300));
 
-		const NumberTextureFont& numberTextureFont = m_comboStatus.isNoError ? m_numberTextureFontNoError : m_numberTextureFont;
-		numberTextureFont.draw(m_numberLayout, { Scene::Width() / 2 + wiggleX, Scaled(313) }, m_comboStatus.combo, ZeroPaddingYN::Yes);
+		const NumberTextureFont& numberTextureFont = m_isNoError ? m_numberTextureFontNoError : m_numberTextureFont;
+		numberTextureFont.draw(m_numberLayout, { Scene::Width() / 2 + wiggleX, Scaled(313) }, m_combo, ZeroPaddingYN::Yes);
 	}
 }

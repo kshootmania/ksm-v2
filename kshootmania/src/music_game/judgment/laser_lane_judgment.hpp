@@ -2,6 +2,7 @@
 #include "music_game/game_defines.hpp"
 #include "music_game/game_status.hpp"
 #include "music_game/view_status.hpp"
+#include "music_game/judgment/scoring_status.hpp"
 #include "kson/chart_data.hpp"
 #include "kson/util/timing_utils.hpp"
 

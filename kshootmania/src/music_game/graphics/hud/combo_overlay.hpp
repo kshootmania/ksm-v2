@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "graphics/number_texture_font.hpp"
-#include "music_game/game_status.hpp"
+#include "music_game/view_status.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -14,8 +14,14 @@ namespace MusicGame::Graphics
 		const TextureRegion m_comboTextureRegion;
 		const TextureRegion m_comboTextureRegionNoError;
 
-		// 直近の更新時のComboStatusの値
-		ComboStatus m_comboStatus;
+		// TODO: Graphics内部でステートを持たないようにする(エディタでプレビューできなくなるので)
+
+		// 直近更新時のコンボ数
+		// (0コンボが表示されないよう初期値は0にする)
+		int32 m_combo = 0;
+
+		// 直近更新時にエラーが1つも出ていない状態かどうか
+		bool m_isNoError = true;
 
 		// 表示中かどうかのタイマー
 		Timer m_visibleTimer;
@@ -23,7 +29,7 @@ namespace MusicGame::Graphics
 	public:
 		ComboOverlay();
 
-		void update(const ComboStatus& comboStatus);
+		void update(const ViewStatus& viewStatus);
 
 		void draw() const;
 	};
