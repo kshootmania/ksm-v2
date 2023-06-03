@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "music_game/game_defines.hpp"
 #include "music_game/game_status.hpp"
-#include "music_game/judgment/scoring_status.hpp"
+#include "music_game/judgment/judgment_handler.hpp"
 #include "kson/chart_data.hpp"
 #include "kson/util/timing_utils.hpp"
 
@@ -29,16 +29,16 @@ namespace MusicGame::Judgment
 		kson::ByPulse<kson::Interval>::const_iterator m_passedNoteCursor;
 		kson::ByPulse<LongNoteJudgment>::iterator m_passedLongJudgmentCursor;
 
-		void processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef);
+		void processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef);
 
-		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef);
+		void processKeyPressed(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, const ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef);
 
-		void processPassedNoteJudgment(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef);
+		void processPassedNoteJudgment(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef);
 
 	public:
 		ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
 
-		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, ScoringStatus& scoringStatusRef);
+		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef);
 
 		std::size_t chipJudgmentCount() const;
 

@@ -56,12 +56,12 @@ namespace MusicGame::Graphics
 		const ScopedRenderStates2D blendState(BlendState::Additive);
 		const ScopedRenderStates2D samplerState(SamplerState::ClampLinear);
 
-		const double wiggleX = Scaled(1.0) * (Periodic::Square0_1(0.05s) - 0.5); // TODO: 楽曲時間を使うべき？
+		const double shakeX = Scaled(1.0) * (Periodic::Square0_1(0.05s) - 0.5); // TODO: 楽曲時間を使うべき？
 
 		const TextureRegion& comboTextureRegion = m_isNoError ? m_comboTextureRegionNoError : m_comboTextureRegion;
-		comboTextureRegion.drawAt(Scene::Width() / 2 + wiggleX, Scaled(300));
+		comboTextureRegion.drawAt(Scene::Width() / 2 + shakeX, Scaled(300));
 
 		const NumberTextureFont& numberTextureFont = m_isNoError ? m_numberTextureFontNoError : m_numberTextureFont;
-		numberTextureFont.draw(m_numberLayout, { Scene::Width() / 2 + wiggleX, Scaled(313) }, m_combo, ZeroPaddingYN::Yes);
+		numberTextureFont.draw(m_numberLayout, { Scene::Width() / 2 + shakeX, Scaled(313) }, m_combo, ZeroPaddingYN::Yes);
 	}
 }

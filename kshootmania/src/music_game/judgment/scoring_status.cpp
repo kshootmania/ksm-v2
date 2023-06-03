@@ -18,7 +18,7 @@ namespace MusicGame::Judgment
 	{
 	}
 
-	void ScoringStatus::doChipJudgment(Judgment::JudgmentResult result)
+	void ScoringStatus::onChipOrLaserSlamJudgment(Judgment::JudgmentResult result)
 	{
 		switch (result)
 		{
@@ -45,7 +45,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void ScoringStatus::doLongJudgment(Judgment::JudgmentResult result)
+	void ScoringStatus::onLongOrLaserLineJudgment(Judgment::JudgmentResult result)
 	{
 		switch (result)
 		{

@@ -106,4 +106,11 @@ namespace MusicGame::Judgment
 	constexpr double kLaserAutoSecBeforeLineDirectionChange = 0.1;
 	constexpr double kLaserAutoSecBeforeLineDirectionChangeByCorrectMovement = 0.2;
 	constexpr double kLaserAutoSecAfterLineDirectionChange = 0.05;
+
+	class ButtonLaneJudgment;
+	class LaserLaneJudgment;
+
+	using BTLaneJudgments = std::array<ButtonLaneJudgment, kson::kNumBTLanesSZ>;
+	using FXLaneJudgments = std::array<ButtonLaneJudgment, kson::kNumFXLanesSZ>;
+	using LaserLaneJudgments = std::array<LaserLaneJudgment, kson::kNumLaserLanesSZ>;
 }

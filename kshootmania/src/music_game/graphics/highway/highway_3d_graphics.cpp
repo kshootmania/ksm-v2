@@ -115,7 +115,7 @@ namespace MusicGame::Graphics
 	{
 		// レンダーテクスチャを3D空間上へ描画
 		const double radians = Math::ToRadians(viewStatus.camStatus.rotationZ) + viewStatus.tiltRadians;
-		const double shiftX = viewStatus.camStatus.shiftX + viewStatus.laserSlamWiggleStatus.shiftX(gameStatus.currentTimeSec);
+		const double shiftX = viewStatus.camStatus.shiftX;
 		const Transformer3D transform(Camera::CamShiftXMatrix(shiftX) * TiltTransformMatrix(radians));
 		m_renderTexture.draw3D(m_mesh);
 	}

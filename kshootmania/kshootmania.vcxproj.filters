@@ -465,6 +465,12 @@
     <ClCompile Include="src\music_game\judgment\combo_status.cpp">
       <Filter>Source Files\music_game\judgment</Filter>
     </ClCompile>
+    <ClCompile Include="src\music_game\judgment\laser_slam_shake.cpp">
+      <Filter>Source Files\music_game\judgment</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\judgment\judgment_handler.cpp">
+      <Filter>Source Files\music_game\judgment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1334,6 +1340,12 @@
       <Filter>Header Files\music_game\judgment</Filter>
     </ClInclude>
     <ClInclude Include="src\music_game\judgment\combo_status.hpp">
+      <Filter>Header Files\music_game\judgment</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\judgment\laser_slam_shake.hpp">
+      <Filter>Header Files\music_game\judgment</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\judgment\judgment_handler.hpp">
       <Filter>Header Files\music_game\judgment</Filter>
     </ClInclude>
   </ItemGroup>

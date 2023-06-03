@@ -23,7 +23,7 @@ namespace MusicGame::Graphics
 		const ScopedRenderStates3D blendState(BlendState::NonPremultiplied);
 		const double jdgoverlayScale = Camera::JdgoverlayScale(viewStatus.camStatus.zoom);
 		const double jdglineScale = Camera::JdglineScale(viewStatus.camStatus.zoom);
-		const double shiftX = viewStatus.camStatus.shiftX + viewStatus.laserSlamWiggleStatus.shiftX(gameStatus.currentTimeSec);
+		const double shiftX = viewStatus.camStatus.shiftX;
 		const Vec3 shiftXVec = Vec3::Right(Camera::ScaledCamShiftXValue(shiftX) * jdgoverlayScale);
 		const Transformer3D transform(Mat4x4::Scale(jdglineScale) * Mat4x4::Translate(shiftXVec) * JudgmentPlaneTransformMatrix(viewStatus.tiltRadians) * Mat4x4::Translate(kPlaneCenter));
 		m_mesh.draw(m_jdglineTexture);

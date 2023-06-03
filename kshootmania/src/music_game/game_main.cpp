@@ -4,7 +4,7 @@
 
 namespace MusicGame
 {
-	void GameMain::updateGameStatus()
+	void GameMain::updateStatus()
 	{
 		// 曲の音声の更新
 		m_bgm.update();
@@ -19,12 +19,11 @@ namespace MusicGame
 		m_gameStatus.currentPulseDouble = currentPulseDouble;
 		m_gameStatus.currentBPM = currentBPM;
 
-		// 判定の更新
-		m_judgmentMain.update(m_chartData, m_gameStatus, m_viewStatus);
-	}
+		// 視点変更を更新
+		// (CamStatusにノーツイベントによる値が相対的に反映されるので、判定の更新より先に実行する必要がある)
+		m_camSystem.update(m_chartData, m_gameStatus.currentPulse);
+		m_viewStatus.camStatus = m_camSystem.status();
 
-	void GameMain::updateViewStatus()
-	{
 		// 傾きを更新
 		const double leftLaserValue = kson::GraphSectionValueAtWithDefault(m_chartData.note.laser[0], m_gameStatus.currentPulse, 0.0); // range: [0, +1]
 		const double rightLaserValue = kson::GraphSectionValueAtWithDefault(m_chartData.note.laser[1], m_gameStatus.currentPulse, 1.0) - 1.0; // range: [-1, 0]
@@ -32,9 +31,8 @@ namespace MusicGame
 		m_highwayTilt.update(tiltFactor, m_chartData, m_gameStatus.currentPulse);
 		m_viewStatus.tiltRadians = m_highwayTilt.radians();
 
-		// 視点変更を更新
-		m_camSystem.update(m_chartData, m_gameStatus.currentPulse);
-		m_viewStatus.camStatus = m_camSystem.status();
+		// 判定の更新
+		m_judgmentMain.update(m_chartData, m_gameStatus, m_viewStatus);
 	}
 
 	void GameMain::updateHighwayScroll()
@@ -74,11 +72,8 @@ namespace MusicGame
 
 	void GameMain::update()
 	{
-		// ゲームステータスの更新とノーツ判定
-		updateGameStatus();
-
-		// ビューステータスの更新
-		updateViewStatus();
+		// 状態更新
+		updateStatus();
 
 		// スクロールの更新
 		updateHighwayScroll();

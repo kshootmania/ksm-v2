@@ -23,9 +23,9 @@ namespace MusicGame::Judgment
 	public:
 		ScoringStatus(int32 scoreValueMax, int32 gaugeValueMax);
 
-		void doChipJudgment(Judgment::JudgmentResult result);
+		void onChipOrLaserSlamJudgment(Judgment::JudgmentResult result);
 
-		void doLongJudgment(Judgment::JudgmentResult result);
+		void onLongOrLaserLineJudgment(Judgment::JudgmentResult result);
 
 		int32 score() const;
 

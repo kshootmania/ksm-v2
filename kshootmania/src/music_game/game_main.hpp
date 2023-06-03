@@ -62,9 +62,7 @@ namespace MusicGame
 		GameStatus m_gameStatus;
 		ViewStatus m_viewStatus;
 
-		void updateGameStatus();
-
-		void updateViewStatus();
+		void updateStatus();
 
 		void updateHighwayScroll();
 

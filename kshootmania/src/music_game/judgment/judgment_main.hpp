@@ -2,7 +2,7 @@
 #include "kson/chart_data.hpp"
 #include "button_lane_judgment.hpp"
 #include "laser_lane_judgment.hpp"
-#include "scoring_status.hpp"
+#include "judgment_handler.hpp"
 
 namespace MusicGame::Judgment
 {
@@ -10,11 +10,11 @@ namespace MusicGame::Judgment
 	class JudgmentMain
 	{
 	private:
-		std::array<Judgment::ButtonLaneJudgment, kson::kNumBTLanesSZ> m_btLaneJudgments;
-		std::array<Judgment::ButtonLaneJudgment, kson::kNumFXLanesSZ> m_fxLaneJudgments;
-		std::array<Judgment::LaserLaneJudgment, kson::kNumLaserLanesSZ> m_laserLaneJudgments;
+		BTLaneJudgments m_btLaneJudgments;
+		FXLaneJudgments m_fxLaneJudgments;
+		LaserLaneJudgments m_laserLaneJudgments;
 
-		ScoringStatus m_scoringStatus;
+		JudgmentHandler m_judgmentHandler;
 
 	public:
 		explicit JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache);
