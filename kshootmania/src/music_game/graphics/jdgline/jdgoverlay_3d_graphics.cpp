@@ -277,7 +277,8 @@ namespace MusicGame::Graphics
 		const double scale = Camera::JdgoverlayScale(viewStatus.camStatus.zoom);
 		const double shiftX = viewStatus.camStatus.shiftX;
 		const Vec3 shiftXVec = Vec3::Right(Camera::ScaledCamShiftXValue(shiftX));
-		const Transformer3D transform(Mat4x4::Translate(shiftXVec) * Mat4x4::Scale(scale, kPlaneCenter) * TiltTransformMatrix(viewStatus.tiltRadians));
+		const double radians = Math::ToRadians(viewStatus.camStatus.rotationZHighway) + viewStatus.tiltRadians;
+		const Transformer3D transform(Mat4x4::Translate(shiftXVec) * Mat4x4::Scale(scale, kPlaneCenter) * TiltTransformMatrix(radians));
 		m_mesh.draw(m_transform, m_renderTexture);
 	}
 }

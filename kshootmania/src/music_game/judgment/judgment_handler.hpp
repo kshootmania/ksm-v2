@@ -4,6 +4,7 @@
 #include "judgment_defines.hpp"
 #include "scoring_status.hpp"
 #include "laser_slam_shake.hpp"
+#include "music_game/camera/cam_pattern/cam_pattern_main.hpp"
 
 namespace MusicGame::Judgment
 {
@@ -13,6 +14,8 @@ namespace MusicGame::Judgment
 		ScoringStatus m_scoringStatus;
 
 		LaserSlamShake m_laserSlamShakeStatus;
+
+		Camera::CamPatternMain m_camPatternMain;
 
 	public:
 		/// @brief コンストラクタ
@@ -36,14 +39,17 @@ namespace MusicGame::Judgment
 
 		/// @brief 直角LASER判定時に呼び出される
 		/// @param result 判定結果
+		/// @param laserSlamPulse 直角LASERのPulse値
 		/// @param prevTimeSec 前回フレームの時間(秒)
+		/// @param prevPulse 前回フレームのPulse値
 		/// @param direction 直角LASERの方向(-1:左, +1:右)
-		void onLaserSlamJudged(JudgmentResult result, double prevTimeSec, int32 direction);
+		void onLaserSlamJudged(JudgmentResult result, kson::Pulse laserSlamPulse, double prevTimeSec, kson::Pulse prevPulse, int32 direction);
 
 		/// @brief 状態をViewStatusに適用
 		/// @param viewStatusRef 適用先のViewStatusへの参照
 		/// @param currentTimeSec 現在の時間(秒)
+		/// @param currentPulse 現在のPulse値
 		/// @note この関数ではViewStatus::camStatusに値を相対的に反映するので、判定と関係ないカメラの値はあらかじめ設定しておくこと
-		void applyToViewStatus(ViewStatus& viewStatusRef, double currentTimeSec);
+		void applyToViewStatus(ViewStatus& viewStatusRef, double currentTimeSec, kson::Pulse currentPulse);
 	};
 }

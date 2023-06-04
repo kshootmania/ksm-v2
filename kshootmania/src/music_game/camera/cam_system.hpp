@@ -9,8 +9,8 @@ namespace MusicGame::Camera
 		double shiftX = 0.0;
 		double rotationX = 0.0;
 		double rotationZ = 0.0;
-		double rotationZLane = 0.0;
-		double rotationZJdgLine = 0.0;
+		double rotationZHighway = 0.0;
+		double rotationZJdgline = 0.0;
 		double centerSplit;
 	};
 

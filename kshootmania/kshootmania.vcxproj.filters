@@ -277,6 +277,12 @@
     <Filter Include="Source Files\music_game\camera">
       <UniqueIdentifier>{6538d29c-d191-44d8-97b5-f95ad4703077}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\music_game\camera\cam_pattern">
+      <UniqueIdentifier>{e5d3e833-fba4-4634-af6b-a0893265879e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\music_game\camera\cam_pattern">
+      <UniqueIdentifier>{78bee3cc-8012-48a3-abf8-9508a3cec840}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\scene\title\title_scene.cpp">
@@ -470,6 +476,12 @@
     </ClCompile>
     <ClCompile Include="src\music_game\judgment\judgment_handler.cpp">
       <Filter>Source Files\music_game\judgment</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_spin.cpp">
+      <Filter>Source Files\music_game\camera\cam_pattern</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_main.cpp">
+      <Filter>Source Files\music_game\camera\cam_pattern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1347,6 +1359,12 @@
     </ClInclude>
     <ClInclude Include="src\music_game\judgment\judgment_handler.hpp">
       <Filter>Header Files\music_game\judgment</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_spin.hpp">
+      <Filter>Header Files\music_game\camera\cam_pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_main.hpp">
+      <Filter>Header Files\music_game\camera\cam_pattern</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

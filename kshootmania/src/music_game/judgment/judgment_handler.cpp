@@ -91,6 +91,7 @@ namespace MusicGame::Judgment
 		: m_scoringStatus(
 			TotalGaugeValue(btLaneJudgments, fxLaneJudgments, laserLaneJudgments, kScoreValueCritical, kScoreValueCritical),
 			GaugeValueMax(chartData.gauge.total, btLaneJudgments, fxLaneJudgments, laserLaneJudgments))
+		, m_camPatternMain(chartData)
 	{
 	}
 
@@ -115,7 +116,7 @@ namespace MusicGame::Judgment
 		m_scoringStatus.onLongOrLaserLineJudgment(result);
 	}
 
-	void JudgmentHandler::onLaserSlamJudged(JudgmentResult result, double prevTimeSec, int32 direction)
+	void JudgmentHandler::onLaserSlamJudged(JudgmentResult result, kson::Pulse laserSlamPulse, double prevTimeSec, kson::Pulse prevPulse, int32 direction)
 	{
 		assert(result == JudgmentResult::kCritical || result == JudgmentResult::kError);
 
@@ -124,10 +125,11 @@ namespace MusicGame::Judgment
 		if (result != JudgmentResult::kError)
 		{
 			m_laserSlamShakeStatus.onLaserSlamJudged(prevTimeSec, direction);
+			m_camPatternMain.onLaserSlamJudged(laserSlamPulse, direction, prevPulse);
 		}
 	}
 
-	void JudgmentHandler::applyToViewStatus(ViewStatus& viewStatusRef, double currentTimeSec)
+	void JudgmentHandler::applyToViewStatus(ViewStatus& viewStatusRef, double currentTimeSec, kson::Pulse currentPulse)
 	{
 		// ScoringStatusをViewStatusに反映
 		viewStatusRef.score = m_scoringStatus.score();
@@ -137,5 +139,8 @@ namespace MusicGame::Judgment
 
 		// 直角LASERの振動をViewStatusに反映
 		m_laserSlamShakeStatus.applyToCamStatus(viewStatusRef.camStatus, currentTimeSec);
+
+		// 視点変更パターン(回転など)をViewStatusに反映
+		m_camPatternMain.applyToCamStatus(viewStatusRef.camStatus, currentPulse);
 	}
 }

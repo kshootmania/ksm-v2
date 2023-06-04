@@ -39,6 +39,6 @@ namespace MusicGame::Judgment
 		}
 
 		// 状態をViewStatusに反映
-		m_judgmentHandler.applyToViewStatus(viewStatusRef, gameStatusRef.currentTimeSec);
+		m_judgmentHandler.applyToViewStatus(viewStatusRef, gameStatusRef.currentTimeSec, gameStatusRef.currentPulse);
 	}
 }
