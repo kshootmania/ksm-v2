@@ -100,7 +100,7 @@ namespace MusicGame::Graphics
 		double layerTiltRadians = 0.0;
 		if (chartData.bg.legacy.layer.rotation.tilt)
 		{
-			layerTiltRadians += viewStatus.tiltRadians * 0.8;
+			layerTiltRadians += viewStatus.tiltRadians * 0.8 + Math::ToRadians(viewStatus.camStatus.rotationZLayer);
 		}
 
 		// TODO: Layer speed specified by KSH
