@@ -25,6 +25,10 @@ void Main()
 	// config.iniを読み込み
 	ConfigIni::Load();
 
+	// 画面サイズ反映
+	Window::SetToggleFullscreenEnabled(false); // Alt+Enter無効化
+	ScreenUtils::ApplyScreenSizeConfig();
+
 	// アセット一覧を登録
 	AssetManagement::RegisterAssets();
 

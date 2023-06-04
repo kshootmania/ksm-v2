@@ -252,5 +252,8 @@ void OptionScene::exitScene()
 {
 	ConfigIni::Save();
 
+	// 画面サイズ反映
+	ScreenUtils::ApplyScreenSizeConfig();
+
 	changeScene(SceneName::kTitle, kDefaultTransitionMs);
 }

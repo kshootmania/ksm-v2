@@ -300,4 +300,7 @@ namespace ScreenUtils
 			return textureRegion;
 		}
 	}
+
+	/// @brief config.iniの画面解像度を反映
+	void ApplyScreenSizeConfig();
 }
