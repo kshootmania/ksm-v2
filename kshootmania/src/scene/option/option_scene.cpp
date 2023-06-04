@@ -52,6 +52,9 @@ namespace
 					StrPair{ U"1024,768", U"1024x768" },
 					StrPair{ U"1280,720", U"1280x720" },
 					StrPair{ U"1280,1024", U"1280x1024" },
+					StrPair{ U"1366,768", U"1366x768" },
+					StrPair{ U"1920,1080", U"1920x1080" },
+					StrPair{ U"1920,1200", U"1920x1200" },
 				}),
 				CreateInfo::Enum(ConfigIni::Key::kFullScreenResolution, Array<StrPair>{
 					StrPair{ U"640,480", U"640x480" },
