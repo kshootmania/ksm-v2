@@ -342,7 +342,7 @@ namespace MusicGame::Judgment
 		const JudgmentResult judgmentResult = laserSlamJudgmentRef.judgmentResult(currentTimeSec);
 		if (judgmentResult != JudgmentResult::kUnspecified)
 		{
-			judgmentHandlerRef.onLaserSlamJudged(judgmentResult, m_prevTimeSec, laserSlamJudgmentRef.direction());
+			judgmentHandlerRef.onLaserSlamJudged(judgmentResult, laserSlamPulse, m_prevTimeSec, m_prevPulse, laserSlamJudgmentRef.direction());
 
 			if (judgmentResult == JudgmentResult::kCritical)
 			{

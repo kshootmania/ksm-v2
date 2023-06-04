@@ -25,7 +25,8 @@ namespace MusicGame::Graphics
 		const double jdglineScale = Camera::JdglineScale(viewStatus.camStatus.zoom);
 		const double shiftX = viewStatus.camStatus.shiftX;
 		const Vec3 shiftXVec = Vec3::Right(Camera::ScaledCamShiftXValue(shiftX) * jdgoverlayScale);
-		const Transformer3D transform(Mat4x4::Scale(jdglineScale) * Mat4x4::Translate(shiftXVec) * JudgmentPlaneTransformMatrix(viewStatus.tiltRadians) * Mat4x4::Translate(kPlaneCenter));
+		const double radians = Math::ToRadians(viewStatus.camStatus.rotationZJdgline) + viewStatus.tiltRadians;
+		const Transformer3D transform(Mat4x4::Scale(jdglineScale) * Mat4x4::Translate(shiftXVec) * JudgmentPlaneTransformMatrix(radians) * Mat4x4::Translate(kPlaneCenter));
 		m_mesh.draw(m_jdglineTexture);
 	}
 }

@@ -136,6 +136,8 @@
     <ClCompile Include="src\music_game\audio\audio_effect_utils.cpp" />
     <ClCompile Include="src\music_game\audio\bgm.cpp" />
     <ClCompile Include="src\music_game\audio\laser_slam_se.cpp" />
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_main.cpp" />
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_spin.cpp" />
     <ClCompile Include="src\music_game\camera\cam_system.cpp" />
     <ClCompile Include="src\music_game\camera\highway_tilt.cpp" />
     <ClCompile Include="src\music_game\camera\highway_tilt_auto.cpp" />
@@ -398,6 +400,8 @@
     <ClInclude Include="src\music_game\audio\bgm.hpp" />
     <ClInclude Include="src\music_game\audio\laser_slam_se.hpp" />
     <ClInclude Include="src\music_game\camera\camera_math.hpp" />
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_main.hpp" />
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_spin.hpp" />
     <ClInclude Include="src\music_game\camera\cam_system.hpp" />
     <ClInclude Include="src\music_game\camera\highway_tilt.hpp" />
     <ClInclude Include="src\music_game\camera\highway_tilt_auto.hpp" />
