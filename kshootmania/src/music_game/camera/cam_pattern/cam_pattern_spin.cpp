@@ -47,28 +47,36 @@ namespace MusicGame::Camera
 		}
 
 		const kson::RelPulse elapsedPulse = currentPulse - m_startPulse;
-		if (elapsedPulse < m_durationRelPulse)
+
+		// ハイウェイの角度計算
+		const double rate = static_cast<double>(elapsedPulse) / static_cast<double>(m_durationRelPulse);
+		if (rate < 1.0)
 		{
-			const double rate = static_cast<double>(elapsedPulse) / static_cast<double>(m_durationRelPulse);
+            // 30度だけ多めに回転させて揺り戻す
+            // HSP版: https://github.com/kshootmania/ksm-v1/blob/b26026420fa164310bf25f93c218bb83480faef8/src/scene/play/play_game_logic.hsp#L205-L218
+            double absDegrees;
+            if (rate < 360.0 / 675)
+            {
+                absDegrees = Sin(rate / (360.0 / 675) * 0.75) / Sin(0.75) * 360;
+            }
+            else if (rate < 440.0 / 675)
+            {
+                absDegrees = Sin(Math::ToRadians((rate * 675 - 360.0) * 9 / 8)) * 30;
+            }
+            else
+            {
+                absDegrees = (1.0 - Pow(Cos(Math::ToRadians((1.0 - rate) * 90 / 235 * 675)), 2)) * 30;
+            }
 
-			// 30度だけ多めに回転させて揺り戻す
-			// HSP版: https://github.com/kshootmania/ksm-v1/blob/b26026420fa164310bf25f93c218bb83480faef8/src/scene/play/play_game_logic.hsp#L205-L218
-			double absDegrees;
-			if (rate < 360.0 / 675)
-			{
-				absDegrees = Sin(rate / (360.0 / 675) * 0.75) / Sin(0.75) * 360;
-			}
-			else if (rate < 440.0 / 675)
-			{
-				absDegrees = Sin(Math::ToRadians((rate * 675 - 360.0) * 9 / 8)) * 30;
-			}
-			else
-			{
-				absDegrees = (1.0 - Pow(Cos(Math::ToRadians((1.0 - rate) * 90 / 235 * 675)), 2)) * 30;
-			}
+            const double degrees = -m_direction * absDegrees;
+            camStatusRef.rotationZHighway += degrees;
+		}
 
-			const double degrees = -m_direction * absDegrees;
-			camStatusRef.rotationZHighway += degrees;
+		// 判定ラインの角度計算
+		if (rate < 1.5)
+		{
+			const double decayRate = (rate > 1.0) ? ((1.5 - rate) / (1.5 - 1.0)) : 1.0;
+			camStatusRef.rotationZJdgline += -m_direction * Sin(Math::TwoPi * rate) * 20 * decayRate;
 		}
     }
 }
