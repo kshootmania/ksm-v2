@@ -1,5 +1,6 @@
 ﻿#include "highway_tilt_auto.hpp"
 #include "music_game/game_defines.hpp"
+#include "kson/util/graph_utils.hpp"
 
 namespace MusicGame::Camera
 {
@@ -10,6 +11,47 @@ namespace MusicGame::Camera
 		constexpr double kZeroTiltSlowDownFactor = 1.0 / 5;
 		constexpr double kMinSpeed = 0.5;
 
+		/// @brief 現在の傾き目標値を取得する
+		/// @param laserLanes LASERノーツのレーン
+		/// @param currentPulse 現在のPulse値
+		/// @return 現在の傾き目標値(-1.0 ～ 1.0)
+		double GetTargetTiltFactor(const kson::LaserLane<kson::LaserSection>& laserLanes, const kson::Pulse currentPulse)
+		{
+			double tiltFactor = 0.0;
+			for (std::size_t i = 0; i < laserLanes.size(); ++i)
+			{
+				const kson::ByPulse<kson::LaserSection>& lane = laserLanes[i];
+				const bool isLeftLaser = i == 0;
+
+				const auto currentNoteCursorX = kson::GraphSectionValueAt(lane, currentPulse);
+				if (currentNoteCursorX.has_value())
+				{
+					// 現在LASERセクション内にいる場合はその値を使用
+					const double value = currentNoteCursorX.value();
+					tiltFactor += isLeftLaser ? value : -(1.0 - value);
+				}
+				else
+				{
+					// 現在LASERセクション内にいない場合も、直近0.5小節以内にレーザーセクションの始点が存在すれば事前に傾かせる
+					const auto itr = kson::FirstInRange(lane, currentPulse, currentPulse + kson::kResolution4 / 2);
+					if (itr != lane.end())
+					{
+						const auto& [_, section] = *itr;
+						if (!section.v.empty())
+						{
+							const auto& [_, v] = *section.v.begin();
+							tiltFactor += isLeftLaser ? v.v : -(1.0 - v.v);
+						}
+					}
+				}
+			}
+			return tiltFactor;
+		}
+
+		/// @brief 傾き目標値に近づける速度を取得する
+		/// @param targetTiltFactor 傾き目標値
+		/// @param currentTiltFactor 現在の傾き
+		/// @return 速度
 		double Speed(double targetTiltFactor, double currentTiltFactor)
 		{
 			double speed = 4.5;
@@ -34,17 +76,18 @@ namespace MusicGame::Camera
 		}
 	}
 
-	void HighwayTiltAuto::update(double tiltFactor)
+	void HighwayTiltAuto::update(const kson::LaserLane<kson::LaserSection>& lanes, kson::Pulse currentPulse)
 	{
-		const double speed = Speed(tiltFactor, m_smoothedTiltFactor);
+		const double targetTiltFactor = GetTargetTiltFactor(lanes, currentPulse);
+		const double speed = Speed(targetTiltFactor, m_smoothedTiltFactor);
 
-		if (m_smoothedTiltFactor < tiltFactor)
+		if (m_smoothedTiltFactor < targetTiltFactor)
 		{
-			m_smoothedTiltFactor = Min(m_smoothedTiltFactor + Scene::DeltaTime() * speed, tiltFactor);
+			m_smoothedTiltFactor = Min(m_smoothedTiltFactor + Scene::DeltaTime() * speed, targetTiltFactor);
 		}
 		else
 		{
-			m_smoothedTiltFactor = Max(m_smoothedTiltFactor - Scene::DeltaTime() * speed, tiltFactor);
+			m_smoothedTiltFactor = Max(m_smoothedTiltFactor - Scene::DeltaTime() * speed, targetTiltFactor);
 		}
 	}
 

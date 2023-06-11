@@ -14,7 +14,7 @@ namespace MusicGame::Camera
 	public:
 		HighwayTilt() = default;
 
-		void update(double tiltFactor, const kson::ChartData& chartData, kson::Pulse currentPulse);
+		void update(const kson::ChartData& chartData, kson::Pulse currentPulse);
 
 		double radians() const;
 	};

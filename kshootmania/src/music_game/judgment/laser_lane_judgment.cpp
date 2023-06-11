@@ -188,11 +188,11 @@ namespace MusicGame::Judgment
 			const auto itr = kson::FirstInRange(lane, currentPulse, currentPulse + kson::kResolution4);
 			if (itr != lane.end())
 			{
-				const auto& [_, sec] = *itr;
-				if (!sec.v.empty())
+				const auto& [_, section] = *itr;
+				if (!section.v.empty())
 				{
-					const auto& [_, v] = *sec.v.begin();
-					return std::pair<double, bool>{ v.v, sec.wide() };
+					const auto& [_, v] = *section.v.begin();
+					return std::pair<double, bool>{ v.v, section.wide() };
 				}
 			}
 

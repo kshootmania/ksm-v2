@@ -2,9 +2,9 @@
 
 namespace MusicGame::Camera
 {
-	void HighwayTilt::update(double tiltFactor, const kson::ChartData& chartData, kson::Pulse currentPulse)
+	void HighwayTilt::update(const kson::ChartData& chartData, kson::Pulse currentPulse)
 	{
-		m_auto.update(tiltFactor);
+		m_auto.update(chartData.note.laser, currentPulse);
 		m_manual.update(chartData.camera.tilt.manual, currentPulse);
 	}
 
