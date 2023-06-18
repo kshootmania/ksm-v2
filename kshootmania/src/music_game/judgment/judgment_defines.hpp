@@ -103,7 +103,7 @@ namespace MusicGame::Judgment
 	constexpr double kLaserAutoSecAfterCorrectMovement = 0.025;
 
 	// LASER折り返し前後での判定補正時間(秒)
-	constexpr double kLaserAutoSecBeforeLineDirectionChange = 0.1;
+	constexpr double kLaserAutoSecBeforeLineDirectionChange = 0.05;
 	constexpr double kLaserAutoSecBeforeLineDirectionChangeByCorrectMovement = 0.2;
 	constexpr double kLaserAutoSecAfterLineDirectionChange = 0.05;
 
