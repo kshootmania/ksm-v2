@@ -10,6 +10,7 @@ namespace MusicGame::Camera
 		constexpr double kZeroTiltFactorThreshold = 0.001;
 		constexpr double kZeroTiltSlowDownFactor = 1.0 / 5;
 		constexpr double kMinSpeed = 0.5;
+		constexpr double kZeroAbsTiltFactorThresholdForKeep = 0.018;
 
 		/// @brief 現在の傾き目標値を取得する
 		/// @param laserLanes LASERノーツのレーン
@@ -78,26 +79,35 @@ namespace MusicGame::Camera
 
 	void HighwayTiltAuto::update(const kson::LaserLane<kson::LaserSection>& lanes, const kson::TiltInfo& tilt, kson::Pulse currentPulse)
 	{
-		const double targetTiltFactor = GetTargetTiltFactor(lanes, currentPulse);
+		double targetTiltFactor = GetTargetTiltFactor(lanes, currentPulse);
 		const double speed = Speed(targetTiltFactor, m_smoothedTiltFactor);
 
 		// 目標値に線形で近づける
-		double newSmoothedTiltFactor;
+		const double prevSmoothedTiltFactor = m_smoothedTiltFactor;
 		if (m_smoothedTiltFactor < targetTiltFactor)
 		{
-			newSmoothedTiltFactor = Min(m_smoothedTiltFactor + Scene::DeltaTime() * speed, targetTiltFactor);
+			m_smoothedTiltFactor = Min(m_smoothedTiltFactor + Scene::DeltaTime() * speed, targetTiltFactor);
 		}
 		else
 		{
-			newSmoothedTiltFactor = Max(m_smoothedTiltFactor - Scene::DeltaTime() * speed, targetTiltFactor);
+			m_smoothedTiltFactor = Max(m_smoothedTiltFactor - Scene::DeltaTime() * speed, targetTiltFactor);
 		}
 
-		// 傾きを反映
-		const bool keep = kson::ValueAtOrDefault(tilt.keep, currentPulse, false);
-		if (!keep || (Abs(m_smoothedTiltFactor) < Abs(newSmoothedTiltFactor) && (Sign(m_smoothedTiltFactor) == Sign(newSmoothedTiltFactor) || Sign(m_smoothedTiltFactor) == 0))) // 傾きキープ時は傾きの絶対値が大きくなった場合のみ反映
+		// 傾きキープ
+		const bool keepEnabled = kson::ValueAtOrDefault(tilt.keep, currentPulse, false);
+		if (keepEnabled)
 		{
-			m_smoothedTiltFactor = newSmoothedTiltFactor;
+			// 前回フレームより傾きが小さいor逆方向に傾いている場合はキープ
+			// HSP版: https://github.com/kshootmania/ksm-v1/blob/b26026420fa164310bf25f93c218bb83480faef8/src/scene/play/play_laser_note.hsp#L149
+			if (Abs(targetTiltFactor) < Abs(m_prevTargetTiltFactor) || (Sign(targetTiltFactor) + Sign(m_prevTargetTiltFactor) == 0 && Abs(prevSmoothedTiltFactor) > kZeroAbsTiltFactorThresholdForKeep))
+			{
+				// キープされた場合は前回フレームの傾きで上書き
+				m_smoothedTiltFactor = prevSmoothedTiltFactor;
+				targetTiltFactor = m_prevTargetTiltFactor;
+			}
 		}
+
+		m_prevTargetTiltFactor = targetTiltFactor;
 	}
 
 	double HighwayTiltAuto::radians() const

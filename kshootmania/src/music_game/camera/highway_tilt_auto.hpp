@@ -7,6 +7,7 @@ namespace MusicGame::Camera
 	{
 	private:
 		double m_smoothedTiltFactor = 0.0;
+		double m_prevTargetTiltFactor = 0.0;
 
 	public:
 		HighwayTiltAuto() = default;
