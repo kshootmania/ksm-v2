@@ -11,6 +11,7 @@ namespace MusicGame::Camera
 		constexpr double kZeroTiltSlowDownFactor = 1.0 / 5;
 		constexpr double kMinSpeed = 0.5;
 		constexpr double kZeroAbsTiltFactorThresholdForKeep = 0.018;
+		constexpr double kTiltScaleInterpolationSpeed = 4.0;
 
 		/// @brief 現在の傾き目標値を取得する
 		/// @param laserLanes LASERノーツのレーン
@@ -75,23 +76,34 @@ namespace MusicGame::Camera
 
 			return speed;
 		}
+
+		/// @brief 現在の値を目標値に近づける
+		/// @param current 現在の値
+		/// @param target 目標値
+		/// @param speed 速度
+		/// @param deltaTime 1フレームの時間
+		/// @return 目標値へ近づけた値
+		double Interpolate(double current, double target, double speed, double deltaTime)
+		{
+			if (current < target)
+			{
+				return Min(current + deltaTime * speed, target);
+			}
+			else
+			{
+				return Max(current - deltaTime * speed, target);
+			}
+		}
 	}
 
-	void HighwayTiltAuto::update(const kson::LaserLane<kson::LaserSection>& lanes, const kson::TiltInfo& tilt, kson::Pulse currentPulse)
+	void HighwayTiltAuto::updateTiltFactor(const kson::LaserLane<kson::LaserSection>& lanes, const kson::TiltInfo& tilt, kson::Pulse currentPulse)
 	{
-		double targetTiltFactor = GetTargetTiltFactor(lanes, currentPulse);
-		const double speed = Speed(targetTiltFactor, m_smoothedTiltFactor);
+		const double prevSmoothedTiltFactor = m_smoothedTiltFactor;
 
 		// 目標値に線形で近づける
-		const double prevSmoothedTiltFactor = m_smoothedTiltFactor;
-		if (m_smoothedTiltFactor < targetTiltFactor)
-		{
-			m_smoothedTiltFactor = Min(m_smoothedTiltFactor + Scene::DeltaTime() * speed, targetTiltFactor);
-		}
-		else
-		{
-			m_smoothedTiltFactor = Max(m_smoothedTiltFactor - Scene::DeltaTime() * speed, targetTiltFactor);
-		}
+		double targetTiltFactor = GetTargetTiltFactor(lanes, currentPulse);
+		const double speed = Speed(targetTiltFactor, m_smoothedTiltFactor);
+		m_smoothedTiltFactor = Interpolate(m_smoothedTiltFactor, targetTiltFactor, speed, Scene::DeltaTime());
 
 		// 傾きキープ
 		const bool keepEnabled = kson::ValueAtOrDefault(tilt.keep, currentPulse, false);
@@ -110,8 +122,20 @@ namespace MusicGame::Camera
 		m_prevTargetTiltFactor = targetTiltFactor;
 	}
 
+	void HighwayTiltAuto::updateTiltScale(const kson::LaserLane<kson::LaserSection>& lanes, const kson::TiltInfo& tilt, kson::Pulse currentPulse)
+	{
+		const double targetTiltScale = kson::ValueAtOrDefault(tilt.scale, currentPulse, 1.0);
+		m_tiltScale = Interpolate(m_tiltScale, targetTiltScale, kTiltScaleInterpolationSpeed, Scene::DeltaTime());
+	}
+
+	void HighwayTiltAuto::update(const kson::LaserLane<kson::LaserSection>& lanes, const kson::TiltInfo& tilt, kson::Pulse currentPulse)
+	{
+		updateTiltFactor(lanes, tilt, currentPulse);
+		updateTiltScale(lanes, tilt, currentPulse);
+	}
+
 	double HighwayTiltAuto::radians() const
 	{
-		return kTiltRadians * m_smoothedTiltFactor;
+		return kTiltRadians * m_smoothedTiltFactor * m_tiltScale;
 	}
 }
