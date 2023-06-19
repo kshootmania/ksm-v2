@@ -4,7 +4,7 @@ namespace MusicGame::Camera
 {
 	void HighwayTilt::update(const kson::ChartData& chartData, kson::Pulse currentPulse)
 	{
-		m_auto.update(chartData.note.laser, currentPulse);
+		m_auto.update(chartData.note.laser, chartData.camera.tilt, currentPulse);
 		m_manual.update(chartData.camera.tilt.manual, currentPulse);
 	}
 

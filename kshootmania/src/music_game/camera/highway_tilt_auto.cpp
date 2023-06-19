@@ -76,18 +76,27 @@ namespace MusicGame::Camera
 		}
 	}
 
-	void HighwayTiltAuto::update(const kson::LaserLane<kson::LaserSection>& lanes, kson::Pulse currentPulse)
+	void HighwayTiltAuto::update(const kson::LaserLane<kson::LaserSection>& lanes, const kson::TiltInfo& tilt, kson::Pulse currentPulse)
 	{
 		const double targetTiltFactor = GetTargetTiltFactor(lanes, currentPulse);
 		const double speed = Speed(targetTiltFactor, m_smoothedTiltFactor);
 
+		// 目標値に線形で近づける
+		double newSmoothedTiltFactor;
 		if (m_smoothedTiltFactor < targetTiltFactor)
 		{
-			m_smoothedTiltFactor = Min(m_smoothedTiltFactor + Scene::DeltaTime() * speed, targetTiltFactor);
+			newSmoothedTiltFactor = Min(m_smoothedTiltFactor + Scene::DeltaTime() * speed, targetTiltFactor);
 		}
 		else
 		{
-			m_smoothedTiltFactor = Max(m_smoothedTiltFactor - Scene::DeltaTime() * speed, targetTiltFactor);
+			newSmoothedTiltFactor = Max(m_smoothedTiltFactor - Scene::DeltaTime() * speed, targetTiltFactor);
+		}
+
+		// 傾きを反映
+		const bool keep = kson::ValueAtOrDefault(tilt.keep, currentPulse, false);
+		if (!keep || (Abs(m_smoothedTiltFactor) < Abs(newSmoothedTiltFactor) && (Sign(m_smoothedTiltFactor) == Sign(newSmoothedTiltFactor) || Sign(m_smoothedTiltFactor) == 0))) // 傾きキープ時は傾きの絶対値が大きくなった場合のみ反映
+		{
+			m_smoothedTiltFactor = newSmoothedTiltFactor;
 		}
 	}
 

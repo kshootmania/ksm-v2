@@ -11,7 +11,7 @@ namespace MusicGame::Camera
 	public:
 		HighwayTiltAuto() = default;
 
-		void update(const kson::LaserLane<kson::LaserSection>& lanes, kson::Pulse currentPulse);
+		void update(const kson::LaserLane<kson::LaserSection>& lanes, const kson::TiltInfo& tilt, kson::Pulse currentPulse);
 
 		double radians() const;
 	};
