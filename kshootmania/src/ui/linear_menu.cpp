@@ -2,11 +2,10 @@
 
 void LinearMenu::increment(int32 absDeltaCursor)
 {
-	m_cursor += absDeltaCursor;
-
 	const int32 range = m_cursorMax + 1 - m_cursorMin;
 	if (m_cyclic && range > 0)
 	{
+		m_cursor += absDeltaCursor;
 		while (m_cursor > m_cursorMax)
 		{
 			m_cursor -= range;
@@ -14,17 +13,24 @@ void LinearMenu::increment(int32 absDeltaCursor)
 	}
 	else
 	{
-		m_cursor = Min(m_cursor, m_cursorMax);
+		if (m_cursor >= m_cursorMax)
+		{
+			m_cursor = m_cursorMax;
+			m_deltaCursor = 0;
+		}
+		else
+		{
+			m_cursor += absDeltaCursor;
+		}
 	}
 }
 
 void LinearMenu::decrement(int32 absDeltaCursor)
 {
-	m_cursor -= absDeltaCursor;
-
 	const int32 range = m_cursorMax + 1 - m_cursorMin;
 	if (m_cyclic && range > 0)
 	{
+		m_cursor -= absDeltaCursor;
 		while (m_cursor < m_cursorMin)
 		{
 			m_cursor += range;
@@ -32,7 +38,15 @@ void LinearMenu::decrement(int32 absDeltaCursor)
 	}
 	else
 	{
-		m_cursor = Max(m_cursor, m_cursorMin);
+		if (m_cursor <= m_cursorMin)
+		{
+			m_cursor = m_cursorMin;
+			m_deltaCursor = 0;
+		}
+		else
+		{
+			m_cursor -= absDeltaCursor;
+		}
 	}
 }
 

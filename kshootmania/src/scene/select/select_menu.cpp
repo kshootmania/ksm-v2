@@ -344,6 +344,7 @@ void SelectMenu::update()
 	if (const int32 deltaCursor = m_menu.deltaCursor(); deltaCursor != 0)
 	{
 		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, m_menu.cursor());
+		m_songSelectSe.play();
 		refreshGraphics(deltaCursor > 0 ? SelectMenuGraphics::kCursorDown : SelectMenuGraphics::kCursorUp);
 	}
 
@@ -351,6 +352,7 @@ void SelectMenu::update()
 	if (m_difficultyMenu.deltaCursor() != 0)
 	{
 		ConfigIni::SetInt(ConfigIni::Key::kSelectDifficulty, m_difficultyMenu.cursor());
+		m_difficultySelectSe.play();
 		refreshGraphics(SelectMenuGraphics::kAll);
 	}
 

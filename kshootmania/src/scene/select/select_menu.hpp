@@ -4,6 +4,7 @@
 #include "select_menu_item.hpp"
 #include "select_difficulty_menu.hpp"
 #include "select_menu_graphics.hpp"
+#include "ksmaudio/ksmaudio.hpp"
 
 class SelectMenu
 {
@@ -20,6 +21,10 @@ private:
 	Stopwatch m_shakeStopwatch;
 
 	const std::function<void(FilePathView)> m_moveToPlaySceneFunc;
+
+	const ksmaudio::Sample m_songSelectSe{"se/sel_m.wav"};
+
+	const ksmaudio::Sample m_difficultySelectSe{"se/sel_l.wav"};
 
 	// TODO: Delete this
 	Font m_debugFont;
