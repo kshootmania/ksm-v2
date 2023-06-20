@@ -48,6 +48,7 @@ struct SelectMenuSongItemChartInfo
 	FilePath previewBGMFilePath;
 	double previewBGMOffsetSec = 0.0;
 	double previewBGMDurationSec = 15.0;
+	double previewBGMVolume = 1.0;
 
 	FilePath iconFilePath;
 

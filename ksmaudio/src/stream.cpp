@@ -43,15 +43,16 @@ namespace
 		return binary;
 	}
 
-	HSTREAM LoadStream(const std::string& filePath, const std::vector<char>* pPreloadedBinary)
+	HSTREAM LoadStream(const std::string& filePath, const std::vector<char>* pPreloadedBinary, bool loop)
 	{
+		const DWORD loopFlag = loop ? BASS_SAMPLE_LOOP : 0;
 		if (pPreloadedBinary == nullptr)
 		{
-			return BASS_StreamCreateFile(FALSE, filePath.c_str(), 0, 0, BASS_STREAM_PRESCAN);
+			return BASS_StreamCreateFile(FALSE, filePath.c_str(), 0, 0, BASS_STREAM_PRESCAN | loopFlag);
 		}
 		else
 		{
-			return BASS_StreamCreateFile(TRUE, pPreloadedBinary->data(), 0, static_cast<QWORD>(pPreloadedBinary->size()), BASS_STREAM_PRESCAN);
+			return BASS_StreamCreateFile(TRUE, pPreloadedBinary->data(), 0, static_cast<QWORD>(pPreloadedBinary->size()), BASS_STREAM_PRESCAN | loopFlag);
 		}
 	}
 
@@ -72,10 +73,11 @@ namespace
 
 namespace ksmaudio
 {
-	Stream::Stream(const std::string& filePath, double volume, bool enableCompressor, bool preload)
+	Stream::Stream(const std::string& filePath, double volume, bool enableCompressor, bool preload, bool loop)
 		: m_preloadedBinary(preload ? Preload(filePath) : nullptr)
-		, m_hStream(LoadStream(filePath, m_preloadedBinary.get()))
+		, m_hStream(LoadStream(filePath, m_preloadedBinary.get(), loop))
 		, m_info(GetChannelInfo(m_hStream))
+		, m_volume(volume)
 	{
 		// 音量を設定
 		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(volume));
@@ -139,6 +141,43 @@ namespace ksmaudio
 	void Stream::removeAudioEffect(HDSP hDSP) const
 	{
 		BASS_ChannelRemoveDSP(m_hStream, hDSP);
+	}
+
+	void Stream::setFadeIn(double durationSec) const
+	{
+		// 音量を0からm_volumeまでdurationSec秒かけて推移させる
+		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, 0.0f);
+		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, m_volume, static_cast<DWORD>(durationSec * 1000));
+	}
+
+	void Stream::setFadeIn(double durationSec, double volume)
+	{
+		m_volume = volume;
+		setFadeIn(durationSec);
+	}
+
+	void Stream::setFadeOut(double durationSec) const
+	{
+		// 音量をm_volumeから0までdurationSec秒かけて推移させる
+		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, m_volume);
+		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, 0.0f, static_cast<DWORD>(durationSec * 1000));
+	}
+
+	void Stream::setFadeOut(double durationSec, double volume)
+	{
+		m_volume = volume;
+		setFadeOut(durationSec);
+	}
+
+	bool Stream::isFading() const
+	{
+		return BASS_ChannelIsSliding(m_hStream, BASS_ATTRIB_VOL);
+	}
+
+	void Stream::setVolume(double volume)
+	{
+		m_volume = volume;
+		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(volume));
 	}
 
 	std::size_t Stream::sampleRate() const

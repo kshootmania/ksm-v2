@@ -179,6 +179,7 @@
     <ClCompile Include="src\scene\select\select_menu.cpp" />
     <ClCompile Include="src\scene\select\select_menu_graphics.cpp" />
     <ClCompile Include="src\scene\select\select_scene.cpp" />
+    <ClCompile Include="src\scene\select\select_song_preview.cpp" />
     <ClCompile Include="src\scene\title\title_menu.cpp" />
     <ClCompile Include="src\scene\title\title_scene.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
@@ -455,6 +456,7 @@
     <ClInclude Include="src\scene\select\select_menu_graphics.hpp" />
     <ClInclude Include="src\scene\select\select_menu_item.hpp" />
     <ClInclude Include="src\scene\select\select_scene.hpp" />
+    <ClInclude Include="src\scene\select\select_song_preview.hpp" />
     <ClInclude Include="src\scene\title\title_assets.hpp" />
     <ClInclude Include="src\scene\title\title_menu.hpp" />
     <ClInclude Include="src\scene\title\title_scene.hpp" />

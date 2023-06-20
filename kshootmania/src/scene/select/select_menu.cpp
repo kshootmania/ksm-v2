@@ -58,6 +58,7 @@ void SelectMenu::decideDirectoryFolderItem()
 	ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, 0);
 
 	refreshGraphics(SelectMenuGraphics::kAll);
+	refreshSongPreview();
 }
 
 bool SelectMenu::openDirectory(FilePathView directoryPath)
@@ -114,6 +115,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath)
 				.previewBGMFilePath = FileSystem::FullPath(FileSystem::ParentPath(chartFile) + FromUTF8(chartData.audio.bgm.filename)),
 				.previewBGMOffsetSec = chartData.audio.bgm.preview.offset / 1000.0,
 				.previewBGMDurationSec = chartData.audio.bgm.preview.duration / 1000.0,
+				.previewBGMVolume = chartData.audio.bgm.vol,
 				.iconFilePath = U""/*TODO*/,
 				.information = FromUTF8(chartData.meta.information),
 				.highScoreInfo = HighScoreInfo{}/*TODO*/,
@@ -307,6 +309,19 @@ void SelectMenu::refreshGraphics(SelectMenuGraphics::RefreshType type)
 	m_shakeStopwatch.restart();
 }
 
+void SelectMenu::refreshSongPreview()
+{
+	const auto pChartInfo = cursorChartInfoPtr();
+	if (pChartInfo == nullptr)
+	{
+		m_songPreview.requestDefaultBgm();
+	}
+	else
+	{
+		m_songPreview.requestSongPreview(pChartInfo->previewBGMFilePath, pChartInfo->previewBGMOffsetSec, pChartInfo->previewBGMDurationSec, pChartInfo->previewBGMVolume);
+	}
+}
+
 SelectMenu::SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc)
 	: m_menu(
 		LinearMenu::CreateInfoWithCursorMinMax{
@@ -336,6 +351,7 @@ SelectMenu::SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc)
 	m_difficultyMenu.setCursor(ConfigIni::GetInt(ConfigIni::Key::kSelectDifficulty));
 
 	refreshGraphics(SelectMenuGraphics::kAll);
+	refreshSongPreview();
 }
 
 void SelectMenu::update()
@@ -346,6 +362,7 @@ void SelectMenu::update()
 		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, m_menu.cursor());
 		m_songSelectSe.play();
 		refreshGraphics(deltaCursor > 0 ? SelectMenuGraphics::kCursorDown : SelectMenuGraphics::kCursorUp);
+		refreshSongPreview();
 	}
 
 	m_difficultyMenu.update();
@@ -354,7 +371,10 @@ void SelectMenu::update()
 		ConfigIni::SetInt(ConfigIni::Key::kSelectDifficulty, m_difficultyMenu.cursor());
 		m_difficultySelectSe.play();
 		refreshGraphics(SelectMenuGraphics::kAll);
+		refreshSongPreview();
 	}
+
+	m_songPreview.update();
 
 	// TODO: Delete this debug code
 	m_debugStr.clear();
@@ -457,6 +477,7 @@ void SelectMenu::closeFolder()
 	ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, m_menu.cursor());
 
 	refreshGraphics(SelectMenuGraphics::kAll);
+	refreshSongPreview();
 }
 
 const SelectMenuItem& SelectMenu::cursorMenuItem() const

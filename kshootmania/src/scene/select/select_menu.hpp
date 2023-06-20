@@ -4,6 +4,7 @@
 #include "select_menu_item.hpp"
 #include "select_difficulty_menu.hpp"
 #include "select_menu_graphics.hpp"
+#include "select_song_preview.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
 class SelectMenu
@@ -21,6 +22,8 @@ private:
 	Stopwatch m_shakeStopwatch;
 
 	const std::function<void(FilePathView)> m_moveToPlaySceneFunc;
+
+	SelectSongPreview m_songPreview;
 
 	const ksmaudio::Sample m_songSelectSe{"se/sel_m.wav"};
 
@@ -42,8 +45,10 @@ private:
 
 	void refreshGraphics(SelectMenuGraphics::RefreshType type);
 
+	void refreshSongPreview();
+
 public:
-	explicit SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc); // TODO: Restore previous selection
+	explicit SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc);
 
 	void update();
 

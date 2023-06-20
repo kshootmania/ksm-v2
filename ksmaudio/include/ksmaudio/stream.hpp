@@ -14,10 +14,11 @@ namespace ksmaudio
 		const std::unique_ptr<std::vector<char>> m_preloadedBinary;
 		const HSTREAM m_hStream;
 		const BASS_CHANNELINFO m_info;
+		float m_volume;
 
 	public:
 		// TODO: filePath encoding problem
-		explicit Stream(const std::string& filePath, double volume = 1.0, bool enableCompressor = false, bool preload = false);
+		explicit Stream(const std::string& filePath, double volume = 1.0, bool enableCompressor = false, bool preload = false, bool loop = false);
 
 		~Stream();
 
@@ -38,6 +39,18 @@ namespace ksmaudio
 		HDSP addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const;
 
 		void removeAudioEffect(HDSP hDSP) const;
+
+		void setFadeIn(double durationSec) const;
+
+		void setFadeIn(double durationSec, double volume);
+
+		void setFadeOut(double durationSec) const;
+
+		void setFadeOut(double durationSec, double volume);
+
+		bool isFading() const;
+
+		void setVolume(double volume);
 
 		std::size_t sampleRate() const;
 
