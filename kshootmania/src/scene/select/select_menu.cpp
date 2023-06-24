@@ -49,6 +49,8 @@ void SelectMenu::decideDirectoryFolderItem()
 	assert(!m_menu.empty());
 	assert(m_menu.cursorValue().itemType == SelectMenuItem::kDirectoryFolder);
 
+	m_folderSelectSe.play();
+
 	// フォルダを開く
 	// Note: openDirectory()の実行中にm_menu.cursorValue().fullPathの中身は破棄されるので、ここでは新しいFilePathとしてコピーしてから渡している
 	const FilePath directoryPath = m_menu.cursorValue().fullPath;
@@ -464,6 +466,8 @@ bool SelectMenu::isFolderOpen() const
 
 void SelectMenu::closeFolder()
 {
+	m_folderSelectSe.play();
+
 	// 元のパスを取得しておく
 	const String originalFullPath = m_folderState.fullPath;
 

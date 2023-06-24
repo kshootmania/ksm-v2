@@ -29,6 +29,8 @@ private:
 
 	const ksmaudio::Sample m_difficultySelectSe{"se/sel_l.wav"};
 
+	const ksmaudio::Sample m_folderSelectSe{"se/sel_dir.wav"};
+
 	// TODO: Delete this
 	Font m_debugFont;
 	String m_debugStr;
