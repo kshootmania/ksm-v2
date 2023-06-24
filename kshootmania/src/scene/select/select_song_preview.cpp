@@ -39,10 +39,12 @@ void SelectSongPreview::update()
 		if (previewEndSec <= posSec)
 		{
 			// フェードアウトが終了したら再び最初からフェードインして再生開始
-			// TODO: ロック要りそう？
+			// (途中の音が鳴らないようロックを挟んでいる)
+			m_songPreviewStream->lockBegin();
 			m_songPreviewStream->seekPosSec(m_songPreviewOffsetSec);
 			m_songPreviewStream->setFadeIn(kFadeInDurationSec);
 			m_songPreviewStream->play();
+			m_songPreviewStream->lockEnd();
 		}
 		else if (previewEndSec - kPreFadeOutStartDurationSec <= posSec && posSec < previewEndSec - kPreFadeOutStartDurationSec + kFadeOutDurationSec / 2) // 誤差によって2回フェードアウトしないよう2で割っている
 		{

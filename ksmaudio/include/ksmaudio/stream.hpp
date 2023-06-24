@@ -57,5 +57,9 @@ namespace ksmaudio
 		std::size_t numChannels() const;
 
 		double latencySec() const;
+
+		void lockBegin() const;
+
+		void lockEnd() const;
 	};
 }

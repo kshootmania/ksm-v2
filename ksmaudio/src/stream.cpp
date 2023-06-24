@@ -201,4 +201,14 @@ namespace ksmaudio
 		// 上記でも大抵バッファサイズと同じになるが変動するので、そのままバッファサイズを返した方が音声エフェクトのタイミング計算が安定する
 		return kBufferSizeMs / 1000.0f;
 	}
+
+	void Stream::lockBegin() const
+	{
+		BASS_ChannelLock(m_hStream, TRUE);
+	}
+
+	void Stream::lockEnd() const
+	{
+		BASS_ChannelLock(m_hStream, FALSE);
+	}
 }
