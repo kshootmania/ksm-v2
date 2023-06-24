@@ -3,7 +3,7 @@
 namespace
 {
 	constexpr double kFadeInDurationSec = 0.5f;
-	constexpr double kFadeOutDurationSec = 0.5f;
+	constexpr double kFadeOutDurationSec = 2.0f; // HSP版の場合は0.5秒でのフェードアウトを2秒間毎フレームリクエストしてしまっていて、結果的に2秒でフェードアウトされている
 	constexpr double kPreFadeOutStartDurationSec = 2.0f;
 }
 
