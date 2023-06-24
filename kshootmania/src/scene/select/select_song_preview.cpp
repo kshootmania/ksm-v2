@@ -44,7 +44,7 @@ void SelectSongPreview::update()
 			m_songPreviewStream->setFadeIn(kFadeInDurationSec);
 			m_songPreviewStream->play();
 		}
-		else if (previewEndSec - kPreFadeOutStartDurationSec <= posSec && posSec < previewEndSec - kPreFadeOutStartDurationSec + kFadeOutDurationSec)
+		else if (previewEndSec - kPreFadeOutStartDurationSec <= posSec && posSec < previewEndSec - kPreFadeOutStartDurationSec + kFadeOutDurationSec / 2) // 誤差によって2回フェードアウトしないよう2で割っている
 		{
 			// フェードアウト
 			if (!m_songPreviewStream->isFading())
