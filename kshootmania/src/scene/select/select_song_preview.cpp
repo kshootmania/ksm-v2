@@ -3,21 +3,24 @@
 namespace
 {
 	constexpr double kFadeInDurationSec = 0.5f;
-	constexpr double kFadeOutDurationSec = 2.0f; // HSP版の場合は0.5秒でのフェードアウトを2秒間毎フレームリクエストしてしまっていて、結果的に2秒でフェードアウトされている
+	constexpr double kFadeInDurationSecFirst = 0.25f;
+	constexpr double kFadeOutDurationSec = 2.0f; // HSP版では0.5秒間でのフェードアウトが指定されているが、2秒間毎フレームそれをリクエストしてしまっているため結果的に2秒間でフェードアウトされている
 	constexpr double kPreFadeOutStartDurationSec = 2.0f;
 }
 
 SelectSongPreview::SelectSongPreview()
 {
+	m_defaultBgmStream.lockBegin();
 	m_defaultBgmStream.setVolume(0.0);
 	m_defaultBgmStream.play();
+	m_defaultBgmStream.lockEnd();
 }
 
 void SelectSongPreview::update()
 {
 	// TODO: 押下し続けている間はデフォルトBGMを再生する
 
-	if (m_songPreviewStartTimer.reachedZero()) // TODO: 最初はすぐに再生
+	if (m_songPreviewStartTimer.reachedZero() || m_isFirst)
 	{
 		// デフォルトBGMを止める
 		m_defaultBgmStream.setVolume(0.0);
@@ -25,11 +28,15 @@ void SelectSongPreview::update()
 
 		// フェードインして再生開始
 		m_songPreviewStream = std::make_unique<ksmaudio::Stream>(m_songPreviewFilename.narrow(), m_songPreviewVolume, true, false);
+		m_songPreviewStream->lockBegin();
 		m_songPreviewStream->seekPosSec(m_songPreviewOffsetSec);
-		m_songPreviewStream->setFadeIn(kFadeInDurationSec);
+		const double fadeInDurationSec = m_isFirst ? kFadeInDurationSecFirst : kFadeInDurationSec;
+		m_songPreviewStream->setFadeIn(fadeInDurationSec);
 		m_songPreviewStream->play();
+		m_songPreviewStream->lockEnd();
 
 		m_songPreviewStartTimer.reset();
+		m_isFirst = false;
 	}
 
 	if (m_songPreviewStream != nullptr)

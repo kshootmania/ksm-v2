@@ -23,6 +23,8 @@ private:
 
 	Timer m_defaultBgmStartTimer{ 0.25s, StartImmediately::No };
 
+	bool m_isFirst = true;
+
 public:
 	SelectSongPreview();
 
