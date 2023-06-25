@@ -6,6 +6,8 @@ namespace MusicGame::Judgment
 {
 	namespace
 	{
+		constexpr kson::RelPulse kLaserLineJudgmentEraseAroundSlamDistance = kson::kResolution4 / 16;
+
 		kson::ByPulse<int32> CreateLaserLineDirectionMap(const kson::ByPulse<kson::LaserSection>& lane)
 		{
 			kson::ByPulse<int32> directionMap;
@@ -116,7 +118,7 @@ namespace MusicGame::Judgment
 
 		kson::ByPulse<LineJudgment> CreateLineJudgmentResultArray(const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo)
 		{
-			// button_lane_judgment.cppのCreateLongNoteJudgmentArray関数と同じやり方を採用
+			// まずはbutton_lane_judgment.cppのCreateLongNoteJudgmentArray関数と同じやり方で生成
 
 			kson::ByPulse<LineJudgment> judgmentArray;
 
@@ -153,6 +155,30 @@ namespace MusicGame::Judgment
 						{
 							const kson::RelPulse length = (pulse <= end - pulseInterval) ? pulseInterval : (pulseInterval * 2); // 末尾の判定のみ2倍の長さ
 							judgmentArray.emplace(pulse, LineJudgment{ .length = length });
+						}
+					}
+				}
+			}
+
+			// 生成された判定のうち、直角LASER付近(距離が一定未満)の判定を削除
+			for (const auto& [y, section] : lane)
+			{
+				for (const auto& [ry, point] : section.v)
+				{
+					const bool isSlam = !kson::AlmostEquals(point.v, point.vf);
+					if (isSlam)
+					{
+						const kson::Pulse slamPulse = y + ry;
+
+						// 削除対象の区間を決める
+						// (区間にminPulseとmaxPulseは含まれない)
+						const kson::Pulse minPulse = slamPulse - kLaserLineJudgmentEraseAroundSlamDistance;
+						const kson::Pulse maxPulse = slamPulse + kLaserLineJudgmentEraseAroundSlamDistance;
+
+						auto it = judgmentArray.upper_bound(minPulse); // minPulseより大きい最初の要素
+						while (it != judgmentArray.end() && it->first < maxPulse)
+						{
+							it = judgmentArray.erase(it); // eraseからは次のイテレータが返される
 						}
 					}
 				}
