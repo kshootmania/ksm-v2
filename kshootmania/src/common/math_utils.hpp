@@ -58,4 +58,11 @@ namespace MathUtils
 	{
 		return kson::AlmostEquals(a, b);
 	}
+
+	template <typename T>
+	T LinearDamp(T current, T target, T maxSpeed, double dt) requires std::is_arithmetic_v<T>
+	{
+		const T absDiffMax = Max(static_cast<T>(maxSpeed * dt), T{ 0 });
+		return current + std::clamp(target - current, -absDiffMax, absDiffMax);
+	}
 }

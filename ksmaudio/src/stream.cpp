@@ -147,7 +147,7 @@ namespace ksmaudio
 	{
 		// 音量を0からm_volumeまでdurationSec秒かけて推移させる
 		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, 0.0f);
-		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, m_volume, static_cast<DWORD>(durationSec * 1000));
+		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(m_volume), static_cast<DWORD>(durationSec * 1000));
 	}
 
 	void Stream::setFadeIn(double durationSec, double volume)
@@ -159,7 +159,7 @@ namespace ksmaudio
 	void Stream::setFadeOut(double durationSec) const
 	{
 		// 音量をm_volumeから0までdurationSec秒かけて推移させる
-		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, m_volume);
+		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(m_volume));
 		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, 0.0f, static_cast<DWORD>(durationSec * 1000));
 	}
 
@@ -178,6 +178,11 @@ namespace ksmaudio
 	{
 		m_volume = volume;
 		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(volume));
+	}
+
+	double Stream::volume() const
+	{
+		return m_volume;
 	}
 
 	std::size_t Stream::sampleRate() const

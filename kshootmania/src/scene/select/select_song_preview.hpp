@@ -19,9 +19,15 @@ private:
 
 	double m_songPreviewVolume = 1.0;
 
+	double m_defaultBgmVolumeWithFade = 1.0;
+
+	/// @brief 楽曲プレビュー開始までに猶予を持たせるためのタイマー
+	/// @note 猶予を持たせている理由: カーソル移動直後に再生開始すると負荷でカーソル移動がもたつくため。また、連続したカーソル移動中はデフォルトBGMを再生したいため。
 	Timer m_songPreviewStartTimer{ 0.2s, StartImmediately::No };
 
-	Timer m_defaultBgmStartTimer{ 0.25s, StartImmediately::No };
+	/// @brief カーソル移動を始めてからの時間を計測するストップウォッチ
+	/// @note カーソル移動中以外は停止状態になっている
+	Stopwatch m_selectingStopwatch{ StartImmediately::No };
 
 	bool m_isFirst = true;
 

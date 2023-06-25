@@ -14,7 +14,7 @@ namespace ksmaudio
 		const std::unique_ptr<std::vector<char>> m_preloadedBinary;
 		const HSTREAM m_hStream;
 		const BASS_CHANNELINFO m_info;
-		float m_volume;
+		double m_volume;
 
 	public:
 		// TODO: filePath encoding problem
@@ -49,6 +49,8 @@ namespace ksmaudio
 		void setFadeOut(double durationSec, double volume);
 
 		bool isFading() const;
+
+		double volume() const;
 
 		void setVolume(double volume);
 

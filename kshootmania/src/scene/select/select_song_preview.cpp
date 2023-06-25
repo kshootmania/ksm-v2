@@ -2,10 +2,11 @@
 
 namespace
 {
-	constexpr double kFadeInDurationSec = 0.5f;
-	constexpr double kFadeInDurationSecFirst = 0.25f;
-	constexpr double kFadeOutDurationSec = 2.0f; // HSP版では0.5秒間でのフェードアウトが指定されているが、2秒間毎フレームそれをリクエストしてしまっているため結果的に2秒間でフェードアウトされている
-	constexpr double kPreFadeOutStartDurationSec = 2.0f;
+	constexpr double kFadeInDurationSec = 0.5;
+	constexpr double kFadeInDurationSecFirst = 0.25;
+	constexpr double kFadeOutDurationSec = 2.0; // HSP版では0.5秒間でのフェードアウトが指定されているが、2秒間毎フレームそれをリクエストしてしまっているため結果的に2秒間でフェードアウトされている
+	constexpr double kPreFadeOutStartDurationSec = 2.0;
+	constexpr double kDefaultBgmVolumeSpeed = 1.0 / kFadeInDurationSec;
 }
 
 SelectSongPreview::SelectSongPreview()
@@ -18,14 +19,8 @@ SelectSongPreview::SelectSongPreview()
 
 void SelectSongPreview::update()
 {
-	// TODO: 押下し続けている間はデフォルトBGMを再生する
-
-	if (m_songPreviewStartTimer.reachedZero() || m_isFirst)
+	if (!m_songPreviewFilename.empty() && (m_songPreviewStartTimer.reachedZero() || m_isFirst))
 	{
-		// デフォルトBGMを止める
-		m_defaultBgmStream.setVolume(0.0);
-		m_isPlayingDefaultBgm = false;
-
 		// フェードインして再生開始
 		m_songPreviewStream = std::make_unique<ksmaudio::Stream>(m_songPreviewFilename.narrow(), m_songPreviewVolume, true, false);
 		m_songPreviewStream->lockBegin();
@@ -36,10 +31,15 @@ void SelectSongPreview::update()
 		m_songPreviewStream->lockEnd();
 
 		m_songPreviewStartTimer.reset();
-		m_isFirst = false;
+
+		if (m_isFirst)
+		{
+			m_defaultBgmVolumeWithFade = 0.0f;
+		}
 	}
 
-	if (m_songPreviewStream != nullptr)
+	const bool isPlayingSongPreview = m_songPreviewStream != nullptr;
+	if (isPlayingSongPreview)
 	{
 		const double previewEndSec = m_songPreviewOffsetSec + m_songPreviewDurationSec;
 		const double posSec = m_songPreviewStream->posSec();
@@ -62,9 +62,21 @@ void SelectSongPreview::update()
 			}
 		}
 
-		// TODO: ループの再開タイミングをHSP版と同じにする
+		m_selectingStopwatch.reset();
+
 		// TODO: 曲の終端に被ったときにおかしくなるかも知れないので要検証
 	}
+	else if (m_songPreviewStartTimer.isRunning())
+	{
+		m_selectingStopwatch.start();
+	}
+
+	const bool isWaitingForSongPreview = m_selectingStopwatch.isRunning() && m_selectingStopwatch.elapsed() <= m_songPreviewStartTimer.duration();
+	const double targetDefaultBgmVolume = (isPlayingSongPreview || isWaitingForSongPreview) ? 0.0 : 1.0;
+	m_defaultBgmVolumeWithFade = MathUtils::LinearDamp(m_defaultBgmVolumeWithFade, targetDefaultBgmVolume, kDefaultBgmVolumeSpeed, Scene::DeltaTime());
+	m_defaultBgmStream.setVolume(m_defaultBgmVolumeWithFade);
+
+	m_isFirst = false;
 }
 
 void SelectSongPreview::requestSongPreview(FilePathView filename, double offsetSec, double durationSec, double volume)
@@ -97,16 +109,7 @@ void SelectSongPreview::requestSongPreview(FilePathView filename, double offsetS
 
 void SelectSongPreview::requestDefaultBgm()
 {
-	if (m_isPlayingDefaultBgm)
-	{
-		// 既にデフォルトBGMが再生されている場合は何もしない
-		return;
-	}
-
 	m_songPreviewFilename.clear();
 	m_songPreviewStream = nullptr;
-
-	// フェードインして再生開始
-	m_defaultBgmStream.setFadeIn(kFadeInDurationSec, 1.0);
-	m_isPlayingDefaultBgm = true;
+	m_songPreviewStartTimer.reset();
 }
