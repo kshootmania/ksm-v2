@@ -7,6 +7,8 @@
 #include "select_song_preview.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
+using PlaySeYN = YesNo<struct PlaySeYN_tag>;
+
 class SelectMenu
 {
 private:
@@ -60,7 +62,7 @@ public:
 
 	bool isFolderOpen() const;
 
-	void closeFolder();
+	void closeFolder(PlaySeYN playSe);
 
 	const SelectMenuItem& cursorMenuItem() const;
 

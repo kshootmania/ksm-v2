@@ -34,7 +34,7 @@ void SelectScene::update()
 	// BackSpaceキーまたはBackボタン(Escキー)でフォルダを閉じる
 	if (closeFolder)
 	{
-		m_menu.closeFolder();
+		m_menu.closeFolder(PlaySeYN::No);
 	}
 
 	// スタートボタンを押した場合、フォルダを開く または プレイ開始

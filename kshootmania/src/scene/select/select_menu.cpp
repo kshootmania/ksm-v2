@@ -450,7 +450,7 @@ void SelectMenu::decide()
 		break;
 
 	case SelectMenuItem::kCurrentFolder:
-		closeFolder();
+		closeFolder(PlaySeYN::Yes);
 		break;
 
 	default:
@@ -464,9 +464,12 @@ bool SelectMenu::isFolderOpen() const
 	return m_folderState.folderType != SelectFolderState::kNone;
 }
 
-void SelectMenu::closeFolder()
+void SelectMenu::closeFolder(PlaySeYN playSe)
 {
-	m_folderSelectSe.play();
+	if (playSe)
+	{
+		m_folderSelectSe.play();
+	}
 
 	// 元のパスを取得しておく
 	const String originalFullPath = m_folderState.fullPath;
