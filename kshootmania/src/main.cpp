@@ -39,6 +39,10 @@ void Main()
 	// シーン管理
 	Addon::Register(U"SceneManager", std::make_unique<SceneManagerAddon>());
 
+	// 毎フレーム連続してアセット生成した時の警告を無効化
+	// (楽曲選択でのスクロールにおいては、正常系でもテクスチャ読み込みが毎フレーム発生するため)
+	Profiler::EnableAssetCreationWarning(false);
+
 #ifdef _DEBUG
 	// ライブラリ側のデバッグ用にコンソール表示(Debugビルドの場合のみ)
 	Console.open();
