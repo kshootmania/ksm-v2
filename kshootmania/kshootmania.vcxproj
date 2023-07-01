@@ -119,6 +119,7 @@
   <ItemGroup>
     <ClCompile Include="src\common\asset_management.cpp" />
     <ClCompile Include="src\common\frame_rate_limit.cpp" />
+    <ClCompile Include="src\common\ime_utils.cpp" />
     <ClCompile Include="src\common\math_utils.cpp" />
     <ClCompile Include="src\graphics\texture_font_text_layout.cpp" />
     <ClCompile Include="src\graphics\number_texture_font.cpp" />
@@ -382,6 +383,7 @@
     <ClInclude Include="src\common\asset_management.hpp" />
     <ClInclude Include="src\common\common_defines.hpp" />
     <ClInclude Include="src\common\frame_rate_limit.hpp" />
+    <ClInclude Include="src\common\ime_utils.hpp" />
     <ClInclude Include="src\common\math_utils.hpp" />
     <ClInclude Include="src\graphics\texture_font_text_layout.hpp" />
     <ClInclude Include="src\graphics\number_texture_font.hpp" />

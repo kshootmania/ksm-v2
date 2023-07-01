@@ -1,5 +1,6 @@
 ﻿#include <Siv3D.hpp>
 #include "common/frame_rate_limit.hpp"
+#include "common/ime_utils.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
 void Main()
@@ -42,6 +43,9 @@ void Main()
 	// 毎フレーム連続してアセット生成した時の警告を無効化
 	// (楽曲選択でのスクロールにおいては、正常系でもテクスチャ読み込みが毎フレーム発生するため)
 	Profiler::EnableAssetCreationWarning(false);
+
+	// IME無効化
+	IMEUtils::DetachIMEContext();
 
 #ifdef _DEBUG
 	// ライブラリ側のデバッグ用にコンソール表示(Debugビルドの場合のみ)

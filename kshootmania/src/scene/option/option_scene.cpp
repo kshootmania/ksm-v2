@@ -1,5 +1,8 @@
 ﻿#include "option_scene.hpp"
 #include "option_assets.hpp"
+#include "common/ime_utils.hpp"
+
+// TODO: TextureIdxまわりどうにかする
 
 namespace
 {
@@ -122,35 +125,29 @@ namespace
 					I18n::Get(I18n::Option::kAssistTickOff),
 					I18n::Get(I18n::Option::kAssistTickOn),
 				}),
-				CreateInfo::Enum(ConfigIni::Key::kDisableIME, Array<StringView>{
-					I18n::Get(I18n::Option::kDisableIMEOff),
-					I18n::Get(I18n::Option::kDisableIMEOnLow),
-					I18n::Get(I18n::Option::kDisableIMEOnMid),
-					I18n::Get(I18n::Option::kDisableIMEOnHigh),
-				}),
-				CreateInfo::Int(ConfigIni::Key::kTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)), // TODO: additional suffix
-				CreateInfo::Int(ConfigIni::Key::kLaserTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)),
+				CreateInfo::Int(ConfigIni::Key::kTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)).setKeyTextureIdx(6), // TODO: additional suffix
+				CreateInfo::Int(ConfigIni::Key::kLaserTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)).setKeyTextureIdx(7),
 				CreateInfo::Enum(ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
 					I18n::Get(I18n::Option::kLaserMouseDirectionLeftThenRight),
 					I18n::Get(I18n::Option::kLaserMouseDirectionRightThenRight),
-				}),
+				}).setKeyTextureIdx(8),
 				CreateInfo::Enum(ConfigIni::Key::kLaserMouseDirectionY, Array<StringView>{
 					I18n::Get(I18n::Option::kLaserMouseDirectionUpThenRight),
 					I18n::Get(I18n::Option::kLaserMouseDirectionDownThenRight),
-				}),
-				CreateInfo::Int(ConfigIni::Key::kLaserSignalSensitivity, kLaserSignalSensitivityMin, kLaserSignalSensitivityMax, kLaserSignalSensitivityDefault), // TODO: additional suffix for zero value
+				}).setKeyTextureIdx(9),
+				CreateInfo::Int(ConfigIni::Key::kLaserSignalSensitivity, kLaserSignalSensitivityMin, kLaserSignalSensitivityMax, kLaserSignalSensitivityDefault).setKeyTextureIdx(10), // TODO: additional suffix for zero value
 				CreateInfo::Enum(ConfigIni::Key::kSwapLaserLR, Array<StringView>{
 					I18n::Get(I18n::Option::kDisabled),
 					I18n::Get(I18n::Option::kEnabled),
-				}),
+				}).setKeyTextureIdx(11),
 				CreateInfo::Enum(ConfigIni::Key::kSelectCloseFolderKey, Array<StringView>{
 					I18n::Get(I18n::Option::kSelectCloseFolderKeyBackspace),
 					I18n::Get(I18n::Option::kSelectCloseFolderKeyEsc),
-				}),
+				}).setKeyTextureIdx(12),
 				CreateInfo::Enum(ConfigIni::Key::kUse3BTsPlusStartAsBack, Array<StringView>{
 					I18n::Get(I18n::Option::kDisabled),
 					I18n::Get(I18n::Option::kEnabled),
-				}),
+				}).setKeyTextureIdx(13),
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueOther, {
 				CreateInfo::Enum(ConfigIni::Key::kHispeedShowXMod, Array<StringView>{
