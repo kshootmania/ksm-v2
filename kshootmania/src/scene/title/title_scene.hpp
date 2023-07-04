@@ -13,6 +13,8 @@ public:
 
 	virtual void update() override;
 
+	virtual void updateFadeIn([[maybe_unused]] double t) { update(); }
+
 	virtual void draw() const override;
 
 	void processMenuItem(TitleMenu::Item item);

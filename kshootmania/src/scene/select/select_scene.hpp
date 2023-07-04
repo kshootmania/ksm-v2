@@ -21,7 +21,5 @@ public:
 
 	virtual void updateFadeIn([[maybe_unused]] double t) { update(); }
 
-	virtual void updateFadeOut([[maybe_unused]] double t) { update(); }
-
 	virtual void draw() const override;
 };
