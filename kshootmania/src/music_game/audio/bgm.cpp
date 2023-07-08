@@ -8,49 +8,49 @@ namespace MusicGame::Audio
 		constexpr double kManualUpdateIntervalSec = 0.005;
 	}
 
-	void BGM::emplaceAudioEffectImpl(bool isFX, const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
+	void BGM::emplaceAudioEffectImpl(bool isFX, const std::string& name, const kson::AudioEffectDef& def, const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges, const std::set<float>& updateTriggerTiming)
 	{
 		const auto pAudioEffectBus = isFX ? m_pAudioEffectBusFX : m_pAudioEffectBusLaser;
 		switch (def.type)
 		{
 		case kson::AudioEffectType::Retrigger:
-			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Retrigger>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Retrigger>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
 		case kson::AudioEffectType::Gate:
-			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Gate>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Gate>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
 		case kson::AudioEffectType::Flanger:
-			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
 		case kson::AudioEffectType::Bitcrusher:
-			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
 		case kson::AudioEffectType::Wobble:
-			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Wobble>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Wobble>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
 		case kson::AudioEffectType::Tapestop:
-			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Tapestop>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Tapestop>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
 		case kson::AudioEffectType::Echo:
-			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Echo>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Echo>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
 		case kson::AudioEffectType::PeakingFilter:
-			pAudioEffectBus->emplaceAudioEffect<ksmaudio::PeakingFilter>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::PeakingFilter>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
 		case kson::AudioEffectType::HighPassFilter:
-			pAudioEffectBus->emplaceAudioEffect<ksmaudio::HighPassFilter>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::HighPassFilter>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
 		case kson::AudioEffectType::LowPassFilter:
-			pAudioEffectBus->emplaceAudioEffect<ksmaudio::LowPassFilter>(name, def.v, { /*TODO*/ }, updateTriggerTiming);
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::LowPassFilter>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 		}
 	}
@@ -184,14 +184,14 @@ namespace MusicGame::Audio
 		return m_stream.latencySec();
 	}
 
-	void BGM::emplaceAudioEffectFX(const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
+	void BGM::emplaceAudioEffectFX(const std::string& name, const kson::AudioEffectDef& def, const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges, const std::set<float>& updateTriggerTiming)
 	{
-		emplaceAudioEffectImpl(true, name, def, updateTriggerTiming);
+		emplaceAudioEffectImpl(true, name, def, paramChanges, updateTriggerTiming);
 	}
 
-	void BGM::emplaceAudioEffectLaser(const std::string& name, const kson::AudioEffectDef& def, const std::set<float>& updateTriggerTiming)
+	void BGM::emplaceAudioEffectLaser(const std::string& name, const kson::AudioEffectDef& def, const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges, const std::set<float>& updateTriggerTiming)
 	{
-		emplaceAudioEffectImpl(false, name, def, updateTriggerTiming);
+		emplaceAudioEffectImpl(false, name, def, paramChanges, updateTriggerTiming);
 	}
 
 	const ksmaudio::AudioEffect::AudioEffectBus& BGM::audioEffectBusFX() const

@@ -2,6 +2,19 @@
 
 namespace ksmaudio::AudioEffect
 {
+	namespace
+	{
+		auto CreateBaseParamChanges(const std::unordered_map<ParamID, std::map<float, ValueSet>>& baseParamChanges)
+		{
+			std::unordered_map<ParamID, detail::Timeline<ValueSet>> result;
+			for (const auto& [paramID, map] : baseParamChanges)
+			{
+				result.emplace(paramID, detail::Timeline<ValueSet>{ map });
+			}
+			return result;
+		}
+	}
+
 	void ParamController::refreshCurrentParams(float timeSec)
 	{
 		m_currentParams = m_baseParams;
@@ -25,11 +38,8 @@ namespace ksmaudio::AudioEffect
 	ParamController::ParamController(const ParamValueSetDict& baseParams,
 		const std::unordered_map<ParamID, std::map<float, ValueSet>>& baseParamChanges)
 		: m_baseParams(baseParams)
+		, m_baseParamChanges(CreateBaseParamChanges(baseParamChanges))
 	{
-		for (const auto& [paramID, map] : baseParamChanges)
-		{
-			m_baseParamChanges.emplace(std::piecewise_construct, std::make_tuple(paramID), std::make_tuple(map));
-		}
 	}
 
 	bool ParamController::update(float timeSec)

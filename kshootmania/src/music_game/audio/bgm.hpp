@@ -22,6 +22,7 @@ namespace MusicGame::Audio
 			bool isFX,
 			const std::string& name,
 			const kson::AudioEffectDef& def,
+			const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges,
 			const std::set<float>& updateTriggerTiming);
 
 	public:
@@ -49,12 +50,14 @@ namespace MusicGame::Audio
 		void emplaceAudioEffectFX(
 			const std::string& name,
 			const kson::AudioEffectDef& def,
-			const std::set<float>& updateTriggerTiming = {}); // TODO: param_change
+			const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges,
+			const std::set<float>& updateTriggerTiming = {});
 
 		void emplaceAudioEffectLaser(
 			const std::string& name,
 			const kson::AudioEffectDef& def,
-			const std::set<float>& updateTriggerTiming = {}); // TODO: param_change
+			const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges,
+			const std::set<float>& updateTriggerTiming = {});
 
 		const ksmaudio::AudioEffect::AudioEffectBus& audioEffectBusFX() const;
 

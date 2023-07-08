@@ -12,6 +12,25 @@ namespace MusicGame::Audio
 		constexpr std::string_view kPeakingFilterAudioEffectName = "peaking_filter";
 		constexpr std::string_view kDefaultLaserAudioEffectName = kPeakingFilterAudioEffectName;
 
+		std::unordered_map<std::string, std::map<float, std::string>> ConvertParamChangesFromPulseToSec(
+			const kson::Dict<kson::ByPulse<std::string>>& paramChangeDict,
+			const kson::ChartData& chartData,
+			const kson::TimingCache& timingCache)
+		{
+			std::unordered_map<std::string, std::map<float, std::string>> result;
+			for (const auto& [name, paramChange] : paramChangeDict)
+			{
+				std::map<float, std::string> paramResult;
+				for (const auto& [y, value] : paramChange)
+				{
+					const float sec = static_cast<float>(kson::PulseToSec(y, chartData.beat, timingCache));
+					paramResult.emplace(sec, value);
+				}
+				result.emplace(name, std::move(paramResult));
+			}
+			return result;
+		}
+
 		void RegisterAudioEffects(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
 		{
 			using AudioEffectUtils::PrecalculateUpdateTriggerTiming;
@@ -21,79 +40,57 @@ namespace MusicGame::Audio
 				+ 1/* 最後の小節の分を足す */
 				+ 1/* インデックスを要素数にするために1を足す */;
 
+			auto defFX = chartData.audio.audioEffect.fx.def;
+			auto defLaser = chartData.audio.audioEffect.laser.def;
+
+			// デフォルトのエフェクト定義を追加
+			// (もし譜面側で同名のエフェクト定義がある場合は上書きせず譜面側を優先する)
+			defFX.merge(kson::Dict<kson::AudioEffectDef>{
+				{ "retrigger", { .type = kson::AudioEffectType::Retrigger } },
+				{ "gate", { .type = kson::AudioEffectType::Gate } },
+				{ "flanger", { .type = kson::AudioEffectType::Flanger } },
+				{ "bitcrusher", { .type = kson::AudioEffectType::Bitcrusher } },
+				{ "wobble", { .type = kson::AudioEffectType::Wobble } },
+				{ "tapestop", { .type = kson::AudioEffectType::Tapestop } },
+				{ "echo", { .type = kson::AudioEffectType::Echo } },
+			});
+			defLaser.merge(kson::Dict<kson::AudioEffectDef>{
+				{ "peaking_filter", { .type = kson::AudioEffectType::PeakingFilter } },
+				{ "high_pass_filter", { .type = kson::AudioEffectType::HighPassFilter } },
+				{ "low_pass_filter", { .type = kson::AudioEffectType::LowPassFilter } },
+				{ "bitcrusher", { .type = kson::AudioEffectType::Bitcrusher } },
+			});
+
 			// FX
-			for (const auto& [name, def] : chartData.audio.audioEffect.fx.def)
+			for (const auto& [name, def] : defFX)
 			{
 				const auto& paramChangeDict = chartData.audio.audioEffect.fx.paramChange;
 				const std::set<float> updateTriggerTiming =
 					paramChangeDict.contains(name)
 					? PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, chartData, timingCache)
 					: PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
+				const auto paramChanges =
+					paramChangeDict.contains(name)
+					? ConvertParamChangesFromPulseToSec(paramChangeDict.at(name), chartData, timingCache)
+					: std::unordered_map<std::string, std::map<float, std::string>>{};
 
-				bgm.emplaceAudioEffectFX(name, def, updateTriggerTiming);
+				bgm.emplaceAudioEffectFX(name, def, paramChanges, updateTriggerTiming);
 			}
 
 			// Laser
-			for (const auto& [name, def] : chartData.audio.audioEffect.laser.def)
+			for (const auto& [name, def] : defLaser)
 			{
 				const auto& paramChangeDict = chartData.audio.audioEffect.laser.paramChange;
 				const std::set<float> updateTriggerTiming =
 					paramChangeDict.contains(name)
 					? PrecalculateUpdateTriggerTiming(def, paramChangeDict.at(name), totalMeasures, chartData, timingCache)
 					: PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
+				const auto paramChanges =
+					paramChangeDict.contains(name)
+					? ConvertParamChangesFromPulseToSec(paramChangeDict.at(name), chartData, timingCache)
+					: std::unordered_map<std::string, std::map<float, std::string>>{};
 
-				bgm.emplaceAudioEffectLaser(name, def, updateTriggerTiming);
-			}
-
-			// テスト用
-			// TODO: Remove this code
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Retrigger };
-				const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
-				bgm.emplaceAudioEffectFX("retrigger", def, updateTriggerTiming);
-			}
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Gate };
-				const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
-				bgm.emplaceAudioEffectFX("gate", def, updateTriggerTiming);
-			}
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Flanger };
-				bgm.emplaceAudioEffectFX("flanger", def);
-			}
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Bitcrusher };
-				bgm.emplaceAudioEffectFX("bitcrusher", def);
-			}
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Wobble };
-				const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
-				bgm.emplaceAudioEffectFX("wobble", def, updateTriggerTiming);
-			}
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Tapestop };
-				bgm.emplaceAudioEffectFX("tapestop", def);
-			}
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Echo };
-				const auto updateTriggerTiming = PrecalculateUpdateTriggerTiming(def, totalMeasures, chartData, timingCache);
-				bgm.emplaceAudioEffectFX("echo", def, updateTriggerTiming);
-			}
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::PeakingFilter };
-				bgm.emplaceAudioEffectLaser("peaking_filter", def);
-			}
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::HighPassFilter };
-				bgm.emplaceAudioEffectLaser("high_pass_filter", def);
-			}
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::LowPassFilter };
-				bgm.emplaceAudioEffectLaser("low_pass_filter", def);
-			}
-			{
-				const kson::AudioEffectDef def = { .type = kson::AudioEffectType::Bitcrusher };
-				bgm.emplaceAudioEffectLaser("bitcrusher", def);
+				bgm.emplaceAudioEffectLaser(name, def, paramChanges, updateTriggerTiming);
 			}
 		}
 

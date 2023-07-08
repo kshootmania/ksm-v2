@@ -24,16 +24,16 @@ namespace ksmaudio::AudioEffect
 		class Timeline
 		{
 		private:
-			const std::map<float, T> m_map;
+			std::shared_ptr<const std::map<float, T>> m_map; // ムーブ時のイテレータ破壊を防ぐためにポインタで持つ必要がある
 			std::map<float, T>::const_iterator m_cursorItr;
 			std::map<float, T>::const_iterator m_nextCursorItr;
 			float m_timeSec = kPastTimeSec;
 
 		public:
 			explicit Timeline(const std::map<float, T>& map)
-				: m_map(map)
-				, m_cursorItr(m_map.cbegin())
-				, m_nextCursorItr(m_map.empty() ? m_map.cend() : std::next(m_map.cbegin()))
+				: m_map(std::make_shared<const std::map<float, T>>(map))
+				, m_cursorItr(m_map->cbegin())
+				, m_nextCursorItr(m_map->empty() ? m_map->cend() : std::next(m_map->cbegin()))
 			{
 			}
 
@@ -47,7 +47,7 @@ namespace ksmaudio::AudioEffect
 
 				m_timeSec = timeSec;
 
-				if (m_nextCursorItr == m_map.cend())
+				if (m_nextCursorItr == m_map->cend())
 				{
 					return false;
 				}
@@ -57,16 +57,16 @@ namespace ksmaudio::AudioEffect
 					return false;
 				}
 
-				const auto itr = detail::CurrentAt(m_map, m_timeSec);
+				const auto itr = detail::CurrentAt(*m_map, m_timeSec);
 				m_cursorItr = itr;
-				m_nextCursorItr = itr == m_map.cend() ? itr : std::next(itr);
+				m_nextCursorItr = itr == m_map->cend() ? itr : std::next(itr);
 
-				return false;
+				return true;
 			}
 
 			bool hasValue() const
 			{
-				return m_cursorItr != m_map.cend() && m_cursorItr->first <= m_timeSec;
+				return m_cursorItr != m_map->cend() && m_cursorItr->first <= m_timeSec;
 			}
 
 			const T& value() const
