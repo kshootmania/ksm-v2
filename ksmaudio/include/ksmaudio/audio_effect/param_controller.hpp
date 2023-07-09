@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <map>
+#include <memory>
 #include <cassert>
 #include "audio_effect_param.hpp"
 
