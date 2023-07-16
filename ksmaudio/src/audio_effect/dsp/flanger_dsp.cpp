@@ -30,7 +30,8 @@ namespace ksmaudio::AudioEffect
 			return;
 		}
 
-		const float lfoSpeed = 1.0f / params.period / m_info.sampleRate;
+		const float periodSamples = params.period * m_info.sampleRate;
+		const float lfoSpeed = periodSamples == 0.0f ? 0.0f : 1.0f / periodSamples;
 		for (std::size_t i = 0; i < numFrames; ++i)
 		{
 			for (std::size_t channel = 0; channel < m_info.numChannels; ++channel)
