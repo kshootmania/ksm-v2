@@ -46,7 +46,7 @@ namespace ksmaudio::AudioEffect
         {
             m_triggerHandler.advanceBatch(frameSize);
 
-            // Process frames even if bypassed to avoid noise at the beginning of effectsd
+            // Process frames even if bypassed to avoid noise at the beginning of effects
             if (numPeriodFrames > 0U)
             {
                 // Here, a fixed frequency is used to reduce computational costs
