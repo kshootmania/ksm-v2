@@ -1,5 +1,6 @@
 ﻿#include "select_difficulty_menu.hpp"
 #include "select_menu.hpp"
+#include "menu_item/iselect_menu_item.hpp"
 
 SelectDifficultyMenu::SelectDifficultyMenu(const SelectMenu* pSelectMenu)
 	: m_menu(
@@ -51,17 +52,17 @@ void SelectDifficultyMenu::update()
 		return;
 	}
 
-	const SelectMenuSongItemInfo* pMenuItem = dynamic_cast<SelectMenuSongItemInfo*>(m_pSelectMenu->cursorMenuItem().info.get());
-	if (pMenuItem == nullptr)
+	const ISelectMenuItem& menuItem = m_pSelectMenu->cursorMenuItem();
+	if (!menuItem.difficultyMenuExists())
 	{
-		// 選択中の項目が曲以外の場合は難易度カーソルを動かさない(元の状態に戻す)
+		// 難易度が存在しない項目の場合は難易度カーソルの移動をキャンセル
 		m_menu.setCursor(cursorPrev);
 		return;
 	}
 
 	const int32 cursor = m_menu.cursor();
-	assert(0 <= cursor && cursor < pMenuItem->chartInfos.size());
-	if (pMenuItem->chartInfos[cursor].has_value())
+	assert(0 <= cursor && cursor < kNumDifficulties);
+	if (menuItem.chartInfoPtr(cursor) != nullptr)
 	{
 		// カーソルの難易度が存在すればその難易度から変更なしでOK
 		return;
@@ -73,7 +74,7 @@ void SelectDifficultyMenu::update()
 	{
 		for (int idx = cursor + 1; idx < kNumDifficulties; ++idx)
 		{
-			if (pMenuItem->chartInfos[idx].has_value())
+			if (menuItem.chartInfoPtr(idx) != nullptr)
 			{
 				newCursor = idx;
 				break;
@@ -84,7 +85,7 @@ void SelectDifficultyMenu::update()
 	{
 		for (int idx = cursor - 1; idx >= 0; --idx)
 		{
-			if (pMenuItem->chartInfos[idx].has_value())
+			if (menuItem.chartInfoPtr(idx) != nullptr)
 			{
 				newCursor = idx;
 				break;
@@ -98,27 +99,26 @@ void SelectDifficultyMenu::draw(const Vec2& shakeVec) const
 {
 	using namespace ScreenUtils;
 
-	const SelectMenuSongItemInfo* pMenuItem = dynamic_cast<SelectMenuSongItemInfo*>(m_pSelectMenu->cursorMenuItem().info.get());
-
-	if (pMenuItem == nullptr)
+	const ISelectMenuItem& menuItem = m_pSelectMenu->cursorMenuItem();
+	if (!menuItem.difficultyMenuExists())
 	{
 		return;
 	}
 
 	const Vec2 baseVec = Scaled(65, 128) + LeftMarginVec() + shakeVec;
 
-	for (int32 i = 0; i < kNumDifficulties; ++i)
+	for (int32 difficultyIdx = 0; difficultyIdx < kNumDifficulties; ++difficultyIdx)
 	{
-		const bool difficultyExists = std::cmp_less(i, pMenuItem->chartInfos.size()) && pMenuItem->chartInfos[i].has_value();
+		const SelectChartInfo* pChartInfo = menuItem.chartInfoPtr(difficultyIdx);
 
 		// 難易度項目の背景を描画
 		// Note: KSMv1でテクスチャの比率とは異なる縦横比で描画されていたので、ここでもそれを再現するために大きさ指定でリサイズしている
-		m_difficultyTexture(difficultyExists ? 1 : 0, i).resized(ScaledL(220, 220)).draw(baseVec + ScaledL(50 + 236 * i, 324));
+		m_difficultyTexture(pChartInfo != nullptr ? 1 : 0, difficultyIdx).resized(ScaledL(220, 220)).draw(baseVec + ScaledL(50 + 236 * difficultyIdx, 324));
 
 		// レベルの数字を描画
-		if (difficultyExists)
+		if (pChartInfo != nullptr)
 		{
-			m_levelNumberTexture(Clamp(pMenuItem->chartInfos[i]->level - 1, 0, kLevelMax - 1)).draw(baseVec + ScaledL(86 + 236 * i, 358));
+			m_levelNumberTexture(Clamp(pChartInfo->level() - 1, 0, kLevelMax - 1)).draw(baseVec + ScaledL(86 + 236 * difficultyIdx, 358));
 		}
 	}
 
@@ -137,20 +137,19 @@ int32 SelectDifficultyMenu::cursor() const
 		return -1;
 	}
 
-	const SelectMenuSongItemInfo* pMenuItem = dynamic_cast<SelectMenuSongItemInfo*>(m_pSelectMenu->cursorMenuItem().info.get());
-	
-	if (pMenuItem == nullptr)
+	const ISelectMenuItem& menuItem = m_pSelectMenu->cursorMenuItem();
+	if (!menuItem.difficultyMenuExists())
 	{
 		return -1;
 	}
 
 	const int32 cursor = m_menu.cursor();
-	assert(0 <= cursor && cursor < pMenuItem->chartInfos.size());
+	assert(0 <= cursor && cursor < kNumDifficulties);
 
 	const int32 altCursor = GetAlternativeCursor(cursor,
-		[pMenuItem](int32 idx)
+		[&menuItem](int32 idx)
 		{
-			return 0 <= idx && std::cmp_less(idx, pMenuItem->chartInfos.size()) && pMenuItem->chartInfos[idx].has_value();
+			return menuItem.chartInfoPtr(idx) != nullptr;
 		});
 
 	return altCursor;
@@ -172,10 +171,10 @@ int32 SelectDifficultyMenu::deltaCursor() const
 }
 
 // 選択中の曲にカーソルの難易度が存在するとは限らないので、存在する難易度のうちカーソルに最も近いものを代替カーソル値(alternative cursor)として返す
-int32 SelectDifficultyMenu::GetAlternativeCursor(int32 rawCursor, std::function<bool(int32)> difficultyExistsFunc)
+int32 SelectDifficultyMenu::GetAlternativeCursor(int32 rawCursor, std::function<bool(int32)> fnDifficultyExists)
 {
 	// カーソルの難易度が存在すればそれをそのまま返す
-	if (difficultyExistsFunc(rawCursor))
+	if (fnDifficultyExists(rawCursor))
 	{
 		return rawCursor;
 	}
@@ -187,7 +186,7 @@ int32 SelectDifficultyMenu::GetAlternativeCursor(int32 rawCursor, std::function<
 	bool found = false;
 	for (int idx = rawCursor - 1; idx >= 0; --idx)
 	{
-		if (difficultyExistsFunc(idx))
+		if (fnDifficultyExists(idx))
 		{
 			altCursor = idx;
 			found = true;
@@ -200,7 +199,7 @@ int32 SelectDifficultyMenu::GetAlternativeCursor(int32 rawCursor, std::function<
 	{
 		for (int idx = rawCursor + 1; idx < kNumDifficulties; ++idx)
 		{
-			if (difficultyExistsFunc(idx))
+			if (fnDifficultyExists(idx))
 			{
 				altCursor = idx;
 				break;

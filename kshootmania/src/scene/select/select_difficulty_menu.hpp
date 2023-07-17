@@ -35,5 +35,5 @@ public:
 
 	int32 deltaCursor() const;
 
-	static int32 GetAlternativeCursor(int32 rawCursor, std::function<bool(int32)> difficultyExistsFunc);
+	static int32 GetAlternativeCursor(int32 rawCursor, std::function<bool(int32)> fnDifficultyExists);
 };

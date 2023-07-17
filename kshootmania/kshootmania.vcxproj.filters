@@ -283,6 +283,12 @@
     <Filter Include="Source Files\music_game\camera\cam_pattern">
       <UniqueIdentifier>{78bee3cc-8012-48a3-abf8-9508a3cec840}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\scene\select\menu_item">
+      <UniqueIdentifier>{6812799a-0c5d-4132-9f54-6ed625c88584}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scene\select\menu_item">
+      <UniqueIdentifier>{76ededc0-9b92-4a04-804b-48da597221c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\scene\title\title_scene.cpp">
@@ -488,6 +494,24 @@
     </ClCompile>
     <ClCompile Include="src\common\ime_utils.cpp">
       <Filter>Source Files\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\select\select_chart_info.cpp">
+      <Filter>Source Files\scene\select</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\select\menu_item\select_menu_song_item.cpp">
+      <Filter>Source Files\scene\select\menu_item</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\select\menu_item\select_menu_all_folder_item.cpp">
+      <Filter>Source Files\scene\select\menu_item</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\select\menu_item\select_menu_dir_folder_item.cpp">
+      <Filter>Source Files\scene\select\menu_item</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\select\menu_item\select_menu_fav_folder_item.cpp">
+      <Filter>Source Files\scene\select\menu_item</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\select\menu_item\select_menu_sub_dir_section_item.cpp">
+      <Filter>Source Files\scene\select\menu_item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1183,9 +1207,6 @@
     <ClInclude Include="src\scene\select\select_folder_state.hpp">
       <Filter>Header Files\scene\select</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\select\select_menu_item.hpp">
-      <Filter>Header Files\scene\select</Filter>
-    </ClInclude>
     <ClInclude Include="src\scoring\high_score_info.hpp">
       <Filter>Header Files\scoring</Filter>
     </ClInclude>
@@ -1377,6 +1398,27 @@
     </ClInclude>
     <ClInclude Include="src\common\ime_utils.hpp">
       <Filter>Header Files\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\select\select_chart_info.hpp">
+      <Filter>Header Files\scene\select</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\select\menu_item\iselect_menu_item.hpp">
+      <Filter>Header Files\scene\select\menu_item</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\select\menu_item\select_menu_song_item.hpp">
+      <Filter>Header Files\scene\select\menu_item</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\select\menu_item\select_menu_all_folder_item.hpp">
+      <Filter>Header Files\scene\select\menu_item</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\select\menu_item\select_menu_dir_folder_item.hpp">
+      <Filter>Header Files\scene\select\menu_item</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\select\menu_item\select_menu_sub_dir_section_item.hpp">
+      <Filter>Header Files\scene\select\menu_item</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\select\menu_item\select_menu_fav_folder_item.hpp">
+      <Filter>Header Files\scene\select\menu_item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

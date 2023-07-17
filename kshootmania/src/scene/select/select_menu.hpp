@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "select_folder_state.hpp"
 #include "ui/array_with_linear_menu.hpp"
-#include "select_menu_item.hpp"
 #include "select_difficulty_menu.hpp"
 #include "select_menu_graphics.hpp"
 #include "select_song_preview.hpp"
@@ -9,12 +8,25 @@
 
 using PlaySeYN = YesNo<struct PlaySeYN_tag>;
 
+class ISelectMenuItem;
+
+struct SelectMenuEventContext
+{
+	// Note: FilePathViewやconst FilePath&ではなくFilePathにしているのは意図的
+	//       (メニュー項目の再構築が発生すると呼び出し元のFilePathが無効になるので、事前にコピーしておく必要がある)
+	std::function<void(FilePath)> fnMoveToPlayScene;
+	std::function<void(FilePath)> fnOpenDirectory;
+	std::function<void()> fnCloseFolder;
+};
+
 class SelectMenu
 {
 private:
+	const SelectMenuEventContext m_eventContext;
+
 	SelectFolderState m_folderState;
 
-	ArrayWithLinearMenu<SelectMenuItem> m_menu;
+	ArrayWithLinearMenu<std::unique_ptr<ISelectMenuItem>> m_menu;
 
 	SelectDifficultyMenu m_difficultyMenu;
 
@@ -22,8 +34,6 @@ private:
 
 	SelectMenuShakeDirection m_shakeDirection = SelectMenuShakeDirection::kUnspecified;
 	Stopwatch m_shakeStopwatch;
-
-	const std::function<void(FilePathView)> m_moveToPlaySceneFunc;
 
 	SelectSongPreview m_songPreview;
 
@@ -33,15 +43,7 @@ private:
 
 	const ksmaudio::Sample m_folderSelectSe{"se/sel_dir.wav"};
 
-	// TODO: Delete this
-	Font m_debugFont;
-	String m_debugStr;
-
-	void decideSongItem();
-
-	void decideDirectoryFolderItem();
-
-	bool openDirectory(FilePathView directoryPath);
+	bool openDirectory(FilePathView directoryPath, PlaySeYN playSe);
 
 	void setCursorAndSave(int32 cursor);
 
@@ -52,7 +54,9 @@ private:
 	void refreshSongPreview();
 
 public:
-	explicit SelectMenu(std::function<void(FilePathView)> moveToPlaySceneFunc);
+	explicit SelectMenu(std::function<void(FilePathView)> fnMoveToPlayScene);
+
+	~SelectMenu(); // ヘッダではISelectMenuItemが不完全型なのでソースファイル側で定義
 
 	void update();
 
@@ -64,9 +68,7 @@ public:
 
 	void closeFolder(PlaySeYN playSe);
 
-	const SelectMenuItem& cursorMenuItem() const;
-
-	const SelectMenuSongItemChartInfo* cursorChartInfoPtr() const;
+	const ISelectMenuItem& cursorMenuItem() const;
 
 	bool empty() const;
 };
