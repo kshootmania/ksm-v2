@@ -60,12 +60,12 @@ FilePath SelectChartInfo::previewBGMFilePath() const
 
 double SelectChartInfo::previewBGMOffsetSec() const
 {
-	return m_chartData.audio.bgm.preview.offset;
+	return m_chartData.audio.bgm.preview.offset / 1000.0;
 }
 
 double SelectChartInfo::previewBGMDurationSec() const
 {
-	return m_chartData.audio.bgm.preview.duration;
+	return m_chartData.audio.bgm.preview.duration / 1000.0;
 }
 
 double SelectChartInfo::previewBGMVolume() const
