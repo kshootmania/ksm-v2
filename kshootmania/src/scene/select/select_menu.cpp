@@ -79,16 +79,18 @@ bool SelectMenu::openDirectory(FilePathView directoryPath, PlaySeYN playSe)
 
 		// 曲の項目を追加
 		Array<FilePath> subDirCandidates;
-		const Array<FilePath> songDirectories = GetSubDirectories(directoryPath);
-		for (const auto& songDirectory : songDirectories)
 		{
-			// 項目追加
-			const bool chartExists = fnInsertSongItem(songDirectory);
-
-			// フォルダ直下に譜面がなかった場合はサブディレクトリの候補に追加
-			if (!chartExists)
+			const Array<FilePath> songDirectories = GetSubDirectories(directoryPath);
+			for (const auto& songDirectory : songDirectories)
 			{
-				subDirCandidates.push_back(songDirectory);
+				// 項目追加
+				const bool chartExists = fnInsertSongItem(songDirectory);
+
+				// フォルダ直下に譜面がなかった場合はサブディレクトリの候補に追加
+				if (!chartExists)
+				{
+					subDirCandidates.push_back(songDirectory);
+				}
 			}
 		}
 
@@ -322,9 +324,6 @@ void SelectMenu::draw() const
 
 	m_graphics.draw(shakeVec);
 	m_difficultyMenu.draw(shakeVec);
-
-	// TODO: Delete this debug code
-	//m_debugFont(m_debugStr).draw(Vec2{ 100, 100 });
 }
 
 void SelectMenu::decide()

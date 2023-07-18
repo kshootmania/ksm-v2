@@ -76,5 +76,9 @@ namespace MusicGame
 		void draw() const;
 
 		void terminate();
+
+		const kson::ChartData& chartData() const;
+
+		PlayResult playResult() const;
 	};
 }

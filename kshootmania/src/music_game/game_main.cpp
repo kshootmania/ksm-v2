@@ -117,4 +117,25 @@ namespace MusicGame
 	{
 		m_hispeedSettingMenu.saveToConfigIni();
 	}
+
+	const kson::ChartData& GameMain::chartData() const
+	{
+		return m_chartData;
+	}
+
+	PlayResult GameMain::playResult() const
+	{
+		// TODO: 各値を取得できるようにする、viewStatusはもはや表示用ではなくなっているので構造を見直す
+		return
+		{
+			.score = m_viewStatus.score,
+			.maxCombo = 0,
+			.criticalCount = 0,
+			.nearFastCount = 0,
+			.nearSlowCount = 0,
+			.errorCount = 0,
+			.gaugePercentage = m_viewStatus.gaugePercentage,
+			.gaugeType = kNormalGauge,
+		};
+	}
 }
