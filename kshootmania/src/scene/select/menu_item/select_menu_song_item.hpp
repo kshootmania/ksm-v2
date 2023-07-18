@@ -4,9 +4,9 @@
 class SelectMenuSongItem : public ISelectMenuItem
 {
 private:
-	bool m_chartExists = false;
+	const FilePath m_fullPath;
 
-	FilePath m_fullPath;
+	bool m_chartExists = false;
 
 	std::array<std::unique_ptr<SelectChartInfo>, kNumDifficulties> m_chartInfos;
 

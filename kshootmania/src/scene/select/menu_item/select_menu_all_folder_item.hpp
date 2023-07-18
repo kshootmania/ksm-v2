@@ -4,7 +4,7 @@
 class SelectMenuAllFolderItem : public ISelectMenuItem
 {
 private:
-	IsCurrentFolderYN m_isCurrentFolder;
+	const IsCurrentFolderYN m_isCurrentFolder;
 
 public:
 	static constexpr StringView kAllFolderSpecialPath = U"*"; // FullPathがこの値の場合は例外的にAllフォルダを表す

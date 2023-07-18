@@ -4,9 +4,9 @@
 class SelectMenuDirFolderItem : public ISelectMenuItem
 {
 private:
-	IsCurrentFolderYN m_isCurrentFolder;
-	FilePath m_fullPath;
-	String m_displayName;
+	const IsCurrentFolderYN m_isCurrentFolder;
+	const FilePath m_fullPath;
+	const String m_displayName;
 
 public:
 	explicit SelectMenuDirFolderItem(IsCurrentFolderYN isCurrentFolder, FilePathView fullPath);

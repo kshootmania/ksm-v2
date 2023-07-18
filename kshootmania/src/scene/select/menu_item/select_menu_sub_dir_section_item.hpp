@@ -4,8 +4,8 @@
 class SelectMenuSubDirSectionItem : public ISelectMenuItem
 {
 private:
-	FilePath m_fullPath;
-	String m_displayName;
+	const FilePath m_fullPath;
+	const String m_displayName;
 
 public:
 	explicit SelectMenuSubDirSectionItem(FilePathView fullPath);
