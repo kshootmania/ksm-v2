@@ -522,6 +522,12 @@
     <ClCompile Include="src\scene\result\result_scene.cpp">
       <Filter>Source Files\scene\result</Filter>
     </ClCompile>
+    <ClCompile Include="src\scene\result\result_panel.cpp">
+      <Filter>Source Files\scene\result</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\play_result.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1439,6 +1445,9 @@
       <Filter>Header Files\music_game</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\result\result_assets.hpp">
+      <Filter>Header Files\scene\result</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\result\result_panel.hpp">
       <Filter>Header Files\scene\result</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,23 +20,23 @@ namespace MusicGame::Judgment
 
 	void ScoringStatus::onChipOrLaserSlamJudgment(Judgment::JudgmentResult result)
 	{
+		m_comboStatus.processJudgmentResult(result);
+
 		switch (result)
 		{
 		case Judgment::JudgmentResult::kCritical:
 			m_scoreValue += Judgment::kScoreValueCritical;
 			addGaugeValue(kGaugeValueChip);
-			m_comboStatus.increment();
 			break;
 
-		case Judgment::JudgmentResult::kNear:
+		case Judgment::JudgmentResult::kNearFast:
+		case Judgment::JudgmentResult::kNearSlow:
 			m_scoreValue += Judgment::kScoreValueNear;
 			addGaugeValue(kGaugeValueChipNear);
-			m_comboStatus.increment();
 			break;
 
 		case Judgment::JudgmentResult::kError:
 			subtractGaugeValue(static_cast<int32>(m_gaugeValueMax * kGaugeDecreasePercentByChipError / 100));
-			m_comboStatus.resetByErrorJudgment();
 			break;
 
 		default:
@@ -47,17 +47,17 @@ namespace MusicGame::Judgment
 
 	void ScoringStatus::onLongOrLaserLineJudgment(Judgment::JudgmentResult result)
 	{
+		m_comboStatus.processJudgmentResult(result);
+
 		switch (result)
 		{
 		case Judgment::JudgmentResult::kCritical:
 			m_scoreValue += Judgment::kScoreValueCritical;
 			addGaugeValue(kGaugeValueLong);
-			m_comboStatus.increment();
 			break;
 
 		case Judgment::JudgmentResult::kError:
 			subtractGaugeValue(static_cast<int32>(m_gaugeValueMax * kGaugeDecreasePercentByLongError / 100));
-			m_comboStatus.resetByErrorJudgment();
 			break;
 
 		default:
@@ -87,6 +87,16 @@ namespace MusicGame::Judgment
 	int32 ScoringStatus::combo() const
 	{
 		return m_comboStatus.combo();
+	}
+
+	int32 ScoringStatus::maxCombo() const
+	{
+		return m_comboStatus.maxCombo();
+	}
+
+	const ComboStats& ScoringStatus::comboStats() const
+	{
+		return m_comboStatus.stats();
 	}
 
 	bool ScoringStatus::isNoError() const

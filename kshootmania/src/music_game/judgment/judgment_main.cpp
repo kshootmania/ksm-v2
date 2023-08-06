@@ -2,7 +2,7 @@
 
 namespace MusicGame::Judgment
 {
-	JudgmentMain::JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+	JudgmentMain::JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, GaugeType gaugeType)
 		: m_btLaneJudgments{
 			ButtonLaneJudgment(kBTButtons[0], chartData.note.bt[0], chartData.beat, timingCache),
 			ButtonLaneJudgment(kBTButtons[1], chartData.note.bt[1], chartData.beat, timingCache),
@@ -14,7 +14,7 @@ namespace MusicGame::Judgment
 		, m_laserLaneJudgments{
 			LaserLaneJudgment(kLaserButtons[0][0], kLaserButtons[0][1], chartData.note.laser[0], chartData.beat, timingCache),
 			LaserLaneJudgment(kLaserButtons[1][0], kLaserButtons[1][1], chartData.note.laser[1], chartData.beat, timingCache) }
-		, m_judgmentHandler(chartData, m_btLaneJudgments, m_fxLaneJudgments, m_laserLaneJudgments)
+		, m_judgmentHandler(chartData, m_btLaneJudgments, m_fxLaneJudgments, m_laserLaneJudgments, gaugeType)
 	{
 	}
 
@@ -40,5 +40,10 @@ namespace MusicGame::Judgment
 
 		// 状態をViewStatusに反映
 		m_judgmentHandler.applyToViewStatus(viewStatusRef, gameStatusRef.currentTimeSec, gameStatusRef.currentPulse);
+	}
+
+	PlayResult JudgmentMain::playResult() const
+	{
+		return m_judgmentHandler.playResult();
 	}
 }

@@ -18,6 +18,8 @@ namespace MusicGame
 	{
 		FilePath chartFilePath;
 
+		GaugeType gaugeType = GaugeType::kNormalGauge;
+
 		bool assistTickEnabled = false;
 	};
 

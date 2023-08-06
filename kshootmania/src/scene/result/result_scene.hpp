@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "result_assets.hpp"
+#include "result_panel.hpp"
 #include "music_game/play_result.hpp"
 
 class ResultScene : public MyScene
@@ -10,6 +11,8 @@ private:
 	const kson::ChartData m_chartData;
 
 	const MusicGame::PlayResult m_playResult;
+
+	ResultPanel m_resultPanel;
 
 public:
 	explicit ResultScene(const InitData& initData);

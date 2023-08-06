@@ -29,9 +29,17 @@ namespace MusicGame::Judgment
 
 		int32 score() const;
 
+		/// @brief NORMAL/EASYゲージのパーセンテージを返す
+		/// @return パーセンテージ(0.0～100.0)
 		double gaugePercentage() const;
 
+		// TODO: HARDゲージのパーセンテージを返す
+
 		int32 combo() const;
+
+		int32 maxCombo() const;
+
+		const ComboStats& comboStats() const;
 
 		bool isNoError() const;
 	};

@@ -7,6 +7,7 @@ namespace
 		return
 		{
 			.chartFilePath = args.chartFilePath,
+			.gaugeType = args.gaugeType,
 			.assistTickEnabled = ConfigIni::GetBool(ConfigIni::Key::kAssistTick),
 		};
 	}

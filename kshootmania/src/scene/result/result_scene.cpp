@@ -4,6 +4,7 @@ ResultScene::ResultScene(const InitData& initData)
 	: MyScene(initData)
 	, m_chartData(getData().resultSceneArgs.chartData)
 	, m_playResult(getData().resultSceneArgs.playResult)
+	, m_resultPanel(m_chartData, m_playResult)
 {
 }
 
@@ -16,7 +17,7 @@ void ResultScene::update()
 	}
 }
 
-void ResultScene::updateFadeIn(double t)
+void ResultScene::updateFadeIn([[maybe_unused]] double t)
 {
 	update();
 }
@@ -24,6 +25,8 @@ void ResultScene::updateFadeIn(double t)
 void ResultScene::draw() const
 {
 	ScreenUtils::FitToHeight(m_bgTexture).drawAt(Scene::Center());
+
+	m_resultPanel.draw();
 }
 
 void ResultScene::drawFadeIn(double t) const

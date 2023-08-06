@@ -17,6 +17,14 @@ namespace MusicGame::Judgment
 			return sum;
 		}
 
+		int32 TotalCombo(const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments)
+		{
+			const int32 btCombo = ApplyAndSum(btLaneJudgments, [](const ButtonLaneJudgment& laneJudgment) { return static_cast<int32>(laneJudgment.chipJudgmentCount() + laneJudgment.longJudgmentCount()); });
+			const int32 fxCombo = ApplyAndSum(fxLaneJudgments, [](const ButtonLaneJudgment& laneJudgment) { return static_cast<int32>(laneJudgment.chipJudgmentCount() + laneJudgment.longJudgmentCount()); });
+			const int32 laserCombo = ApplyAndSum(laserLaneJudgments, [](const LaserLaneJudgment& laneJudgment) { return static_cast<int32>(laneJudgment.lineJudgmentCount() + laneJudgment.slamJudgmentCount()); });
+			return btCombo + fxCombo + laserCombo;
+		}
+
 		int32 TotalGaugeValueButtonLane(ButtonLaneJudgment laneJudgment, int32 chipValue, int32 longValue)
 		{
 			const int32 chipJudgmentCount = static_cast<int32>(laneJudgment.chipJudgmentCount());
@@ -87,8 +95,10 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	JudgmentHandler::JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments)
-		: m_scoringStatus(
+	JudgmentHandler::JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments, GaugeType gaugeType)
+		: m_gaugeType(gaugeType)
+		, m_totalCombo(TotalCombo(btLaneJudgments, fxLaneJudgments, laserLaneJudgments))
+		, m_scoringStatus(
 			TotalGaugeValue(btLaneJudgments, fxLaneJudgments, laserLaneJudgments, kScoreValueCritical, kScoreValueCritical),
 			GaugeValueMax(chartData.gauge.total, btLaneJudgments, fxLaneJudgments, laserLaneJudgments))
 		, m_camPatternMain(chartData)
@@ -97,7 +107,7 @@ namespace MusicGame::Judgment
 
 	void JudgmentHandler::onChipJudged(JudgmentResult result)
 	{
-		assert(result == JudgmentResult::kCritical || result == JudgmentResult::kNear || result == JudgmentResult::kError);
+		assert(result == JudgmentResult::kCritical || result == JudgmentResult::kNearFast || result == JudgmentResult::kNearSlow || result == JudgmentResult::kError);
 
 		m_scoringStatus.onChipOrLaserSlamJudgment(result);
 	}
@@ -133,7 +143,7 @@ namespace MusicGame::Judgment
 	{
 		// ScoringStatusをViewStatusに反映
 		viewStatusRef.score = m_scoringStatus.score();
-		viewStatusRef.gaugePercentage = m_scoringStatus.gaugePercentage();
+		viewStatusRef.gaugePercentage = m_scoringStatus.gaugePercentage(); // TODO: HARDゲージ
 		viewStatusRef.combo = m_scoringStatus.combo();
 		viewStatusRef.isNoError = m_scoringStatus.isNoError();
 
@@ -142,5 +152,19 @@ namespace MusicGame::Judgment
 
 		// 視点変更パターン(回転など)をViewStatusに反映
 		m_camPatternMain.applyToCamStatus(viewStatusRef.camStatus, currentPulse);
+	}
+
+	PlayResult JudgmentHandler::playResult() const
+	{
+		return PlayResult
+		{
+			.score = m_scoringStatus.score(),
+			.maxCombo = m_scoringStatus.maxCombo(),
+			.totalCombo = m_totalCombo,
+			.comboStats = m_scoringStatus.comboStats(),
+			.gaugeType = m_gaugeType,
+			.gaugePercentage = m_scoringStatus.gaugePercentage(),
+			.gaugePercentageHard = 0.0, // TODO: HARDゲージ
+		};
 	}
 }

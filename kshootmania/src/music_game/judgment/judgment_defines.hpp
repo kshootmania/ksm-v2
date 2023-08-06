@@ -6,7 +6,8 @@ namespace MusicGame::Judgment
 	{
 		kUnspecified,
 		kError,
-		kNear,
+		kNearFast,
+		kNearSlow,
 		kCritical,
 	};
 
@@ -30,26 +31,6 @@ namespace MusicGame::Judgment
 			constexpr double kWindowSecNear = 0.114;
 			constexpr double kWindowSecError = 0.260;
 			constexpr double kWindowSecErrorEasy = 0.160;
-
-			constexpr JudgmentResult Judge(double secDiff, bool isEasyGauge)
-			{
-				if (secDiff < kWindowSecCritical)
-				{
-					return JudgmentResult::kCritical;
-				}
-				else if (secDiff < kWindowSecNear)
-				{
-					return JudgmentResult::kNear;
-				}
-				else if (secDiff < (isEasyGauge ? kWindowSecErrorEasy : kWindowSecError))
-				{
-					return JudgmentResult::kError;
-				}
-				else
-				{
-					return JudgmentResult::kUnspecified;
-				}
-			}
 		}
 
 		namespace LongNote

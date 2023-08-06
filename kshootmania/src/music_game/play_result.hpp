@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "music_game/game_defines.hpp"
+#include "judgment/combo_status.hpp"
 
 namespace MusicGame
 {
@@ -9,16 +10,18 @@ namespace MusicGame
 
 		int32 maxCombo = 0;
 
-		int32 criticalCount = 0;
+		int32 totalCombo = 0;
 
-		int32 nearFastCount = 0;
+		Judgment::ComboStats comboStats;
 
-		int32 nearSlowCount = 0;
-
-		int32 errorCount = 0;
+		GaugeType gaugeType = GaugeType::kNormalGauge;
 
 		double gaugePercentage = 0.0;
 
-		GaugeType gaugeType = kNormalGauge;
+		double gaugePercentageHard = 0.0;
+
+		Achievement achievement() const;
+
+		Grade grade() const;
 	};
 }

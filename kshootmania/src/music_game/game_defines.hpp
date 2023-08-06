@@ -29,7 +29,7 @@ namespace MusicGame
 
 	constexpr kson::Pulse kPastPulse = -100000000;
 
-	enum GaugeType : int32
+	enum class GaugeType : int32
 	{
 		kEasyGauge = 0,
 		kNormalGauge,
@@ -37,12 +37,15 @@ namespace MusicGame
 
 		kNumGaugeTypes,
 	};
+	constexpr int32 kNumGaugeTypes = static_cast<int32>(GaugeType::kNumGaugeTypes);
 
 	constexpr int32 kScoreMax = 10000000;
 
 	constexpr int32 kGaugeValueChip = 200;
 	constexpr int32 kGaugeValueChipNear = 100;
 	constexpr int32 kGaugeValueLong = 50;
+
+	constexpr double kGaugePercentageThreshold = 70.0;
 
 	constexpr double kGaugeDecreasePercentByChipError = 2.0;
 	constexpr double kGaugeDecreasePercentByLongError = 0.5;

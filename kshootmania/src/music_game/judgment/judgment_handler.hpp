@@ -11,6 +11,10 @@ namespace MusicGame::Judgment
 	class JudgmentHandler
 	{
 	private:
+		const GaugeType m_gaugeType;
+
+		const int32 m_totalCombo;
+
 		ScoringStatus m_scoringStatus;
 
 		LaserSlamShake m_laserSlamShakeStatus;
@@ -23,7 +27,8 @@ namespace MusicGame::Judgment
 		/// @param btLaneJudgments BTレーン判定の配列
 		/// @param fxLaneJudgments FXレーン判定の配列
 		/// @param laserLaneJudgments LASERレーン判定の配列
-		JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments);
+		/// @param gaugeType ゲージの種類
+		JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments, GaugeType gaugeType);
 
 		/// @brief チップノーツ判定時に呼び出される
 		/// @param result 判定結果
@@ -51,5 +56,9 @@ namespace MusicGame::Judgment
 		/// @param currentPulse 現在のPulse値
 		/// @note この関数ではViewStatus::camStatusに値を相対的に反映するので、判定と関係ないカメラの値はあらかじめ設定しておくこと
 		void applyToViewStatus(ViewStatus& viewStatusRef, double currentTimeSec, kson::Pulse currentPulse);
+
+		/// @brief PlayResultを取得
+		/// @return PlayResult
+		PlayResult playResult() const;
 	};
 }

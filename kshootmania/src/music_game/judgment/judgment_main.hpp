@@ -17,8 +17,12 @@ namespace MusicGame::Judgment
 		JudgmentHandler m_judgmentHandler;
 
 	public:
-		explicit JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache);
+		explicit JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, GaugeType gaugeType);
 
 		void update(const kson::ChartData& chartData, GameStatus& gameStatusRef, ViewStatus& viewStatusRef);
+
+		/// @brief PlayResultを取得
+		/// @return PlayResult
+		PlayResult playResult() const;
 	};
 }
