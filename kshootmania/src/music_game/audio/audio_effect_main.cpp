@@ -40,28 +40,44 @@ namespace MusicGame::Audio
 				+ 1/* 最後の小節の分を足す */
 				+ 1/* インデックスを要素数にするために1を足す */;
 
-			auto defFX = chartData.audio.audioEffect.fx.def;
-			auto defLaser = chartData.audio.audioEffect.laser.def;
-
 			// デフォルトのエフェクト定義を追加
 			// (もし譜面側で同名のエフェクト定義がある場合は上書きせず譜面側を優先する)
-			defFX.merge(kson::Dict<kson::AudioEffectDef>{
-				{ "retrigger", { .type = kson::AudioEffectType::Retrigger } },
-				{ "gate", { .type = kson::AudioEffectType::Gate } },
-				{ "flanger", { .type = kson::AudioEffectType::Flanger } },
-				{ "bitcrusher", { .type = kson::AudioEffectType::Bitcrusher } },
-				{ "wobble", { .type = kson::AudioEffectType::Wobble } },
-				{ "tapestop", { .type = kson::AudioEffectType::Tapestop } },
-				{ "echo", { .type = kson::AudioEffectType::Echo } },
-			});
-			defLaser.merge(kson::Dict<kson::AudioEffectDef>{
-				{ "peaking_filter", { .type = kson::AudioEffectType::PeakingFilter } },
-				{ "high_pass_filter", { .type = kson::AudioEffectType::HighPassFilter } },
-				{ "low_pass_filter", { .type = kson::AudioEffectType::LowPassFilter } },
-				{ "bitcrusher", { .type = kson::AudioEffectType::Bitcrusher } },
-			});
+			std::vector<kson::AudioEffectDefKVP> defFX;
+			std::vector<kson::AudioEffectDefKVP> defLaser;
+			const auto fnInsertDefaultFX = [&defFX, &chartData](const std::string& name, const kson::AudioEffectDef& v)
+			{
+				if (chartData.audio.audioEffect.fx.defContains(name))
+				{
+					return;
+				}
+				defFX.push_back(
+					kson::AudioEffectDefKVP{
+						.name = name,
+						.v = v,
+					});
+			};
+			const auto fnInsertDefaultLaser = [&defLaser, &chartData](const std::string& name, const kson::AudioEffectDef& v)
+			{
+				if (chartData.audio.audioEffect.laser.defContains(name))
+				{
+					return;
+				}
+				defLaser.push_back(
+					kson::AudioEffectDefKVP{
+						.name = name,
+						.v = v,
+					});
+			};
 
 			// FX
+			fnInsertDefaultFX("retrigger", { .type = kson::AudioEffectType::Retrigger });
+			fnInsertDefaultFX("gate", { .type = kson::AudioEffectType::Gate });
+			fnInsertDefaultFX("flanger", { .type = kson::AudioEffectType::Flanger });
+			fnInsertDefaultFX("bitcrusher", { .type = kson::AudioEffectType::Bitcrusher });
+			fnInsertDefaultFX("wobble", { .type = kson::AudioEffectType::Wobble });
+			fnInsertDefaultFX("tapestop", { .type = kson::AudioEffectType::Tapestop });
+			fnInsertDefaultFX("echo", { .type = kson::AudioEffectType::Echo });
+			defFX.insert(defFX.end(), chartData.audio.audioEffect.fx.def.begin(), chartData.audio.audioEffect.fx.def.end());
 			for (const auto& [name, def] : defFX)
 			{
 				const auto& paramChangeDict = chartData.audio.audioEffect.fx.paramChange;
@@ -78,6 +94,11 @@ namespace MusicGame::Audio
 			}
 
 			// Laser
+			fnInsertDefaultLaser("peaking_filter", { .type = kson::AudioEffectType::PeakingFilter });
+			fnInsertDefaultLaser("high_pass_filter", { .type = kson::AudioEffectType::HighPassFilter });
+			fnInsertDefaultLaser("low_pass_filter", { .type = kson::AudioEffectType::LowPassFilter });
+			fnInsertDefaultLaser("bitcrusher", { .type = kson::AudioEffectType::Bitcrusher });
+			defLaser.insert(defLaser.end(), chartData.audio.audioEffect.laser.def.begin(), chartData.audio.audioEffect.laser.def.end());
 			for (const auto& [name, def] : defLaser)
 			{
 				const auto& paramChangeDict = chartData.audio.audioEffect.laser.paramChange;
@@ -123,14 +144,13 @@ namespace MusicGame::Audio
 
 		kson::ByPulse<Optional<AudioEffectInvocation>> CreateLaserPulseAudioEffectInvocations(BGM& bgm, const kson::ChartData& chartData)
 		{
-			const auto& pulseEvent = chartData.audio.audioEffect.laser.pulseEvent;
-			const auto& def = chartData.audio.audioEffect.laser.def;
-			const auto fnIsPeakingFilter = [&def](const std::string& audioEffectName) -> bool
+			const auto& audioEffectLaser = chartData.audio.audioEffect.laser;
+			const auto fnIsPeakingFilter = [&audioEffectLaser](const std::string& audioEffectName) -> bool
 			{
-				if (def.contains(audioEffectName))
+				if (audioEffectLaser.defContains(audioEffectName))
 				{
 					// ユーザー定義のpeaking_filterの場合
-					return def.at(audioEffectName).type == kson::AudioEffectType::PeakingFilter;
+					return audioEffectLaser.defByName(audioEffectName).type == kson::AudioEffectType::PeakingFilter;
 				}
 				else
 				{
@@ -140,7 +160,7 @@ namespace MusicGame::Audio
 			};
 			const auto& audioEffectBus = bgm.audioEffectBusLaser();
 			kson::ByPulse<Optional<AudioEffectInvocation>> convertedPulseEvent;
-			for (const auto& [audioEffectName, pulses] : pulseEvent)
+			for (const auto& [audioEffectName, pulses] : audioEffectLaser.pulseEvent)
 			{
 				for (const auto& y : pulses)
 				{
