@@ -10,6 +10,12 @@ namespace MusicGame::Audio
 
 	void BGM::emplaceAudioEffectImpl(bool isFX, const std::string& name, const kson::AudioEffectDef& def, const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges, const std::set<float>& updateTriggerTiming)
 	{
+		if (m_stream.numChannels() == 0)
+		{
+			// ロード失敗時は音声エフェクトを追加しない
+			return;
+		}
+
 		const auto pAudioEffectBus = isFX ? m_pAudioEffectBusFX : m_pAudioEffectBusLaser;
 		switch (def.type)
 		{
