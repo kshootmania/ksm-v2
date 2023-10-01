@@ -14,7 +14,7 @@ namespace
 		return static_cast<int32>(grade) - 1;
 	}
 
-	RenderTexture CreateRenderTexture(const kson::ChartData& chartData, const MusicGame::PlayResult& playResult)
+	RenderTexture CreateRenderTexture(FilePathView chartFilePath, const kson::ChartData& chartData, const MusicGame::PlayResult& playResult)
 	{
 		const Texture panelTextureAsset = TextureAsset(ResultTexture::kPanel);
 		const NumberTextureFont scoreFont(ResultTexture::kScoreNumberFont, { 64, 64 });
@@ -26,6 +26,14 @@ namespace
 
 		const ScopedRenderTarget2D renderTarget(renderTexture);
 		const ScopedRenderStates2D renderState(SamplerState::ClampAniso);
+
+		// ジャケットを表示
+		const FilePath parentPath = FileSystem::ParentPath(chartFilePath);
+		const Texture jacketTexture(parentPath + Unicode::FromUTF8(chartData.meta.jacketFilename));
+		if (!jacketTexture.isEmpty())
+		{
+			jacketTexture.resized(246, 246).draw(180, 85);
+		}
 
 		// スコアを表示
 		const TextureFontTextLayout scoreTextLayout({ 64, 64 }, TextureFontTextLayout::Align::Left, 8, 50.0);
@@ -232,8 +240,8 @@ namespace
 	}
 }
 
-ResultPanel::ResultPanel(const kson::ChartData& chartData, const MusicGame::PlayResult& playResult)
-	: m_renderTexture(CreateRenderTexture(chartData, playResult))
+ResultPanel::ResultPanel(FilePathView chartFilePath, const kson::ChartData& chartData, const MusicGame::PlayResult& playResult)
+	: m_renderTexture(CreateRenderTexture(chartFilePath, chartData, playResult))
 	, m_topTextureRow(TopTextureRow(playResult))
 {
 }

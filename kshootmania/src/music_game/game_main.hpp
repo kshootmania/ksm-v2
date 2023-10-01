@@ -26,6 +26,8 @@ namespace MusicGame
 	class GameMain
 	{
 	private:
+		FilePath m_chartFilePath;
+
 		FilePath m_parentPath;
 
 		// 初回更新かどうか
@@ -78,6 +80,8 @@ namespace MusicGame
 		void draw() const;
 
 		void terminate();
+
+		FilePathView chartFilePath() const;
 
 		const kson::ChartData& chartData() const;
 

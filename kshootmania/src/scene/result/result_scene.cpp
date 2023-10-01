@@ -4,7 +4,7 @@ ResultScene::ResultScene(const InitData& initData)
 	: MyScene(initData)
 	, m_chartData(getData().resultSceneArgs.chartData)
 	, m_playResult(getData().resultSceneArgs.playResult)
-	, m_resultPanel(m_chartData, m_playResult)
+	, m_resultPanel(getData().resultSceneArgs.chartFilePath, m_chartData, m_playResult)
 {
 }
 

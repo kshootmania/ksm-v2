@@ -46,7 +46,8 @@ namespace MusicGame
 	}
 
 	GameMain::GameMain(const GameCreateInfo& createInfo)
-		: m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
+		: m_chartFilePath(createInfo.chartFilePath)
+		, m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
 		, m_chartData(kson::LoadKSHChartData(createInfo.chartFilePath.narrow()))
 		, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
 		, m_judgmentMain(m_chartData, m_timingCache, createInfo.gaugeType)
@@ -116,6 +117,11 @@ namespace MusicGame
 	void GameMain::terminate()
 	{
 		m_hispeedSettingMenu.saveToConfigIni();
+	}
+
+	FilePathView GameMain::chartFilePath() const
+	{
+		return m_chartFilePath;
 	}
 
 	const kson::ChartData& GameMain::chartData() const

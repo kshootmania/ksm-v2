@@ -20,7 +20,7 @@ private:
 	const int32 m_topTextureRow;
 
 public:
-	ResultPanel(const kson::ChartData& chartData, const MusicGame::PlayResult& playResult);
+	ResultPanel(FilePathView chartFilePath, const kson::ChartData& chartData, const MusicGame::PlayResult& playResult);
 
 	void draw() const;
 };

@@ -33,7 +33,8 @@ void PlayScene::update()
 	if (KeyConfig::Down(KeyConfig::kBack))
 	{
 		getData().resultSceneArgs =
-		{
+		ResultSceneArgs{
+			.chartFilePath = FilePath(m_gameMain.chartFilePath()),
 			.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
 			.playResult = m_gameMain.playResult(),
 		};

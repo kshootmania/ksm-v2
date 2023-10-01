@@ -3,6 +3,8 @@
 
 struct ResultSceneArgs
 {
+	FilePath chartFilePath;
+
 	kson::ChartData chartData;
 
 	MusicGame::PlayResult playResult;
