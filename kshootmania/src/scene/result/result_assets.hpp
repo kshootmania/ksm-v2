@@ -15,4 +15,6 @@ namespace ResultTexture
 	constexpr StringView kGrade = U"result_grade.png";
 
 	constexpr StringView kDifficulty = U"result_difficulty.png";
+
+	constexpr StringView kLevel = U"msel_level.png";
 }

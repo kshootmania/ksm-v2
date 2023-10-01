@@ -42,6 +42,13 @@ namespace
 		});
 		difficultyTiledTexture(chartData.meta.difficulty.idx).scaled(0.8).draw(Point{ 94, 366 });
 
+		// レベルを表示
+		const TiledTexture levelTiledTexture(ResultTexture::kLevel, TiledTextureSizeInfo{
+			.row = kLevelMax,
+			.sourceSize = { 150, 120 },
+		});
+		levelTiledTexture(chartData.meta.level - 1).scaled(0.25).draw(Point{ 210, 361 });
+
 		// スコアを表示
 		const TextureFontTextLayout scoreTextLayout({ 64, 64 }, TextureFontTextLayout::Align::Left, 8, 50.0);
 		scoreFont.draw(scoreTextLayout, { 100, 400 }, playResult.score, ZeroPaddingYN::Yes);
