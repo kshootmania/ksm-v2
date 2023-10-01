@@ -13,4 +13,6 @@ namespace ResultTexture
 	constexpr StringView kJudgmentCountFont = U"num0.png";
 
 	constexpr StringView kGrade = U"result_grade.png";
+
+	constexpr StringView kDifficulty = U"result_difficulty.png";
 }

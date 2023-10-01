@@ -35,6 +35,13 @@ namespace
 			jacketTexture.resized(246, 246).draw(180, 85);
 		}
 
+		// 難易度を表示
+		const TiledTexture difficultyTiledTexture(ResultTexture::kDifficulty, TiledTextureSizeInfo{
+			.row = kNumDifficulties,
+			.sourceSize = { 84, 24 },
+		});
+		difficultyTiledTexture(chartData.meta.difficulty.idx).scaled(0.8).draw(Point{ 94, 366 });
+
 		// スコアを表示
 		const TextureFontTextLayout scoreTextLayout({ 64, 64 }, TextureFontTextLayout::Align::Left, 8, 50.0);
 		scoreFont.draw(scoreTextLayout, { 100, 400 }, playResult.score, ZeroPaddingYN::Yes);
