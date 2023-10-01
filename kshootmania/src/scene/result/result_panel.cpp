@@ -20,6 +20,7 @@ namespace
 		const NumberTextureFont scoreFont(ResultTexture::kScoreNumberFont, { 64, 64 });
 		const NumberTextureFont maxComboFont(ResultTexture::kMaxComboFont, { 136, 120 });
 		const NumberTextureFont judgmentCountFont(ResultTexture::kJudgmentCountFont, { 136, 120 });
+		const NumberTextureFont gaugePercentFont(ResultTexture::kPercentNumberTextureFont, { 136, 120 });
 
 		RenderTexture renderTexture(panelTextureAsset.size());
 		Shader::Copy(panelTextureAsset, renderTexture);
@@ -69,6 +70,10 @@ namespace
 			.sourceSize = { 100, 100 },
 		});
 		gradeTiledTexture(GradeToTextureRow(playResult.grade())).draw(Point{ 430, 286 });
+
+		// ゲージのパーセンテージを表示
+		const TextureFontTextLayout gaugePercentTextLayout({ 13, 15 }, TextureFontTextLayout::Align::Right, 3, 14.0);
+		gaugePercentFont.draw(gaugePercentTextLayout, { 0, 445 }, static_cast<int32>(playResult.gaugePercentage)/*TODO: Hard gauge*/, ZeroPaddingYN::No);
 
 		return renderTexture;
 	}

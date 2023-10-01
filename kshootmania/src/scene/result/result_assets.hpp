@@ -17,4 +17,6 @@ namespace ResultTexture
 	constexpr StringView kDifficulty = U"result_difficulty.png";
 
 	constexpr StringView kLevel = U"msel_level.png";
+
+	constexpr StringView kPercentNumberTextureFont = U"num0.png";
 }
