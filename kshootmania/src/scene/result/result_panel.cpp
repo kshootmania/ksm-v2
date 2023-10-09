@@ -16,6 +16,8 @@ namespace
 
 	RenderTexture CreateRenderTexture(FilePathView chartFilePath, const kson::ChartData& chartData, const MusicGame::PlayResult& playResult)
 	{
+		using namespace MusicGame;
+
 		const Texture panelTextureAsset = TextureAsset(ResultTexture::kPanel);
 		const NumberTextureFont scoreFont(ResultTexture::kScoreNumberFont, { 64, 64 });
 		const NumberTextureFont maxComboFont(ResultTexture::kMaxComboFont, { 136, 120 });
@@ -74,6 +76,19 @@ namespace
 		// ゲージのパーセンテージを表示
 		const TextureFontTextLayout gaugePercentTextLayout({ 13, 15 }, TextureFontTextLayout::Align::Right, 3, 14.0);
 		gaugePercentFont.draw(gaugePercentTextLayout, { 0, 445 }, static_cast<int32>(playResult.gaugePercentage)/*TODO: Hard gauge*/, ZeroPaddingYN::No);
+
+		// ゲージのバーを表示
+		constexpr Size kGaugeBarTextureSize{ 48, 434 };
+		constexpr Size kGaugeBarSize{ 48, 435 }; // 描画先(result.png)のゲージ部分はミスって素材(er_g.gif)より1px大きくなっている
+		const TiledTexture gaugeBarTiledTexture(ResultTexture::kGaugeBarTextureFilename, TiledTextureSizeInfo{
+			.column = kNumGaugeTypes * 2,
+			.sourceSize = kGaugeBarTextureSize,
+		});
+		constexpr Vec2 kGaugeBarPosition{ 4, 4 };
+		const double percentThreshold = (playResult.gaugeType == GaugeType::kHardGauge) ? kGaugePercentageThresholdHardWarning : kGaugePercentageThreshold;
+		const int32 gaugeBarColumn = static_cast<int32>(playResult.gaugeType) * 2 + ((playResult.gaugePercentage < percentThreshold) ? 0 : 1);
+		const int32 gaugeBarHeight = static_cast<int32>(kGaugeBarSize.y * playResult.gaugePercentage / 100);
+		gaugeBarTiledTexture(0, gaugeBarColumn).resized(kGaugeBarSize).drawClipped(kGaugeBarPosition, { kGaugeBarPosition.x, kGaugeBarPosition.y + kGaugeBarSize.y - gaugeBarHeight, kGaugeBarSize.x, gaugeBarHeight });
 
 		return renderTexture;
 	}

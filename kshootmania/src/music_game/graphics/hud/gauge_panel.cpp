@@ -51,7 +51,7 @@ namespace MusicGame::Graphics
 		using namespace ScreenUtils;
 		const ScopedRenderStates2D samplerState(SamplerState::ClampAniso);
 
-		const double percentThreshold = (m_gaugeType == GaugeType::kHardGauge) ? 30.0 : kGaugePercentageThreshold;
+		const double percentThreshold = (m_gaugeType == GaugeType::kHardGauge) ? kGaugePercentageThresholdHardWarning : kGaugePercentageThreshold;
 		const int32 column = static_cast<int32>(m_gaugeType) * 2 + ((percent < percentThreshold) ? 0 : 1);
 
 		const Vec2 basePosition = { Scene::Width() / 2 + Scaled(155), Scaled(88) };

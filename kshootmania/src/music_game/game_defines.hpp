@@ -46,6 +46,7 @@ namespace MusicGame
 	constexpr int32 kGaugeValueLong = 50;
 
 	constexpr double kGaugePercentageThreshold = 70.0;
+	constexpr double kGaugePercentageThresholdHardWarning = 30.0;
 
 	constexpr double kGaugeDecreasePercentByChipError = 2.0;
 	constexpr double kGaugeDecreasePercentByLongError = 0.5;
