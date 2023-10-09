@@ -188,7 +188,7 @@ OptionScene::OptionScene(const InitData& initData)
 			.sourceSize = { 540, 48 },
 		})
 	, m_optionMenus(MakeOptionMenus())
-	, m_font(ScreenUtils::Scaled(18), FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 0, FontStyle::Default)
+	, m_font(FontAsset(kFontAssetSystem))
 {
 }
 
@@ -245,7 +245,7 @@ void OptionScene::draw() const
 	}
 
 	// Footer text
-	m_font(footerStr).draw(ScaledByWidth(kGuideX), Scaled(kGuideY), Palette::White);
+	m_font(footerStr).draw(ScreenUtils::Scaled(18), ScaledByWidth(kGuideX), Scaled(kGuideY), Palette::White);
 }
 
 void OptionScene::exitScene()

@@ -18,7 +18,7 @@ void SelectMenuFavFolderItem::drawCenter([[maybe_unused]] int32 difficultyIdx, c
 	Shader::Copy(assets.dirItemTextures.center, renderTexture);
 
 	const ScopedRenderTarget2D scopedRenderTarget(renderTexture);
-	assets.fontLL(FolderDisplayNameCenter(m_displayName, m_isCurrentFolder)).drawAt(Vec2{ 16 + 740 / 2, 135 + 102 / 2 });
+	assets.font(FolderDisplayNameCenter(m_displayName, m_isCurrentFolder)).drawAt(44, Vec2{ 16 + 740 / 2, 135 + 102 / 2 });
 }
 
 void SelectMenuFavFolderItem::drawUpperLower([[maybe_unused]] int32 difficultyIdx, const RenderTexture& renderTexture, const SelectMenuItemGraphicAssets& assets, bool isUpper) const
@@ -26,5 +26,5 @@ void SelectMenuFavFolderItem::drawUpperLower([[maybe_unused]] int32 difficultyId
 	Shader::Copy(isUpper ? assets.dirItemTextures.upperHalf : assets.dirItemTextures.lowerHalf, renderTexture);
 
 	const ScopedRenderTarget2D scopedRenderTarget(renderTexture);
-	assets.fontL(FolderDisplayNameUpperLower(m_displayName, m_isCurrentFolder)).drawAt(isUpper ? Vec2{ 16 + 770 / 2, 12 + 86 / 2 } : Vec2{ 16 + 770 / 2, 126 + 86 / 2 });
+	assets.font(FolderDisplayNameUpperLower(m_displayName, m_isCurrentFolder)).drawAt(38, isUpper ? Vec2{ 16 + 770 / 2, 12 + 86 / 2 } : Vec2{ 16 + 770 / 2, 126 + 86 / 2 });
 }

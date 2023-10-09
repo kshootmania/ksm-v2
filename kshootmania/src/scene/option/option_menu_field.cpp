@@ -234,10 +234,10 @@ void OptionMenuField::draw(const Vec2& position, const TiledTexture& valueTiledT
 		}
 
 		const StringView displayName = m_valueDisplayNamePairs[cursor].second;
-		font(displayName).drawAt(textPosition);
+		font(displayName).drawAt(ScreenUtils::Scaled(15), textPosition);
 	}
 	else
 	{
-		font(Format(cursor) + m_suffixStr).drawAt(textPosition);
+		font(Format(cursor) + m_suffixStr).drawAt(ScreenUtils::Scaled(15), textPosition);
 	}
 }

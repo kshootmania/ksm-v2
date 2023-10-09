@@ -57,7 +57,7 @@ OptionMenu::OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMen
 			.sourceSize = kFieldTextureSourceSize,
 		})
 	, m_fields(MakeFields(m_fieldKeyTexture, fieldCreateInfos))
-	, m_font(ScreenUtils::Scaled(15), FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default)
+	, m_font(FontAsset(kFontAssetSystem))
 	, m_stopwatch(StartImmediately::Yes)
 {
 }

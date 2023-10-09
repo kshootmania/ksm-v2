@@ -33,14 +33,8 @@ struct SelectMenuItemGraphicAssets
 		.lowerHalf = TextureAsset(SelectTexture::kSubDirLowerHalf),
 	};
 
-	// TODO: Use FontAsset class instead
-	// TODO: Use SDF instead of using font size directly
-	Font fontLL{ 44, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default };
-	Font fontL{ 38, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default };
-	Font fontM{ 30, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default };
-	Font fontS{ 24, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default };
-	Font fontSS{ 19, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default };
-	Font fontSSS{ 17, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default };
+	Font font = FontAsset(kFontAssetSystem);
+	Font fontBold = FontAsset(kFontAssetSystemBold);
 };
 
 enum class SelectMenuShakeDirection

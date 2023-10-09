@@ -17,7 +17,7 @@ void SelectMenuSubDirSectionItem::drawCenter([[maybe_unused]] int32 difficultyId
 	Shader::Copy(assets.subDirItemTextures.center, renderTexture);
 
 	const ScopedRenderTarget2D scopedRenderTarget(renderTexture);
-	assets.fontLL(m_displayName).drawAt(Vec2{ 16 + 740 / 2, 135 + 102 / 2 });
+	assets.font(m_displayName).drawAt(44, Vec2{ 16 + 740 / 2, 135 + 102 / 2 });
 }
 
 void SelectMenuSubDirSectionItem::drawUpperLower([[maybe_unused]] int32 difficultyIdx, const RenderTexture& renderTexture, const SelectMenuItemGraphicAssets& assets, bool isUpper) const
@@ -25,5 +25,5 @@ void SelectMenuSubDirSectionItem::drawUpperLower([[maybe_unused]] int32 difficul
 	Shader::Copy(isUpper ? assets.subDirItemTextures.upperHalf : assets.subDirItemTextures.lowerHalf, renderTexture);
 
 	const ScopedRenderTarget2D scopedRenderTarget(renderTexture);
-	assets.fontL(m_displayName).drawAt(isUpper ? Vec2{ 16 + 770 / 2, 12 + 86 / 2 } : Vec2{ 16 + 770 / 2, 126 + 86 / 2 });
+	assets.font(m_displayName).drawAt(38, isUpper ? Vec2{ 16 + 770 / 2, 12 + 86 / 2 } : Vec2{ 16 + 770 / 2, 126 + 86 / 2 });
 }

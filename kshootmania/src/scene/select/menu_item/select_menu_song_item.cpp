@@ -107,25 +107,19 @@ void SelectMenuSongItem::drawCenter(int32 difficultyIdx, const RenderTexture& re
 	}
 
 	// Title
-	for (int32 i = 0; i < 2; ++i)
-	{
-		// Draw twice to make the font slightly bold
-		// (Using a bold typeface makes the font too bold compared to HSP's Artlet2D)
-		// TODO: Maybe fonts with bold glyphs (e.g. Arial) do not have this problem (unconfirmed), so simply use bold for them.
-		assets.fontM(pChartInfo->title()).drawAt(Vec2{ 16 + i + 462 / 2, 11 + 36 / 2 });
-	}
+	assets.fontBold(pChartInfo->title()).drawAt(28, Vec2{ 16 + 462 / 2, 12 + 36 / 2 });
 
 	// Artist
-	assets.fontS(pChartInfo->artist()).drawAt(Vec2{ 16 + 462 / 2, 48 + 36 / 2 });
+	assets.font(pChartInfo->artist()).drawAt(24, Vec2{ 16 + 462 / 2, 48 + 36 / 2 });
 
 	// Jacket
 	DrawJacketImage(pChartInfo->jacketFilePath(), { 492, 22 }, { 254, 254 });
 
 	// Jacket author (Illustrated by)
-	assets.fontSSS(pChartInfo->jacketAuthor()).draw(Arg::leftCenter = Vec2{ 630, 290 + 18 / 2 }, Palette::Black);
+	assets.font(pChartInfo->jacketAuthor()).draw(17, Arg::leftCenter = Vec2{ 630, 290 + 18 / 2 }, Palette::Black);
 
 	// Chart author (Effected by)
-	assets.fontSS(pChartInfo->chartAuthor()).draw(Arg::leftCenter = Vec2{ 154, 293 + 22 / 2 });
+	assets.font(pChartInfo->chartAuthor()).draw(19, Arg::leftCenter = Vec2{ 154, 293 + 22 / 2 });
 }
 
 void SelectMenuSongItem::drawUpperLower(int32 difficultyIdx, const RenderTexture& renderTexture, const SelectMenuItemGraphicAssets& assets, bool isUpper) const
@@ -148,15 +142,10 @@ void SelectMenuSongItem::drawUpperLower(int32 difficultyIdx, const RenderTexture
 	}
 
 	// 曲名を描画
-	for (int32 i = 0; i < 2; ++i)
-	{
-		// Draw twice to make the font slightly bold
-		// (Using a bold typeface makes the font too bold compared to HSP's Artlet2D)
-		assets.fontM(pChartInfo->title()).drawAt(isUpper ? Vec2{ 12 + i + 576 / 2, 8 + 40 / 2 } : Vec2{ 12 + i + 576 / 2, 116 + 40 / 2 });
-	}
+	assets.fontBold(pChartInfo->title()).drawAt(28, isUpper ? Vec2{ 12 + 576 / 2, 10 + 40 / 2 } : Vec2{ 12 + 576 / 2, 117 + 40 / 2 });
 
 	// アーティスト名を描画
-	assets.fontS(pChartInfo->artist()).drawAt(isUpper ? Vec2{ 230 + 354 / 2, 67 + 40 / 2 } : Vec2{ 230 + 354 / 2, 171 + 40 / 2 });
+	assets.font(pChartInfo->artist()).drawAt(24, isUpper ? Vec2{ 230 + 354 / 2, 67 + 40 / 2 } : Vec2{ 230 + 354 / 2, 171 + 40 / 2 });
 
 	// ジャケット画像を描画
 	DrawJacketImage(pChartInfo->jacketFilePath(), { 600, 10 }, { 208, 208 });
