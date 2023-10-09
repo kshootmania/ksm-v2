@@ -19,4 +19,6 @@ namespace ResultTexture
 	constexpr StringView kLevel = U"msel_level.png";
 
 	constexpr StringView kPercentNumberTextureFont = U"num0.png";
+
+	constexpr StringView kGaugeBarTextureFilename = U"er_g.gif";
 }
