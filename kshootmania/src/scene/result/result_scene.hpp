@@ -2,10 +2,13 @@
 #include "result_assets.hpp"
 #include "result_panel.hpp"
 #include "music_game/play_result.hpp"
+#include "ksmaudio/ksmaudio.hpp"
 
 class ResultScene : public MyScene
 {
 private:
+	ksmaudio::Stream m_bgmStream{ "se/result_bgm.ogg", 1.0, false, false, true };
+
 	const Texture m_bgTexture{ TextureAsset(ResultTexture::kBG) };
 
 	const kson::ChartData m_chartData;
