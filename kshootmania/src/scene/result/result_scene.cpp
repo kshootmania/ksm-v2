@@ -6,6 +6,7 @@ ResultScene::ResultScene(const InitData& initData)
 	, m_playResult(getData().resultSceneArgs.playResult)
 	, m_resultPanel(getData().resultSceneArgs.chartFilePath, m_chartData, m_playResult)
 {
+	m_bgmStream.play();
 }
 
 void ResultScene::update()
@@ -14,6 +15,7 @@ void ResultScene::update()
 	if (KeyConfig::Down(KeyConfig::kStart) || KeyConfig::Down(KeyConfig::kBack))
 	{
 		changeScene(SceneName::kSelect, kDefaultTransitionMs);
+		m_bgmStream.setFadeOut(kDefaultTransitionMs / 1000.0);
 	}
 }
 
