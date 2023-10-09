@@ -106,6 +106,7 @@ namespace MusicGame::Judgment
 		// レーン上で最も現在時間に近いノーツを調べる
 		bool found = false;
 		double minDistance = 0.0;
+		bool isFast = false;
 		kson::Pulse nearestNotePulse;
 		for (auto itr = m_passedNoteCursor; itr != lane.end(); ++itr)
 		{
@@ -129,6 +130,7 @@ namespace MusicGame::Judgment
 				{
 					nearestNotePulse = y;
 					minDistance = Abs(diffSec);
+					isFast = currentTimeSec < sec;
 					found = true;
 				}
 				else if (found && Abs(diffSec) >= minDistance && y > currentPulse)
@@ -169,18 +171,19 @@ namespace MusicGame::Judgment
 			else if (minDistance < ChipNote::kWindowSecNear)
 			{
 				// NEAR判定
-				m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kNear;
-				judgmentHandlerRef.onChipJudged(JudgmentResult::kNear);
+				const auto judgmentResult = isFast ? JudgmentResult::kNearFast : JudgmentResult::kNearSlow;
+				m_chipJudgmentArray.at(nearestNotePulse) = judgmentResult;
+				judgmentHandlerRef.onChipJudged(judgmentResult);
 				laneStatusRef.keyBeamType = KeyBeamType::kNear; // TODO: fast/slow
-				chipAnimType = JudgmentResult::kNear; // TODO: fast/slow
+				chipAnimType = judgmentResult;
 			}
-			else if (minDistance < ChipNote::kWindowSecError) // TODO: easy gauge, fast/slow
+			else if (minDistance < ChipNote::kWindowSecError) // TODO: easy gauge
 			{
 				// ERROR判定
 				m_chipJudgmentArray.at(nearestNotePulse) = JudgmentResult::kError;
 				judgmentHandlerRef.onChipJudged(JudgmentResult::kError);
 				laneStatusRef.keyBeamType = KeyBeamType::kDefault;
-				chipAnimType = JudgmentResult::kError;
+				chipAnimType = JudgmentResult::kError; // TODO: fast/slow
 			}
 
 			if (chipAnimType.has_value())

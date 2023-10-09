@@ -46,16 +46,17 @@ namespace MusicGame
 	}
 
 	GameMain::GameMain(const GameCreateInfo& createInfo)
-		: m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
+		: m_chartFilePath(createInfo.chartFilePath)
+		, m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
 		, m_chartData(kson::LoadKSHChartData(createInfo.chartFilePath.narrow()))
 		, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
-		, m_judgmentMain(m_chartData, m_timingCache)
+		, m_judgmentMain(m_chartData, m_timingCache, createInfo.gaugeType)
 		, m_highwayScroll(m_chartData)
 		, m_bgm(FileSystem::PathAppend(m_parentPath, Unicode::FromUTF8(m_chartData.audio.bgm.filename)), m_chartData.audio.bgm.vol, static_cast<double>(m_chartData.audio.bgm.offset) / 1000)
 		, m_assistTick(createInfo.assistTickEnabled)
 		, m_laserSlamSE(m_chartData)
 		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)
-		, m_graphicsMain(m_chartData, m_parentPath)
+		, m_graphicsMain(m_chartData, m_parentPath, createInfo.gaugeType)
 	{
 	}
 
@@ -116,5 +117,20 @@ namespace MusicGame
 	void GameMain::terminate()
 	{
 		m_hispeedSettingMenu.saveToConfigIni();
+	}
+
+	FilePathView GameMain::chartFilePath() const
+	{
+		return m_chartFilePath;
+	}
+
+	const kson::ChartData& GameMain::chartData() const
+	{
+		return m_chartData;
+	}
+
+	PlayResult GameMain::playResult() const
+	{
+		return m_judgmentMain.playResult();
 	}
 }

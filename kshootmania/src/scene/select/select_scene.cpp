@@ -1,5 +1,4 @@
 ﻿#include "select_scene.hpp"
-#include "select_assets.hpp"
 
 void SelectScene::moveToPlayScene(FilePathView chartFilePath)
 {
@@ -9,7 +8,6 @@ void SelectScene::moveToPlayScene(FilePathView chartFilePath)
 
 SelectScene::SelectScene(const InitData& initData)
 	: MyScene(initData)
-	, m_bgTexture(TextureAsset(SelectTexture::kBG))
 	, m_folderCloseButton(
 		ConfigIni::GetInt(ConfigIni::Key::kSelectCloseFolderKey) == ConfigIni::Value::SelectCloseFolderKey::kBackButton
 			? KeyConfig::kBack

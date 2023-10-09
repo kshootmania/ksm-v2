@@ -65,7 +65,8 @@ namespace MusicGame::Graphics
 		case kCritical:
 			return m_chipCriticalTexture;
 
-		case kNear:
+		case kNearFast:
+		case kNearSlow:
 			return m_chipNearTexture; // TODO: Fast near
 
 		case kError:

@@ -167,6 +167,7 @@
     <ClCompile Include="src\music_game\judgment\laser_lane_judgment.cpp" />
     <ClCompile Include="src\music_game\judgment\laser_slam_shake.cpp" />
     <ClCompile Include="src\music_game\judgment\scoring_status.cpp" />
+    <ClCompile Include="src\music_game\play_result.cpp" />
     <ClCompile Include="src\music_game\scroll\highway_scroll.cpp" />
     <ClCompile Include="src\music_game\ui\hispeed_setting_menu.cpp" />
     <ClCompile Include="src\scene\option\option_menu.cpp" />
@@ -174,6 +175,8 @@
     <ClCompile Include="src\scene\option\option_top_menu.cpp" />
     <ClCompile Include="src\scene\option\option_scene.cpp" />
     <ClCompile Include="src\scene\play\play_scene.cpp" />
+    <ClCompile Include="src\scene\result\result_panel.cpp" />
+    <ClCompile Include="src\scene\result\result_scene.cpp" />
     <ClCompile Include="src\scene\scene_manager_addon.cpp" />
     <ClCompile Include="src\scene\select\menu_item\select_menu_all_folder_item.cpp" />
     <ClCompile Include="src\scene\select\menu_item\select_menu_dir_folder_item.cpp" />
@@ -443,6 +446,7 @@
     <ClInclude Include="src\music_game\judgment\laser_lane_judgment.hpp" />
     <ClInclude Include="src\music_game\judgment\laser_slam_shake.hpp" />
     <ClInclude Include="src\music_game\judgment\scoring_status.hpp" />
+    <ClInclude Include="src\music_game\play_result.hpp" />
     <ClInclude Include="src\music_game\scroll\highway_scroll.hpp" />
     <ClInclude Include="src\music_game\scroll\hispeed_setting.hpp" />
     <ClInclude Include="src\music_game\timeline.hpp" />
@@ -455,6 +459,10 @@
     <ClInclude Include="src\scene\option\option_top_menu.hpp" />
     <ClInclude Include="src\scene\play\play_scene.hpp" />
     <ClInclude Include="src\scene\play\play_scene_args.hpp" />
+    <ClInclude Include="src\scene\result\result_assets.hpp" />
+    <ClInclude Include="src\scene\result\result_panel.hpp" />
+    <ClInclude Include="src\scene\result\result_scene.hpp" />
+    <ClInclude Include="src\scene\result\result_scene_args.hpp" />
     <ClInclude Include="src\scene\scene_manager_addon.hpp" />
     <ClInclude Include="src\scene\select\menu_item\iselect_menu_item.hpp" />
     <ClInclude Include="src\scene\select\menu_item\select_menu_all_folder_item.hpp" />

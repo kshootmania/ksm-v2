@@ -4,8 +4,10 @@ namespace
 {
 	MusicGame::GameCreateInfo MakeGameCreateInfo(const PlaySceneArgs& args)
 	{
-		return {
+		return
+		{
 			.chartFilePath = args.chartFilePath,
+			.gaugeType = args.gaugeType,
 			.assistTickEnabled = ConfigIni::GetBool(ConfigIni::Key::kAssistTick),
 		};
 	}
@@ -27,10 +29,17 @@ void PlayScene::update()
 {
 	m_gameMain.update();
 
-	// Escキーで楽曲選択画面に戻る
+	// Escキーでゲームを中断してリザルト画面へ遷移
 	if (KeyConfig::Down(KeyConfig::kBack))
 	{
-		changeScene(U"Select", kDefaultTransitionMs);
+		getData().resultSceneArgs =
+		ResultSceneArgs{
+			.chartFilePath = FilePath(m_gameMain.chartFilePath()),
+			.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
+			.playResult = m_gameMain.playResult(),
+		};
+
+		changeScene(SceneName::kResult, kDefaultTransitionMs);
 	}
 }
 
