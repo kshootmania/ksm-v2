@@ -12,7 +12,7 @@ SceneManagerAddon::SceneManagerAddon()
 	m_sceneManager.add<SelectScene>(SceneName::kSelect);
 	m_sceneManager.add<PlayScene>(SceneName::kPlay);
 	m_sceneManager.add<ResultScene>(SceneName::kResult);
-	m_sceneManager.changeScene(SceneName::kTitle, kDefaultTransitionMs);
+	m_sceneManager.init(SceneName::kTitle, kDefaultTransitionMs);
 }
 
 bool SceneManagerAddon::update()
