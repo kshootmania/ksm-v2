@@ -25,8 +25,13 @@ namespace AssetManagement
 			{
 				AudioAsset::Register(FileSystem::RelativePath(path, seFullPath), path);
 			}
+		}
 
-			// TODO: BGM assets
+		void RegisterFontAssets()
+		{
+			// フォントを登録
+			FontAsset::Register(kFontAssetSystem, FontMethod::SDF, 600, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default);
+			FontAsset::Register(kFontAssetSystemBold, FontMethod::SDF, 600, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Bold);
 		}
 	}
 
@@ -35,5 +40,6 @@ namespace AssetManagement
 		// 注意: アセットの実際のロードはここではなく、各シーンでの使用時に実施される
 		RegisterTextureAssets();
 		RegisterAudioAssets();
+		RegisterFontAssets();
 	}
 }

@@ -1,10 +1,13 @@
 ﻿#pragma once
 
-namespace AssetManagement
+inline namespace AssetManagement
 {
 	constexpr StringView kAssetPrefixSRGB = U"SRGB:";
-
-	void RegisterAssets();
+	constexpr StringView kFontAssetSystem = U"System";
+	constexpr StringView kFontAssetSystemBold = U"SystemBold";
 }
 
-using AssetManagement::kAssetPrefixSRGB;
+namespace AssetManagement
+{
+	void RegisterAssets();
+}
