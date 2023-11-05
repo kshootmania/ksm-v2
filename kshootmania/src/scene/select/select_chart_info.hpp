@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "kson/chart_data.hpp"
-#include "scoring/high_score_info.hpp"
+#include "high_score/high_score_info.hpp"
 
 class SelectChartInfo
 {

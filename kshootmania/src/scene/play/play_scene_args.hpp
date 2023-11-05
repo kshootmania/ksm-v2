@@ -5,5 +5,5 @@ struct PlaySceneArgs
 {
 	FilePath chartFilePath;
 
-	MusicGame::GaugeType gaugeType = MusicGame::GaugeType::kNormalGauge;
+	GaugeType gaugeType = GaugeType::kNormalGauge;
 };

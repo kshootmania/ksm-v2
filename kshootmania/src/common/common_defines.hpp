@@ -48,3 +48,28 @@ enum class Grade : int32
 	kAA,
 	kAAA,
 };
+
+enum class GaugeType : int32
+{
+	kEasyGauge = 0,
+	kNormalGauge,
+	kHardGauge,
+
+	kNumGaugeTypes,
+};
+constexpr int32 kNumGaugeTypes = static_cast<int32>(GaugeType::kNumGaugeTypes);
+
+enum class TurnMode : int32
+{
+	kNormal = 0,
+	kMirror,
+	kRandom,
+};
+
+enum class JudgmentPlayMode : int32
+{
+	kOn = 0,
+	kOff,
+	kAuto,
+	kHide,
+};

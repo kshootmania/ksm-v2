@@ -126,8 +126,8 @@ namespace
 	int32 TopTextureRow(const MusicGame::PlayResult& playResult)
 	{
 		const Achievement achievement = playResult.achievement();
-		const bool isEasyGauge = playResult.gaugeType == MusicGame::GaugeType::kEasyGauge;
-		const bool isHardGauge = playResult.gaugeType == MusicGame::GaugeType::kHardGauge;
+		const bool isEasyGauge = playResult.gaugeType == GaugeType::kEasyGauge;
+		const bool isHardGauge = playResult.gaugeType == GaugeType::kHardGauge;
 		const bool isAssist = false; // TODO: アシストかどうかを代入
 		switch (achievement)
 		{
@@ -136,13 +136,13 @@ namespace
 			{
 				switch (playResult.gaugeType)
 				{
-				case MusicGame::GaugeType::kNormalGauge:
+				case GaugeType::kNormalGauge:
 					return kTopTextureRowAssistFailed;
 
-				case MusicGame::GaugeType::kEasyGauge:
+				case GaugeType::kEasyGauge:
 					return kTopTextureRowAssistEasyFailed;
 
-				case MusicGame::GaugeType::kHardGauge:
+				case GaugeType::kHardGauge:
 					return kTopTextureRowAssistHardFailed;
 
 				default:
@@ -153,13 +153,13 @@ namespace
 			{
 				switch (playResult.gaugeType)
 				{
-				case MusicGame::GaugeType::kNormalGauge:
+				case GaugeType::kNormalGauge:
 					return kTopTextureRowFailed;
 
-				case MusicGame::GaugeType::kEasyGauge:
+				case GaugeType::kEasyGauge:
 					return kTopTextureRowEasyFailed;
 
-				case MusicGame::GaugeType::kHardGauge:
+				case GaugeType::kHardGauge:
 					return kTopTextureRowHardFailed;
 
 				default:
@@ -173,13 +173,13 @@ namespace
 			{
 				switch (playResult.gaugeType)
 				{
-				case MusicGame::GaugeType::kNormalGauge:
+				case GaugeType::kNormalGauge:
 					return kTopTextureRowAssistClear;
 
-				case MusicGame::GaugeType::kEasyGauge:
+				case GaugeType::kEasyGauge:
 					return kTopTextureRowAssistEasyClear;
 
-				case MusicGame::GaugeType::kHardGauge:
+				case GaugeType::kHardGauge:
 					return kTopTextureRowAssistHardClear;
 
 				default:
@@ -190,13 +190,13 @@ namespace
 			{
 				switch (playResult.gaugeType)
 				{
-				case MusicGame::GaugeType::kNormalGauge:
+				case GaugeType::kNormalGauge:
 					return kTopTextureRowCleared;
 
-				case MusicGame::GaugeType::kEasyGauge:
+				case GaugeType::kEasyGauge:
 					return kTopTextureRowEasyClear;
 
-				case MusicGame::GaugeType::kHardGauge:
+				case GaugeType::kHardGauge:
 					return kTopTextureRowHardClear;
 
 				default:
@@ -210,11 +210,11 @@ namespace
 			{
 				switch (playResult.gaugeType)
 				{
-				case MusicGame::GaugeType::kNormalGauge:
-				case MusicGame::GaugeType::kHardGauge:
+				case GaugeType::kNormalGauge:
+				case GaugeType::kHardGauge:
 					return kTopTextureRowAssistFullCombo;
 
-				case MusicGame::GaugeType::kEasyGauge:
+				case GaugeType::kEasyGauge:
 					return kTopTextureRowAssistEasyFullCombo;
 
 				default:
@@ -225,11 +225,11 @@ namespace
 			{
 				switch (playResult.gaugeType)
 				{
-				case MusicGame::GaugeType::kNormalGauge:
-				case MusicGame::GaugeType::kHardGauge:
+				case GaugeType::kNormalGauge:
+				case GaugeType::kHardGauge:
 					return kTopTextureRowFullCombo;
 
-				case MusicGame::GaugeType::kEasyGauge:
+				case GaugeType::kEasyGauge:
 					return kTopTextureRowEasyFullCombo;
 
 				default:
@@ -243,11 +243,11 @@ namespace
 			{
 				switch (playResult.gaugeType)
 				{
-				case MusicGame::GaugeType::kNormalGauge:
-				case MusicGame::GaugeType::kHardGauge:
+				case GaugeType::kNormalGauge:
+				case GaugeType::kHardGauge:
 					return kTopTextureRowAssistPerfect;
 
-				case MusicGame::GaugeType::kEasyGauge:
+				case GaugeType::kEasyGauge:
 					return kTopTextureRowAssistEasyPerfect;
 
 				default:
@@ -258,11 +258,11 @@ namespace
 			{
 				switch (playResult.gaugeType)
 				{
-				case MusicGame::GaugeType::kNormalGauge:
-				case MusicGame::GaugeType::kHardGauge:
+				case GaugeType::kNormalGauge:
+				case GaugeType::kHardGauge:
 					return kTopTextureRowPerfect;
 
-				case MusicGame::GaugeType::kEasyGauge:
+				case GaugeType::kEasyGauge:
 					return kTopTextureRowEasyPerfect;
 
 				default:
