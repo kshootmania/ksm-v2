@@ -14,7 +14,7 @@ namespace
 	}
 }
 
-HighScoreInfo HighScoreInfo::fromKscValue(const String& kscValue)
+HighScoreInfo HighScoreInfo::FromKscValue(const String& kscValue)
 {
 	HighScoreInfo highScoreInfo;
 

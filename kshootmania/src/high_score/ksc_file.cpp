@@ -16,7 +16,7 @@ HighScoreInfo ReadHighScoreInfo(FilePathView kscFilePath, const HighScoreConditi
 		if (line.starts_with(search))
 		{
 			const String value = line.substr(search.length());
-			return HighScoreInfo::fromKscValue(value);
+			return HighScoreInfo::FromKscValue(value);
 		}
 	}
 

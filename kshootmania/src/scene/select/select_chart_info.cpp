@@ -1,5 +1,30 @@
 ﻿#include "select_chart_info.hpp"
+#include "high_score/ksc_file.hpp"
 #include "kson/io/ksh_io.hpp"
+
+namespace
+{
+	HighScoreInfo LoadHighScoreInfo(FilePathView chartFilePath)
+	{
+		// TODO: ksonが増えるまでに決め打ちをどうにかする
+		const auto relativeChartFilePath = FileSystem::RelativePath(chartFilePath, FileSystem::FullPath(U"songs"));
+		if (String{ relativeChartFilePath.substr(relativeChartFilePath.size() - 4U) }.lowercased() != U".ksh")
+		{
+			return HighScoreInfo{};
+		}
+
+		const FilePath kscFilePath = U"score/PLAYER/" + relativeChartFilePath.substr(0, relativeChartFilePath.size() - 4U) + U".ksc";
+
+		HighScoreInfo info;
+
+		if (FileSystem::Exists(kscFilePath))
+		{
+			info = ReadHighScoreInfo(kscFilePath, HighScoreCondition{/*TODO*/});
+		}
+
+		return info;
+	}
+}
 
 FilePath SelectChartInfo::toFullPath(const std::string& u8Filename) const
 {
@@ -9,7 +34,7 @@ FilePath SelectChartInfo::toFullPath(const std::string& u8Filename) const
 SelectChartInfo::SelectChartInfo(FilePathView chartFilePath)
 	: m_chartFilePath(chartFilePath)
 	, m_chartData(kson::LoadKSHMetaChartData(chartFilePath.narrow()))
-	, m_highScoreInfo(/* TODO: ハイスコア実装 */)
+	, m_highScoreInfo(LoadHighScoreInfo(chartFilePath))
 {
 }
 

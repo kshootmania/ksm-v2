@@ -18,5 +18,5 @@ struct HighScoreInfo
 
 	int32 fullComboCount = 0;
 
-	static HighScoreInfo fromKscValue(const String& kscValue);
+	static HighScoreInfo FromKscValue(const String& kscValue);
 };

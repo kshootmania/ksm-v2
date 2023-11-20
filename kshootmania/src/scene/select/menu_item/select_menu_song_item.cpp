@@ -120,6 +120,11 @@ void SelectMenuSongItem::drawCenter(int32 difficultyIdx, const RenderTexture& re
 
 	// Chart author (Effected by)
 	assets.font(pChartInfo->chartAuthor()).draw(19, Arg::leftCenter = Vec2{ 154, 293 + 22 / 2 });
+
+	// High score
+	// TODO: とりあえず仮で文字で表示している
+	const auto& highScoreInfo = pChartInfo->highScoreInfo();
+	assets.fontBold(Format(highScoreInfo.score)).drawAt(28, Vec2{ 240, 350 });
 }
 
 void SelectMenuSongItem::drawUpperLower(int32 difficultyIdx, const RenderTexture& renderTexture, const SelectMenuItemGraphicAssets& assets, bool isUpper) const
