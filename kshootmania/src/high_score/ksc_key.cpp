@@ -1,4 +1,4 @@
-﻿#include "high_score_condition.hpp"
+﻿#include "ksc_key.hpp"
 
 namespace
 {
@@ -53,7 +53,7 @@ namespace
 	}
 }
 
-String HighScoreCondition::toKscKey() const
+String KscKey::toString() const
 {
 	// 3番目は元々ノーツ増減オプション用に予約されていたが不使用なので"normal"固定
 	return U"{},{},normal,{},{},{}"_fmt(
@@ -62,4 +62,11 @@ String HighScoreCondition::toKscKey() const
 		JudgmentPlayModeStr(btPlayMode),
 		JudgmentPlayModeStr(fxPlayMode),
 		JudgmentPlayModeStr(laserPlayMode));
+}
+
+KscKey KscKey::withGaugeType(GaugeType gaugeType) const
+{
+	KscKey result = *this;
+	result.gaugeType = gaugeType;
+	return result;
 }

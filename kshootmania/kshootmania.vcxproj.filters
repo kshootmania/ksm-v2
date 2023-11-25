@@ -531,13 +531,16 @@
     <ClCompile Include="src\music_game\play_result.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\high_score\high_score_condition.cpp">
+    <ClCompile Include="src\high_score\ksc_key.cpp">
       <Filter>Source Files\high_score</Filter>
     </ClCompile>
-    <ClCompile Include="src\high_score\high_score_info.cpp">
+    <ClCompile Include="src\high_score\ksc_value.cpp">
       <Filter>Source Files\high_score</Filter>
     </ClCompile>
     <ClCompile Include="src\high_score\ksc_file.cpp">
+      <Filter>Source Files\high_score</Filter>
+    </ClCompile>
+    <ClCompile Include="src\high_score\high_score_info.cpp">
       <Filter>Source Files\high_score</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1459,13 +1462,16 @@
     <ClInclude Include="src\scene\result\result_panel.hpp">
       <Filter>Header Files\scene\result</Filter>
     </ClInclude>
-    <ClInclude Include="src\high_score\high_score_info.hpp">
+    <ClInclude Include="src\high_score\ksc_value.hpp">
       <Filter>Header Files\high_score</Filter>
     </ClInclude>
-    <ClInclude Include="src\high_score\high_score_condition.hpp">
+    <ClInclude Include="src\high_score\ksc_key.hpp">
       <Filter>Header Files\high_score</Filter>
     </ClInclude>
     <ClInclude Include="src\high_score\ksc_file.hpp">
+      <Filter>Header Files\high_score</Filter>
+    </ClInclude>
+    <ClInclude Include="src\high_score\high_score_info.hpp">
       <Filter>Header Files\high_score</Filter>
     </ClInclude>
   </ItemGroup>

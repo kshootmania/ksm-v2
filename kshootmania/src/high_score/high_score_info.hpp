@@ -1,22 +1,29 @@
 ﻿#pragma once
+#include "ksc_value.hpp"
 
 struct HighScoreInfo
 {
-	Medal medal = Medal::kNoMedal;
+	KscValue normalGauge;
 
-	Grade grade = Grade::kNoGrade;
+	KscValue easyGauge;
 
-	int32 score = 0;
+	KscValue hardGauge;
 
-	int32 percent = 0;
+	int32 score(GaugeType gaugeType) const;
 
-	int32 maxCombo = 0;
+	Medal medal() const;
 
-	int32 playCount = 0;
+	Grade grade(GaugeType gaugeType) const;
 
-	int32 clearCount = 0;
+	int32 percent(GaugeType gaugeType) const;
 
-	int32 fullComboCount = 0;
+	int32 playCount(GaugeType gaugeType) const;
 
-	static HighScoreInfo FromKscValue(const String& kscValue);
+	int32 clearCount(GaugeType gaugeType) const;
+
+	int32 fullComboCount(GaugeType gaugeType) const;
+
+	int32 perfectCount(GaugeType gaugeType) const;
+
+	int32 maxCombo(GaugeType gaugeType) const;
 };

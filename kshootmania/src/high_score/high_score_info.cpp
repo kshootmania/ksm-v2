@@ -1,32 +1,190 @@
 ﻿#include "high_score_info.hpp"
 
-namespace
+int32 HighScoreInfo::score(GaugeType gaugeType) const
 {
-	template <typename T>
-	T GetKscValue(const Array<String>& values, std::size_t index, T defaultValue)
+	// NORMALとHARDは同じスコア基準なので共有、EASYはタイミング判定しきい値が異なりスコア基準が異なるので別にする
+	switch (gaugeType)
 	{
-		if (values.size() <= index)
-		{
-			return defaultValue;
-		}
+	case GaugeType::kEasyGauge:
+		return easyGauge.score;
 
-		return static_cast<T>(Parse<int32>(values[index]));
+	case GaugeType::kNormalGauge:
+	case GaugeType::kHardGauge:
+		return Max(normalGauge.score, hardGauge.score);
+
+	default:
+		assert(false && "Unknown gauge type");
+		return 0;
 	}
 }
 
-HighScoreInfo HighScoreInfo::FromKscValue(const String& kscValue)
+Medal HighScoreInfo::medal() const
 {
-	HighScoreInfo highScoreInfo;
+	// NORMALとHARDのPERFECT/FULLCOMBOは同じなので共有、EASYはタイミング判定しきい値が異なるので別にする
 
-	const Array<String> values = kscValue.split(U',');
-	highScoreInfo.score = GetKscValue<int32>(values, 0, highScoreInfo.score);
-	highScoreInfo.medal = GetKscValue<Medal>(values, 1, highScoreInfo.medal);
-	highScoreInfo.grade = GetKscValue<Grade>(values, 2, highScoreInfo.grade);
-	highScoreInfo.percent = GetKscValue<int32>(values, 3, highScoreInfo.percent);
-	highScoreInfo.maxCombo = GetKscValue<int32>(values, 4, highScoreInfo.maxCombo);
-	highScoreInfo.playCount = GetKscValue<int32>(values, 5, highScoreInfo.playCount);
-	highScoreInfo.clearCount = GetKscValue<int32>(values, 6, highScoreInfo.clearCount);
-	highScoreInfo.fullComboCount = GetKscValue<int32>(values, 7, highScoreInfo.fullComboCount);
+	if (normalGauge.achievement == Achievement::kPerfect || hardGauge.achievement == Achievement::kPerfect)
+	{
+		return Medal::kPerfect;
+	}
 
-	return highScoreInfo;
+	if (normalGauge.achievement == Achievement::kFullCombo || hardGauge.achievement == Achievement::kFullCombo)
+	{
+		return Medal::kFullCombo;
+	}
+
+	if (hardGauge.achievement == Achievement::kCleared)
+	{
+		return Medal::kHardClear;
+	}
+
+	if (normalGauge.achievement == Achievement::kCleared)
+	{
+		return Medal::kClear;
+	}
+
+	if (easyGauge.achievement == Achievement::kPerfect)
+	{
+		return Medal::kEasyPerfect;
+	}
+
+	if (easyGauge.achievement == Achievement::kFullCombo)
+	{
+		return Medal::kEasyFullCombo;
+	}
+
+	if (easyGauge.achievement == Achievement::kCleared)
+	{
+		return Medal::kEasyClear;
+	}
+
+	return Medal::kNoMedal;
+}
+
+Grade HighScoreInfo::grade(GaugeType gaugeType) const
+{
+	// NORMALとHARDは同じグレード基準なので共有、EASYはタイミング判定しきい値が異なりグレード基準が異なるので別にする
+	// (NORMALとHARDではパーセンテージ基準は異なるが、HARDのグレード算出の際はNORMAL扱いでのパーセンテージを使用するためグレード基準は同じ)
+	switch (gaugeType)
+	{
+	case GaugeType::kEasyGauge:
+		return easyGauge.grade;
+
+	case GaugeType::kNormalGauge:
+	case GaugeType::kHardGauge:
+		return Max(normalGauge.grade, hardGauge.grade);
+
+	default:
+		assert(false && "Unknown gauge type");
+		return Grade::kNoGrade;
+	}
+}
+
+int32 HighScoreInfo::percent(GaugeType gaugeType) const
+{
+	// ゲージのパーセンテージについてはEASY、NORMAL、HARDで全て異なるので別にする
+	switch (gaugeType)
+	{
+	case GaugeType::kEasyGauge:
+		return easyGauge.percent;
+
+	case GaugeType::kNormalGauge:
+		return normalGauge.percent;
+
+	case GaugeType::kHardGauge:
+		return hardGauge.percent;
+
+	default:
+		assert(false && "Unknown gauge type");
+		return 0;
+	}
+}
+
+int32 HighScoreInfo::playCount(GaugeType gaugeType) const
+{
+	// 主にCLEAR/FULLCOMBO/PERFECTの分母として見る目的の数値なので、それらと同様にNORMALとHARDは共有、EASYは別にする
+	switch (gaugeType)
+	{
+	case GaugeType::kEasyGauge:
+		return easyGauge.playCount;
+
+	case GaugeType::kNormalGauge:
+	case GaugeType::kHardGauge:
+		return normalGauge.playCount + hardGauge.playCount;
+
+	default:
+		assert(false && "Unknown gauge type");
+		return 0;
+	}
+}
+
+int32 HighScoreInfo::clearCount(GaugeType gaugeType) const
+{
+	// NORMALとHARDのCLEARは同じなので共有、EASYはタイミング判定しきい値が異なりスコア基準が異なるので別にする
+	switch (gaugeType)
+	{
+	case GaugeType::kEasyGauge:
+		return easyGauge.clearCount;
+
+	case GaugeType::kNormalGauge:
+	case GaugeType::kHardGauge:
+		return normalGauge.clearCount + hardGauge.clearCount;
+
+	default:
+		assert(false && "Unknown gauge type");
+		return 0;
+	}
+}
+
+int32 HighScoreInfo::fullComboCount(GaugeType gaugeType) const
+{
+	// NORMALとHARDは同じスコア基準なので共有、EASYはタイミング判定しきい値が異なりスコア基準が異なるので別にする
+	switch (gaugeType)
+	{
+	case GaugeType::kEasyGauge:
+		return easyGauge.fullComboCount;
+
+	case GaugeType::kNormalGauge:
+	case GaugeType::kHardGauge:
+		return normalGauge.fullComboCount + hardGauge.fullComboCount;
+
+	default:
+		assert(false && "Unknown gauge type");
+		return 0;
+	}
+}
+
+int32 HighScoreInfo::perfectCount(GaugeType gaugeType) const
+{
+	// NORMALとHARDは同じスコア基準なので共有、EASYはタイミング判定しきい値が異なりスコア基準が異なるので別にする
+	switch (gaugeType)
+	{
+	case GaugeType::kEasyGauge:
+		return easyGauge.perfectCount;
+
+	case GaugeType::kNormalGauge:
+	case GaugeType::kHardGauge:
+		return normalGauge.perfectCount + hardGauge.perfectCount;
+
+	default:
+		assert(false && "Unknown gauge type");
+		return 0;
+	}
+}
+
+int32 HighScoreInfo::maxCombo(GaugeType gaugeType) const
+{
+	// NORMALとHARDは同じスコア基準なので共有、EASYはタイミング判定しきい値が異なりスコア基準が異なるので別にする
+	switch (gaugeType)
+	{
+	case GaugeType::kEasyGauge:
+		return easyGauge.maxCombo;
+
+	case GaugeType::kNormalGauge:
+	case GaugeType::kHardGauge:
+		return Max(normalGauge.maxCombo, hardGauge.maxCombo);
+
+	default:
+		assert(false && "Unknown gauge type");
+		return 0;
+	}
 }

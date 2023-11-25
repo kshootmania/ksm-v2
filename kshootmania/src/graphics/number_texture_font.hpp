@@ -5,7 +5,7 @@ using ZeroPaddingYN = YesNo<struct ZeroPaddingYN_tag>;
 
 class NumberTextureFont
 {
-private:
+public:
 	const TiledTexture m_tiledTexture;
 
 public:

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "music_game/game_defines.hpp"
 
-struct HighScoreCondition
+struct KscKey
 {
 	GaugeType gaugeType = GaugeType::kNormalGauge;
 
@@ -13,5 +13,7 @@ struct HighScoreCondition
 
 	JudgmentPlayMode laserPlayMode = JudgmentPlayMode::kOn;
 
-	String toKscKey() const;
+	String toString() const;
+
+	KscKey withGaugeType(GaugeType gaugeType) const;
 };

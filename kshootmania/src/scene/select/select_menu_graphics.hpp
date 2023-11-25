@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "select_assets.hpp"
+#include "graphics/number_texture_font.hpp"
 
 class ISelectMenuItem;
 
@@ -35,6 +36,28 @@ struct SelectMenuItemGraphicAssets
 
 	Font font = FontAsset(kFontAssetSystem);
 	Font fontBold = FontAsset(kFontAssetSystemBold);
+
+	TiledTexture highScoreMedalTexture
+	{
+		TextureAsset(SelectTexture::kHighScoreMedalTexture),
+		TiledTextureSizeInfo
+		{
+			.row = static_cast<int32>(Medal::kNumMedals),
+			.sourceSize = { 188, 78 },
+		}
+	};
+
+	NumberTextureFont highScoreNumberTextureFont{ SelectTexture::kHighScoreNumberTextureFont, { 136, 120 } };
+
+	TiledTexture highScoreGradeTexture
+	{
+		TextureAsset(SelectTexture::kHighScoreGradeTexture),
+		TiledTextureSizeInfo
+		{
+			.row = static_cast<int32>(Grade::kNumGrades),
+			.sourceSize = { 64, 64 },
+		}
+	};
 };
 
 enum class SelectMenuShakeDirection

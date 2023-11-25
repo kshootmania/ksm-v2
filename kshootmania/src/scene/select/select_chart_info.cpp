@@ -19,7 +19,7 @@ namespace
 
 		if (FileSystem::Exists(kscFilePath))
 		{
-			info = ReadHighScoreInfo(kscFilePath, HighScoreCondition{/*TODO*/});
+			info = ReadHighScoreInfo(kscFilePath, KscKey{/*TODO*/});
 		}
 
 		return info;

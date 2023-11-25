@@ -131,7 +131,7 @@ namespace
 		const bool isAssist = false; // TODO: アシストかどうかを代入
 		switch (achievement)
 		{
-		case Achievement::kFailed:
+		case Achievement::kNone:
 			if (isAssist)
 			{
 				switch (playResult.gaugeType)

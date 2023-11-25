@@ -1,5 +1,5 @@
 ﻿#pragma once
 #include "high_score_info.hpp"
-#include "high_score_condition.hpp"
+#include "ksc_key.hpp"
 
-HighScoreInfo ReadHighScoreInfo(FilePathView kscFilePath, const HighScoreCondition& condition);
+HighScoreInfo ReadHighScoreInfo(FilePathView kscFilePath, const KscKey& condition);
