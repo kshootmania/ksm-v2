@@ -32,4 +32,8 @@ namespace SelectTexture
 
 	constexpr StringView kScrollBar = U"msel_bar.png";
 	constexpr StringView kScrollBarCursor = U"msel_barcur.png";
+
+	constexpr StringView kHighScoreMedalTexture = U"msel_medal.png";
+	constexpr StringView kHighScoreNumberTextureFont = U"num0.png";
+	constexpr StringView kHighScoreGradeTexture = U"msel_grade.png";
 }

@@ -29,16 +29,6 @@ namespace MusicGame
 
 	constexpr kson::Pulse kPastPulse = -100000000;
 
-	enum class GaugeType : int32
-	{
-		kEasyGauge = 0,
-		kNormalGauge,
-		kHardGauge,
-
-		kNumGaugeTypes,
-	};
-	constexpr int32 kNumGaugeTypes = static_cast<int32>(GaugeType::kNumGaugeTypes);
-
 	constexpr int32 kScoreMax = 10000000;
 
 	constexpr int32 kGaugeValueChip = 200;

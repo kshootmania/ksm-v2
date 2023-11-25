@@ -19,7 +19,7 @@ namespace MusicGame
 		// 途中でプレイをやめた場合
 		if (comboStats.critical + comboStats.near() + comboStats.error < totalCombo)
 		{
-			return Achievement::kFailed;
+			return Achievement::kNone;
 		}
 
 		// 途中でプレイをやめていなければ判定内訳の合計がtotalComboになるはず
@@ -27,7 +27,7 @@ namespace MusicGame
 
 		if (gaugePercentage < kGaugePercentageThreshold)
 		{
-			return Achievement::kFailed; // ゲージがクリアラインを下回った場合
+			return Achievement::kNone; // ゲージがクリアラインを下回った場合
 		}
 		else if (comboStats.critical == totalCombo)
 		{

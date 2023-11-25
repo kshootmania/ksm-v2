@@ -120,6 +120,14 @@ void SelectMenuSongItem::drawCenter(int32 difficultyIdx, const RenderTexture& re
 
 	// Chart author (Effected by)
 	assets.font(pChartInfo->chartAuthor()).draw(19, Arg::leftCenter = Vec2{ 154, 293 + 22 / 2 });
+
+	// High score
+	const GaugeType gaugeType = GaugeType::kNormalGauge; // TODO: 現在選択中のゲージタイプを反映
+	const auto& highScoreInfo = pChartInfo->highScoreInfo();
+	assets.highScoreMedalTexture(static_cast<int32>(highScoreInfo.medal())).scaled(kScale2x).draw(42, 323);
+	const TextureFontTextLayout highScoreTextLayout({ 17, 15 }, TextureFontTextLayout::Align::Left, 8, 18.5);
+	assets.highScoreNumberTextureFont.draw(highScoreTextLayout, { 160, 342 }, highScoreInfo.score(gaugeType), ZeroPaddingYN::Yes);
+	assets.highScoreGradeTexture(static_cast<int32>(highScoreInfo.grade(gaugeType))).scaled(kScale2x).draw(334, 327);
 }
 
 void SelectMenuSongItem::drawUpperLower(int32 difficultyIdx, const RenderTexture& renderTexture, const SelectMenuItemGraphicAssets& assets, bool isUpper) const

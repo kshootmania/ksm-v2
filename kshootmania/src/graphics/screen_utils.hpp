@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <Siv3D.hpp>
 
-namespace ScreenUtils
+inline namespace ScreenUtils
 {
 	TextureRegion FitToHeight(const Texture& texture);
 
@@ -74,6 +74,7 @@ namespace ScreenUtils
 
 	constexpr int32 kScale2xNumerator = 1;
 	constexpr int32 kScale2xDenominator = 2;
+	constexpr double kScale2x = static_cast<double>(kScale2xNumerator) / kScale2xDenominator;
 
 	inline int32 Scaled2x(int32 v)
 	{

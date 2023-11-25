@@ -20,7 +20,6 @@ constexpr double kPastTimeSec = -100000.0;
 enum class Medal : int32
 {
 	kNoMedal = 0,
-	kPlayed,
 	kEasyClear,
 	kEasyFullCombo,
 	kEasyPerfect,
@@ -28,11 +27,13 @@ enum class Medal : int32
 	kHardClear,
 	kFullCombo,
 	kPerfect,
+
+	kNumMedals,
 };
 
 enum class Achievement : int32
 {
-	kFailed,
+	kNone = 0,
 	kCleared,
 	kFullCombo,
 	kPerfect,
@@ -47,4 +48,31 @@ enum class Grade : int32
 	kA,
 	kAA,
 	kAAA,
+
+	kNumGrades,
+};
+
+enum class GaugeType : int32
+{
+	kEasyGauge = 0,
+	kNormalGauge,
+	kHardGauge,
+
+	kNumGaugeTypes,
+};
+constexpr int32 kNumGaugeTypes = static_cast<int32>(GaugeType::kNumGaugeTypes);
+
+enum class TurnMode : int32
+{
+	kNormal = 0,
+	kMirror,
+	kRandom,
+};
+
+enum class JudgmentPlayMode : int32
+{
+	kOn = 0,
+	kOff,
+	kAuto,
+	kHide,
 };

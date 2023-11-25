@@ -127,6 +127,10 @@
     <ClCompile Include="src\graphics\number_texture_font.cpp" />
     <ClCompile Include="src\graphics\screen_utils.cpp" />
     <ClCompile Include="src\graphics\tiled_texture.cpp" />
+    <ClCompile Include="src\high_score\high_score_info.cpp" />
+    <ClCompile Include="src\high_score\ksc_key.cpp" />
+    <ClCompile Include="src\high_score\ksc_value.cpp" />
+    <ClCompile Include="src\high_score\ksc_file.cpp" />
     <ClCompile Include="src\i18n\i18n.cpp" />
     <ClCompile Include="src\ini\config_ini.cpp" />
     <ClCompile Include="src\ini\ksm_ini_data.cpp" />
@@ -400,6 +404,10 @@
     <ClInclude Include="src\graphics\number_texture_font.hpp" />
     <ClInclude Include="src\graphics\screen_utils.hpp" />
     <ClInclude Include="src\graphics\tiled_texture.hpp" />
+    <ClInclude Include="src\high_score\high_score_info.hpp" />
+    <ClInclude Include="src\high_score\ksc_key.hpp" />
+    <ClInclude Include="src\high_score\ksc_value.hpp" />
+    <ClInclude Include="src\high_score\ksc_file.hpp" />
     <ClInclude Include="src\i18n\i18n.hpp" />
     <ClInclude Include="src\ini\config_ini.hpp" />
     <ClInclude Include="src\ini\ksm_ini_data.hpp" />
@@ -484,7 +492,6 @@
     <ClInclude Include="src\scene\title\title_assets.hpp" />
     <ClInclude Include="src\scene\title\title_menu.hpp" />
     <ClInclude Include="src\scene\title\title_scene.hpp" />
-    <ClInclude Include="src\scoring\high_score_info.hpp" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\ui\array_with_linear_menu.hpp" />
     <ClInclude Include="src\ui\linear_menu.hpp" />

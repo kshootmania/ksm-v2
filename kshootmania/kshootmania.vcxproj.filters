@@ -190,9 +190,6 @@
     <Filter Include="Source Files\scene\select">
       <UniqueIdentifier>{159d7840-d844-4bb0-88f2-ddbaee653f9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\scoring">
-      <UniqueIdentifier>{77e8f166-a9ca-41f8-b54d-7e1f2aea4d15}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\common">
       <UniqueIdentifier>{0297cf3a-d302-46cd-9caa-159ab033c77c}</UniqueIdentifier>
     </Filter>
@@ -294,6 +291,12 @@
     </Filter>
     <Filter Include="Source Files\scene\result">
       <UniqueIdentifier>{8ea84dcd-da2b-40fa-a302-d8a83c1befce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\high_score">
+      <UniqueIdentifier>{77e8f166-a9ca-41f8-b54d-7e1f2aea4d15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\high_score">
+      <UniqueIdentifier>{1ee0a769-51eb-457a-9ad8-87d974445d75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -527,6 +530,18 @@
     </ClCompile>
     <ClCompile Include="src\music_game\play_result.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\high_score\ksc_key.cpp">
+      <Filter>Source Files\high_score</Filter>
+    </ClCompile>
+    <ClCompile Include="src\high_score\ksc_value.cpp">
+      <Filter>Source Files\high_score</Filter>
+    </ClCompile>
+    <ClCompile Include="src\high_score\ksc_file.cpp">
+      <Filter>Source Files\high_score</Filter>
+    </ClCompile>
+    <ClCompile Include="src\high_score\high_score_info.cpp">
+      <Filter>Source Files\high_score</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1222,9 +1237,6 @@
     <ClInclude Include="src\scene\select\select_folder_state.hpp">
       <Filter>Header Files\scene\select</Filter>
     </ClInclude>
-    <ClInclude Include="src\scoring\high_score_info.hpp">
-      <Filter>Header Files\scoring</Filter>
-    </ClInclude>
     <ClInclude Include="src\common\common_defines.hpp">
       <Filter>Header Files\common</Filter>
     </ClInclude>
@@ -1449,6 +1461,18 @@
     </ClInclude>
     <ClInclude Include="src\scene\result\result_panel.hpp">
       <Filter>Header Files\scene\result</Filter>
+    </ClInclude>
+    <ClInclude Include="src\high_score\ksc_value.hpp">
+      <Filter>Header Files\high_score</Filter>
+    </ClInclude>
+    <ClInclude Include="src\high_score\ksc_key.hpp">
+      <Filter>Header Files\high_score</Filter>
+    </ClInclude>
+    <ClInclude Include="src\high_score\ksc_file.hpp">
+      <Filter>Header Files\high_score</Filter>
+    </ClInclude>
+    <ClInclude Include="src\high_score\high_score_info.hpp">
+      <Filter>Header Files\high_score</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
