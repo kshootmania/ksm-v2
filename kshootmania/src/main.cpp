@@ -28,7 +28,7 @@ void Main()
 
 	// 画面サイズ反映
 	Window::SetToggleFullscreenEnabled(false); // Alt+Enter無効化
-	ScreenUtils::ApplyScreenSizeConfig();
+	ApplyScreenSizeConfig();
 
 	// アセット一覧を登録
 	AssetManagement::RegisterAssets();

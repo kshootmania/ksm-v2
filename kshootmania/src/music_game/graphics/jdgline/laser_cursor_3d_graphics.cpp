@@ -31,7 +31,7 @@ namespace MusicGame::Graphics
 		: m_texture(kTextureFilename,
 			{
 				.row = kson::kNumLaserLanes,
-				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
+				.sourceScale = SourceScale::kNoScaling,
 				.sourceSize = kSourceSize,
 			})
 		, m_mesh(MeshData::Billboard())

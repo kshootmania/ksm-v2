@@ -22,7 +22,7 @@ namespace MusicGame::Graphics
 
 		SizeF ScaledJacketSize(Size sourceSize)
 		{
-			SizeF size = ScreenUtils::Scaled(SizeF{ kJacketWidth, kJacketWidth });
+			SizeF size = Scaled(SizeF{ kJacketWidth, kJacketWidth });
 			if (sourceSize.x < sourceSize.y)
 			{
 				size.x *= static_cast<double>(sourceSize.x) / sourceSize.y;
@@ -37,26 +37,24 @@ namespace MusicGame::Graphics
 
 	SongInfoPanel::SongInfoPanel(const kson::ChartData& chartData, FilePathView parentPath)
 		: m_jacketTexture(parentPath + Unicode::FromUTF8(chartData.meta.jacketFilename))
-		, m_jacketPosition(Scene::Width() / 2 + static_cast<int32>(ScreenUtils::Scaled(kJacketPosition.x)), static_cast<int32>(ScreenUtils::Scaled(kJacketPosition.y)))
+		, m_jacketPosition(Scene::Width() / 2 + static_cast<int32>(Scaled(kJacketPosition.x)), static_cast<int32>(Scaled(kJacketPosition.y)))
 		, m_scaledJacketSize(ScaledJacketSize(m_jacketTexture.size()))
 		, m_titlePanelBaseTexture(kTitlePanelSize * 2, kTransparent)
-		, m_titlePanelPosition(Scene::Width() / 2 + ScreenUtils::Scaled(kTitlePanelBasePosition.x), ScreenUtils::Scaled(kTitlePanelBasePosition.y))
+		, m_titlePanelPosition(Scene::Width() / 2 + Scaled(kTitlePanelBasePosition.x), Scaled(kTitlePanelBasePosition.y))
 		, m_detailPanelBaseTexture(TextureAsset(kDetailPanelBaseTextureFilename))
-		, m_detailPanelPosition(Scene::Width() / 2 + ScreenUtils::Scaled(kDetailPanelBasePosition.x), ScreenUtils::Scaled(kDetailPanelBasePosition.y))
+		, m_detailPanelPosition(Scene::Width() / 2 + Scaled(kDetailPanelBasePosition.x), Scaled(kDetailPanelBasePosition.y))
 		, m_difficultyTexture(kDifficultyTextureFilename,
 			{
 				.row = kNumDifficulties,
-				.sourceScale = ScreenUtils::SourceScale::k2x,
+				.sourceScale = SourceScale::k2x,
 				.sourceSize = { 84, 24 },
 			})
 		, m_difficultyTextureRegion(m_difficultyTexture(chartData.meta.difficulty.idx))
 		, m_level(chartData.meta.level)
 		, m_numberTextureFont(kNumberTextureFontFilename, { 20, 18 })
-		, m_levelNumberLayout(ScreenUtils::Scaled(10, 9), TextureFontTextLayout::Align::Left)
-		, m_bpmNumberLayout(ScreenUtils::Scaled(10, 9), TextureFontTextLayout::Align::Left)
+		, m_levelNumberLayout(Scaled(10, 9), TextureFontTextLayout::Align::Left)
+		, m_bpmNumberLayout(Scaled(10, 9), TextureFontTextLayout::Align::Left)
 	{
-		using namespace ScreenUtils;
-
 		// 曲名・アーティスト名のパネルのテクスチャははじめに用意しておく
 		{
 			Shader::Copy(TextureAsset(kTitlePanelBaseTextureFilename), m_titlePanelBaseTexture);
@@ -83,8 +81,6 @@ namespace MusicGame::Graphics
 
 	void SongInfoPanel::draw(double currentBPM, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
-		using namespace ScreenUtils;
-
 		m_jacketTexture.resized(m_scaledJacketSize).drawAt(m_jacketPosition);
 		m_titlePanelBaseTexture.resized(Scaled(kTitlePanelSize)).drawAt(m_titlePanelPosition);
 		m_detailPanelBaseTexture.resized(Scaled(kDetailPanelSize)).draw(m_detailPanelPosition);

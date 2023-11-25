@@ -27,7 +27,7 @@ void TitleScene::update()
 
 void TitleScene::draw() const
 {
-	ScreenUtils::FitToHeight(m_bgTexture).drawAt(Scene::Center());
+	FitToHeight(m_bgTexture).drawAt(Scene::Center());
 	m_menu.draw();
 
 	// 終了前のフェードアウト描画

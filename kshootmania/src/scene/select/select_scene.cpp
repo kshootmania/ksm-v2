@@ -44,7 +44,7 @@ void SelectScene::update()
 
 void SelectScene::draw() const
 {
-	ScreenUtils::FitToHeight(m_bgTexture).drawAt(Scene::Center());
+	FitToHeight(m_bgTexture).drawAt(Scene::Center());
 	m_bgAnim.draw();
 	m_menu.draw();
 }

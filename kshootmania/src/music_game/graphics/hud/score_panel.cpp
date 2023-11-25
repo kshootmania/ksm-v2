@@ -12,14 +12,12 @@ namespace MusicGame::Graphics
 		//: m_captionTexture(TextureAsset(kCaptionTextureFilename))
 		: m_captionTexture(U"imgs/" + kCaptionTextureFilename)
 		, m_numberTextureFont(kNumberTextureFontFilename, { 64, 64 })
-		, m_numberLayout(ScreenUtils::Scaled(24, 24), TextureFontTextLayout::Align::Right, 8, ScreenUtils::Scaled(22))
+		, m_numberLayout(Scaled(24, 24), TextureFontTextLayout::Align::Right, 8, Scaled(22))
 	{
 	}
 
 	void ScorePanel::draw(int32 score) const
 	{
-		using namespace ScreenUtils;
-
 		m_captionTexture.resized(Scaled(240, 24)).draw(Scene::Width() / 2 + Scaled(60), Scaled(16));
 		m_numberTextureFont.draw(m_numberLayout, { Scene::Width() / 2 + Scaled(92), Scaled(42) }, score, ZeroPaddingYN::Yes);
 	}

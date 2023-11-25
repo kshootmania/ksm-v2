@@ -11,7 +11,7 @@ struct TiledTextureSizeInfo
 	int32 column = 1;
 
 	Point sourceOffset = { 0, 0 };
-	ScreenUtils::SourceScale sourceScale = ScreenUtils::SourceScale::kNoScaling;
+	SourceScale sourceScale = SourceScale::kNoScaling;
 
 	// sourceSizeに対してkAutoDetectSizeを指定するとrow・columnに応じて自動的に決定される
 	// (その場合、row・columnにはkAutoDetect以外を指定すること)
@@ -33,7 +33,7 @@ public:
 	TiledTexture(Texture&& texture, const TiledTextureSizeInfo& sizeInfo);
 	TiledTexture(const Texture& texture, const TiledTextureSizeInfo& sizeInfo);
 	TiledTexture(StringView textureAssetKey, const TiledTextureSizeInfo& sizeInfo);
-	TiledTexture(StringView textureAssetKey, ScreenUtils::SourceScale scale);
+	TiledTexture(StringView textureAssetKey, SourceScale scale);
 
 	const Size& scaledSize() const
 	{

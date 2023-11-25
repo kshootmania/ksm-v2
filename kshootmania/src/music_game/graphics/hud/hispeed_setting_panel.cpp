@@ -34,14 +34,13 @@ namespace MusicGame::Graphics
 				.sourceOffset = { 0, 18 * 10 },
 				.sourceSize = { 20, 18 },
 			})
-		, m_numberLayout(ScreenUtils::Scaled(10, 9), TextureFontTextLayout::Align::Center)
-		, m_numberLayoutHalf({ static_cast<double>(ScreenUtils::Scaled(10)) / 2, ScreenUtils::Scaled(9) }, TextureFontTextLayout::Align::Center)
+		, m_numberLayout(Scaled(10, 9), TextureFontTextLayout::Align::Center)
+		, m_numberLayoutHalf({ static_cast<double>(Scaled(10)) / 2, Scaled(9) }, TextureFontTextLayout::Align::Center)
 	{
 	}
 
 	void HispeedSettingPanel::draw(const Vec2& position, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
-		using namespace ScreenUtils;
 		const ScopedRenderStates2D samplerState(SamplerState::ClampLinear);
 
 		const Scroll::HighwayScroll& highwayScroll = highwayScrollContext.highwayScroll();

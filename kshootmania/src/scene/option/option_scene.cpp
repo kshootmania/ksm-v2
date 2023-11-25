@@ -184,7 +184,7 @@ OptionScene::OptionScene(const InitData& initData)
 	, m_headerTiledTexture(OptionTexture::kMenuHeader,
 		{
 			.row = kOptionMenuTypeEnumCount + 1,
-			.sourceScale = ScreenUtils::SourceScale::k2x,
+			.sourceScale = SourceScale::k2x,
 			.sourceSize = { 540, 48 },
 		})
 	, m_optionMenus(MakeOptionMenus())
@@ -220,8 +220,6 @@ void OptionScene::update()
 
 void OptionScene::draw() const
 {
-	using namespace ScreenUtils;
-
 	FitToHeight(m_bgTexture).drawAt(Scene::Center());
 
 	StringView footerStr;
@@ -245,7 +243,7 @@ void OptionScene::draw() const
 	}
 
 	// Footer text
-	m_font(footerStr).draw(ScreenUtils::Scaled(18), ScaledByWidth(kGuideX), Scaled(kGuideY), Palette::White);
+	m_font(footerStr).draw(Scaled(18), ScaledByWidth(kGuideX), Scaled(kGuideY), Palette::White);
 }
 
 void OptionScene::exitScene()
@@ -253,7 +251,7 @@ void OptionScene::exitScene()
 	ConfigIni::Save();
 
 	// 画面サイズ反映
-	ScreenUtils::ApplyScreenSizeConfig();
+	ApplyScreenSizeConfig();
 
 	changeScene(SceneName::kTitle, kDefaultTransitionMs);
 }

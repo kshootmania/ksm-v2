@@ -94,8 +94,8 @@ namespace MusicGame::Graphics
 				}
 
 				const int32 frameIdx = static_cast<int32>(sec / kChipAnimDurationSec * kChipAnimFrames);
-				const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 92 + (isBT ? 0 : 30) + (isBT ? kBTLaneDiffX : kFXLaneDiffX) * laneIdx + centerSplitShiftX, 17);
-				chipAnimTexture(chipAnimState.type)(frameIdx).resized(ScreenUtils::Scaled(kChipAnimSize)).draw(position);
+				const Vec2 position = Scaled(kTextureSize.x / 4 + 92 + (isBT ? 0 : 30) + (isBT ? kBTLaneDiffX : kFXLaneDiffX) * laneIdx + centerSplitShiftX, 17);
+				chipAnimTexture(chipAnimState.type)(frameIdx).resized(Scaled(kChipAnimSize)).draw(position);
 			}
 		}
 	}
@@ -118,8 +118,8 @@ namespace MusicGame::Graphics
 			const auto& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
 			const int32 centerSplitShiftX = static_cast<int32>(Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit, static_cast<double>(kBTLaneDiffX)) * ((laneIdx >= numLanes / 2) ? 1 : -1));
 			const double sec = gameStatus.currentTimeSec - laneStatus.currentLongNoteAnimOffsetTimeSec;
-			const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + (isBT ? 75 : 96) + (isBT ? kBTLaneDiffX : kFXLaneDiffX) * laneIdx + centerSplitShiftX, isBT ? 10 : 0);
-			const SizeF size = ScreenUtils::Scaled(isBT ? kLongAnimSizeBT : kLongAnimSizeFX);
+			const Vec2 position = Scaled(kTextureSize.x / 4 + (isBT ? 75 : 96) + (isBT ? kBTLaneDiffX : kFXLaneDiffX) * laneIdx + centerSplitShiftX, isBT ? 10 : 0);
+			const SizeF size = Scaled(isBT ? kLongAnimSizeBT : kLongAnimSizeFX);
 
 			int32 frameIdx;
 			if (laneStatus.currentLongNotePulse.has_value())
@@ -163,7 +163,7 @@ namespace MusicGame::Graphics
 	void Jdgoverlay3DGraphics::drawLaserAnim(const GameStatus& gameStatus) const
 	{
 		const int32 frameIdx = static_cast<int32>(MathUtils::WrappedFmod(gameStatus.currentTimeSec / kLaserAnimLoopDurationSec, 1.0) * kLaserAnimLoopFrames);
-		const SizeF size = ScreenUtils::Scaled(kLaserAnimSize);
+		const SizeF size = Scaled(kLaserAnimSize);
 		for (int32 i = 0; i < kson::kNumLaserLanes; ++i)
 		{
 			const auto& laneStatus = gameStatus.laserLaneStatus[i];
@@ -173,7 +173,7 @@ namespace MusicGame::Graphics
 				continue;
 			}
 			const double cursorX = laneStatus.cursorWide ? ((laneStatus.cursorX.value() - 0.5) * 2 + 0.5) : laneStatus.cursorX.value();
-			const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 + 28 + static_cast<int32>(295 * cursorX), 17);
+			const Vec2 position = Scaled(kTextureSize.x / 4 + 28 + static_cast<int32>(295 * cursorX), 17);
 			m_laserAnimTexture(frameIdx, i).resized(size).draw(position);
 		}
 	}
@@ -204,53 +204,53 @@ namespace MusicGame::Graphics
 					continue;
 				}
 
-				const SizeF size = ScreenUtils::Scaled(kLaserRippleAnimSize);
+				const SizeF size = Scaled(kLaserRippleAnimSize);
 				const double x = rippleAnimStatus.wide ? ((rippleAnimStatus.x - 0.5) * 2 + 0.5) : rippleAnimStatus.x;
-				const Vec2 position = ScreenUtils::Scaled(kTextureSize.x / 4 - 6 + static_cast<int32>(295 * x), 17);
+				const Vec2 position = Scaled(kTextureSize.x / 4 - 6 + static_cast<int32>(295 * x), 17);
 				m_laserRippleAnimTexture(frameIdx, i).resized(size).draw(position, ColorF{ kLaserRippleAnimAlpha });
 			}
 		}
 	}
 
 	Jdgoverlay3DGraphics::Jdgoverlay3DGraphics(const BasicCamera3D& camera)
-		: m_renderTexture(ScreenUtils::Scaled(kTextureSize.x), ScreenUtils::Scaled(kTextureSize.y))
+		: m_renderTexture(Scaled(kTextureSize.x), Scaled(kTextureSize.y))
 		, m_chipCriticalTexture(kChipCriticalAnimTextureFilename,
 			{
 				.row = kChipAnimFrames,
-				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
+				.sourceScale = SourceScale::kNoScaling,
 				.sourceSize = kChipAnimSourceSize,
 			})
 		, m_chipNearTexture(kChipNearAnimTextureFilename,
 			{
 				.row = kChipAnimFrames,
 				.column = 2, // 1列目はSLOW(またはFAST/SLOW非表示時)、2列目はFAST
-				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
+				.sourceScale = SourceScale::kNoScaling,
 				.sourceSize = kChipAnimSourceSize,
 			})
 		, m_chipErrorTexture(kChipErrorAnimTextureFilename,
 			{
 				.row = kChipAnimFrames, // TODO: FAST
-				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
+				.sourceScale = SourceScale::kNoScaling,
 				.sourceSize = kChipAnimSourceSize,
 			})
 		, m_longAnimTexture(kLongAnimTextureFilename,
 			{
 				.row = kLongAnimTotalFrames,
-				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
+				.sourceScale = SourceScale::kNoScaling,
 				.sourceSize = kLongAnimSourceSize,
 			})
 		, m_laserAnimTexture(kLaserAnimTextureFilename,
 			{
 				.row = kLaserAnimLoopFrames,
 				.column = kson::kNumLaserLanes,
-				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
+				.sourceScale = SourceScale::kNoScaling,
 				.sourceSize = kLaserAnimSourceSize,
 			})
 		, m_laserRippleAnimTexture(kLaserRippleAnimTextureFilename,
 			{
 				.row = kLaserRippleAnimFrames,
 				.column = kson::kNumLaserLanes,
-				.sourceScale = ScreenUtils::SourceScale::kNoScaling,
+				.sourceScale = SourceScale::kNoScaling,
 				.sourceSize = kLaserRippleAnimSourceSize,
 			})
 		, m_transform(camera.billboard(kPlaneCenter, kPlaneSize))

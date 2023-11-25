@@ -211,8 +211,6 @@ void OptionMenuField::update()
 
 void OptionMenuField::draw(const Vec2& position, const TiledTexture& valueTiledTexture, const Font& font) const
 {
-	using namespace ScreenUtils;
-
 	// Draw left half (key)
 	m_keyTextureRegion.draw(position);
 
@@ -234,10 +232,10 @@ void OptionMenuField::draw(const Vec2& position, const TiledTexture& valueTiledT
 		}
 
 		const StringView displayName = m_valueDisplayNamePairs[cursor].second;
-		font(displayName).drawAt(ScreenUtils::Scaled(15), textPosition);
+		font(displayName).drawAt(Scaled(15), textPosition);
 	}
 	else
 	{
-		font(Format(cursor) + m_suffixStr).drawAt(ScreenUtils::Scaled(15), textPosition);
+		font(Format(cursor) + m_suffixStr).drawAt(Scaled(15), textPosition);
 	}
 }

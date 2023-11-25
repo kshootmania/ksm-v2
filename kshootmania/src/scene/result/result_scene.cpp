@@ -26,7 +26,7 @@ void ResultScene::updateFadeIn([[maybe_unused]] double t)
 
 void ResultScene::draw() const
 {
-	ScreenUtils::FitToHeight(m_bgTexture).drawAt(Scene::Center());
+	FitToHeight(m_bgTexture).drawAt(Scene::Center());
 
 	m_resultPanel.draw();
 }

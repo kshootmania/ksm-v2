@@ -51,8 +51,6 @@ SelectBGAnim::SelectBGAnim()
 
 void SelectBGAnim::draw() const
 {
-	using namespace ScreenUtils;
-
 	const ScopedRenderStates2D additive(BlendState::Additive);
 	const double sec = m_stopwatch.sF();
 	const double alpha = AlphaValue(sec);

@@ -36,7 +36,7 @@ OptionTopMenu::OptionTopMenu()
 	, m_itemTiledTexture(OptionTexture::kTopMenuItem,
 		{
 			.row = kItemEnumCount,
-			.sourceScale = ScreenUtils::SourceScale::k2x,
+			.sourceScale = SourceScale::k2x,
 			.sourceSize = { 960, 160 },
 		})
 	, m_stopwatch(StartImmediately::Yes)
@@ -50,8 +50,6 @@ void OptionTopMenu::update()
 
 void OptionTopMenu::draw() const
 {
-	using namespace ScreenUtils;
-
 	const int32 x = Scene::Center().x;
 
 	// Draw menu items

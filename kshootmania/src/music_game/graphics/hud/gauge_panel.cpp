@@ -25,30 +25,29 @@ namespace MusicGame::Graphics
 		, m_baseTexture(kBaseTextureFilename,
 			{
 				.column = kNumGaugeTypes * 2,
-				.sourceScale = ScreenUtils::SourceScale::k2x,
+				.sourceScale = SourceScale::k2x,
 				.sourceSize = { 192, 570 },
 			})
 		, m_barTexture(kBarTextureFilename,
 			{
 				.column = kNumGaugeTypes * 2,
-				.sourceScale = ScreenUtils::SourceScale::k2x,
+				.sourceScale = SourceScale::k2x,
 				.sourceSize = { 48, 434 },
 			})
 		, m_barAnimTexture(kBarAnimTextureFilename,
 			{
 				.column = kNumGaugeTypes * 2,
-				.sourceScale = ScreenUtils::SourceScale::k2x,
+				.sourceScale = SourceScale::k2x,
 				.sourceSize = { 48, 868 },
 			})
 		, m_percentBaseTexture(TextureAsset(kPercentBaseTextureFilename))
 		, m_percentNumberTextureFont(kPercentNumberTextureFontFilename, { 20, 18 })
-		, m_percentNumberLayout(ScreenUtils::Scaled2x(20, 18), TextureFontTextLayout::Align::Right)
+		, m_percentNumberLayout(Scaled2x(20, 18), TextureFontTextLayout::Align::Right)
 	{
 	}
 
 	void GaugePanel::draw(double percent, kson::Pulse currentPulse) const
 	{
-		using namespace ScreenUtils;
 		const ScopedRenderStates2D samplerState(SamplerState::ClampAniso);
 
 		const double percentThreshold = (m_gaugeType == GaugeType::kHardGauge) ? kGaugePercentageThresholdHardWarning : kGaugePercentageThreshold;

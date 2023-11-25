@@ -20,10 +20,10 @@ namespace MusicGame::Graphics
 	ComboOverlay::ComboOverlay()
 		: m_numberTextureFont(kTextureFilename, kNumberTextureSourceSize, kNumberTextureSourceOffset)
 		, m_numberTextureFontNoError(kTextureFilename, kNumberTextureSourceSize, kNumberTextureSourceOffsetNoError)
-		, m_numberLayout(ScreenUtils::Scaled(40, 50), TextureFontTextLayout::Align::Center, 4, ScreenUtils::Scaled(32))
+		, m_numberLayout(Scaled(40, 50), TextureFontTextLayout::Align::Center, 4, Scaled(32))
 		, m_comboTexture(TextureAsset(kTextureFilename))
-		, m_comboTextureRegion(m_comboTexture(kComboTextureSourceOffset, kComboTextureSourceSize).resized(ScreenUtils::Scaled(80, 20)))
-		, m_comboTextureRegionNoError(m_comboTexture(kComboTextureSourceOffsetNoError, kComboTextureSourceSize).resized(ScreenUtils::Scaled(80, 20)))
+		, m_comboTextureRegion(m_comboTexture(kComboTextureSourceOffset, kComboTextureSourceSize).resized(Scaled(80, 20)))
+		, m_comboTextureRegionNoError(m_comboTexture(kComboTextureSourceOffsetNoError, kComboTextureSourceSize).resized(Scaled(80, 20)))
 		, m_visibleTimer(kVisibleDuration)
 	{
 	}
@@ -52,7 +52,6 @@ namespace MusicGame::Graphics
 			return;
 		}
 
-		using namespace ScreenUtils;
 		const ScopedRenderStates2D blendState(BlendState::Additive);
 		const ScopedRenderStates2D samplerState(SamplerState::ClampLinear);
 

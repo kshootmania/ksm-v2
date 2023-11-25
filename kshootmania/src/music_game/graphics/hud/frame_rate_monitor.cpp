@@ -10,14 +10,13 @@ namespace MusicGame::Graphics
 
 	FrameRateMonitor::FrameRateMonitor()
 		: m_numberTextureFont(kNumberTextureFontFilename, { 20, 18 })
-		, m_numberLayout(ScreenUtils::Scaled(10, 9), TextureFontTextLayout::Align::Right)
+		, m_numberLayout(Scaled(10, 9), TextureFontTextLayout::Align::Right)
 		, m_fpsTexture(TextureAsset(kFPSTextureFilename))
 	{
 	}
 
 	void FrameRateMonitor::draw() const
 	{
-		using namespace ScreenUtils;
 		const ScopedRenderStates2D samplerState(SamplerState::ClampLinear);
 
 		m_fpsTexture.resized(Scaled(30, 9)).draw(Scene::Width() - Scaled(38), Scaled(460));

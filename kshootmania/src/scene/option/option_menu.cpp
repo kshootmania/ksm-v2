@@ -42,18 +42,18 @@ OptionMenu::OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMen
 	, m_fieldKeyTexture(fieldKeyTextureAssetKey,
 		{
 			.row = TiledTextureSizeInfo::kAutoDetect,
-			.sourceScale = ScreenUtils::SourceScale::k2x,
+			.sourceScale = SourceScale::k2x,
 			.sourceSize = kFieldTextureHalfSourceSize,
 		})
 	, m_fieldValueTexture(OptionTexture::kMenuFieldValue,
 		{
 			.row = 4,
-			.sourceScale = ScreenUtils::SourceScale::k2x,
+			.sourceScale = SourceScale::k2x,
 			.sourceSize = kFieldTextureHalfSourceSize,
 		})
 	, m_fieldCursorTexture(OptionTexture::kMenuFieldCursor,
 		{
-			.sourceScale = ScreenUtils::SourceScale::k2x,
+			.sourceScale = SourceScale::k2x,
 			.sourceSize = kFieldTextureSourceSize,
 		})
 	, m_fields(MakeFields(m_fieldKeyTexture, fieldCreateInfos))
@@ -81,8 +81,6 @@ void OptionMenu::update()
 
 void OptionMenu::draw(const Vec2& position) const
 {
-	using namespace ScreenUtils;
-
 	for (int32 i = 0; i < static_cast<int32>(m_fields.size()); ++i)
 	{
 		const Vec2 fieldPos = position + Vec2{ 0, Scaled(kFieldDiffY) * i };

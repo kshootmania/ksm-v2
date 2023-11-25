@@ -19,19 +19,19 @@ SelectDifficultyMenu::SelectDifficultyMenu(const SelectMenu* pSelectMenu)
 		{
 			.row = 2,
 			.column = kNumDifficulties,
-			.sourceScale = ScreenUtils::SourceScale::k1x,
+			.sourceScale = SourceScale::k1x,
 			.sourceSize = { 115, 110 },
 		})
 	, m_levelNumberTexture(SelectTexture::kSongLevelNumber,
 		{
 			.row = kLevelMax,
-			.sourceScale = ScreenUtils::SourceScale::kL,
+			.sourceScale = SourceScale::kL,
 			.sourceSize = { 150, 120 },
 		})
 	, m_cursorTexture(SelectTexture::kSongDifficultyCursor,
 		{
 			.row = 12,
-			.sourceScale = ScreenUtils::SourceScale::kL,
+			.sourceScale = SourceScale::kL,
 			.sourceSize = { 200, 200 },
 		})
 	, m_stopwatch(StartImmediately::Yes)
@@ -97,8 +97,6 @@ void SelectDifficultyMenu::update()
 
 void SelectDifficultyMenu::draw(const Vec2& shakeVec) const
 {
-	using namespace ScreenUtils;
-
 	const ISelectMenuItem& menuItem = m_pSelectMenu->cursorMenuItem();
 	if (!menuItem.difficultyMenuExists())
 	{

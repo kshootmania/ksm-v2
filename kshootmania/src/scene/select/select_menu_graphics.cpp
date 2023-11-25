@@ -99,8 +99,6 @@ void SelectMenuGraphics::refresh(const ArrayWithLinearMenu<std::unique_ptr<ISele
 
 void SelectMenuGraphics::draw(const Vec2& shakeVec) const
 {
-	using namespace ScreenUtils;
-
 	// 上半分の項目を描画
 	for (int32 i = 0; i < std::ssize(m_upperHalfItems); ++i)
 	{

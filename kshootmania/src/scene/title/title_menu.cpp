@@ -43,10 +43,10 @@ TitleMenu::TitleMenu(TitleScene* pTitleScene)
 		{
 			.row = kItemEnumCount,
 			.column = 2, // 加算テクスチャと減算テクスチャの2枚
-			.sourceScale = ScreenUtils::SourceScale::k3x,
+			.sourceScale = SourceScale::k3x,
 			.sourceSize = { 525, 75 },
 		})
-	, m_menuCursorTexture(TitleTexture::kMenuCursor, ScreenUtils::SourceScale::k3x)
+	, m_menuCursorTexture(TitleTexture::kMenuCursor, SourceScale::k3x)
 	, m_stopwatch(StartImmediately::Yes)
 {
 }
@@ -68,8 +68,6 @@ void TitleMenu::update()
 
 void TitleMenu::draw() const
 {
-	using namespace ScreenUtils;
-
 	const int32 x = Scene::Center().x;
 
 	// メニューカーソルを描画(加算)

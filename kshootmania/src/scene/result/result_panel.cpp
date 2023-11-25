@@ -288,8 +288,6 @@ ResultPanel::ResultPanel(FilePathView chartFilePath, const kson::ChartData& char
 
 void ResultPanel::draw() const
 {
-	using namespace ScreenUtils;
-
 	m_renderTexture.resized(ScaledL(kPanelSize)).draw(Scaled(140) + LeftMargin(), Scaled(60));
 	m_topTexture(m_topTextureRow).resized(ScaledL(kTopSize)).draw(Scaled(138) + LeftMargin(), Scaled(20));
 }
