@@ -14,6 +14,36 @@ namespace
 	}
 }
 
+KscValue KscValue::applyPlayResult(const MusicGame::PlayResult& playResult) const
+{
+	return KscValue
+	{
+		.score = Max(score, playResult.score),
+		.achievement = Max(achievement, playResult.achievement()),
+		.grade = Max(grade, playResult.grade()),
+		.percent = Max(percent, playResult.gaugePercentOfCurrentGaugeType()),
+		.maxCombo = Max(maxCombo, playResult.maxCombo),
+		.playCount = playCount + 1,
+		.clearCount = clearCount + (playResult.achievement() >= Achievement::kCleared ? 1 : 0),
+		.fullComboCount = fullComboCount + (playResult.achievement() >= Achievement::kFullCombo ? 1 : 0),
+		.perfectCount = perfectCount + (playResult.achievement() >= Achievement::kPerfect ? 1 : 0),
+	};
+}
+
+String KscValue::toString() const
+{
+	return U"{},{},{},{},{},{},{},{},{}"_fmt(
+		score,
+		static_cast<int32>(achievement),
+		static_cast<int32>(grade),
+		percent,
+		maxCombo,
+		playCount,
+		clearCount,
+		fullComboCount,
+		perfectCount);
+}
+
 KscValue KscValue::FromString(const String& str)
 {
 	const Array<String> values = str.split(U',');

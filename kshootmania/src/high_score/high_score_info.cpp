@@ -188,3 +188,53 @@ int32 HighScoreInfo::maxCombo(GaugeType gaugeType) const
 		return 0;
 	}
 }
+
+KscValue& HighScoreInfo::kscValueOf(GaugeType gaugeType)
+{
+	switch (gaugeType)
+	{
+	case GaugeType::kEasyGauge:
+		return easyGauge;
+
+	case GaugeType::kNormalGauge:
+		return normalGauge;
+
+	case GaugeType::kHardGauge:
+		return hardGauge;
+
+	default:
+		throw Error(U"Unknown gauge type");
+	}
+}
+
+const KscValue& HighScoreInfo::kscValueOf(GaugeType gaugeType) const
+{
+	switch (gaugeType)
+	{
+	case GaugeType::kEasyGauge:
+		return easyGauge;
+
+	case GaugeType::kNormalGauge:
+		return normalGauge;
+
+	case GaugeType::kHardGauge:
+		return hardGauge;
+
+	default:
+		throw Error(U"Unknown gauge type");
+	}
+}
+
+bool HighScoreInfo::isHighScoreUpdated(const MusicGame::PlayResult& playResult) const
+{
+	// NORMALとHARDで共通のハイスコア上で更新判定する必要があるため、
+	// ここではkscValueOf関数ではなくscore関数を使用して現在のスコアを調べる必要がある点に注意
+	return score(playResult.gaugeType) < playResult.score;
+}
+
+HighScoreInfo HighScoreInfo::applyPlayResult(const MusicGame::PlayResult& playResult) const
+{
+	HighScoreInfo newHighScoreInfo = *this;
+	newHighScoreInfo.kscValueOf(playResult.gaugeType) = kscValueOf(playResult.gaugeType).applyPlayResult(playResult);
+	return newHighScoreInfo;
+}

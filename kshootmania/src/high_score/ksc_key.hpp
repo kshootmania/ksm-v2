@@ -15,5 +15,5 @@ struct KscKey
 
 	String toString() const;
 
-	KscKey withGaugeType(GaugeType gaugeType) const;
+	KscKey withGaugeType(GaugeType newGaugeType) const;
 };

@@ -130,7 +130,7 @@
     <ClCompile Include="src\high_score\high_score_info.cpp" />
     <ClCompile Include="src\high_score\ksc_key.cpp" />
     <ClCompile Include="src\high_score\ksc_value.cpp" />
-    <ClCompile Include="src\high_score\ksc_file.cpp" />
+    <ClCompile Include="src\high_score\ksc_io.cpp" />
     <ClCompile Include="src\i18n\i18n.cpp" />
     <ClCompile Include="src\ini\config_ini.cpp" />
     <ClCompile Include="src\ini\ksm_ini_data.cpp" />
@@ -407,7 +407,7 @@
     <ClInclude Include="src\high_score\high_score_info.hpp" />
     <ClInclude Include="src\high_score\ksc_key.hpp" />
     <ClInclude Include="src\high_score\ksc_value.hpp" />
-    <ClInclude Include="src\high_score\ksc_file.hpp" />
+    <ClInclude Include="src\high_score\ksc_io.hpp" />
     <ClInclude Include="src\i18n\i18n.hpp" />
     <ClInclude Include="src\ini\config_ini.hpp" />
     <ClInclude Include="src\ini\ksm_ini_data.hpp" />

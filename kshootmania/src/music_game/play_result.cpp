@@ -75,4 +75,16 @@ namespace MusicGame
 			return Grade::kD;
 		}
 	}
+
+	int32 PlayResult::gaugePercentOfCurrentGaugeType() const
+	{
+		if (gaugeType == GaugeType::kHardGauge)
+		{
+			return static_cast<int32>(gaugePercentageHard);
+		}
+		else
+		{
+			return static_cast<int32>(gaugePercentage);
+		}
+	}
 }

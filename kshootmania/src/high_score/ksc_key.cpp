@@ -64,9 +64,9 @@ String KscKey::toString() const
 		JudgmentPlayModeStr(laserPlayMode));
 }
 
-KscKey KscKey::withGaugeType(GaugeType gaugeType) const
+KscKey KscKey::withGaugeType(GaugeType newGaugeType) const
 {
 	KscKey result = *this;
-	result.gaugeType = gaugeType;
+	result.gaugeType = newGaugeType;
 	return result;
 }

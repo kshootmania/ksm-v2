@@ -23,5 +23,7 @@ namespace MusicGame
 		Achievement achievement() const;
 
 		Grade grade() const;
+
+		int32 gaugePercentOfCurrentGaugeType() const;
 	};
 }

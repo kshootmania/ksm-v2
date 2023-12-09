@@ -537,7 +537,7 @@
     <ClCompile Include="src\high_score\ksc_value.cpp">
       <Filter>Source Files\high_score</Filter>
     </ClCompile>
-    <ClCompile Include="src\high_score\ksc_file.cpp">
+    <ClCompile Include="src\high_score\ksc_io.cpp">
       <Filter>Source Files\high_score</Filter>
     </ClCompile>
     <ClCompile Include="src\high_score\high_score_info.cpp">
@@ -1468,7 +1468,7 @@
     <ClInclude Include="src\high_score\ksc_key.hpp">
       <Filter>Header Files\high_score</Filter>
     </ClInclude>
-    <ClInclude Include="src\high_score\ksc_file.hpp">
+    <ClInclude Include="src\high_score\ksc_io.hpp">
       <Filter>Header Files\high_score</Filter>
     </ClInclude>
     <ClInclude Include="src\high_score\high_score_info.hpp">
