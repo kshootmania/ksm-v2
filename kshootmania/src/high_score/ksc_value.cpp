@@ -21,7 +21,7 @@ KscValue KscValue::applyPlayResult(const MusicGame::PlayResult& playResult) cons
 		.score = Max(score, playResult.score),
 		.achievement = Max(achievement, playResult.achievement()),
 		.grade = Max(grade, playResult.grade()),
-		.percent = Max(percent, playResult.gaugePercentOfCurrentGaugeType()),
+		.percent = Max(percent, playResult.gaugePercentForHighScore()),
 		.maxCombo = Max(maxCombo, playResult.maxCombo),
 		.playCount = playCount + 1,
 		.clearCount = clearCount + (playResult.achievement() >= Achievement::kCleared ? 1 : 0),

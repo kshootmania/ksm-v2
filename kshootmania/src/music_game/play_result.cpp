@@ -8,22 +8,34 @@ namespace MusicGame
 		constexpr int32 kGaugeFactorMax = kScoreMax - kScoreFactorMax;
 	}
 
-	Achievement PlayResult::achievement() const
+	bool PlayResult::isAborted() const
 	{
-		// TODO: EASY/HARDゲージ
-		if (gaugeType != GaugeType::kNormalGauge)
-		{
-			throw std::runtime_error("Not implemented");
-		}
-
-		// 途中でプレイをやめた場合
 		if (comboStats.critical + comboStats.near() + comboStats.error < totalCombo)
 		{
-			return Achievement::kNone;
+			// 途中でプレイをやめた場合
+			return true;
+		}
+		else
+		{
+			// 途中でプレイをやめていなければ判定内訳の合計がtotalComboになるはず
+			assert(comboStats.critical + comboStats.near() + comboStats.error == totalCombo);
+			return false;
+		}
+	}
+
+	Achievement PlayResult::achievement() const
+	{
+		// TODO(alphaまで): EASY/HARDゲージ
+		if (gaugeType != GaugeType::kNormalGauge)
+		{
+			throw Error(U"Not implemented");
 		}
 
-		// 途中でプレイをやめていなければ判定内訳の合計がtotalComboになるはず
-		assert(comboStats.critical + comboStats.near() + comboStats.error == totalCombo);
+		if (isAborted())
+		{
+			// 途中でプレイをやめた場合
+			return Achievement::kNone;
+		}
 
 		if (gaugePercentage < kGaugePercentageThreshold)
 		{
@@ -46,6 +58,12 @@ namespace MusicGame
 
 	Grade PlayResult::grade() const
 	{
+		if (isAborted())
+		{
+			// 途中でプレイをやめた場合はDにする(未プレイと区別するためにNoGradeにはしない)
+			return Grade::kD;
+		}
+
 		const int32 scoreFactor = static_cast<int32>(static_cast<int64>(score) * kScoreFactorMax / kScoreMax);
 		const int32 gaugeFactor = kGaugeFactorMax * static_cast<int32>(gaugePercentage) / 100;
 		const int32 gradeScore = scoreFactor + gaugeFactor;
@@ -76,8 +94,15 @@ namespace MusicGame
 		}
 	}
 
-	int32 PlayResult::gaugePercentOfCurrentGaugeType() const
+	int32 PlayResult::gaugePercentForHighScore() const
 	{
+		if (isAborted())
+		{
+			// 途中でプレイをやめた場合は0%扱いにする
+			// (プレイ途中のゲージのパーセンテージがハイスコアに記録されないようにするため)
+			return 0;
+		}
+
 		if (gaugeType == GaugeType::kHardGauge)
 		{
 			return static_cast<int32>(gaugePercentageHard);

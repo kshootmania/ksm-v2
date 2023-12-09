@@ -20,10 +20,12 @@ namespace MusicGame
 
 		double gaugePercentageHard = 0.0;
 
+		bool isAborted() const;
+
 		Achievement achievement() const;
 
 		Grade grade() const;
 
-		int32 gaugePercentOfCurrentGaugeType() const;
+		int32 gaugePercentForHighScore() const;
 	};
 }
