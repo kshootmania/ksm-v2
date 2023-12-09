@@ -71,7 +71,8 @@ namespace KscIo
 			{
 				return false;
 			}
-			writer << condition.toString() << U"=" << KscValue{}.applyPlayResult(playResult).toString() << U"\n";
+			const KscValue kscValue = KscValue{}.applyPlayResult(playResult);
+			writer.write(U"{}={}\n"_fmt(condition.toString(), kscValue.toString()));
 			return true;
 		}
 
@@ -134,7 +135,7 @@ namespace KscIo
 				{
 					return false;
 				}
-				writer << newKscFileContent;
+				writer.write(newKscFileContent);
 			}
 
 			return true;
