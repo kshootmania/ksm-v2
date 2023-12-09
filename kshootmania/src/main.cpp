@@ -3,10 +3,26 @@
 #include "common/ime_utils.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
+void CreateHighScoreBackup()
+{
+	// 既にバックアップフォルダが存在する場合は何もしない
+	if (FileSystem::Exists(U"score_backup"))
+	{
+		return;
+	}
+
+	// scoreフォルダを再帰的にコピー
+	FileSystem::Copy(U"score", U"score_backup", CopyOption::UpdateExisting);
+}
+
 void Main()
 {
 	// Escキーによるプログラム終了を無効化
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
+
+	// 実行ファイルのパスをカレントディレクトリに設定
+	// (ChangeCurrentDirectoryはここ以外は基本的に使用禁止。どうしても使う必要がある場合は必ずModulePathに戻すこと)
+	FileSystem::ChangeCurrentDirectory(FileSystem::ModulePath());
 
 	// デフォルト色を指定
 	Scene::SetBackground(Palette::Black);
@@ -25,6 +41,9 @@ void Main()
 
 	// config.iniを読み込み
 	ConfigIni::Load();
+
+	// ハイスコアのバックアップを作成
+	CreateHighScoreBackup();
 
 	// 画面サイズ反映
 	Window::SetToggleFullscreenEnabled(false); // Alt+Enter無効化
