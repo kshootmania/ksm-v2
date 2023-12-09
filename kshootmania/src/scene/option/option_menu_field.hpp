@@ -15,6 +15,8 @@ private:
 	// 選択肢オプション用
 	const Array<std::pair<String, String>> m_valueDisplayNamePairs;
 
+	const std::function<void()> m_onChangeCallback;
+
 	LinearMenu m_menu;
 
 	TextureRegion m_keyTextureRegion;
@@ -37,6 +39,8 @@ public:
 		static constexpr int32 kKeyTextureIdxAutoSet = -1;
 		int32 keyTextureIdx = kKeyTextureIdxAutoSet;
 
+		std::function<void()> onChangeCallback = nullptr;
+
 		static CreateInfo Enum(StringView configIniKey, const Array<String>& valueDisplayNames);
 
 		static CreateInfo Enum(StringView configIniKey, const Array<StringView>& valueDisplayNames);
@@ -52,6 +56,10 @@ public:
 		CreateInfo& setKeyTextureIdx(int32 idx)&;
 
 		CreateInfo&& setKeyTextureIdx(int32 idx)&&;
+
+		CreateInfo& setOnChangeCallback(std::function<void()> callback)&;
+
+		CreateInfo&& setOnChangeCallback(std::function<void()> callback)&&;
 	};
 
 	OptionMenuField(const TextureRegion& keyTextureRegion, const CreateInfo& createInfo);

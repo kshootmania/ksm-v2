@@ -168,11 +168,24 @@ OptionMenuField::CreateInfo&& OptionMenuField::CreateInfo::setKeyTextureIdx(int3
 	return std::move(*this);
 }
 
+OptionMenuField::CreateInfo& OptionMenuField::CreateInfo::setOnChangeCallback(std::function<void()> callback)&
+{
+	onChangeCallback = std::move(callback);
+	return *this;
+}
+
+OptionMenuField::CreateInfo&& OptionMenuField::CreateInfo::setOnChangeCallback(std::function<void()> callback)&&
+{
+	onChangeCallback = std::move(callback);
+	return std::move(*this);
+}
+
 OptionMenuField::OptionMenuField(const TextureRegion& keyTextureRegion, const CreateInfo& createInfo)
 	: m_configIniKey(createInfo.configIniKey)
 	, m_isEnum(createInfo.valueStep == 0)
 	, m_suffixStr(createInfo.suffixStr)
 	, m_valueDisplayNamePairs(createInfo.valueDisplayNamePairs)
+	, m_onChangeCallback(createInfo.onChangeCallback)
 	, m_menu(createInfo.valueStep == 0
 		? MakeMenuEnum(static_cast<int32>(createInfo.valueDisplayNamePairs.size()), FindDefaultCursor(m_configIniKey, m_isEnum, m_valueDisplayNamePairs, 0))
 		: MakeMenuInt(createInfo.valueMin, createInfo.valueMax, FindDefaultCursor(m_configIniKey, m_isEnum, m_valueDisplayNamePairs, createInfo.valueDefault), createInfo.valueStep))
@@ -205,6 +218,11 @@ void OptionMenuField::update()
 		else
 		{
 			ConfigIni::SetInt(m_configIniKey, cursor);
+		}
+
+		if (m_onChangeCallback != nullptr)
+		{
+			m_onChangeCallback();
 		}
 	}
 }

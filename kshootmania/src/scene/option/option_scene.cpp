@@ -71,7 +71,11 @@ namespace
 					StrPair{ U"1920,1080", U"1920x1080" },
 					StrPair{ U"1920,1200", U"1920x1200" },
 				}),
-				CreateInfo::Enum(ConfigIni::Key::kLanguage, availableLanguageStrPairs),
+				CreateInfo::Enum(ConfigIni::Key::kLanguage, availableLanguageStrPairs).setOnChangeCallback(
+					[]
+					{
+						I18n::LoadLanguage(ConfigIni::GetString(ConfigIni::Key::kLanguage));
+					}),
 				CreateInfo::Enum(ConfigIni::Key::kTextureSize, Array<IntStrPair>{
 					IntStrPair{ ConfigIni::Value::TextureSize::kSmall, I18n::Get(I18n::Option::kTextureSizeSmall) },
 					IntStrPair{ ConfigIni::Value::TextureSize::kMedium, I18n::Get(I18n::Option::kTextureSizeMedium) },

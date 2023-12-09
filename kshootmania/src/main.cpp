@@ -36,11 +36,11 @@ void Main()
 	ksmaudio::Init(nullptr);
 #endif
 
-	// 言語ファイルを読み込み
-	I18n::LoadLanguage(U"Japanese");
-
 	// config.iniを読み込み
 	ConfigIni::Load();
+
+	// 言語ファイルを読み込み
+	I18n::LoadLanguage(ConfigIni::GetString(ConfigIni::Key::kLanguage));
 
 	// ハイスコアのバックアップを作成
 	CreateHighScoreBackup();
