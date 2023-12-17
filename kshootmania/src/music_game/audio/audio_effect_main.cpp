@@ -115,17 +115,24 @@ namespace MusicGame::Audio
 			}
 		}
 
-		kson::FXLane<AudioEffectInvocation> CreateLongFXNoteAudioEffectInvocations(BGM& bgm, const kson::ChartData& chartData)
+		kson::FXLane<Optional<AudioEffectInvocation>> CreateLongFXNoteAudioEffectInvocations(BGM& bgm, const kson::ChartData& chartData)
 		{
 			const auto& longEvent = chartData.audio.audioEffect.fx.longEvent;
 			const auto& audioEffectBus = bgm.audioEffectBusFX();
-			kson::FXLane<AudioEffectInvocation> convertedLongEvent;
+			kson::FXLane<Optional<AudioEffectInvocation>> convertedLongEvent;
 			for (const auto& [audioEffectName, lanes] : longEvent)
 			{
 				for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 				{
 					for (const auto& [y, dict] : lanes[i])
 					{
+						if (audioEffectName.empty())
+						{
+							// エフェクトなしへの変更の場合はエフェクトなしを挿入
+							convertedLongEvent[i].insert_or_assign(y, none);
+							continue;
+						}
+
 						if (!audioEffectBus.audioEffectContainsName(audioEffectName))
 						{
 							// FXノーツに定義されていないエフェクト名が指定されている場合は無視
@@ -220,6 +227,7 @@ namespace MusicGame::Audio
 	{
 		m_activeAudioEffectDictFX.clear();
 
+		// レーン毎に現在押されている最中のロングFXノーツの音声エフェクトを列挙
 		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 		{
 			// 2レーンのうち直近ロングFXノーツが押され始めた方のレーンを先に処理する
@@ -232,21 +240,33 @@ namespace MusicGame::Audio
 
 			if (!currentLongNoteOfLanes[laneIdx].has_value())
 			{
+				// ロングFXノーツを押していない場合はエフェクトなし
 				continue;
 			}
 
+			// そのレーンの直近の音声エフェクト呼び出しを取得
 			const auto& [longNoteY, longNote] = *currentLongNoteOfLanes[laneIdx];
 			const auto itr = kson::ValueItrAt(m_longFXNoteInvocations[laneIdx], currentPulseForAudio);
 			if (itr == m_longFXNoteInvocations[laneIdx].end())
 			{
+				// 見つからなかった場合はエフェクトなし
 				continue;
 			}
 
+			// 取得した音声エフェクト呼び出しが現在押下中のロングノーツに属するかを調べる
+			//
 			// 1本のロングFXノーツの途中で他の種類の音声エフェクトに変更される場合がある。
 			// そのため、イベントが現在のロングノーツに属するかを調べるには、ロングノーツの開始点との一致判定ではなく、ロングノーツの範囲(開始～終了)の中にあるかを調べる必要がある。
-			const auto& [longEventY, audioEffectInvocation] = *itr;
+			const auto& [longEventY, audioEffectInvocationOpt] = *itr;
+			if (!audioEffectInvocationOpt.has_value())
+			{
+				// エフェクトなしへの変更の場合はエフェクトなし
+				continue;
+			}
+			const auto& audioEffectInvocation = *audioEffectInvocationOpt;
 			if (longEventY > currentPulseForAudio || longEventY < longNoteY || longNoteY + longNote.length <= longEventY)
 			{
+				// 現在のロングノーツの範囲外にある場合はエフェクトなし
 				continue;
 			}
 			m_activeAudioEffectDictFX.emplace(audioEffectInvocation.audioEffectIdx, ksmaudio::AudioEffect::ActiveAudioEffectInvocation{

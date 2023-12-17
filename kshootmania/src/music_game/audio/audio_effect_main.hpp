@@ -30,7 +30,7 @@ namespace MusicGame::Audio
 	class AudioEffectMain
 	{
 	private:
-		const kson::FXLane<AudioEffectInvocation> m_longFXNoteInvocations;
+		const kson::FXLane<Optional<AudioEffectInvocation>> m_longFXNoteInvocations;
 		const kson::ByPulse<Optional<AudioEffectInvocation>> m_laserPulseInvocations;
 
 		std::array<bool, kson::kNumFXLanesSZ> m_longFXPressedPrev = { false, false };
