@@ -5,14 +5,17 @@
 #include "play/play_scene.hpp"
 #include "result/result_scene.hpp"
 
-SceneManagerAddon::SceneManagerAddon()
+namespace
 {
-	m_sceneManager.add<TitleScene>(SceneName::kTitle);
-	m_sceneManager.add<OptionScene>(SceneName::kOption);
-	m_sceneManager.add<SelectScene>(SceneName::kSelect);
-	m_sceneManager.add<PlayScene>(SceneName::kPlay);
-	m_sceneManager.add<ResultScene>(SceneName::kResult);
-	m_sceneManager.init(SceneName::kTitle, kDefaultTransitionMs);
+	SceneManagerAddon& GetInstance()
+	{
+		SceneManagerAddon* const pAddon = Addon::GetAddon<SceneManagerAddon>(U"SceneManager");
+		if (pAddon == nullptr)
+		{
+			throw Error(U"SceneManager addon is not registered");
+		}
+		return *pAddon;
+	}
 }
 
 bool SceneManagerAddon::update()
@@ -23,4 +26,21 @@ bool SceneManagerAddon::update()
 void SceneManagerAddon::draw() const
 {
 	m_sceneManager.drawScene();
+}
+
+void SceneManagerAddon::Init()
+{
+	MySceneManager& sceneManager = GetInstance().m_sceneManager;
+	sceneManager.add<TitleScene>(SceneName::kTitle);
+	sceneManager.add<OptionScene>(SceneName::kOption);
+	sceneManager.add<SelectScene>(SceneName::kSelect);
+	sceneManager.add<PlayScene>(SceneName::kPlay);
+	sceneManager.add<ResultScene>(SceneName::kResult);
+	ScreenFadeAddon::FadeOut(0s);
+	sceneManager.init(SceneName::kTitle, 0);
+}
+
+void SceneManagerAddon::ChangeScene(const String& sceneName)
+{
+	GetInstance().m_sceneManager.changeScene(sceneName, 0);
 }

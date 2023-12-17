@@ -42,6 +42,23 @@ namespace MusicGame::Judgment
 		m_judgmentHandler.applyToViewStatus(viewStatusRef, gameStatusRef.currentTimeSec, gameStatusRef.currentPulse);
 	}
 
+	void JudgmentMain::lockForExit()
+	{
+		for (std::size_t i = 0U; i < kson::kNumBTLanesSZ; ++i)
+		{
+			m_btLaneJudgments[i].lockForExit();
+		}
+		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
+		{
+			m_fxLaneJudgments[i].lockForExit();
+		}
+		for (std::size_t i = 0U; i < kson::kNumLaserLanesSZ; ++i)
+		{
+			m_laserLaneJudgments[i].lockForExit();
+		}
+		m_judgmentHandler.lockForExit();
+	}
+
 	PlayResult JudgmentMain::playResult() const
 	{
 		return m_judgmentHandler.playResult();

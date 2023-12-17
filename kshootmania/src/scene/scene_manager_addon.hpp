@@ -21,17 +21,19 @@ namespace SceneName
 	inline const String kResult = U"Result";
 }
 
-constexpr int32 kDefaultTransitionMs = 800;
-
 class SceneManagerAddon : public IAddon
 {
 private:
 	MySceneManager m_sceneManager;
 
 public:
-	SceneManagerAddon();
+	SceneManagerAddon() = default;
 
 	virtual bool update() override;
 
 	virtual void draw() const override;
+
+	static void Init();
+
+	static void ChangeScene(const String& sceneName);
 };

@@ -15,8 +15,4 @@ public:
 	virtual void update() override;
 
 	virtual void draw() const override;
-
-	virtual void updateFadeIn([[maybe_unused]] double t) override;
-
-	virtual void updateFadeOut([[maybe_unused]] double t) override;
 };

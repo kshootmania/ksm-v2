@@ -543,6 +543,9 @@
     <ClCompile Include="src\high_score\high_score_info.cpp">
       <Filter>Source Files\high_score</Filter>
     </ClCompile>
+    <ClCompile Include="src\scene\screen_fade_addon.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1473,6 +1476,9 @@
     </ClInclude>
     <ClInclude Include="src\high_score\high_score_info.hpp">
       <Filter>Header Files\high_score</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\screen_fade_addon.hpp">
+      <Filter>Header Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

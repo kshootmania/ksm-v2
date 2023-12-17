@@ -79,6 +79,8 @@ namespace MusicGame
 
 		void draw() const;
 
+		void lockForExit();
+
 		void terminate();
 
 		FilePathView chartFilePath() const;

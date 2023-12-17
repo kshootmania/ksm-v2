@@ -21,6 +21,8 @@ namespace MusicGame::Judgment
 
 		void update(const kson::ChartData& chartData, GameStatus& gameStatusRef, ViewStatus& viewStatusRef);
 
+		void lockForExit();
+
 		/// @brief PlayResultを取得
 		/// @return PlayResult
 		PlayResult playResult() const;

@@ -109,12 +109,22 @@ namespace MusicGame::Judgment
 	{
 		assert(result == JudgmentResult::kCritical || result == JudgmentResult::kNearFast || result == JudgmentResult::kNearSlow || result == JudgmentResult::kError);
 
+		if (m_isLockedForExit)
+		{
+			return;
+		}
+
 		m_scoringStatus.onChipOrLaserSlamJudgment(result);
 	}
 
 	void JudgmentHandler::onLongJudged(JudgmentResult result)
 	{
 		assert(result == JudgmentResult::kCritical || result == JudgmentResult::kError);
+
+		if (m_isLockedForExit)
+		{
+			return;
+		}
 
 		m_scoringStatus.onLongOrLaserLineJudgment(result);
 	}
@@ -123,12 +133,22 @@ namespace MusicGame::Judgment
 	{
 		assert(result == JudgmentResult::kCritical || result == JudgmentResult::kError);
 
+		if (m_isLockedForExit)
+		{
+			return;
+		}
+
 		m_scoringStatus.onLongOrLaserLineJudgment(result);
 	}
 
 	void JudgmentHandler::onLaserSlamJudged(JudgmentResult result, kson::Pulse laserSlamPulse, double prevTimeSec, kson::Pulse prevPulse, int32 direction)
 	{
 		assert(result == JudgmentResult::kCritical || result == JudgmentResult::kError);
+
+		if (m_isLockedForExit)
+		{
+			return;
+		}
 
 		m_scoringStatus.onChipOrLaserSlamJudgment(result);
 
@@ -152,6 +172,11 @@ namespace MusicGame::Judgment
 
 		// 視点変更パターン(回転など)をViewStatusに反映
 		m_camPatternMain.applyToCamStatus(viewStatusRef.camStatus, currentPulse);
+	}
+
+	void JudgmentHandler::lockForExit()
+	{
+		m_isLockedForExit = true;
 	}
 
 	PlayResult JudgmentHandler::playResult() const

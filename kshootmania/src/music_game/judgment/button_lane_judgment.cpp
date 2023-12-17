@@ -287,7 +287,7 @@ namespace MusicGame::Judgment
 	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
 	{
 		// チップノーツとロングノーツの始点の判定処理
-		if (KeyConfig::Down(m_keyConfigButton))
+		if (!m_isLockedForExit && KeyConfig::Down(m_keyConfigButton))
 		{
 			processKeyDown(lane, currentPulse, currentTimeSec, laneStatusRef, judgmentHandlerRef);
 		}
@@ -329,5 +329,12 @@ namespace MusicGame::Judgment
 	std::size_t ButtonLaneJudgment::longJudgmentCount() const
 	{
 		return m_longJudgmentArray.size();
+	}
+
+	void ButtonLaneJudgment::lockForExit()
+	{
+		// ButtonLaneJudgmentではKeyDownの処理のみスキップする
+		// (フェードアウト中に押したキーでCRITICALやNEARの判定ビームが見えると気になるので)
+		m_isLockedForExit = true;
 	}
 }

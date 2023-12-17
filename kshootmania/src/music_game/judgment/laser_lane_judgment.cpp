@@ -762,6 +762,11 @@ namespace MusicGame::Judgment
 		m_prevTimeSec = currentTimeSec;
 	}
 
+	void LaserLaneJudgment::lockForExit()
+	{
+		m_isLockedForExit = true;
+	}
+
 	std::size_t LaserLaneJudgment::lineJudgmentCount() const
 	{
 		return m_lineJudgmentArray.size();

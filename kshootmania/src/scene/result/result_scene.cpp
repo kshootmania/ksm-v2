@@ -20,21 +20,24 @@ ResultScene::ResultScene(const InitData& initData)
 	KscIo::WriteHighScoreInfo(chartFilePath, m_playResult, condition);
 
 	m_bgmStream.play();
+
+	ScreenFadeAddon::FadeIn();
 }
 
 void ResultScene::update()
 {
+	if (ScreenFadeAddon::IsFadingOut())
+	{
+		return;
+	}
+
 	// StartボタンまたはBackボタンで楽曲選択画面に戻る
 	if (KeyConfig::Down(KeyConfig::kStart) || KeyConfig::Down(KeyConfig::kBack))
 	{
-		changeScene(SceneName::kSelect, kDefaultTransitionMs);
-		m_bgmStream.setFadeOut(kDefaultTransitionMs / 1000.0);
+		m_bgmStream.setFadeOut(ScreenFadeAddon::kDefaultDurationSec);
+		ScreenFadeAddon::FadeOutToScene(SceneName::kSelect);
+		return;
 	}
-}
-
-void ResultScene::updateFadeIn([[maybe_unused]] double t)
-{
-	update();
 }
 
 void ResultScene::draw() const
@@ -42,12 +45,4 @@ void ResultScene::draw() const
 	FitToHeight(m_bgTexture).drawAt(Scene::Center());
 
 	m_resultPanel.draw();
-}
-
-void ResultScene::drawFadeIn(double t) const
-{
-	draw();
-
-	// 画面全体を白色でフェード
-	Scene::Rect().draw(ColorF(1.0, 1.0 - t));
 }

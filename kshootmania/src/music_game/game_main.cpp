@@ -114,6 +114,11 @@ namespace MusicGame
 		m_graphicsMain.draw(m_chartData, m_gameStatus, m_viewStatus, highwayScrollContext);
 	}
 
+	void GameMain::lockForExit()
+	{
+		m_judgmentMain.lockForExit();
+	}
+
 	void GameMain::terminate()
 	{
 		m_hispeedSettingMenu.saveToConfigIni();

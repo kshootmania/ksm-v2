@@ -15,6 +15,8 @@ namespace MusicGame::Judgment
 
 		const int32 m_totalCombo;
 
+		bool m_isLockedForExit = false;
+
 		ScoringStatus m_scoringStatus;
 
 		LaserSlamShake m_laserSlamShakeStatus;
@@ -56,6 +58,9 @@ namespace MusicGame::Judgment
 		/// @param currentPulse 現在のPulse値
 		/// @note この関数ではViewStatus::camStatusに値を相対的に反映するので、判定と関係ないカメラの値はあらかじめ設定しておくこと
 		void applyToViewStatus(ViewStatus& viewStatusRef, double currentTimeSec, kson::Pulse currentPulse);
+
+		/// @brief プレイ終了のために判定処理をロック
+		void lockForExit();
 
 		/// @brief PlayResultを取得
 		/// @return PlayResult

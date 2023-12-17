@@ -18,6 +18,7 @@ PlayScene::PlayScene(const InitData& initData)
 	, m_gameMain(MakeGameCreateInfo(getData().playSceneArgs))
 {
 	m_gameMain.start();
+	ScreenFadeAddon::FadeIn(nullptr, Palette::White);
 }
 
 PlayScene::~PlayScene()
@@ -30,30 +31,22 @@ void PlayScene::update()
 	m_gameMain.update();
 
 	// Escキーでゲームを中断してリザルト画面へ遷移
-	if (KeyConfig::Down(KeyConfig::kBack))
+	if (!ScreenFadeAddon::IsFadingOut() && KeyConfig::Down(KeyConfig::kBack))
 	{
-		getData().resultSceneArgs =
-		ResultSceneArgs{
+		m_gameMain.lockForExit();
+
+		getData().resultSceneArgs = ResultSceneArgs
+		{
 			.chartFilePath = FilePath(m_gameMain.chartFilePath()),
 			.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
 			.playResult = m_gameMain.playResult(),
 		};
 
-		changeScene(SceneName::kResult, kDefaultTransitionMs);
+		ScreenFadeAddon::FadeOutToScene(SceneName::kResult);
 	}
 }
 
 void PlayScene::draw() const
 {
 	m_gameMain.draw();
-}
-
-void PlayScene::updateFadeIn([[maybe_unused]] double t)
-{
-	update();
-}
-
-void PlayScene::updateFadeOut([[maybe_unused]] double t)
-{
-	update();
 }

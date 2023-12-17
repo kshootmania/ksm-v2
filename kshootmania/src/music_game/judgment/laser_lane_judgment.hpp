@@ -49,8 +49,10 @@ namespace MusicGame::Judgment
 		const KeyConfig::Button m_keyConfigButtonR;
 		const kson::ByPulse<int32> m_laserLineDirectionMap;
 		const kson::ByPulse<int32> m_laserLineDirectionMapForRippleEffect;
-
 		const Array<double> m_laserLineDirectionChangeSecArray;
+
+		bool m_isLockedForExit = false;
+
 		Array<double>::const_iterator m_laserLineDirectionChangeSecArrayCursor;
 
 		kson::ByPulse<LineJudgment> m_lineJudgmentArray;
@@ -85,6 +87,8 @@ namespace MusicGame::Judgment
 		LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
 
 		void update(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, double currentSec, LaserLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef);
+
+		void lockForExit();
 
 		std::size_t lineJudgmentCount() const;
 

@@ -21,6 +21,8 @@ namespace MusicGame::Judgment
 		const KeyConfig::Button m_keyConfigButton;
 		const std::map<kson::Pulse, double> m_pulseToSec;
 
+		bool m_isLockedForExit = false;
+
 		kson::ByPulse<JudgmentResult> m_chipJudgmentArray;
 		kson::ByPulse<LongNoteJudgment> m_longJudgmentArray;
 
@@ -43,5 +45,7 @@ namespace MusicGame::Judgment
 		std::size_t chipJudgmentCount() const;
 
 		std::size_t longJudgmentCount() const;
+
+		void lockForExit();
 	};
 }

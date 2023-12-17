@@ -54,10 +54,11 @@ void Main()
 
 	// フレームレート制限
 	Graphics::SetVSyncEnabled(false);
-	Addon::Register(U"FrameRateLimit", std::make_unique<FrameRateLimit>(300));
+	Addon::Register(U"FrameRateLimit", std::make_unique<FrameRateLimit>(300), -100);
 
 	// シーン管理
-	Addon::Register(U"SceneManager", std::make_unique<SceneManagerAddon>());
+	Addon::Register(U"ScreenFade", std::make_unique<ScreenFadeAddon>(), -1);
+	Addon::Register(U"SceneManager", std::make_unique<SceneManagerAddon>(), 0);
 
 	// 毎フレーム連続してアセット生成した時の警告を無効化
 	// (楽曲選択でのスクロールにおいては、正常系でもテクスチャ読み込みが毎フレーム発生するため)
@@ -70,6 +71,9 @@ void Main()
 	// ライブラリ側のデバッグ用にコンソール表示(Debugビルドの場合のみ)
 	Console.open();
 #endif
+
+	// シーン初期化
+	SceneManagerAddon::Init();
 
 	// メインループ
 	while (System::Update())
