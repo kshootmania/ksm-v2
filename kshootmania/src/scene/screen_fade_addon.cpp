@@ -13,135 +13,178 @@ namespace
 	}
 }
 
-void ScreenFadeAddon::fadeImpl(State fadeState, const Duration& duration, std::function<void()> callback, const Color& color)
+double ScreenFade::currentAlpha() const
 {
-	if (m_state != State::None && color == m_color)
+	if (isRunning())
 	{
-		// 既にフェード中かつ同じ色であれば、アルファ値を引き継ぐ
-		// (フェードイン中にフェードアウトを呼び出した場合に不自然にならないようにするため)
-		// TODO: フェードインとフェードアウトを別々のインスタンスにして重ねれば異なる色でも不自然にならなくなる
-		m_startAlpha = fadeAlpha();
+		return std::lerp(m_startAlpha, m_targetAlpha, m_timer.progress0_1());
 	}
 	else
 	{
-		m_startAlpha = 0.0;
+		return m_isFinished ? m_targetAlpha : 0.0;
+	}
+}
+
+ScreenFade::ScreenFade(double startAlpha, double targetAlpha)
+	: m_startAlpha(startAlpha)
+	, m_targetAlpha(targetAlpha)
+{
+}
+
+void ScreenFade::start(const Duration& duration, const Color& color, std::function<void()> callback)
+{
+	if (isRunning())
+	{
+#ifdef _DEBUG
+		Print << U"ScreenFadeでフェード中に多重にフェード開始された";
+#endif
+		return;
 	}
 
-	m_state = fadeState;
-	m_callback = std::move(callback);
 	m_color = color;
+	m_callback = std::move(callback);
 	m_timer.set(duration);
-	m_isTimerStarted = false;
+	m_timer.start();
 }
 
-double ScreenFadeAddon::fadeAlpha() const
+void ScreenFade::update()
 {
-	if (m_state == State::None)
+	if (!m_timer.isStarted())
 	{
-		return 0.0;
+		return;
 	}
 
-	double targetAlpha;
-	switch (m_state)
-	{
-	case State::FadeIn:
-		targetAlpha = 0.0;
-		break;
-	case State::FadeOut:
-		targetAlpha = 1.0;
-		break;
-	default:
-		throw Error(U"Invalid state");
-	}
-
-	return std::lerp(m_startAlpha, targetAlpha, m_timer.progress0_1());
-}
-
-bool ScreenFadeAddon::update()
-{
-	if (m_state == State::None)
-	{
-		return true;
-	}
-
-	if (m_timer.reachedZero())
+	if (!m_isFinished && m_timer.reachedZero())
 	{
 		if (m_callback)
 		{
 			m_callback();
-			m_callback = nullptr;
 		}
-		if (m_state == State::FadeIn)
-		{
-			// フェードインが終わったらNoneにする
-			// (フェードアウトの場合はフェードインされるまでそのままなのでNoneにしない)
-			m_state = State::None;
-			m_isTimerStarted = false;
-			return true;
-		}
+		m_isFinished = true;
 	}
+}
 
-	// タイマーを開始
-	// (fadeImplの呼び出しから次フレームまでに時間がかかる場合も考えられるので、update内で開始する)
-	if (m_state != State::None && !m_isTimerStarted)
+void ScreenFade::draw() const
+{
+	if (!m_timer.isStarted())
 	{
-		m_timer.restart();
-		m_isTimerStarted = true;
+		return;
 	}
 
+	const double alpha = currentAlpha();
+	if (alpha > 0.0)
+	{
+		Scene::Rect().draw(ColorF{ m_color }.withAlpha(alpha));
+	}
+}
+
+void ScreenFade::pause()
+{
+	m_timer.pause();
+}
+
+void ScreenFade::reset()
+{
+	m_timer.reset();
+	m_isFinished = false;
+}
+
+bool ScreenFade::isStarted() const
+{
+	return m_timer.isStarted();
+}
+
+bool ScreenFade::isRunning() const
+{
+	return m_timer.isRunning() || m_timer.isPaused();
+}
+
+bool ScreenFade::isFinished() const
+{
+	return m_isFinished;
+}
+
+bool ScreenFadeAddon::update()
+{
+	m_fadeIn.update();
+	m_fadeOut.update();
 	return true;
 }
 
 void ScreenFadeAddon::draw() const
 {
-	if (m_state == State::None || !m_isTimerStarted)
+	m_fadeIn.draw();
+	m_fadeOut.draw();
+}
+
+void ScreenFadeAddon::FadeIn(const Duration& duration, const Color& color)
+{
+	ScreenFadeAddon& instance = ::GetInstance();
+	instance.m_fadeIn.start(duration, color, nullptr);
+	instance.m_fadeOut.reset();
+}
+
+void ScreenFadeAddon::FadeIn(const Color& color)
+{
+	ScreenFadeAddon& instance = ::GetInstance();
+	instance.m_fadeIn.start(kDefaultDuration, color, nullptr);
+	instance.m_fadeOut.reset();
+}
+
+void ScreenFadeAddon::FadeOut(const Duration& duration, std::function<void()> callback, const Color& color)
+{
+	auto callbackImpl = [callbackMoved = std::move(callback)]()
 	{
-		return;
-	}
+		callbackMoved();
+		::GetInstance().m_fadeIn.reset();
+	};
 
-	Scene::Rect().draw(ColorF{ m_color }.withAlpha(fadeAlpha()));
-}
-
-void ScreenFadeAddon::FadeIn(const Duration& fadeTimeSec, std::function<void()> callback, const Color& color)
-{
-	::GetInstance().fadeImpl(State::FadeIn, fadeTimeSec, std::move(callback), color);
-}
-
-void ScreenFadeAddon::FadeIn(std::function<void()> callback, const Color& color)
-{
-	::GetInstance().fadeImpl(State::FadeIn, kDefaultDuration, std::move(callback), color);
-}
-
-void ScreenFadeAddon::FadeOut(const Duration& fadeTimeSec, std::function<void()> callback, const Color& color)
-{
-	::GetInstance().fadeImpl(State::FadeOut, fadeTimeSec, std::move(callback), color);
+	ScreenFadeAddon& instance = ::GetInstance();
+	instance.m_fadeOut.start(duration, color, std::move(callbackImpl));
+	instance.m_fadeIn.pause();
 }
 
 void ScreenFadeAddon::FadeOut(std::function<void()> callback, const Color& color)
 {
-	::GetInstance().fadeImpl(State::FadeOut, kDefaultDuration, std::move(callback), color);
+	auto callbackImpl = [callbackMoved = std::move(callback)]()
+	{
+		callbackMoved();
+		::GetInstance().m_fadeIn.reset();
+	};
+
+	ScreenFadeAddon& instance = ::GetInstance();
+	instance.m_fadeOut.start(kDefaultDuration, color, std::move(callbackImpl));
+	instance.m_fadeIn.pause();
 }
 
 void ScreenFadeAddon::FadeOutToScene(const String& sceneName, const Duration& duration, const Color& color)
 {
-	const auto callback = [sceneNameCopy = sceneName]() // 呼び出しタイミングが後なのでsceneNameは要コピーキャプチャ
+	auto callbackImpl = [sceneNameCopy = sceneName]() // 呼び出しタイミングが後なのでsceneNameは要コピーキャプチャ
 	{
 		SceneManagerAddon::ChangeScene(sceneNameCopy);
+		::GetInstance().m_fadeIn.reset();
 	};
-	::GetInstance().fadeImpl(State::FadeOut, duration, callback, color);
+
+	ScreenFadeAddon& instance = ::GetInstance();
+	instance.m_fadeOut.start(duration, color, std::move(callbackImpl));
+	instance.m_fadeIn.pause();
 }
 
 bool ScreenFadeAddon::IsFading()
 {
-	return ::GetInstance().m_state != State::None;
+	return IsFadingIn() || IsFadingOut();
 }
 
 bool ScreenFadeAddon::IsFadingIn()
 {
-	return ::GetInstance().m_state == State::FadeIn;
+	ScreenFadeAddon& instance = ::GetInstance();
+	return instance.m_fadeIn.isRunning();
 }
 
 bool ScreenFadeAddon::IsFadingOut()
 {
-	return ::GetInstance().m_state == State::FadeOut;
+	ScreenFadeAddon& instance = ::GetInstance();
+
+	// フェードアウトの場合はタイマー終了後もアルファ値がゼロでなく、その場合もフェードアウト中とみなすためisRunning()ではなくisStarted()で判定
+	return instance.m_fadeOut.isStarted();
 }

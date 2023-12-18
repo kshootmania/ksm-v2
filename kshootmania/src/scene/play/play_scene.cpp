@@ -18,7 +18,7 @@ PlayScene::PlayScene(const InitData& initData)
 	, m_gameMain(MakeGameCreateInfo(getData().playSceneArgs))
 {
 	m_gameMain.start();
-	ScreenFadeAddon::FadeIn(nullptr, Palette::White);
+	ScreenFadeAddon::FadeIn(Palette::White);
 }
 
 PlayScene::~PlayScene()
