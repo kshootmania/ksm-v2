@@ -403,3 +403,4 @@ FodyWeavers.xsd
 !**/App/songs/K-Shoot MANIA/.gitkeep
 **/App/config.ini
 **/App/score/*
+**/.DS_Store

@@ -109,7 +109,7 @@ const HighScoreInfo& SelectChartInfo::highScoreInfo() const
 
 bool SelectChartInfo::hasError() const
 {
-	return m_chartData.error != kson::Error::None;
+	return m_chartData.error != kson::ErrorType::None;
 }
 
 String SelectChartInfo::errorString() const

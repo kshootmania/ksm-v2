@@ -64,8 +64,10 @@ void Main()
 	// (楽曲選択でのスクロールにおいては、正常系でもテクスチャ読み込みが毎フレーム発生するため)
 	Profiler::EnableAssetCreationWarning(false);
 
+#ifdef _WIN32
 	// IME無効化
 	IMEUtils::DetachIMEContext();
+#endif
 
 #ifdef _DEBUG
 	// ライブラリ側のデバッグ用にコンソール表示(Debugビルドの場合のみ)
