@@ -20,6 +20,9 @@ void Main()
 	// Escキーによるプログラム終了を無効化
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 
+	// F1キーによるライセンス表示を無効化
+	LicenseManager::DisableDefaultTrigger();
+
 	// ウィンドウタイトル
 	Window::SetTitle(U"K-Shoot MANIA v2.0.0-prealpha");
 
