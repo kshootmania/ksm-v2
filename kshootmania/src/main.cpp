@@ -25,7 +25,7 @@ void Main()
 
 	// 実行ファイルのパスをカレントディレクトリに設定
 	// (ChangeCurrentDirectoryはここ以外は基本的に使用禁止。どうしても使う必要がある場合は必ずModulePathに戻すこと)
-	FileSystem::ChangeCurrentDirectory(FileSystem::ModulePath());
+	FileSystem::ChangeCurrentDirectory(FileSystem::ParentPath(FileSystem::ModulePath()));
 
 	// デフォルト色を指定
 	Scene::SetBackground(Palette::Black);
