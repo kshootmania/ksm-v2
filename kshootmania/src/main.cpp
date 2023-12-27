@@ -20,6 +20,9 @@ void Main()
 	// Escキーによるプログラム終了を無効化
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 
+	// ウィンドウタイトル
+	Window::SetTitle(U"K-Shoot MANIA v2.0.0-prealpha");
+
 	// 実行ファイルのパスをカレントディレクトリに設定
 	// (ChangeCurrentDirectoryはここ以外は基本的に使用禁止。どうしても使う必要がある場合は必ずModulePathに戻すこと)
 	FileSystem::ChangeCurrentDirectory(FileSystem::ModulePath());
