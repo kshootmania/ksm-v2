@@ -179,6 +179,7 @@
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\low_pass_filter_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\peaking_filter_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\retrigger_echo_dsp.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\dsp\sidechain_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\tapestop_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\wobble_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\bitcrusher_params.hpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="include\ksmaudio\audio_effect\params\low_pass_filter_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\peaking_filter_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\retrigger_echo_params.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\params\sidechain_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\tapestop_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\wobble_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\param_controller.hpp" />
@@ -207,6 +209,7 @@
     <ClCompile Include="src\audio_effect\dsp\low_pass_filter_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\peaking_filter_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\retrigger_echo_dsp.cpp" />
+    <ClCompile Include="src\audio_effect\dsp\sidechain_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\tapestop_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\wobble_dsp.cpp" />
     <ClCompile Include="src\audio_effect\param_controller.cpp" />

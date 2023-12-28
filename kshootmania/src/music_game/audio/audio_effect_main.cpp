@@ -77,6 +77,7 @@ namespace MusicGame::Audio
 			fnInsertDefaultFX("wobble", { .type = kson::AudioEffectType::Wobble });
 			fnInsertDefaultFX("tapestop", { .type = kson::AudioEffectType::Tapestop });
 			fnInsertDefaultFX("echo", { .type = kson::AudioEffectType::Echo });
+			fnInsertDefaultFX("sidechain", { .type = kson::AudioEffectType::Sidechain });
 			defFX.insert(defFX.end(), chartData.audio.audioEffect.fx.def.begin(), chartData.audio.audioEffect.fx.def.end());
 			for (const auto& [name, def] : defFX)
 			{

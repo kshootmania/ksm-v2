@@ -19,6 +19,9 @@
 #include "dsp/tapestop_dsp.hpp"
 #include "params/tapestop_params.hpp"
 
+#include "dsp/sidechain_dsp.hpp"
+#include "params/sidechain_params.hpp"
+
 #include "dsp/peaking_filter_dsp.hpp"
 #include "params/peaking_filter_params.hpp"
 
@@ -43,6 +46,8 @@ namespace ksmaudio
 	using Tapestop = AudioEffect::BasicAudioEffect<AudioEffect::TapestopParams, AudioEffect::TapestopDSP, AudioEffect::TapestopDSPParams>;
 
 	using Echo = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::EchoParams, AudioEffect::RetriggerEchoDSP, AudioEffect::RetriggerEchoDSPParams>;
+
+	using Sidechain = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::SidechainParams, AudioEffect::SidechainDSP, AudioEffect::SidechainDSPParams>;
 
 	using PeakingFilter = AudioEffect::BasicAudioEffect<AudioEffect::PeakingFilterParams, AudioEffect::PeakingFilterDSP, AudioEffect::PeakingFilterDSPParams>;
 

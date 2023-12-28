@@ -47,6 +47,10 @@ namespace MusicGame::Audio
 			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Echo>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
+		case kson::AudioEffectType::Sidechain:
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Sidechain>(name, def.v, paramChanges, updateTriggerTiming);
+			break;
+
 		case kson::AudioEffectType::PeakingFilter:
 			pAudioEffectBus->emplaceAudioEffect<ksmaudio::PeakingFilter>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
@@ -57,6 +61,10 @@ namespace MusicGame::Audio
 
 		case kson::AudioEffectType::LowPassFilter:
 			pAudioEffectBus->emplaceAudioEffect<ksmaudio::LowPassFilter>(name, def.v, paramChanges, updateTriggerTiming);
+			break;
+
+		default:
+			assert(false && "Unknown audio effect type");
 			break;
 		}
 	}

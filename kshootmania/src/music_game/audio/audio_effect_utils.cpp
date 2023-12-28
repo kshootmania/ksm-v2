@@ -41,6 +41,11 @@ namespace MusicGame::Audio::AudioEffectUtils
 		{
 			const kson::Pulse startY = kson::MeasureIdxToPulse(measureIdx, beatInfo, timingCache);
 			const kson::Pulse endY = kson::MeasureIdxToPulse(measureIdx + 1, beatInfo, timingCache);
+			if (startY > endY)
+			{
+				assert(false && "Invalid order detected!");
+				return { startY, startY };
+			}
 			return { startY, endY };
 		}
 
@@ -51,6 +56,20 @@ namespace MusicGame::Audio::AudioEffectUtils
 			{
 				const float sec = static_cast<float>(kson::MeasureIdxToSec(measureIdx, chartData.beat, timingCache));
 				timingSet.insert(sec);
+			}
+			return timingSet;
+		}
+
+		std::set<float> PrecalculateUpdateTriggerTimingBeatOnly(std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+		{
+			std::set<float> timingSet;
+			for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
+			{
+				const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
+				for (kson::Pulse y = startY; startY <= y && y < endY; y += kson::kResolution)
+				{
+					timingSet.insert(static_cast<float>(kson::PulseToSec(y, chartData.beat, timingCache)));
+				}
 			}
 			return timingSet;
 		}
@@ -157,8 +176,10 @@ namespace MusicGame::Audio::AudioEffectUtils
 
 		case kson::AudioEffectType::Gate:
 		case kson::AudioEffectType::Wobble:
-		case kson::AudioEffectType::Sidechain:
 			return PrecalculateUpdateTriggerTimingBarLineOnly(totalMeasures, chartData, timingCache);
+
+		case kson::AudioEffectType::Sidechain:
+			return PrecalculateUpdateTriggerTimingBeatOnly(totalMeasures, chartData, timingCache);
 
 		default:
 			return {};
@@ -179,8 +200,10 @@ namespace MusicGame::Audio::AudioEffectUtils
 
 		case kson::AudioEffectType::Gate:
 		case kson::AudioEffectType::Wobble:
-		case kson::AudioEffectType::Sidechain:
 			return PrecalculateUpdateTriggerTimingBarLineOnly(totalMeasures, chartData, timingCache);
+
+		case kson::AudioEffectType::Sidechain:
+			return PrecalculateUpdateTriggerTimingBeatOnly(totalMeasures, chartData, timingCache);
 
 		default:
 			return {};
