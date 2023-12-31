@@ -64,8 +64,6 @@ namespace MusicGame
 	{
 		m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 		m_bgm.play();
-
-		kson::SaveKSONChartData("hogehoge.kson", m_chartData);
 	}
 
 	void GameMain::update()
