@@ -194,6 +194,7 @@ OptionScene::OptionScene(const InitData& initData)
 	, m_optionMenus(MakeOptionMenus())
 	, m_font(FontAsset(kFontAssetSystem))
 {
+	m_bgmStream.play();
 	ScreenFadeAddon::FadeIn();
 }
 
@@ -263,5 +264,7 @@ void OptionScene::exitScene()
 	// 画面サイズ反映
 	ApplyScreenSizeConfig();
 
+	// フェードアウト
+	m_bgmStream.setFadeOut(ScreenFadeAddon::kDefaultDurationSec);
 	ScreenFadeAddon::FadeOutToScene(SceneName::kTitle);
 }
