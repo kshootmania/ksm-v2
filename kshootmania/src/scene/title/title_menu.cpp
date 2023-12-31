@@ -53,8 +53,15 @@ TitleMenu::TitleMenu(TitleScene* pTitleScene)
 
 void TitleMenu::update()
 {
+	const auto prevCursor = m_menu.cursor();
 	m_menu.update();
-	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(m_menu.cursor()), kMenuCursorPosRelaxationTimeSec);
+	const auto cursor = m_menu.cursor();
+	if (prevCursor != cursor)
+	{
+		m_selectSe.play();
+	}
+
+	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(cursor), kMenuCursorPosRelaxationTimeSec);
 
 	if (KeyConfig::Down(KeyConfig::kStart))
 	{

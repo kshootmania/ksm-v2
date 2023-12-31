@@ -17,7 +17,6 @@ namespace ksmaudio
 		double m_volume;
 
 	public:
-		// TODO: filePath encoding problem
 		explicit Stream(const std::string& filePath, double volume = 1.0, bool enableCompressor = false, bool preload = false, bool loop = false);
 
 		~Stream();
