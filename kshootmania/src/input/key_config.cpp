@@ -3,8 +3,8 @@
 namespace
 {
 	// キーコンフィグの設定画面や保存時などに配列サイズが固定のほうが都合が良いのでs3d::InputGroupは不使用
-	using ConfigSet = std::array<Input, KeyConfig::kButtonEnumCount>;
-	std::array<ConfigSet, KeyConfig::kConfigSetEnumCount> s_configSetArray;
+	using ConfigSetArray = std::array<Input, KeyConfig::kButtonEnumCount>;
+	std::array<ConfigSetArray, KeyConfig::kConfigSetEnumCount> s_configSetArray;
 
 	constexpr std::array<InputDeviceType, KeyConfig::kConfigSetEnumCount> kConfigSetDeviceTypes = {
 		InputDeviceType::Keyboard,
@@ -19,9 +19,39 @@ namespace
 		U"Gamepad 1",
 		U"Gamepad 2",
 	};
+
+	StringView ConfigSetToConfigIniKey(KeyConfig::ConfigSet configSet)
+	{
+		switch (configSet)
+		{
+		case KeyConfig::kKeyboard1:
+			return ConfigIni::Key::kKeyConfigKeyboard1;
+		case KeyConfig::kKeyboard2:
+			return ConfigIni::Key::kKeyConfigKeyboard2;
+		case KeyConfig::kGamepad1:
+			return ConfigIni::Key::kKeyConfigGamepad1;
+		case KeyConfig::kGamepad2:
+			return ConfigIni::Key::kKeyConfigGamepad2;
+		default:
+			throw Error(U"ConfigSetToConfigIniKey(): Invalid configSet");
+		}
+	}
+
+	void RevertUnconfigurableKeyConfigs()
+	{
+		// Keyboard 1の場合、ユーザーによって変更できない固定のキーコンフィグがあるので上書き
+		s_configSetArray[KeyConfig::kKeyboard1][KeyConfig::kStart] = KeyEnter;
+		s_configSetArray[KeyConfig::kKeyboard1][KeyConfig::kBack] = KeyEscape;
+		s_configSetArray[KeyConfig::kKeyboard1][KeyConfig::kAutoPlay] = KeyF11;
+		s_configSetArray[KeyConfig::kKeyboard1][KeyConfig::kUp] = KeyUp;
+		s_configSetArray[KeyConfig::kKeyboard1][KeyConfig::kDown] = KeyDown;
+		s_configSetArray[KeyConfig::kKeyboard1][KeyConfig::kLeft] = KeyLeft;
+		s_configSetArray[KeyConfig::kKeyboard1][KeyConfig::kRight] = KeyRight;
+		s_configSetArray[KeyConfig::kKeyboard1][KeyConfig::kBackspace] = KeyBackspace;
+	}
 }
 
-void KeyConfig::SetConfigValue(ConfigSet targetConfigSet, StringView configValue)
+void KeyConfig::SetConfigValueByCommaSeparated(ConfigSet targetConfigSet, StringView configValue)
 {
 	Array<String> values = String(configValue).split(U',');
 
@@ -67,17 +97,67 @@ void KeyConfig::SetConfigValue(ConfigSet targetConfigSet, StringView configValue
 		}
 	}
 
-	// Keyboard 1の場合、ユーザーによって変更できない固定のキーコンフィグがあるので上書き
-	if (targetConfigSet == kKeyboard1)
+	RevertUnconfigurableKeyConfigs();
+}
+
+void KeyConfig::SetConfigValue(ConfigSet targetConfigSet, ConfigurableButton button, const Input& input)
+{
+	if (targetConfigSet < 0 || kConfigSetEnumCount <= targetConfigSet)
 	{
-		s_configSetArray[kKeyboard1][kStart] = KeyEnter;
-		s_configSetArray[kKeyboard1][kBack] = KeyEscape;
-		s_configSetArray[kKeyboard1][kAutoPlay] = KeyF11;
-		s_configSetArray[kKeyboard1][kUp] = KeyUp;
-		s_configSetArray[kKeyboard1][kDown] = KeyDown;
-		s_configSetArray[kKeyboard1][kLeft] = KeyLeft;
-		s_configSetArray[kKeyboard1][kRight] = KeyRight;
-		s_configSetArray[kKeyboard1][kBackspace] = KeyBackspace;
+		throw Error(U"Warning: Invalid key config target '{}'!"_fmt(targetConfigSet));
+	}
+
+	if (button < 0 || kConfigurableButtonEnumCount <= button)
+	{
+		throw Error(U"Warning: Invalid key config button '{}'!"_fmt(button));
+	}
+
+	s_configSetArray[targetConfigSet][button] = input;
+
+	RevertUnconfigurableKeyConfigs();
+}
+
+const Input& KeyConfig::GetConfigValue(ConfigSet targetConfigSet, ConfigurableButton button)
+{
+	if (targetConfigSet < 0 || kConfigSetEnumCount <= targetConfigSet)
+	{
+		throw Error(U"Warning: Invalid key config target '{}'!"_fmt(targetConfigSet));
+	}
+
+	if (button < 0 || kConfigurableButtonEnumCount <= button)
+	{
+		throw Error(U"Warning: Invalid key config button '{}'!"_fmt(button));
+	}
+
+	return s_configSetArray[targetConfigSet][button];
+}
+
+void KeyConfig::SaveToConfigIni()
+{
+	for (int32 configSetIdx = 0; configSetIdx < kConfigSetEnumCount; ++configSetIdx)
+	{
+		// キーコード一覧をカンマ区切りの文字列に変換
+		String configValue;
+		for (int32 i = 0; i < kConfigurableButtonEnumCount; ++i)
+		{
+			int32 code;
+			if (s_configSetArray[configSetIdx][i].deviceType() == InputDeviceType::Undefined)
+			{
+				code = -1;
+			}
+			else
+			{
+				code = static_cast<int32>(s_configSetArray[configSetIdx][i].code());
+			}
+			configValue += Format(code);
+			configValue += U",";
+		}
+		configValue.pop_back();
+
+		// 保存
+		const auto configSet = static_cast<ConfigSet>(configSetIdx);
+		const StringView configIniKey = ConfigSetToConfigIniKey(configSet);
+		ConfigIni::SetString(configIniKey, configValue);
 	}
 }
 

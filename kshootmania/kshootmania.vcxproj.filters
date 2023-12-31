@@ -549,6 +549,9 @@
     <ClCompile Include="src\music_game\graphics\hud\achievement_panel.cpp">
       <Filter>Source Files\music_game\graphics\hud</Filter>
     </ClCompile>
+    <ClCompile Include="src\scene\option\option_key_config_menu.cpp">
+      <Filter>Source Files\scene\option</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1485,6 +1488,9 @@
     </ClInclude>
     <ClInclude Include="src\music_game\graphics\hud\achievement_panel.hpp">
       <Filter>Header Files\music_game\graphics\hud</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\option\option_key_config_menu.hpp">
+      <Filter>Header Files\scene\option</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

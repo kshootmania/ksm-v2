@@ -177,6 +177,7 @@
     <ClCompile Include="src\music_game\play_result.cpp" />
     <ClCompile Include="src\music_game\scroll\highway_scroll.cpp" />
     <ClCompile Include="src\music_game\ui\hispeed_setting_menu.cpp" />
+    <ClCompile Include="src\scene\option\option_key_config_menu.cpp" />
     <ClCompile Include="src\scene\option\option_menu.cpp" />
     <ClCompile Include="src\scene\option\option_menu_field.cpp" />
     <ClCompile Include="src\scene\option\option_top_menu.cpp" />
@@ -466,6 +467,7 @@
     <ClInclude Include="src\music_game\ui\hispeed_setting_menu.hpp" />
     <ClInclude Include="src\music_game\view_status.hpp" />
     <ClInclude Include="src\scene\option\option_assets.hpp" />
+    <ClInclude Include="src\scene\option\option_key_config_menu.hpp" />
     <ClInclude Include="src\scene\option\option_menu.hpp" />
     <ClInclude Include="src\scene\option\option_menu_field.hpp" />
     <ClInclude Include="src\scene\option\option_scene.hpp" />

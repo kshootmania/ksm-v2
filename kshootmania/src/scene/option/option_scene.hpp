@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "option_top_menu.hpp"
 #include "option_menu.hpp"
+#include "option_key_config_menu.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
 class OptionScene : public MyScene
@@ -24,6 +25,8 @@ private:
 	OptionTopMenu m_topMenu;
 
 	std::array<OptionMenu, kOptionMenuTypeEnumCount> m_optionMenus;
+
+	OptionKeyConfigMenu m_keyConfigMenu;
 
 	const Font m_font;
 
