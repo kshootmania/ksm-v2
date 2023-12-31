@@ -906,6 +906,22 @@ namespace
 			return U"({:02X})"_fmt(keyCode);
 		}
 	}
+
+	Texture CreateFXLRTexture()
+	{
+		Image image{ U"imgs/config_fx.gif" };
+
+		// 黒を透明にする
+		for (Color& colorRef : image)
+		{
+			if (colorRef == Palette::Black)
+			{
+				colorRef = Color{ 255, 0 };
+			}
+		}
+
+		return Texture{ image };
+	}
 }
 
 void OptionKeyConfigMenu::updateNoneState()
@@ -1066,6 +1082,12 @@ OptionKeyConfigMenu::OptionKeyConfigMenu()
 			.type = CursorInput::Type::Vertical,
 			.buttonFlags = CursorButtonFlags::kArrowOrBT,
 		})
+	, m_fxLRTexture(CreateFXLRTexture(), TiledTextureSizeInfo
+		{
+			.column = 3,
+			.sourceScale = SourceScale::k1x,
+			.sourceSize = { 192, 192 },
+		})
 {
 }
 
@@ -1089,6 +1111,7 @@ void OptionKeyConfigMenu::update()
 
 void OptionKeyConfigMenu::draw() const
 {
+	// BT
 	for (int32 i = 0; i < kson::kNumBTLanes; ++i)
 	{
 		const Rect rect{ LeftMargin() + Scaled(95 + i * 120), Scaled(165), Scaled(100), Scaled(100) };
@@ -1104,6 +1127,7 @@ void OptionKeyConfigMenu::draw() const
 		m_font(KeyCodeToString(input.code())).drawAt(Scaled(16), rect.center(), Palette::Black);
 	}
 
+	// FX
 	for (int32 i = 0; i < kson::kNumFXLanes; ++i)
 	{
 		const Rect rect{ LeftMargin() + Scaled(185 + i * 150), Scaled(290), Scaled(130), Scaled(60) };
@@ -1119,6 +1143,27 @@ void OptionKeyConfigMenu::draw() const
 		m_font(KeyCodeToString(input.code())).drawAt(Scaled(16), rect.center(), Palette::White);
 	}
 
+	// FX-L+R
+	{
+		const Point position{ LeftMargin() + Scaled(540), Scaled(324) };
+
+		const auto matchCursor = OptionKeyConfigCursor::FX_LR;
+		int32 column;
+		if (m_cursor == matchCursor)
+		{
+			column = m_state == OptionKeyConfigMenuState::SettingButton1 ? 2 : 1;
+		}
+		else
+		{
+			column = 0;
+		}
+		m_fxLRTexture(0, column).resized(Scaled(96, 96)).drawAt(position);
+
+		const Input& input = KeyConfig::GetConfigValue(m_targetConfigSet, KeyConfig::ConfigurableButton::kFX_LR);
+		m_font(KeyCodeToString(input.code())).drawAt(Scaled(16), position + Scaled(0, 58), Palette::White);
+	}
+
+	// Laser
 	for (int32 i = 0; i < kson::kNumLaserLanes; ++i)
 	{
 		const Circle circle{ Point{ LeftMargin() + Scaled(165 + i * 320), Scaled(110) }, Scaled(30) };

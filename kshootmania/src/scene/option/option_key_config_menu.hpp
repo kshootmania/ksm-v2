@@ -33,6 +33,8 @@ private:
 	KeyConfig::ConfigSet m_targetConfigSet = KeyConfig::ConfigSet::kKeyboard1;
 	Font m_font = FontAsset(AssetManagement::kFontAssetSystem);
 
+	const TiledTexture m_fxLRTexture;
+
 	void setInput(const Input& input);
 
 	void updateNoneState();
