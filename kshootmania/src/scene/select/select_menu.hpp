@@ -71,4 +71,6 @@ public:
 	const ISelectMenuItem& cursorMenuItem() const;
 
 	bool empty() const;
+
+	void fadeOutSongPreviewForExit(double durationSec);
 };

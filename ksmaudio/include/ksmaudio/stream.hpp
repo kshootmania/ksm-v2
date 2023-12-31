@@ -48,6 +48,8 @@ namespace ksmaudio
 
 		void setFadeOut(double durationSec, double volume);
 
+		bool isPlaying() const;
+
 		bool isFading() const;
 
 		double volume() const;

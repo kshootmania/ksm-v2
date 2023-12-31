@@ -373,3 +373,8 @@ bool SelectMenu::empty() const
 {
 	return m_menu.empty();
 }
+
+void SelectMenu::fadeOutSongPreviewForExit(double durationSec)
+{
+	m_songPreview.fadeOutForExit(durationSec);
+}
