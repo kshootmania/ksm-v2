@@ -130,7 +130,7 @@ namespace
 					I18n::Get(I18n::Option::kAssistTickOn),
 				}).setKeyTextureIdx(4),
 				CreateInfo::Int(ConfigIni::Key::kTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)).setKeyTextureIdx(6), // TODO: additional suffix
-				CreateInfo::Int(ConfigIni::Key::kLaserTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)).setKeyTextureIdx(7),
+				//CreateInfo::Int(ConfigIni::Key::kLaserTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)).setKeyTextureIdx(7),
 				/*CreateInfo::Enum(ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
 					I18n::Get(I18n::Option::kLaserMouseDirectionLeftThenRight),
 					I18n::Get(I18n::Option::kLaserMouseDirectionRightThenRight),
@@ -148,10 +148,10 @@ namespace
 					I18n::Get(I18n::Option::kSelectCloseFolderKeyBackspace),
 					I18n::Get(I18n::Option::kSelectCloseFolderKeyEsc),
 				}).setKeyTextureIdx(12),
-				CreateInfo::Enum(ConfigIni::Key::kUse3BTsPlusStartAsBack, Array<StringView>{
+				/*CreateInfo::Enum(ConfigIni::Key::kUse3BTsPlusStartAsBack, Array<StringView>{
 					I18n::Get(I18n::Option::kDisabled),
 					I18n::Get(I18n::Option::kEnabled),
-				}).setKeyTextureIdx(13),
+				}).setKeyTextureIdx(13),*/
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueOther, {
 				CreateInfo::Enum(ConfigIni::Key::kHispeedShowXMod, Array<StringView>{
