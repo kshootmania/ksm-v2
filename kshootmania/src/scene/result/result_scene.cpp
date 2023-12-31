@@ -21,7 +21,7 @@ ResultScene::ResultScene(const InitData& initData)
 
 	m_bgmStream.play();
 
-	ScreenFadeAddon::FadeIn();
+	ScreenFadeAddon::FadeIn(Palette::White);
 }
 
 void ResultScene::update()
