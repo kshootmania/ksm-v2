@@ -21,6 +21,10 @@ namespace ksmaudio
 
 		~Stream();
 
+		Stream(const Stream&) = delete;
+
+		Stream& operator=(const Stream&) = delete;
+
 		void play() const;
 
 		void pause() const;
