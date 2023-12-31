@@ -546,6 +546,9 @@
     <ClCompile Include="src\scene\screen_fade_addon.cpp">
       <Filter>Source Files\scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\music_game\graphics\hud\achievement_panel.cpp">
+      <Filter>Source Files\music_game\graphics\hud</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1479,6 +1482,9 @@
     </ClInclude>
     <ClInclude Include="src\scene\screen_fade_addon.hpp">
       <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\graphics\hud\achievement_panel.hpp">
+      <Filter>Header Files\music_game\graphics\hud</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

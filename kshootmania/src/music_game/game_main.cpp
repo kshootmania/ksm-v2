@@ -30,6 +30,14 @@ namespace MusicGame
 
 		// 判定の更新
 		m_judgmentMain.update(m_chartData, m_gameStatus, m_viewStatus);
+		if (!m_gameStatus.playFinishStatus.has_value() && m_judgmentMain.isFinished())
+		{
+			m_gameStatus.playFinishStatus = PlayFinishStatus
+			{
+				.finishTimeSec = currentTimeSec,
+				.achievement = m_judgmentMain.playResult().achievement(),
+			};
+		}
 	}
 
 	void GameMain::updateHighwayScroll()

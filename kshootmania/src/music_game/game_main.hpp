@@ -65,6 +65,7 @@ namespace MusicGame
 		// 状態
 		GameStatus m_gameStatus;
 		ViewStatus m_viewStatus;
+		bool m_isFinishedPrev = false;
 
 		void updateStatus();
 

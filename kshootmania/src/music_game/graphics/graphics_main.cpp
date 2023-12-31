@@ -153,5 +153,6 @@ namespace MusicGame::Graphics
 		m_gaugePanel.draw(viewStatus.gaugePercentage, gameStatus.currentPulse);
 		m_comboOverlay.draw();
 		m_frameRateMonitor.draw();
+		m_achievementPanel.draw(gameStatus);
 	}
 }

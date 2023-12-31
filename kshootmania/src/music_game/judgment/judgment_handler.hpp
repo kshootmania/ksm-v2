@@ -62,6 +62,9 @@ namespace MusicGame::Judgment
 		/// @brief プレイ終了のために判定処理をロック
 		void lockForExit();
 
+		/// @brief 全てのコンボを判定済みかどうかを取得
+		bool isFinished() const;
+
 		/// @brief PlayResultを取得
 		/// @return PlayResult
 		PlayResult playResult() const;

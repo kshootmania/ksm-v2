@@ -103,6 +103,12 @@ namespace MusicGame
 		}
 	};
 
+	struct PlayFinishStatus
+	{
+		double finishTimeSec = kPastTimeSec;
+		Achievement achievement = Achievement::kNone;
+	};
+
 	/// @brief ゲームステータス
 	/// @note ゲームプレイに関与する状態を入れる。表示にしか関与しないものはGameStatusではなくViewStatusへ入れる
 	struct GameStatus
@@ -119,5 +125,7 @@ namespace MusicGame
 		std::array<LaserLaneStatus, kson::kNumLaserLanesSZ> laserLaneStatus;
 
 		std::size_t lastPressedLongFXNoteLaneIdx = 0U; // For audio effect parameter priority
+
+		Optional<PlayFinishStatus> playFinishStatus = none;
 	};
 }

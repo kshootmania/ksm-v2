@@ -103,4 +103,9 @@ namespace MusicGame::Judgment
 	{
 		return m_comboStatus.isNoError();
 	}
+
+	int32 ScoringStatus::totalJudgedCombo() const
+	{
+		return m_comboStatus.totalJudgedCombo();
+	}
 }
