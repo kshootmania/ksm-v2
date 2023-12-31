@@ -42,6 +42,8 @@ namespace ksmaudio
 
 		double latencySec() const;
 
+		void setFadeOut(double durationSec) const;
+
 		// Note: The pointer is valid until this StreamWithEffects instance is destroyed.
 		AudioEffect::AudioEffectBus* emplaceAudioEffectBusFX();
 		AudioEffect::AudioEffectBus* emplaceAudioEffectBusLaser();

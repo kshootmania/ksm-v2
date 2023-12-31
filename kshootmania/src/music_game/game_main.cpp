@@ -4,6 +4,22 @@
 
 namespace MusicGame
 {
+	namespace
+	{
+		constexpr double kPlayFinishFadeOutStartSec = 2.4; // TODO: HARD落ちした場合は赤色表示を加えた上で4.8秒にする
+
+		bool ShouldStartFadeOut(const GameStatus& gameStatus)
+		{
+			if (!gameStatus.playFinishStatus.has_value())
+			{
+				return false;
+			}
+
+			const double secSincePlayFinishPrev = gameStatus.currentTimeSec - gameStatus.playFinishStatus->finishTimeSec;
+			return secSincePlayFinishPrev >= kPlayFinishFadeOutStartSec;
+		}
+	}
+
 	void GameMain::updateStatus()
 	{
 		// 曲の音声の更新
@@ -74,7 +90,7 @@ namespace MusicGame
 		m_bgm.play();
 	}
 
-	void GameMain::update()
+	GameMain::StartFadeOutYN GameMain::update()
 	{
 		// 状態更新
 		updateStatus();
@@ -108,6 +124,8 @@ namespace MusicGame
 		m_graphicsMain.update(m_viewStatus);
 
 		m_isFirstUpdate = false;
+
+		return ShouldStartFadeOut(m_gameStatus) ? StartFadeOutYN::Yes : StartFadeOutYN::No;
 	}
 
 	void GameMain::draw() const
@@ -143,5 +161,10 @@ namespace MusicGame
 	PlayResult GameMain::playResult() const
 	{
 		return m_judgmentMain.playResult();
+	}
+
+	void GameMain::startBGMFadeOut(double durationSec)
+	{
+		m_bgm.setFadeOut(durationSec);
 	}
 }
