@@ -516,6 +516,10 @@ namespace
 		{
 			return U"Z";
 		}
+		if (keyCode == 0x5B)
+		{
+			return U"Win";
+		}
 		if (keyCode == 0x60)
 		{
 			return U"0";
@@ -562,7 +566,7 @@ namespace
 		}
 		if (keyCode == 0x6B)
 		{
-			return U"+";
+			return U";";
 		}
 		if (keyCode == 0x6C)
 		{
@@ -814,11 +818,11 @@ namespace
 		}
 		if (keyCode == 0xBA)
 		{
-			return U";";
+			return U":";
 		}
 		if (keyCode == 0xBB)
 		{
-			return U"+";
+			return U";";
 		}
 		if (keyCode == 0xBC)
 		{
