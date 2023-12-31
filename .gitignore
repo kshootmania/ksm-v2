@@ -397,6 +397,8 @@ FodyWeavers.xsd
 **/App/example/
 **/App/Screenshot/
 **/App/*.exe
+**/App/*.lib
+**/App/*.exp
 **/App/songs/*
 !**/App/songs/K-Shoot MANIA/
 **/App/songs/K-Shoot MANIA/*
