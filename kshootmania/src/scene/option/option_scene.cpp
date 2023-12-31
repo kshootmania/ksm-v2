@@ -196,6 +196,7 @@ OptionScene::OptionScene(const InitData& initData)
 {
 	m_bgmStream.play();
 	ScreenFadeAddon::FadeIn();
+	AutoMuteAddon::SetEnabled(true);
 }
 
 void OptionScene::update()

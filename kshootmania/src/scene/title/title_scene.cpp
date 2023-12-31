@@ -8,6 +8,7 @@ TitleScene::TitleScene(const InitData& initData)
 {
 	m_bgmStream.play();
 	ScreenFadeAddon::FadeIn();
+	AutoMuteAddon::SetEnabled(true);
 }
 
 void TitleScene::update()

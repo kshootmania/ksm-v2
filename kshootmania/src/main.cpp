@@ -1,6 +1,7 @@
 ﻿#include <Siv3D.hpp>
 #include "common/frame_rate_limit.hpp"
 #include "common/ime_utils.hpp"
+#include "addon/auto_mute_addon.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
 void CreateHighScoreBackup()
@@ -65,6 +66,8 @@ void Main()
 	// シーン管理
 	Addon::Register(U"ScreenFade", std::make_unique<ScreenFadeAddon>(), -1);
 	Addon::Register(U"SceneManager", std::make_unique<SceneManagerAddon>(), 0);
+
+	Addon::Register(AutoMuteAddon::kAddonName, std::make_unique<AutoMuteAddon>(), 1);
 
 	// 毎フレーム連続してアセット生成した時の警告を無効化
 	// (楽曲選択でのスクロールにおいては、正常系でもテクスチャ読み込みが毎フレーム発生するため)

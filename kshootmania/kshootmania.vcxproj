@@ -119,6 +119,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\addon\auto_mute_addon.cpp" />
     <ClCompile Include="src\common\asset_management.cpp" />
     <ClCompile Include="src\common\frame_rate_limit.cpp" />
     <ClCompile Include="src\common\ime_utils.cpp" />
@@ -398,6 +399,7 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\addon\auto_mute_addon.hpp" />
     <ClInclude Include="src\common\asset_management.hpp" />
     <ClInclude Include="src\common\common_defines.hpp" />
     <ClInclude Include="src\common\frame_rate_limit.hpp" />

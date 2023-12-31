@@ -5,6 +5,7 @@
 #include "common/common_defines.hpp"
 #include "common/asset_management.hpp"
 #include "common/math_utils.hpp"
+#include "addon/auto_mute_addon.hpp"
 #include "graphics/screen_utils.hpp"
 #include "graphics/tiled_texture.hpp"
 #include "ui/linear_menu.hpp"

@@ -15,6 +15,7 @@ SelectScene::SelectScene(const InitData& initData)
 	, m_menu([this](FilePathView chartFilePath) { moveToPlayScene(chartFilePath); })
 {
 	ScreenFadeAddon::FadeIn();
+	AutoMuteAddon::SetEnabled(true);
 }
 
 void SelectScene::update()

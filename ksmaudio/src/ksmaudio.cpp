@@ -23,4 +23,9 @@ namespace ksmaudio
 	{
 		BASS_Free();
 	}
+
+	void SetMute(bool isMute)
+	{
+		BASS_SetConfig(BASS_CONFIG_GVOL_STREAM, isMute ? 0 : 10000);
+	}
 }

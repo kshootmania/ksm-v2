@@ -298,6 +298,12 @@
     <Filter Include="Source Files\high_score">
       <UniqueIdentifier>{1ee0a769-51eb-457a-9ad8-87d974445d75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\addon">
+      <UniqueIdentifier>{511870ef-dc8d-4376-b557-85de38a190cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\addon">
+      <UniqueIdentifier>{39472495-8b39-4805-a151-cdd446e1c45f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\scene\title\title_scene.cpp">
@@ -551,6 +557,9 @@
     </ClCompile>
     <ClCompile Include="src\scene\option\option_key_config_menu.cpp">
       <Filter>Source Files\scene\option</Filter>
+    </ClCompile>
+    <ClCompile Include="src\addon\auto_mute_addon.cpp">
+      <Filter>Source Files\addon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1491,6 +1500,9 @@
     </ClInclude>
     <ClInclude Include="src\scene\option\option_key_config_menu.hpp">
       <Filter>Header Files\scene\option</Filter>
+    </ClInclude>
+    <ClInclude Include="src\addon\auto_mute_addon.hpp">
+      <Filter>Header Files\addon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

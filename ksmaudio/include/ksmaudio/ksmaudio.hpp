@@ -14,4 +14,6 @@ namespace ksmaudio
 	void Init(void* hWnd);
 
 	void Terminate();
+
+	void SetMute(bool isMute);
 }

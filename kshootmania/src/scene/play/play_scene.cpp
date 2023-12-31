@@ -21,6 +21,9 @@ PlayScene::PlayScene(const InitData& initData)
 {
 	m_gameMain.start();
 	ScreenFadeAddon::FadeIn(Palette::White);
+
+	// Playシーンではウィンドウのフォーカスが外れていてもミュートしない
+	AutoMuteAddon::SetEnabled(false);
 }
 
 PlayScene::~PlayScene()
