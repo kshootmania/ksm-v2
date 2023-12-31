@@ -29,6 +29,7 @@ void SelectScene::update()
 	// Backボタン(Escキー)を押した場合、(フォルダを閉じる状況でなければ)タイトル画面へ戻る
 	if (!closeFolder && KeyConfig::Down(KeyConfig::kBack))
 	{
+		m_menu.fadeOutSongPreviewForExit(ScreenFadeAddon::kDefaultDurationSec);
 		ScreenFadeAddon::FadeOutToScene(SceneName::kTitle);
 		return;
 	}

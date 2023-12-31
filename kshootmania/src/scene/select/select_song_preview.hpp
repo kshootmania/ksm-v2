@@ -7,8 +7,6 @@ class SelectSongPreview
 private:
 	ksmaudio::Stream m_defaultBgmStream{"se/sel_bgm.ogg", 1.0, false, false, true};
 
-	bool m_isPlayingDefaultBgm = false;
-
 	String m_songPreviewFilename;
 
 	std::unique_ptr<ksmaudio::Stream> m_songPreviewStream;
@@ -39,4 +37,6 @@ public:
 	void requestSongPreview(FilePathView filename, double offsetSec, double durationSec, double volume);
 
 	void requestDefaultBgm();
+
+	void fadeOutForExit(double durationSec);
 };

@@ -6,6 +6,7 @@ TitleScene::TitleScene(const InitData& initData)
 	, m_menu(this)
 	, m_bgTexture(TextureAsset(TitleTexture::kBG))
 {
+	m_bgmStream.play();
 	ScreenFadeAddon::FadeIn();
 }
 
@@ -27,6 +28,9 @@ void TitleScene::draw() const
 
 void TitleScene::processMenuItem(TitleMenu::Item item)
 {
+	m_bgmStream.setVolume(0.0);
+	m_enterSe.play(); // TODO: シーン遷移時に消えるのを修正
+
 	switch (item)
 	{
 	case TitleMenu::kStart:

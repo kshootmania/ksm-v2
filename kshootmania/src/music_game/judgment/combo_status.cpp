@@ -54,4 +54,9 @@ namespace MusicGame::Judgment
 	{
 		return m_stats.error == 0;
 	}
+
+	int32 ComboStatus::totalJudgedCombo() const
+	{
+		return m_stats.totalJudgedCombo();
+	}
 }

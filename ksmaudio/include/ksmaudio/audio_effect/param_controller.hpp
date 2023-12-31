@@ -26,8 +26,8 @@ namespace ksmaudio::AudioEffect
 		{
 		private:
 			std::shared_ptr<const std::map<float, T>> m_map; // ムーブ時のイテレータ破壊を防ぐためにポインタで持つ必要がある
-			std::map<float, T>::const_iterator m_cursorItr;
-			std::map<float, T>::const_iterator m_nextCursorItr;
+			typename std::map<float, T>::const_iterator m_cursorItr;
+			typename std::map<float, T>::const_iterator m_nextCursorItr;
 			float m_timeSec = kPastTimeSec;
 
 		public:

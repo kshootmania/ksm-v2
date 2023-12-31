@@ -8,6 +8,7 @@
 #include "hud/gauge_panel.hpp"
 #include "hud/combo_overlay.hpp"
 #include "hud/frame_rate_monitor.hpp"
+#include "hud/achievement_panel.hpp"
 #include "music_game/game_status.hpp"
 #include "music_game/view_status.hpp"
 #include "music_game/scroll/highway_scroll.hpp"
@@ -38,6 +39,7 @@ namespace MusicGame::Graphics
 		GaugePanel m_gaugePanel;
 		ComboOverlay m_comboOverlay;
 		FrameRateMonitor m_frameRateMonitor;
+		AchievementPanel m_achievementPanel;
 
 		void drawBG(const ViewStatus& viewStatus) const;
 

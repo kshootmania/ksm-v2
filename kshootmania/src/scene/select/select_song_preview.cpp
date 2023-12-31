@@ -96,7 +96,6 @@ void SelectSongPreview::requestSongPreview(FilePathView filename, double offsetS
 	}
 
 	m_defaultBgmStream.setVolume(0.0);
-	m_isPlayingDefaultBgm = false;
 
 	m_songPreviewFilename = filename;
 	m_songPreviewStream = nullptr;
@@ -112,4 +111,16 @@ void SelectSongPreview::requestDefaultBgm()
 	m_songPreviewFilename.clear();
 	m_songPreviewStream = nullptr;
 	m_songPreviewStartTimer.reset();
+}
+
+void SelectSongPreview::fadeOutForExit(double durationSec)
+{
+	if (m_songPreviewStream)
+	{
+		m_songPreviewStream->setFadeOut(durationSec);
+	}
+	else
+	{
+		m_defaultBgmStream.setFadeOut(durationSec);
+	}
 }

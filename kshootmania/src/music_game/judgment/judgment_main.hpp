@@ -26,5 +26,9 @@ namespace MusicGame::Judgment
 		/// @brief PlayResultを取得
 		/// @return PlayResult
 		PlayResult playResult() const;
+
+		/// @brief 全てのノーツが判定済みかどうか
+		/// @return 全てのノーツが判定済みならtrue
+		bool isFinished() const;
 	};
 }

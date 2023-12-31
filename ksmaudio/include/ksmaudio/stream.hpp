@@ -17,10 +17,13 @@ namespace ksmaudio
 		double m_volume;
 
 	public:
-		// TODO: filePath encoding problem
 		explicit Stream(const std::string& filePath, double volume = 1.0, bool enableCompressor = false, bool preload = false, bool loop = false);
 
 		~Stream();
+
+		Stream(const Stream&) = delete;
+
+		Stream& operator=(const Stream&) = delete;
 
 		void play() const;
 
@@ -47,6 +50,8 @@ namespace ksmaudio
 		void setFadeOut(double durationSec) const;
 
 		void setFadeOut(double durationSec, double volume);
+
+		bool isPlaying() const;
 
 		bool isFading() const;
 

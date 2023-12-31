@@ -179,6 +179,11 @@ namespace MusicGame::Judgment
 		m_isLockedForExit = true;
 	}
 
+	bool JudgmentHandler::isFinished() const
+	{
+		return m_totalCombo <= m_scoringStatus.totalJudgedCombo();
+	}
+
 	PlayResult JudgmentHandler::playResult() const
 	{
 		return PlayResult

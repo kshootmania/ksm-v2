@@ -79,7 +79,13 @@ namespace KeyConfig
 		}
 	}
 
-	void SetConfigValue(ConfigSet targetConfigSet, StringView configValue);
+	void SetConfigValueByCommaSeparated(ConfigSet targetConfigSet, StringView configValue);
+
+	void SetConfigValue(ConfigSet targetConfigSet, ConfigurableButton button, const Input& input);
+
+	const Input& GetConfigValue(ConfigSet targetConfigSet, ConfigurableButton button);
+
+	void SaveToConfigIni();
 
 	bool Pressed(Button button);
 

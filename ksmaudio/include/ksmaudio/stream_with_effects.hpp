@@ -18,6 +18,10 @@ namespace ksmaudio
 		// TODO: filePath encoding problem
 		explicit StreamWithEffects(const std::string& filePath, double volume = 1.0, bool enableCompressor = false, bool preload = false);
 
+		StreamWithEffects(const StreamWithEffects&) = delete;
+
+		StreamWithEffects& operator=(const StreamWithEffects&) = delete;
+
 		void play() const;
 
 		void pause() const;
@@ -37,6 +41,8 @@ namespace ksmaudio
 		std::size_t numChannels() const;
 
 		double latencySec() const;
+
+		void setFadeOut(double durationSec) const;
 
 		// Note: The pointer is valid until this StreamWithEffects instance is destroyed.
 		AudioEffect::AudioEffectBus* emplaceAudioEffectBusFX();

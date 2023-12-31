@@ -62,5 +62,7 @@ namespace MusicGame::Audio
 		const ksmaudio::AudioEffect::AudioEffectBus& audioEffectBusFX() const;
 
 		const ksmaudio::AudioEffect::AudioEffectBus& audioEffectBusLaser() const;
+
+		void setFadeOut(double durationSec);
 	};
 }

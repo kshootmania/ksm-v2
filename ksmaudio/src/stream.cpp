@@ -168,6 +168,12 @@ namespace ksmaudio
 		m_volume = volume;
 		setFadeOut(durationSec);
 	}
+	
+	bool Stream::isPlaying() const
+	{
+		const DWORD status = BASS_ChannelIsActive(m_hStream);
+		return status == BASS_ACTIVE_PLAYING || status == BASS_ACTIVE_STALLED;
+	}
 
 	bool Stream::isFading() const
 	{

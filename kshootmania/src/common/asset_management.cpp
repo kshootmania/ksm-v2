@@ -30,8 +30,13 @@ namespace AssetManagement
 		void RegisterFontAssets()
 		{
 			// フォントを登録
+#ifdef _WIN32
 			FontAsset::Register(kFontAssetSystem, FontMethod::MSDF, 44, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default);
 			FontAsset::Register(kFontAssetSystemBold, FontMethod::MSDF, 44, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Bold);
+#else
+			FontAsset::Register(kFontAssetSystem, FontMethod::MSDF, 44, Typeface::Regular);
+			FontAsset::Register(kFontAssetSystemBold, FontMethod::MSDF, 44, Typeface::Bold);
+#endif
 		}
 	}
 

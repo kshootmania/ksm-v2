@@ -43,10 +43,20 @@ void KSMIniData::save(FilePathView path) const
 	String ini;
 	ini.reserve(kReserveSize);
 
+#ifdef _MSC_VER
 	// iniファイル内に登場しなかったキーのset
 	const auto keysView = std::views::keys(m_hashTable);
 	std::set<StringView> remainingKeys(keysView.begin(), keysView.end()); // 順序を安定にするためにunordered_setではなくsetを使用
-
+#else
+	// iniファイル内に登場しなかったキーのset
+	// (Apple Clangが現状std::views::keys非対応のためforで回す)
+	std::set<StringView> remainingKeys; // 順序を安定にするためにunordered_setではなくsetを使用
+	for (const auto& [key, _] : m_hashTable)
+	{
+		remainingKeys.insert(key);
+	}
+#endif
+	
 	// iniファイルの内容を読み込みながら, 設定の行を最新の値で書き換える
 	if (FileSystem::Exists(path))
 	{

@@ -152,7 +152,7 @@ void ConfigIni::Load()
 	{
 		const StringView defaultValue = KeyConfig::kDefaultConfigValues[targetConfigSet];
 		const StringView configValue = GetString(iniKey, defaultValue);
-		KeyConfig::SetConfigValue(targetConfigSet, configValue);
+		KeyConfig::SetConfigValueByCommaSeparated(targetConfigSet, configValue);
 	}
 }
 

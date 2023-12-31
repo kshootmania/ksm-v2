@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "option_top_menu.hpp"
 #include "option_menu.hpp"
+#include "option_key_config_menu.hpp"
+#include "ksmaudio/ksmaudio.hpp"
 
 class OptionScene : public MyScene
 {
@@ -24,9 +26,13 @@ private:
 
 	std::array<OptionMenu, kOptionMenuTypeEnumCount> m_optionMenus;
 
+	OptionKeyConfigMenu m_keyConfigMenu;
+
 	const Font m_font;
 
 	Optional<OptionMenuType> m_currentOptionMenuIdx = none;
+
+	ksmaudio::Stream m_bgmStream{ "se/option_bgm.ogg", 1.0, false, false, true };
 
 public:
 	explicit OptionScene(const InitData& initData);

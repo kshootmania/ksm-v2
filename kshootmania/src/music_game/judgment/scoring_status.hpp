@@ -42,5 +42,7 @@ namespace MusicGame::Judgment
 		const ComboStats& comboStats() const;
 
 		bool isNoError() const;
+
+		int32 totalJudgedCombo() const;
 	};
 }

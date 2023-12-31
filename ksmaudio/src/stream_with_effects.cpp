@@ -64,6 +64,11 @@ namespace ksmaudio
 		return m_stream.latencySec();
 	}
 
+	void StreamWithEffects::setFadeOut(double durationSec) const
+	{
+		m_stream.setFadeOut(durationSec);
+	}
+
 	AudioEffect::AudioEffectBus* StreamWithEffects::emplaceAudioEffectBusFX()
 	{
 		return emplaceAudioEffectBusImpl(false);

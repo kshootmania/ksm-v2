@@ -2,6 +2,8 @@
 
 namespace
 {
+	constexpr Duration kPlayFinishFadeOutDuration = 2.4s;
+
 	MusicGame::GameCreateInfo MakeGameCreateInfo(const PlaySceneArgs& args)
 	{
 		return
@@ -28,21 +30,38 @@ PlayScene::~PlayScene()
 
 void PlayScene::update()
 {
-	m_gameMain.update();
+	const auto startFadeOut = m_gameMain.update();
 
-	// Escキーでゲームを中断してリザルト画面へ遷移
-	if (!ScreenFadeAddon::IsFadingOut() && KeyConfig::Down(KeyConfig::kBack))
+	if (!ScreenFadeAddon::IsFadingOut())
 	{
-		m_gameMain.lockForExit();
-
-		getData().resultSceneArgs = ResultSceneArgs
+		// 譜面終了時、またはBackボタンでリザルト画面に遷移
+		if (startFadeOut)
 		{
-			.chartFilePath = FilePath(m_gameMain.chartFilePath()),
-			.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
-			.playResult = m_gameMain.playResult(),
-		};
+			getData().resultSceneArgs = ResultSceneArgs
+			{
+				.chartFilePath = FilePath(m_gameMain.chartFilePath()),
+				.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
+				.playResult = m_gameMain.playResult(),
+			};
 
-		ScreenFadeAddon::FadeOutToScene(SceneName::kResult);
+			m_gameMain.startBGMFadeOut(kPlayFinishFadeOutDuration.count());
+			ScreenFadeAddon::FadeOutToScene(SceneName::kResult, kPlayFinishFadeOutDuration);
+		}
+		else if (KeyConfig::Down(KeyConfig::kBack))
+		{
+			// Backボタンの場合はスコアが変動しないようロック
+			m_gameMain.lockForExit();
+
+			getData().resultSceneArgs = ResultSceneArgs
+			{
+				.chartFilePath = FilePath(m_gameMain.chartFilePath()),
+				.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
+				.playResult = m_gameMain.playResult(),
+			};
+
+			m_gameMain.startBGMFadeOut(ScreenFadeAddon::kDefaultDurationSec);
+			ScreenFadeAddon::FadeOutToScene(SceneName::kResult);
+		}
 	}
 }
 

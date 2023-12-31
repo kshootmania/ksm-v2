@@ -4,6 +4,22 @@
 
 namespace MusicGame
 {
+	namespace
+	{
+		constexpr double kPlayFinishFadeOutStartSec = 2.4; // TODO: HARD落ちした場合は赤色表示を加えた上で4.8秒にする
+
+		bool ShouldStartFadeOut(const GameStatus& gameStatus)
+		{
+			if (!gameStatus.playFinishStatus.has_value())
+			{
+				return false;
+			}
+
+			const double secSincePlayFinishPrev = gameStatus.currentTimeSec - gameStatus.playFinishStatus->finishTimeSec;
+			return secSincePlayFinishPrev >= kPlayFinishFadeOutStartSec;
+		}
+	}
+
 	void GameMain::updateStatus()
 	{
 		// 曲の音声の更新
@@ -30,6 +46,14 @@ namespace MusicGame
 
 		// 判定の更新
 		m_judgmentMain.update(m_chartData, m_gameStatus, m_viewStatus);
+		if (!m_gameStatus.playFinishStatus.has_value() && m_judgmentMain.isFinished())
+		{
+			m_gameStatus.playFinishStatus = PlayFinishStatus
+			{
+				.finishTimeSec = currentTimeSec,
+				.achievement = m_judgmentMain.playResult().achievement(),
+			};
+		}
 	}
 
 	void GameMain::updateHighwayScroll()
@@ -64,11 +88,9 @@ namespace MusicGame
 	{
 		m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 		m_bgm.play();
-
-		kson::SaveKSONChartData("hogehoge.kson", m_chartData);
 	}
 
-	void GameMain::update()
+	GameMain::StartFadeOutYN GameMain::update()
 	{
 		// 状態更新
 		updateStatus();
@@ -102,6 +124,8 @@ namespace MusicGame
 		m_graphicsMain.update(m_viewStatus);
 
 		m_isFirstUpdate = false;
+
+		return ShouldStartFadeOut(m_gameStatus) ? StartFadeOutYN::Yes : StartFadeOutYN::No;
 	}
 
 	void GameMain::draw() const
@@ -137,5 +161,10 @@ namespace MusicGame
 	PlayResult GameMain::playResult() const
 	{
 		return m_judgmentMain.playResult();
+	}
+
+	void GameMain::startBGMFadeOut(double durationSec)
+	{
+		m_bgm.setFadeOut(durationSec);
 	}
 }

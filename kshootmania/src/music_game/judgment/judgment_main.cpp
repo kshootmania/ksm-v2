@@ -63,4 +63,9 @@ namespace MusicGame::Judgment
 	{
 		return m_judgmentHandler.playResult();
 	}
+
+	bool JudgmentMain::isFinished() const
+	{
+		return m_judgmentHandler.isFinished();
+	}
 }

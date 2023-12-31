@@ -217,4 +217,9 @@ namespace MusicGame::Audio
 	{
 		return *m_pAudioEffectBusLaser;
 	}
+
+	void BGM::setFadeOut(double durationSec)
+	{
+		m_stream.setFadeOut(durationSec);
+	}
 }

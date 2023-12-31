@@ -25,6 +25,9 @@ namespace MusicGame
 
 	class GameMain
 	{
+	public:
+		using StartFadeOutYN = YesNo<struct StartFadeOutYN_tag>;
+
 	private:
 		FilePath m_chartFilePath;
 
@@ -65,6 +68,7 @@ namespace MusicGame
 		// 状態
 		GameStatus m_gameStatus;
 		ViewStatus m_viewStatus;
+		bool m_isFinishedPrev = false;
 
 		void updateStatus();
 
@@ -75,7 +79,7 @@ namespace MusicGame
 
 		void start();
 
-		void update();
+		StartFadeOutYN update();
 
 		void draw() const;
 
@@ -88,5 +92,7 @@ namespace MusicGame
 		const kson::ChartData& chartData() const;
 
 		PlayResult playResult() const;
+
+		void startBGMFadeOut(double durationSec);
 	};
 }

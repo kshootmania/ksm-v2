@@ -76,7 +76,7 @@ namespace
 					{
 						I18n::LoadLanguage(ConfigIni::GetString(ConfigIni::Key::kLanguage));
 					}),
-				CreateInfo::Enum(ConfigIni::Key::kTextureSize, Array<IntStrPair>{
+				/*CreateInfo::Enum(ConfigIni::Key::kTextureSize, Array<IntStrPair>{
 					IntStrPair{ ConfigIni::Value::TextureSize::kSmall, I18n::Get(I18n::Option::kTextureSizeSmall) },
 					IntStrPair{ ConfigIni::Value::TextureSize::kMedium, I18n::Get(I18n::Option::kTextureSizeMedium) },
 					IntStrPair{ ConfigIni::Value::TextureSize::kLarge, I18n::Get(I18n::Option::kTextureSizeLarge) },
@@ -98,10 +98,10 @@ namespace
 				CreateInfo::Enum(ConfigIni::Key::kVsync, Array<StringView>{
 					I18n::Get(I18n::Option::kVsyncOff),
 					I18n::Get(I18n::Option::kVsyncOn),
-				}),
+				}),*/
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueInputJudgment, {
-				CreateInfo::Enum(ConfigIni::Key::kJudgmentModeBT, Array<StringView>{
+				/*CreateInfo::Enum(ConfigIni::Key::kJudgmentModeBT, Array<StringView>{
 					I18n::Get(I18n::Option::kJudgmentOn),
 					I18n::Get(I18n::Option::kJudgmentOff),
 					I18n::Get(I18n::Option::kJudgmentAuto),
@@ -124,14 +124,14 @@ namespace
 					IntStrPair{ ConfigIni::Value::LaserInputType::kSlider, I18n::Get(I18n::Option::kLaserInputTypeSlider) },
 					IntStrPair{ ConfigIni::Value::LaserInputType::kMouseXY, I18n::Get(I18n::Option::kLaserInputTypeMouseXY) },
 					IntStrPair{ ConfigIni::Value::LaserInputType::kAnalogStickXY, I18n::Get(I18n::Option::kLaserInputTypeAnalogStickXY) },
-				}),
+				}),*/
 				CreateInfo::Enum(ConfigIni::Key::kAssistTick, Array<StringView>{
 					I18n::Get(I18n::Option::kAssistTickOff),
 					I18n::Get(I18n::Option::kAssistTickOn),
-				}),
+				}).setKeyTextureIdx(4),
 				CreateInfo::Int(ConfigIni::Key::kTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)).setKeyTextureIdx(6), // TODO: additional suffix
-				CreateInfo::Int(ConfigIni::Key::kLaserTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)).setKeyTextureIdx(7),
-				CreateInfo::Enum(ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
+				//CreateInfo::Int(ConfigIni::Key::kLaserTimingAdjust, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::kTimingAdjustMs)).setKeyTextureIdx(7),
+				/*CreateInfo::Enum(ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
 					I18n::Get(I18n::Option::kLaserMouseDirectionLeftThenRight),
 					I18n::Get(I18n::Option::kLaserMouseDirectionRightThenRight),
 				}).setKeyTextureIdx(8),
@@ -143,15 +143,15 @@ namespace
 				CreateInfo::Enum(ConfigIni::Key::kSwapLaserLR, Array<StringView>{
 					I18n::Get(I18n::Option::kDisabled),
 					I18n::Get(I18n::Option::kEnabled),
-				}).setKeyTextureIdx(11),
+				}).setKeyTextureIdx(11),*/
 				CreateInfo::Enum(ConfigIni::Key::kSelectCloseFolderKey, Array<StringView>{
 					I18n::Get(I18n::Option::kSelectCloseFolderKeyBackspace),
 					I18n::Get(I18n::Option::kSelectCloseFolderKeyEsc),
 				}).setKeyTextureIdx(12),
-				CreateInfo::Enum(ConfigIni::Key::kUse3BTsPlusStartAsBack, Array<StringView>{
+				/*CreateInfo::Enum(ConfigIni::Key::kUse3BTsPlusStartAsBack, Array<StringView>{
 					I18n::Get(I18n::Option::kDisabled),
 					I18n::Get(I18n::Option::kEnabled),
-				}).setKeyTextureIdx(13),
+				}).setKeyTextureIdx(13),*/
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueOther, {
 				CreateInfo::Enum(ConfigIni::Key::kHispeedShowXMod, Array<StringView>{
@@ -166,7 +166,7 @@ namespace
 					I18n::Get(I18n::Option::kHispeedTypeHide),
 					I18n::Get(I18n::Option::kHispeedTypeShow),
 				}),
-				CreateInfo::Enum(ConfigIni::Key::kHideMouseCursor, Array<StringView>{
+				/*CreateInfo::Enum(ConfigIni::Key::kHideMouseCursor, Array<StringView>{
 					I18n::Get(I18n::Option::kHideMouseCursorOff),
 					I18n::Get(I18n::Option::kHideMouseCursorOn),
 				}).setKeyTextureIdx(5),
@@ -174,7 +174,7 @@ namespace
 					I18n::Get(I18n::Option::kUseNumpadAsArrowKeysOff),
 					I18n::Get(I18n::Option::kUseNumpadAsArrowKeysOnKeyboard),
 					I18n::Get(I18n::Option::kUseNumpadAsArrowKeysOnController),
-				}).setKeyTextureIdx(6),
+				}).setKeyTextureIdx(6),*/
 			}),
 			OptionMenu(OptionTexture::kMenuKeyValueOther/*FIXME*/, {
 			}),
@@ -194,6 +194,7 @@ OptionScene::OptionScene(const InitData& initData)
 	, m_optionMenus(MakeOptionMenus())
 	, m_font(FontAsset(kFontAssetSystem))
 {
+	m_bgmStream.play();
 	ScreenFadeAddon::FadeIn();
 }
 
@@ -206,7 +207,14 @@ void OptionScene::update()
 
 	if (m_currentOptionMenuIdx.has_value())
 	{
-		m_optionMenus[*m_currentOptionMenuIdx].update();
+		if (m_currentOptionMenuIdx == OptionMenuType::kKeyConfig)
+		{
+			m_keyConfigMenu.update();
+		}
+		else
+		{
+			m_optionMenus[*m_currentOptionMenuIdx].update();
+		}
 
 		if (KeyConfig::Down(KeyConfig::kBack))
 		{
@@ -239,10 +247,18 @@ void OptionScene::draw() const
 		const int32 headerIdx = *m_currentOptionMenuIdx + 1;
 		m_headerTiledTexture(headerIdx).draw(Scaled(kHeaderX), Scaled(kHeaderY));
 
-		// Menu items
-		m_optionMenus[*m_currentOptionMenuIdx].draw(LeftMarginVec() + Vec2{ ScaledByWidth(kOptionMenuOffsetX), Scaled(kOptionMenuOffsetY) });
-
-		footerStr = I18n::Get(I18n::Option::kGuideOption);
+		if (m_currentOptionMenuIdx == OptionMenuType::kKeyConfig)
+		{
+			// Key config
+			m_keyConfigMenu.draw();
+			footerStr = I18n::Get(I18n::Option::kGuideKeyConfig);
+		}
+		else
+		{
+			// Menu items
+			m_optionMenus[*m_currentOptionMenuIdx].draw(LeftMarginVec() + Vec2{ ScaledByWidth(kOptionMenuOffsetX), Scaled(kOptionMenuOffsetY) });
+			footerStr = I18n::Get(I18n::Option::kGuideOption);
+		}
 	}
 	else
 	{
@@ -263,5 +279,7 @@ void OptionScene::exitScene()
 	// 画面サイズ反映
 	ApplyScreenSizeConfig();
 
+	// フェードアウト
+	m_bgmStream.setFadeOut(ScreenFadeAddon::kDefaultDurationSec);
 	ScreenFadeAddon::FadeOutToScene(SceneName::kTitle);
 }

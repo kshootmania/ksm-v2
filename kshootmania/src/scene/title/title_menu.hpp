@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "graphics/tiled_texture.hpp"
+#include "ksmaudio/ksmaudio.hpp"
 
 class TitleScene;
 
@@ -17,6 +18,8 @@ private:
 	Stopwatch m_stopwatch;
 
 	double m_easedCursorPos = 0.0;
+
+	ksmaudio::Sample m_selectSe{ "se/title_sel.wav" };
 
 public:
 	enum Item : int32

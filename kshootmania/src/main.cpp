@@ -20,9 +20,15 @@ void Main()
 	// Escキーによるプログラム終了を無効化
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 
+	// F1キーによるライセンス表示を無効化
+	LicenseManager::DisableDefaultTrigger();
+
+	// ウィンドウタイトル
+	Window::SetTitle(U"K-Shoot MANIA v2.0.0-alpha1");
+
 	// 実行ファイルのパスをカレントディレクトリに設定
 	// (ChangeCurrentDirectoryはここ以外は基本的に使用禁止。どうしても使う必要がある場合は必ずModulePathに戻すこと)
-	FileSystem::ChangeCurrentDirectory(FileSystem::ModulePath());
+	FileSystem::ChangeCurrentDirectory(FileSystem::ParentPath(FileSystem::ModulePath()));
 
 	// デフォルト色を指定
 	Scene::SetBackground(Palette::Black);
@@ -64,8 +70,10 @@ void Main()
 	// (楽曲選択でのスクロールにおいては、正常系でもテクスチャ読み込みが毎フレーム発生するため)
 	Profiler::EnableAssetCreationWarning(false);
 
+#ifdef _WIN32
 	// IME無効化
 	IMEUtils::DetachIMEContext();
+#endif
 
 #ifdef _DEBUG
 	// ライブラリ側のデバッグ用にコンソール表示(Debugビルドの場合のみ)

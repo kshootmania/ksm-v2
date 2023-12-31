@@ -60,6 +60,7 @@ OptionMenu::OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMen
 	, m_font(FontAsset(kFontAssetSystem))
 	, m_stopwatch(StartImmediately::Yes)
 {
+	KeyConfig::SaveToConfigIni();
 }
 
 void OptionMenu::update()

@@ -15,6 +15,10 @@ namespace ksmaudio
 
 		~Sample();
 
+		Sample(const Sample&) = delete;
+
+		Sample& operator=(const Sample&) = delete;
+
 		void play(double volume = 1.0) const;
 	};
 }
