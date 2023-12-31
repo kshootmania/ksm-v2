@@ -13,7 +13,7 @@ SelectMenuAllFolderItem::SelectMenuAllFolderItem(IsCurrentFolderYN isCurrentFold
 
 void SelectMenuAllFolderItem::decide(const SelectMenuEventContext& context, [[maybe_unused]] int32 difficultyIdx)
 {
-	Print << U"Not Implemented (SelectMenuAllFolderItem::decide)";
+	//Print << U"Not Implemented (SelectMenuAllFolderItem::decide)";
 }
 
 void SelectMenuAllFolderItem::drawCenter([[maybe_unused]] int32 difficultyIdx, const RenderTexture& renderTexture, const SelectMenuItemGraphicAssets& assets) const

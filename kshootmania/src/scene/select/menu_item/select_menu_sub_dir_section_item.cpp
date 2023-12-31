@@ -9,7 +9,7 @@ SelectMenuSubDirSectionItem::SelectMenuSubDirSectionItem(FilePathView fullPath)
 
 void SelectMenuSubDirSectionItem::decide(const SelectMenuEventContext& context, [[maybe_unused]] int32 difficultyIdx)
 {
-	Print << U"Not Implemented (SelectMenuSubDirSectionItem::decide)";
+	//Print << U"Not Implemented (SelectMenuSubDirSectionItem::decide)";
 }
 
 void SelectMenuSubDirSectionItem::drawCenter([[maybe_unused]] int32 difficultyIdx, const RenderTexture& renderTexture, const SelectMenuItemGraphicAssets& assets) const

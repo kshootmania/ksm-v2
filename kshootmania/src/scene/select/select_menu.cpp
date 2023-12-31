@@ -173,7 +173,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath, PlaySeYN playSe)
 			if (rotatedIdx == directories.size() - 1)
 			{
 				// "All"フォルダの項目を追加
-				m_menu.push_back(std::make_unique<SelectMenuAllFolderItem>(IsCurrentFolderYN::No));
+				//m_menu.push_back(std::make_unique<SelectMenuAllFolderItem>(IsCurrentFolderYN::No));
 
 				// TODO: "Courses"フォルダの項目を追加
 			}

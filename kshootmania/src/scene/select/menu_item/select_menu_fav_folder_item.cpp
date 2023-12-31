@@ -10,7 +10,7 @@ SelectMenuFavFolderItem::SelectMenuFavFolderItem(IsCurrentFolderYN isCurrentFold
 
 void SelectMenuFavFolderItem::decide(const SelectMenuEventContext& context, [[maybe_unused]] int32 difficultyIdx)
 {
-	Print << U"Not Implemented (SelectMenuFavFolderItem::decide)";
+	//Print << U"Not Implemented (SelectMenuFavFolderItem::decide)";
 }
 
 void SelectMenuFavFolderItem::drawCenter([[maybe_unused]] int32 difficultyIdx, const RenderTexture& renderTexture, const SelectMenuItemGraphicAssets& assets) const
