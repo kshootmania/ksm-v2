@@ -34,7 +34,6 @@ namespace ksmaudio::AudioEffect
 			return;
 		}
 
-		const float fSampleRate = static_cast<float>(m_info.sampleRate);
 		const bool isBypassed = bypass || params.mix == 0.0f; // 切り替え時のノイズ回避のためにbypass状態でも処理自体はする
 
 		assert(dataSize % m_info.numChannels == 0U);
@@ -56,7 +55,7 @@ namespace ksmaudio::AudioEffect
 			{
 				if (vUpdated)
 				{
-					m_lowPassFilters[ch].setLowPassFilter(freq, params.q, fSampleRate);
+					m_lowPassFilters[ch].setLowPassFilter(freq, params.q, m_info.sampleRateFloat);
 				}
 
 				const float wet = m_lowPassFilters[ch].process(*pData);

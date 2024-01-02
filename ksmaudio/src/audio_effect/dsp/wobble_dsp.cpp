@@ -40,7 +40,6 @@ namespace ksmaudio::AudioEffect
 
         const std::size_t frameSize = dataSize / m_info.numChannels;
         const std::size_t numPeriodFrames = static_cast<std::size_t>(params.waveLength * m_info.sampleRate);
-        const float fSampleRate = static_cast<float>(m_info.sampleRate);
         
         if (bypass || params.mix == 0.0f)
         {
@@ -53,7 +52,7 @@ namespace ksmaudio::AudioEffect
                 const float freq = WobbleFreq(m_triggerHandler.framesSincePrevTrigger(), numPeriodFrames, params.freq1, params.freq2);
                 for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
                 {
-                    m_lowPassFilters[ch].setLowPassFilter(freq, params.q, fSampleRate);
+                    m_lowPassFilters[ch].setLowPassFilter(freq, params.q, m_info.sampleRateFloat);
                 }
                 for (std::size_t i = 0U; i < frameSize; ++i)
                 {
@@ -74,7 +73,7 @@ namespace ksmaudio::AudioEffect
             const float freq = WobbleFreq(m_triggerHandler.framesSincePrevTrigger(), numPeriodFrames, params.freq1, params.freq2);
             for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
             {
-                m_lowPassFilters[ch].setLowPassFilter(freq, params.q, fSampleRate);
+                m_lowPassFilters[ch].setLowPassFilter(freq, params.q, m_info.sampleRateFloat);
                 *pData = m_lowPassFilters[ch].process(*pData);
                 ++pData;
             }

@@ -33,6 +33,8 @@ namespace ksmaudio::AudioEffect
 
 		std::size_t sampleRate;
 
+		float sampleRateFloat;
+
 		float sampleRateScale;
 
 		std::size_t numChannels;
@@ -40,6 +42,7 @@ namespace ksmaudio::AudioEffect
 		constexpr DSPCommonInfo(std::size_t sampleRate, std::size_t numChannels)
 			: isUnsupported(numChannels == 0U || numChannels >= 3U) // Supports stereo and mono only
 			, sampleRate(sampleRate)
+			, sampleRateFloat(static_cast<float>(sampleRate))
 			, sampleRateScale(sampleRate / 44100.0f)
 			, numChannels(numChannels)
 		{

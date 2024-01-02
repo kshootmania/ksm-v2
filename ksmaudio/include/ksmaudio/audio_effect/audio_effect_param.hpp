@@ -56,6 +56,8 @@ namespace ksmaudio::AudioEffect
 
 	bool GetValueAsBool(const Param& param, const Status& status, bool isOn);
 
+	int GetValueAsInt(const Param& param, const Status& status, bool isOn);
+
 	Param DefineParam(Type type, const std::string& valueSetStr);
 
 	class TapestopTriggerParam

@@ -74,6 +74,7 @@ namespace MusicGame::Audio
 			fnInsertDefaultFX("gate", { .type = kson::AudioEffectType::Gate });
 			fnInsertDefaultFX("flanger", { .type = kson::AudioEffectType::Flanger });
 			fnInsertDefaultFX("bitcrusher", { .type = kson::AudioEffectType::Bitcrusher });
+			fnInsertDefaultFX("phaser", { .type = kson::AudioEffectType::Phaser });
 			fnInsertDefaultFX("wobble", { .type = kson::AudioEffectType::Wobble });
 			fnInsertDefaultFX("tapestop", { .type = kson::AudioEffectType::Tapestop });
 			fnInsertDefaultFX("echo", { .type = kson::AudioEffectType::Echo });

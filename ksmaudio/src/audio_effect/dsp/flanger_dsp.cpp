@@ -31,12 +31,12 @@ namespace ksmaudio::AudioEffect
 		}
 
 		const float periodSamples = params.period * m_info.sampleRate;
-		const float lfoSpeed = periodSamples == 0.0f ? 0.0f : 1.0f / periodSamples;
+		const float lfoSpeed = periodSamples == 0.0f ? 0.0f : (1.0f / periodSamples);
 		for (std::size_t i = 0; i < numFrames; ++i)
 		{
 			for (std::size_t channel = 0; channel < m_info.numChannels; ++channel)
 			{
-				const float lfoValue = (channel == 0U) ? detail::Triangle(m_lfoTimeRate) : detail::Triangle(detail::DecimalPart(m_lfoTimeRate + params.stereoWidth / 2));
+				const float lfoValue = detail::TriangleWithStereoWidth(m_lfoTimeRate, channel, params.stereoWidth);
 				const float delayFrames = (params.delay + lfoValue * params.depth) * m_info.sampleRateScale;
 				const float wet = (*pData + m_ringBuffer.lerpedDelay((std::max)(delayFrames - 1.0f, 0.0f), channel)) * params.vol; // writeより先にreadするので1フレーム引いている
 				m_ringBuffer.write(m_lowShelfFilters[channel].process(std::lerp(*pData, wet, params.feedback) * std::lerp(1.0f, params.vol, params.mix)), channel);

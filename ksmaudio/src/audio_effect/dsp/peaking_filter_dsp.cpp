@@ -153,7 +153,6 @@ namespace ksmaudio::AudioEffect
 			return;
 		}
 
-		const float fSampleRate = static_cast<float>(m_info.sampleRate);
 		const bool isBypassed = bypass || params.mix == 0.0f; // 切り替え時のノイズ回避のためにbypass状態でも処理自体はする
 
 		assert(dataSize % m_info.numChannels == 0U);
@@ -169,7 +168,7 @@ namespace ksmaudio::AudioEffect
 				// 余韻を適用する必要がある場合はフィルタ係数を毎回更新
 				for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
 				{
-					m_peakingFilters[ch].setPeakingFilter(m_release.freq(), params.bandwidth, m_release.baseGainDb() * params.gainRate, fSampleRate);
+					m_peakingFilters[ch].setPeakingFilter(m_release.freq(), params.bandwidth, m_release.baseGainDb() * params.gainRate, m_info.sampleRateFloat);
 				}
 			}
 			else
@@ -180,7 +179,7 @@ namespace ksmaudio::AudioEffect
 					// 値が更新された場合はフィルタ係数を更新
 					for (std::size_t ch = 0U; ch < m_info.numChannels; ++ch)
 					{
-						m_peakingFilters[ch].setPeakingFilter(m_valueController.freq(), params.bandwidth, m_valueController.baseGainDb() * params.gainRate, fSampleRate);
+						m_peakingFilters[ch].setPeakingFilter(m_valueController.freq(), params.bandwidth, m_valueController.baseGainDb() * params.gainRate, m_info.sampleRateFloat);
 					}
 				}
 			}

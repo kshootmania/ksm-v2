@@ -15,8 +15,8 @@ namespace ksmaudio::AudioEffect
         assert(dataSize % m_info.numChannels == 0);
 
         const std::size_t frameSize = dataSize / m_info.numChannels;
-        const std::size_t numLoopFrames = static_cast<std::size_t>(params.waveLength * static_cast<float>(m_info.sampleRate));
-        const std::size_t numNonZeroFrames = static_cast<std::size_t>(static_cast<float>(numLoopFrames) * params.rate);
+        const std::size_t numLoopFrames = static_cast<std::size_t>(params.waveLength * m_info.sampleRate);
+        const std::size_t numNonZeroFrames = static_cast<std::size_t>(numLoopFrames * params.rate);
         if (0 <= m_framesUntilTrigger && std::cmp_less(m_framesUntilTrigger, frameSize)) // m_framesUntilTrigger < frameSize
         {
             // 今回の処理フレーム中にトリガ更新タイミングが含まれている場合、トリガ更新の前後2つに分けて処理

@@ -230,6 +230,11 @@ namespace ksmaudio::AudioEffect
 		return ValueAsBool(GetValue(param, status, isOn));
 	}
 
+	int GetValueAsInt(const Param& param, const Status& status, bool isOn)
+	{
+		return static_cast<int>(GetValue(param, status, isOn));
+	}
+
 	Param DefineParam(Type type, const std::string& valueSetStr)
 	{
 		return {

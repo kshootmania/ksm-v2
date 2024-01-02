@@ -178,6 +178,7 @@
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\high_pass_filter_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\low_pass_filter_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\peaking_filter_dsp.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\dsp\phaser_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\retrigger_echo_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\sidechain_dsp.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\dsp\tapestop_dsp.hpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="include\ksmaudio\audio_effect\params\high_pass_filter_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\low_pass_filter_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\peaking_filter_params.hpp" />
+    <ClInclude Include="include\ksmaudio\audio_effect\params\phaser_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\retrigger_echo_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\sidechain_params.hpp" />
     <ClInclude Include="include\ksmaudio\audio_effect\params\tapestop_params.hpp" />
@@ -208,6 +210,7 @@
     <ClCompile Include="src\audio_effect\dsp\high_pass_filter_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\low_pass_filter_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\peaking_filter_dsp.cpp" />
+    <ClCompile Include="src\audio_effect\dsp\phaser_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\retrigger_echo_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\sidechain_dsp.cpp" />
     <ClCompile Include="src\audio_effect\dsp\tapestop_dsp.cpp" />
