@@ -63,19 +63,12 @@ namespace MusicGame::Graphics
 			ScopedRenderStates2D blendState(kEnableAlphaBlend); // Note: The drawn text edge will be darker than expected, but no problem here.
 
 			// Title
-			const Font titleFont(30, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default);
-			const auto drawableTitle = titleFont(Unicode::FromUTF8(chartData.meta.title));
-			for (int32 i = 0; i < 2; ++i)
-			{
-				// Draw twice to make the font slightly bold
-				// (Using a bold typeface makes the font too bold compared to HSP's Artlet2D)
-				// TODO: Maybe fonts with bold glyphs (e.g. Arial) do not have this problem (unconfirmed), so simply use bold for them.
-				drawableTitle.drawAt(Point{ 12 + i, 4 } + Point{ 448, 52 } / 2, kSongInfoFontColor);
-			}
+			const Font titleFont = FontAsset(AssetManagement::kFontAssetSystemBold);
+			titleFont(Unicode::FromUTF8(chartData.meta.title)).drawAt(30, Point{ 12, 4 } + Point{ 448, 52 } / 2, kSongInfoFontColor);
 
 			// Artist
-			const Font artistFont(22, FileSystem::GetFolderPath(SpecialFolder::SystemFonts) + U"msgothic.ttc", 2, FontStyle::Default);
-			artistFont(Unicode::FromUTF8(chartData.meta.artist)).drawAt(Point{ 12, 54 } + Point{ 448, 28 } / 2, kSongInfoFontColor);
+			const Font artistFont = FontAsset(AssetManagement::kFontAssetSystem);
+			artistFont(Unicode::FromUTF8(chartData.meta.artist)).drawAt(22, Point{ 12, 54 } + Point{ 448, 28 } / 2, kSongInfoFontColor);
 		}
 	}
 
