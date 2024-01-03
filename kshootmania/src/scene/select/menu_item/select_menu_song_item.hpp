@@ -15,7 +15,9 @@ public:
 
 	virtual ~SelectMenuSongItem() = default;
 
-	virtual void decide(const SelectMenuEventContext& context, int32 difficultyIdx);
+	virtual void decide(const SelectMenuEventContext& context, int32 difficultyIdx) override;
+
+	virtual void decideAutoPlay(const SelectMenuEventContext& context, int32 difficultyIdx) override;
 
 	virtual FilePathView fullPath() const override
 	{

@@ -18,6 +18,7 @@ namespace
 PlayScene::PlayScene(const InitData& initData)
 	: MyScene(initData)
 	, m_gameMain(MakeGameCreateInfo(getData().playSceneArgs))
+	, m_isAutoPlay(getData().playSceneArgs.playOption.isAutoPlay)
 {
 	m_gameMain.start();
 	ScreenFadeAddon::FadeIn(Palette::White);
@@ -40,30 +41,44 @@ void PlayScene::update()
 		// 譜面終了時、またはBackボタンでリザルト画面に遷移
 		if (startFadeOut)
 		{
-			getData().resultSceneArgs = ResultSceneArgs
-			{
-				.chartFilePath = FilePath(m_gameMain.chartFilePath()),
-				.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
-				.playResult = m_gameMain.playResult(),
-			};
-
 			m_gameMain.startBGMFadeOut(kPlayFinishFadeOutDuration.count());
-			ScreenFadeAddon::FadeOutToScene(SceneName::kResult, kPlayFinishFadeOutDuration);
+
+			if (m_isAutoPlay)
+			{
+				ScreenFadeAddon::FadeOutToScene(SceneName::kSelect, kPlayFinishFadeOutDuration);
+			}
+			else
+			{
+				getData().resultSceneArgs = ResultSceneArgs
+				{
+					.chartFilePath = FilePath(m_gameMain.chartFilePath()),
+					.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
+					.playResult = m_gameMain.playResult(),
+				};
+				ScreenFadeAddon::FadeOutToScene(SceneName::kResult, kPlayFinishFadeOutDuration);
+			}
 		}
 		else if (KeyConfig::Down(KeyConfig::kBack))
 		{
 			// Backボタンの場合はスコアが変動しないようロック
 			m_gameMain.lockForExit();
 
-			getData().resultSceneArgs = ResultSceneArgs
-			{
-				.chartFilePath = FilePath(m_gameMain.chartFilePath()),
-				.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
-				.playResult = m_gameMain.playResult(),
-			};
-
 			m_gameMain.startBGMFadeOut(ScreenFadeAddon::kDefaultDurationSec);
-			ScreenFadeAddon::FadeOutToScene(SceneName::kResult);
+
+			if (m_isAutoPlay)
+			{
+				ScreenFadeAddon::FadeOutToScene(SceneName::kSelect);
+			}
+			else
+			{
+				getData().resultSceneArgs = ResultSceneArgs
+				{
+					.chartFilePath = FilePath(m_gameMain.chartFilePath()),
+					.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
+					.playResult = m_gameMain.playResult(),
+				};
+				ScreenFadeAddon::FadeOutToScene(SceneName::kResult);
+			}
 		}
 	}
 }

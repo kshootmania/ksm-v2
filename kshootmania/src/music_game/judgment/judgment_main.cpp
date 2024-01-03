@@ -3,17 +3,18 @@
 namespace MusicGame::Judgment
 {
 	JudgmentMain::JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const PlayOption& playOption)
-		: m_btLaneJudgments{
-			ButtonLaneJudgment(kBTButtons[0], chartData.note.bt[0], chartData.beat, timingCache),
-			ButtonLaneJudgment(kBTButtons[1], chartData.note.bt[1], chartData.beat, timingCache),
-			ButtonLaneJudgment(kBTButtons[2], chartData.note.bt[2], chartData.beat, timingCache),
-			ButtonLaneJudgment(kBTButtons[3], chartData.note.bt[3], chartData.beat, timingCache) }
+		: m_playOption(playOption)
+		, m_btLaneJudgments{
+			ButtonLaneJudgment(playOption.btJudgmentPlayMode(), kBTButtons[0], chartData.note.bt[0], chartData.beat, timingCache),
+			ButtonLaneJudgment(playOption.btJudgmentPlayMode(), kBTButtons[1], chartData.note.bt[1], chartData.beat, timingCache),
+			ButtonLaneJudgment(playOption.btJudgmentPlayMode(), kBTButtons[2], chartData.note.bt[2], chartData.beat, timingCache),
+			ButtonLaneJudgment(playOption.btJudgmentPlayMode(), kBTButtons[3], chartData.note.bt[3], chartData.beat, timingCache) }
 		, m_fxLaneJudgments{
-			ButtonLaneJudgment(kFXButtons[0], chartData.note.fx[0], chartData.beat, timingCache),
-			ButtonLaneJudgment(kFXButtons[1], chartData.note.fx[1], chartData.beat, timingCache) }
+			ButtonLaneJudgment(playOption.fxJudgmentPlayMode(), kFXButtons[0], chartData.note.fx[0], chartData.beat, timingCache),
+			ButtonLaneJudgment(playOption.fxJudgmentPlayMode(), kFXButtons[1], chartData.note.fx[1], chartData.beat, timingCache) }
 		, m_laserLaneJudgments{
-			LaserLaneJudgment(kLaserButtons[0][0], kLaserButtons[0][1], chartData.note.laser[0], chartData.beat, timingCache),
-			LaserLaneJudgment(kLaserButtons[1][0], kLaserButtons[1][1], chartData.note.laser[1], chartData.beat, timingCache) }
+			LaserLaneJudgment(playOption.laserJudgmentPlayMode(), kLaserButtons[0][0], kLaserButtons[0][1], chartData.note.laser[0], chartData.beat, timingCache),
+			LaserLaneJudgment(playOption.laserJudgmentPlayMode(), kLaserButtons[1][0], kLaserButtons[1][1], chartData.note.laser[1], chartData.beat, timingCache) }
 		, m_judgmentHandler(chartData, m_btLaneJudgments, m_fxLaneJudgments, m_laserLaneJudgments, playOption)
 	{
 	}

@@ -14,7 +14,7 @@ struct SelectMenuEventContext
 {
 	// Note: FilePathViewやconst FilePath&ではなくFilePathにしているのは意図的
 	//       (メニュー項目の再構築が発生すると呼び出し元のFilePathが無効になるので、事前にコピーしておく必要がある)
-	std::function<void(FilePath)> fnMoveToPlayScene;
+	std::function<void(FilePath, MusicGame::IsAutoPlayYN)> fnMoveToPlayScene;
 	std::function<void(FilePath)> fnOpenDirectory;
 	std::function<void()> fnCloseFolder;
 };
@@ -54,7 +54,7 @@ private:
 	void refreshSongPreview();
 
 public:
-	explicit SelectMenu(std::function<void(FilePathView)> fnMoveToPlayScene);
+	explicit SelectMenu(std::function<void(FilePathView, MusicGame::IsAutoPlayYN)> fnMoveToPlayScene);
 
 	~SelectMenu(); // ヘッダではISelectMenuItemが不完全型なのでソースファイル側で定義
 
@@ -63,6 +63,8 @@ public:
 	void draw() const;
 
 	void decide();
+
+	void decideAutoPlay();
 
 	bool isFolderOpen() const;
 

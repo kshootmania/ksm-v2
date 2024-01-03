@@ -4,8 +4,11 @@
 class PlayScene : public MyScene
 {
 private:
-	// ゲームのメインクラス
+	/// @brief ゲームのメインクラス
 	MusicGame::GameMain m_gameMain;
+
+	/// @brief オートプレイかどうか
+	MusicGame::IsAutoPlayYN m_isAutoPlay;
 
 public:
 	explicit PlayScene(const InitData& initData);

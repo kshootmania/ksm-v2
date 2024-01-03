@@ -13,11 +13,11 @@ namespace MusicGame::Judgment
 			kson::ByPulse<int32> directionMap;
 			directionMap.emplace(kson::Pulse{ 0 }, 0);
 
-			for (const auto& [y, sec] : lane)
+			for (const auto& [y, section] : lane)
 			{
 				kson::Pulse prevPulse = y;
 				Optional<double> prevValue = none;
-				for (const auto& [ry, v] : sec.v)
+				for (const auto& [ry, v] : section.v)
 				{
 					if (prevValue.has_value())
 					{
@@ -274,22 +274,38 @@ namespace MusicGame::Judgment
 		return m_totalAbsDeltaCursorX >= kLaserSlamCriticalDeltaCursorXThreshold;
 	}
 
-	JudgmentResult LaserSlamJudgment::judgmentResult(double currentTimeSec) const
+	JudgmentResult LaserSlamJudgment::judgmentResult(double currentTimeSec, IsAutoPlayYN isAutoPlay) const
 	{
-		if (isCriticalSatisfied())
+		if (isAutoPlay)
 		{
-			// CRITICAL判定の移動量を満たしていればCRITICAL判定
-			return JudgmentResult::kCritical;
-		}
-		else if (currentTimeSec <= m_sec + TimingWindow::LaserNote::kWindowSecSlam)
-		{
-			// CRITICAL判定の移動量を満たしておらず、まだ判定時間終了前の場合は未判定
-			return JudgmentResult::kUnspecified;
+			if (currentTimeSec < m_sec - TimingWindow::LaserNote::kWindowSecSlam)
+			{
+				return JudgmentResult::kUnspecified;
+			}
+			else
+			{
+				// 直角音のタイミングが遅れないよう、オートプレイ時は判定可能になったタイミングでやや先行してCRITICAL判定にする
+				// (直角音は別途LaserSlamSE側でノーツ通りのタイミングで再生する仕組みになっているので、先行判定して問題ない)
+				return JudgmentResult::kCritical;
+			}
 		}
 		else
 		{
-			// CRITICAL判定の移動量を満たしておらず、既に判定時間を過ぎている場合はERROR判定
-			return JudgmentResult::kError;
+			if (isCriticalSatisfied())
+			{
+				// CRITICAL判定の移動量を満たしていればCRITICAL判定
+				return JudgmentResult::kCritical;
+			}
+			else if (currentTimeSec <= m_sec + TimingWindow::LaserNote::kWindowSecSlam)
+			{
+				// CRITICAL判定の移動量を満たしておらず、まだ判定時間終了前の場合は未判定
+				return JudgmentResult::kUnspecified;
+			}
+			else
+			{
+				// CRITICAL判定の移動量を満たしておらず、既に判定時間を過ぎている場合はERROR判定
+				return JudgmentResult::kError;
+			}
 		}
 	}
 
@@ -346,7 +362,7 @@ namespace MusicGame::Judgment
 		laneStatusRef.cursorX = Clamp(nextCursorX, 0.0, 1.0);
 	}
 
-	void LaserLaneJudgment::processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
+	void LaserLaneJudgment::processSlamJudgment(const kson::ByPulse<kson::LaserSection>& lane, double deltaCursorX, double currentTimeSec, LaserLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef, IsAutoPlayYN isAutoPlay)
 	{
 		// 直角LASERはまだカーソルが出ていなくても先行判定するので、カーソルの存在チェックはしない
 
@@ -365,7 +381,7 @@ namespace MusicGame::Judgment
 		laserSlamJudgmentRef.addDeltaCursorX(deltaCursorX, currentTimeSec);
 
 		// 判定が決まった場合
-		const JudgmentResult judgmentResult = laserSlamJudgmentRef.judgmentResult(currentTimeSec);
+		const JudgmentResult judgmentResult = laserSlamJudgmentRef.judgmentResult(currentTimeSec, isAutoPlay);
 		if (judgmentResult != JudgmentResult::kUnspecified)
 		{
 			judgmentHandlerRef.onLaserSlamJudged(judgmentResult, laserSlamPulse, m_prevTimeSec, m_prevPulse, laserSlamJudgmentRef.direction());
@@ -407,7 +423,7 @@ namespace MusicGame::Judgment
 
 				// 未判定である(まだERROR判定になっていない)直角LASERが見つかったら抜ける
 				const auto& [_, nextLaserSlamJudgmentRef] = *m_slamJudgmentArrayCursor;
-				if (nextLaserSlamJudgmentRef.judgmentResult(currentTimeSec) == JudgmentResult::kUnspecified)
+				if (nextLaserSlamJudgmentRef.judgmentResult(currentTimeSec, isAutoPlay) == JudgmentResult::kUnspecified)
 				{
 					break;
 				}
@@ -448,6 +464,31 @@ namespace MusicGame::Judgment
 			// 直角判定後の補正時間内であれば、カーソルを理想位置へ吸い付かせる
 			laneStatusRef.cursorX = laneStatusRef.noteCursorX;
 		}
+	}
+
+	void LaserLaneJudgment::processAutoCursorMovementForAutoPlay(double currentTimeSec, LaserLaneStatus& laneStatusRef)
+	{
+		if (!laneStatusRef.cursorX.has_value())
+		{
+			// カーソルが出ていない場合は何もしない
+			return;
+		}
+
+		if (!laneStatusRef.noteCursorX.has_value())
+		{
+			// 事前生成されたカーソルは動かさない(いわゆる始点ロック)
+			return;
+		}
+
+		if (!laneStatusRef.currentLaserSectionPulse.has_value())
+		{
+			// noteCursorXが存在すればcurrentLaserSectionPulseも存在するはず
+			assert(false && "currentLaserSectionPulse is none although noteCursorX is not none");
+			return;
+		}
+
+		// カーソルを理想位置へ吸い付かせる
+		laneStatusRef.cursorX = laneStatusRef.noteCursorX;
 	}
 
 	void LaserLaneJudgment::processAutoCursorMovementByLineDirectionChange(double currentTimeSec, LaserLaneStatus& laneStatusRef)
@@ -595,18 +636,19 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void LaserLaneJudgment::processPassedLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
+	void LaserLaneJudgment::processPassedLineJudgment(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse currentPulse, LaserLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef, IsAutoPlayYN isAutoPlay)
 	{
+		const JudgmentResult result = isAutoPlay ? JudgmentResult::kCritical : JudgmentResult::kError;
 		for (auto itr = m_passedLineJudgmentCursor; itr != m_lineJudgmentArray.end(); ++itr)
 		{
 			auto& [y, judgment] = *itr;
 			if (y + judgment.length < currentPulse)
 			{
-				// 通過済みロングノーツのERROR判定
+				// 通過済みの判定を処理
 				if (judgment.result == JudgmentResult::kUnspecified)
 				{
-					judgment.result = JudgmentResult::kError;
-					judgmentHandlerRef.onLaserLineJudged(JudgmentResult::kError);
+					judgment.result = result;
+					judgmentHandlerRef.onLaserLineJudged(result);
 				}
 
 				m_passedLineJudgmentCursor = std::next(itr);
@@ -614,8 +656,9 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	LaserLaneJudgment::LaserLaneJudgment(KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
-		: m_keyConfigButtonL(keyConfigButtonL)
+	LaserLaneJudgment::LaserLaneJudgment(JudgmentPlayMode judgmentPlayMode, KeyConfig::Button keyConfigButtonL, KeyConfig::Button keyConfigButtonR, const kson::ByPulse<kson::LaserSection>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
+		: m_judgmentPlayMode(judgmentPlayMode)
+		, m_keyConfigButtonL(keyConfigButtonL)
 		, m_keyConfigButtonR(keyConfigButtonR)
 		, m_laserLineDirectionMap(CreateLaserLineDirectionMap(lane))
 		, m_laserLineDirectionMapForRippleEffect(CreateLaserLineDirectionMapForRippleEffect(m_laserLineDirectionMap, lane))
@@ -701,36 +744,51 @@ namespace MusicGame::Judgment
 			m_lastCorrectMovementSec = kPastTimeSec;
 		}
 
-		// キー押下中の判定処理
-		// (左向きキーと右向きキーを同時に押している場合、最後に押した方を優先する)
-		const Optional<KeyConfig::Button> lastPressedButton = KeyConfig::LastPressedLaserButton(m_keyConfigButtonL, m_keyConfigButtonR);
-		double deltaCursorX;
-		if (lastPressedButton.has_value())
+		if (m_judgmentPlayMode == JudgmentPlayMode::kOn)
 		{
-			const int32 direction = lastPressedButton == m_keyConfigButtonL ? -1 : 1;
-			deltaCursorX = kLaserKeyboardCursorXPerSec * Scene::DeltaTime() * direction; // TODO: Scene::DeltaTime()を使わずcurrentTimeSecの差分を使う
+			// キー押下中の判定処理
+			// (左向きキーと右向きキーを同時に押している場合、最後に押した方を優先する)
+			const Optional<KeyConfig::Button> lastPressedButton = KeyConfig::LastPressedLaserButton(m_keyConfigButtonL, m_keyConfigButtonR);
+			double deltaCursorX;
+			if (lastPressedButton.has_value())
+			{
+				const int32 direction = lastPressedButton == m_keyConfigButtonL ? -1 : 1;
+				deltaCursorX = kLaserKeyboardCursorXPerSec * Scene::DeltaTime() * direction; // TODO: Scene::DeltaTime()を使わずcurrentTimeSecの差分を使う
+			}
+			else
+			{
+				deltaCursorX = 0.0;
+			}
+			processCursorMovement(deltaCursorX, currentPulse, currentTimeSec, laneStatusRef);
+			processSlamJudgment(lane, deltaCursorX, currentTimeSec, laneStatusRef, judgmentHandlerRef, IsAutoPlayYN::No);
+
+			// 直角LASER判定直後のカーソル自動移動
+			processAutoCursorMovementBySlamJudgment(currentTimeSec, laneStatusRef);
+
+			// 折り返し地点でのカーソル自動移動
+			processAutoCursorMovementByLineDirectionChange(currentTimeSec, laneStatusRef);
+
+			// 正解判定後のカーソル自動移動
+			processAutoCursorMovementAfterCorrectMovement(currentTimeSec, laneStatusRef);
+
+			// カーソル位置をもとにLASERの判定を決定
+			processLineJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, judgmentHandlerRef);
+
+			// 通過済みのLASER判定をERRORにする
+			processPassedLineJudgment(lane, currentPulse, laneStatusRef, judgmentHandlerRef, IsAutoPlayYN::No);
+			// FIXME: 通過済みの直角が明示的にERROR判定されていない？
 		}
-		else
+		else if (m_judgmentPlayMode == JudgmentPlayMode::kAuto)
 		{
-			deltaCursorX = 0.0;
+			// オートプレイ中のカーソル自動移動
+			processAutoCursorMovementForAutoPlay(currentTimeSec, laneStatusRef);
+
+			// 直角判定
+			processSlamJudgment(lane, 0.0, currentTimeSec, laneStatusRef, judgmentHandlerRef, IsAutoPlayYN::Yes);
+
+			// 通過済みのLASER判定をCRITICALにする
+			processPassedLineJudgment(lane, currentPulse, laneStatusRef, judgmentHandlerRef, IsAutoPlayYN::Yes);
 		}
-		processCursorMovement(deltaCursorX, currentPulse, currentTimeSec, laneStatusRef);
-		processSlamJudgment(lane, deltaCursorX, currentTimeSec, laneStatusRef, judgmentHandlerRef);
-
-		// 直角LASER判定直後のカーソル自動移動
-		processAutoCursorMovementBySlamJudgment(currentTimeSec, laneStatusRef);
-
-		// 折り返し地点でのカーソル自動移動
-		processAutoCursorMovementByLineDirectionChange(currentTimeSec, laneStatusRef);
-
-		// 正解判定後のカーソル自動移動
-		processAutoCursorMovementAfterCorrectMovement(currentTimeSec, laneStatusRef);
-
-		// カーソル位置をもとにLASERの判定を決定
-		processLineJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, judgmentHandlerRef);
-
-		// 通過済みのLASER判定をERRORにする
-		processPassedLineJudgment(lane, currentPulse, laneStatusRef, judgmentHandlerRef);
 
 		if (m_prevIsCursorInCriticalJudgmentRange)
 		{

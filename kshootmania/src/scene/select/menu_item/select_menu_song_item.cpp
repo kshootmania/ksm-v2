@@ -79,7 +79,25 @@ void SelectMenuSongItem::decide(const SelectMenuEventContext& context, int32 dif
 		return;
 	}
 	const FilePath chartFilePath = FilePath{ pChartInfo->chartFilePath() };
-	context.fnMoveToPlayScene(chartFilePath);
+	context.fnMoveToPlayScene(chartFilePath, MusicGame::IsAutoPlayYN::No);
+}
+
+void SelectMenuSongItem::decideAutoPlay(const SelectMenuEventContext& context, int32 difficultyIdx)
+{
+	if (difficultyIdx < 0 || kNumDifficulties <= difficultyIdx)
+	{
+		Logger << U"[SelectMenu] Difficulty index out of range: {} ({})"_fmt(difficultyIdx, m_fullPath);
+		return;
+	}
+
+	const SelectChartInfo* pChartInfo = chartInfoPtr(difficultyIdx);
+	if (pChartInfo == nullptr)
+	{
+		Logger << U"[SelectMenu] pChartInfo is null (difficultyIdx:{}): {}"_fmt(difficultyIdx, m_fullPath);
+		return;
+	}
+	const FilePath chartFilePath = FilePath{ pChartInfo->chartFilePath() };
+	context.fnMoveToPlayScene(chartFilePath, MusicGame::IsAutoPlayYN::Yes);
 }
 
 const SelectChartInfo* SelectMenuSongItem::chartInfoPtr(int difficultyIdx) const

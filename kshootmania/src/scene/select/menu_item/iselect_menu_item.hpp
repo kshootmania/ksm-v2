@@ -40,6 +40,10 @@ public:
 
 	virtual void decide(const SelectMenuEventContext& context, int32 difficultyIdx) = 0;
 
+	virtual void decideAutoPlay(const SelectMenuEventContext& context, int32 difficultyIdx)
+	{
+	}
+
 	virtual FilePathView fullPath() const = 0;
 
 	virtual const SelectChartInfo* chartInfoPtr([[maybe_unused]] int difficultyIdx) const

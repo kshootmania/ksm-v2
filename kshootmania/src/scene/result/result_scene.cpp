@@ -7,17 +7,20 @@ ResultScene::ResultScene(const InitData& initData)
 	, m_playResult(getData().resultSceneArgs.playResult)
 	, m_resultPanel(getData().resultSceneArgs.chartFilePath, m_chartData, m_playResult)
 {
-	// TODO(alphaまで): 実際の設定を反映
-	const KscKey condition
+	if (!m_playResult.playOption.isAutoPlay) // オートプレイの場合はスコアを保存しない(オートプレイではリザルト画面を出さないので不要だが一応チェックはする)
 	{
-		.gaugeType = GaugeType::kNormalGauge,
-		.turnMode = TurnMode::kNormal,
-		.btPlayMode = JudgmentPlayMode::kOn,
-		.fxPlayMode = JudgmentPlayMode::kOn,
-		.laserPlayMode = JudgmentPlayMode::kOn,
-	};
-	const FilePathView chartFilePath = getData().resultSceneArgs.chartFilePath;
-	KscIo::WriteHighScoreInfo(chartFilePath, m_playResult, condition);
+		// TODO(alphaまで): 実際の設定を反映
+		const KscKey condition
+		{
+			.gaugeType = GaugeType::kNormalGauge,
+			.turnMode = TurnMode::kNormal,
+			.btPlayMode = JudgmentPlayMode::kOn,
+			.fxPlayMode = JudgmentPlayMode::kOn,
+			.laserPlayMode = JudgmentPlayMode::kOn,
+		};
+		const FilePathView chartFilePath = getData().resultSceneArgs.chartFilePath;
+		KscIo::WriteHighScoreInfo(chartFilePath, m_playResult, condition);
+	}
 
 	m_bgmStream.play();
 

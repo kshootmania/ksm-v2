@@ -1,8 +1,9 @@
 ﻿#include "select_scene.hpp"
 
-void SelectScene::moveToPlayScene(FilePathView chartFilePath)
+void SelectScene::moveToPlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay)
 {
 	getData().playSceneArgs.chartFilePath = chartFilePath;
+	getData().playSceneArgs.playOption.isAutoPlay = isAutoPlay;
 	ScreenFadeAddon::FadeOutToScene(SceneName::kPlay, ScreenFadeAddon::kDefaultDuration, Palette::White);
 }
 
@@ -12,7 +13,7 @@ SelectScene::SelectScene(const InitData& initData)
 		ConfigIni::GetInt(ConfigIni::Key::kSelectCloseFolderKey) == ConfigIni::Value::SelectCloseFolderKey::kBackButton
 			? KeyConfig::kBack
 			: KeyConfig::kBackspace)
-	, m_menu([this](FilePathView chartFilePath) { moveToPlayScene(chartFilePath); })
+	, m_menu([this](FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlayYN) { moveToPlayScene(chartFilePath, isAutoPlayYN); })
 {
 	ScreenFadeAddon::FadeIn();
 	AutoMuteAddon::SetEnabled(true);
@@ -47,6 +48,12 @@ void SelectScene::update()
 	if (KeyConfig::Down(KeyConfig::kStart))
 	{
 		m_menu.decide();
+	}
+
+	// オートプレイボタン(F11)を押した場合、オートプレイ開始
+	if (KeyConfig::Down(KeyConfig::kAutoPlay))
+	{
+		m_menu.decideAutoPlay();
 	}
 }
 

@@ -84,7 +84,7 @@ namespace MusicGame::Judgment
 			return judgmentArray;
 		}
 
-		bool IsDuringLongNote(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse)
+		bool IsDuringLongNote(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, kson::Pulse* pLongNoteY = nullptr)
 		{
 			const auto& currentNoteItr = kson::ValueItrAt(lane, currentPulse);
 			if (currentNoteItr != lane.end())
@@ -92,6 +92,10 @@ namespace MusicGame::Judgment
 				const auto& [y, note] = *currentNoteItr;
 				if (y <= currentPulse && currentPulse < y + note.length)
 				{
+					if (pLongNoteY != nullptr)
+					{
+						*pLongNoteY = y;
+					}
 					return true;
 				}
 			}
@@ -231,26 +235,36 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	void ButtonLaneJudgment::processPassedNoteJudgment(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
+	void ButtonLaneJudgment::processPassedNoteJudgment(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef, IsAutoPlayYN isAutoPlay)
 	{
 		using namespace TimingWindow;
+
+		const JudgmentResult result = isAutoPlay ? JudgmentResult::kCritical : JudgmentResult::kError;
+		const double thresholdSec = isAutoPlay ? 0.0 : ChipNote::kWindowSecError;
 
 		for (auto itr = m_passedNoteCursor; itr != lane.end(); ++itr)
 		{
 			const auto& [y, note] = *itr;
-			const double passSec = (note.length == 0) ? m_pulseToSec.at(y) + ChipNote::kWindowSecError : m_pulseToSec.at(y + note.length);
+			const double passSec = (note.length == 0) ? m_pulseToSec.at(y) + thresholdSec : m_pulseToSec.at(y + note.length);
 			if (currentTimeSec >= passSec)
 			{
-				// 通過済みチップノーツのERROR判定
+				// 通過済みチップノーツの判定
 				if (note.length == 0 && m_chipJudgmentArray.at(y) == JudgmentResult::kUnspecified)
 				{
-					m_chipJudgmentArray.at(y) = JudgmentResult::kError;
-					judgmentHandlerRef.onChipJudged(JudgmentResult::kError);
+					m_chipJudgmentArray.at(y) = result;
+					judgmentHandlerRef.onChipJudged(result);
 
 					laneStatusRef.chipAnim.push({
 						.startTimeSec = currentTimeSec,
-						.type = JudgmentResult::kError,
+						.type = result,
 					});
+
+					// オートプレイの場合はここでCRITICALのキービームを表示
+					if (isAutoPlay)
+					{
+						laneStatusRef.keyBeamTimeSec = passSec;
+						laneStatusRef.keyBeamType = KeyBeamType::kCritical;
+					}
 				}
 
 				m_passedNoteCursor = std::next(itr);
@@ -262,11 +276,11 @@ namespace MusicGame::Judgment
 			auto& [y, judgment] = *itr;
 			if (y + judgment.length < currentPulse)
 			{
-				// 通過済みロングノーツのERROR判定
+				// 通過済みロングノーツの判定
 				if (judgment.result == JudgmentResult::kUnspecified)
 				{
-					judgment.result = JudgmentResult::kError;
-					judgmentHandlerRef.onLongJudged(JudgmentResult::kError);
+					judgment.result = result;
+					judgmentHandlerRef.onLongJudged(result);
 				}
 
 				m_passedLongJudgmentCursor = std::next(itr);
@@ -274,8 +288,9 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	ButtonLaneJudgment::ButtonLaneJudgment(KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
-		: m_keyConfigButton(keyConfigButton)
+	ButtonLaneJudgment::ButtonLaneJudgment(JudgmentPlayMode judgmentPlayMode, KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
+		: m_judgmentPlayMode(judgmentPlayMode)
+		, m_keyConfigButton(keyConfigButton)
 		, m_pulseToSec(CreatePulseToSec(lane, beatInfo, timingCache))
 		, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane))
 		, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatInfo))
@@ -286,36 +301,64 @@ namespace MusicGame::Judgment
 
 	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
 	{
-		// チップノーツとロングノーツの始点の判定処理
-		if (!m_isLockedForExit && KeyConfig::Down(m_keyConfigButton))
+		if (m_judgmentPlayMode == JudgmentPlayMode::kOn)
 		{
-			processKeyDown(lane, currentPulse, currentTimeSec, laneStatusRef, judgmentHandlerRef);
-		}
+			// チップノーツとロングノーツの始点の判定処理
+			if (!m_isLockedForExit && KeyConfig::Down(m_keyConfigButton))
+			{
+				processKeyDown(lane, currentPulse, currentTimeSec, laneStatusRef, judgmentHandlerRef);
+			}
 
-		// ロングノーツ押下中の判定処理
-		if (KeyConfig::Pressed(m_keyConfigButton))
-		{
-			processKeyPressed(lane, currentPulse, laneStatusRef, judgmentHandlerRef);
-		}
+			// ロングノーツ押下中の判定処理
+			if (KeyConfig::Pressed(m_keyConfigButton))
+			{
+				processKeyPressed(lane, currentPulse, laneStatusRef, judgmentHandlerRef);
+			}
 
-		// ロングノーツを離したときの判定処理
-		if (laneStatusRef.currentLongNotePulse.has_value() &&
-			(KeyConfig::Up(m_keyConfigButton) || (*laneStatusRef.currentLongNotePulse + lane.at(*laneStatusRef.currentLongNotePulse).length < currentPulse)))
-		{
-			laneStatusRef.currentLongNotePulse = none;
-			laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
-		}
+			// ロングノーツを離したときの判定処理
+			if (laneStatusRef.currentLongNotePulse.has_value() &&
+				(KeyConfig::Up(m_keyConfigButton) || (*laneStatusRef.currentLongNotePulse + lane.at(*laneStatusRef.currentLongNotePulse).length < currentPulse)))
+			{
+				laneStatusRef.currentLongNotePulse = none;
+				laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
+			}
 
-		// 通り過ぎたノーツをERROR判定にする
-		processPassedNoteJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, judgmentHandlerRef);
+			// 通り過ぎたノーツをERROR判定にする
+			processPassedNoteJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, judgmentHandlerRef, IsAutoPlayYN::No);
 
-		if (IsDuringLongNote(lane, currentPulse))
-		{
-			laneStatusRef.longNotePressed = laneStatusRef.currentLongNotePulse.has_value();
+			if (IsDuringLongNote(lane, currentPulse))
+			{
+				laneStatusRef.longNotePressed = laneStatusRef.currentLongNotePulse.has_value();
+			}
+			else
+			{
+				laneStatusRef.longNotePressed = none;
+			}
 		}
-		else
+		else if (m_judgmentPlayMode == JudgmentPlayMode::kAuto)
 		{
-			laneStatusRef.longNotePressed = none;
+			// 通り過ぎたノーツをCRITICAL判定にする
+			processPassedNoteJudgment(lane, currentPulse, currentTimeSec, laneStatusRef, judgmentHandlerRef, IsAutoPlayYN::Yes);
+
+			kson::Pulse currentLongNoteY;
+			if (IsDuringLongNote(lane, currentPulse, &currentLongNoteY))
+			{
+				// ロングノーツ中の場合は押下中にする
+				laneStatusRef.longNotePressed = true;
+				laneStatusRef.currentLongNotePulse = currentLongNoteY;
+				laneStatusRef.currentLongNoteAnimOffsetTimeSec = m_pulseToSec.at(currentLongNoteY);
+			}
+			else
+			{
+				// ロングノーツ中でない場合
+				if (laneStatusRef.currentLongNotePulse.has_value())
+				{
+					// 前フレームでロングノーツが存在し、現在フレームで存在しない場合は離した扱いにする(アニメーション用)
+					laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
+				}
+				laneStatusRef.longNotePressed = none;
+				laneStatusRef.currentLongNotePulse = none;
+			}
 		}
 
 		m_prevPulse = currentPulse;

@@ -249,10 +249,10 @@ void SelectMenu::refreshSongPreview()
 	}
 }
 
-SelectMenu::SelectMenu(std::function<void(FilePathView)> fnMoveToPlayScene)
+SelectMenu::SelectMenu(std::function<void(FilePathView, MusicGame::IsAutoPlayYN)> fnMoveToPlayScene)
 	: m_eventContext
 		{
-			.fnMoveToPlayScene = [fnMoveToPlayScene](FilePath path) { fnMoveToPlayScene(path); },
+			.fnMoveToPlayScene = [fnMoveToPlayScene](FilePath path, MusicGame::IsAutoPlayYN isAutoPlay) { fnMoveToPlayScene(path, isAutoPlay); },
 			.fnOpenDirectory = [this](FilePath path) { openDirectory(path, PlaySeYN::Yes); },
 			.fnCloseFolder = [this]() { closeFolder(PlaySeYN::Yes); },
 		}
@@ -334,6 +334,16 @@ void SelectMenu::decide()
 	}
 
 	m_menu.cursorValue()->decide(m_eventContext, m_difficultyMenu.cursor());
+}
+
+void SelectMenu::decideAutoPlay()
+{
+	if (m_menu.empty() || m_menu.cursorValue() == nullptr)
+	{
+		return;
+	}
+
+	m_menu.cursorValue()->decideAutoPlay(m_eventContext, m_difficultyMenu.cursor());
 }
 
 bool SelectMenu::isFolderOpen() const

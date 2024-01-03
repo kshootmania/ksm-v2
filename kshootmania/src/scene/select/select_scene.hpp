@@ -13,7 +13,7 @@ private:
 
 	SelectMenu m_menu;
 
-	void moveToPlayScene(FilePathView chartFilePath);
+	void moveToPlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay);
 
 public:
 	explicit SelectScene(const InitData& initData);

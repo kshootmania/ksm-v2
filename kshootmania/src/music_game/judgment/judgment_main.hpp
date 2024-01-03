@@ -10,6 +10,7 @@ namespace MusicGame::Judgment
 	class JudgmentMain
 	{
 	private:
+		const PlayOption m_playOption;
 		BTLaneJudgments m_btLaneJudgments;
 		FXLaneJudgments m_fxLaneJudgments;
 		LaserLaneJudgments m_laserLaneJudgments;
