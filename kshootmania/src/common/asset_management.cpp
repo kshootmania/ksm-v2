@@ -12,7 +12,7 @@ namespace AssetManagement
 		constexpr StringView kFontAssetSystemScBold = U"SystemScBold";
 		constexpr StringView kFontAssetSystemTc = U"SystemTc";
 		constexpr StringView kFontAssetSystemTcBold = U"SystemTcBold";
-		constexpr StringView kDefaultFontResourcePath = U"assets/font/corporate-logo/Corporate-Logo-Medium-ver3.otf";
+		constexpr StringView kDefaultFontResourcePath = U"assets/font/corporate-logo/Corporate-Logo-ver3-ksm.otf";
 
 		void RegisterTextureAssets()
 		{

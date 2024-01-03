@@ -1080,7 +1080,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="App\assets\font\corporate-logo\Corporate-Logo-Medium-ver3.otf">
+    <Font Include="App\assets\font\corporate-logo\Corporate-Logo-ver3-ksm.otf">
       <Filter>Resource Files\assets\font\corporate-logo</Filter>
     </Font>
   </ItemGroup>
