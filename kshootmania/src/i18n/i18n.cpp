@@ -2,6 +2,8 @@
 
 namespace
 {
+	I18n::StandardLanguage s_currentLanguage = I18n::StandardLanguage::Unknown;
+
 	std::array<std::array<String, I18n::kKeyIdxMax>, I18n::kCategoryMax> s_i18nDictionary;
 
 	StringView TrimZeroPadding(StringView str)
@@ -15,6 +17,34 @@ namespace
 		}
 
 		return str.substr(cursor);
+	}
+
+	I18n::StandardLanguage ConvertLanguageNameToStandardLanguage(StringView name)
+	{
+		if (name == U"English")
+		{
+			return I18n::StandardLanguage::English;
+		}
+		else if (name == U"Japanese")
+		{
+			return I18n::StandardLanguage::Japanese;
+		}
+		else if (name == U"Korean")
+		{
+			return I18n::StandardLanguage::Korean;
+		}
+		else if (name == U"Simplified Chinese")
+		{
+			return I18n::StandardLanguage::SimplifiedChinese;
+		}
+		else if (name == U"Traditional Chinese")
+		{
+			return I18n::StandardLanguage::TraditionalChinese;
+		}
+		else
+		{
+			return I18n::StandardLanguage::Unknown;
+		}
 	}
 }
 
@@ -31,13 +61,20 @@ Array<String> I18n::GetAvailableLanguageList()
 	return langList;
 }
 
+I18n::StandardLanguage I18n::CurrentLanguage()
+{
+	return s_currentLanguage;
+}
+
 void I18n::LoadLanguage(StringView name, StringView fallback)
 {
 	String path = U"{}/{}.txt"_fmt(kDirectoryPath, name);
+	s_currentLanguage = ::ConvertLanguageNameToStandardLanguage(name);
 	if (!FileSystem::Exists(path))
 	{
 		Print << U"Warning: Could not find language file '{}'!"_fmt(path);
 		path = U"{}/{}.txt"_fmt(kDirectoryPath, fallback);
+		s_currentLanguage = ::ConvertLanguageNameToStandardLanguage(fallback);
 		if (!FileSystem::Exists(path))
 		{
 			throw Error(U"I18n::LoadLanguage(): Could not load language '{}' and could not load fallback '{}'!"_fmt(name, fallback));

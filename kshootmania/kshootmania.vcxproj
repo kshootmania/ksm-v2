@@ -213,23 +213,6 @@
     <Image Include="App\engine\texture\box-shadow\32.png" />
     <Image Include="App\engine\texture\box-shadow\64.png" />
     <Image Include="App\engine\texture\box-shadow\8.png" />
-    <Image Include="App\example\bay.jpg" />
-    <Image Include="App\example\gif\test.gif" />
-    <Image Include="App\example\obj\bark.jpg" />
-    <Image Include="App\example\obj\leaves.png" />
-    <Image Include="App\example\obj\pine_leaves_red.png" />
-    <Image Include="App\example\obj\siv3d-kun-eye.png" />
-    <Image Include="App\example\obj\siv3d-kun.png" />
-    <Image Include="App\example\particle.png" />
-    <Image Include="App\example\siv3d-kun.png" />
-    <Image Include="App\example\spritesheet\siv3d-kun-16.png" />
-    <Image Include="App\example\texture\earth.jpg" />
-    <Image Include="App\example\texture\grass.jpg" />
-    <Image Include="App\example\texture\ground.jpg" />
-    <Image Include="App\example\texture\rock.jpg" />
-    <Image Include="App\example\texture\uv.png" />
-    <Image Include="App\example\texture\wood.jpg" />
-    <Image Include="App\example\windmill.png" />
     <Image Include="App\icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -239,22 +222,10 @@
     <Text Include="App\dll\soundtouch\COPYING.TXT" />
     <Text Include="App\engine\font\fontawesome\LICENSE.txt" />
     <Text Include="App\engine\soundfont\GMGSx.sf2.txt" />
-    <Text Include="App\example\font\DotGothic16\OFL.txt" />
-    <Text Include="App\example\font\RocknRoll\OFL.txt" />
-    <Text Include="App\example\LICENSE.txt" />
-    <Text Include="App\example\midi\test.txt" />
-    <Text Include="App\example\obj\credit.txt" />
-    <Text Include="App\example\spritesheet\siv3d-kun-16.txt" />
-    <Text Include="App\example\svg\README.txt" />
-    <Text Include="App\example\texture\credit.txt" />
-    <Text Include="App\example\txt\en.txt" />
-    <Text Include="App\example\txt\jp.txt" />
-    <Text Include="App\example\txt\kr.txt" />
-    <Text Include="App\example\txt\sc.txt" />
-    <Text Include="App\example\video\river.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="App\assets\font\corporate-logo\LICENSE" />
     <None Include="App\dll\soundtouch\SoundTouch_x64.dll" />
     <None Include="App\engine\font\fontawesome\fontawesome-brands.otf.zstdcmp" />
     <None Include="App\engine\font\fontawesome\fontawesome-solid.otf.zstdcmp" />
@@ -327,77 +298,6 @@
     <None Include="App\engine\shader\glsl\square_dot.frag" />
     <None Include="App\engine\shader\glsl\texture.frag" />
     <None Include="App\engine\soundfont\GMGSx.sf2.zstdcmp" />
-    <None Include="App\example\csv\config.csv" />
-    <None Include="App\example\font\DotGothic16\README-JP.md" />
-    <None Include="App\example\font\DotGothic16\README.md" />
-    <None Include="App\example\font\RocknRoll\README-JP.md" />
-    <None Include="App\example\font\RocknRoll\README.md" />
-    <None Include="App\example\geojson\countries.geojson" />
-    <None Include="App\example\ini\config.ini" />
-    <None Include="App\example\json\config.json" />
-    <None Include="App\example\json\empty.json" />
-    <None Include="App\example\json\invalid-blank.json" />
-    <None Include="App\example\json\invalid-syntax.json" />
-    <None Include="App\example\json\test.json" />
-    <None Include="App\example\midi\test.mid" />
-    <None Include="App\example\obj\blacksmith.mtl" />
-    <None Include="App\example\obj\crystal1.mtl" />
-    <None Include="App\example\obj\crystal2.mtl" />
-    <None Include="App\example\obj\crystal3.mtl" />
-    <None Include="App\example\obj\mill.mtl" />
-    <None Include="App\example\obj\pine.mtl" />
-    <None Include="App\example\obj\siv3d-kun.mtl" />
-    <None Include="App\example\obj\tree.mtl" />
-    <None Include="App\example\script\breakout.as" />
-    <None Include="App\example\script\hello.as" />
-    <None Include="App\example\script\paint.as" />
-    <None Include="App\example\script\piano.as" />
-    <None Include="App\example\script\test.as" />
-    <None Include="App\example\shader\glsl\default2d.vert" />
-    <None Include="App\example\shader\glsl\default2d_shape.frag" />
-    <None Include="App\example\shader\glsl\default2d_texture.frag" />
-    <None Include="App\example\shader\glsl\default3d_forward.frag" />
-    <None Include="App\example\shader\glsl\default3d_forward.vert" />
-    <None Include="App\example\shader\glsl\extract_bright_linear.frag" />
-    <None Include="App\example\shader\glsl\forward_fog.frag" />
-    <None Include="App\example\shader\glsl\forward_triplanar.frag" />
-    <None Include="App\example\shader\glsl\game_of_life.frag" />
-    <None Include="App\example\shader\glsl\grayscale.frag" />
-    <None Include="App\example\shader\glsl\homography.frag" />
-    <None Include="App\example\shader\glsl\homography.vert" />
-    <None Include="App\example\shader\glsl\multi_texture_blend.frag" />
-    <None Include="App\example\shader\glsl\multi_texture_mask.frag" />
-    <None Include="App\example\shader\glsl\poisson_disk.frag" />
-    <None Include="App\example\shader\glsl\posterize.frag" />
-    <None Include="App\example\shader\glsl\rgb_shift.frag" />
-    <None Include="App\example\shader\glsl\rgb_to_bgr.frag" />
-    <None Include="App\example\shader\glsl\soft_shape.vert" />
-    <None Include="App\example\shader\glsl\swirl.frag" />
-    <None Include="App\example\shader\glsl\terrain_forward.frag" />
-    <None Include="App\example\shader\glsl\terrain_forward.vert" />
-    <None Include="App\example\shader\glsl\terrain_normal.frag" />
-    <None Include="App\example\svg\cat.svg" />
-    <None Include="App\example\svg\turtle.svg" />
-    <None Include="App\example\toml\config.toml" />
-    <None Include="App\example\toml\test.toml" />
-    <None Include="App\example\zip\zip_test.zip" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="App\example\shot.mp3" />
-    <Media Include="App\example\test.mp3" />
-    <Media Include="App\example\video\river.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf" />
-    <Font Include="App\example\font\RocknRoll\RocknRollOne-Regular.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="App\example\objdetect\haarcascade\eye.xml" />
-    <Xml Include="App\example\objdetect\haarcascade\face_anime.xml" />
-    <Xml Include="App\example\objdetect\haarcascade\frontal_catface.xml" />
-    <Xml Include="App\example\objdetect\haarcascade\frontal_face_alt2.xml" />
-    <Xml Include="App\example\xml\config.xml" />
-    <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\addon\auto_mute_addon.hpp" />
@@ -507,94 +407,15 @@
     <ClInclude Include="src\ui\linear_menu.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App\example\obj\blacksmith.obj">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\obj\crystal1.obj">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\obj\crystal2.obj">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\obj\crystal3.obj">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\obj\mill.obj">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\obj\pine.obj">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\obj\siv3d-kun.obj">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\obj\tree.obj">
-      <FileType>Document</FileType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App\example\shader\hlsl\default2d.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\default3d_forward.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\extract_bright_linear.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\forward_fog.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\forward_triplanar.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\game_of_life.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\grayscale.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\homography.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\multi_texture_blend.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\multi_texture_mask.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\poisson_disk.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\posterize.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\rgb_shift.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\rgb_to_bgr.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\soft_shape.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\swirl.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\terrain_forward.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="App\example\shader\hlsl\terrain_normal.hlsl">
-      <FileType>Document</FileType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\kson\kson.vcxproj">
       <Project>{e8fc8484-971e-48d5-8523-1f38e5f9a45e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ksmaudio\ksmaudio.vcxproj">
       <Project>{590cb790-463c-417a-bb1f-183adf4fe900}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="App\assets\font\corporate-logo\Corporate-Logo-Medium-ver3.otf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

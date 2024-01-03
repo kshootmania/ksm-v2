@@ -31,7 +31,7 @@ private:
 	OptionKeyConfigCursor m_cursor = OptionKeyConfigCursor::BT_A;
 	OptionKeyConfigMenuState m_state = OptionKeyConfigMenuState::None;
 	KeyConfig::ConfigSet m_targetConfigSet = KeyConfig::ConfigSet::kKeyboard1;
-	Font m_font = FontAsset(AssetManagement::kFontAssetSystem);
+	const Font m_font = AssetManagement::SystemFont();
 
 	const TiledTexture m_fxLRTexture;
 

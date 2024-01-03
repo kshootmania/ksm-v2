@@ -7,6 +7,20 @@ namespace I18n
 
 	Array<String> GetAvailableLanguageList();
 
+	/// @brief 標準搭載している言語
+	/// @remark ユーザー側で独自に追加したものが選択されている場合はUnknownとなる
+	enum class StandardLanguage
+	{
+		Unknown,
+		English,
+		Japanese,
+		Korean,
+		SimplifiedChinese,
+		TraditionalChinese,
+	};
+
+	StandardLanguage CurrentLanguage();
+
 	void LoadLanguage(StringView name, StringView fallback = U"English");
 
 	enum Category : int32

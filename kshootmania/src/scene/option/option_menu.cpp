@@ -57,7 +57,7 @@ OptionMenu::OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMen
 			.sourceSize = kFieldTextureSourceSize,
 		})
 	, m_fields(MakeFields(m_fieldKeyTexture, fieldCreateInfos))
-	, m_font(FontAsset(kFontAssetSystem))
+	, m_font(AssetManagement::SystemFont())
 	, m_stopwatch(StartImmediately::Yes)
 {
 	KeyConfig::SaveToConfigIni();

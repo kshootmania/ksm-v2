@@ -34,8 +34,8 @@ struct SelectMenuItemGraphicAssets
 		.lowerHalf = TextureAsset(SelectTexture::kSubDirLowerHalf),
 	};
 
-	Font font = FontAsset(kFontAssetSystem);
-	Font fontBold = FontAsset(kFontAssetSystemBold);
+	Font font = AssetManagement::SystemFont();
+	Font fontBold = AssetManagement::SystemFontBold();
 
 	TiledTexture highScoreMedalTexture
 	{

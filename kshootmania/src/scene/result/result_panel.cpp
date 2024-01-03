@@ -32,7 +32,7 @@ namespace
 		const ScopedRenderStates2D renderState(SamplerState::ClampAniso);
 
 		// 曲名/アーティスト名を表示
-		const Font font = FontAsset(kFontAssetSystem);
+		const Font font = AssetManagement::SystemFont();
 		font(Unicode::FromUTF8(chartData.meta.title)).drawAt(28, 303, 26);
 		font(Unicode::FromUTF8(chartData.meta.artist)).drawAt(20, 303, 61);
 

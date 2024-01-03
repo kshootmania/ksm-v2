@@ -192,7 +192,6 @@ OptionScene::OptionScene(const InitData& initData)
 			.sourceSize = { 540, 48 },
 		})
 	, m_optionMenus(MakeOptionMenus())
-	, m_font(FontAsset(kFontAssetSystem))
 {
 	m_bgmStream.play();
 	ScreenFadeAddon::FadeIn();

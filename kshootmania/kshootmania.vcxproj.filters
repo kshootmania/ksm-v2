@@ -22,9 +22,6 @@
     <Filter Include="Resource Files\engine">
       <UniqueIdentifier>{dd0f627e-1b27-4b22-bd33-cc62510e3a5a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\example">
-      <UniqueIdentifier>{787b06ce-3059-4eaa-b49a-4134cb25205d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\engine\font">
       <UniqueIdentifier>{7e18b547-b2a2-46d4-8735-e97fa50deb52}</UniqueIdentifier>
     </Filter>
@@ -60,78 +57,6 @@
     </Filter>
     <Filter Include="Resource Files\engine\texture\box-shadow">
       <UniqueIdentifier>{8c8c80fe-a6dc-452d-b92d-fbb22ec16326}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\font">
-      <UniqueIdentifier>{75d01503-f48f-428a-90ea-7df5461128ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\geojson">
-      <UniqueIdentifier>{4dad8534-6903-4539-ac54-4eb4a91ef18c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\gif">
-      <UniqueIdentifier>{5b874bd1-5071-4d6e-8a59-d871a49831ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\json">
-      <UniqueIdentifier>{b673d272-5c92-4f7c-80db-e3fd9ac64fb7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\midi">
-      <UniqueIdentifier>{49df1a08-f14e-4324-b53c-edfbc459a304}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\obj">
-      <UniqueIdentifier>{ab29e3f5-96cd-4f71-848d-87152c85d0b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\objdetect">
-      <UniqueIdentifier>{0ae9e42f-936c-472d-ab58-e02078fcbe04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\shader">
-      <UniqueIdentifier>{b04b2902-e5ba-41ff-9dc0-39100d77cad9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\spritesheet">
-      <UniqueIdentifier>{c980c9fe-5b8c-47e4-b80b-815bfc8455bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\svg">
-      <UniqueIdentifier>{fc9cb198-2447-4107-ba16-345b2b7959a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\texture">
-      <UniqueIdentifier>{1bcdbb58-4b57-468a-a70c-cc597a172ac8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\video">
-      <UniqueIdentifier>{6bbcd10e-58c0-457a-a765-a77e07e9b264}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\zip">
-      <UniqueIdentifier>{72342ac7-0912-41d2-876e-f9d8459541bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\font\DotGothic16">
-      <UniqueIdentifier>{50046b74-592f-41de-868d-8108b662b584}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\font\RocknRoll">
-      <UniqueIdentifier>{e8c9aeb9-4699-4e00-bbc0-e76432aadd98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\objdetect\haarcascade">
-      <UniqueIdentifier>{2f7cb5ee-6376-4043-80f7-ef181eec1f35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\shader\glsl">
-      <UniqueIdentifier>{7959c616-7399-41db-b147-0d96a63ffcc7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\shader\hlsl">
-      <UniqueIdentifier>{731ce1c7-c198-470e-a218-f260ab7587b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\csv">
-      <UniqueIdentifier>{6a4aeb01-c411-4aa5-a0f6-08dcc4c37d41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\ini">
-      <UniqueIdentifier>{0138aba9-47ad-4016-912a-ca63c37a0683}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\script">
-      <UniqueIdentifier>{a98f9989-f4e1-493e-bc54-b8c75341364f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\toml">
-      <UniqueIdentifier>{22815459-028c-4382-8622-0895878434fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\txt">
-      <UniqueIdentifier>{cd366a70-35b6-47c7-9d2e-e3a6180490bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\example\xml">
-      <UniqueIdentifier>{adda71c0-38fa-4ca2-91b9-e1e4039183dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\engine\font\min">
       <UniqueIdentifier>{1b103960-f11a-4515-b4f1-f59333ce00d9}</UniqueIdentifier>
@@ -303,6 +228,15 @@
     </Filter>
     <Filter Include="Source Files\addon">
       <UniqueIdentifier>{39472495-8b39-4805-a151-cdd446e1c45f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets">
+      <UniqueIdentifier>{edd28521-f50e-46c1-b674-61d8b810fef8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\font">
+      <UniqueIdentifier>{d41b25cc-ada7-4f71-9f41-085f2938dbf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\font\corporate-logo">
+      <UniqueIdentifier>{91506994-9d13-4562-9fc6-62d24fe5658d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -587,57 +521,6 @@
     <Image Include="App\engine\texture\box-shadow\256.png">
       <Filter>Resource Files\engine\texture\box-shadow</Filter>
     </Image>
-    <Image Include="App\example\particle.png">
-      <Filter>Resource Files\example</Filter>
-    </Image>
-    <Image Include="App\example\siv3d-kun.png">
-      <Filter>Resource Files\example</Filter>
-    </Image>
-    <Image Include="App\example\windmill.png">
-      <Filter>Resource Files\example</Filter>
-    </Image>
-    <Image Include="App\example\bay.jpg">
-      <Filter>Resource Files\example</Filter>
-    </Image>
-    <Image Include="App\example\gif\test.gif">
-      <Filter>Resource Files\example\gif</Filter>
-    </Image>
-    <Image Include="App\example\spritesheet\siv3d-kun-16.png">
-      <Filter>Resource Files\example\spritesheet</Filter>
-    </Image>
-    <Image Include="App\example\texture\earth.jpg">
-      <Filter>Resource Files\example\texture</Filter>
-    </Image>
-    <Image Include="App\example\texture\grass.jpg">
-      <Filter>Resource Files\example\texture</Filter>
-    </Image>
-    <Image Include="App\example\texture\ground.jpg">
-      <Filter>Resource Files\example\texture</Filter>
-    </Image>
-    <Image Include="App\example\texture\rock.jpg">
-      <Filter>Resource Files\example\texture</Filter>
-    </Image>
-    <Image Include="App\example\texture\uv.png">
-      <Filter>Resource Files\example\texture</Filter>
-    </Image>
-    <Image Include="App\example\texture\wood.jpg">
-      <Filter>Resource Files\example\texture</Filter>
-    </Image>
-    <Image Include="App\example\obj\bark.jpg">
-      <Filter>Resource Files\example\obj</Filter>
-    </Image>
-    <Image Include="App\example\obj\leaves.png">
-      <Filter>Resource Files\example\obj</Filter>
-    </Image>
-    <Image Include="App\example\obj\pine_leaves_red.png">
-      <Filter>Resource Files\example\obj</Filter>
-    </Image>
-    <Image Include="App\example\obj\siv3d-kun.png">
-      <Filter>Resource Files\example\obj</Filter>
-    </Image>
-    <Image Include="App\example\obj\siv3d-kun-eye.png">
-      <Filter>Resource Files\example\obj</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc">
@@ -653,45 +536,6 @@
     </Text>
     <Text Include="App\engine\soundfont\GMGSx.sf2.txt">
       <Filter>Resource Files\engine\soundfont</Filter>
-    </Text>
-    <Text Include="App\example\font\DotGothic16\OFL.txt">
-      <Filter>Resource Files\example\font\DotGothic16</Filter>
-    </Text>
-    <Text Include="App\example\font\RocknRoll\OFL.txt">
-      <Filter>Resource Files\example\font\RocknRoll</Filter>
-    </Text>
-    <Text Include="App\example\midi\test.txt">
-      <Filter>Resource Files\example\midi</Filter>
-    </Text>
-    <Text Include="App\example\spritesheet\siv3d-kun-16.txt">
-      <Filter>Resource Files\example\spritesheet</Filter>
-    </Text>
-    <Text Include="App\example\svg\README.txt">
-      <Filter>Resource Files\example\svg</Filter>
-    </Text>
-    <Text Include="App\example\texture\credit.txt">
-      <Filter>Resource Files\example\texture</Filter>
-    </Text>
-    <Text Include="App\example\video\river.txt">
-      <Filter>Resource Files\example\video</Filter>
-    </Text>
-    <Text Include="App\example\obj\credit.txt">
-      <Filter>Resource Files\example\obj</Filter>
-    </Text>
-    <Text Include="App\example\txt\jp.txt">
-      <Filter>Resource Files\example\txt</Filter>
-    </Text>
-    <Text Include="App\example\txt\kr.txt">
-      <Filter>Resource Files\example\txt</Filter>
-    </Text>
-    <Text Include="App\example\txt\sc.txt">
-      <Filter>Resource Files\example\txt</Filter>
-    </Text>
-    <Text Include="App\example\txt\en.txt">
-      <Filter>Resource Files\example\txt</Filter>
-    </Text>
-    <Text Include="App\example\LICENSE.txt">
-      <Filter>Resource Files\example</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -905,246 +749,6 @@
     <None Include="App\engine\soundfont\GMGSx.sf2.zstdcmp">
       <Filter>Resource Files\engine\soundfont</Filter>
     </None>
-    <None Include="App\example\font\DotGothic16\README.md">
-      <Filter>Resource Files\example\font\DotGothic16</Filter>
-    </None>
-    <None Include="App\example\font\DotGothic16\README-JP.md">
-      <Filter>Resource Files\example\font\DotGothic16</Filter>
-    </None>
-    <None Include="App\example\font\RocknRoll\README.md">
-      <Filter>Resource Files\example\font\RocknRoll</Filter>
-    </None>
-    <None Include="App\example\font\RocknRoll\README-JP.md">
-      <Filter>Resource Files\example\font\RocknRoll</Filter>
-    </None>
-    <None Include="App\example\geojson\countries.geojson">
-      <Filter>Resource Files\example\geojson</Filter>
-    </None>
-    <None Include="App\example\json\empty.json">
-      <Filter>Resource Files\example\json</Filter>
-    </None>
-    <None Include="App\example\json\invalid-blank.json">
-      <Filter>Resource Files\example\json</Filter>
-    </None>
-    <None Include="App\example\json\invalid-syntax.json">
-      <Filter>Resource Files\example\json</Filter>
-    </None>
-    <None Include="App\example\json\test.json">
-      <Filter>Resource Files\example\json</Filter>
-    </None>
-    <None Include="App\example\json\config.json">
-      <Filter>Resource Files\example\json</Filter>
-    </None>
-    <None Include="App\example\midi\test.mid">
-      <Filter>Resource Files\example\midi</Filter>
-    </None>
-    <None Include="App\example\svg\cat.svg">
-      <Filter>Resource Files\example\svg</Filter>
-    </None>
-    <None Include="App\example\svg\turtle.svg">
-      <Filter>Resource Files\example\svg</Filter>
-    </None>
-    <None Include="App\example\zip\zip_test.zip">
-      <Filter>Resource Files\example\zip</Filter>
-    </None>
-    <None Include="App\example\obj\blacksmith.mtl">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\crystal1.mtl">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\crystal2.mtl">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\crystal3.mtl">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\mill.mtl">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\pine.mtl">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\siv3d-kun.mtl">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\tree.mtl">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\blacksmith.obj">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\crystal3.obj">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\crystal2.obj">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\crystal1.obj">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\mill.obj">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\pine.obj">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\siv3d-kun.obj">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\obj\tree.obj">
-      <Filter>Resource Files\example\obj</Filter>
-    </None>
-    <None Include="App\example\csv\config.csv">
-      <Filter>Resource Files\example\csv</Filter>
-    </None>
-    <None Include="App\example\ini\config.ini">
-      <Filter>Resource Files\example\ini</Filter>
-    </None>
-    <None Include="App\example\script\paint.as">
-      <Filter>Resource Files\example\script</Filter>
-    </None>
-    <None Include="App\example\script\piano.as">
-      <Filter>Resource Files\example\script</Filter>
-    </None>
-    <None Include="App\example\script\test.as">
-      <Filter>Resource Files\example\script</Filter>
-    </None>
-    <None Include="App\example\script\breakout.as">
-      <Filter>Resource Files\example\script</Filter>
-    </None>
-    <None Include="App\example\script\hello.as">
-      <Filter>Resource Files\example\script</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\game_of_life.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\grayscale.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\homography.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\homography.vert">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\multi_texture_blend.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\multi_texture_mask.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\poisson_disk.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\posterize.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\rgb_shift.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\rgb_to_bgr.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\soft_shape.vert">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\swirl.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\terrain_forward.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\terrain_forward.vert">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\terrain_normal.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\default2d.vert">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\default2d_shape.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\default2d_texture.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\default3d_forward.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\default3d_forward.vert">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\extract_bright_linear.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\forward_fog.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\glsl\forward_triplanar.frag">
-      <Filter>Resource Files\example\shader\glsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\default2d.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\default3d_forward.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\extract_bright_linear.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\forward_fog.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\forward_triplanar.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\game_of_life.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\grayscale.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\homography.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\multi_texture_blend.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\multi_texture_mask.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\poisson_disk.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\posterize.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\rgb_shift.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\rgb_to_bgr.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\soft_shape.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\swirl.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\terrain_forward.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\shader\hlsl\terrain_normal.hlsl">
-      <Filter>Resource Files\example\shader\hlsl</Filter>
-    </None>
-    <None Include="App\example\toml\config.toml">
-      <Filter>Resource Files\example\toml</Filter>
-    </None>
-    <None Include="App\example\toml\test.toml">
-      <Filter>Resource Files\example\toml</Filter>
-    </None>
     <None Include="App\engine\font\min\LICENSE">
       <Filter>Resource Files\engine\font\min</Filter>
     </None>
@@ -1154,45 +758,9 @@
     <None Include=".editorconfig">
       <Filter>Source Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="App\example\test.mp3">
-      <Filter>Resource Files\example</Filter>
-    </Media>
-    <Media Include="App\example\video\river.mp4">
-      <Filter>Resource Files\example\video</Filter>
-    </Media>
-    <Media Include="App\example\shot.mp3">
-      <Filter>Resource Files\example</Filter>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="App\example\font\DotGothic16\DotGothic16-Regular.ttf">
-      <Filter>Resource Files\example\font\DotGothic16</Filter>
-    </Font>
-    <Font Include="App\example\font\RocknRoll\RocknRollOne-Regular.ttf">
-      <Filter>Resource Files\example\font\RocknRoll</Filter>
-    </Font>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="App\example\objdetect\haarcascade\face_anime.xml">
-      <Filter>Resource Files\example\objdetect\haarcascade</Filter>
-    </Xml>
-    <Xml Include="App\example\objdetect\haarcascade\frontal_catface.xml">
-      <Filter>Resource Files\example\objdetect\haarcascade</Filter>
-    </Xml>
-    <Xml Include="App\example\objdetect\haarcascade\frontal_face_alt2.xml">
-      <Filter>Resource Files\example\objdetect\haarcascade</Filter>
-    </Xml>
-    <Xml Include="App\example\objdetect\haarcascade\eye.xml">
-      <Filter>Resource Files\example\objdetect\haarcascade</Filter>
-    </Xml>
-    <Xml Include="App\example\xml\config.xml">
-      <Filter>Resource Files\example\xml</Filter>
-    </Xml>
-    <Xml Include="App\example\xml\test.xml">
-      <Filter>Resource Files\example\xml</Filter>
-    </Xml>
+    <None Include="App\assets\font\corporate-logo\LICENSE">
+      <Filter>Resource Files\assets\font\corporate-logo</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -1510,5 +1078,10 @@
     <ClInclude Include="src\common\fs_utils.hpp">
       <Filter>Header Files\common</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="App\assets\font\corporate-logo\Corporate-Logo-Medium-ver3.otf">
+      <Filter>Resource Files\assets\font\corporate-logo</Filter>
+    </Font>
   </ItemGroup>
 </Project>

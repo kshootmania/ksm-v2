@@ -28,7 +28,7 @@ private:
 
 	OptionKeyConfigMenu m_keyConfigMenu;
 
-	const Font m_font;
+	const Font m_font = AssetManagement::SystemFont();
 
 	Optional<OptionMenuType> m_currentOptionMenuIdx = none;
 
