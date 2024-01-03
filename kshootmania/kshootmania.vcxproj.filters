@@ -238,6 +238,9 @@
     <Filter Include="Resource Files\assets\font\corporate-logo">
       <UniqueIdentifier>{91506994-9d13-4562-9fc6-62d24fe5658d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets\font\tektur-ksm">
+      <UniqueIdentifier>{7bb2995f-307d-441b-9f3f-a74b97eb521f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\scene\title\title_scene.cpp">
@@ -761,6 +764,9 @@
     <None Include="App\assets\font\corporate-logo\LICENSE">
       <Filter>Resource Files\assets\font\corporate-logo</Filter>
     </None>
+    <None Include="App\assets\font\tektur-ksm\LICENSE">
+      <Filter>Resource Files\assets\font\tektur-ksm</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -1078,10 +1084,16 @@
     <ClInclude Include="src\common\fs_utils.hpp">
       <Filter>Header Files\common</Filter>
     </ClInclude>
+    <ClInclude Include="src\music_game\play_option.hpp">
+      <Filter>Header Files\music_game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="App\assets\font\corporate-logo\Corporate-Logo-ver3-ksm.otf">
+    <Font Include="App\assets\font\corporate-logo\Corporate-Logo-Medium-ver3.otf">
       <Filter>Resource Files\assets\font\corporate-logo</Filter>
+    </Font>
+    <Font Include="App\assets\font\tektur-ksm\Tektur-KSM-Medium.ttf">
+      <Filter>Resource Files\assets\font\tektur-ksm</Filter>
     </Font>
   </ItemGroup>
 </Project>

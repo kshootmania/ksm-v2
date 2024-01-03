@@ -226,6 +226,7 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="App\assets\font\corporate-logo\LICENSE" />
+    <None Include="App\assets\font\tektur-ksm\LICENSE" />
     <None Include="App\dll\soundtouch\SoundTouch_x64.dll" />
     <None Include="App\engine\font\fontawesome\fontawesome-brands.otf.zstdcmp" />
     <None Include="App\engine\font\fontawesome\fontawesome-solid.otf.zstdcmp" />
@@ -364,6 +365,7 @@
     <ClInclude Include="src\music_game\judgment\laser_lane_judgment.hpp" />
     <ClInclude Include="src\music_game\judgment\laser_slam_shake.hpp" />
     <ClInclude Include="src\music_game\judgment\scoring_status.hpp" />
+    <ClInclude Include="src\music_game\play_option.hpp" />
     <ClInclude Include="src\music_game\play_result.hpp" />
     <ClInclude Include="src\music_game\scroll\highway_scroll.hpp" />
     <ClInclude Include="src\music_game\scroll\hispeed_setting.hpp" />
@@ -415,7 +417,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="App\assets\font\corporate-logo\Corporate-Logo-ver3-ksm.otf" />
+    <Font Include="App\assets\font\corporate-logo\Corporate-Logo-Medium-ver3.otf" />
+    <Font Include="App\assets\font\tektur-ksm\Tektur-KSM-Medium.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -93,7 +93,7 @@ Resource(engine/texture/box-shadow/8.png)
 //Resource(engine/font/mplus/mplus-1p-heavy.ttf.zstdcmp)
 //Resource(engine/font/mplus/mplus-1p-black.ttf.zstdcmp)
 Resource(engine/font/noto-cjk/NotoSansCJK-Regular.ttc.zstdcmp)
-//Resource(engine/font/noto-cjk/NotoSansJP-Regular.otf.zstdcmp)
+Resource(engine/font/noto-cjk/NotoSansJP-Regular.otf.zstdcmp)
 
 //
 //	Emoji Fonts
@@ -119,7 +119,9 @@ Resource(engine/font/noto-cjk/NotoSansCJK-Regular.ttc.zstdcmp)
 //
 //////////////////////////////////////////////////////
 
-Resource(assets/font/corporate-logo/Corporate-Logo-ver3-ksm.otf)
+Resource(assets/font/tektur-ksm/Tektur-KSM-Medium.ttf)
+Resource(assets/font/corporate-logo/Corporate-Logo-Medium-ver3.otf)
+Resource(assets/font/noto-sans-kr/NotoSansKR-Medium.ttf)
 
 /* examples 
 
