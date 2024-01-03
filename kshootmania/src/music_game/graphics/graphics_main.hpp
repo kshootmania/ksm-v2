@@ -46,7 +46,7 @@ namespace MusicGame::Graphics
 		void drawLayer(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus) const;
 
 	public:
-		explicit GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath, GaugeType gaugeType);
+		explicit GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath, const PlayOption& playOption);
 
 		void update(const ViewStatus& viewStatus);
 

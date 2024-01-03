@@ -229,12 +229,12 @@ bool HighScoreInfo::isHighScoreUpdated(const MusicGame::PlayResult& playResult) 
 {
 	// NORMALとHARDで共通のハイスコア上で更新判定する必要があるため、
 	// ここではkscValueOf関数ではなくscore関数を使用して現在のスコアを調べる必要がある点に注意
-	return score(playResult.gaugeType) < playResult.score;
+	return score(playResult.playOption.gaugeType) < playResult.score;
 }
 
 HighScoreInfo HighScoreInfo::applyPlayResult(const MusicGame::PlayResult& playResult) const
 {
 	HighScoreInfo newHighScoreInfo = *this;
-	newHighScoreInfo.kscValueOf(playResult.gaugeType) = kscValueOf(playResult.gaugeType).applyPlayResult(playResult);
+	newHighScoreInfo.kscValueOf(playResult.playOption.gaugeType) = kscValueOf(playResult.playOption.gaugeType).applyPlayResult(playResult);
 	return newHighScoreInfo;
 }

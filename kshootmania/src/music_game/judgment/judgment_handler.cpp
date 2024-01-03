@@ -95,8 +95,8 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	JudgmentHandler::JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments, GaugeType gaugeType)
-		: m_gaugeType(gaugeType)
+	JudgmentHandler::JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments, const PlayOption& playOption)
+		: m_playOption(playOption)
 		, m_totalCombo(TotalCombo(btLaneJudgments, fxLaneJudgments, laserLaneJudgments))
 		, m_scoringStatus(
 			TotalGaugeValue(btLaneJudgments, fxLaneJudgments, laserLaneJudgments, kScoreValueCritical, kScoreValueCritical),
@@ -192,7 +192,7 @@ namespace MusicGame::Judgment
 			.maxCombo = m_scoringStatus.maxCombo(),
 			.totalCombo = m_totalCombo,
 			.comboStats = m_scoringStatus.comboStats(),
-			.gaugeType = m_gaugeType,
+			.playOption = m_playOption,
 			.gaugePercentage = m_scoringStatus.gaugePercentage(),
 			.gaugePercentageHard = 0.0, // TODO: HARDゲージ
 		};

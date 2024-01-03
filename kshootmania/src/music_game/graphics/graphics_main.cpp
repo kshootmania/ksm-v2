@@ -112,7 +112,7 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	GraphicsMain::GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath, GaugeType gaugeType)
+	GraphicsMain::GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath, const PlayOption& playOption)
 		: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 		, m_bgBillboardMesh(MeshData::Billboard())
 		, m_bgTexture(BGFilePath(chartData, parentPath))
@@ -121,7 +121,7 @@ namespace MusicGame::Graphics
 		, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
 		, m_jdgoverlay3DGraphics(m_camera)
 		, m_songInfoPanel(chartData, parentPath)
-		, m_gaugePanel(gaugeType)
+		, m_gaugePanel(playOption.gaugeType)
 	{
 	}
 

@@ -11,7 +11,7 @@ namespace MusicGame::Judgment
 	class JudgmentHandler
 	{
 	private:
-		const GaugeType m_gaugeType;
+		const PlayOption m_playOption;
 
 		const int32 m_totalCombo;
 
@@ -30,7 +30,7 @@ namespace MusicGame::Judgment
 		/// @param fxLaneJudgments FXレーン判定の配列
 		/// @param laserLaneJudgments LASERレーン判定の配列
 		/// @param gaugeType ゲージの種類
-		JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments, GaugeType gaugeType);
+		JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments, const PlayOption& playOption);
 
 		/// @brief チップノーツ判定時に呼び出される
 		/// @param result 判定結果

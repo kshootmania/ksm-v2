@@ -78,8 +78,8 @@ namespace KscIo
 
 		bool UpdateExistingKscFile(FilePathView kscFilePath, const MusicGame::PlayResult& playResult, const KscKey& condition)
 		{
-			assert(playResult.gaugeType == condition.gaugeType && "Gauge type mismatch");
-			const GaugeType gaugeType = playResult.gaugeType;
+			assert(playResult.playOption.gaugeType == condition.gaugeType && "Gauge type mismatch");
+			const GaugeType gaugeType = playResult.playOption.gaugeType;
 
 			// 既存のkscファイルを読み込んで、今回のプレイ結果を反映したkscファイルの文字列を生成
 			String newKscFileContent;
@@ -167,7 +167,7 @@ namespace KscIo
 			return false;
 		}
 
-		if (playResult.gaugeType != condition.gaugeType)
+		if (playResult.playOption.gaugeType != condition.gaugeType)
 		{
 			// ゲージの種類は必ず一致するはず
 			assert(false && "Gauge type mismatch");

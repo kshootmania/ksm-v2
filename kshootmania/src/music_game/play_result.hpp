@@ -14,7 +14,7 @@ namespace MusicGame
 
 		Judgment::ComboStats comboStats;
 
-		GaugeType gaugeType = GaugeType::kNormalGauge;
+		PlayOption playOption;
 
 		double gaugePercentage = 0.0;
 

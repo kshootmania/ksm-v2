@@ -94,8 +94,8 @@ namespace
 			.sourceSize = kGaugeBarTextureSize,
 		});
 		constexpr Vec2 kGaugeBarPosition{ 4, 4 };
-		const double percentThreshold = (playResult.gaugeType == GaugeType::kHardGauge) ? kGaugePercentageThresholdHardWarning : kGaugePercentageThreshold;
-		const int32 gaugeBarColumn = static_cast<int32>(playResult.gaugeType) * 2 + ((playResult.gaugePercentage < percentThreshold) ? 0 : 1);
+		const double percentThreshold = (playResult.playOption.gaugeType == GaugeType::kHardGauge) ? kGaugePercentageThresholdHardWarning : kGaugePercentageThreshold;
+		const int32 gaugeBarColumn = static_cast<int32>(playResult.playOption.gaugeType) * 2 + ((playResult.gaugePercentage < percentThreshold) ? 0 : 1);
 		const int32 gaugeBarHeight = static_cast<int32>(kGaugeBarSize.y * playResult.gaugePercentage / 100);
 		gaugeBarTiledTexture(0, gaugeBarColumn).resized(kGaugeBarSize).drawClipped(kGaugeBarPosition, { kGaugeBarPosition.x, kGaugeBarPosition.y + kGaugeBarSize.y - gaugeBarHeight, kGaugeBarSize.x, gaugeBarHeight });
 
@@ -129,15 +129,15 @@ namespace
 	int32 TopTextureRow(const MusicGame::PlayResult& playResult)
 	{
 		const Achievement achievement = playResult.achievement();
-		const bool isEasyGauge = playResult.gaugeType == GaugeType::kEasyGauge;
-		const bool isHardGauge = playResult.gaugeType == GaugeType::kHardGauge;
+		const bool isEasyGauge = playResult.playOption.gaugeType == GaugeType::kEasyGauge;
+		const bool isHardGauge = playResult.playOption.gaugeType == GaugeType::kHardGauge;
 		const bool isAssist = false; // TODO: アシストかどうかを代入
 		switch (achievement)
 		{
 		case Achievement::kNone:
 			if (isAssist)
 			{
-				switch (playResult.gaugeType)
+				switch (playResult.playOption.gaugeType)
 				{
 				case GaugeType::kNormalGauge:
 					return kTopTextureRowAssistFailed;
@@ -154,7 +154,7 @@ namespace
 			}
 			else
 			{
-				switch (playResult.gaugeType)
+				switch (playResult.playOption.gaugeType)
 				{
 				case GaugeType::kNormalGauge:
 					return kTopTextureRowFailed;
@@ -174,7 +174,7 @@ namespace
 		case Achievement::kCleared:
 			if (isAssist)
 			{
-				switch (playResult.gaugeType)
+				switch (playResult.playOption.gaugeType)
 				{
 				case GaugeType::kNormalGauge:
 					return kTopTextureRowAssistClear;
@@ -191,7 +191,7 @@ namespace
 			}
 			else
 			{
-				switch (playResult.gaugeType)
+				switch (playResult.playOption.gaugeType)
 				{
 				case GaugeType::kNormalGauge:
 					return kTopTextureRowCleared;
@@ -211,7 +211,7 @@ namespace
 		case Achievement::kFullCombo:
 			if (isAssist)
 			{
-				switch (playResult.gaugeType)
+				switch (playResult.playOption.gaugeType)
 				{
 				case GaugeType::kNormalGauge:
 				case GaugeType::kHardGauge:
@@ -226,7 +226,7 @@ namespace
 			}
 			else
 			{
-				switch (playResult.gaugeType)
+				switch (playResult.playOption.gaugeType)
 				{
 				case GaugeType::kNormalGauge:
 				case GaugeType::kHardGauge:
@@ -244,7 +244,7 @@ namespace
 		case Achievement::kPerfect:
 			if (isAssist)
 			{
-				switch (playResult.gaugeType)
+				switch (playResult.playOption.gaugeType)
 				{
 				case GaugeType::kNormalGauge:
 				case GaugeType::kHardGauge:
@@ -259,7 +259,7 @@ namespace
 			}
 			else
 			{
-				switch (playResult.gaugeType)
+				switch (playResult.playOption.gaugeType)
 				{
 				case GaugeType::kNormalGauge:
 				case GaugeType::kHardGauge:

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "game_status.hpp"
+#include "play_option.hpp"
 #include "judgment/judgment_main.hpp"
 #include "camera/highway_tilt.hpp"
 #include "scroll/hispeed_setting.hpp"
@@ -18,7 +19,7 @@ namespace MusicGame
 	{
 		FilePath chartFilePath;
 
-		GaugeType gaugeType = GaugeType::kNormalGauge;
+		PlayOption playOption;
 
 		bool assistTickEnabled = false;
 	};

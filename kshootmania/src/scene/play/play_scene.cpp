@@ -9,7 +9,7 @@ namespace
 		return
 		{
 			.chartFilePath = args.chartFilePath,
-			.gaugeType = args.gaugeType,
+			.playOption = args.playOption,
 			.assistTickEnabled = ConfigIni::GetBool(ConfigIni::Key::kAssistTick),
 		};
 	}

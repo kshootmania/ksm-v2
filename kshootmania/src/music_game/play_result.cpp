@@ -26,7 +26,7 @@ namespace MusicGame
 	Achievement PlayResult::achievement() const
 	{
 		// TODO(alphaまで): EASY/HARDゲージ
-		if (gaugeType != GaugeType::kNormalGauge)
+		if (playOption.gaugeType != GaugeType::kNormalGauge)
 		{
 			throw Error(U"Not implemented");
 		}
@@ -103,7 +103,7 @@ namespace MusicGame
 			return 0;
 		}
 
-		if (gaugeType == GaugeType::kHardGauge)
+		if (playOption.gaugeType == GaugeType::kHardGauge)
 		{
 			return static_cast<int32>(gaugePercentageHard);
 		}
