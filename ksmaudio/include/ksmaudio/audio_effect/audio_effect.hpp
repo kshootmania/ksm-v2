@@ -49,7 +49,7 @@ namespace ksmaudio::AudioEffect
 		}
 	};
 
-	template <typename Params, typename DSP, typename DSPParams>
+	template <typename Params, typename DSP, typename DSPParams, int Priority>
 	class BasicAudioEffect final : public IAudioEffect
 	{
 	protected:
@@ -62,6 +62,7 @@ namespace ksmaudio::AudioEffect
 
 	public:
 		static constexpr bool kIsWithTrigger = false;
+		static constexpr int kPriority = Priority;
 
 		BasicAudioEffect(std::size_t sampleRate, std::size_t numChannels, bool isLaser)
 			: m_isLaser(isLaser)
@@ -140,7 +141,7 @@ namespace ksmaudio::AudioEffect
 		}
 	};
 
-	template <typename Params, typename DSP, typename DSPParams>
+	template <typename Params, typename DSP, typename DSPParams, int Priority>
 	class BasicAudioEffectWithTrigger final : public IAudioEffect
 	{
 	protected:
@@ -154,6 +155,7 @@ namespace ksmaudio::AudioEffect
 
 	public:
 		static constexpr bool kIsWithTrigger = true;
+		static constexpr int kPriority = Priority;
 
 		BasicAudioEffectWithTrigger(std::size_t sampleRate, std::size_t numChannels, bool isLaser, const std::set<float>& updateTriggerTiming)
 			: m_isLaser(isLaser)

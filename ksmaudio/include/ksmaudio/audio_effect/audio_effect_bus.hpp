@@ -75,7 +75,7 @@ namespace ksmaudio::AudioEffect
 
 			m_nameIdxDict.emplace(name, m_audioEffects.size() - 1U);
 
-			const HDSP hDSP = m_pStream->addAudioEffect(audioEffect.get(), 100); // TODO: priority
+			const HDSP hDSP = m_pStream->addAudioEffect(audioEffect.get(), T::kPriority);
 			m_hDSPs.push_back(hDSP);
 
 			// ここで、paramsを渡すのではなくparamValueSetDict()で改めて取得しているのは、Dict内に暗黙に定義されるデフォルト値も入れる必要があるため

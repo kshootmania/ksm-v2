@@ -36,27 +36,31 @@
 
 namespace ksmaudio
 {
-	using Retrigger = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::RetriggerParams, AudioEffect::RetriggerEchoDSP, AudioEffect::RetriggerEchoDSPParams>;
+	// priorityはHSP版と同一に設定
+	// HSP版: https://github.com/kshootmania/ksm-v1/blob/ea05374a3ece796612b29d927cb3c6f5aabb266e/src/audio/fxdef.hsp
+	// 別途定義されているコンプレッサーの優先度(kCompressorFXPriority)を下回らないよう注意
 
-	using Gate = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::GateParams, AudioEffect::GateDSP, AudioEffect::GateDSPParams>;
+	using Retrigger = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::RetriggerParams, AudioEffect::RetriggerEchoDSP, AudioEffect::RetriggerEchoDSPParams, 25>;
 
-	using Flanger = AudioEffect::BasicAudioEffect<AudioEffect::FlangerParams, AudioEffect::FlangerDSP, AudioEffect::FlangerDSPParams>;
+	using Gate = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::GateParams, AudioEffect::GateDSP, AudioEffect::GateDSPParams, 17>;
 
-	using Bitcrusher = AudioEffect::BasicAudioEffect<AudioEffect::BitcrusherParams, AudioEffect::BitcrusherDSP, AudioEffect::BitcrusherDSPParams>;
+	using Flanger = AudioEffect::BasicAudioEffect<AudioEffect::FlangerParams, AudioEffect::FlangerDSP, AudioEffect::FlangerDSPParams, 15>;
 
-	using Phaser = AudioEffect::BasicAudioEffect<AudioEffect::PhaserParams, AudioEffect::PhaserDSP, AudioEffect::PhaserDSPParams>;
+	using Bitcrusher = AudioEffect::BasicAudioEffect<AudioEffect::BitcrusherParams, AudioEffect::BitcrusherDSP, AudioEffect::BitcrusherDSPParams, 20>;
 
-	using Wobble = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::WobbleParams, AudioEffect::WobbleDSP, AudioEffect::WobbleDSPParams>;
+	using Phaser = AudioEffect::BasicAudioEffect<AudioEffect::PhaserParams, AudioEffect::PhaserDSP, AudioEffect::PhaserDSPParams, 16>;
 
-	using Tapestop = AudioEffect::BasicAudioEffect<AudioEffect::TapestopParams, AudioEffect::TapestopDSP, AudioEffect::TapestopDSPParams>;
+	using Wobble = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::WobbleParams, AudioEffect::WobbleDSP, AudioEffect::WobbleDSPParams, 17>;
 
-	using Echo = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::EchoParams, AudioEffect::RetriggerEchoDSP, AudioEffect::RetriggerEchoDSPParams>;
+	using Tapestop = AudioEffect::BasicAudioEffect<AudioEffect::TapestopParams, AudioEffect::TapestopDSP, AudioEffect::TapestopDSPParams, 18>;
 
-	using Sidechain = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::SidechainParams, AudioEffect::SidechainDSP, AudioEffect::SidechainDSPParams>;
+	using Echo = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::EchoParams, AudioEffect::RetriggerEchoDSP, AudioEffect::RetriggerEchoDSPParams, 26>;
 
-	using PeakingFilter = AudioEffect::BasicAudioEffect<AudioEffect::PeakingFilterParams, AudioEffect::PeakingFilterDSP, AudioEffect::PeakingFilterDSPParams>;
+	using Sidechain = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::SidechainParams, AudioEffect::SidechainDSP, AudioEffect::SidechainDSPParams, 14>;
 
-	using HighPassFilter = AudioEffect::BasicAudioEffect<AudioEffect::HighPassFilterParams, AudioEffect::HighPassFilterDSP, AudioEffect::HighPassFilterDSPParams>;
+	using PeakingFilter = AudioEffect::BasicAudioEffect<AudioEffect::PeakingFilterParams, AudioEffect::PeakingFilterDSP, AudioEffect::PeakingFilterDSPParams, 1>;
 
-	using LowPassFilter = AudioEffect::BasicAudioEffect<AudioEffect::LowPassFilterParams, AudioEffect::LowPassFilterDSP, AudioEffect::LowPassFilterDSPParams>;
+	using HighPassFilter = AudioEffect::BasicAudioEffect<AudioEffect::HighPassFilterParams, AudioEffect::HighPassFilterDSP, AudioEffect::HighPassFilterDSPParams, 2>;
+
+	using LowPassFilter = AudioEffect::BasicAudioEffect<AudioEffect::LowPassFilterParams, AudioEffect::LowPassFilterDSP, AudioEffect::LowPassFilterDSPParams, 3>;
 }
