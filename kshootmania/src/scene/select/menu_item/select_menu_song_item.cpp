@@ -107,7 +107,7 @@ void SelectMenuSongItem::drawCenter(int32 difficultyIdx, const RenderTexture& re
 	}
 
 	// Title
-	assets.fontBold(pChartInfo->title()).drawAt(28, Vec2{ 16 + 462 / 2, 12 + 36 / 2 });
+	assets.fontBold(pChartInfo->title()).drawAt(27, Vec2{ 16 + 462 / 2, 12 + 36 / 2 });
 
 	// Artist
 	assets.font(pChartInfo->artist()).drawAt(24, Vec2{ 16 + 462 / 2, 48 + 36 / 2 });

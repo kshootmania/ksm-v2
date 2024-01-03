@@ -63,11 +63,11 @@ namespace MusicGame::Graphics
 			ScopedRenderStates2D blendState(kEnableAlphaBlend); // Note: The drawn text edge will be darker than expected, but no problem here.
 
 			// Title
-			const Font titleFont = AssetManagement::SystemFontBold();// FontAsset(AssetManagement::kFontAssetSystemBold);
-			titleFont(Unicode::FromUTF8(chartData.meta.title)).drawAt(30, Point{ 12, 4 } + Point{ 448, 52 } / 2, kSongInfoFontColor);
+			const Font titleFont = AssetManagement::SystemFontBold();
+			titleFont(Unicode::FromUTF8(chartData.meta.title)).drawAt(27, Point{ 12, 4 } + Point{ 448, 52 } / 2, kSongInfoFontColor);
 
 			// Artist
-			const Font artistFont = AssetManagement::SystemFont();// FontAsset(AssetManagement::kFontAssetSystem);
+			const Font artistFont = AssetManagement::SystemFont();
 			artistFont(Unicode::FromUTF8(chartData.meta.artist)).drawAt(22, Point{ 12, 54 } + Point{ 448, 28 } / 2, kSongInfoFontColor);
 		}
 	}
