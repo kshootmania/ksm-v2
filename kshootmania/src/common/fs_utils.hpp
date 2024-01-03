@@ -1,0 +1,20 @@
+﻿#pragma once
+
+/// @brief ファイルシステム関連の関数群
+namespace FsUtils
+{
+	/// @brief 特殊フォルダ内の相対パスからフルパスを取得
+	/// @param folder 特殊フォルダの種類
+	/// @param relativePath 特殊フォルダ内の相対パス
+	/// @return フルパス
+	FilePath GetFullPathInFolder(SpecialFolder folder, FilePathView relativePath);
+
+	/// @brief システムフォントのフルパスを取得
+	/// @param filename フォントのファイル名
+	/// @return フルパス
+	FilePath GetSystemFontFullPath(FilePathView filename);
+
+	/// @brief 実行ファイルがあるディレクトリのフルパスを取得
+	/// @return フルパス
+	FilePath AppDirectoryPath();
+}

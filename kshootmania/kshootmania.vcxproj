@@ -122,6 +122,7 @@
     <ClCompile Include="src\addon\auto_mute_addon.cpp" />
     <ClCompile Include="src\common\asset_management.cpp" />
     <ClCompile Include="src\common\frame_rate_limit.cpp" />
+    <ClCompile Include="src\common\fs_utils.cpp" />
     <ClCompile Include="src\common\ime_utils.cpp" />
     <ClCompile Include="src\common\math_utils.cpp" />
     <ClCompile Include="src\graphics\texture_font_text_layout.cpp" />
@@ -403,6 +404,7 @@
     <ClInclude Include="src\common\asset_management.hpp" />
     <ClInclude Include="src\common\common_defines.hpp" />
     <ClInclude Include="src\common\frame_rate_limit.hpp" />
+    <ClInclude Include="src\common\fs_utils.hpp" />
     <ClInclude Include="src\common\ime_utils.hpp" />
     <ClInclude Include="src\common\math_utils.hpp" />
     <ClInclude Include="src\graphics\texture_font_text_layout.hpp" />

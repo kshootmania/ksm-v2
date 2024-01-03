@@ -28,8 +28,8 @@ void Main()
 	Window::SetTitle(U"K-Shoot MANIA v2.0.0-alpha1");
 
 	// 実行ファイルのパスをカレントディレクトリに設定
-	// (ChangeCurrentDirectoryはここ以外は基本的に使用禁止。どうしても使う必要がある場合は必ずModulePathに戻すこと)
-	FileSystem::ChangeCurrentDirectory(FileSystem::ParentPath(FileSystem::ModulePath()));
+	// (ChangeCurrentDirectoryはここ以外は基本的に使用禁止。どうしても使う必要がある場合は必ずAppDirectoryPathに戻すこと)
+	FileSystem::ChangeCurrentDirectory(FsUtils::AppDirectoryPath());
 
 	// デフォルト色を指定
 	Scene::SetBackground(Palette::Black);
