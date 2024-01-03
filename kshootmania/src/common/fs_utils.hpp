@@ -9,11 +9,6 @@ namespace FsUtils
 	/// @return フルパス
 	FilePath GetFullPathInFolder(SpecialFolder folder, FilePathView relativePath);
 
-	/// @brief システムフォントのフルパスを取得
-	/// @param filename フォントのファイル名
-	/// @return フルパス
-	FilePath GetSystemFontFullPath(FilePathView filename);
-
 	/// @brief 実行ファイルがあるディレクトリのフルパスを取得
 	/// @return フルパス
 	FilePath AppDirectoryPath();
