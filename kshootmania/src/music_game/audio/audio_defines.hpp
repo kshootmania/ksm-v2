@@ -2,8 +2,8 @@
 
 namespace MusicGame::Audio
 {
-	// 効果音は30ms早めのタイミングで再生する
-	constexpr double kSELatencySec = 0.03;
+	// 効果音は35ms早めのタイミングで再生する
+	constexpr double kSELatencySec = 0.035;
 
 	// LASER直角音の最大同時再生数
 	// (旧バージョンの譜面では別の値を使う)
