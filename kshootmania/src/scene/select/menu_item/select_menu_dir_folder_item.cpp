@@ -1,5 +1,6 @@
 ﻿#include "select_menu_dir_folder_item.hpp"
 #include "scene/select/select_menu_graphics.hpp"
+#include "graphics/font_utils.hpp"
 
 SelectMenuDirFolderItem::SelectMenuDirFolderItem(IsCurrentFolderYN isCurrentFolder, FilePathView fullPath)
 	: m_isCurrentFolder(isCurrentFolder)
@@ -24,14 +25,18 @@ void SelectMenuDirFolderItem::drawCenter([[maybe_unused]] int32 difficultyIdx, c
 {
 	Shader::Copy(assets.dirItemTextures.center, renderTexture);
 
+	const String displayName = FolderDisplayNameCenter(m_displayName, m_isCurrentFolder);
+
 	const ScopedRenderTarget2D scopedRenderTarget(renderTexture);
-	assets.font(FolderDisplayNameCenter(m_displayName, m_isCurrentFolder)).drawAt(44, Vec2{ 16 + 740 / 2, 135 + 102 / 2 });
+	FontUtils::DrawTextCenterWithFitWidth(assets.fontBold(displayName), 44, 42, { 36, 135, 700, 102 });
 }
 
 void SelectMenuDirFolderItem::drawUpperLower([[maybe_unused]] int32 difficultyIdx, const RenderTexture& renderTexture, const SelectMenuItemGraphicAssets& assets, bool isUpper) const
 {
 	Shader::Copy(isUpper ? assets.dirItemTextures.upperHalf : assets.dirItemTextures.lowerHalf, renderTexture);
 
+	const String displayName = FolderDisplayNameUpperLower(m_displayName, m_isCurrentFolder);
+
 	const ScopedRenderTarget2D scopedRenderTarget(renderTexture);
-	assets.font(FolderDisplayNameUpperLower(m_displayName, m_isCurrentFolder)).drawAt(38, isUpper ? Vec2{ 16 + 770 / 2, 12 + 86 / 2 } : Vec2{ 16 + 770 / 2, 126 + 86 / 2 });
+	FontUtils::DrawTextCenterWithFitWidth(assets.font(displayName), 38, 36, isUpper ? Rect{ 26, 17, 750, 86 } : Rect{ 26, 131, 750, 86 });
 }

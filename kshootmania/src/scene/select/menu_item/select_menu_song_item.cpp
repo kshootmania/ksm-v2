@@ -1,4 +1,5 @@
 ﻿#include "select_menu_song_item.hpp"
+#include "graphics/font_utils.hpp"
 #include "scene/select/select_difficulty_menu.hpp"
 #include "scene/select/select_menu_graphics.hpp"
 
@@ -22,7 +23,7 @@ namespace
 		{
 			size.y *= static_cast<double>(jacketTexture.height()) / jacketTexture.width();
 		}
-		jacketTexture.resized(size).draw(pos);
+		jacketTexture.resized(size).draw(pos); 
 	}
 }
 
@@ -125,19 +126,19 @@ void SelectMenuSongItem::drawCenter(int32 difficultyIdx, const RenderTexture& re
 	}
 
 	// Title
-	assets.fontBold(pChartInfo->title()).drawAt(27, Vec2{ 16 + 462 / 2, 12 + 36 / 2 });
+	FontUtils::DrawTextCenterWithFitWidth(assets.fontBold(pChartInfo->title()), 27, 25, { 16, 12, 462, 36 });
 
 	// Artist
-	assets.font(pChartInfo->artist()).drawAt(24, Vec2{ 16 + 462 / 2, 48 + 36 / 2 });
+	FontUtils::DrawTextCenterWithFitWidth(assets.font(pChartInfo->artist()), 23, 22, { 16, 48, 462, 36 });
 
 	// Jacket
 	DrawJacketImage(pChartInfo->jacketFilePath(), { 492, 22 }, { 254, 254 });
 
 	// Jacket author (Illustrated by)
-	assets.font(pChartInfo->jacketAuthor()).draw(17, Arg::leftCenter = Vec2{ 630, 290 + 18 / 2 }, Palette::Black);
+	FontUtils::DrawTextLeftWithFitWidth(assets.font(pChartInfo->jacketAuthor()), 17, 15, { 630, 290, 110, 18 }, Palette::Black, 1);
 
 	// Chart author (Effected by)
-	assets.font(pChartInfo->chartAuthor()).draw(19, Arg::leftCenter = Vec2{ 154, 293 + 22 / 2 });
+	FontUtils::DrawTextLeftWithFitWidth(assets.font(pChartInfo->chartAuthor()), 18, 17, { 154, 293, 320, 22 }, Palette::White, 1);
 
 	// High score
 	const GaugeType gaugeType = GaugeType::kNormalGauge; // TODO: 現在選択中のゲージタイプを反映
@@ -168,10 +169,10 @@ void SelectMenuSongItem::drawUpperLower(int32 difficultyIdx, const RenderTexture
 	}
 
 	// 曲名を描画
-	assets.fontBold(pChartInfo->title()).drawAt(28, isUpper ? Vec2{ 12 + 576 / 2, 10 + 40 / 2 } : Vec2{ 12 + 576 / 2, 117 + 40 / 2 });
+	FontUtils::DrawTextCenterWithFitWidth(assets.fontBold(pChartInfo->title()), 28, 26, { 22, isUpper ? 10 : 117, 556, 40 });
 
 	// アーティスト名を描画
-	assets.font(pChartInfo->artist()).drawAt(24, isUpper ? Vec2{ 230 + 354 / 2, 67 + 40 / 2 } : Vec2{ 230 + 354 / 2, 171 + 40 / 2 });
+	FontUtils::DrawTextCenterWithFitWidth(assets.font(pChartInfo->artist()), 24, 22, { 245, isUpper ? 67 : 171, 324, 40 });
 
 	// ジャケット画像を描画
 	DrawJacketImage(pChartInfo->jacketFilePath(), { 600, 10 }, { 208, 208 });

@@ -1,5 +1,6 @@
 ﻿#include "song_info_panel.hpp"
 #include "music_game/graphics/graphics_defines.hpp"
+#include "graphics/font_utils.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -64,11 +65,11 @@ namespace MusicGame::Graphics
 
 			// Title
 			const Font titleFont = AssetManagement::SystemFontBold();
-			titleFont(Unicode::FromUTF8(chartData.meta.title)).drawAt(27, Point{ 12, 4 } + Point{ 448, 52 } / 2, kSongInfoFontColor);
+			FontUtils::DrawTextCenterWithFitWidth(titleFont(Unicode::FromUTF8(chartData.meta.title)), 27, 25, { 36, 5, 408, 50 }, kSongInfoFontColor);
 
 			// Artist
 			const Font artistFont = AssetManagement::SystemFont();
-			artistFont(Unicode::FromUTF8(chartData.meta.artist)).drawAt(22, Point{ 12, 54 } + Point{ 448, 28 } / 2, kSongInfoFontColor);
+			FontUtils::DrawTextCenterWithFitWidth(artistFont(Unicode::FromUTF8(chartData.meta.artist)), 22, 21, { 36, 54, 408, 28 }, kSongInfoFontColor);
 		}
 	}
 

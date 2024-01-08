@@ -1,5 +1,6 @@
 ﻿#include "result_panel.hpp"
 #include "graphics/number_texture_font.hpp"
+#include "graphics/font_utils.hpp"
 
 namespace
 {
@@ -33,11 +34,11 @@ namespace
 
 		// 曲名を表示
 		const Font fontBold = AssetManagement::SystemFontBold();
-		fontBold(Unicode::FromUTF8(chartData.meta.title)).drawAt(27, 303, 28);
+		FontUtils::DrawTextCenterWithFitWidth(fontBold(Unicode::FromUTF8(chartData.meta.title)), 27, 25, { 100, 11, 408, 36 });
 
 		// アーティスト名を表示
 		const Font font = AssetManagement::SystemFont();
-		font(Unicode::FromUTF8(chartData.meta.artist)).drawAt(20, 303, 61);
+		FontUtils::DrawTextCenterWithFitWidth(font(Unicode::FromUTF8(chartData.meta.artist)), 20, 19, { 100, 47, 408, 28 });
 
 		// ジャケットを表示
 		const FilePath parentPath = FileSystem::ParentPath(chartFilePath);

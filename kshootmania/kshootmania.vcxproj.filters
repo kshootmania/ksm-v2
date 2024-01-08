@@ -501,6 +501,9 @@
     <ClCompile Include="src\common\fs_utils.cpp">
       <Filter>Source Files\common</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\font_utils.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1086,6 +1089,9 @@
     </ClInclude>
     <ClInclude Include="src\music_game\play_option.hpp">
       <Filter>Header Files\music_game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\font_utils.hpp">
+      <Filter>Header Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
