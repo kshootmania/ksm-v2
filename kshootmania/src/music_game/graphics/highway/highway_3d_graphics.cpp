@@ -121,9 +121,13 @@ namespace MusicGame::Graphics
 				{
 					const kson::Pulse pulse = kson::MeasureIdxToPulse(measureIndex, chartData.beat, timingCache);
 					const int32 pulsePositionY = highwayScrollContext.getPositionY(pulse);
-					if (pulsePositionY < 0 || kHighwayTextureSize.y <= pulsePositionY)
+					if (pulsePositionY >= kHighwayTextureSize.y)
 					{
 						continue;
+					}
+					if (pulsePositionY < 0)
+					{
+						break;
 					}
 
 					const Vec2 position = kBarLinePositionOffset + Vec2::Down(pulsePositionY);
