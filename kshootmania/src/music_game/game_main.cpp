@@ -135,7 +135,7 @@ namespace MusicGame
 		const Scroll::HighwayScrollContext highwayScrollContext(&m_highwayScroll, &m_chartData.beat, &m_timingCache, &m_gameStatus);
 
 		// 描画実行
-		m_graphicsMain.draw(m_chartData, m_gameStatus, m_viewStatus, highwayScrollContext);
+		m_graphicsMain.draw(m_chartData, m_timingCache, m_gameStatus, m_viewStatus, highwayScrollContext);
 	}
 
 	void GameMain::lockForExit()

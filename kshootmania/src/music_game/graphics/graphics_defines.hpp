@@ -15,6 +15,8 @@ namespace MusicGame::Graphics
 	constexpr Size kHighwayTextureSizeWide = { kHighwayTextureSize.x * kLaserXScaleWide, kHighwayTextureSize.y };
 	constexpr Float2 kHighwayPlaneSizeWide = { kHighwayPlaneSize.x * kLaserXScaleWide, kHighwayPlaneSize.y };
 
+	constexpr int32 kHighwayTextureWideCenterX = kHighwayTextureSizeWide.x / 2;
+
 	constexpr int32 kHighwayTextureOffsetX = (kHighwayTextureSizeWide.x - kHighwayTextureSize.x) / 2;
 
 	constexpr Vec2 kLanePositionOffset = { kHighwayTextureOffsetX + 44.0, 0.0 };

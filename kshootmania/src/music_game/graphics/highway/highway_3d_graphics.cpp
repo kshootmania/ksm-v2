@@ -8,6 +8,7 @@ namespace MusicGame::Graphics
 	namespace
 	{
 		constexpr StringView kShineEffectTextureFilename = U"lanelight.gif";
+		constexpr StringView kBarLineTextureFilename = U"bline.gif";
 
 		// カメラ座標と判定ラインを線で結んだ場合の垂直からの角度
 		// (値の根拠は不明だが、KSMv1でこの値が使用されていたためそのまま持ってきている)
@@ -28,11 +29,18 @@ namespace MusicGame::Graphics
 		constexpr Vec2 kShineEffectPositionDiff = { 0.0, 300.0 };
 		constexpr double kShineEffectLoopSec = 0.2;
 
+		constexpr int32 kMaxNumBarLines = 2;
+		constexpr Size kBarLineTextureSize = { 192, 16 };
+		constexpr Size kBarLineTextureHalfSize = { kBarLineTextureSize.x / 2, kBarLineTextureSize.y };
+		constexpr Vec2 kBarLinePositionOffset = { kHighwayTextureWideCenterX - kBarLineTextureHalfSize.x, -14 };
+		constexpr ColorF kBarLineColor = Color{ 110 };
+
 		constexpr double kHighwayRotationXByCamera = ToRadians(60.0);
 	}
 
 	Highway3DGraphics::Highway3DGraphics()
 		: m_shineEffectTexture(TextureAsset(kShineEffectTextureFilename))
+		, m_barLineTexture(TextureAsset(kBarLineTextureFilename))
 		, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, kHighwayPlaneSizeWide, 1, 1, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
 		, m_mesh(m_meshData) // DynamicMesh::fill()で頂点データの配列サイズが動的に変更される訳ではないのでこの初期化は必須
 	{
@@ -69,34 +77,67 @@ namespace MusicGame::Graphics
 		m_mesh.fill(m_meshData);
 	}
 
-	void Highway3DGraphics::draw2D(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const
+	void Highway3DGraphics::draw2D(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
 		m_renderTexture.drawBaseTexture(viewStatus.camStatus.centerSplit);
 
-		// Draw shine effect
 		{
 			const ScopedRenderTarget2D renderTarget(m_renderTexture.additiveTexture());
 			const ScopedRenderStates2D renderState(BlendState::Additive);
 
-			const double rate = MathUtils::WrappedFmod(gameStatus.currentTimeSec, kShineEffectLoopSec) / kShineEffectLoopSec;
-			const Vec2 position = kShineEffectPositionOffset + kShineEffectPositionDiff * rate;
-			if (MathUtils::AlmostEquals(viewStatus.camStatus.centerSplit, 0.0))
+			const bool isCenterSplitUsed = !MathUtils::AlmostEquals(viewStatus.camStatus.centerSplit, 0.0);
+			const double centerSplitShiftX = isCenterSplitUsed ? Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit) : 0.0;
+
+			// 光沢エフェクトを描画
 			{
-				// center_split不使用時はそのまま描画
-				for (int32 i = 0; i < kNumShineEffects; ++i)
+
+				const double rate = MathUtils::WrappedFmod(gameStatus.currentTimeSec, kShineEffectLoopSec) / kShineEffectLoopSec;
+				const Vec2 position = kShineEffectPositionOffset + kShineEffectPositionDiff * rate;
+				if (isCenterSplitUsed)
 				{
-					m_shineEffectTexture.draw(position + kShineEffectPositionDiff * i);
+					// center_split不使用時はそのまま描画
+					for (int32 i = 0; i < kNumShineEffects; ++i)
+					{
+						m_shineEffectTexture.draw(position + kShineEffectPositionDiff * i);
+					}
+				}
+				else
+				{
+					// center_split使用時は左右に分割して描画
+					const Size halfSize = { m_shineEffectTexture.width() / 2, m_shineEffectTexture.height() };
+					for (int32 i = 0; i < kNumShineEffects; ++i)
+					{
+						m_shineEffectTexture(0, 0, halfSize).draw(Vec2::Right(-centerSplitShiftX) + position + kShineEffectPositionDiff * i);
+						m_shineEffectTexture(halfSize.x, 0, halfSize).draw(Vec2::Right(halfSize.x + centerSplitShiftX) + position + kShineEffectPositionDiff * i);
+					}
 				}
 			}
-			else
+
+			// 小節線を描画
 			{
-				// center_split使用時は左右に分割して描画
-				const double centerSplitShiftX = Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit);
-				const Size halfSize = { m_shineEffectTexture.width() / 2, m_shineEffectTexture.height() };
-				for (int32 i = 0; i < kNumShineEffects; ++i)
+				const int32 startMeasureIndex = kson::PulseToMeasureIdx(gameStatus.currentPulse, chartData.beat, timingCache) - 1;
+				const int32 endMeasureIndex = startMeasureIndex + kMaxNumBarLines + 1;
+				for (int32 measureIndex = startMeasureIndex; measureIndex < endMeasureIndex; ++measureIndex)
 				{
-					m_shineEffectTexture(0, 0, halfSize).draw(Vec2::Right(-centerSplitShiftX) + position + kShineEffectPositionDiff * i);
-					m_shineEffectTexture(halfSize.x, 0, halfSize).draw(Vec2::Right(halfSize.x + centerSplitShiftX) + position + kShineEffectPositionDiff * i);
+					const kson::Pulse pulse = kson::MeasureIdxToPulse(measureIndex, chartData.beat, timingCache);
+					const int32 pulsePositionY = highwayScrollContext.getPositionY(pulse);
+					if (pulsePositionY < 0 || kHighwayTextureSize.y <= pulsePositionY)
+					{
+						continue;
+					}
+
+					const Vec2 position = kBarLinePositionOffset + Vec2::Down(pulsePositionY);
+					if (isCenterSplitUsed)
+					{
+						// center_split不使用時はそのまま描画
+						m_barLineTexture.draw(position, kBarLineColor);
+					}
+					else
+					{
+						// center_split使用時は左右に分割して描画
+						m_barLineTexture(0, 0, kBarLineTextureHalfSize).draw(Vec2::Right(-centerSplitShiftX) + position, kBarLineColor);
+						m_barLineTexture(kBarLineTextureHalfSize.x, 0, kBarLineTextureHalfSize).draw(Vec2::Right(kBarLineTextureHalfSize.x + centerSplitShiftX) + position, kBarLineColor);
+					}
 				}
 			}
 		}

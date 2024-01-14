@@ -11,66 +11,6 @@ namespace MusicGame::Scroll
 		// 上記の「108/2」と「10」を乗算した値にあたる
 		constexpr double kBasePixels = 540.0;
 
-		kson::Pulse LastNoteEndPulseButtonLane(const kson::ByPulse<kson::Interval>& lane)
-		{
-			if (lane.empty())
-			{
-				return kson::Pulse{ 0 };
-			}
-
-			const auto& [y, lastNote] = *lane.rbegin();
-
-			return y + lastNote.length;
-		}
-
-		kson::Pulse LastNoteEndPulseLaserLane(const kson::ByPulse<kson::LaserSection>& lane)
-		{
-			if (lane.empty())
-			{
-				return kson::Pulse{ 0 };
-			}
-
-			const auto& [y, lastSection] = *lane.rbegin();
-			if (lastSection.v.empty())
-			{
-				assert(false && "Laser section must not be empty");
-				return y;
-			}
-
-			const auto& [ry, lastPoint] = *lastSection.v.rbegin();
-			return y + ry;
-		}
-
-		kson::Pulse LastNoteEndPulse(const kson::ChartData& chartData)
-		{
-			auto maxPulse = kson::Pulse{ 0 };
-			for (const auto& lane : chartData.note.bt)
-			{
-				const kson::Pulse y = LastNoteEndPulseButtonLane(lane);
-				if (y > maxPulse)
-				{
-					maxPulse = y;
-				}
-			}
-			for (const auto& lane : chartData.note.fx)
-			{
-				const kson::Pulse y = LastNoteEndPulseButtonLane(lane);
-				if (y > maxPulse)
-				{
-					maxPulse = y;
-				}
-			}
-			for (const auto& lane : chartData.note.laser)
-			{
-				const kson::Pulse y = LastNoteEndPulseLaserLane(lane);
-				if (y > maxPulse)
-				{
-					maxPulse = y;
-				}
-			}
-			return maxPulse;
-		}
-
 		/// @brief BPMの最頻値(累計Pulse値が最も大きいBPM)を返す
 		/// @param chartData 譜面データ
 		/// @return BPM
@@ -115,15 +55,15 @@ namespace MusicGame::Scroll
 
 			// 最終BPM変化を加味する
 			// (最終ノーツのPulse値を調べ、最終BPM変化より後ろであれば加味)
-			const kson::Pulse lastNoteEndPulse = LastNoteEndPulse(chartData);
-			if (lastNoteEndPulse > prevY)
+			const kson::Pulse lastNoteEndY = kson::LastNoteEndY(chartData.note);
+			if (lastNoteEndY > prevY)
 			{
 				if (!prevBPMInt.has_value())
 				{
 					assert(false && "prevBPMInt must not be none after the loop");
 					return kErrorBPM;
 				}
-				bpmTotalPulses[prevBPMInt.value()] += lastNoteEndPulse - prevY;
+				bpmTotalPulses[prevBPMInt.value()] += lastNoteEndY - prevY;
 			}
 
 			if (bpmTotalPulses.empty())
