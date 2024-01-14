@@ -83,6 +83,9 @@ namespace MusicGame
 		// cursorXがnoteCursorXから一定以内の距離であればnoteVisualCursorXをカーソル表示位置として使用する。
 		Optional<double> noteVisualCursorX = none;
 
+		// ノーツ側の表示用理想カーソル横位置がはみ出しLASER用のものか
+		bool noteVisualCursorWide = false;
+
 		// 現在判定しているLASERセクションの始点のPulse値
 		// (クリティカル判定でない場合にもnoneではなくPulse値になる。主に判定グラフィックス用)
 		Optional<kson::Pulse> currentLaserSectionPulse = none;
@@ -119,6 +122,9 @@ namespace MusicGame
 		kson::Pulse currentPulse = 0;
 		double currentPulseDouble = 0.0;
 		double currentBPM = 120.0;
+
+		double currentTimeSecAdjusted = 0.0;
+		kson::Pulse currentPulseAdjusted = 0;
 		
 		std::array<ButtonLaneStatus, kson::kNumBTLanesSZ> btLaneStatus;
 		std::array<ButtonLaneStatus, kson::kNumFXLanesSZ> fxLaneStatus;

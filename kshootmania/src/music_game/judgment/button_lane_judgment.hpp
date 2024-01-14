@@ -18,6 +18,7 @@ namespace MusicGame::Judgment
 		};
 
 	private:
+		const PlayOption m_playOption;
 		const JudgmentPlayMode m_judgmentPlayMode;
 		const KeyConfig::Button m_keyConfigButton;
 		const std::map<kson::Pulse, double> m_pulseToSec;
@@ -39,9 +40,9 @@ namespace MusicGame::Judgment
 		void processPassedNoteJudgment(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef, IsAutoPlayYN isAutoPlay);
 
 	public:
-		ButtonLaneJudgment(JudgmentPlayMode judgmentPlayMode, KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
+		ButtonLaneJudgment(const PlayOption& playOption, JudgmentPlayMode judgmentPlayMode, KeyConfig::Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
 
-		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef);
+		void update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, kson::Pulse currentRawPulse, double currentRawSec, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef);
 
 		std::size_t chipJudgmentCount() const;
 

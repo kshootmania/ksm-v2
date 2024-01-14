@@ -42,6 +42,9 @@ namespace MusicGame
 		const kson::ChartData m_chartData;
 		const kson::TimingCache m_timingCache;
 
+		// プレイオプション
+		const PlayOption m_playOption;
+
 		// 判定
 		Judgment::JudgmentMain m_judgmentMain;
 

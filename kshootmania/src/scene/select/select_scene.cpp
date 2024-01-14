@@ -2,8 +2,15 @@
 
 void SelectScene::moveToPlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay)
 {
-	getData().playSceneArgs.chartFilePath = chartFilePath;
-	getData().playSceneArgs.playOption.isAutoPlay = isAutoPlay;
+	auto& argsRef = getData().playSceneArgs;
+	argsRef.chartFilePath = chartFilePath;
+	argsRef.playOption = MusicGame::PlayOption
+	{
+		.isAutoPlay = isAutoPlay,
+		.gaugeType = GaugeType::kNormalGauge, // TODO: ゲージの種類
+		.timingAdjustMs = ConfigIni::GetInt(ConfigIni::Key::kTimingAdjust),
+		.laserTimingAdjustMs = ConfigIni::GetInt(ConfigIni::Key::kLaserTimingAdjust),
+	};
 	ScreenFadeAddon::FadeOutToScene(SceneName::kPlay, ScreenFadeAddon::kDefaultDuration, Palette::White);
 }
 

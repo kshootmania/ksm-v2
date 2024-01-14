@@ -35,6 +35,11 @@ namespace MusicGame
 		m_gameStatus.currentPulseDouble = currentPulseDouble;
 		m_gameStatus.currentBPM = currentBPM;
 
+		// タイミング調整後の時間を取得
+		const double timingAdjustSec = m_playOption.timingAdjustMs / 1000.0;
+		m_gameStatus.currentTimeSecAdjusted = currentTimeSec + timingAdjustSec;
+		m_gameStatus.currentPulseAdjusted = kson::SecToPulse(currentTimeSec + timingAdjustSec, m_chartData.beat, m_timingCache);
+
 		// 視点変更を更新
 		// (CamStatusにノーツイベントによる値が相対的に反映されるので、判定の更新より先に実行する必要がある)
 		m_camSystem.update(m_chartData, m_gameStatus.currentPulse);
@@ -74,6 +79,7 @@ namespace MusicGame
 		, m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
 		, m_chartData(kson::LoadKSHChartData(createInfo.chartFilePath.narrow()))
 		, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
+		, m_playOption(createInfo.playOption)
 		, m_judgmentMain(m_chartData, m_timingCache, createInfo.playOption)
 		, m_highwayScroll(m_chartData)
 		, m_bgm(FileSystem::PathAppend(m_parentPath, Unicode::FromUTF8(m_chartData.audio.bgm.filename)), m_chartData.audio.bgm.vol, static_cast<double>(m_chartData.audio.bgm.offset) / 1000)

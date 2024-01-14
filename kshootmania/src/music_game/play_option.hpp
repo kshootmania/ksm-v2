@@ -10,6 +10,10 @@ namespace MusicGame
 
 		GaugeType gaugeType = GaugeType::kNormalGauge;
 
+		int32 timingAdjustMs = 0;
+
+		int32 laserTimingAdjustMs = 0;
+
 		JudgmentPlayMode btJudgmentPlayMode() const
 		{
 			return isAutoPlay ? JudgmentPlayMode::kAuto : JudgmentPlayMode::kOn;

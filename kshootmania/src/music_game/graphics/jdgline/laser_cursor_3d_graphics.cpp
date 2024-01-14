@@ -46,14 +46,31 @@ namespace MusicGame::Graphics
 		for (int32 i = 0; i < kson::kNumLaserLanes; ++i)
 		{
 			const auto& laneStatus = gameStatus.laserLaneStatus[i];
-			if (!laneStatus.cursorX.has_value())
+
+			// カーソルの横位置
+			double cursorX;
+			if (laneStatus.cursorX.has_value() &&
+				laneStatus.noteCursorX.has_value() &&
+				Judgment::IsLaserCursorInAutoFitRange(laneStatus.cursorX.value(), laneStatus.noteCursorX.value()))
+			{
+				// 近い範囲にあれば理想カーソル位置に描画
+				cursorX = laneStatus.noteVisualCursorX.value();
+			}
+			else if (laneStatus.noteVisualCursorX.has_value())
+			{
+				cursorX = laneStatus.noteVisualCursorX.value();
+			}
+			else if (laneStatus.cursorX.has_value())
+			{
+				cursorX = laneStatus.cursorX.value();
+			}
+			else
 			{
 				// カーソルが出ていない
 				continue;
 			}
 
 			// カーソルを描画
-			const double cursorX = laneStatus.cursorX.value();
 			const double jdgoverlayScale = Camera::JdgoverlayScale(viewStatus.camStatus.zoom);
 			const Vec3 shiftXVec = Vec3::Right(Camera::ScaledCamShiftXValue(viewStatus.camStatus.shiftX));
 			const Vec3 center = kPlaneCenter + CursorVec(laneStatus.cursorWide, cursorX, jdgoverlayScale) + shiftXVec * jdgoverlayScale;
