@@ -95,20 +95,20 @@ namespace MusicGame::Graphics
 				const Vec2 position = kShineEffectPositionOffset + kShineEffectPositionDiff * rate;
 				if (isCenterSplitUsed)
 				{
-					// center_split不使用時はそのまま描画
-					for (int32 i = 0; i < kNumShineEffects; ++i)
-					{
-						m_shineEffectTexture.draw(position + kShineEffectPositionDiff * i);
-					}
-				}
-				else
-				{
 					// center_split使用時は左右に分割して描画
 					const Size halfSize = { m_shineEffectTexture.width() / 2, m_shineEffectTexture.height() };
 					for (int32 i = 0; i < kNumShineEffects; ++i)
 					{
 						m_shineEffectTexture(0, 0, halfSize).draw(Vec2::Right(-centerSplitShiftX) + position + kShineEffectPositionDiff * i);
 						m_shineEffectTexture(halfSize.x, 0, halfSize).draw(Vec2::Right(halfSize.x + centerSplitShiftX) + position + kShineEffectPositionDiff * i);
+					}
+				}
+				else
+				{
+					// center_split不使用時はそのまま描画
+					for (int32 i = 0; i < kNumShineEffects; ++i)
+					{
+						m_shineEffectTexture.draw(position + kShineEffectPositionDiff * i);
 					}
 				}
 			}
@@ -129,14 +129,14 @@ namespace MusicGame::Graphics
 					const Vec2 position = kBarLinePositionOffset + Vec2::Down(pulsePositionY);
 					if (isCenterSplitUsed)
 					{
-						// center_split不使用時はそのまま描画
-						m_barLineTexture.draw(position, kBarLineColor);
-					}
-					else
-					{
 						// center_split使用時は左右に分割して描画
 						m_barLineTexture(0, 0, kBarLineTextureHalfSize).draw(Vec2::Right(-centerSplitShiftX) + position, kBarLineColor);
 						m_barLineTexture(kBarLineTextureHalfSize.x, 0, kBarLineTextureHalfSize).draw(Vec2::Right(kBarLineTextureHalfSize.x + centerSplitShiftX) + position, kBarLineColor);
+					}
+					else
+					{
+						// center_split不使用時はそのまま描画
+						m_barLineTexture.draw(position, kBarLineColor);
 					}
 				}
 			}
