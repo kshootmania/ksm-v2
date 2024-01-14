@@ -18,6 +18,8 @@ namespace AssetManagement
 		constexpr StringView kFontAssetSystemScBold = U"SystemScBold";
 		constexpr StringView kFontAssetSystemTc = U"SystemTc";
 		constexpr StringView kFontAssetSystemTcBold = U"SystemTcBold";
+		constexpr StringView kFontAssetSystemEmoji = U"SystemEmoji";
+		constexpr StringView kFontAssetSystemEmojiBold = U"SystemEmojiBold";
 		constexpr StringView kFontResourcePath = U"assets/font/tektur-ksm/Tektur-KSM-Medium.ttf";
 		constexpr StringView kFontJaResourcePath = U"assets/font/corporate-logo/Corporate-Logo-Medium-ver3.otf";
 		constexpr StringView kFontKrResourcePath = U"assets/font/noto-sans-kr/NotoSansKR-Medium.ttf"; // CJKフォントだとハングルが細かったので別途用意
@@ -61,22 +63,26 @@ namespace AssetManagement
 			FontAsset::Register(kFontAssetSystemScBold, FontMethod::MSDF, 44, Typeface::CJK_Regular_SC, FontStyle::Bold);
 			FontAsset::Register(kFontAssetSystemTc, FontMethod::MSDF, 44, Typeface::CJK_Regular_TC);
 			FontAsset::Register(kFontAssetSystemTcBold, FontMethod::MSDF, 44, Typeface::CJK_Regular_TC, FontStyle::Bold);
+			FontAsset::Register(kFontAssetSystemEmoji, FontMethod::MSDF, 44, Typeface::MonochromeEmoji);
+			FontAsset::Register(kFontAssetSystemEmojiBold, FontMethod::MSDF, 44, Typeface::MonochromeEmoji, FontStyle::Bold);
 		}
 
-		Font MakeFallbackFont(StringView fontAssetName1, StringView fontAssetName2, StringView fontAssetName3 = U"", StringView fontAssetName4 = U"")
+		Font MakeFallbackFont(StringView fontAssetName1, StringView fontAssetName2, StringView fontAssetName3, StringView fontAssetName4 = U"", StringView fontAssetName5 = U"")
 		{
 			const Font font1 = FontAsset(fontAssetName1);
 			const Font font2 = FontAsset(fontAssetName2);
 			font1.addFallback(font2);
-			if (!fontAssetName3.empty())
-			{
-				const Font font3 = FontAsset(fontAssetName3);
-				font1.addFallback(font3);
-			}
+			const Font font3 = FontAsset(fontAssetName3);
+			font1.addFallback(font3);
 			if (!fontAssetName4.empty())
 			{
 				const Font font4 = FontAsset(fontAssetName4);
 				font1.addFallback(font4);
+			}
+			if (!fontAssetName5.empty())
+			{
+				const Font font5 = FontAsset(fontAssetName5);
+				font1.addFallback(font5);
 			}
 			return font1;
 		}
@@ -97,20 +103,20 @@ namespace AssetManagement
 		{
 		case I18n::StandardLanguage::SimplifiedChinese:
 			// 簡体字の場合は簡体字デザインのCJKフォントを優先
-			return MakeFallbackFont(kFontAssetSystem, kFontAssetSystemSc);
+			return MakeFallbackFont(kFontAssetSystem, kFontAssetSystemSc, kFontAssetSystemEmoji);
 
 		case I18n::StandardLanguage::TraditionalChinese:
 			// 繁体字の場合は繁体字デザインのCJKフォントを優先
-			return MakeFallbackFont(kFontAssetSystem, kFontAssetSystemTc);
+			return MakeFallbackFont(kFontAssetSystem, kFontAssetSystemTc, kFontAssetSystemEmoji);
 
 		case I18n::StandardLanguage::Korean:
 			// 韓国語の場合は日本語フォントを優先し、韓国語デザインのCJKフォントをフォールバック指定
 			// (日本語フォントにハングルは含まれないため日本語フォントを優先してもさほど問題ない)
-			return MakeFallbackFont(kFontAssetSystem, kFontAssetSystemJp, kFontAssetSystemKr, kFontAssetSystemKrCJK);
+			return MakeFallbackFont(kFontAssetSystem, kFontAssetSystemJp, kFontAssetSystemKr, kFontAssetSystemKrCJK, kFontAssetSystemEmoji);
 
 		default:
 			// それ以外の場合は日本語フォントを優先
-			return MakeFallbackFont(kFontAssetSystem, kFontAssetSystemJp, kFontAssetSystemJpCJK);
+			return MakeFallbackFont(kFontAssetSystem, kFontAssetSystemJp, kFontAssetSystemJpCJK, kFontAssetSystemEmoji);
 		}
 	}
 
@@ -121,20 +127,20 @@ namespace AssetManagement
 		{
 		case I18n::StandardLanguage::SimplifiedChinese:
 			// 簡体字の場合は簡体字デザインのCJKフォントを優先
-			return MakeFallbackFont(kFontAssetSystemBold, kFontAssetSystemScBold);
+			return MakeFallbackFont(kFontAssetSystemBold, kFontAssetSystemScBold, kFontAssetSystemEmojiBold);
 
 		case I18n::StandardLanguage::TraditionalChinese:
 			// 繁体字の場合は繁体字デザインのCJKフォントを優先
-			return MakeFallbackFont(kFontAssetSystemBold, kFontAssetSystemTcBold);
+			return MakeFallbackFont(kFontAssetSystemBold, kFontAssetSystemTcBold, kFontAssetSystemEmojiBold);
 
 		case I18n::StandardLanguage::Korean:
 			// 韓国語の場合は日本語フォントを優先し、韓国語デザインのCJKフォントをフォールバック指定
 			// (日本語フォントにハングルは含まれないため日本語フォントを優先してもさほど問題ない)
-			return MakeFallbackFont(kFontAssetSystemBold, kFontAssetSystemJpBold, kFontAssetSystemKrBold, kFontAssetSystemKrCJK);
+			return MakeFallbackFont(kFontAssetSystemBold, kFontAssetSystemJpBold, kFontAssetSystemKrBold, kFontAssetSystemKrCJK, kFontAssetSystemEmojiBold);
 
 		default:
 			// それ以外の場合は日本語フォントを優先
-			return MakeFallbackFont(kFontAssetSystemBold, kFontAssetSystemJpBold, kFontAssetSystemJpCJKBold);
+			return MakeFallbackFont(kFontAssetSystemBold, kFontAssetSystemJpBold, kFontAssetSystemJpCJKBold, kFontAssetSystemEmojiBold);
 		}
 	}
 }
