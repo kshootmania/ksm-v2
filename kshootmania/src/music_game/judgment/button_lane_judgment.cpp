@@ -245,7 +245,7 @@ namespace MusicGame::Judgment
 		for (auto itr = m_passedNoteCursor; itr != lane.end(); ++itr)
 		{
 			const auto& [y, note] = *itr;
-			const double passSec = (note.length == 0) ? m_pulseToSec.at(y) + thresholdSec : m_pulseToSec.at(y + note.length);
+			const double passSec = ((note.length == 0) ? m_pulseToSec.at(y) : m_pulseToSec.at(y + note.length)) + thresholdSec;
 			if (currentTimeSec >= passSec)
 			{
 				// 通過済みチップノーツの判定
