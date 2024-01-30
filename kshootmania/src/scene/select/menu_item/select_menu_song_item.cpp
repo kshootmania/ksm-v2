@@ -140,7 +140,7 @@ void SelectMenuSongItem::drawCenter(int32 difficultyIdx, const RenderTexture& re
 	// Chart author (Effected by)
 	FontUtils::DrawTextLeftWithFitWidth(assets.font(pChartInfo->chartAuthor()), 18, 17, { 154, 293, 320, 22 }, Palette::White, 1);
 
-	// High score
+	// クリアメダル・ハイスコア・グレードを描画
 	const GaugeType gaugeType = GaugeType::kNormalGauge; // TODO: 現在選択中のゲージタイプを反映
 	const auto& highScoreInfo = pChartInfo->highScoreInfo();
 	assets.highScoreMedalTexture(static_cast<int32>(highScoreInfo.medal())).scaled(kScale2x).draw(42, 323);
@@ -176,4 +176,10 @@ void SelectMenuSongItem::drawUpperLower(int32 difficultyIdx, const RenderTexture
 
 	// ジャケット画像を描画
 	DrawJacketImage(pChartInfo->jacketFilePath(), { 600, 10 }, { 208, 208 });
+
+	// クリアメダル・グレードを描画
+	const GaugeType gaugeType = GaugeType::kNormalGauge; // TODO: 現在選択中のゲージタイプを反映
+	const auto& highScoreInfo = pChartInfo->highScoreInfo();
+	assets.highScoreMedalTexture(static_cast<int32>(highScoreInfo.medal())).scaled(kScale2x).draw(70, isUpper ? 70 : 176);
+	assets.highScoreGradeTexture(static_cast<int32>(highScoreInfo.grade(gaugeType))).scaled(kScale2x).draw(183, isUpper ? 75 : 181);
 }
