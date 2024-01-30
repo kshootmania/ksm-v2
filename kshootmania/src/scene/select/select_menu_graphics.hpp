@@ -90,6 +90,8 @@ private:
 	Array<RenderTexture> m_upperHalfItems;
 	Array<RenderTexture> m_lowerHalfItems;
 
+	Optional<int32> m_prevDifficultyIdx = none;
+
 	void refreshCenterMenuItem(const ISelectMenuItem& item, int32 difficultyIdx) const;
 
 	void refreshUpperLowerMenuItem(const RenderTexture& target, const ISelectMenuItem& item, int32 difficultyIdx, bool isUpper) const;
