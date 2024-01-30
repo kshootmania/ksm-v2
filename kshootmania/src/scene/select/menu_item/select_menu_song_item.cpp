@@ -155,31 +155,55 @@ void SelectMenuSongItem::drawUpperLower(int32 difficultyIdx, const RenderTexture
 
 	const ScopedRenderTarget2D scopedRenderTarget(renderTexture);
 
+	// 難易度が存在しない場合は代替カーソル値を使用して譜面情報を取得
+	// (曲名・アーティスト名・ジャケット画像はカーソル難易度が存在しない場合でも常に描画する必要があるため。
+	//  なお、difficultyIdxには既にCenterの項目の代替カーソル値が適用済みである、つまりCenterの項目における存在しない難易度を選択中の場合は存在する難易度の値に置換済みである点に注意。
+	//  つまり、Centerの代替カーソル値をもとにさらに代替カーソル値を求めている)
 	const int32 altDifficultyIdx = SelectDifficultyMenu::GetAlternativeCursor(difficultyIdx,
 		[this](int32 idx)
 		{
 			return chartInfoPtr(idx) != nullptr;
 		});
-
-	const SelectChartInfo* pChartInfo = chartInfoPtr(altDifficultyIdx);
-	if (pChartInfo == nullptr)
+	const SelectChartInfo* pAltChartInfo = chartInfoPtr(altDifficultyIdx);
+	if (pAltChartInfo == nullptr)
 	{
-		assert(false && "SelectMenuSongItem::drawUpperLower: pChartInfo is null");
+		assert(false && "SelectMenuSongItem::drawUpperLower: pAltChartInfo is null");
 		return;
 	}
 
 	// 曲名を描画
-	FontUtils::DrawTextCenterWithFitWidth(assets.fontBold(pChartInfo->title()), 28, 26, { 22, isUpper ? 10 : 117, 556, 40 });
+	FontUtils::DrawTextCenterWithFitWidth(assets.fontBold(pAltChartInfo->title()), 28, 26, { 22, isUpper ? 10 : 117, 556, 40 });
 
 	// アーティスト名を描画
-	FontUtils::DrawTextCenterWithFitWidth(assets.font(pChartInfo->artist()), 24, 22, { 245, isUpper ? 67 : 171, 324, 40 });
+	FontUtils::DrawTextCenterWithFitWidth(assets.font(pAltChartInfo->artist()), 24, 22, { 245, isUpper ? 67 : 171, 324, 40 });
 
 	// ジャケット画像を描画
-	DrawJacketImage(pChartInfo->jacketFilePath(), { 600, 10 }, { 208, 208 });
+	DrawJacketImage(pAltChartInfo->jacketFilePath(), { 600, 10 }, { 208, 208 });
 
-	// クリアメダル・グレードを描画
-	const GaugeType gaugeType = GaugeType::kNormalGauge; // TODO: 現在選択中のゲージタイプを反映
-	const auto& highScoreInfo = pChartInfo->highScoreInfo();
-	assets.highScoreMedalTexture(static_cast<int32>(highScoreInfo.medal())).scaled(kScale2x).draw(70, isUpper ? 70 : 176);
-	assets.highScoreGradeTexture(static_cast<int32>(highScoreInfo.grade(gaugeType))).scaled(kScale2x).draw(183, isUpper ? 75 : 181);
+	// レベル・クリアメダル・グレードは、現在カーソルの難易度が存在しない場合は表示しないようにする必要がある
+	// そのため、difficultyIdxのままの難易度で取得したpChartInfoを使用する
+	if (const SelectChartInfo* pChartInfo = chartInfoPtr(difficultyIdx))
+	{
+		// レベルを描画
+		const int32 level = pChartInfo->level();
+		if (kLevelMin <= level && level <= kLevelMax)
+		{
+			const int32 textureRow = level - kLevelMin;
+			assets.songLevelNumberTexture(textureRow).scaled(0.25).draw(26, isUpper ? 74 : 180);
+		}
+		else
+		{
+			assert(false && "SelectMenuSongItem::drawUpperLower: level out of range");
+		}
+
+		// クリアメダル・グレードを描画
+		const GaugeType gaugeType = GaugeType::kNormalGauge; // TODO: 現在選択中のゲージタイプを反映
+		const auto& highScoreInfo = pChartInfo->highScoreInfo();
+		assets.highScoreMedalTexture(static_cast<int32>(highScoreInfo.medal())).scaled(kScale2x).draw(70, isUpper ? 70 : 176);
+		assets.highScoreGradeTexture(static_cast<int32>(highScoreInfo.grade(gaugeType))).scaled(kScale2x).draw(183, isUpper ? 75 : 181);
+	}
+	else
+	{
+		assets.highScoreGradeTexture(static_cast<int32>(Grade::kNoGrade)).scaled(kScale2x).draw(183, isUpper ? 75 : 181);
+	}
 }

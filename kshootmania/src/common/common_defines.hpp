@@ -10,7 +10,9 @@ enum DifficultyIdx : int32
 	kNumDifficulties,
 };
 
+constexpr int32 kLevelMin = 1;
 constexpr int32 kLevelMax = 20;
+constexpr int32 kNumLevels = kLevelMax - kLevelMin + 1;
 
 inline constexpr StringView kKSHExtension = U"ksh";
 inline constexpr StringView kKSONExtension = U"kson";

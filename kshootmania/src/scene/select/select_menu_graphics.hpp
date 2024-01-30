@@ -37,6 +37,16 @@ struct SelectMenuItemGraphicAssets
 	Font font = AssetManagement::SystemFont();
 	Font fontBold = AssetManagement::SystemFontBold();
 
+	TiledTexture songLevelNumberTexture
+	{
+		TextureAsset(SelectTexture::kSongLevelNumber),
+		TiledTextureSizeInfo
+		{
+			.row = kNumLevels,
+			.sourceSize = { 150, 120 },
+		}
+	};
+
 	TiledTexture highScoreMedalTexture
 	{
 		TextureAsset(SelectTexture::kHighScoreMedalTexture),
