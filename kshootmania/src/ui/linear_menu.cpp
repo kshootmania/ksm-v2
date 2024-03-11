@@ -70,6 +70,11 @@ LinearMenu::LinearMenu(const CreateInfoWithCursorMinMax& createInfo)
 {
 }
 
+int32 LinearMenu::cursor() const
+{
+	return m_cursor;
+}
+
 void LinearMenu::update()
 {
 	m_cursorInput.update();

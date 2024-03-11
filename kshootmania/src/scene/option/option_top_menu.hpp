@@ -28,8 +28,8 @@ public:
 	void draw() const;
 
 	template <typename T>
-	T cursor()
+	T cursorAs()
 	{
-		return m_menu.cursor<T>();
+		return m_menu.cursorAs<T>();
 	}
 };

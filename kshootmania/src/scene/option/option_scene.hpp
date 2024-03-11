@@ -7,6 +7,7 @@
 class OptionScene : public MyScene
 {
 public:
+	// TODO: OptionTopMenu::Itemと統一
 	enum OptionMenuType : int32
 	{
 		kDisplaySound = 0,

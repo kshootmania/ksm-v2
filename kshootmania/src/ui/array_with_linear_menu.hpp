@@ -19,8 +19,10 @@ public:
 
 	explicit ArrayWithLinearMenu(Array<T>&& array, const LinearMenu::CreateInfoWithCursorMinMax& createInfo);
 
-	template <typename U = int32>
-	U cursor() const;
+	int32 cursor() const;
+
+	template <typename U>
+	U cursorAs() const;
 
 	template <typename U>
 	void setCursor(U value);
@@ -105,10 +107,16 @@ LinearMenu::CreateInfoWithCursorMinMax ArrayWithLinearMenu<T>::FixLinearMenuCrea
 }
 
 template <typename T>
-template <typename U>
-U ArrayWithLinearMenu<T>::cursor() const
+int32 ArrayWithLinearMenu<T>::cursor() const
 {
-	return m_linearMenu.template cursor<U>();
+	return m_linearMenu.cursor();
+}
+
+template <typename T>
+template <typename U>
+U ArrayWithLinearMenu<T>::cursorAs() const
+{
+	return m_linearMenu.template cursorAs<U>();
 }
 
 template <typename T>

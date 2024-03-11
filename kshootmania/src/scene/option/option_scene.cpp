@@ -227,7 +227,7 @@ void OptionScene::update()
 
 		if (KeyConfig::Down(KeyConfig::kStart))
 		{
-			m_currentOptionMenuIdx = m_topMenu.cursor<OptionMenuType>();
+			m_currentOptionMenuIdx = m_topMenu.cursorAs<OptionMenuType>();
 		}
 		else if (KeyConfig::Down(KeyConfig::kBack))
 		{

@@ -65,7 +65,7 @@ void TitleMenu::update()
 
 	if (KeyConfig::Down(KeyConfig::kStart))
 	{
-		m_pTitleScene->processMenuItem(m_menu.cursor<Item>());
+		m_pTitleScene->processMenuItem(m_menu.cursorAs<Item>());
 	}
 	else if (KeyConfig::Down(KeyConfig::kBack))
 	{

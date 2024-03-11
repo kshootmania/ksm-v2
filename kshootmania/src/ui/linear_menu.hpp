@@ -48,10 +48,14 @@ public:
 	explicit LinearMenu(const CreateInfoWithCursorMinMax& createInfo);
 
 	/// @brief カーソルの値を取得
-	/// @tparam T enumで取得したい場合は型を指定
 	/// @return カーソルの値
-	template <typename T = int32>
-	T cursor() const;
+	int32 cursor() const;
+
+	/// @brief カーソルの値を取得
+	/// @tparam T 取得したいenum型を指定
+	/// @return カーソルの値
+	template <typename T>
+	T cursorAs() const;
 
 	/// @brief カーソルの値を設定
 	/// @tparam T enumをキャストなしで指定するためのテンプレートパラメータ(指定不要)
@@ -99,7 +103,7 @@ public:
 };
 
 template<typename T>
-T LinearMenu::cursor() const
+T LinearMenu::cursorAs() const
 {
 	return static_cast<T>(m_cursor);
 }
