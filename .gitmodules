@@ -1,3 +1,6 @@
 [submodule "kson"]
 	path = kson
 	url = https://github.com/m4saka/libkson.git
+[submodule "kshootmania/third_party/CoTaskLib"]
+	path = kshootmania/third_party/CoTaskLib
+	url = https://github.com/m4saka/CoTaskLib.git
