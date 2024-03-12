@@ -22,6 +22,10 @@ namespace ksmaudio
 
 		StreamWithEffects& operator=(const StreamWithEffects&) = delete;
 
+		StreamWithEffects(StreamWithEffects&&) = default;
+
+		StreamWithEffects& operator=(StreamWithEffects&&) = default;
+
 		void play() const;
 
 		void pause() const;
