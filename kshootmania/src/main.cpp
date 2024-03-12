@@ -1,8 +1,10 @@
 ﻿#include <Siv3D.hpp>
+#include <CoTaskLib.hpp>
 #include "common/frame_rate_limit.hpp"
 #include "common/ime_utils.hpp"
 #include "addon/auto_mute_addon.hpp"
 #include "ksmaudio/ksmaudio.hpp"
+#include "scene/title/title_scene.hpp"
 
 void CreateHighScoreBackup()
 {
@@ -14,6 +16,12 @@ void CreateHighScoreBackup()
 
 	// scoreフォルダを再帰的にコピー
 	FileSystem::Copy(U"score", U"score_backup", CopyOption::UpdateExisting);
+}
+
+CoTask<void> MainTask()
+{
+	const TitleMenuItem titleMenuItem = co_await TitleScene();
+	Print << U"Selected menu item: " << (int32)titleMenuItem;
 }
 
 void Main()
@@ -65,7 +73,6 @@ void Main()
 
 	// シーン管理
 	Addon::Register(U"ScreenFade", std::make_unique<ScreenFadeAddon>(), -1);
-	Addon::Register(U"SceneManager", std::make_unique<SceneManagerAddon>(), 0);
 
 	Addon::Register(AutoMuteAddon::kAddonName, std::make_unique<AutoMuteAddon>(), 1);
 
@@ -83,8 +90,10 @@ void Main()
 	Console.open();
 #endif
 
-	// シーン初期化
-	SceneManagerAddon::Init();
+	// コルーチンライブラリ初期化
+	Co::Init();
+
+	const auto mainTaskRun = MainTask().runScoped();
 
 	// メインループ
 	while (System::Update())

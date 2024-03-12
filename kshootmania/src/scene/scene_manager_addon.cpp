@@ -31,7 +31,6 @@ void SceneManagerAddon::draw() const
 void SceneManagerAddon::Init()
 {
 	MySceneManager& sceneManager = GetInstance().m_sceneManager;
-	sceneManager.add<TitleScene>(SceneName::kTitle);
 	sceneManager.add<OptionScene>(SceneName::kOption);
 	sceneManager.add<SelectScene>(SceneName::kSelect);
 	sceneManager.add<PlayScene>(SceneName::kPlay);

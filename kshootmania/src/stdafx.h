@@ -1,7 +1,6 @@
 ﻿#pragma once
 //# define NO_S3D_USING
 #include <Siv3D.hpp>
-#include <CoTaskLib.hpp>
 #include "kson/kson.hpp"
 #include "common/common_defines.hpp"
 #include "common/asset_management.hpp"

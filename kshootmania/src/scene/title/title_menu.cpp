@@ -1,6 +1,4 @@
 ﻿#include "title_menu.hpp"
-#include "title_scene.hpp"
-#include "title_assets.hpp"
 
 namespace
 {
@@ -28,49 +26,36 @@ namespace
 	}
 }
 
-TitleMenu::TitleMenu(TitleScene* pTitleScene)
-	: m_pTitleScene(pTitleScene)
-	, m_menu(
-		LinearMenu::CreateInfoWithEnumCount{
-			.cursorInputCreateInfo = {
-				.type = CursorInput::Type::Vertical,
-				.buttonFlags = CursorButtonFlags::kArrowOrBTAllOrLaserAll,
-			},
-			.enumCount = Item::kItemEnumCount,
-			.cyclic = IsCyclicMenuYN::No,
-		})
-	, m_menuItemTexture(TitleTexture::kMenuItem,
-		{
-			.row = kItemEnumCount,
-			.column = 2, // 加算テクスチャと減算テクスチャの2枚
-			.sourceScale = SourceScale::k3x,
-			.sourceSize = { 525, 75 },
-		})
-	, m_menuCursorTexture(TitleTexture::kMenuCursor, SourceScale::k3x)
-	, m_stopwatch(StartImmediately::Yes)
-{
-}
-
 void TitleMenu::update()
 {
-	const auto prevCursor = m_menu.cursor();
-	m_menu.update();
-	const auto cursor = m_menu.cursor();
-	if (prevCursor != cursor)
+	if (!m_selectedItem.has_value())
 	{
-		m_selectSe.play();
+		const auto prevCursor = m_menu.cursor();
+		m_menu.update();
+		const auto cursor = m_menu.cursor();
+		if (prevCursor != cursor)
+		{
+			m_selectSe.play();
+		}
+
+		if (KeyConfig::Down(KeyConfig::kStart))
+		{
+			m_selectedItem = m_menu.cursorAs<TitleMenuItem>();
+		}
+		else if (KeyConfig::Down(KeyConfig::kBack))
+		{
+			m_menu.setCursor(kExit);
+		}
 	}
 
-	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(cursor), kMenuCursorPosRelaxationTimeSec);
+	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(m_menu.cursor()), kMenuCursorPosRelaxationTimeSec);
+}
 
-	if (KeyConfig::Down(KeyConfig::kStart))
-	{
-		m_pTitleScene->processMenuItem(m_menu.cursorAs<Item>());
-	}
-	else if (KeyConfig::Down(KeyConfig::kBack))
-	{
-		m_menu.setCursor(kExit);
-	}
+CoTask<TitleMenuItem> TitleMenu::waitForSelection()
+{
+	const auto everyFrameUpdate = Co::EveryFrame([this] { update(); }).runScoped();
+	co_await Co::WaitUntil([this] { return m_selectedItem.has_value(); });
+	co_return *m_selectedItem;
 }
 
 void TitleMenu::draw() const
