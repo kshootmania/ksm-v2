@@ -18,9 +18,9 @@ void CreateHighScoreBackup()
 	FileSystem::Copy(U"score", U"score_backup", CopyOption::UpdateExisting);
 }
 
-CoTask<void> MainTask()
+Co::Task<void> MainTask()
 {
-	const TitleMenuItem titleMenuItem = co_await TitleScene();
+	const TitleMenuItem titleMenuItem = co_await Co::MakeTask<TitleScene>();
 	Print << U"Selected menu item: " << (int32)titleMenuItem;
 }
 

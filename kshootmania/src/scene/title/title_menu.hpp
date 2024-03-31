@@ -60,7 +60,7 @@ public:
 
 	TitleMenu& operator=(TitleMenu&&) = default;
 
-	CoTask<TitleMenuItem> waitForSelection();
+	Co::Task<TitleMenuItem> waitForSelection();
 
 	void draw() const;
 };

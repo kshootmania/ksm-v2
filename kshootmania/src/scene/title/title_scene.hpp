@@ -4,7 +4,7 @@
 #include "title_assets.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
-class TitleScene : public CoSceneBase<TitleMenuItem>
+class TitleScene : public Co::SequenceBase<TitleMenuItem>
 {
 private:
 	const Texture m_bgTexture{ TextureAsset(TitleTexture::kBG) };
@@ -15,7 +15,7 @@ private:
 public:
 	TitleScene() = default;
 
-	virtual CoTask<TitleMenuItem> start() override;
+	virtual Co::Task<TitleMenuItem> start() override;
 
 	virtual void draw() const override;
 };

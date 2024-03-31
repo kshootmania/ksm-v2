@@ -1,6 +1,6 @@
 ﻿#include "title_scene.hpp"
 
-CoTask<TitleMenuItem> TitleScene::start()
+Co::Task<TitleMenuItem> TitleScene::start()
 {
 	m_bgmStream.play();
 	AutoMuteAddon::SetEnabled(true);

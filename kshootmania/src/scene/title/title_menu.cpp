@@ -51,7 +51,7 @@ void TitleMenu::update()
 	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(m_menu.cursor()), kMenuCursorPosRelaxationTimeSec);
 }
 
-CoTask<TitleMenuItem> TitleMenu::waitForSelection()
+Co::Task<TitleMenuItem> TitleMenu::waitForSelection()
 {
 	const auto everyFrameUpdate = Co::EveryFrame([this] { update(); }).runScoped();
 	co_await Co::WaitUntil([this] { return m_selectedItem.has_value(); });
