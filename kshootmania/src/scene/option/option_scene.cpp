@@ -1,11 +1,14 @@
 ﻿#include "option_scene.hpp"
 #include "option_assets.hpp"
 #include "common/ime_utils.hpp"
+#include "scene/title/title_scene.hpp"
 
 // TODO: TextureIdxまわりどうにかする
 
 namespace
 {
+	constexpr Duration kFadeDuration = 0.6s;
+
 	constexpr int32 kHeaderX = 12;
 	constexpr int32 kHeaderY = 10;
 	constexpr int32 kHeaderWidth = 270;
@@ -182,9 +185,8 @@ namespace
 	}
 }
 
-OptionScene::OptionScene(const InitData& initData)
-	: MyScene(initData)
-	, m_bgTexture(TextureAsset(OptionTexture::kBG))
+OptionScene::OptionScene()
+	: m_bgTexture(TextureAsset(OptionTexture::kBG))
 	, m_headerTiledTexture(OptionTexture::kMenuHeader,
 		{
 			.row = kOptionMenuTypeEnumCount + 1,
@@ -194,17 +196,11 @@ OptionScene::OptionScene(const InitData& initData)
 	, m_optionMenus(MakeOptionMenus())
 {
 	m_bgmStream.play();
-	ScreenFadeAddon::FadeIn();
 	AutoMuteAddon::SetEnabled(true);
 }
 
 void OptionScene::update()
 {
-	if (ScreenFadeAddon::IsFadingOut())
-	{
-		return;
-	}
-
 	if (m_currentOptionMenuIdx.has_value())
 	{
 		if (m_currentOptionMenuIdx == OptionMenuType::kKeyConfig)
@@ -272,6 +268,17 @@ void OptionScene::draw() const
 	m_font(footerStr).draw(Scaled(18), ScaledByWidth(kGuideX), Scaled(kGuideY), Palette::White);
 }
 
+Co::Task<void> OptionScene::fadeIn()
+{
+	co_await Co::SimpleFadeIn(kFadeDuration);
+}
+
+Co::Task<void> OptionScene::fadeOut()
+{
+	m_bgmStream.setFadeOut(kFadeDuration.count());
+	co_await Co::SimpleFadeOut(kFadeDuration);
+}
+
 void OptionScene::exitScene()
 {
 	ConfigIni::Save();
@@ -279,7 +286,6 @@ void OptionScene::exitScene()
 	// 画面サイズ反映
 	ApplyScreenSizeConfig();
 
-	// フェードアウト
-	m_bgmStream.setFadeOut(ScreenFadeAddon::kDefaultDurationSec);
-	ScreenFadeAddon::FadeOutToScene(SceneName::kTitle);
+	// シーン遷移
+	requestNextScene<TitleScene>(TitleMenuItem::kOption);
 }

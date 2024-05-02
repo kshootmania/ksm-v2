@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "music_game/play_result.hpp"
 
 struct KscValue
 {

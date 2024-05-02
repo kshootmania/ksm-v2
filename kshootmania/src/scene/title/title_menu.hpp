@@ -17,20 +17,9 @@ enum TitleMenuItem : int32
 class TitleMenu
 {
 private:
-	Optional<TitleMenuItem> m_selectedItem = none;
+	bool m_isAlreadySelected = false;
 
-	LinearMenu m_menu
-	{
-		LinearMenu::CreateInfoWithEnumCount
-		{
-			.cursorInputCreateInfo = {
-				.type = CursorInput::Type::Vertical,
-				.buttonFlags = CursorButtonFlags::kArrowOrBTAllOrLaserAll,
-			},
-			.enumCount = TitleMenuItem::kItemEnumCount,
-			.cyclic = IsCyclicMenuYN::No,
-		}
-	};
+	LinearMenu m_menu;
 
 	TiledTexture m_menuItemTexture
 	{
@@ -51,16 +40,21 @@ private:
 
 	ksmaudio::Sample m_selectSe{ "se/title_sel.wav" };
 
-	void update();
+	Co::EventStream<TitleMenuItem> m_onSelect;
 
 public:
-	TitleMenu() = default;
+	TitleMenu(TitleMenuItem defaultMenuitem);
 
 	TitleMenu(TitleMenu&&) = default;
 
 	TitleMenu& operator=(TitleMenu&&) = default;
 
-	Co::Task<TitleMenuItem> waitForSelection();
+	void update();
 
 	void draw() const;
+
+	const Co::EventStream<TitleMenuItem>& onSelect() const
+	{
+		return m_onSelect;
+	}
 };

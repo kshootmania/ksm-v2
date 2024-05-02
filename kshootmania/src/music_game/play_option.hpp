@@ -2,8 +2,6 @@
 
 namespace MusicGame
 {
-	using IsAutoPlayYN = YesNo<struct IsAutoPlayYN_tag>;
-
 	struct PlayOption
 	{
 		IsAutoPlayYN isAutoPlay = IsAutoPlayYN::No;

@@ -1,27 +1,34 @@
 ﻿#include "play_scene.hpp"
+#include "scene/select/select_scene.hpp"
+#include "scene/result/result_scene.hpp"
 
 namespace
 {
+	constexpr Duration kFadeDuration = 0.6s;
+
 	constexpr Duration kPlayFinishFadeOutDuration = 2.4s;
 
-	MusicGame::GameCreateInfo MakeGameCreateInfo(const PlaySceneArgs& args)
+	MusicGame::GameCreateInfo MakeGameCreateInfo(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay)
 	{
 		return
 		{
-			.chartFilePath = args.chartFilePath,
-			.playOption = args.playOption,
+			.chartFilePath = FilePath{ chartFilePath },
+			.playOption = MusicGame::PlayOption
+			{
+				.isAutoPlay = isAutoPlay,
+				// TODO: 他のオプション
+			},
 			.assistTickEnabled = ConfigIni::GetBool(ConfigIni::Key::kAssistTick),
 		};
 	}
 }
 
-PlayScene::PlayScene(const InitData& initData)
-	: MyScene(initData)
-	, m_gameMain(MakeGameCreateInfo(getData().playSceneArgs))
-	, m_isAutoPlay(getData().playSceneArgs.playOption.isAutoPlay)
+PlayScene::PlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay)
+	: m_gameMain(MakeGameCreateInfo(chartFilePath, isAutoPlay))
+	, m_isAutoPlay(isAutoPlay)
+	, m_fadeOutDuration(kFadeDuration)
 {
 	m_gameMain.start();
-	ScreenFadeAddon::FadeIn(Palette::White);
 
 	// Playシーンではウィンドウのフォーカスが外れていてもミュートしない
 	AutoMuteAddon::SetEnabled(false);
@@ -36,49 +43,46 @@ void PlayScene::update()
 {
 	const auto startFadeOut = m_gameMain.update();
 
-	if (!ScreenFadeAddon::IsFadingOut())
+	// 譜面終了時、またはBackボタンでリザルト画面に遷移
+	if (startFadeOut)
 	{
-		// 譜面終了時、またはBackボタンでリザルト画面に遷移
-		if (startFadeOut)
-		{
-			m_gameMain.startBGMFadeOut(kPlayFinishFadeOutDuration.count());
+		m_fadeOutDuration = kPlayFinishFadeOutDuration;
 
-			if (m_isAutoPlay)
-			{
-				ScreenFadeAddon::FadeOutToScene(SceneName::kSelect, kPlayFinishFadeOutDuration);
-			}
-			else
-			{
-				getData().resultSceneArgs = ResultSceneArgs
-				{
-					.chartFilePath = FilePath(m_gameMain.chartFilePath()),
-					.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
-					.playResult = m_gameMain.playResult(),
-				};
-				ScreenFadeAddon::FadeOutToScene(SceneName::kResult, kPlayFinishFadeOutDuration);
-			}
+		if (m_isAutoPlay)
+		{
+			requestNextScene<SelectScene>();
 		}
-		else if (KeyConfig::Down(KeyConfig::kBack))
+		else
 		{
-			// Backボタンの場合はスコアが変動しないようロック
-			m_gameMain.lockForExit();
-
-			m_gameMain.startBGMFadeOut(ScreenFadeAddon::kDefaultDurationSec);
-
-			if (m_isAutoPlay)
+			const ResultSceneArgs args =
 			{
-				ScreenFadeAddon::FadeOutToScene(SceneName::kSelect);
-			}
-			else
+				.chartFilePath = FilePath(m_gameMain.chartFilePath()),
+				.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
+				.playResult = m_gameMain.playResult(),
+			};
+			requestNextScene<ResultScene>(args);
+		}
+	}
+	else if (KeyConfig::Down(KeyConfig::kBack))
+	{
+		m_fadeOutDuration = 0s;
+
+		// Backボタンの場合はスコアが変動しないようロック
+		m_gameMain.lockForExit();
+
+		if (m_isAutoPlay)
+		{
+			requestNextScene<SelectScene>();
+		}
+		else
+		{
+			const ResultSceneArgs args =
 			{
-				getData().resultSceneArgs = ResultSceneArgs
-				{
-					.chartFilePath = FilePath(m_gameMain.chartFilePath()),
-					.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
-					.playResult = m_gameMain.playResult(),
-				};
-				ScreenFadeAddon::FadeOutToScene(SceneName::kResult);
-			}
+				.chartFilePath = FilePath(m_gameMain.chartFilePath()),
+				.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
+				.playResult = m_gameMain.playResult(),
+			};
+			requestNextScene<ResultScene>(args);
 		}
 	}
 }
@@ -86,4 +90,18 @@ void PlayScene::update()
 void PlayScene::draw() const
 {
 	m_gameMain.draw();
+}
+
+inline Co::Task<void> PlayScene::fadeIn()
+{
+	co_await Co::SimpleFadeIn(kFadeDuration);
+}
+
+Co::Task<void> PlayScene::fadeOut()
+{
+	// 再生時間の進行を止めないためにフェードアウト中もGameMainのupdateは実行
+	const Co::ScopedUpdater updater([this] { m_gameMain.update(); });
+
+	m_gameMain.startBGMFadeOut(m_fadeOutDuration.count());
+	co_await Co::SimpleFadeOut(m_fadeOutDuration);
 }

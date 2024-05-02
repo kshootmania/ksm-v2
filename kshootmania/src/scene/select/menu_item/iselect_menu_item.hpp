@@ -40,7 +40,7 @@ public:
 
 	virtual void decide(const SelectMenuEventContext& context, int32 difficultyIdx) = 0;
 
-	virtual void decideAutoPlay(const SelectMenuEventContext& context, int32 difficultyIdx)
+	virtual void decideAutoPlay([[maybe_unused]] const SelectMenuEventContext& context, [[maybe_unused]] int32 difficultyIdx)
 	{
 	}
 

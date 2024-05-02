@@ -42,4 +42,6 @@ namespace MusicGame
 	constexpr double kGaugeDecreasePercentByLongError = 0.5;
 
 	constexpr double kTiltRadians = 10_deg;
+
+	using IsAutoPlayYN = YesNo<struct IsAutoPlayYN_tag>;
 }

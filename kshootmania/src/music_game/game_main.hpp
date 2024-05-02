@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "game_status.hpp"
 #include "play_option.hpp"
+#include "play_result.hpp"
 #include "judgment/judgment_main.hpp"
 #include "camera/highway_tilt.hpp"
 #include "scroll/hispeed_setting.hpp"

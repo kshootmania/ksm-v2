@@ -26,9 +26,24 @@ namespace
 	}
 }
 
+TitleMenu::TitleMenu(TitleMenuItem defaultMenuitem)
+	: m_menu(
+		LinearMenu::CreateInfoWithEnumCount
+		{
+			.cursorInputCreateInfo = {
+				.type = CursorInput::Type::Vertical,
+				.buttonFlags = CursorButtonFlags::kArrowOrBTAllOrLaserAll,
+			},
+			.enumCount = TitleMenuItem::kItemEnumCount,
+			.cyclic = IsCyclicMenuYN::No,
+			.defaultCursor = defaultMenuitem,
+		})
+{
+}
+
 void TitleMenu::update()
 {
-	if (!m_selectedItem.has_value())
+	if (!m_isAlreadySelected)
 	{
 		const auto prevCursor = m_menu.cursor();
 		m_menu.update();
@@ -40,7 +55,9 @@ void TitleMenu::update()
 
 		if (KeyConfig::Down(KeyConfig::kStart))
 		{
-			m_selectedItem = m_menu.cursorAs<TitleMenuItem>();
+			const auto selectedItem = m_menu.cursorAs<TitleMenuItem>();
+			m_onSelect.publish(selectedItem);
+			m_isAlreadySelected = true;
 		}
 		else if (KeyConfig::Down(KeyConfig::kBack))
 		{
@@ -49,13 +66,6 @@ void TitleMenu::update()
 	}
 
 	m_easedCursorPos = EaseValue(m_easedCursorPos, static_cast<double>(m_menu.cursor()), kMenuCursorPosRelaxationTimeSec);
-}
-
-Co::Task<TitleMenuItem> TitleMenu::waitForSelection()
-{
-	const auto everyFrameUpdate = Co::EveryFrame([this] { update(); }).runScoped();
-	co_await Co::WaitUntil([this] { return m_selectedItem.has_value(); });
-	co_return *m_selectedItem;
 }
 
 void TitleMenu::draw() const

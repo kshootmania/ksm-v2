@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "kson/chart_data.hpp"
+#include "music_game/play_option.hpp"
 #include "button_lane_judgment.hpp"
 #include "laser_lane_judgment.hpp"
 #include "judgment_handler.hpp"

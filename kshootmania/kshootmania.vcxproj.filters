@@ -405,9 +405,6 @@
     <ClCompile Include="src\music_game\graphics\hud\combo_overlay.cpp">
       <Filter>Source Files\music_game\graphics\hud</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\scene_manager_addon.cpp">
-      <Filter>Source Files\scene</Filter>
-    </ClCompile>
     <ClCompile Include="src\common\frame_rate_limit.cpp">
       <Filter>Source Files\common</Filter>
     </ClCompile>
@@ -485,9 +482,6 @@
     </ClCompile>
     <ClCompile Include="src\high_score\high_score_info.cpp">
       <Filter>Source Files\high_score</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scene\screen_fade_addon.cpp">
-      <Filter>Source Files\scene</Filter>
     </ClCompile>
     <ClCompile Include="src\music_game\graphics\hud\achievement_panel.cpp">
       <Filter>Source Files\music_game\graphics\hud</Filter>
@@ -979,9 +973,6 @@
     <ClInclude Include="src\music_game\graphics\hud\combo_overlay.hpp">
       <Filter>Header Files\music_game\graphics\hud</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\scene_manager_addon.hpp">
-      <Filter>Header Files\scene</Filter>
-    </ClInclude>
     <ClInclude Include="src\common\frame_rate_limit.hpp">
       <Filter>Header Files\common</Filter>
     </ClInclude>
@@ -1072,9 +1063,6 @@
     <ClInclude Include="src\high_score\high_score_info.hpp">
       <Filter>Header Files\high_score</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\screen_fade_addon.hpp">
-      <Filter>Header Files\scene</Filter>
-    </ClInclude>
     <ClInclude Include="src\music_game\graphics\hud\achievement_panel.hpp">
       <Filter>Header Files\music_game\graphics\hud</Filter>
     </ClInclude>
@@ -1092,6 +1080,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\font_utils.hpp">
       <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

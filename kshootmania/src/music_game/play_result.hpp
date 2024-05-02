@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "music_game/game_defines.hpp"
 #include "judgment/combo_status.hpp"
+#include "play_option.hpp"
 
 namespace MusicGame
 {

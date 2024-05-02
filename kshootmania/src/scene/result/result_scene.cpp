@@ -1,11 +1,16 @@
 ﻿#include "result_scene.hpp"
+#include "scene/select/select_scene.hpp"
 #include "high_score/ksc_io.hpp"
 
-ResultScene::ResultScene(const InitData& initData)
-	: MyScene(initData)
-	, m_chartData(getData().resultSceneArgs.chartData)
-	, m_playResult(getData().resultSceneArgs.playResult)
-	, m_resultPanel(getData().resultSceneArgs.chartFilePath, m_chartData, m_playResult)
+namespace
+{
+	constexpr Duration kFadeDuration = 0.6s;
+}
+
+ResultScene::ResultScene(const ResultSceneArgs& args)
+	: m_chartData(args.chartData)
+	, m_playResult(args.playResult)
+	, m_resultPanel(args.chartFilePath, m_chartData, m_playResult)
 {
 	if (!m_playResult.playOption.isAutoPlay) // オートプレイの場合はスコアを保存しない(オートプレイではリザルト画面を出さないので不要だが一応チェックはする)
 	{
@@ -18,28 +23,22 @@ ResultScene::ResultScene(const InitData& initData)
 			.fxPlayMode = JudgmentPlayMode::kOn,
 			.laserPlayMode = JudgmentPlayMode::kOn,
 		};
-		const FilePathView chartFilePath = getData().resultSceneArgs.chartFilePath;
+		const FilePathView chartFilePath = args.chartFilePath;
 		KscIo::WriteHighScoreInfo(chartFilePath, m_playResult, condition);
 	}
 
 	m_bgmStream.play();
 
-	ScreenFadeAddon::FadeIn(Palette::White);
 	AutoMuteAddon::SetEnabled(true);
 }
 
 void ResultScene::update()
 {
-	if (ScreenFadeAddon::IsFadingOut())
-	{
-		return;
-	}
-
 	// StartボタンまたはBackボタンで楽曲選択画面に戻る
 	if (KeyConfig::Down(KeyConfig::kStart) || KeyConfig::Down(KeyConfig::kBack))
 	{
-		m_bgmStream.setFadeOut(ScreenFadeAddon::kDefaultDurationSec);
-		ScreenFadeAddon::FadeOutToScene(SceneName::kSelect);
+		m_bgmStream.setFadeOut(0.5); // TODO: フェードアウト時間の定数を統一
+		requestNextScene<SelectScene>();
 		return;
 	}
 }
@@ -49,4 +48,9 @@ void ResultScene::draw() const
 	FitToHeight(m_bgTexture).drawAt(Scene::Center());
 
 	m_resultPanel.draw();
+}
+
+Co::Task<void> ResultScene::fadeIn()
+{
+	co_await Co::SimpleFadeIn(kFadeDuration, Palette::White);
 }

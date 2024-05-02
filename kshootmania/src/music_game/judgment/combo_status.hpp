@@ -1,4 +1,5 @@
 ﻿#pragma once
+#undef near // Windows.h対策
 #include "judgment_defines.hpp"
 
 namespace MusicGame::Judgment

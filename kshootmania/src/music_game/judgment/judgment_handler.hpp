@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "kson/chart_data.hpp"
+#include "music_game/play_option.hpp"
+#include "music_game/play_result.hpp"
 #include "music_game/view_status.hpp"
 #include "judgment_defines.hpp"
 #include "scoring_status.hpp"

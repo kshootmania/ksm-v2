@@ -12,6 +12,7 @@
 #include "music_game/game_status.hpp"
 #include "music_game/view_status.hpp"
 #include "music_game/scroll/highway_scroll.hpp"
+#include "music_game/play_option.hpp"
 #include "kson/util/timing_utils.hpp"
 
 namespace MusicGame::Graphics

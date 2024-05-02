@@ -188,8 +188,6 @@
     <ClCompile Include="src\scene\play\play_scene.cpp" />
     <ClCompile Include="src\scene\result\result_panel.cpp" />
     <ClCompile Include="src\scene\result\result_scene.cpp" />
-    <ClCompile Include="src\scene\scene_manager_addon.cpp" />
-    <ClCompile Include="src\scene\screen_fade_addon.cpp" />
     <ClCompile Include="src\scene\select\menu_item\select_menu_all_folder_item.cpp" />
     <ClCompile Include="src\scene\select\menu_item\select_menu_dir_folder_item.cpp" />
     <ClCompile Include="src\scene\select\menu_item\select_menu_fav_folder_item.cpp" />
@@ -386,8 +384,6 @@
     <ClInclude Include="src\scene\result\result_panel.hpp" />
     <ClInclude Include="src\scene\result\result_scene.hpp" />
     <ClInclude Include="src\scene\result\result_scene_args.hpp" />
-    <ClInclude Include="src\scene\scene_manager_addon.hpp" />
-    <ClInclude Include="src\scene\screen_fade_addon.hpp" />
     <ClInclude Include="src\scene\select\menu_item\iselect_menu_item.hpp" />
     <ClInclude Include="src\scene\select\menu_item\select_menu_all_folder_item.hpp" />
     <ClInclude Include="src\scene\select\menu_item\select_menu_dir_folder_item.hpp" />
@@ -409,6 +405,7 @@
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\ui\array_with_linear_menu.hpp" />
     <ClInclude Include="src\ui\linear_menu.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\kson\kson.vcxproj">

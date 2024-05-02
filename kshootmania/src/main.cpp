@@ -18,12 +18,6 @@ void CreateHighScoreBackup()
 	FileSystem::Copy(U"score", U"score_backup", CopyOption::UpdateExisting);
 }
 
-Co::Task<void> MainTask()
-{
-	const TitleMenuItem titleMenuItem = co_await Co::MakeTask<TitleScene>();
-	Print << U"Selected menu item: " << (int32)titleMenuItem;
-}
-
 void Main()
 {
 	// Escキーによるプログラム終了を無効化
@@ -71,9 +65,6 @@ void Main()
 	Graphics::SetVSyncEnabled(false);
 	Addon::Register(U"FrameRateLimit", std::make_unique<FrameRateLimit>(300), -100);
 
-	// シーン管理
-	Addon::Register(U"ScreenFade", std::make_unique<ScreenFadeAddon>(), -1);
-
 	Addon::Register(AutoMuteAddon::kAddonName, std::make_unique<AutoMuteAddon>(), 1);
 
 	// 毎フレーム連続してアセット生成した時の警告を無効化
@@ -93,11 +84,14 @@ void Main()
 	// コルーチンライブラリ初期化
 	Co::Init();
 
-	const auto mainTaskRun = MainTask().runScoped();
-
 	// メインループ
+	const auto mainTaskRun = Co::AsTask<TitleScene>(TitleMenuItem::kStart).runScoped();
 	while (System::Update())
 	{
+		if (mainTaskRun.done())
+		{
+			break;
+		}
 	}
 
 	// config.iniを保存
