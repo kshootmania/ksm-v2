@@ -32,15 +32,16 @@ ResultScene::ResultScene(const ResultSceneArgs& args)
 	AutoMuteAddon::SetEnabled(true);
 }
 
-void ResultScene::update()
+Co::Task<Co::SceneFactory> ResultScene::start()
 {
-	// StartボタンまたはBackボタンで楽曲選択画面に戻る
-	if (KeyConfig::Down(KeyConfig::kStart) || KeyConfig::Down(KeyConfig::kBack))
-	{
-		m_bgmStream.setFadeOut(0.5); // TODO: フェードアウト時間の定数を統一
-		requestNextScene<SelectScene>();
-		return;
-	}
+	// StartボタンまたはBackボタンが押されるまで待機
+	co_await Co::Any(
+		KeyConfig::WaitForDown(KeyConfig::kStart),
+		KeyConfig::WaitForDown(KeyConfig::kBack));
+
+	// 楽曲選択へ戻る
+	m_bgmStream.setFadeOut(kFadeDuration.count());
+	co_return Co::MakeSceneFactory<SelectScene>();
 }
 
 void ResultScene::draw() const

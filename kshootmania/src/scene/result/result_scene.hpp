@@ -6,7 +6,7 @@
 #include "music_game/play_result.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
-class ResultScene : public Co::UpdateSceneBase
+class ResultScene : public Co::SceneBase
 {
 private:
 	ksmaudio::Stream m_bgmStream{ "se/result_bgm.ogg", 1.0, false, false, true };
@@ -24,7 +24,7 @@ public:
 
 	virtual ~ResultScene() = default;
 
-	virtual void update() override;
+	virtual Co::Task<Co::SceneFactory> start() override;
 
 	virtual void draw() const override;
 

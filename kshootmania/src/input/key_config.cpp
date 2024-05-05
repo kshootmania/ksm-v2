@@ -247,6 +247,36 @@ bool KeyConfig::Down(Button button)
 	return false;
 }
 
+void KeyConfig::ClearInput(Button button)
+{
+	if (button == KeyConfig::kUnspecifiedButton)
+	{
+		return;
+	}
+
+	for (auto& configSet : s_configSetArray)
+	{
+		configSet[button].clearInput();
+	}
+
+	// FXの場合はLR両押しキーの状態もクリア
+	if (button == kFX_L || button == kFX_R)
+	{
+		for (auto& configSet : s_configSetArray)
+		{
+			configSet[kFX_LR].clearInput();
+		}
+	}
+}
+
+Co::Task<void> KeyConfig::WaitForDown(Button button)
+{
+	co_await Co::WaitUntil([button]() { return Down(button); });
+
+	// 即座に次シーンに遷移した場合に多重に反応しないよう、入力をクリアする必要がある
+	ClearInput(button);
+}
+
 bool KeyConfig::Up(Button button)
 {
 	if (button == KeyConfig::kUnspecifiedButton)

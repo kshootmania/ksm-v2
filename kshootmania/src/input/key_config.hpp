@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <CoTaskLib.hpp>
 
 using StartRequiredForBTFXLaserYN = YesNo<struct StartRequiredForBTFXLaserYN_tag>;
 
@@ -92,6 +93,10 @@ namespace KeyConfig
 	Optional<KeyConfig::Button> LastPressedLaserButton(Button button1, Button button2);
 
 	bool Down(Button button);
+
+	void ClearInput(Button button);
+
+	Co::Task<void> WaitForDown(Button button);
 
 	bool Up(Button button);
 
