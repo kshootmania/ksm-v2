@@ -11,7 +11,7 @@ void SelectScene::moveToPlayScene(FilePathView chartFilePath, MusicGame::IsAutoP
 {
 	m_fadeOutColor = Palette::White;
 	m_menu.fadeOutSongPreviewForExit(kFadeDuration.count());
-	requestNextScene<PlayScene>(chartFilePath, isAutoPlay);
+	requestNextScene<PlayScene>(FilePath{ chartFilePath }, isAutoPlay);
 }
 
 SelectScene::SelectScene()
