@@ -10,7 +10,6 @@ namespace
 void SelectScene::moveToPlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay)
 {
 	m_fadeOutColor = Palette::White;
-	m_menu.fadeOutSongPreviewForExit(kFadeDuration.count());
 	requestNextScene<PlayScene>(FilePath{ chartFilePath }, isAutoPlay);
 }
 
@@ -31,6 +30,7 @@ void SelectScene::update()
 	// Backボタン(Escキー)を押した場合、(フォルダを閉じる状況でなければ)タイトル画面へ戻る
 	if (!closeFolder && KeyConfig::Down(KeyConfig::kBack))
 	{
+		m_menu.fadeOutSongPreviewForExit(kFadeDuration.count());
 		m_fadeOutColor = Palette::Black;
 		requestNextScene<TitleScene>(TitleMenuItem::kStart);
 		return;
