@@ -14,8 +14,6 @@ private:
 
 	TitleMenu m_menu;
 
-	Optional<Co::SceneFactory> m_nextSceneFactory;
-
 public:
 	explicit TitleScene(TitleMenuItem defaultMenuitem);
 

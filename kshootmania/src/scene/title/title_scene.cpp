@@ -51,8 +51,6 @@ Co::Task<Co::SceneFactory> TitleScene::start()
 	default:
 		throw Error{ U"Invalid menu item: {}"_fmt(std::to_underlying(selectedMenuItem)) };
 	}
-
-	co_return *m_nextSceneFactory;
 }
 
 void TitleScene::update()
