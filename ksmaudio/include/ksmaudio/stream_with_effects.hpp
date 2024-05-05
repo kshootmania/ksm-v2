@@ -34,19 +34,19 @@ namespace ksmaudio
 
 		void updateManually() const;
 
-		double posSec() const;
+		SecondsF posSec() const;
 
-		void seekPosSec(double timeSec) const;
+		void seekPosSec(SecondsF timeSec) const;
 
-		double durationSec() const;
+		Duration duration() const;
 
 		std::size_t sampleRate() const;
 
 		std::size_t numChannels() const;
 
-		double latencySec() const;
+		Duration latency() const;
 
-		void setFadeOut(double durationSec) const;
+		void setFadeOut(Duration duration) const;
 
 		// Note: The pointer is valid until this StreamWithEffects instance is destroyed.
 		AudioEffect::AudioEffectBus* emplaceAudioEffectBusFX();

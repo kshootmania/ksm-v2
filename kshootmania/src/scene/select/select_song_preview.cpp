@@ -2,11 +2,11 @@
 
 namespace
 {
-	constexpr double kFadeInDurationSec = 0.5;
-	constexpr double kFadeInDurationSecFirst = 0.25;
-	constexpr double kFadeOutDurationSec = 2.0; // HSP版では0.5秒間でのフェードアウトが指定されているが、2秒間毎フレームそれをリクエストしてしまっているため結果的に2秒間でフェードアウトされている
-	constexpr double kPreFadeOutStartDurationSec = 2.0;
-	constexpr double kDefaultBgmVolumeSpeed = 1.0 / kFadeInDurationSec;
+	constexpr Duration kFadeInDuration = 0.5s;
+	constexpr Duration kFadeInDurationFirst = 0.25s;
+	constexpr Duration kFadeOutDuration = 2.0s; // HSP版では0.5秒間でのフェードアウトが指定されているが、2秒間毎フレームそれをリクエストしてしまっているため結果的に2秒間でフェードアウトされている
+	constexpr Duration kPreFadeOutStartDuration = 2.0s;
+	constexpr double kDefaultBgmVolumeSpeed = 1.0 / kFadeInDuration.count();
 }
 
 SelectSongPreview::SelectSongPreview()
@@ -24,9 +24,9 @@ void SelectSongPreview::update()
 		// フェードインして再生開始
 		m_songPreviewStream = std::make_unique<ksmaudio::Stream>(m_songPreviewFilename.narrow(), m_songPreviewVolume, true, false);
 		m_songPreviewStream->lockBegin();
-		m_songPreviewStream->seekPosSec(m_songPreviewOffsetSec);
-		const double fadeInDurationSec = m_isFirst ? kFadeInDurationSecFirst : kFadeInDurationSec;
-		m_songPreviewStream->setFadeIn(fadeInDurationSec);
+		m_songPreviewStream->seekPosSec(m_songPreviewOffset);
+		const Duration fadeInDuration = m_isFirst ? kFadeInDurationFirst : kFadeInDuration;
+		m_songPreviewStream->setFadeIn(fadeInDuration);
 		m_songPreviewStream->play();
 		m_songPreviewStream->lockEnd();
 
@@ -41,24 +41,24 @@ void SelectSongPreview::update()
 	const bool isPlayingSongPreview = m_songPreviewStream != nullptr;
 	if (isPlayingSongPreview)
 	{
-		const double previewEndSec = m_songPreviewOffsetSec + m_songPreviewDurationSec;
-		const double posSec = m_songPreviewStream->posSec();
+		const SecondsF previewEndSec = m_songPreviewOffset + m_songPreviewDuration;
+		const SecondsF posSec = m_songPreviewStream->posSec();
 		if (previewEndSec <= posSec)
 		{
 			// フェードアウトが終了したら再び最初からフェードインして再生開始
 			// (途中の音が鳴らないようロックを挟んでいる)
 			m_songPreviewStream->lockBegin();
-			m_songPreviewStream->seekPosSec(m_songPreviewOffsetSec);
-			m_songPreviewStream->setFadeIn(kFadeInDurationSec);
+			m_songPreviewStream->seekPosSec(m_songPreviewOffset);
+			m_songPreviewStream->setFadeIn(kFadeInDuration);
 			m_songPreviewStream->play();
 			m_songPreviewStream->lockEnd();
 		}
-		else if (previewEndSec - kPreFadeOutStartDurationSec <= posSec && posSec < previewEndSec - kPreFadeOutStartDurationSec + kFadeOutDurationSec / 2) // 誤差によって2回フェードアウトしないよう2で割っている
+		else if (previewEndSec - kPreFadeOutStartDuration <= posSec && posSec < previewEndSec - kPreFadeOutStartDuration + kFadeOutDuration / 2) // 誤差によって2回フェードアウトしないよう2で割っている
 		{
 			// フェードアウト
 			if (!m_songPreviewStream->isFading())
 			{
-				m_songPreviewStream->setFadeOut(kFadeOutDurationSec);
+				m_songPreviewStream->setFadeOut(kFadeOutDuration);
 			}
 		}
 
@@ -79,7 +79,7 @@ void SelectSongPreview::update()
 	m_isFirst = false;
 }
 
-void SelectSongPreview::requestSongPreview(FilePathView filename, double offsetSec, double durationSec, double volume)
+void SelectSongPreview::requestSongPreview(FilePathView filename, SecondsF offset, SecondsF duration, double volume)
 {
 	if (filename == m_songPreviewFilename)
 	{
@@ -99,8 +99,8 @@ void SelectSongPreview::requestSongPreview(FilePathView filename, double offsetS
 
 	m_songPreviewFilename = filename;
 	m_songPreviewStream = nullptr;
-	m_songPreviewOffsetSec = offsetSec;
-	m_songPreviewDurationSec = durationSec;
+	m_songPreviewOffset = offset;
+	m_songPreviewDuration = duration;
 	m_songPreviewVolume = volume;
 
 	m_songPreviewStartTimer.restart();
@@ -113,14 +113,14 @@ void SelectSongPreview::requestDefaultBgm()
 	m_songPreviewStartTimer.reset();
 }
 
-void SelectSongPreview::fadeOutForExit(double durationSec)
+void SelectSongPreview::fadeOutForExit(Duration duration)
 {
 	if (m_songPreviewStream)
 	{
-		m_songPreviewStream->setFadeOut(durationSec);
+		m_songPreviewStream->setFadeOut(duration);
 	}
 	else
 	{
-		m_defaultBgmStream.setFadeOut(durationSec);
+		m_defaultBgmStream.setFadeOut(duration);
 	}
 }

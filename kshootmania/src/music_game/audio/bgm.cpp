@@ -4,8 +4,8 @@ namespace MusicGame::Audio
 {
 	namespace
 	{
-		constexpr double kBlendTimeSec = 5.0;
-		constexpr double kManualUpdateIntervalSec = 0.005;
+		constexpr Duration kBlendTime = 5s;
+		constexpr Duration kManualUpdateInterval = 0.005s;
 	}
 
 	void BGM::emplaceAudioEffectImpl(bool isFX, const std::string& name, const kson::AudioEffectDef& def, const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges, const std::set<float>& updateTriggerTiming)
@@ -73,10 +73,10 @@ namespace MusicGame::Audio
 		}
 	}
 
-	BGM::BGM(FilePathView filePath, double volume, double offsetSec)
+	BGM::BGM(FilePathView filePath, double volume, SecondsF offset)
 		: m_stream(filePath.narrow(), volume, true, true)
-		, m_durationSec(m_stream.durationSec())
-		, m_offsetSec(offsetSec)
+		, m_duration(m_stream.duration())
+		, m_offset(offset)
 		, m_pAudioEffectBusFX(m_stream.emplaceAudioEffectBusFX())
 		, m_pAudioEffectBusLaser(m_stream.emplaceAudioEffectBusLaser())
 		, m_stopwatch(StartImmediately::No)
@@ -93,14 +93,14 @@ namespace MusicGame::Audio
 
 		if (m_isStreamStarted)
 		{
-			if (m_manualUpdateStopwatch.sF() >= kManualUpdateIntervalSec)
+			if (m_manualUpdateStopwatch.elapsed() >= kManualUpdateInterval)
 			{
 				m_stream.updateManually();
 				m_manualUpdateStopwatch.restart();
 			}
-			m_timeSec = m_stream.posSec() - m_offsetSec;
+			m_timeSec = m_stream.posSec() - m_offset;
 
-			if (m_timeSec + m_offsetSec < m_durationSec - kBlendTimeSec)
+			if (m_timeSec + m_offset < m_duration - kBlendTime)
 			{
 				// ストップウォッチの時間を同期
 				m_stopwatch.set(SecondsF{ m_timeSec });
@@ -108,11 +108,11 @@ namespace MusicGame::Audio
 		}
 		else
 		{
-			m_timeSec = m_stopwatch.sF();
+			m_timeSec = m_stopwatch.elapsed();
 
-			if (m_timeSec + m_offsetSec >= 0.0)
+			if (m_timeSec + m_offset >= 0s)
 			{
-				m_stream.seekPosSec(m_timeSec + m_offsetSec);
+				m_stream.seekPosSec(m_timeSec + m_offset);
 				m_stream.play();
 				m_isStreamStarted = true;
 			}
@@ -152,9 +152,9 @@ namespace MusicGame::Audio
 		m_isPaused = true;
 	}
 
-	void BGM::seekPosSec(double posSec)
+	void BGM::seekPosSec(SecondsF posSec)
 	{
-		if (posSec < 0.0)
+		if (posSec < 0s)
 		{
 			m_stream.stop();
 		}
@@ -163,43 +163,43 @@ namespace MusicGame::Audio
 			m_stream.seekPosSec(posSec);
 		}
 		m_timeSec = posSec;
-		m_stopwatch.set(SecondsF{ posSec });
+		m_stopwatch.set(posSec);
 	}
 
-	double BGM::posSec() const
+	SecondsF BGM::posSec() const
 	{
 		// 開始・終了地点でノーツの動きが一瞬止まるのを防ぐため、最初と最後は再生位置に対してストップウォッチの時間を混ぜる
 		// TODO: うまく効いていないようなので見直す
 		if (m_isStreamStarted)
 		{
-			const double timeSecWithOffset = m_timeSec + m_offsetSec;
-			if (0.0 <= timeSecWithOffset && timeSecWithOffset < kBlendTimeSec)
+			const SecondsF timeSecWithOffset = m_timeSec + m_offset;
+			if (0s <= timeSecWithOffset && timeSecWithOffset < kBlendTime)
 			{
-				const double lerpRate = timeSecWithOffset / kBlendTimeSec;
-				return Math::Lerp(m_stopwatch.sF(), m_timeSec, lerpRate);
+				const double lerpRate = timeSecWithOffset / kBlendTime;
+				return Math::Lerp(m_stopwatch.elapsed(), m_timeSec, lerpRate);
 			}
-			else if (m_durationSec - kBlendTimeSec <= timeSecWithOffset && timeSecWithOffset < m_durationSec)
+			else if (m_duration - kBlendTime <= timeSecWithOffset && timeSecWithOffset < m_duration)
 			{
-				const double lerpRate = (timeSecWithOffset - (m_durationSec - kBlendTimeSec)) / kBlendTimeSec;
-				return Math::Lerp(m_timeSec, m_stopwatch.sF(), lerpRate);
+				const double lerpRate = (timeSecWithOffset - (m_duration - kBlendTime)) / kBlendTime;
+				return Math::Lerp(m_timeSec, m_stopwatch.elapsed(), lerpRate);
 			}
-			else if (m_durationSec - m_offsetSec <= m_stopwatch.sF())
+			else if (m_duration - m_offset <= m_stopwatch.elapsed())
 			{
-				return m_stopwatch.sF();
+				return m_stopwatch.elapsed();
 			}
 		}
 
 		return m_timeSec;
 	}
 
-	double BGM::durationSec() const
+	Duration BGM::duration() const
 	{
-		return m_durationSec;
+		return m_duration;
 	}
 
-	double BGM::latencySec() const
+	Duration BGM::latency() const
 	{
-		return m_stream.latencySec();
+		return m_stream.latency();
 	}
 
 	void BGM::emplaceAudioEffectFX(const std::string& name, const kson::AudioEffectDef& def, const std::unordered_map<std::string, std::map<float, std::string>>& paramChanges, const std::set<float>& updateTriggerTiming)
@@ -222,8 +222,8 @@ namespace MusicGame::Audio
 		return *m_pAudioEffectBusLaser;
 	}
 
-	void BGM::setFadeOut(double durationSec)
+	void BGM::setFadeOut(Duration duration)
 	{
-		m_stream.setFadeOut(durationSec);
+		m_stream.setFadeOut(duration);
 	}
 }

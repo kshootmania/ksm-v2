@@ -118,19 +118,19 @@ namespace ksmaudio
 		BASS_ChannelUpdate(m_hStream, 0);
 	}
 
-	double Stream::posSec() const
+	SecondsF Stream::posSec() const
 	{
-		return BASS_ChannelBytes2Seconds(m_hStream, BASS_ChannelGetPosition(m_hStream, BASS_POS_BYTE));
+		return SecondsF{ BASS_ChannelBytes2Seconds(m_hStream, BASS_ChannelGetPosition(m_hStream, BASS_POS_BYTE)) };
 	}
 
-	void Stream::seekPosSec(double timeSec) const
+	void Stream::seekPosSec(SecondsF time) const
 	{
-		BASS_ChannelSetPosition(m_hStream, BASS_ChannelSeconds2Bytes(m_hStream, timeSec), 0);
+		BASS_ChannelSetPosition(m_hStream, BASS_ChannelSeconds2Bytes(m_hStream, time.count()), 0);
 	}
 
-	double Stream::durationSec() const
+	Duration Stream::duration() const
 	{
-		return BASS_ChannelBytes2Seconds(m_hStream, BASS_ChannelGetLength(m_hStream, BASS_POS_BYTE));
+		return Duration{ BASS_ChannelBytes2Seconds(m_hStream, BASS_ChannelGetLength(m_hStream, BASS_POS_BYTE)) };
 	}
 
 	HDSP Stream::addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const
@@ -143,30 +143,30 @@ namespace ksmaudio
 		BASS_ChannelRemoveDSP(m_hStream, hDSP);
 	}
 
-	void Stream::setFadeIn(double durationSec) const
+	void Stream::setFadeIn(Duration duration) const
 	{
 		// 音量を0からm_volumeまでdurationSec秒かけて推移させる
 		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, 0.0f);
-		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(m_volume), static_cast<DWORD>(durationSec * 1000));
+		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(m_volume), static_cast<DWORD>(duration.count() * 1000));
 	}
 
-	void Stream::setFadeIn(double durationSec, double volume)
+	void Stream::setFadeIn(Duration duration, double volume)
 	{
 		m_volume = volume;
-		setFadeIn(durationSec);
+		setFadeIn(duration);
 	}
 
-	void Stream::setFadeOut(double durationSec) const
+	void Stream::setFadeOut(Duration duration) const
 	{
 		// 音量をm_volumeから0までdurationSec秒かけて推移させる
 		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(m_volume));
-		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, 0.0f, static_cast<DWORD>(durationSec * 1000));
+		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, 0.0f, static_cast<DWORD>(duration.count() * 1000));
 	}
 
-	void Stream::setFadeOut(double durationSec, double volume)
+	void Stream::setFadeOut(Duration duration, double volume)
 	{
 		m_volume = volume;
-		setFadeOut(durationSec);
+		setFadeOut(duration);
 	}
 	
 	bool Stream::isPlaying() const
@@ -201,16 +201,16 @@ namespace ksmaudio
 		return static_cast<std::size_t>(m_info.chans);
 	}
 
-	double Stream::latencySec() const
+	SecondsF Stream::latency() const
 	{
 		/*DWORD playbuf = BASS_ChannelGetData(m_hStream, NULL, BASS_DATA_AVAILABLE);
 		if (playbuf != (DWORD)-1)
 		{
-			return BASS_ChannelBytes2Seconds(m_hStream, playbuf);
+			return SecondsF{ BASS_ChannelBytes2Seconds(m_hStream, playbuf) };
 		}*/
 
 		// 上記でも大抵バッファサイズと同じになるが変動するので、そのままバッファサイズを返した方が音声エフェクトのタイミング計算が安定する
-		return kBufferSizeMs / 1000.0f;
+		return SecondsF{ kBufferSizeMs / 1000.0f };
 	}
 
 	void Stream::lockBegin() const

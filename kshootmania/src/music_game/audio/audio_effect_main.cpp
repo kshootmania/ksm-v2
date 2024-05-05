@@ -36,7 +36,7 @@ namespace MusicGame::Audio
 			using AudioEffectUtils::PrecalculateUpdateTriggerTiming;
 
 			const std::int64_t totalMeasures =
-				kson::SecToMeasureIdx(bgm.durationSec(), chartData.beat, timingCache)
+				kson::SecToMeasureIdx(bgm.duration().count(), chartData.beat, timingCache)
 				+ 1/* 最後の小節の分を足す */
 				+ 1/* インデックスを要素数にするために1を足す */;
 
@@ -294,8 +294,9 @@ namespace MusicGame::Audio
 
 	void AudioEffectMain::update(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus)
 	{
-		const double currentTimeSec = bgm.posSec();
-		const double currentTimeSecForAudio = currentTimeSec + bgm.latencySec(); // Note: In BASS v2.4.13 and later, for unknown reasons, the effects are out of sync even after adding this latency.
+		// TODO: SecondsFに統一
+		const double currentTimeSec = bgm.posSec().count();
+		const double currentTimeSecForAudio = currentTimeSec + bgm.latency().count(); // Note: In BASS v2.4.13 and later, for unknown reasons, the effects are out of sync even after adding this latency.
 		const kson::Pulse currentPulseForAudio = kson::SecToPulse(currentTimeSecForAudio, chartData.beat, timingCache);
 		const double currentBPMForAudio = kson::TempoAt(currentPulseForAudio, chartData.beat);
 

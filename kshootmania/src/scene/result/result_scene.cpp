@@ -40,7 +40,7 @@ Co::Task<Co::SceneFactory> ResultScene::start()
 		KeyConfig::WaitForDown(KeyConfig::kBack));
 
 	// 楽曲選択へ戻る
-	m_bgmStream.setFadeOut(kFadeDuration.count());
+	m_bgmStream.setFadeOut(kFadeDuration);
 	co_return Co::MakeSceneFactory<SelectScene>();
 }
 

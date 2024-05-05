@@ -275,7 +275,7 @@ Co::Task<void> OptionScene::fadeIn()
 
 Co::Task<void> OptionScene::fadeOut()
 {
-	m_bgmStream.setFadeOut(kFadeDuration.count());
+	m_bgmStream.setFadeOut(kFadeDuration);
 	co_await Co::SimpleFadeOut(kFadeDuration);
 }
 

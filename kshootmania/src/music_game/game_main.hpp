@@ -95,6 +95,6 @@ namespace MusicGame
 
 		PlayResult playResult() const;
 
-		void startBGMFadeOut(double durationSec);
+		void startBGMFadeOut(Duration duration);
 	};
 }

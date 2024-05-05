@@ -34,19 +34,19 @@ namespace ksmaudio
 		m_stream.updateManually();
 	}
 
-	double StreamWithEffects::posSec() const
+	SecondsF StreamWithEffects::posSec() const
 	{
 		return m_stream.posSec();
 	}
 
-	void StreamWithEffects::seekPosSec(double timeSec) const
+	void StreamWithEffects::seekPosSec(SecondsF timeSec) const
 	{
 		m_stream.seekPosSec(timeSec);
 	}
 
-	double StreamWithEffects::durationSec() const
+	Duration StreamWithEffects::duration() const
 	{
-		return m_stream.durationSec();
+		return m_stream.duration();
 	}
 
 	std::size_t StreamWithEffects::sampleRate() const
@@ -59,14 +59,14 @@ namespace ksmaudio
 		return m_stream.numChannels();
 	}
 
-	double StreamWithEffects::latencySec() const
+	Duration StreamWithEffects::latency() const
 	{
-		return m_stream.latencySec();
+		return m_stream.latency();
 	}
 
-	void StreamWithEffects::setFadeOut(double durationSec) const
+	void StreamWithEffects::setFadeOut(Duration duration) const
 	{
-		m_stream.setFadeOut(durationSec);
+		m_stream.setFadeOut(duration);
 	}
 
 	AudioEffect::AudioEffectBus* StreamWithEffects::emplaceAudioEffectBusFX()

@@ -8,9 +8,9 @@ namespace MusicGame::Audio
 	{
 	private:
 		ksmaudio::StreamWithEffects m_stream;
-		const double m_durationSec;
-		const double m_offsetSec;
-		double m_timeSec = 0.0;
+		const Duration m_duration;
+		const SecondsF m_offset;
+		SecondsF m_timeSec = 0s;
 		bool m_isStreamStarted = false;
 		bool m_isPaused = true;
 		ksmaudio::AudioEffect::AudioEffectBus* const m_pAudioEffectBusFX;
@@ -26,7 +26,7 @@ namespace MusicGame::Audio
 			const std::set<float>& updateTriggerTiming);
 
 	public:
-		BGM(FilePathView filePath, double volume, double offsetSec);
+		BGM(FilePathView filePath, double volume, SecondsF offset);
 
 		void update();
 
@@ -39,13 +39,13 @@ namespace MusicGame::Audio
 
 		void pause();
 
-		void seekPosSec(double posSec);
+		void seekPosSec(SecondsF timeSec);
 
-		double posSec() const;
+		SecondsF posSec() const;
 
-		double durationSec() const;
+		Duration duration() const;
 
-		double latencySec() const;
+		Duration latency() const;
 
 		void emplaceAudioEffectFX(
 			const std::string& name,
@@ -63,6 +63,6 @@ namespace MusicGame::Audio
 
 		const ksmaudio::AudioEffect::AudioEffectBus& audioEffectBusLaser() const;
 
-		void setFadeOut(double durationSec);
+		void setFadeOut(Duration duration);
 	};
 }

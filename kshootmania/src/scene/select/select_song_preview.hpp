@@ -11,9 +11,9 @@ private:
 
 	std::unique_ptr<ksmaudio::Stream> m_songPreviewStream;
 
-	double m_songPreviewOffsetSec = 0.0;
+	SecondsF m_songPreviewOffset = 0s;
 
-	double m_songPreviewDurationSec = 0.0;
+	SecondsF m_songPreviewDuration = 0s;
 
 	double m_songPreviewVolume = 1.0;
 
@@ -34,9 +34,9 @@ public:
 
 	void update();
 
-	void requestSongPreview(FilePathView filename, double offsetSec, double durationSec, double volume);
+	void requestSongPreview(FilePathView filename, SecondsF offset, SecondsF duration, double volume);
 
 	void requestDefaultBgm();
 
-	void fadeOutForExit(double durationSec);
+	void fadeOutForExit(Duration duration);
 };

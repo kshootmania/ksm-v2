@@ -77,14 +77,14 @@ FilePath SelectChartInfo::previewBGMFilePath() const
 	return toFullPath(m_chartData.audio.bgm.filename);
 }
 
-double SelectChartInfo::previewBGMOffsetSec() const
+SecondsF SelectChartInfo::previewBGMOffset() const
 {
-	return m_chartData.audio.bgm.preview.offset / 1000.0;
+	return SecondsF{ m_chartData.audio.bgm.preview.offset / 1000.0 };
 }
 
-double SelectChartInfo::previewBGMDurationSec() const
+Duration SelectChartInfo::previewBGMDuration() const
 {
-	return m_chartData.audio.bgm.preview.duration / 1000.0;
+	return Duration{ m_chartData.audio.bgm.preview.duration / 1000.0 };
 }
 
 double SelectChartInfo::previewBGMVolume() const

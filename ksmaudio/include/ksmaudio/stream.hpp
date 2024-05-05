@@ -2,12 +2,16 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <chrono>
 #include "bass.h"
 #include "bass_fx.h"
 #include "ksmaudio/audio_effect/audio_effect.hpp"
 
 namespace ksmaudio
 {
+	using SecondsF = std::chrono::duration<double>;
+	using Duration = SecondsF;
+
 	class Stream
 	{
 	private:
@@ -37,23 +41,23 @@ namespace ksmaudio
 
 		void updateManually() const;
 
-		double posSec() const;
+		SecondsF posSec() const;
 
-		void seekPosSec(double timeSec) const;
+		void seekPosSec(SecondsF time) const;
 
-		double durationSec() const;
+		Duration duration() const;
 
 		HDSP addAudioEffect(AudioEffect::IAudioEffect* pAudioEffect, int priority) const;
 
 		void removeAudioEffect(HDSP hDSP) const;
 
-		void setFadeIn(double durationSec) const;
+		void setFadeIn(Duration duration) const;
 
-		void setFadeIn(double durationSec, double volume);
+		void setFadeIn(Duration duration, double volume);
 
-		void setFadeOut(double durationSec) const;
+		void setFadeOut(Duration duration) const;
 
-		void setFadeOut(double durationSec, double volume);
+		void setFadeOut(Duration duration, double volume);
 
 		bool isPlaying() const;
 
@@ -67,7 +71,7 @@ namespace ksmaudio
 
 		std::size_t numChannels() const;
 
-		double latencySec() const;
+		Duration latency() const;
 
 		void lockBegin() const;
 

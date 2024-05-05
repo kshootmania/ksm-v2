@@ -26,7 +26,8 @@ namespace MusicGame
 		m_bgm.update();
 
 		// 再生時間と現在のBPMを取得
-		const double currentTimeSec = m_bgm.posSec();
+		// TODO: SecondsFに統一
+		const double currentTimeSec = m_bgm.posSec().count();
 		const kson::Pulse currentPulse = kson::SecToPulse(currentTimeSec, m_chartData.beat, m_timingCache);
 		const double currentPulseDouble = kson::SecToPulseDouble(currentTimeSec, m_chartData.beat, m_timingCache);
 		const double currentBPM = kson::TempoAt(currentPulse, m_chartData.beat);
@@ -76,7 +77,7 @@ namespace MusicGame
 		, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
 		, m_judgmentMain(m_chartData, m_timingCache, createInfo.playOption)
 		, m_highwayScroll(m_chartData)
-		, m_bgm(FileSystem::PathAppend(m_parentPath, Unicode::FromUTF8(m_chartData.audio.bgm.filename)), m_chartData.audio.bgm.vol, static_cast<double>(m_chartData.audio.bgm.offset) / 1000)
+		, m_bgm(FileSystem::PathAppend(m_parentPath, Unicode::FromUTF8(m_chartData.audio.bgm.filename)), m_chartData.audio.bgm.vol, SecondsF{ static_cast<double>(m_chartData.audio.bgm.offset) / 1000 })
 		, m_assistTick(createInfo.assistTickEnabled)
 		, m_laserSlamSE(m_chartData)
 		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache)
@@ -116,7 +117,8 @@ namespace MusicGame
 		});
 
 		// 効果音の更新
-		const double currentTimeSec = m_bgm.posSec();
+		// TODO: SecondsFに統一
+		const double currentTimeSec = m_bgm.posSec().count();
 		m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
 		m_laserSlamSE.update(m_chartData, m_gameStatus);
 
@@ -163,8 +165,8 @@ namespace MusicGame
 		return m_judgmentMain.playResult();
 	}
 
-	void GameMain::startBGMFadeOut(double durationSec)
+	void GameMain::startBGMFadeOut(Duration duration)
 	{
-		m_bgm.setFadeOut(durationSec);
+		m_bgm.setFadeOut(duration);
 	}
 }

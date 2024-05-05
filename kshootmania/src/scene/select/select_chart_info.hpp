@@ -34,9 +34,9 @@ public:
 
 	FilePath previewBGMFilePath() const;
 
-	double previewBGMOffsetSec() const;
+	SecondsF previewBGMOffset() const;
 
-	double previewBGMDurationSec() const;
+	Duration previewBGMDuration() const;
 
 	double previewBGMVolume() const;
 

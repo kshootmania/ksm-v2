@@ -2,10 +2,10 @@
 
 namespace MusicGame
 {
-	constexpr double kTimeSecBeforeStart = 3.4;
-	constexpr double kTimeSecBeforeStartMovie = 4.4;
+	constexpr Duration kTimeSecBeforeStart = 3.4s;
+	constexpr Duration kTimeSecBeforeStartMovie = 4.4s;
 
-	constexpr double TimeSecBeforeStart(bool movie)
+	constexpr Duration TimeSecBeforeStart(bool movie)
 	{
 		return movie ? kTimeSecBeforeStartMovie : kTimeSecBeforeStart;
 	}

@@ -245,7 +245,7 @@ void SelectMenu::refreshSongPreview()
 	}
 	else
 	{
-		m_songPreview.requestSongPreview(pChartInfo->previewBGMFilePath(), pChartInfo->previewBGMOffsetSec(), pChartInfo->previewBGMDurationSec(), pChartInfo->previewBGMVolume());
+		m_songPreview.requestSongPreview(pChartInfo->previewBGMFilePath(), pChartInfo->previewBGMOffset(), pChartInfo->previewBGMDuration(), pChartInfo->previewBGMVolume());
 	}
 }
 
@@ -384,7 +384,7 @@ bool SelectMenu::empty() const
 	return m_menu.empty();
 }
 
-void SelectMenu::fadeOutSongPreviewForExit(double durationSec)
+void SelectMenu::fadeOutSongPreviewForExit(Duration duration)
 {
-	m_songPreview.fadeOutForExit(durationSec);
+	m_songPreview.fadeOutForExit(duration);
 }

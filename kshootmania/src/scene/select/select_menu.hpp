@@ -74,5 +74,5 @@ public:
 
 	bool empty() const;
 
-	void fadeOutSongPreviewForExit(double durationSec);
+	void fadeOutSongPreviewForExit(Duration duration);
 };
