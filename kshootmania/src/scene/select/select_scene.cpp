@@ -4,7 +4,8 @@
 
 namespace
 {
-	constexpr Duration kFadeDuration = 0.5s;
+	constexpr Duration kFadeInDuration = 0.25s;
+	constexpr Duration kFadeOutDuration = 0.4s;
 }
 
 void SelectScene::moveToPlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay)
@@ -30,7 +31,7 @@ void SelectScene::update()
 	// Backボタン(Escキー)を押した場合、(フォルダを閉じる状況でなければ)タイトル画面へ戻る
 	if (!closeFolder && KeyConfig::Down(KeyConfig::kBack))
 	{
-		m_menu.fadeOutSongPreviewForExit(kFadeDuration);
+		m_menu.fadeOutSongPreviewForExit(kFadeOutDuration);
 		m_fadeOutColor = Palette::Black;
 		requestNextScene<TitleScene>(TitleMenuItem::kStart);
 		return;
@@ -66,10 +67,10 @@ void SelectScene::draw() const
 
 Co::Task<void> SelectScene::fadeIn()
 {
-	co_await Co::SimpleFadeIn(kFadeDuration);
+	co_await Co::SimpleFadeIn(kFadeInDuration);
 }
 
 Co::Task<void> SelectScene::fadeOut()
 {
-	co_await Co::SimpleFadeOut(kFadeDuration, m_fadeOutColor);
+	co_await Co::SimpleFadeOut(kFadeOutDuration, m_fadeOutColor);
 }
