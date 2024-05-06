@@ -1,5 +1,5 @@
 ﻿#include "select_scene.hpp"
-#include "scene/play/play_scene.hpp"
+#include "scene/play_prepare/play_prepare_scene.hpp"
 #include "scene/title/title_scene.hpp"
 
 namespace
@@ -11,7 +11,7 @@ namespace
 void SelectScene::moveToPlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay)
 {
 	m_fadeOutColor = Palette::White;
-	requestNextScene<PlayScene>(FilePath{ chartFilePath }, isAutoPlay);
+	requestNextScene<PlayPrepareScene>(FilePath{ chartFilePath }, isAutoPlay);
 }
 
 SelectScene::SelectScene()

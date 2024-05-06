@@ -20,26 +20,12 @@ namespace MusicGame::Graphics
 		constexpr Vec2 kJacketPosition = { -286.5, 45.5 };
 		constexpr Point kTitlePanelBasePosition = { -155, 45 };
 		constexpr Point kDetailPanelBasePosition = { -295, 69 };
-
-		SizeF ScaledJacketSize(Size sourceSize)
-		{
-			SizeF size = Scaled(SizeF{ kJacketWidth, kJacketWidth });
-			if (sourceSize.x < sourceSize.y)
-			{
-				size.x *= static_cast<double>(sourceSize.x) / sourceSize.y;
-			}
-			else if (sourceSize.y < sourceSize.x)
-			{
-				size.y *= static_cast<double>(sourceSize.y) / sourceSize.x;
-			}
-			return size;
-		}
 	}
 
 	SongInfoPanel::SongInfoPanel(const kson::ChartData& chartData, FilePathView parentPath)
 		: m_jacketTexture(parentPath + Unicode::FromUTF8(chartData.meta.jacketFilename))
 		, m_jacketPosition(Scene::Width() / 2 + static_cast<int32>(Scaled(kJacketPosition.x)), static_cast<int32>(Scaled(kJacketPosition.y)))
-		, m_scaledJacketSize(ScaledJacketSize(m_jacketTexture.size()))
+		, m_scaledJacketSize(RectSizeInSquare(m_jacketTexture.size(), Scaled(kJacketWidth) ))
 		, m_titlePanelBaseTexture(kTitlePanelSize * 2, kTransparent)
 		, m_titlePanelPosition(Scene::Width() / 2 + Scaled(kTitlePanelBasePosition.x), Scaled(kTitlePanelBasePosition.y))
 		, m_detailPanelBaseTexture(TextureAsset(kDetailPanelBaseTextureFilename))

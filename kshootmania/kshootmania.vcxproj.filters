@@ -241,6 +241,12 @@
     <Filter Include="Resource Files\assets\font\tektur-ksm">
       <UniqueIdentifier>{7bb2995f-307d-441b-9f3f-a74b97eb521f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\scene\play_prepare">
+      <UniqueIdentifier>{3a2de163-6916-4934-90ac-17bcde62755d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\scene\play_prepare">
+      <UniqueIdentifier>{dfe743d5-4b37-4969-a717-f71df3e6a088}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\scene\title\title_scene.cpp">
@@ -497,6 +503,9 @@
     </ClCompile>
     <ClCompile Include="src\graphics\font_utils.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\play_prepare\play_prepare_scene.cpp">
+      <Filter>Source Files\scene\play_prepare</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1083,6 +1092,12 @@
     </ClInclude>
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\play_prepare\play_prepare_scene.hpp">
+      <Filter>Header Files\scene\play_prepare</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\play_prepare\play_prepare_assets.hpp">
+      <Filter>Header Files\scene\play_prepare</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

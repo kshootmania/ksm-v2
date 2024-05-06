@@ -186,6 +186,7 @@
     <ClCompile Include="src\scene\option\option_top_menu.cpp" />
     <ClCompile Include="src\scene\option\option_scene.cpp" />
     <ClCompile Include="src\scene\play\play_scene.cpp" />
+    <ClCompile Include="src\scene\play_prepare\play_prepare_scene.cpp" />
     <ClCompile Include="src\scene\result\result_panel.cpp" />
     <ClCompile Include="src\scene\result\result_scene.cpp" />
     <ClCompile Include="src\scene\select\menu_item\select_menu_all_folder_item.cpp" />
@@ -380,6 +381,8 @@
     <ClInclude Include="src\scene\option\option_top_menu.hpp" />
     <ClInclude Include="src\scene\play\play_scene.hpp" />
     <ClInclude Include="src\scene\play\play_scene_args.hpp" />
+    <ClInclude Include="src\scene\play_prepare\play_prepare_assets.hpp" />
+    <ClInclude Include="src\scene\play_prepare\play_prepare_scene.hpp" />
     <ClInclude Include="src\scene\result\result_assets.hpp" />
     <ClInclude Include="src\scene\result\result_panel.hpp" />
     <ClInclude Include="src\scene\result\result_scene.hpp" />

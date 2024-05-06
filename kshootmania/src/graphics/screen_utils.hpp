@@ -302,6 +302,20 @@ inline namespace ScreenUtils
 		}
 	}
 
+	inline SizeF RectSizeInSquare(const Size& textureSize, double targetSquareSize)
+	{
+		SizeF size{ targetSquareSize, targetSquareSize };
+		if (textureSize.x < textureSize.y)
+		{
+			size.x *= static_cast<double>(textureSize.x) / textureSize.y;
+		}
+		else if (textureSize.y < textureSize.x)
+		{
+			size.y *= static_cast<double>(textureSize.y) / textureSize.x;
+		}
+		return size;
+	}
+
 	/// @brief config.iniの画面解像度を反映
 	void ApplyScreenSizeConfig();
 }
