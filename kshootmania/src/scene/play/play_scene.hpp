@@ -2,7 +2,7 @@
 #include <CoTaskLib.hpp>
 #include "music_game/game_main.hpp"
 
-class PlayScene : public Co::UpdateSceneBase
+class PlayScene : public Co::UpdaterSceneBase
 {
 private:
 	/// @brief ゲームのメインクラス

@@ -21,7 +21,7 @@ Co::Task<Co::SceneFactory> TitleScene::start()
 	AutoMuteAddon::SetEnabled(true);
 
 	// メニューが選択されるまで待機
-	const TitleMenuItem selectedMenuItem = co_await m_menu.onSelect().firstAsync();
+	const TitleMenuItem selectedMenuItem = co_await m_menu.selectedMenuItemAsync();
 
 	// 効果音を鳴らす
 	m_bgmStream.setVolume(0.0);

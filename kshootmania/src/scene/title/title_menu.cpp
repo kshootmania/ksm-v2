@@ -56,7 +56,7 @@ void TitleMenu::update()
 		if (KeyConfig::Down(KeyConfig::kStart))
 		{
 			const auto selectedItem = m_menu.cursorAs<TitleMenuItem>();
-			m_onSelect.publish(selectedItem);
+			m_selectedMenuItemSource.requestFinish(selectedItem);
 			m_isAlreadySelected = true;
 		}
 		else if (KeyConfig::Down(KeyConfig::kBack))

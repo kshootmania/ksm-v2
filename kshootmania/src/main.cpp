@@ -85,10 +85,11 @@ void Main()
 	Co::Init();
 
 	// メインループ
-	const auto mainTaskRun = Co::AsTask<TitleScene>(TitleMenuItem::kStart).runScoped();
+	const auto sceneRunner = Co::ScopedSceneRunner<TitleScene>{ TitleMenuItem::kStart };
+	
 	while (System::Update())
 	{
-		if (mainTaskRun.done())
+		if (sceneRunner.isFinished())
 		{
 			break;
 		}

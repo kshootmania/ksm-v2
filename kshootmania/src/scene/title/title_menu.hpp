@@ -40,7 +40,7 @@ private:
 
 	ksmaudio::Sample m_selectSe{ "se/title_sel.wav" };
 
-	Co::EventStream<TitleMenuItem> m_onSelect;
+	Co::TaskFinishSource<TitleMenuItem> m_selectedMenuItemSource;
 
 public:
 	TitleMenu(TitleMenuItem defaultMenuitem);
@@ -53,8 +53,8 @@ public:
 
 	void draw() const;
 
-	const Co::EventStream<TitleMenuItem>& onSelect() const
+	Co::Task<TitleMenuItem> selectedMenuItemAsync() const
 	{
-		return m_onSelect;
+		return m_selectedMenuItemSource.waitForFinish();
 	}
 };

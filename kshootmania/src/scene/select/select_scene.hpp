@@ -5,7 +5,7 @@
 #include "select_menu.hpp"
 #include "select_folder_state.hpp"
 
-class SelectScene : public Co::UpdateSceneBase
+class SelectScene : public Co::UpdaterSceneBase
 {
 private:
 	const Texture m_bgTexture{ TextureAsset(SelectTexture::kBG) };

@@ -5,7 +5,7 @@
 #include "option_key_config_menu.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
-class OptionScene : public Co::UpdateSceneBase
+class OptionScene : public Co::UpdaterSceneBase
 {
 public:
 	// TODO: OptionTopMenu::Itemと統一
