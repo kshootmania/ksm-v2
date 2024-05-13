@@ -22,7 +22,7 @@ Co::Task<Co::SceneFactory> PlayPrepareScene::start()
 	m_seStream.play();
 
 	// TODO: ジャケット画像の描画を追加してスケールをtweenerで操作
-	Co::ScopedTweener tweener{ 1s, [](double t) { Print << t; } };
+	const auto _ = Co::Linear(1s, [](double t) { Print << t; }).runScoped();
 
 	const auto [isWait, isStart, isBack] = co_await Co::Any(
 		waitAsync(),
