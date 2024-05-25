@@ -247,6 +247,12 @@
     <Filter Include="Header Files\scene\play_prepare">
       <UniqueIdentifier>{dfe743d5-4b37-4969-a717-f71df3e6a088}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\third_party">
+      <UniqueIdentifier>{2d1fe827-f360-4121-907e-1dff71649b32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\third_party\CoTaskLib">
+      <UniqueIdentifier>{35ec8b6e-d771-43fd-881e-570e4f2d352c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\scene\title\title_scene.cpp">
@@ -1090,14 +1096,35 @@
     <ClInclude Include="src\graphics\font_utils.hpp">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\scene\play_prepare\play_prepare_scene.hpp">
       <Filter>Header Files\scene\play_prepare</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\play_prepare\play_prepare_assets.hpp">
       <Filter>Header Files\scene\play_prepare</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib.hpp">
+      <Filter>Header Files\third_party</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Ease.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Core.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Scene.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Sequence.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\ScreenFade.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween3D.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,14 +14,18 @@ private:
 
 	TitleMenu m_menu;
 
+	TitleMenuItem m_selectedMenuItem = TitleMenuItem::kStart;
+
 public:
 	explicit TitleScene(TitleMenuItem defaultMenuitem);
 
-	virtual Co::Task<Co::SceneFactory> start() override;
+	virtual Co::Task<void> start() override;
 
 	void update();
 
 	virtual void draw() const override;
 
 	virtual Co::Task<void> fadeIn() override;
+
+	virtual Co::Task<void> fadeOut() override;
 };

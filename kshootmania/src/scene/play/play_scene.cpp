@@ -94,7 +94,7 @@ void PlayScene::draw() const
 
 inline Co::Task<void> PlayScene::fadeIn()
 {
-	co_await Co::SimpleFadeIn(kFadeDuration);
+	co_await Co::ScreenFadeIn(kFadeDuration);
 }
 
 Co::Task<void> PlayScene::fadeOut()
@@ -103,5 +103,5 @@ Co::Task<void> PlayScene::fadeOut()
 	const Co::ScopedUpdater updater([this] { m_gameMain.update(); });
 
 	m_gameMain.startBGMFadeOut(m_fadeOutDuration);
-	co_await Co::SimpleFadeOut(m_fadeOutDuration);
+	co_await Co::ScreenFadeOut(m_fadeOutDuration);
 }

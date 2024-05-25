@@ -13,7 +13,7 @@ TitleScene::TitleScene(TitleMenuItem defaultMenuitem)
 {
 }
 
-Co::Task<Co::SceneFactory> TitleScene::start()
+Co::Task<void> TitleScene::start()
 {
 	const Co::ScopedUpdater updater{ [this] { update(); } };
 
@@ -21,36 +21,11 @@ Co::Task<Co::SceneFactory> TitleScene::start()
 	AutoMuteAddon::SetEnabled(true);
 
 	// メニューが選択されるまで待機
-	const TitleMenuItem selectedMenuItem = co_await m_menu.selectedMenuItemAsync();
+	m_selectedMenuItem = co_await m_menu.selectedMenuItemAsync();
 
 	// 効果音を鳴らす
 	m_bgmStream.setVolume(0.0);
 	m_enterSe.play(); // TODO: シーン遷移時に消えるのを修正
-
-	// 次のシーンへ遷移
-	switch (selectedMenuItem)
-	{
-	case TitleMenuItem::kStart:
-		co_await Co::SimpleFadeOut(kFadeDuration);
-		co_return Co::MakeSceneFactory<SelectScene>();
-
-	case TitleMenuItem::kOption:
-		co_await Co::SimpleFadeOut(kFadeDuration);
-		co_return Co::MakeSceneFactory<OptionScene>();
-
-	case TitleMenuItem::kInputGate:
-		// TODO: INPUT GATEへ遷移
-		co_await Co::SimpleFadeOut(kFadeDuration);
-		co_return Co::MakeSceneFactory<TitleScene>(TitleMenuItem::kInputGate);
-
-	case TitleMenuItem::kExit:
-		// 効果音が途中で切れないよう終了時は少し長めにフェードアウト
-		co_await Co::SimpleFadeOut(kFadeDurationExit);
-		co_return Co::SceneFinish();
-		
-	default:
-		throw Error{ U"Invalid menu item: {}"_fmt(std::to_underlying(selectedMenuItem)) };
-	}
 }
 
 void TitleScene::update()
@@ -66,5 +41,36 @@ void TitleScene::draw() const
 
 Co::Task<void> TitleScene::fadeIn()
 {
-	co_await Co::SimpleFadeIn(kFadeDuration);
+	co_await Co::ScreenFadeIn(kFadeDuration);
+}
+
+Co::Task<void> TitleScene::fadeOut()
+{
+	// 次のシーンへ遷移
+	switch (m_selectedMenuItem)
+	{
+	case TitleMenuItem::kStart:
+		co_await Co::ScreenFadeOut(kFadeDuration);
+		requestNextScene<SelectScene>();
+		break;
+
+	case TitleMenuItem::kOption:
+		co_await Co::ScreenFadeOut(kFadeDuration);
+		requestNextScene<OptionScene>();
+		break;
+
+	case TitleMenuItem::kInputGate:
+		// TODO: INPUT GATEへ遷移
+		co_await Co::ScreenFadeOut(kFadeDuration);
+		requestNextScene<TitleScene>(TitleMenuItem::kInputGate);
+		break;
+
+	case TitleMenuItem::kExit:
+		// 効果音が途中で切れないよう終了時は少し長めにフェードアウト
+		co_await Co::ScreenFadeOut(kFadeDurationExit);
+		break;
+
+	default:
+		throw Error{ U"Invalid menu item: {}"_fmt(std::to_underlying(m_selectedMenuItem)) };
+	}
 }

@@ -270,13 +270,13 @@ void OptionScene::draw() const
 
 Co::Task<void> OptionScene::fadeIn()
 {
-	co_await Co::SimpleFadeIn(kFadeDuration);
+	co_await Co::ScreenFadeIn(kFadeDuration);
 }
 
 Co::Task<void> OptionScene::fadeOut()
 {
 	m_bgmStream.setFadeOut(kFadeDuration);
-	co_await Co::SimpleFadeOut(kFadeDuration);
+	co_await Co::ScreenFadeOut(kFadeDuration);
 }
 
 void OptionScene::exitScene()

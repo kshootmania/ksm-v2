@@ -32,7 +32,7 @@ ResultScene::ResultScene(const ResultSceneArgs& args)
 	AutoMuteAddon::SetEnabled(true);
 }
 
-Co::Task<Co::SceneFactory> ResultScene::start()
+Co::Task<void> ResultScene::start()
 {
 	// StartボタンまたはBackボタンが押されるまで待機
 	co_await Co::Any(
@@ -41,7 +41,7 @@ Co::Task<Co::SceneFactory> ResultScene::start()
 
 	// 楽曲選択へ戻る
 	m_bgmStream.setFadeOut(kFadeDuration);
-	co_return Co::MakeSceneFactory<SelectScene>();
+	requestNextScene<SelectScene>();
 }
 
 void ResultScene::draw() const
@@ -53,5 +53,5 @@ void ResultScene::draw() const
 
 Co::Task<void> ResultScene::fadeIn()
 {
-	co_await Co::SimpleFadeIn(kFadeDuration, Palette::White);
+	co_await Co::ScreenFadeIn(kFadeDuration, Palette::White);
 }

@@ -24,7 +24,7 @@ public:
 
 	virtual ~ResultScene() = default;
 
-	virtual Co::Task<Co::SceneFactory> start() override;
+	virtual Co::Task<void> start() override;
 
 	virtual void draw() const override;
 

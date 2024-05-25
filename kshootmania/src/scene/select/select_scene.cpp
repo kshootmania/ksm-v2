@@ -67,10 +67,10 @@ void SelectScene::draw() const
 
 Co::Task<void> SelectScene::fadeIn()
 {
-	co_await Co::SimpleFadeIn(kFadeInDuration);
+	co_await Co::ScreenFadeIn(kFadeInDuration);
 }
 
 Co::Task<void> SelectScene::fadeOut()
 {
-	co_await Co::SimpleFadeOut(kFadeOutDuration, m_fadeOutColor);
+	co_await Co::ScreenFadeOut(kFadeOutDuration, m_fadeOutColor);
 }

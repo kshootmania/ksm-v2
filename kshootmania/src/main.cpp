@@ -85,7 +85,7 @@ void Main()
 	Co::Init();
 
 	// メインループ
-	const auto sceneRunner = Co::ScopedSceneRunner<TitleScene>{ TitleMenuItem::kStart };
+	const auto sceneRunner = Co::EntryScene<TitleScene>(TitleMenuItem::kStart).runScoped();
 	
 	while (System::Update())
 	{

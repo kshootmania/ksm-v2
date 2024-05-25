@@ -6,45 +6,48 @@ namespace
 {
 	constexpr Duration kFadeDuration = 1s;
 
-	Co::Task<void> waitAsync()
-	{
-		co_await Co::Delay(2s);
-	}
+	constexpr SizeF kJacketSize{ 300.0, 300.0 };
 }
 
 PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay)
-	: m_playSceneFactory(Co::MakeSceneFactory<PlayScene>(FilePath{ chartFilePath }, isAutoPlay))
+	: m_chartFilePath(chartFilePath)
+	, m_isAutoPlay(isAutoPlay)
+	, m_chartData(kson::LoadKSHChartData(chartFilePath.narrow()))
+	, m_jacketTexture(FileSystem::ParentPath(chartFilePath) + Unicode::FromUTF8(m_chartData.meta.jacketFilename))
 {
 }
 
-Co::Task<Co::SceneFactory> PlayPrepareScene::start()
+Co::Task<void> PlayPrepareScene::start()
 {
 	m_seStream.play();
 
-	// TODO: ジャケット画像の描画を追加してスケールをtweenerで操作
-	const auto _ = Co::Linear(1s, [](double t) { Print << t; }).runScoped();
+	// ジャケットのスケールアニメーション
+	const auto _ = Co::Ease(&m_jacketScale, 2s).fromTo(1.2, 1.0).play().runScoped();
 
 	const auto [isWait, isStart, isBack] = co_await Co::Any(
-		waitAsync(),
+		Co::Delay(2s),
 		KeyConfig::WaitForDown(KeyConfig::kStart),
 		KeyConfig::WaitForDown(KeyConfig::kBack));
 
 	if (isBack)
 	{
-		co_return Co::MakeSceneFactory<SelectScene>();
+		requestNextScene<SelectScene>();
 	}
 	else
 	{
-		co_return m_playSceneFactory;
+		requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay);
 	}
 }
 
 void PlayPrepareScene::draw() const
 {
 	FitToHeight(m_bgTexture).drawAt(Scene::Center());
+
+	const SizeF jacketSize = kJacketSize * m_jacketScale;
+	m_jacketTexture.resized(jacketSize).drawAt(Scene::Center().movedBy(0, Scaled(-100)));
 }
 
 Co::Task<void> PlayPrepareScene::fadeIn()
 {
-	co_await Co::SimpleFadeIn(kFadeDuration, Palette::White);
+	co_await Co::ScreenFadeIn(kFadeDuration, Palette::White);
 }

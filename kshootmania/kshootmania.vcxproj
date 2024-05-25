@@ -409,6 +409,13 @@
     <ClInclude Include="src\ui\array_with_linear_menu.hpp" />
     <ClInclude Include="src\ui\linear_menu.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Core.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Ease.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Scene.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\ScreenFade.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Sequence.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween3D.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\kson\kson.vcxproj">
