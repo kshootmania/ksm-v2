@@ -43,7 +43,7 @@ private:
 	Co::TaskFinishSource<TitleMenuItem> m_selectedMenuItemSource;
 
 public:
-	TitleMenu(TitleMenuItem defaultMenuitem);
+	explicit TitleMenu(TitleMenuItem defaultMenuitem);
 
 	TitleMenu(TitleMenu&&) = default;
 

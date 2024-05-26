@@ -1,6 +1,7 @@
 ﻿#include "title_scene.hpp"
 #include "scene/select/select_scene.hpp"
 #include "scene/option/option_scene.hpp"
+#include "scene/common/show_loading_one_frame.hpp"
 
 namespace
 {
@@ -52,6 +53,9 @@ Co::Task<void> TitleScene::fadeOut()
 	case TitleMenuItem::kStart:
 		co_await Co::ScreenFadeOut(kFadeDuration);
 		requestNextScene<SelectScene>();
+
+		// SelectSceneはコンストラクタの処理に時間がかかるので、ローディングはここで出しておく
+		co_await ShowLoadingOneFrame::Play(HasBgYN::No);
 		break;
 
 	case TitleMenuItem::kOption:

@@ -1,5 +1,6 @@
 ﻿#include "result_scene.hpp"
 #include "scene/select/select_scene.hpp"
+#include "scene/common/show_loading_one_frame.hpp"
 #include "high_score/ksc_io.hpp"
 
 namespace
@@ -40,7 +41,6 @@ Co::Task<void> ResultScene::start()
 		KeyConfig::WaitForDown(KeyConfig::kBack));
 
 	// 楽曲選択へ戻る
-	m_bgmStream.setFadeOut(kFadeDuration);
 	requestNextScene<SelectScene>();
 }
 
@@ -53,5 +53,11 @@ void ResultScene::draw() const
 
 Co::Task<void> ResultScene::fadeIn()
 {
-	co_await Co::ScreenFadeIn(kFadeDuration, Palette::White);
+	return Co::ScreenFadeIn(kFadeDuration, Palette::White);
+}
+
+Co::Task<void> ResultScene::postFadeOut()
+{
+	// SelectSceneはコンストラクタの処理に時間がかかるので、ローディングはここで出しておく
+	return ShowLoadingOneFrame::Play(HasBgYN::Yes);
 }

@@ -21,4 +21,6 @@ namespace ResultTexture
 	constexpr StringView kPercentNumberTextureFont = U"num0.png";
 
 	constexpr StringView kGaugeBarTextureFilename = U"er_g.gif";
+
+	constexpr StringView kLoading = U"loading.png";
 }

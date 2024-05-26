@@ -253,6 +253,12 @@
     <Filter Include="Header Files\third_party\CoTaskLib">
       <UniqueIdentifier>{35ec8b6e-d771-43fd-881e-570e4f2d352c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\scene\common">
+      <UniqueIdentifier>{8fafb3ff-bed2-4710-973c-3f95281dc0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\scene\common">
+      <UniqueIdentifier>{a681aa53-9c48-413f-9f33-8c2fec87e745}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\scene\title\title_scene.cpp">
@@ -512,6 +518,9 @@
     </ClCompile>
     <ClCompile Include="src\scene\play_prepare\play_prepare_scene.cpp">
       <Filter>Source Files\scene\play_prepare</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\common\show_loading_one_frame.cpp">
+      <Filter>Source Files\scene\common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1125,6 +1134,12 @@
     </ClInclude>
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween3D.hpp">
       <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\common\show_loading_one_frame.hpp">
+      <Filter>Header Files\scene\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\common\common_assets.hpp">
+      <Filter>Header Files\scene\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
