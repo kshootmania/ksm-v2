@@ -7,7 +7,7 @@ ShowLoadingOneFrame::ShowLoadingOneFrame(HasBgYN hasBg)
 
 Co::Task<void> ShowLoadingOneFrame::start()
 {
-	return Co::DelayFrame();
+	co_await Co::NextFrame();
 }
 
 void ShowLoadingOneFrame::draw() const

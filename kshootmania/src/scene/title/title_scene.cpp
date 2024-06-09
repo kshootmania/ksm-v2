@@ -16,7 +16,7 @@ TitleScene::TitleScene(TitleMenuItem defaultMenuitem)
 
 Co::Task<void> TitleScene::start()
 {
-	const Co::ScopedUpdater updater{ [this] { update(); } };
+	const auto updateRunner = Co::UpdaterTask([this] { update(); }).runScoped();
 
 	m_bgmStream.play();
 	AutoMuteAddon::SetEnabled(true);

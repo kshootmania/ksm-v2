@@ -89,7 +89,7 @@ void Main()
 	
 	while (System::Update())
 	{
-		if (sceneRunner.isFinished())
+		if (sceneRunner.done())
 		{
 			break;
 		}

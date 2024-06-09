@@ -53,8 +53,8 @@ public:
 
 	void draw() const;
 
-	Co::Task<TitleMenuItem> selectedMenuItemAsync() const
+	Co::Task<TitleMenuItem> selectedMenuItemAsync()
 	{
-		return m_selectedMenuItemSource.waitForFinish();
+		return m_selectedMenuItemSource.waitForResult();
 	}
 };

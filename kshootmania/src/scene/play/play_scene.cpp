@@ -100,7 +100,7 @@ inline Co::Task<void> PlayScene::fadeIn()
 Co::Task<void> PlayScene::fadeOut()
 {
 	// 再生時間の進行を止めないためにフェードアウト中もGameMainのupdateは実行
-	const Co::ScopedUpdater updater([this] { m_gameMain.update(); });
+	const auto updateRunner = Co::UpdaterTask([this] { m_gameMain.update(); }).runScoped();
 
 	m_gameMain.startBGMFadeOut(m_fadeOutDuration);
 	co_await Co::ScreenFadeOut(m_fadeOutDuration);
