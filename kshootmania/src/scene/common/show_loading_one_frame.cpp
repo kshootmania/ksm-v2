@@ -22,7 +22,7 @@ void ShowLoadingOneFrame::draw() const
 		Scene::Rect().draw(Palette::Black);
 	}
 
-	m_loadingTexture.draw(Scene::Width() - Scaled(208), Scaled(442));
+	m_loadingTexture.resized(Scaled(200, 30)).draw(Scene::Width() - Scaled(208), Scaled(442));
 }
 
 Co::Task<void> ShowLoadingOneFrame::Play(HasBgYN hasBg)

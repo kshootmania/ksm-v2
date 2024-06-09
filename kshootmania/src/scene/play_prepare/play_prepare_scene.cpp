@@ -1,6 +1,7 @@
 ﻿#include "play_prepare_scene.hpp"
 #include "scene/select/select_scene.hpp"
 #include "scene/play/play_scene.hpp"
+#include "scene/common/show_loading_one_frame.hpp"
 
 namespace
 {
@@ -35,6 +36,7 @@ Co::Task<void> PlayPrepareScene::start()
 	}
 	else
 	{
+		co_await ShowLoadingOneFrame::Play(HasBgYN::No);
 		requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay);
 	}
 }
