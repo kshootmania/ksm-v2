@@ -12,13 +12,15 @@ namespace KscIo
 				return false;
 			}
 
-			// TODO: ksonが増えるまでに決め打ちをどうにかする
-			const auto relativeChartFilePath = FileSystem::RelativePath(chartFilePath, FileSystem::FullPath(U"songs"));
-			if (relativeChartFilePath.size() < 4U || String{ relativeChartFilePath.substr(relativeChartFilePath.size() - 4U) }.lowercased() != U".ksh")
+			const auto extension = FileSystem::Extension(chartFilePath);
+			const auto fileName = FileSystem::FileName(chartFilePath);
+
+			if ((bool)!extension.str().compare(U"ksh"))
 			{
 				return false;
 			}
-			*pFilePath = U"score/PLAYER/{}.ksc"_fmt(relativeChartFilePath.substr(0, relativeChartFilePath.size() - 4U));
+			*pFilePath = U"score/PLAYER/{}.ksc"_fmt(fileName.substr(0, extension.size()));
+
 			return true;
 		}
 
