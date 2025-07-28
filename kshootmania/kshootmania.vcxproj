@@ -50,16 +50,16 @@
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug\Intermediate\</IntDir>
     <TargetName>$(ProjectName)(debug)</TargetName>
     <LocalDebuggerWorkingDirectory>$(ProjectDir)App</LocalDebuggerWorkingDirectory>
-    <IncludePath>$(SIV3D_0_6_14)\include;$(SIV3D_0_6_14)\include\ThirdParty;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_6_14)\lib\Windows;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_6_16)\include;$(SIV3D_0_6_16)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_6_16)\lib\Windows;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ProjectDir)App\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Release\Intermediate\</IntDir>
     <LocalDebuggerWorkingDirectory>$(ProjectDir)App</LocalDebuggerWorkingDirectory>
-    <IncludePath>$(SIV3D_0_6_14)\include;$(SIV3D_0_6_14)\include\ThirdParty;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_6_14)\lib\Windows;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_6_16)\include;$(SIV3D_0_6_16)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_6_16)\lib\Windows;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -414,11 +414,15 @@
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Core.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Ease.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\LazyDeletionFlatMap.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\License.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\S3dAsyncTask.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Scene.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\ScreenFade.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Sequence.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\SimpleDialog.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween.hpp" />
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween3D.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Typewriter.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\kson\kson.vcxproj">

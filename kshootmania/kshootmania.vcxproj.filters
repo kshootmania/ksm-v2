@@ -1114,32 +1114,44 @@
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib.hpp">
       <Filter>Header Files\third_party</Filter>
     </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Ease.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Core.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Scene.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Sequence.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\ScreenFade.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween3D.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
     <ClInclude Include="src\scene\common\show_loading_one_frame.hpp">
       <Filter>Header Files\scene\common</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\common\common_assets.hpp">
       <Filter>Header Files\scene\common</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Sequence.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\SimpleDialog.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Typewriter.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Core.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Ease.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\LazyDeletionFlatMap.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\License.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\S3dAsyncTask.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Scene.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\ScreenFade.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
