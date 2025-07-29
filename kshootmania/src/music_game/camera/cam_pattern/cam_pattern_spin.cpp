@@ -55,20 +55,21 @@ namespace MusicGame::Camera
             // 30度だけ多めに回転させて揺り戻す
             // HSP版: https://github.com/kshootmania/ksm-v1/blob/b26026420fa164310bf25f93c218bb83480faef8/src/scene/play/play_game_logic.hsp#L205-L218
             double absDegrees;
-            if (rate < 360.0 / 675)
+			const int time = 675;
+            if (rate < 360.0 / time)
             {
-                absDegrees = Sin(rate / (360.0 / 675) * 0.75) / Sin(0.75) * 360;
+                absDegrees = Sin(rate / (360.0 / time) * 0.75) / Sin(0.75) * 360;
             }
-            else if (rate < 440.0 / 675)
+            else if (rate < 440.0 / time)
             {
-                absDegrees = Sin(Math::ToRadians((rate * 675 - 360.0) * 9 / 8)) * 30;
+                absDegrees = Sin(Math::ToRadians((rate * time - 360.0) * 9 / 8)) * 30;
             }
             else
             {
-                absDegrees = (1.0 - Pow(Cos(Math::ToRadians((1.0 - rate) * 90 / 235 * 675)), 2)) * 30;
+                absDegrees = (1.0 - Pow(Cos(Math::ToRadians((1.0 - rate) * 90 / 235 * time)), 2)) * 30;
             }
 
-            const double degrees = -m_direction * absDegrees;
+            const double degrees = -m_direction * absDegrees; 
             camStatusRef.rotationZHighway += degrees;
 		}
 
