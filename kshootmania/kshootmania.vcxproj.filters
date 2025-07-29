@@ -525,6 +525,9 @@
     <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_halfspin.cpp">
       <Filter>Source Files\music_game\camera\cam_pattern</Filter>
     </ClCompile>
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_swing.cpp">
+      <Filter>Source Files\music_game\camera\cam_pattern</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1157,6 +1160,9 @@
       <Filter>Header Files\third_party\CoTaskLib</Filter>
     </ClInclude>
     <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_halfspin.hpp">
+      <Filter>Header Files\music_game\camera\cam_pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_swing.hpp">
       <Filter>Header Files\music_game\camera\cam_pattern</Filter>
     </ClInclude>
   </ItemGroup>

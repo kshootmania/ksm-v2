@@ -3,21 +3,16 @@
 #include "music_game/camera/cam_system.hpp"
 #include "cam_pattern_spin.hpp"
 #include "cam_pattern_halfspin.hpp"
+#include "cam_pattern_swing.hpp"
 
 namespace MusicGame::Camera
 {
 	class CamPatternMain
 	{
 	private:
-		// 一回転
-		CamPatternSpin m_spin;
-
-		// 半回転
-		CamPatternHalfSpin m_halfspin;
-
-		// 左右振動
-
-
+		CamPatternSpin m_spin;			// 一回転
+		CamPatternHalfSpin m_halfspin;	// 半回転
+		CamPatternSwing m_swing;		// 左右振動
 
 	public:
 		explicit CamPatternMain(const kson::ChartData& chartData);
