@@ -5,7 +5,7 @@
 SelectMenuDirFolderItem::SelectMenuDirFolderItem(IsCurrentFolderYN isCurrentFolder, FilePathView fullPath)
 	: m_isCurrentFolder(isCurrentFolder)
 	, m_fullPath(fullPath)
-	, m_displayName(FileSystem::FileName(m_fullPath))
+	, m_displayName(String(m_fullPath).split('/')[String(m_fullPath).split('/').size() - 2])
 {
 }
 

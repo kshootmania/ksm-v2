@@ -31,6 +31,10 @@ namespace MusicGame::Audio
 			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Flanger>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
+		case kson::AudioEffectType::PitchShift:
+			// PitchShift
+			break;
+
 		case kson::AudioEffectType::Bitcrusher:
 			pAudioEffectBus->emplaceAudioEffect<ksmaudio::Bitcrusher>(name, def.v, paramChanges, updateTriggerTiming);
 			break;

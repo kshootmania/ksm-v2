@@ -60,12 +60,6 @@ namespace MusicGame
 	void GameMain::updateHighwayScroll()
 	{
 		// ハイスピードを更新
-		if (m_isFirstUpdate)
-		{
-			// HighwayScrollはHispeedSettingMenuの更新に必要だが、事前に一度は更新しておかないとBPMが入らないので、初回は追加で先に更新
-			// TODO: 消したい
-			m_highwayScroll.update(m_hispeedSettingMenu.hispeedSetting(), m_gameStatus.currentBPM);
-		}
 		m_hispeedSettingMenu.update(m_highwayScroll);
 		m_highwayScroll.update(m_hispeedSettingMenu.hispeedSetting(), m_gameStatus.currentBPM);
 	}
@@ -89,6 +83,9 @@ namespace MusicGame
 	{
 		m_bgm.seekPosSec(-TimeSecBeforeStart(false/* TODO: movie */));
 		m_bgm.play();
+
+		// ハイスピード初回更新
+		m_highwayScroll.update(m_hispeedSettingMenu.hispeedSetting(), m_gameStatus.currentBPM);
 	}
 
 	GameMain::StartFadeOutYN GameMain::update()
@@ -124,8 +121,6 @@ namespace MusicGame
 
 		// グラフィックの更新
 		m_graphicsMain.update(m_viewStatus);
-
-		m_isFirstUpdate = false;
 
 		return ShouldStartFadeOut(m_gameStatus) ? StartFadeOutYN::Yes : StartFadeOutYN::No;
 	}
