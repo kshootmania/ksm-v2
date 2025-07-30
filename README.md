@@ -8,6 +8,7 @@ https://github.com/m4saka/kshootmania-v1-cpp/wiki#%E9%96%8B%E7%99%BA%E7%8A%B6%E6
 ### memo
 - 譜面停止(ksm v1) <br> https://github.com/kshootmania/ksm-v1/blob/ea05374a3ece796612b29d927cb3c6f5aabb266e/src/scene/play/play_utils.hsp#L246-L269
 - 揺れエフェクト？(ksm v1) <br> https://github.com/kshootmania/ksm-v1/blob/ea05374a3ece796612b29d927cb3c6f5aabb266e/src/scene/play/play_utils.hsp#L554-L564
+- ゲージの種類？(ksm v1) <br> https://github.com/kshootmania/ksm-v1/blob/ea05374a3ece796612b29d927cb3c6f5aabb266e/src/scene/play/play_draw_frame.hsp#L1075-L1164
 
 ## 開発のコンセプト
 
