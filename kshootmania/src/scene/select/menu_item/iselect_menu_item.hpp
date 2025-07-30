@@ -9,6 +9,8 @@ using IsCurrentFolderYN = YesNo<struct IsCurrentFolderYN_tag>;
 class ISelectMenuItem
 {
 protected:
+	const char m_slash = '/';
+
 	static String FolderDisplayNameCenter(StringView folderName, IsCurrentFolderYN isCurrentFolder)
 	{
 		if (isCurrentFolder)

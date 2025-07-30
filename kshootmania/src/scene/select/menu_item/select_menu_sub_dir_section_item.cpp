@@ -3,7 +3,7 @@
 
 SelectMenuSubDirSectionItem::SelectMenuSubDirSectionItem(FilePathView fullPath)
 	: m_fullPath(fullPath)
-	, m_displayName(String(m_fullPath).split('/')[String(m_fullPath).split('/').size() - 2])
+	, m_displayName(String(m_fullPath).split(m_slash)[String(m_fullPath).split(m_slash).size() - 2])
 {
 }
 
