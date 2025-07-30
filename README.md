@@ -3,7 +3,7 @@ K-Shoot MANIA v2 (v1 Remastered)
 
 ## 開発状況
 
-https://github.com/m4saka/kshootmania-v1-cpp/wiki#%E9%96%8B%E7%99%BA%E7%8A%B6%E6%B3%81
+https://github.com/ario1281/ksm-v2/wiki#%E9%96%8B%E7%99%BA%E7%8A%B6%E6%B3%81
 
 ## 開発のコンセプト
 
