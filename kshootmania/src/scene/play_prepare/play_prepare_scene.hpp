@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <CoTaskLib.hpp>
-#include "ksmaudio/ksmaudio.hpp"
 #include "play_prepare_assets.hpp"
+#include "ksmaudio/ksmaudio.hpp"
 
 class PlayPrepareScene : public Co::SceneBase
 {

@@ -43,10 +43,21 @@ Co::Task<void> PlayPrepareScene::start()
 
 void PlayPrepareScene::draw() const
 {
-	FitToHeight(m_bgTexture).drawAt(Scene::Center());
+	auto center = Scene::Center();
 
+	FitToHeight(m_bgTexture).drawAt(center);
+
+	// 曲名を表示
+	const Font fontBold = AssetManagement::SystemFontBold();
+	fontBold(Unicode::FromUTF8(m_chartData.meta.title)).drawAt(27, Vec2(center.x, center.y + 85));
+
+	// アーティストを表示
+	const Font font = AssetManagement::SystemFont();
+	font(Unicode::FromUTF8(m_chartData.meta.artist)).drawAt(20, Vec2(center.x, center.y + 140));
+
+	// ジャケットを表示
 	const SizeF jacketSize = kJacketSize * m_jacketScale;
-	m_jacketTexture.resized(jacketSize).drawAt(Scene::Center().movedBy(0, Scaled(-100)));
+	m_jacketTexture.resized(jacketSize).drawAt(center.movedBy(0, Scaled(-100)));
 }
 
 Co::Task<void> PlayPrepareScene::fadeIn()
