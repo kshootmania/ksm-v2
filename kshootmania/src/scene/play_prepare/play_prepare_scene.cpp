@@ -64,7 +64,7 @@ void PlayPrepareScene::draw() const
 		.row = kNumDifficulties,
 		.sourceSize = { 126, 36 }
 	});
-	difficultyTiledTexture(m_chartData.meta.difficulty.idx).scaled(0.8).draw(Point{94, 400});
+	difficultyTiledTexture(m_chartData.meta.difficulty.idx).scaled(0.8).draw(Point{94, 500});
 
 }
 
