@@ -48,16 +48,24 @@ void PlayPrepareScene::draw() const
 	FitToHeight(m_bgTexture).drawAt(center);
 
 	// 曲名を表示
-	const Font fontBold = AssetManagement::SystemFontBold();
-	fontBold(Unicode::FromUTF8(m_chartData.meta.title)).drawAt(27, Vec2(center.x, center.y + 85));
+	const Font titleFontBold = AssetManagement::SystemFontBold();
+	titleFontBold(Unicode::FromUTF8(m_chartData.meta.title)).drawAt(27, Vec2(center.x, center.y + 85));
 
 	// アーティストを表示
-	const Font font = AssetManagement::SystemFont();
-	font(Unicode::FromUTF8(m_chartData.meta.artist)).drawAt(20, Vec2(center.x, center.y + 140));
+	const Font artistFont = AssetManagement::SystemFont();
+	artistFont(Unicode::FromUTF8(m_chartData.meta.artist)).drawAt(20, Vec2(center.x, center.y + 140));
 
 	// ジャケットを表示
 	const SizeF jacketSize = kJacketSize * m_jacketScale;
 	m_jacketTexture.resized(jacketSize).drawAt(center.movedBy(0, Scaled(-100)));
+
+	// 難易度を表示
+	const TiledTexture difficultyTiledTexture(PlayPrepareTexture::kDifficulty, TiledTextureSizeInfo{
+		.row = kNumDifficulties,
+		.sourceSize = { 126, 36 }
+	});
+	difficultyTiledTexture(m_chartData.meta.difficulty.idx).scaled(0.8).draw(Point{94, 400});
+
 }
 
 Co::Task<void> PlayPrepareScene::fadeIn()
