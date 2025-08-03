@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <CoTaskLib.hpp>
 #include "play_prepare_assets.hpp"
+#include "play_prepare_panel.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
 class PlayPrepareScene : public Co::SceneBase
@@ -17,6 +18,8 @@ private:
 	const Texture m_bgTexture{ TextureAsset(PlayPrepareTexture::kBG) };
 
 	const Texture m_jacketTexture;
+
+	PlayPreparePanel m_playPreparePanel;
 
 	double m_jacketScale = 1.0;
 
