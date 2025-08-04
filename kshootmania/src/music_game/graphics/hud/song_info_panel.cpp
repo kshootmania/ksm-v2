@@ -34,11 +34,11 @@ namespace MusicGame::Graphics
 			{
 				.row = kNumDifficulties,
 				.sourceScale = SourceScale::k2x,
-				.sourceSize = { 84, 24 },
+				.sourceSize = { 84, 96 / 4 },
 			})
 		, m_difficultyTextureRegion(m_difficultyTexture(chartData.meta.difficulty.idx))
 		, m_level(chartData.meta.level)
-		, m_numberTextureFont(kNumberTextureFontFilename, { 20, 18 })
+		, m_numberTextureFont(kNumberTextureFontFilename, { 40 / 2, 288 / 16 })
 		, m_levelNumberLayout(Scaled(10, 9), TextureFontTextLayout::Align::Left)
 		, m_bpmNumberLayout(Scaled(10, 9), TextureFontTextLayout::Align::Left)
 	{
@@ -70,8 +70,7 @@ namespace MusicGame::Graphics
 		m_numberTextureFont.draw(m_levelNumberLayout, m_detailPanelPosition + Scaled(79, 4), m_level, ZeroPaddingYN::No);
 
 		// BPM
-		// TODO: BPMの小数部分を表示
-		m_numberTextureFont.draw(m_bpmNumberLayout, m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(currentBPM), ZeroPaddingYN::No);
+		m_numberTextureFont.draw(m_bpmNumberLayout, m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(round(currentBPM)), ZeroPaddingYN::No);
 
 		// ハイスピード設定
 		m_hispeedSettingPanel.draw(m_detailPanelPosition + Scaled(159, 27), highwayScrollContext);
