@@ -3,6 +3,7 @@
 #include "kson/kson.hpp"
 #include "menu_item/select_menu_song_item.hpp"
 #include "menu_item/select_menu_all_folder_item.hpp"
+#include "menu_item/select_menu_fav_folder_item.hpp"
 #include "menu_item/select_menu_dir_folder_item.hpp"
 #include "menu_item/select_menu_sub_dir_section_item.hpp"
 
@@ -12,11 +13,21 @@ namespace
 	{
 		return
 			FileSystem::DirectoryContents(path, Recursive::No)
-				.filter(
-					[](FilePathView p)
-					{
-						return FileSystem::IsDirectory(p);
-					});
+			.filter(
+				[](FilePathView p)
+				{
+				return FileSystem::IsDirectory(p);
+				});
+	}
+	Array<FilePath> GetFavoriteFiles(FilePathView path)
+	{
+		return
+			FileSystem::DirectoryContents(path, Recursive::No)
+			.filter(
+				[](FilePathView p)
+				{
+					return (FileSystem::IsFile(p) && FileSystem::Extension(p).includes(U"fav"));
+				});
 	}
 
 	Vec2 ShakeVec(SelectMenuShakeDirection direction, double timeSec)
@@ -137,45 +148,88 @@ bool SelectMenu::openDirectory(FilePathView directoryPath, PlaySeYN playSe)
 			U"songs", // TODO: 設定可能にする
 		};
 
-		Array<FilePath> directories;
-		for (const auto& path : searchPaths)
+		// All
 		{
-			directories.append(GetSubDirectories(path).map([](FilePathView p) { return FileSystem::FullPath(p); }));
+
 		}
-
-		// フォルダを開いている場合は、そのフォルダが先頭になるような順番で項目を追加する必要があるので、現在開いているフォルダのインデックスを調べる
-		std::size_t currentDirectoryIdx = 0;
-		bool found = false;
-		if (!directoryPath.empty())
+		// フォルダ
 		{
-			const auto itr = std::find(directories.begin(), directories.end(), m_folderState.fullPath);
-			if (itr != directories.end())
+			Array<FilePath> directories;
+			for (const auto& path : searchPaths)
 			{
-				currentDirectoryIdx = static_cast<std::size_t>(std::distance(directories.begin(), itr));
-				found = true;
-			}
-		}
-
-		// 項目を追加
-		for (std::size_t i = 0; i < directories.size(); ++i)
-		{
-			const std::size_t rotatedIdx = (i + currentDirectoryIdx) % directories.size();
-
-			if (found && i == 0)
-			{
-				// 現在開いているフォルダは項目タイプkCurrentFolderとして既に追加済みなのでスキップ
-				continue;
+				directories.append(GetSubDirectories(path).map([](FilePathView p) { return FileSystem::FullPath(p); }));
 			}
 
-			const auto& directory = directories[rotatedIdx];
-			m_menu.push_back(std::make_unique<SelectMenuDirFolderItem>(IsCurrentFolderYN::No, FileSystem::FullPath(directory)));
-
-			if (rotatedIdx == directories.size() - 1)
+			// フォルダを開いている場合は、そのフォルダが先頭になるような順番で項目を追加する必要があるので、現在開いているフォルダのインデックスを調べる
+			std::size_t currentDirectoryIdx = 0;
+			bool found = false;
+			if (!directoryPath.empty())
 			{
-				// "All"フォルダの項目を追加
-				//m_menu.push_back(std::make_unique<SelectMenuAllFolderItem>(IsCurrentFolderYN::No));
+				const auto itr = std::find(directories.begin(), directories.end(), m_folderState.fullPath);
+				if (itr != directories.end())
+				{
+					currentDirectoryIdx = static_cast<std::size_t>(std::distance(directories.begin(), itr));
+					found = true;
+				}
+			}
 
-				// TODO: "Courses"フォルダの項目を追加
+			// 項目を追加
+			for (std::size_t i = 0; i < directories.size(); ++i)
+			{
+				const std::size_t rotatedIdx = (i + currentDirectoryIdx) % directories.size();
+
+				if (found && i == 0)
+				{
+					// 現在開いているフォルダは項目タイプkCurrentFolderとして既に追加済みなのでスキップ
+					continue;
+				}
+
+				const auto& directory = directories[rotatedIdx];
+				m_menu.push_back(std::make_unique<SelectMenuDirFolderItem>(IsCurrentFolderYN::No, FileSystem::FullPath(directory)));
+
+				if (rotatedIdx == directories.size() - 1)
+				{
+					// "All"フォルダの項目を追加
+					//m_menu.push_back(std::make_unique<SelectMenuAllFolderItem>(IsCurrentFolderYN::No));
+
+					// TODO: "Courses"フォルダの項目を追加
+				}
+			}
+		}
+		// お気に入り
+		{
+			Array<FilePath> directories;
+			for (const auto& path : searchPaths)
+			{
+				directories.append(GetFavoriteFiles(path).map([](FilePathView p) { return FileSystem::FullPath(p); }));
+			}
+
+			// フォルダを開いている場合は、そのフォルダが先頭になるような順番で項目を追加する必要があるので、現在開いているフォルダのインデックスを調べる
+			std::size_t currentDirectoryIdx = 0;
+			bool found = false;
+			if (!directoryPath.empty())
+			{
+				const auto itr = std::find(directories.begin(), directories.end(), m_folderState.fullPath);
+				if (itr != directories.end())
+				{
+					currentDirectoryIdx = static_cast<std::size_t>(std::distance(directories.begin(), itr));
+					found = true;
+				}
+			}
+
+			// 項目を追加
+			for (std::size_t i = 0; i < directories.size(); ++i)
+			{
+				const std::size_t rotatedIdx = (i + currentDirectoryIdx) % directories.size();
+
+				if (found && i == 0)
+				{
+					// 現在開いているフォルダは項目タイプkCurrentFolderとして既に追加済みなのでスキップ
+					continue;
+				}
+
+				const auto& directory = directories[rotatedIdx];
+				m_menu.push_back(std::make_unique<SelectMenuFavFolderItem>(IsCurrentFolderYN::No, FileSystem::FullPath(directory)));
 			}
 		}
 	}
