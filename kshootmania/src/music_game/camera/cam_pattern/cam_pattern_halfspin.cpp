@@ -58,19 +58,19 @@ namespace MusicGame::Camera
 			const int time = 400;
 			if (rate < 110.0 / time)
 			{
-				absDegrees = sin(rate / (110.0 / time) * 1.8) / sin(1.8) * 60;
+				absDegrees = Sin(rate / (110.0 / time) * 1.8) / Sin(1.8) * 60;
 			}
 			else if (rate < 220.0 / time)
 			{
-				absDegrees = (cos((rate * time - 110.0) * 1.8 / 110.0) - cos(1.8)) / (1.0 - cos(1.8)) * 60;
+				absDegrees = (Cos((rate * time - 110.0) * 1.8 / 110.0) - Cos(1.8)) / (1.0 - Cos(1.8)) * 60;
 			}
 			else if (rate < 310.0 / time)
 			{
-				absDegrees = -sin((rate * time - 220) * 1.8 / 90.0) / sin(1.8) * 15;
+				absDegrees = -Sin((rate * time - 220) * 1.8 / 90.0) / Sin(1.8) * 15;
 			}
 			else
 			{
-				absDegrees = -(cos((rate * time - 310) * 1.8 / 90.0) - cos(1.8)) / (1.0 - cos(1.8)) * 15;
+				absDegrees = -(Cos((rate * time - 310) * 1.8 / 90.0) - Cos(1.8)) / (1.0 - Cos(1.8)) * 15;
 			}
 
 			const double degrees = -m_direction * absDegrees;
@@ -87,7 +87,7 @@ namespace MusicGame::Camera
 		// 背景アニメーションの角度計算
 		if (rate < 0.75)
 		{
-			camStatusRef.rotationZLayer += -m_direction * Sin(rate * 1.1 / 0.75) / Sin(1.1) * 360 * 2;
+			camStatusRef.rotationZLayer += -m_direction * Sin(rate * 1.1 / 0.75) / Sin(1.1) * 360;
 		}
 	}
 }

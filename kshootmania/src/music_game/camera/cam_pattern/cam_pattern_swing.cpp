@@ -41,5 +41,26 @@ namespace MusicGame::Camera
 
 	void CamPatternSwing::applyToCamStatus(CamStatus& camStatusRef, kson::Pulse currentPulse) const
 	{
+		if (currentPulse < m_startPulse)
+		{
+			return;
+		}
+
+		const kson::RelPulse elapsedPulse = currentPulse - m_startPulse;
+
+		// ハイウェイの角度計算
+		const double rate = static_cast<double>(elapsedPulse) / static_cast<double>(m_durationRelPulse);
+		if (rate < 1.0)
+		{
+			double absDegrees = 0;
+			const int time = 360;
+			if (rate < 360.0 / time)
+			{
+				absDegrees = -Sin(Math::ToRadians((rate * time - 360.0) * 9 / 8)) * 90.0;
+			}
+
+			const double degrees = -m_direction * absDegrees;
+			camStatusRef.shiftX += degrees;
+		}
 	}
 }

@@ -11,6 +11,7 @@ namespace MusicGame::Graphics
 		constexpr StringView kLongBTNoteTextureFilename = U"bt_long.gif";
 
 		constexpr StringView kChipFXNoteTextureFilename = U"fx_chip.gif";
+		constexpr StringView kChipFXSENoteTextureFilename = U"fx_chip_se.gif";
 		constexpr StringView kLongFXNoteTextureFilename = U"fx_long.gif";
 
 		constexpr double kLongNoteSourceYDefault = 0.0;
@@ -167,6 +168,12 @@ namespace MusicGame::Graphics
 				.column = kNumTextureColumnsMainSub,
 				.sourceSize = { 82, 14 },
 			}))
+		, m_chipFXSENoteTexture(NoteGraphicsUtils::ApplyAlphaToNoteTexture(TextureAsset(kChipFXSENoteTextureFilename),
+			{
+				.column = kNumTextureColumnsMainSub,
+				.sourceSize = { 82, 14 },
+			})
+		)
 		, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
 	{
 	}
