@@ -25,3 +25,7 @@ https://github.com/kshootmania/ksm-v2/wiki#%E9%96%8B%E7%99%BA%E7%8A%B6%E6%B3%81
 - OpenSiv3D 0.6.16 (installed to Visual Studio 2022)
     - 下記からインストーラをダウンロードして実行してください / Download and run the installer below
         - https://github.com/Siv3D/OpenSiv3D#downloads
+
+## Contributors
+
+@m4saka, @ario1281
