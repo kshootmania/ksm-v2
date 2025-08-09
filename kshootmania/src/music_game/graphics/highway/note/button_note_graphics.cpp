@@ -58,6 +58,7 @@ namespace MusicGame::Graphics
 				}
 
 				// 音ありFX描画の可否
+				// ToDo:もう少しきれいに書けないか？
 				bool hasKeySound = false;
 				for (const auto& [filename, lanes] : chipEvent)
 				{
