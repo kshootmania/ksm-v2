@@ -50,16 +50,16 @@
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug\Intermediate\</IntDir>
     <TargetName>$(ProjectName)(debug)</TargetName>
     <LocalDebuggerWorkingDirectory>$(ProjectDir)App</LocalDebuggerWorkingDirectory>
-    <IncludePath>$(SIV3D_0_6_14)\include;$(SIV3D_0_6_14)\include\ThirdParty;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_6_14)\lib\Windows;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_6_16)\include;$(SIV3D_0_6_16)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_6_16)\lib\Windows;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ProjectDir)App\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Release\Intermediate\</IntDir>
     <LocalDebuggerWorkingDirectory>$(ProjectDir)App</LocalDebuggerWorkingDirectory>
-    <IncludePath>$(SIV3D_0_6_14)\include;$(SIV3D_0_6_14)\include\ThirdParty;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_6_14)\lib\Windows;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_6_16)\include;$(SIV3D_0_6_16)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_6_16)\lib\Windows;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -148,6 +148,8 @@
     <ClCompile Include="src\music_game\audio\laser_slam_se.cpp" />
     <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_main.cpp" />
     <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_spin.cpp" />
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_half_spin.cpp" />
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_swing.cpp" />
     <ClCompile Include="src\music_game\camera\cam_system.cpp" />
     <ClCompile Include="src\music_game\camera\highway_tilt.cpp" />
     <ClCompile Include="src\music_game\camera\highway_tilt_auto.cpp" />
@@ -187,6 +189,7 @@
     <ClCompile Include="src\scene\option\option_top_menu.cpp" />
     <ClCompile Include="src\scene\option\option_scene.cpp" />
     <ClCompile Include="src\scene\play\play_scene.cpp" />
+    <ClCompile Include="src\scene\play_prepare\play_prepare_panel.cpp" />
     <ClCompile Include="src\scene\play_prepare\play_prepare_scene.cpp" />
     <ClCompile Include="src\scene\result\result_panel.cpp" />
     <ClCompile Include="src\scene\result\result_scene.cpp" />
@@ -334,6 +337,8 @@
     <ClInclude Include="src\music_game\camera\camera_math.hpp" />
     <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_main.hpp" />
     <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_spin.hpp" />
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_half_spin.hpp" />
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_swing.hpp" />
     <ClInclude Include="src\music_game\camera\cam_system.hpp" />
     <ClInclude Include="src\music_game\camera\highway_tilt.hpp" />
     <ClInclude Include="src\music_game\camera\highway_tilt_auto.hpp" />
@@ -385,26 +390,12 @@
     <ClInclude Include="src\scene\play\play_scene.hpp" />
     <ClInclude Include="src\scene\play\play_scene_args.hpp" />
     <ClInclude Include="src\scene\play_prepare\play_prepare_assets.hpp" />
+    <ClInclude Include="src\scene\play_prepare\play_prepare_panel.hpp" />
     <ClInclude Include="src\scene\play_prepare\play_prepare_scene.hpp" />
     <ClInclude Include="src\scene\result\result_assets.hpp" />
     <ClInclude Include="src\scene\result\result_panel.hpp" />
     <ClInclude Include="src\scene\result\result_scene.hpp" />
     <ClInclude Include="src\scene\result\result_scene_args.hpp" />
-    <ClInclude Include="src\scene\select\menu_item\iselect_menu_item.hpp" />
-    <ClInclude Include="src\scene\select\menu_item\select_menu_all_folder_item.hpp" />
-    <ClInclude Include="src\scene\select\menu_item\select_menu_dir_folder_item.hpp" />
-    <ClInclude Include="src\scene\select\menu_item\select_menu_fav_folder_item.hpp" />
-    <ClInclude Include="src\scene\select\menu_item\select_menu_song_item.hpp" />
-    <ClInclude Include="src\scene\select\menu_item\select_menu_sub_dir_section_item.hpp" />
-    <ClInclude Include="src\scene\select\select_assets.hpp" />
-    <ClInclude Include="src\scene\select\select_bg_anim.hpp" />
-    <ClInclude Include="src\scene\select\select_chart_info.hpp" />
-    <ClInclude Include="src\scene\select\select_difficulty_menu.hpp" />
-    <ClInclude Include="src\scene\select\select_folder_state.hpp" />
-    <ClInclude Include="src\scene\select\select_menu.hpp" />
-    <ClInclude Include="src\scene\select\select_menu_graphics.hpp" />
-    <ClInclude Include="src\scene\select\select_scene.hpp" />
-    <ClInclude Include="src\scene\select\select_song_preview.hpp" />
     <ClInclude Include="src\scene\title\title_assets.hpp" />
     <ClInclude Include="src\scene\title\title_menu.hpp" />
     <ClInclude Include="src\scene\title\title_scene.hpp" />
@@ -414,11 +405,15 @@
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Core.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Ease.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\LazyDeletionFlatMap.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\License.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\S3dAsyncTask.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Scene.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\ScreenFade.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Sequence.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\SimpleDialog.hpp" />
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween.hpp" />
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween3D.hpp" />
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Typewriter.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\kson\kson.vcxproj">

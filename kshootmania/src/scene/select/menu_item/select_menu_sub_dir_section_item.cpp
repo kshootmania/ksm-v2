@@ -3,7 +3,7 @@
 
 SelectMenuSubDirSectionItem::SelectMenuSubDirSectionItem(FilePathView fullPath)
 	: m_fullPath(fullPath)
-	, m_displayName(FileSystem::FileName(m_fullPath))
+	, m_displayName(FsUtils::DirectoryNameByDirectoryPath(m_fullPath))
 {
 }
 

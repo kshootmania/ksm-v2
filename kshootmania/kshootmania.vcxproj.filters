@@ -109,9 +109,6 @@
     <Filter Include="Source Files\ui">
       <UniqueIdentifier>{4acadc9e-0378-4a21-8de5-48077219f27e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\scene\select">
-      <UniqueIdentifier>{98aef201-8ee4-4515-9f5a-584739884efb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\scene\select">
       <UniqueIdentifier>{159d7840-d844-4bb0-88f2-ddbaee653f9e}</UniqueIdentifier>
     </Filter>
@@ -204,9 +201,6 @@
     </Filter>
     <Filter Include="Source Files\music_game\camera\cam_pattern">
       <UniqueIdentifier>{78bee3cc-8012-48a3-abf8-9508a3cec840}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\scene\select\menu_item">
-      <UniqueIdentifier>{6812799a-0c5d-4132-9f54-6ed625c88584}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\scene\select\menu_item">
       <UniqueIdentifier>{76ededc0-9b92-4a04-804b-48da597221c2}</UniqueIdentifier>
@@ -521,6 +515,15 @@
     </ClCompile>
     <ClCompile Include="src\scene\common\show_loading_one_frame.cpp">
       <Filter>Source Files\scene\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_half_spin.cpp">
+      <Filter>Source Files\music_game\camera\cam_pattern</Filter>
+    </ClCompile>
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_swing.cpp">
+      <Filter>Source Files\music_game\camera\cam_pattern</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\play_prepare\play_prepare_panel.cpp">
+      <Filter>Source Files\scene\play_prepare</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -838,32 +841,11 @@
     <ClInclude Include="src\scene\title\title_scene.hpp">
       <Filter>Header Files\scene\title</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\select\select_scene.hpp">
-      <Filter>Header Files\scene\select</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\select_assets.hpp">
-      <Filter>Header Files\scene\select</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\select_bg_anim.hpp">
-      <Filter>Header Files\scene\select</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\select_menu.hpp">
-      <Filter>Header Files\scene\select</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\select_folder_state.hpp">
-      <Filter>Header Files\scene\select</Filter>
-    </ClInclude>
     <ClInclude Include="src\common\common_defines.hpp">
       <Filter>Header Files\common</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\array_with_linear_menu.hpp">
       <Filter>Header Files\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\select_difficulty_menu.hpp">
-      <Filter>Header Files\scene\select</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\select_menu_graphics.hpp">
-      <Filter>Header Files\scene\select</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\play\play_scene.hpp">
       <Filter>Header Files\scene\play</Filter>
@@ -1033,32 +1015,8 @@
     <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_main.hpp">
       <Filter>Header Files\music_game\camera\cam_pattern</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\select\select_song_preview.hpp">
-      <Filter>Header Files\scene\select</Filter>
-    </ClInclude>
     <ClInclude Include="src\common\ime_utils.hpp">
       <Filter>Header Files\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\select_chart_info.hpp">
-      <Filter>Header Files\scene\select</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\menu_item\iselect_menu_item.hpp">
-      <Filter>Header Files\scene\select\menu_item</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\menu_item\select_menu_song_item.hpp">
-      <Filter>Header Files\scene\select\menu_item</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\menu_item\select_menu_all_folder_item.hpp">
-      <Filter>Header Files\scene\select\menu_item</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\menu_item\select_menu_dir_folder_item.hpp">
-      <Filter>Header Files\scene\select\menu_item</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\menu_item\select_menu_sub_dir_section_item.hpp">
-      <Filter>Header Files\scene\select\menu_item</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\select\menu_item\select_menu_fav_folder_item.hpp">
-      <Filter>Header Files\scene\select\menu_item</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\result\result_scene.hpp">
       <Filter>Header Files\scene\result</Filter>
@@ -1114,32 +1072,53 @@
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib.hpp">
       <Filter>Header Files\third_party</Filter>
     </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Ease.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Core.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Scene.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Sequence.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\ScreenFade.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
-    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween3D.hpp">
-      <Filter>Header Files\third_party\CoTaskLib</Filter>
-    </ClInclude>
     <ClInclude Include="src\scene\common\show_loading_one_frame.hpp">
       <Filter>Header Files\scene\common</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\common\common_assets.hpp">
       <Filter>Header Files\scene\common</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Sequence.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\SimpleDialog.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Tween.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Typewriter.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Core.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Ease.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\LazyDeletionFlatMap.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\License.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\S3dAsyncTask.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\Scene.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\ScreenFade.hpp">
+      <Filter>Header Files\third_party\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_half_spin.hpp">
+      <Filter>Header Files\music_game\camera\cam_pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_swing.hpp">
+      <Filter>Header Files\music_game\camera\cam_pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\play_prepare\play_prepare_panel.hpp">
+      <Filter>Header Files\scene\play_prepare</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

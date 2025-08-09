@@ -11,6 +11,7 @@ namespace MusicGame::Graphics
 		constexpr StringView kLongBTNoteTextureFilename = U"bt_long.gif";
 
 		constexpr StringView kChipFXNoteTextureFilename = U"fx_chip.gif";
+		constexpr StringView kChipFXSENoteTextureFilename = U"fx_chip_se.gif";
 		constexpr StringView kLongFXNoteTextureFilename = U"fx_long.gif";
 
 		constexpr double kLongNoteSourceYDefault = 0.0;
@@ -35,6 +36,7 @@ namespace MusicGame::Graphics
 			const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
 			const double centerSplitShiftX = Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit) * ((laneIdx >= numLanes / 2) ? 1 : -1);
 			const Vec2 offsetPosition = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * static_cast<double>(laneIdx);
+
 			for (const auto& [y, note] : lane)
 			{
 				const int32 positionStartY = highwayScrollContext.getPositionY(y);
@@ -53,9 +55,28 @@ namespace MusicGame::Graphics
 					continue;
 				}
 
+				// 音ありFX描画の可否
+				// ToDo:もう少しきれいに書けないか？
+				// TODO: キー音有無は譜面ロード時にノーツ毎に事前判定しておく
+				bool hasKeySound = false;
+				const auto& chipEvent = chartData.audio.keySound.fx.chipEvent;
+				for (const auto& [filename, lanes] : chipEvent)
+				{
+					if (laneIdx >= lanes.size())
+					{
+						continue;
+					}
+
+					if (lanes[laneIdx].contains(y))
+					{
+						hasKeySound = true;
+						break;
+					}
+				}
+
 				const double yRate = static_cast<double>(kHighwayTextureSize.y - positionStartY) / kHighwayTextureSize.y;
 				const int32 height = NoteGraphicsUtils::ChipNoteHeight(yRate);
-				const TiledTexture& sourceTexture = isBT ? m_chipBTNoteTexture : m_chipFXNoteTexture;
+				const TiledTexture& sourceTexture = isBT ? m_chipBTNoteTexture : hasKeySound ? m_chipFXSENoteTexture : m_chipFXNoteTexture;
 				const Vec2 position = offsetPosition + Vec2::Right(centerSplitShiftX) + Vec2::Down(positionStartY - height / 2);
 				sourceTexture() // TODO: Chip BT color
 					.resized(isBT ? 40 : 82, height)
@@ -167,6 +188,12 @@ namespace MusicGame::Graphics
 				.column = kNumTextureColumnsMainSub,
 				.sourceSize = { 82, 14 },
 			}))
+			, m_chipFXSENoteTexture(NoteGraphicsUtils::ApplyAlphaToNoteTexture(TextureAsset(kChipFXSENoteTextureFilename),
+				{
+					.column = kNumTextureColumnsMainSub,
+					.sourceSize = { 82, 14 },
+				})
+				)
 		, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
 	{
 	}
