@@ -24,12 +24,9 @@ namespace MusicGame::Graphics
 
 	SongInfoPanel::SongInfoPanel(const kson::ChartData& chartData, FilePathView parentPath)
 		: m_jacketTexture(parentPath + Unicode::FromUTF8(chartData.meta.jacketFilename))
-		, m_jacketPosition(Scene::Width() / 2 + static_cast<int32>(Scaled(kJacketPosition.x)), static_cast<int32>(Scaled(kJacketPosition.y)))
 		, m_scaledJacketSize(RectSizeInSquare(m_jacketTexture.size(), Scaled(kJacketWidth) ))
 		, m_titlePanelBaseTexture(kTitlePanelSize * 2, kTransparent)
-		, m_titlePanelPosition(Scene::Width() / 2 + Scaled(kTitlePanelBasePosition.x), Scaled(kTitlePanelBasePosition.y))
 		, m_detailPanelBaseTexture(TextureAsset(kDetailPanelBaseTextureFilename))
-		, m_detailPanelPosition(Scene::Width() / 2 + Scaled(kDetailPanelBasePosition.x), Scaled(kDetailPanelBasePosition.y))
 		, m_difficultyTexture(kDifficultyTextureFilename,
 			{
 				.row = kNumDifficulties,
@@ -61,18 +58,22 @@ namespace MusicGame::Graphics
 
 	void SongInfoPanel::draw(double currentBPM, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
-		m_jacketTexture.resized(m_scaledJacketSize).drawAt(m_jacketPosition);
-		m_titlePanelBaseTexture.resized(Scaled(kTitlePanelSize)).drawAt(m_titlePanelPosition);
-		m_detailPanelBaseTexture.resized(Scaled(kDetailPanelSize)).draw(m_detailPanelPosition);
-		m_difficultyTextureRegion.draw(m_detailPanelPosition + Scaled(13, 3));
+		const Vec2 jacketPosition(Scene::Width() / 2 + static_cast<int32>(Scaled(kJacketPosition.x)), static_cast<int32>(Scaled(kJacketPosition.y)));
+		const Vec2 titlePanelPosition(Scene::Width() / 2 + Scaled(kTitlePanelBasePosition.x), Scaled(kTitlePanelBasePosition.y));
+		const Vec2 detailPanelPosition(Scene::Width() / 2 + Scaled(kDetailPanelBasePosition.x), Scaled(kDetailPanelBasePosition.y));
+		
+		m_jacketTexture.resized(m_scaledJacketSize).drawAt(jacketPosition);
+		m_titlePanelBaseTexture.resized(Scaled(kTitlePanelSize)).drawAt(titlePanelPosition);
+		m_detailPanelBaseTexture.resized(Scaled(kDetailPanelSize)).draw(detailPanelPosition);
+		m_difficultyTextureRegion.draw(detailPanelPosition + Scaled(13, 3));
 
 		// Level
-		m_numberTextureFont.draw(m_levelNumberLayout, m_detailPanelPosition + Scaled(79, 4), m_level, ZeroPaddingYN::No);
+		m_numberTextureFont.draw(m_levelNumberLayout, detailPanelPosition + Scaled(79, 4), m_level, ZeroPaddingYN::No);
 
 		// BPM
-		m_numberTextureFont.draw(m_bpmNumberLayout, m_detailPanelPosition + Scaled(159, 4), static_cast<int32>(round(currentBPM)), ZeroPaddingYN::No);
+		m_numberTextureFont.draw(m_bpmNumberLayout, detailPanelPosition + Scaled(159, 4), static_cast<int32>(round(currentBPM)), ZeroPaddingYN::No);
 
 		// ハイスピード設定
-		m_hispeedSettingPanel.draw(m_detailPanelPosition + Scaled(159, 27), highwayScrollContext);
+		m_hispeedSettingPanel.draw(detailPanelPosition + Scaled(159, 27), highwayScrollContext);
 	}
 }

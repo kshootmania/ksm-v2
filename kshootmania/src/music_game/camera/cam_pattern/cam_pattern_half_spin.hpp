@@ -8,7 +8,7 @@ namespace MusicGame::Camera
 	class CamPatternHalfSpin
 	{
 	private:
-		const kson::ByPulse<kson::CamPatternInvokeSpin> m_halfspinEvents;
+		const kson::ByPulse<kson::CamPatternInvokeSpin> m_halfSpinEvents;
 
 		std::unordered_set<kson::Pulse> m_alreadyInvokedEventPulses;
 

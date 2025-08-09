@@ -30,8 +30,6 @@ namespace MusicGame::Graphics
 		const ScopedRenderTarget2D renderTarget(target.additiveTexture());
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
-		const auto chipEvent = chartData.audio.keySound.fx.chipEvent;
-
 		const std::size_t numLanes = isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ;
 		for (std::size_t laneIdx = 0; laneIdx < numLanes; ++laneIdx)
 		{
@@ -59,7 +57,9 @@ namespace MusicGame::Graphics
 
 				// 音ありFX描画の可否
 				// ToDo:もう少しきれいに書けないか？
+				// TODO: キー音有無は譜面ロード時にノーツ毎に事前判定しておく
 				bool hasKeySound = false;
+				const auto& chipEvent = chartData.audio.keySound.fx.chipEvent;
 				for (const auto& [filename, lanes] : chipEvent)
 				{
 					if (laneIdx >= lanes.size())

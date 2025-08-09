@@ -67,6 +67,7 @@ namespace MusicGame
 		GameStatus m_gameStatus;
 		ViewStatus m_viewStatus;
 		bool m_isFinishedPrev = false;
+		bool m_isFirstUpdate = true;
 
 		void updateStatus();
 

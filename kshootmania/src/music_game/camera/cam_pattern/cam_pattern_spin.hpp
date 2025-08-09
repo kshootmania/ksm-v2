@@ -16,8 +16,6 @@ namespace MusicGame::Camera
 		kson::RelPulse m_durationRelPulse = kson::RelPulse{ 0 };
 		int32 m_direction = 0;
 
-		int32 m_spinCount = 0;
-
 	public:
 		explicit CamPatternSpin(const kson::ChartData& chartData);
 

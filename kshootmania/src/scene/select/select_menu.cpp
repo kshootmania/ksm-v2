@@ -26,7 +26,7 @@ namespace
 			.filter(
 				[](FilePathView p)
 				{
-					return (FileSystem::IsFile(p) && FileSystem::Extension(p).includes(U"fav"));
+					return FileSystem::IsFile(p) && FileSystem::Extension(p) == U"fav";
 				});
 	}
 
