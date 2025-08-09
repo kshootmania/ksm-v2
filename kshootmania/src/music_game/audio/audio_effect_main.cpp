@@ -1,4 +1,5 @@
-﻿#include "audio_effect_main.hpp"
+﻿#include <Siv3D.hpp>
+#include "audio_effect_main.hpp"
 #include "audio_effect_utils.hpp"
 #include "ksmaudio/audio_effect/audio_effect_bus.hpp"
 #include "kson/util/graph_utils.hpp"
