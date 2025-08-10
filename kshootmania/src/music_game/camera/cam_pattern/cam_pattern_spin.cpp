@@ -36,8 +36,7 @@ namespace MusicGame::Camera
 		m_startPulse = currentPulse;
 		m_durationRelPulse = spinEvent.length;
 		m_direction = direction;
-		m_spinCount = 1;
-        m_alreadyInvokedEventPulses.insert(laserSlamPulse);
+		m_alreadyInvokedEventPulses.insert(laserSlamPulse);
 	}
 
 	void CamPatternSpin::applyToCamStatus(CamStatus& camStatusRef, kson::Pulse currentPulse) const
@@ -53,26 +52,25 @@ namespace MusicGame::Camera
 		const double rate = static_cast<double>(elapsedPulse) / static_cast<double>(m_durationRelPulse);
 		if (rate < 1.0)
 		{
-            // 30度だけ多めに回転させて揺り戻す
-            // HSP版: https://github.com/kshootmania/ksm-v1/blob/b26026420fa164310bf25f93c218bb83480faef8/src/scene/play/play_game_logic.hsp#L205-L218
-            double absDegrees;
-			const int time = 675;
-            if (rate < 360.0 / time)
-            {
-				const double angle =  360.0 * m_spinCount;
-                absDegrees = Sin(rate / (360.0 / time) * 0.75) / Sin(0.75) * angle;
-            }
-            else if (rate < 440.0 / time)
-            {
-                absDegrees = Sin(Math::ToRadians((rate * time - 360.0) * 9 / 8)) * 30.0;
-            }
-            else
-            {
-                absDegrees = (1.0 - Pow(Cos(Math::ToRadians((1.0 - rate) * 90 / 235 * time)), 2)) * 30.0;
-            }
+			// 30度だけ多めに回転させて揺り戻す
+			// HSP版: https://github.com/kshootmania/ksm-v1/blob/b26026420fa164310bf25f93c218bb83480faef8/src/scene/play/play_game_logic.hsp#L205-L218
+			double absDegrees;
+			constexpr double kDuration = 675.0;
+			if (rate < 360.0 / kDuration)
+			{
+				absDegrees = Sin(rate / (360.0 / kDuration) * 0.75) / Sin(0.75) * 360.0;
+			}
+			else if (rate < 440.0 / kDuration)
+			{
+				absDegrees = Sin(Math::ToRadians((rate * kDuration - 360.0) * 9 / 8)) * 30.0;
+			}
+			else
+			{
+				absDegrees = (1.0 - Pow(Cos(Math::ToRadians((1.0 - rate) * 90 / 235 * kDuration)), 2)) * 30.0;
+			}
 
-            const double degrees = -m_direction * absDegrees; 
-            camStatusRef.rotationZHighway += degrees;
+			const double degrees = -m_direction * absDegrees;
+			camStatusRef.rotationZHighway += degrees;
 		}
 
 		// 判定ラインの角度計算

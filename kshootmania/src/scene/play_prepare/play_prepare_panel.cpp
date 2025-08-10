@@ -44,7 +44,6 @@ namespace
 
 PlayPreparePanel::PlayPreparePanel(FilePathView chartFilePath, const kson::ChartData& chartData)
 	: m_titlePanelBaseTexture(CreateRenderTexture(chartFilePath, chartData))
-	, m_titlePanelPosition(Scene::Width() / 2 + Scaled(kTitlePanelBasePosition.x), Scene::Height() / 2 + Scaled(kTitlePanelBasePosition.y))
 	, m_difficultyTexture(kDifficultyTextureFilename,
 		{
 			.row = kNumDifficulties,
@@ -53,7 +52,7 @@ PlayPreparePanel::PlayPreparePanel(FilePathView chartFilePath, const kson::Chart
 		})
 	, m_difficultyTextureRegion(m_difficultyTexture(chartData.meta.difficulty.idx))
 	, m_level(chartData.meta.level)
-	, m_bpm(chartData.meta.stdBPM ? chartData.meta.stdBPM : chartData.beat.bpm.at(0))
+	, m_bpm(chartData.meta.stdBPM > 0.0 ? chartData.meta.stdBPM : (chartData.beat.bpm.empty() ? 120.0 : chartData.beat.bpm.begin()->second))
 	, m_numberTextureFont(kNumberTextureFontFilename, { 40 / 2, 228 / 16 })
 	, m_numberLargeTextureFont(kNumberLargeTextureFontFilename, { 60 / 2, 432 / 16 })
 	, m_levelNumberLayout(Scaled(20, 18), TextureFontTextLayout::Align::Left)
@@ -63,12 +62,13 @@ PlayPreparePanel::PlayPreparePanel(FilePathView chartFilePath, const kson::Chart
 
 void PlayPreparePanel::draw() const
 {
-	m_titlePanelBaseTexture.resized(ScaledL(kTitlePanelSize * 2)).drawAt(m_titlePanelPosition);
-	m_difficultyTextureRegion.draw(m_titlePanelPosition + Scaled(-150, 32));
+	const Vec2 titlePanelPosition(Scene::Width() / 2 + Scaled(kTitlePanelBasePosition.x), Scene::Height() / 2 + Scaled(kTitlePanelBasePosition.y));
+	m_titlePanelBaseTexture.resized(ScaledL(kTitlePanelSize * 2)).drawAt(titlePanelPosition);
+	m_difficultyTextureRegion.draw(titlePanelPosition + Scaled(-150, 32));
 
 	// Level
-	m_numberLargeTextureFont.draw(m_levelNumberLayout, m_titlePanelPosition + Scaled(-50, 31), m_level, ZeroPaddingYN::No);
+	m_numberLargeTextureFont.draw(m_levelNumberLayout, titlePanelPosition + Scaled(-50, 31), m_level, ZeroPaddingYN::No);
 
 	// BPM
-	m_numberLargeTextureFont.draw(m_bpmNumberLayout, m_titlePanelPosition + Scaled(100, 31), static_cast<int32>(round(m_bpm)), ZeroPaddingYN::No);
+	m_numberLargeTextureFont.draw(m_bpmNumberLayout, titlePanelPosition + Scaled(100, 31), static_cast<int32>(round(m_bpm)), ZeroPaddingYN::No);
 }

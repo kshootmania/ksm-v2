@@ -516,7 +516,7 @@
     <ClCompile Include="src\scene\common\show_loading_one_frame.cpp">
       <Filter>Source Files\scene\common</Filter>
     </ClCompile>
-    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_halfspin.cpp">
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_half_spin.cpp">
       <Filter>Source Files\music_game\camera\cam_pattern</Filter>
     </ClCompile>
     <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_swing.cpp">
@@ -1111,7 +1111,7 @@
     <ClInclude Include="third_party\CoTaskLib\include\CoTaskLib\ScreenFade.hpp">
       <Filter>Header Files\third_party\CoTaskLib</Filter>
     </ClInclude>
-    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_halfspin.hpp">
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_half_spin.hpp">
       <Filter>Header Files\music_game\camera\cam_pattern</Filter>
     </ClInclude>
     <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_swing.hpp">

@@ -148,7 +148,7 @@
     <ClCompile Include="src\music_game\audio\laser_slam_se.cpp" />
     <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_main.cpp" />
     <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_spin.cpp" />
-    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_halfspin.cpp" />
+    <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_half_spin.cpp" />
     <ClCompile Include="src\music_game\camera\cam_pattern\cam_pattern_swing.cpp" />
     <ClCompile Include="src\music_game\camera\cam_system.cpp" />
     <ClCompile Include="src\music_game\camera\highway_tilt.cpp" />
@@ -337,7 +337,7 @@
     <ClInclude Include="src\music_game\camera\camera_math.hpp" />
     <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_main.hpp" />
     <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_spin.hpp" />
-    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_halfspin.hpp" />
+    <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_half_spin.hpp" />
     <ClInclude Include="src\music_game\camera\cam_pattern\cam_pattern_swing.hpp" />
     <ClInclude Include="src\music_game\camera\cam_system.hpp" />
     <ClInclude Include="src\music_game\camera\highway_tilt.hpp" />

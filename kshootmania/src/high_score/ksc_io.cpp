@@ -13,14 +13,14 @@ namespace KscIo
 			}
 
 			const auto extension = FileSystem::Extension(chartFilePath);
-			const auto fileName = FileSystem::FileName(chartFilePath);
-
-			if ((bool)!extension.str().compare(U"ksh"))
+			if (extension != U"ksh")
 			{
 				return false;
 			}
-			*pFilePath = U"score/PLAYER/{}.ksc"_fmt(fileName.substr(0, extension.size()));
 
+			// サブフォルダの存在を考慮する必要があるため、songsフォルダからの相対パスを使用してkscファイルのパスを生成
+			const auto relativeChartFilePath = FileSystem::RelativePath(chartFilePath, FileSystem::FullPath(U"songs")); // TODO: songsフォルダ以外が指定可能になったら要修正
+			*pFilePath = U"score/PLAYER/{}.ksc"_fmt(FsUtils::EliminateExtension(relativeChartFilePath));
 			return true;
 		}
 
