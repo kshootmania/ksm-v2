@@ -12,7 +12,7 @@ namespace MusicGame::Camera
 	{
 		assert(direction == 1 || direction == -1);
 
-		// 回転がなければ何もしない
+		// swingがなければ何もしない
 		if (!m_swingEvents.contains(laserSlamPulse))
 		{
 			return;
@@ -26,13 +26,13 @@ namespace MusicGame::Camera
 
 		const auto& swingEvent = m_swingEvents.at(laserSlamPulse);
 
-		// 直角LASERと回転方向が一致しない場合は何もしない
+		// 直角LASERとswing方向が一致しない場合は何もしない
 		if (swingEvent.d != direction)
 		{
 			return;
 		}
 
-		// 回転開始
+		// swing開始
 		m_startPulse = currentPulse;
 		m_durationRelPulse = swingEvent.length;
 		m_direction = direction;
@@ -53,10 +53,10 @@ namespace MusicGame::Camera
 		if (rate < 1.0)
 		{
 			double absDegrees = 0;
-			const int time = 360;
-			if (rate < 360.0 / time)
+			constexpr double kDuration = 360.0;
+			if (rate < 360.0 / kDuration)
 			{
-				absDegrees = -Sin(Math::ToRadians((rate * time - 360.0) * 9 / 8)) * 90.0;
+				absDegrees = -Sin(Math::ToRadians((rate * kDuration - 360.0) * 9 / 8)) * 90.0;
 			}
 
 			const double degrees = -m_direction * absDegrees;

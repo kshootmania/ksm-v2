@@ -1,10 +1,10 @@
-﻿#include "cam_pattern_halfspin.hpp"
+﻿#include "cam_pattern_half_spin.hpp"
 
 namespace MusicGame::Camera
 {
 	CamPatternHalfSpin::CamPatternHalfSpin(const kson::ChartData& chartData)
-		: m_halfspinEvents(chartData.camera.cam.pattern.laser.slamEvent.halfSpin)
-		, m_alreadyInvokedEventPulses(m_halfspinEvents.size())
+		: m_halfSpinEvents(chartData.camera.cam.pattern.laser.slamEvent.halfSpin)
+		, m_alreadyInvokedEventPulses(m_halfSpinEvents.size())
 	{
 	}
 
@@ -13,7 +13,7 @@ namespace MusicGame::Camera
 		assert(direction == 1 || direction == -1);
 
 		// 半回転がなければ何もしない
-		if (!m_halfspinEvents.contains(laserSlamPulse))
+		if (!m_halfSpinEvents.contains(laserSlamPulse))
 		{
 			return;
 		}
@@ -24,17 +24,17 @@ namespace MusicGame::Camera
 			return;
 		}
 
-		const auto& halfspinEvent = m_halfspinEvents.at(laserSlamPulse);
+		const auto& halfSpinEvent = m_halfSpinEvents.at(laserSlamPulse);
 
 		// 直角LASERと回転の方向が一致しない場合何もしない
-		if (halfspinEvent.d != direction)
+		if (halfSpinEvent.d != direction)
 		{
 			return;
 		}
 
 		// 回転開始
 		m_startPulse = currentPulse;
-		m_durationRelPulse = halfspinEvent.length;
+		m_durationRelPulse = halfSpinEvent.length;
 		m_direction = direction;
 		m_alreadyInvokedEventPulses.insert(laserSlamPulse);
 	}
@@ -55,22 +55,22 @@ namespace MusicGame::Camera
 			// 60度, 15度ずつ左右に揺らす
 			// HSP版: https://github.com/kshootmania/ksm-v1/blob/b26026420fa164310bf25f93c218bb83480faef8/src/scene/play/play_game_logic.hsp#L233-L244
 			double absDegrees;
-			const int time = 400;
-			if (rate < 110.0 / time)
+			constexpr double kDuration = 400.0;
+			if (rate < 110.0 / kDuration)
 			{
-				absDegrees = Sin(rate / (110.0 / time) * 1.8) / Sin(1.8) * 60;
+				absDegrees = Sin(rate / (110.0 / kDuration) * 1.8) / Sin(1.8) * 60;
 			}
-			else if (rate < 220.0 / time)
+			else if (rate < 220.0 / kDuration)
 			{
-				absDegrees = (Cos((rate * time - 110.0) * 1.8 / 110.0) - Cos(1.8)) / (1.0 - Cos(1.8)) * 60;
+				absDegrees = (Cos((rate * kDuration - 110.0) * 1.8 / 110.0) - Cos(1.8)) / (1.0 - Cos(1.8)) * 60;
 			}
-			else if (rate < 310.0 / time)
+			else if (rate < 310.0 / kDuration)
 			{
-				absDegrees = -Sin((rate * time - 220) * 1.8 / 90.0) / Sin(1.8) * 15;
+				absDegrees = -Sin((rate * kDuration - 220) * 1.8 / 90.0) / Sin(1.8) * 15;
 			}
 			else
 			{
-				absDegrees = -(Cos((rate * time - 310) * 1.8 / 90.0) - Cos(1.8)) / (1.0 - Cos(1.8)) * 15;
+				absDegrees = -(Cos((rate * kDuration - 310) * 1.8 / 90.0) - Cos(1.8)) / (1.0 - Cos(1.8)) * 15;
 			}
 
 			const double degrees = -m_direction * absDegrees;

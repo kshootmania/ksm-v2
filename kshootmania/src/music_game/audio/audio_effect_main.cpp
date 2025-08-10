@@ -1,5 +1,4 @@
-﻿#include <Siv3D.hpp>
-#include "audio_effect_main.hpp"
+﻿#include "audio_effect_main.hpp"
 #include "audio_effect_utils.hpp"
 #include "ksmaudio/audio_effect/audio_effect_bus.hpp"
 #include "kson/util/graph_utils.hpp"
@@ -74,7 +73,7 @@ namespace MusicGame::Audio
 			fnInsertDefaultFX("retrigger", { .type = kson::AudioEffectType::Retrigger });
 			fnInsertDefaultFX("gate", { .type = kson::AudioEffectType::Gate });
 			fnInsertDefaultFX("flanger", { .type = kson::AudioEffectType::Flanger });
-			fnInsertDefaultFX("pitchshift", { .type = kson::AudioEffectType::PitchShift});
+			fnInsertDefaultFX("pitch_shift", { .type = kson::AudioEffectType::PitchShift });
 			fnInsertDefaultFX("bitcrusher", { .type = kson::AudioEffectType::Bitcrusher });
 			fnInsertDefaultFX("phaser", { .type = kson::AudioEffectType::Phaser });
 			fnInsertDefaultFX("wobble", { .type = kson::AudioEffectType::Wobble });

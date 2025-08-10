@@ -4,7 +4,7 @@ namespace MusicGame::Camera
 {
 	CamPatternMain::CamPatternMain(const kson::ChartData& chartData)
 		: m_spin(chartData)
-		, m_halfspin(chartData)
+		, m_halfSpin(chartData)
 		, m_swing(chartData)
 	{
 	}
@@ -12,7 +12,7 @@ namespace MusicGame::Camera
 	void CamPatternMain::onLaserSlamJudged(kson::Pulse laserSlamPulse, int32 direction, kson::Pulse currentPulse)
 	{
 		m_spin.onLaserSlamJudged(laserSlamPulse, direction, currentPulse);
-		m_halfspin.onLaserSlamJudged(laserSlamPulse, direction, currentPulse);
+		m_halfSpin.onLaserSlamJudged(laserSlamPulse, direction, currentPulse);
 		m_swing.onLaserSlamJudged(laserSlamPulse, direction, currentPulse);
 
 	}
@@ -20,7 +20,7 @@ namespace MusicGame::Camera
 	void CamPatternMain::applyToCamStatus(CamStatus& camStatusRef, kson::Pulse currentPulse) const
 	{
 		m_spin.applyToCamStatus(camStatusRef, currentPulse);
-		m_halfspin.applyToCamStatus(camStatusRef, currentPulse);
+		m_halfSpin.applyToCamStatus(camStatusRef, currentPulse);
 		m_swing.applyToCamStatus(camStatusRef, currentPulse);
 	}
 }

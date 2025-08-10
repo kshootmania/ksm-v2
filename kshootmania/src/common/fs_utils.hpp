@@ -12,4 +12,14 @@ namespace FsUtils
 	/// @brief 実行ファイルがあるディレクトリのフルパスを取得
 	/// @return フルパス
 	FilePath AppDirectoryPath();
+
+	/// @brief ディレクトリパスからディレクトリ名を取得
+	/// @param directoryPath ディレクトリパス(ファイルパスは不可)
+	/// @return ディレクトリ名
+	String DirectoryNameByDirectoryPath(FilePathView directoryPath);
+
+	/// @brief ファイルパスから拡張子を除去
+	/// @param path ファイルパス
+	/// @return 拡張子を除去したファイルパス
+	String EliminateExtension(FilePathView path);
 }

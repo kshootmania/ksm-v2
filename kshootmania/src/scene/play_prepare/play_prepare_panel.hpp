@@ -7,7 +7,6 @@ class PlayPreparePanel
 {
 private:
 	const RenderTexture m_titlePanelBaseTexture;
-	const Vec2 m_titlePanelPosition;
 
 	const TiledTexture m_difficultyTexture;
 	const TextureRegion m_difficultyTextureRegion;
