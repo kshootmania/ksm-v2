@@ -32,7 +32,7 @@ namespace MusicGame::Audio
 			break;
 
 		case kson::AudioEffectType::PitchShift:
-			// PitchShift
+			pAudioEffectBus->emplaceAudioEffect<ksmaudio::PitchShift>(name, def.v, paramChanges, updateTriggerTiming);
 			break;
 
 		case kson::AudioEffectType::Bitcrusher:

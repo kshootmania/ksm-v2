@@ -1,7 +1,6 @@
 #pragma once
 #include "ksmaudio/audio_effect/audio_effect.hpp"
 #include "ksmaudio/audio_effect/params/pitch_shift_params.hpp"
-#include "../../third_party/bass_fx/bass_fx.h"
 
 namespace ksmaudio::AudioEffect
 {

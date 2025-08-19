@@ -10,6 +10,9 @@
 #include "dsp/flanger_dsp.hpp"
 #include "params/flanger_params.hpp"
 
+#include "dsp/pitch_shift_dsp.hpp"
+#include "params/pitch_shift_params.hpp"
+
 #include "dsp/bitcrusher_dsp.hpp"
 #include "params/bitcrusher_params.hpp"
 
@@ -45,6 +48,8 @@ namespace ksmaudio
 	using Gate = AudioEffect::BasicAudioEffectWithTrigger<AudioEffect::GateParams, AudioEffect::GateDSP, AudioEffect::GateDSPParams, 17>;
 
 	using Flanger = AudioEffect::BasicAudioEffect<AudioEffect::FlangerParams, AudioEffect::FlangerDSP, AudioEffect::FlangerDSPParams, 15>;
+
+	using PitchShift = AudioEffect::BasicAudioEffect<AudioEffect::PitchShiftParams, AudioEffect::PitchShiftDSP, AudioEffect::PitchShiftDSPParams, 12>;
 
 	using Bitcrusher = AudioEffect::BasicAudioEffect<AudioEffect::BitcrusherParams, AudioEffect::BitcrusherDSP, AudioEffect::BitcrusherDSPParams, 20>;
 
