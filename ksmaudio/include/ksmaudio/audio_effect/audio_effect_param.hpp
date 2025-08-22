@@ -183,6 +183,7 @@ namespace ksmaudio::AudioEffect
 		kUnknown,
 		kAttackTime,
 		kBandwidth,
+		kChunkSize,
 		kDelay,
 		kDepth,
 		kFeedback,
@@ -195,6 +196,7 @@ namespace ksmaudio::AudioEffect
 		kGain,
 		kHoldTime,
 		kMix,
+		kOverWrap,
 		kPeriod,
 		kPitch,
 		kQ,
@@ -215,6 +217,7 @@ namespace ksmaudio::AudioEffect
 
 	inline const std::unordered_map<std::string, ParamID> kStrToParamID{
 		{ "attack_time", ParamID::kAttackTime },
+		{ "chunk_size", ParamID::kChunkSize },
 		{ "delay", ParamID::kDelay },
 		{ "depth", ParamID::kDepth },
 		{ "feedback_level", ParamID::kFeedbackLevel },
@@ -227,6 +230,7 @@ namespace ksmaudio::AudioEffect
 		{ "gain", ParamID::kGain },
 		{ "hold_time", ParamID::kHoldTime },
 		{ "mix", ParamID::kMix },
+		{ "over_wrap", ParamID::kOverWrap },
 		{ "period", ParamID::kPeriod },
 		{ "pitch", ParamID::kPitch },
 		{ "q", ParamID::kQ },
@@ -248,6 +252,7 @@ namespace ksmaudio::AudioEffect
 	inline const std::unordered_map<ParamID, Type> kParamIDType{
 		{ ParamID::kUnknown, Type::kUnspecified },
 		{ ParamID::kAttackTime, Type::kLength },
+		{ ParamID::kChunkSize, Type::kSample },
 		{ ParamID::kDelay, Type::kSample },
 		{ ParamID::kDepth, Type::kSample },
 		{ ParamID::kFeedback, Type::kRate },
@@ -260,6 +265,7 @@ namespace ksmaudio::AudioEffect
 		{ ParamID::kGain, Type::kRate },
 		{ ParamID::kHoldTime, Type::kLength },
 		{ ParamID::kMix, Type::kRate },
+		{ ParamID::kOverWrap, Type::kRate },
 		{ ParamID::kPeriod, Type::kLength },
 		{ ParamID::kPitch, Type::kPitch },
 		{ ParamID::kQ, Type::kFloat },

@@ -178,9 +178,11 @@ namespace MusicGame::Audio::AudioEffectUtils
 		case kson::AudioEffectType::Wobble:
 			return PrecalculateUpdateTriggerTimingBarLineOnly(totalMeasures, chartData, timingCache);
 
+		case kson::AudioEffectType::Phaser:
 		case kson::AudioEffectType::Sidechain:
 			return PrecalculateUpdateTriggerTimingBeatOnly(totalMeasures, chartData, timingCache);
 
+		case kson::AudioEffectType::PitchShift:
 		default:
 			return {};
 		}
@@ -202,9 +204,11 @@ namespace MusicGame::Audio::AudioEffectUtils
 		case kson::AudioEffectType::Wobble:
 			return PrecalculateUpdateTriggerTimingBarLineOnly(totalMeasures, chartData, timingCache);
 
+		case kson::AudioEffectType::Phaser:
 		case kson::AudioEffectType::Sidechain:
 			return PrecalculateUpdateTriggerTimingBeatOnly(totalMeasures, chartData, timingCache);
 
+		case kson::AudioEffectType::PitchShift:
 		default:
 			return {};
 		}

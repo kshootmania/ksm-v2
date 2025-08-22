@@ -46,6 +46,8 @@ namespace ksmaudio
 
 	using Flanger = AudioEffect::BasicAudioEffect<AudioEffect::FlangerParams, AudioEffect::FlangerDSP, AudioEffect::FlangerDSPParams, 15>;
 
+	using PitchShift = AudioEffect::BasicAudioEffect<AudioEffect::PitchShiftParams, AudioEffect::PitchShiftDSP, AudioEffect::PitchShiftDSPParams, 12>;
+
 	using Bitcrusher = AudioEffect::BasicAudioEffect<AudioEffect::BitcrusherParams, AudioEffect::BitcrusherDSP, AudioEffect::BitcrusherDSPParams, 20>;
 
 	using Phaser = AudioEffect::BasicAudioEffect<AudioEffect::PhaserParams, AudioEffect::PhaserDSP, AudioEffect::PhaserDSPParams, 16>;
