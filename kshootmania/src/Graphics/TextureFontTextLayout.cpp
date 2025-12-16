@@ -8,18 +8,21 @@ TextureFontTextLayout::Grid::Grid(const Vec2& lastLetterPosition, const Vec2& di
 {
 }
 
-RectF TextureFontTextLayout::Grid::fromFront(int32 index) const
+[[nodiscard]]
+RectF TextureFontTextLayout::Grid::fromFront(int32 index) const noexcept
 {
 	return fromBack(m_numLettersAfterPadding - 1 - index);
 }
 
-RectF TextureFontTextLayout::Grid::fromBack(int32 index) const
+[[nodiscard]]
+RectF TextureFontTextLayout::Grid::fromBack(int32 index) const noexcept
 {
 	const Vec2 position = m_lastLetterPosition + m_diffPosition * index;
 	return RectF{ position, m_letterSize };
 }
 
-int32 TextureFontTextLayout::Grid::numLettersAfterPadding() const
+[[nodiscard]]
+int32 TextureFontTextLayout::Grid::numLettersAfterPadding() const noexcept
 {
 	return m_numLettersAfterPadding;
 }
@@ -37,7 +40,8 @@ TextureFontTextLayout::TextureFontTextLayout(const SizeF& letterSize, Align alig
 {
 }
 
-TextureFontTextLayout::Grid TextureFontTextLayout::grid(const Vec2& position, int32 numLetters) const
+[[nodiscard]]
+TextureFontTextLayout::Grid TextureFontTextLayout::grid(const Vec2& position, int32 numLetters) const noexcept
 {
 	assert(numLetters >= 0 && "numLetters must not be negative");
 	assert(m_scanX >= 0.0 && "m_scanX must not be negative");

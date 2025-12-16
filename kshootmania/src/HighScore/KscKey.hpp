@@ -15,6 +15,7 @@ struct KscKey
 
 	JudgmentPlayMode laserPlayMode = JudgmentPlayMode::kOn;
 
+	[[nodiscard]]
 	String toString() const;
 
 	KscKey withGaugeType(GaugeType newGaugeType) const;

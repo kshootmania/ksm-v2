@@ -212,6 +212,7 @@ hispeedtype_x=0
 
 	KSMIniData s_configIniData;
 
+	[[nodiscard]]
 	FilePath GetConfigIniFilePath()
 	{
 		return FileSystem::PathAppend(FsUtils::AppDataDirectoryPath(), U"config.ini");
@@ -277,16 +278,19 @@ void ConfigIni::Save()
 	s_configIniData.save(GetConfigIniFilePath());
 }
 
+[[nodiscard]]
 bool ConfigIni::HasValue(StringView key)
 {
 	return s_configIniData.hasValue(key);
 }
 
+[[nodiscard]]
 bool ConfigIni::GetBool(StringView key, bool defaultValue)
 {
 	return s_configIniData.getBool(key, defaultValue);
 }
 
+[[nodiscard]]
 int32 ConfigIni::GetInt(StringView key, int32 defaultValue)
 {
 	return s_configIniData.getInt(key, defaultValue);

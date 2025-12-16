@@ -1,6 +1,7 @@
 ﻿#include "HighScoreInfo.hpp"
 
-int32 HighScoreInfo::score(GaugeType gaugeType) const
+[[nodiscard]]
+int32 HighScoreInfo::score(GaugeType gaugeType) const noexcept
 {
 	// NORMALとHARDは同じスコア基準なので共有、EASYはタイミング判定しきい値が異なりスコア基準が異なるので別にする
 	switch (gaugeType)
@@ -18,7 +19,8 @@ int32 HighScoreInfo::score(GaugeType gaugeType) const
 	}
 }
 
-Medal HighScoreInfo::medal() const
+[[nodiscard]]
+Medal HighScoreInfo::medal() const noexcept
 {
 	// NORMALとHARDのPERFECT/FULLCOMBOは同じなので共有、EASYはタイミング判定しきい値が異なるので別にする
 
@@ -60,7 +62,8 @@ Medal HighScoreInfo::medal() const
 	return Medal::kNoMedal;
 }
 
-Grade HighScoreInfo::grade(GaugeType gaugeType) const
+[[nodiscard]]
+Grade HighScoreInfo::grade(GaugeType gaugeType) const noexcept
 {
 	// NORMALとHARDは同じグレード基準なので共有、EASYはタイミング判定しきい値が異なりグレード基準が異なるので別にする
 	// (NORMALとHARDではパーセンテージ基準は異なるが、HARDのグレード算出の際はNORMAL扱いでのパーセンテージを使用するためグレード基準は同じ)
@@ -79,7 +82,8 @@ Grade HighScoreInfo::grade(GaugeType gaugeType) const
 	}
 }
 
-int32 HighScoreInfo::percent(GaugeType gaugeType) const
+[[nodiscard]]
+int32 HighScoreInfo::percent(GaugeType gaugeType) const noexcept
 {
 	// ゲージのパーセンテージについてはEASY、NORMAL、HARDで全て異なるので別にする
 	switch (gaugeType)
@@ -99,7 +103,8 @@ int32 HighScoreInfo::percent(GaugeType gaugeType) const
 	}
 }
 
-int32 HighScoreInfo::playCount(GaugeType gaugeType) const
+[[nodiscard]]
+int32 HighScoreInfo::playCount(GaugeType gaugeType) const noexcept
 {
 	// 主にCLEAR/FULLCOMBO/PERFECTの分母として見る目的の数値なので、それらと同様にNORMALとHARDは共有、EASYは別にする
 	switch (gaugeType)
@@ -117,7 +122,8 @@ int32 HighScoreInfo::playCount(GaugeType gaugeType) const
 	}
 }
 
-int32 HighScoreInfo::clearCount(GaugeType gaugeType) const
+[[nodiscard]]
+int32 HighScoreInfo::clearCount(GaugeType gaugeType) const noexcept
 {
 	// NORMALとHARDのCLEARは同じなので共有、EASYはタイミング判定しきい値が異なりスコア基準が異なるので別にする
 	switch (gaugeType)
@@ -135,7 +141,8 @@ int32 HighScoreInfo::clearCount(GaugeType gaugeType) const
 	}
 }
 
-int32 HighScoreInfo::fullComboCount(GaugeType gaugeType) const
+[[nodiscard]]
+int32 HighScoreInfo::fullComboCount(GaugeType gaugeType) const noexcept
 {
 	// NORMALとHARDは同じスコア基準なので共有、EASYはタイミング判定しきい値が異なりスコア基準が異なるので別にする
 	switch (gaugeType)
@@ -153,7 +160,8 @@ int32 HighScoreInfo::fullComboCount(GaugeType gaugeType) const
 	}
 }
 
-int32 HighScoreInfo::perfectCount(GaugeType gaugeType) const
+[[nodiscard]]
+int32 HighScoreInfo::perfectCount(GaugeType gaugeType) const noexcept
 {
 	// NORMALとHARDは同じスコア基準なので共有、EASYはタイミング判定しきい値が異なりスコア基準が異なるので別にする
 	switch (gaugeType)
@@ -171,7 +179,8 @@ int32 HighScoreInfo::perfectCount(GaugeType gaugeType) const
 	}
 }
 
-int32 HighScoreInfo::maxCombo(GaugeType gaugeType) const
+[[nodiscard]]
+int32 HighScoreInfo::maxCombo(GaugeType gaugeType) const noexcept
 {
 	// NORMALとHARDは同じスコア基準なので共有、EASYはタイミング判定しきい値が異なりスコア基準が異なるので別にする
 	switch (gaugeType)
@@ -189,6 +198,7 @@ int32 HighScoreInfo::maxCombo(GaugeType gaugeType) const
 	}
 }
 
+[[nodiscard]]
 KscValue& HighScoreInfo::kscValueOf(GaugeType gaugeType)
 {
 	switch (gaugeType)
@@ -207,6 +217,7 @@ KscValue& HighScoreInfo::kscValueOf(GaugeType gaugeType)
 	}
 }
 
+[[nodiscard]]
 const KscValue& HighScoreInfo::kscValueOf(GaugeType gaugeType) const
 {
 	switch (gaugeType)
@@ -225,6 +236,7 @@ const KscValue& HighScoreInfo::kscValueOf(GaugeType gaugeType) const
 	}
 }
 
+[[nodiscard]]
 bool HighScoreInfo::isHighScoreUpdated(const MusicGame::PlayResult& playResult) const
 {
 	// NORMALとHARDで共通のハイスコア上で更新判定する必要があるため、
@@ -232,6 +244,7 @@ bool HighScoreInfo::isHighScoreUpdated(const MusicGame::PlayResult& playResult) 
 	return score(playResult.playOption.gaugeType) < playResult.score;
 }
 
+[[nodiscard]]
 HighScoreInfo HighScoreInfo::applyPlayResult(const MusicGame::PlayResult& playResult) const
 {
 	HighScoreInfo newHighScoreInfo = *this;

@@ -148,14 +148,19 @@ namespace ConfigIni
 
 	void Save();
 
+	[[nodiscard]]
 	bool HasValue(StringView key);
 
+	[[nodiscard]]
 	bool GetBool(StringView key, bool defaultValue = false);
 
+	[[nodiscard]]
 	int32 GetInt(StringView key, int32 defaultValue = 0);
 
+	[[nodiscard]]
 	double GetDouble(StringView key, double defaultValue = 0.0);
 
+	[[nodiscard]]
 	StringView GetString(StringView key, StringView defaultValue = U"");
 
 	void SetBool(StringView key, bool value);
@@ -168,5 +173,6 @@ namespace ConfigIni
 
 	/// @brief ConfigIniから利用可能なハイスピードタイプを読み込み
 	/// @return 利用可能なハイスピードタイプの配列
+	[[nodiscard]]
 	Array<MusicGame::HispeedType> LoadAvailableHispeedTypes();
 }

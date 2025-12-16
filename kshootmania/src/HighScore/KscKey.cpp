@@ -2,7 +2,8 @@
 
 namespace
 {
-	StringView GaugeTypeStr(GaugeType gaugeType)
+	[[nodiscard]]
+	StringView GaugeTypeStr(GaugeType gaugeType) noexcept
 	{
 		switch (gaugeType)
 		{
@@ -18,7 +19,8 @@ namespace
 		}
 	}
 
-	StringView TurnModeStr(TurnMode turnMode)
+	[[nodiscard]]
+	StringView TurnModeStr(TurnMode turnMode) noexcept
 	{
 		switch (turnMode)
 		{
@@ -34,7 +36,8 @@ namespace
 		}
 	}
 
-	StringView JudgmentPlayModeStr(JudgmentPlayMode judgmentPlayMode)
+	[[nodiscard]]
+	StringView JudgmentPlayModeStr(JudgmentPlayMode judgmentPlayMode) noexcept
 	{
 		switch (judgmentPlayMode)
 		{
@@ -52,6 +55,7 @@ namespace
 		}
 	}
 
+	[[nodiscard]]
 	String PlaybackSpeedStr(double playbackSpeed)
 	{
 		if (playbackSpeed == 1.0)
@@ -63,6 +67,7 @@ namespace
 	}
 }
 
+[[nodiscard]]
 String KscKey::toString() const
 {
 	return U"{},{},{},{},{},{}"_fmt(

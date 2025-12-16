@@ -6,7 +6,8 @@ namespace MathUtils
 {
 	// 必ず正の値を返す剰余(浮動小数点数版)
 	template <typename T>
-	T WrappedFmod(T a, T b) requires std::is_floating_point_v<T>
+	[[nodiscard]]
+	T WrappedFmod(T a, T b) noexcept requires std::is_floating_point_v<T>
 	{
 		if (b <= std::numeric_limits<T>::epsilon())
 		{
@@ -27,7 +28,8 @@ namespace MathUtils
 
 	// 必ず正の値を返す剰余(整数版)
 	template <typename T>
-	T WrappedMod(T a, T b) requires std::is_integral_v<T>
+	[[nodiscard]]
+	T WrappedMod(T a, T b) noexcept requires std::is_integral_v<T>
 	{
 		if (b == T{ 0 })
 		{
@@ -46,21 +48,25 @@ namespace MathUtils
 		}
 	}
 
-	int32 NumDigits(int32 number);
+	[[nodiscard]]
+	int32 NumDigits(int32 number) noexcept;
 
 	template <typename T = int32, typename U>
-	T RoundToInt(U value) requires std::is_floating_point_v<U>
+	[[nodiscard]]
+	T RoundToInt(U value) noexcept requires std::is_floating_point_v<U>
 	{
 		return static_cast<T>(value + U{ 0.5 });
 	}
 
-	inline bool AlmostEquals(double a, double b)
+	[[nodiscard]]
+	inline bool AlmostEquals(double a, double b) noexcept
 	{
 		return kson::AlmostEquals(a, b);
 	}
 
 	template <typename T>
-	T LinearDamp(T current, T target, T maxSpeed, double dt) requires std::is_arithmetic_v<T>
+	[[nodiscard]]
+	T LinearDamp(T current, T target, T maxSpeed, double dt) noexcept requires std::is_arithmetic_v<T>
 	{
 		const T absDiffMax = Max(static_cast<T>(maxSpeed * dt), T{ 0 });
 		return current + std::clamp(target - current, -absDiffMax, absDiffMax);

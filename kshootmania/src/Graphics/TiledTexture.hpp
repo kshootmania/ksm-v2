@@ -35,7 +35,8 @@ public:
 	TiledTexture(StringView textureAssetKey, const TiledTextureSizeInfo& sizeInfo);
 	TiledTexture(StringView textureAssetKey, SourceScale scale);
 
-	const Size& scaledSize() const
+	[[nodiscard]]
+	const Size& scaledSize() const noexcept
 	{
 		return m_scaledSize;
 	}
@@ -49,12 +50,14 @@ public:
 		return operator()(static_cast<int32>(row), static_cast<int32>(column));
 	}
 
-	int32 row() const
+	[[nodiscard]]
+	int32 row() const noexcept
 	{
 		return m_sizeInfo.row;
 	}
 
-	int32 column() const
+	[[nodiscard]]
+	int32 column() const noexcept
 	{
 		return m_sizeInfo.column;
 	}

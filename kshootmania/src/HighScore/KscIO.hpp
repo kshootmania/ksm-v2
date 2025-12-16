@@ -10,6 +10,7 @@ namespace KscIO
 	/// @param chartFilePath 譜面ファイルのパス(kscファイルのパスではないので注意)
 	/// @param condition 読み込むハイスコア情報の条件
 	/// @return 読み込んだハイスコア情報
+	[[nodiscard]]
 	HighScoreInfo ReadHighScoreInfo(FilePathView chartFilePath, const KscKey& condition);
 
 	/// @brief ハイスコア情報を書き込む
@@ -23,6 +24,7 @@ namespace KscIO
 	/// @param courseFilePath コースファイル(.kco)のパス(kscファイルのパスではないので注意)
 	/// @param condition 読み込むハイスコア情報の条件
 	/// @return 読み込んだハイスコア情報
+	[[nodiscard]]
 	HighScoreInfo ReadCourseHighScoreInfo(FilePathView courseFilePath, const KscKey& condition);
 
 	/// @brief コースのハイスコア情報を書き込む

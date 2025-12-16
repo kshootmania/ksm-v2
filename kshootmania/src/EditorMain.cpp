@@ -87,12 +87,13 @@ public:
 		m_editorCanvas->draw();
 	}
 
-	bool isExitRequested() const
+	[[nodiscard]]
+	bool isExitRequested() const noexcept
 	{
 		return m_exitRequested;
 	}
 
-	void requestExit()
+	void requestExit() noexcept
 	{
 		m_exitRequested = true;
 	}

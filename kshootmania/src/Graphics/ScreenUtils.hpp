@@ -8,41 +8,48 @@ inline namespace ScreenUtils
 	constexpr int32 kBaseScreenWidth = 640;
 	constexpr int32 kBaseScreenHeight = 480;
 
-	inline int32 Scaled(int32 v)
+	[[nodiscard]]
+	inline int32 Scaled(int32 v) noexcept
 	{
 		const Size screenSize = Scene::Size();
 		return v * screenSize.y / kBaseScreenHeight;
 	}
 
-	inline double Scaled(double v)
+	[[nodiscard]]
+	inline double Scaled(double v) noexcept
 	{
 		const Size screenSize = Scene::Size();
 		return v * screenSize.y / kBaseScreenHeight;
 	}
 
-	inline int32 ScaledByWidth(int32 v)
+	[[nodiscard]]
+	inline int32 ScaledByWidth(int32 v) noexcept
 	{
 		const Size screenSize = Scene::Size();
 		return v * screenSize.x / kBaseScreenWidth;
 	}
 
-	inline double ScaledByWidth(double v)
+	[[nodiscard]]
+	inline double ScaledByWidth(double v) noexcept
 	{
 		const Size screenSize = Scene::Size();
 		return v * screenSize.x / kBaseScreenWidth;
 	}
 
-	inline Point Scaled(const Point& point)
+	[[nodiscard]]
+	inline Point Scaled(const Point& point) noexcept
 	{
 		return { Scaled(point.x), Scaled(point.y) };
 	}
 
-	inline Point Scaled(const int32 x, const int32 y)
+	[[nodiscard]]
+	inline Point Scaled(const int32 x, const int32 y) noexcept
 	{
 		return { Scaled(x), Scaled(y) };
 	}
 
-	inline Vec2 Scaled(const Vec2& vec)
+	[[nodiscard]]
+	inline Vec2 Scaled(const Vec2& vec) noexcept
 	{
 		return { Scaled(vec.x), Scaled(vec.y) };
 	}

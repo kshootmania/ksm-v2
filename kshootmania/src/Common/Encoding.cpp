@@ -5,6 +5,7 @@
 
 namespace Encoding
 {
+	[[nodiscard]]
 	Array<String> ReadTextFileLinesShiftJISOrUTF8BasedOnBOM(FilePathView filePath)
 	{
 		Array<String> lines;

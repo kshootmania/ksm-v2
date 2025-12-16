@@ -17,9 +17,9 @@ private:
 	IsCyclicMenuYN m_cyclic;
 	int32 m_deltaCursor = 0;
 
-	void increment(int32 absDeltaCursor);
+	void increment(int32 absDeltaCursor) noexcept;
 
-	void decrement(int32 absDeltaCursor);
+	void decrement(int32 absDeltaCursor) noexcept;
 
 public:
 	/// @brief LinearMenuの生成パラメータ(enumの列挙子の個数を指定)
@@ -49,71 +49,76 @@ public:
 
 	/// @brief カーソルの値を取得
 	/// @return カーソルの値
-	int32 cursor() const;
+	int32 cursor() const noexcept;
 
 	/// @brief カーソルの値を取得
 	/// @tparam T 取得したいenum型を指定
 	/// @return カーソルの値
 	template <typename T>
-	T cursorAs() const;
+	T cursorAs() const noexcept;
 
 	/// @brief カーソルの値を設定
 	/// @tparam T enumをキャストなしで指定するためのテンプレートパラメータ(指定不要)
 	/// @param value カーソルの値
 	template <typename T>
-	void setCursor(T value);
+	void setCursor(T value) noexcept;
 
 	/// @brief 更新(毎フレーム呼ぶ。入力を反映したくないときは呼ばないようにすればOK)
-	void update();
+	void update() noexcept;
 
 	/// @brief カーソルの最小値を設定
 	/// @tparam T enumをキャストなしで指定するためのテンプレートパラメータ(指定不要)
 	/// @param value カーソルの最小値
 	template <typename T>
-	void setCursorMin(T value);
+	void setCursorMin(T value) noexcept;
 
 	/// @brief カーソルの最大値を設定
 	/// @tparam T enumをキャストなしで指定するためのテンプレートパラメータ(指定不要)
 	/// @param value カーソルの最大値
 	template <typename T>
-	void setCursorMax(T value);
+	void setCursorMax(T value) noexcept;
 
 	/// @brief カーソルの最大値を設定
 	/// @tparam T enumをキャストなしで指定するためのテンプレートパラメータ(指定不要)
 	/// @param valueMin カーソルの最小値
 	/// @param valueMax カーソルの最大値
 	template <typename T>
-	void setCursorMinMax(T valueMin, T valueMax);
+	void setCursorMinMax(T valueMin, T valueMax) noexcept;
 
 	/// @brief カーソル移動の1回あたりの変化量を設定
 	/// @param step 1回あたりの変化量
-	void setCursorStep(int32 step);
+	void setCursorStep(int32 step) noexcept;
 
 	/// @brief カーソルの値が最小値かどうか返す
 	/// @return 最小値であればtrue、違えばfalse
-	bool isCursorMin() const;
+	[[nodiscard]]
+	bool isCursorMin() const noexcept;
 
 	/// @brief カーソルの値が最大値かどうか返す
 	/// @return 最大値であればtrue、違えばfalse
-	bool isCursorMax() const;
+	[[nodiscard]]
+	bool isCursorMax() const noexcept;
 
 	/// @brief 前回のupdate時のカーソル値の変化量(update後にsetCursorによる変更があった場合は0になる)
 	/// @return 変化量
-	int32 deltaCursor() const;
+	[[nodiscard]]
+	int32 deltaCursor() const noexcept;
 
 	/// @brief カーソル位置の割合を返す
 	/// @return カーソル位置の割合(0.0〜1.0)
-	double cursorRate() const;
+	[[nodiscard]]
+	double cursorRate() const noexcept;
 };
 
-template<typename T>
-T LinearMenu::cursorAs() const
+template <typename T>
+[[nodiscard]]
+T LinearMenu::cursorAs() const noexcept
 {
 	return static_cast<T>(m_cursor);
 }
 
-template<typename T>
-void LinearMenu::setCursor(T value)
+template <typename T>
+void LinearMenu::setCursor(T value) noexcept
 {
 	int32 cursor = static_cast<int32>(value);
 
@@ -142,8 +147,9 @@ void LinearMenu::setCursor(T value)
 	m_deltaCursor = 0;
 }
 
-template<typename T>
-void LinearMenu::setCursorMin(T value)
+template <typename T>
+[[nodiscard]]
+void LinearMenu::setCursorMin(T value) noexcept
 {
 	if (value > m_cursorMax)
 	{
@@ -155,8 +161,9 @@ void LinearMenu::setCursorMin(T value)
 	m_cursor = Clamp(m_cursor, m_cursorMin, m_cursorMax);
 }
 
-template<typename T>
-void LinearMenu::setCursorMax(T value)
+template <typename T>
+[[nodiscard]]
+void LinearMenu::setCursorMax(T value) noexcept
 {
 	if (value < m_cursorMin)
 	{
@@ -168,8 +175,9 @@ void LinearMenu::setCursorMax(T value)
 	m_cursor = Clamp(m_cursor, m_cursorMin, m_cursorMax);
 }
 
-template<typename T>
-void LinearMenu::setCursorMinMax(T valueMin, T valueMax)
+template <typename T>
+[[nodiscard]]
+void LinearMenu::setCursorMinMax(T valueMin, T valueMax) noexcept
 {
 	if (valueMin > valueMax)
 	{

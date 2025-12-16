@@ -14,5 +14,5 @@ public:
 
 	virtual void postPresent() override;
 
-	void setTargetFPS(const Optional<int32>& targetFPS);
+	void setTargetFPS(const Optional<int32>& targetFPS) noexcept;
 };

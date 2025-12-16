@@ -193,6 +193,7 @@ namespace KscIO
 		}
 	}
 
+	[[nodiscard]]
 	HighScoreInfo ReadHighScoreInfo(FilePathView chartFilePath, const KscKey& condition)
 	{
 		FilePath kscFilePath;
@@ -238,6 +239,7 @@ namespace KscIO
 		}
 	}
 
+	[[nodiscard]]
 	HighScoreInfo ReadCourseHighScoreInfo(FilePathView courseFilePath, const KscKey& condition)
 	{
 		FilePath kscFilePath;

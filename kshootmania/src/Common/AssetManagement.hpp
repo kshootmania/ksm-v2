@@ -6,7 +6,9 @@ namespace AssetManagement
 
 	void RefreshSystemFontForCurrentLanguage();
 
+	[[nodiscard]]
 	Font SystemFont();
 
+	[[nodiscard]]
 	Font SystemFontBold();
 }

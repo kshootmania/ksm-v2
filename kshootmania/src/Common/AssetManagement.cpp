@@ -11,6 +11,7 @@ namespace AssetManagement
 		constexpr StringView kFontResourcePathSc = U"assets/font/KSM-SC-Medium.ttf";
 		constexpr StringView kFontResourcePathTc = U"assets/font/KSM-TC-Medium.ttf";
 
+		[[nodiscard]]
 		FilePath GetFontPathForCurrentLanguage()
 		{
 			const I18n::StandardLanguage language = I18n::CurrentLanguage();
@@ -79,11 +80,13 @@ namespace AssetManagement
 		RegisterFontAssets();
 	}
 
+	[[nodiscard]]
 	Font SystemFont()
 	{
 		return FontAsset(kFontAssetSystem);
 	}
 
+	[[nodiscard]]
 	Font SystemFontBold()
 	{
 		return FontAsset(kFontAssetSystemBold);

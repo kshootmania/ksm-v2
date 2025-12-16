@@ -15,14 +15,19 @@ public:
 
 	void save(FilePathView path) const;
 
+	[[nodiscard]]
 	bool hasValue(StringView key) const;
 
+	[[nodiscard]]
 	bool getBool(StringView key, bool defaultValue = false) const;
 
+	[[nodiscard]]
 	int32 getInt(StringView key, int32 defaultValue = 0) const;
 
+	[[nodiscard]]
 	double getDouble(StringView key, double defaultValue = 0.0) const;
 
+	[[nodiscard]]
 	StringView getString(StringView key, StringView defaultValue = U"") const;
 
 	void setBool(StringView key, bool value);

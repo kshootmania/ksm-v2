@@ -115,16 +115,19 @@ void KSMIniData::save(FilePathView path) const
 	}
 }
 
+[[nodiscard]]
 bool KSMIniData::hasValue(StringView key) const
 {
 	return m_hashTable.contains(key);
 }
 
+[[nodiscard]]
 bool KSMIniData::getBool(StringView key, bool defaultValue) const
 {
 	return getInt(key, defaultValue ? 1 : 0) != 0;
 }
 
+[[nodiscard]]
 int32 KSMIniData::getInt(StringView key, int32 defaultValue) const
 {
 	if (!m_hashTable.contains(key))
@@ -143,6 +146,7 @@ int32 KSMIniData::getInt(StringView key, int32 defaultValue) const
 	}
 }
 
+[[nodiscard]]
 double KSMIniData::getDouble(StringView key, double defaultValue) const
 {
 	if (!m_hashTable.contains(key))
@@ -161,6 +165,7 @@ double KSMIniData::getDouble(StringView key, double defaultValue) const
 	}
 }
 
+[[nodiscard]]
 StringView KSMIniData::getString(StringView key, StringView defaultValue) const
 {
 	return m_hashTable.contains(key) ? m_hashTable.at(key) : defaultValue;

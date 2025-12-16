@@ -18,62 +18,68 @@ namespace
 
 namespace RuntimeConfig
 {
-	GaugeType GetGaugeType()
+	[[nodiscard]]
+	GaugeType GetGaugeType() noexcept
 	{
 		return g_config.gaugeType;
 	}
 
-	void SetGaugeType(GaugeType gaugeType)
+	void SetGaugeType(GaugeType gaugeType) noexcept
 	{
 		g_config.gaugeType = gaugeType;
 	}
 
-	TurnMode GetTurnMode()
+	[[nodiscard]]
+	TurnMode GetTurnMode() noexcept
 	{
 		return g_config.turnMode;
 	}
 
-	void SetTurnMode(TurnMode turnMode)
+	void SetTurnMode(TurnMode turnMode) noexcept
 	{
 		g_config.turnMode = turnMode;
 	}
 
-	JudgmentPlayMode GetJudgmentPlayModeBT()
+	[[nodiscard]]
+	JudgmentPlayMode GetJudgmentPlayModeBT() noexcept
 	{
 		return g_config.judgmentModeBT;
 	}
 
-	void SetJudgmentPlayModeBT(JudgmentPlayMode mode)
+	void SetJudgmentPlayModeBT(JudgmentPlayMode mode) noexcept
 	{
 		g_config.judgmentModeBT = mode;
 	}
 
-	JudgmentPlayMode GetJudgmentPlayModeFX()
+	[[nodiscard]]
+	JudgmentPlayMode GetJudgmentPlayModeFX() noexcept
 	{
 		return g_config.judgmentModeFX;
 	}
 
-	void SetJudgmentPlayModeFX(JudgmentPlayMode mode)
+	void SetJudgmentPlayModeFX(JudgmentPlayMode mode) noexcept
 	{
 		g_config.judgmentModeFX = mode;
 	}
 
-	JudgmentPlayMode GetJudgmentPlayModeLaser()
+	[[nodiscard]]
+	JudgmentPlayMode GetJudgmentPlayModeLaser() noexcept
 	{
 		return g_config.judgmentModeLaser;
 	}
 
-	void SetJudgmentPlayModeLaser(JudgmentPlayMode mode)
+	void SetJudgmentPlayModeLaser(JudgmentPlayMode mode) noexcept
 	{
 		g_config.judgmentModeLaser = mode;
 	}
 
-	double GetPlaybackSpeed()
+	[[nodiscard]]
+	double GetPlaybackSpeed() noexcept
 	{
 		return g_config.playbackSpeed;
 	}
 
-	void SetPlaybackSpeed(double speed)
+	void SetPlaybackSpeed(double speed) noexcept
 	{
 		g_config.playbackSpeed = speed;
 	}

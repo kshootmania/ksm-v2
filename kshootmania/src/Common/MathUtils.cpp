@@ -1,10 +1,7 @@
 ﻿#include "MathUtils.hpp"
 
-int32 MathUtils::NumDigits(int32 number)
+[[nodiscard]]
+int32 MathUtils::NumDigits(int32 number) noexcept
 {
-	if (number == 0)
-	{
-		return 1;
-	}
-	return static_cast<int32>(Log10(Abs(number))) + 1;
+	return number == 0 ? 1 : static_cast<int32>(Log10(Abs(number))) + 1;
 }

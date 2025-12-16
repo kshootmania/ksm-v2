@@ -1,7 +1,7 @@
 ﻿#include "LinearMenu.hpp"
 #include "Input/KeyConfig.hpp"
 
-void LinearMenu::increment(int32 absDeltaCursor)
+void LinearMenu::increment(int32 absDeltaCursor) noexcept
 {
 	const int32 range = m_cursorMax + 1 - m_cursorMin;
 	if (m_cyclic && range > 0)
@@ -26,7 +26,7 @@ void LinearMenu::increment(int32 absDeltaCursor)
 	}
 }
 
-void LinearMenu::decrement(int32 absDeltaCursor)
+void LinearMenu::decrement(int32 absDeltaCursor) noexcept
 {
 	const int32 range = m_cursorMax + 1 - m_cursorMin;
 	if (m_cyclic && range > 0)
@@ -71,12 +71,13 @@ LinearMenu::LinearMenu(const CreateInfoWithCursorMinMax& createInfo)
 {
 }
 
-int32 LinearMenu::cursor() const
+[[nodiscard]]
+int32 LinearMenu::cursor() const noexcept
 {
 	return m_cursor;
 }
 
-void LinearMenu::update()
+void LinearMenu::update() noexcept
 {
 	m_cursorInput.update();
 	m_deltaCursor = m_cursorInput.deltaCursor();
@@ -92,27 +93,31 @@ void LinearMenu::update()
 	}
 }
 
-void LinearMenu::setCursorStep(int32 step)
+void LinearMenu::setCursorStep(int32 step) noexcept
 {
 	m_cursorStep = step;
 }
 
-bool LinearMenu::isCursorMin() const
+[[nodiscard]]
+bool LinearMenu::isCursorMin() const noexcept
 {
 	return m_cursor <= m_cursorMin;
 }
 
-bool LinearMenu::isCursorMax() const
+[[nodiscard]]
+bool LinearMenu::isCursorMax() const noexcept
 {
 	return m_cursor >= m_cursorMax;
 }
 
-int32 LinearMenu::deltaCursor() const
+[[nodiscard]]
+int32 LinearMenu::deltaCursor() const noexcept
 {
 	return m_deltaCursor;
 }
 
-double LinearMenu::cursorRate() const
+[[nodiscard]]
+double LinearMenu::cursorRate() const noexcept
 {
 	if (m_cursorMax <= m_cursorMin)
 	{

@@ -15,11 +15,13 @@ namespace FsUtils
 	}
 #endif
 
+	[[nodiscard]]
 	FilePath GetFullPathInFolder(SpecialFolder folder, FilePathView relativePath)
 	{
 		return FileSystem::PathAppend(FileSystem::GetFolderPath(folder), relativePath);
 	}
 
+	[[nodiscard]]
 	FilePath AppDataDirectoryPath()
 	{
 #ifdef __APPLE__
@@ -34,6 +36,7 @@ namespace FsUtils
 #endif
 	}
 
+	[[nodiscard]]
 	FilePath ResourceDirectoryPath()
 	{
 #ifdef __APPLE__
@@ -59,42 +62,50 @@ namespace FsUtils
 #endif
 	}
 
+	[[nodiscard]]
 	FilePath ScoreDirectoryPath()
 	{
 		return FileSystem::PathAppend(AppDataDirectoryPath(), U"score");
 	}
 
+	[[nodiscard]]
 	FilePath SongsDirectoryPath()
 	{
 		return FileSystem::PathAppend(AppDataDirectoryPath(), U"songs");
 	}
 
+	[[nodiscard]]
 	FilePath SongsDefaultDirectoryPath()
 	{
 		return FileSystem::PathAppend(ResourceDirectoryPath(), U"songs_default");
 	}
 
+	[[nodiscard]]
 	FilePath CoursesDirectoryPath()
 	{
 		return FileSystem::PathAppend(AppDataDirectoryPath(), U"courses");
 	}
 
+	[[nodiscard]]
 	FilePath CourseScoreDirectoryPath()
 	{
 		return FileSystem::PathAppend(CoursesDirectoryPath(), U"score");
 	}
 
+	[[nodiscard]]
 	FilePath GetResourcePath(FilePathView folderName)
 	{
 		return FileSystem::PathAppend(ResourceDirectoryPath(), folderName);
 	}
 
+	[[nodiscard]]
 	String DirectoryNameByDirectoryPath(FilePathView directoryPath)
 	{
 		const bool endsWithSlash = directoryPath.ends_with(U'/') || directoryPath.ends_with(U'\\');
 		return FileSystem::FileName(endsWithSlash ? directoryPath.substr(0, directoryPath.size() - 1) : directoryPath);
 	}
 
+	[[nodiscard]]
 	String EliminateExtension(FilePathView path)
 	{
 		if (path.empty())
@@ -109,6 +120,7 @@ namespace FsUtils
 		return String{ path.substr(0, path.size() - extension.size() - 1) }; // ドット除去のため-1
 	}
 
+	[[nodiscard]]
 	String RelativePathFromSongsDir(FilePathView fullPath)
 	{
 		return FileSystem::RelativePath(fullPath, SongsDirectoryPath());

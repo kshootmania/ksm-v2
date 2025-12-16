@@ -33,7 +33,7 @@ void FrameRateLimit::postPresent()
 	std::this_thread::sleep_until(m_sleepUntil);
 }
 
-void FrameRateLimit::setTargetFPS(const Optional<int32>& targetFPS)
+void FrameRateLimit::setTargetFPS(const Optional<int32>& targetFPS) noexcept
 {
 	m_targetFPS = targetFPS;
 }

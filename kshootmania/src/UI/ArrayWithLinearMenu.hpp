@@ -5,6 +5,7 @@ template <typename T>
 class ArrayWithLinearMenu
 {
 private:
+	[[nodiscard]]
 	static LinearMenu::CreateInfoWithCursorMinMax FixLinearMenuCreateInfo(const Array<T>& array, LinearMenu::CreateInfoWithCursorMinMax createInfo);
 
 	Array<T> m_array;
@@ -19,10 +20,12 @@ public:
 
 	explicit ArrayWithLinearMenu(Array<T>&& array, const LinearMenu::CreateInfoWithCursorMinMax& createInfo);
 
-	int32 cursor() const;
+	[[nodiscard]]
+	int32 cursor() const noexcept;
 
 	template <typename U>
-	U cursorAs() const;
+	[[nodiscard]]
+	U cursorAs() const noexcept;
 
 	template <typename U>
 	void setCursor(U value);
@@ -30,34 +33,47 @@ public:
 	/// @brief 配列内で指定した値に一致する要素のインデックスにカーソルを設定
 	/// @param value 検索する値
 	/// @return 値が見つかった場合はtrue、見つからなかった場合はfalse(カーソルは変更されない)
+	[[nodiscard]]
 	bool setCursorToValue(const T& value);
 
 	void update();
 
-	bool isCursorMin() const;
+	[[nodiscard]]
+	bool isCursorMin() const noexcept;
 
-	bool isCursorMax() const;
+	[[nodiscard]]
+	bool isCursorMax() const noexcept;
 
-	int32 deltaCursor() const;
+	[[nodiscard]]
+	int32 deltaCursor() const noexcept;
 
-	double cursorRate() const;
+	[[nodiscard]]
+	double cursorRate() const noexcept;
 
+	[[nodiscard]]
 	T& cursorValue();
 
+	[[nodiscard]]
 	const T& cursorValue() const;
 
 	void setArray(const Array<T>& array);
 
-	auto& operator[](std::size_t idx);
+	[[nodiscard]]
+	auto& operator[](std::size_t idx) noexcept;
 
-	const auto& operator[](std::size_t idx) const;
+	[[nodiscard]]
+	const auto& operator[](std::size_t idx) const noexcept;
 
+	[[nodiscard]]
 	auto& at(std::size_t idx);
 
+	[[nodiscard]]
 	const auto& at(std::size_t idx) const;
 
+	[[nodiscard]]
 	auto& atCyclic(int32 idx);
 
+	[[nodiscard]]
 	const auto& atCyclic(int32 idx) const;
 
 	void clear();
@@ -71,37 +87,53 @@ public:
 
 	void pop_back();
 
-	auto begin();
+	[[nodiscard]]
+	auto begin() noexcept;
 
-	auto begin() const;
+	[[nodiscard]]
+	auto begin() const noexcept;
 
-	auto cbegin() const;
+	[[nodiscard]]
+	auto cbegin() const noexcept;
 
-	auto end();
+	[[nodiscard]]
+	auto end() noexcept;
 
-	auto end() const;
+	[[nodiscard]]
+	auto end() const noexcept;
 
-	auto cend() const;
+	[[nodiscard]]
+	auto cend() const noexcept;
 
-	auto rbegin();
+	[[nodiscard]]
+	auto rbegin() noexcept;
 
-	auto rbegin() const;
+	[[nodiscard]]
+	auto rbegin() const noexcept;
 
-	auto crbegin() const;
+	[[nodiscard]]
+	auto crbegin() const noexcept;
 
-	auto rend();
+	[[nodiscard]]
+	auto rend() noexcept;
 
-	auto rend() const;
+	[[nodiscard]]
+	auto rend() const noexcept;
 
-	auto crend() const;
+	[[nodiscard]]
+	auto crend() const noexcept;
 
+	[[nodiscard]]
 	auto& back();
 
+	[[nodiscard]]
 	const auto& back() const;
 
-	auto size() const;
+	[[nodiscard]]
+	auto size() const noexcept;
 
-	auto empty() const;
+	[[nodiscard]]
+	auto empty() const noexcept;
 };
 
 template<typename T>
@@ -114,14 +146,14 @@ LinearMenu::CreateInfoWithCursorMinMax ArrayWithLinearMenu<T>::FixLinearMenuCrea
 }
 
 template <typename T>
-int32 ArrayWithLinearMenu<T>::cursor() const
+int32 ArrayWithLinearMenu<T>::cursor() const noexcept
 {
 	return m_linearMenu.cursor();
 }
 
 template <typename T>
 template <typename U>
-U ArrayWithLinearMenu<T>::cursorAs() const
+U ArrayWithLinearMenu<T>::cursorAs() const noexcept
 {
 	return m_linearMenu.template cursorAs<U>();
 }
@@ -180,25 +212,25 @@ void ArrayWithLinearMenu<T>::update()
 }
 
 template <typename T>
-bool ArrayWithLinearMenu<T>::isCursorMin() const
+bool ArrayWithLinearMenu<T>::isCursorMin() const noexcept
 {
 	return m_linearMenu.isCursorMin();
 }
 
 template <typename T>
-bool ArrayWithLinearMenu<T>::isCursorMax() const
+bool ArrayWithLinearMenu<T>::isCursorMax() const noexcept
 {
 	return m_linearMenu.isCursorMax();
 }
 
 template<typename T>
-int32 ArrayWithLinearMenu<T>::deltaCursor() const
+int32 ArrayWithLinearMenu<T>::deltaCursor() const noexcept
 {
 	return m_linearMenu.deltaCursor();
 }
 
 template<typename T>
-double ArrayWithLinearMenu<T>::cursorRate() const
+double ArrayWithLinearMenu<T>::cursorRate() const noexcept
 {
 	return m_linearMenu.cursorRate();
 }
@@ -222,13 +254,13 @@ void ArrayWithLinearMenu<T>::setArray(const Array<T>& array)
 }
 
 template <typename T>
-auto& ArrayWithLinearMenu<T>::operator[](std::size_t idx)
+auto& ArrayWithLinearMenu<T>::operator[](std::size_t idx) noexcept
 {
 	return m_array[idx];
 }
 
 template <typename T>
-const auto& ArrayWithLinearMenu<T>::operator[](std::size_t idx) const
+const auto& ArrayWithLinearMenu<T>::operator[](std::size_t idx) const noexcept
 {
 	return m_array[idx];
 }
@@ -336,73 +368,73 @@ void ArrayWithLinearMenu<T>::pop_back()
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::begin()
+auto ArrayWithLinearMenu<T>::begin() noexcept
 {
 	return m_array.begin();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::begin() const
+auto ArrayWithLinearMenu<T>::begin() const noexcept
 {
 	return m_array.begin();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::cbegin() const
+auto ArrayWithLinearMenu<T>::cbegin() const noexcept
 {
 	return m_array.cbegin();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::end()
+auto ArrayWithLinearMenu<T>::end() noexcept
 {
 	return m_array.end();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::end() const
+auto ArrayWithLinearMenu<T>::end() const noexcept
 {
 	return m_array.end();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::cend() const
+auto ArrayWithLinearMenu<T>::cend() const noexcept
 {
 	return m_array.cend();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::rbegin()
+auto ArrayWithLinearMenu<T>::rbegin() noexcept
 {
 	return m_array.rbegin();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::rbegin() const
+auto ArrayWithLinearMenu<T>::rbegin() const noexcept
 {
 	return m_array.rbegin();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::crbegin() const
+auto ArrayWithLinearMenu<T>::crbegin() const noexcept
 {
 	return m_array.crbegin();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::rend()
+auto ArrayWithLinearMenu<T>::rend() noexcept
 {
 	return m_array.rend();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::rend() const
+auto ArrayWithLinearMenu<T>::rend() const noexcept
 {
 	return m_array.rend();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::crend() const
+auto ArrayWithLinearMenu<T>::crend() const noexcept
 {
 	return m_array.crend();
 }
@@ -420,13 +452,13 @@ const auto& ArrayWithLinearMenu<T>::back() const
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::size() const
+auto ArrayWithLinearMenu<T>::size() const noexcept
 {
 	return m_array.size();
 }
 
 template <typename T>
-auto ArrayWithLinearMenu<T>::empty() const
+auto ArrayWithLinearMenu<T>::empty() const noexcept
 {
 	return m_array.empty();
 }

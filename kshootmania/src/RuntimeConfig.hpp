@@ -5,29 +5,35 @@
 // config.iniには保存されず、起動時にデフォルト値にリセットされる
 namespace RuntimeConfig
 {
-	GaugeType GetGaugeType();
+	[[nodiscard]]
+	GaugeType GetGaugeType() noexcept;
 
-	void SetGaugeType(GaugeType gaugeType);
+	void SetGaugeType(GaugeType gaugeType) noexcept;
 
-	TurnMode GetTurnMode();
+	[[nodiscard]]
+	TurnMode GetTurnMode() noexcept;
 
-	void SetTurnMode(TurnMode turnMode);
+	void SetTurnMode(TurnMode turnMode) noexcept;
 
-	JudgmentPlayMode GetJudgmentPlayModeBT();
+	[[nodiscard]]
+	JudgmentPlayMode GetJudgmentPlayModeBT() noexcept;
 
-	void SetJudgmentPlayModeBT(JudgmentPlayMode mode);
+	void SetJudgmentPlayModeBT(JudgmentPlayMode mode) noexcept;
 
-	JudgmentPlayMode GetJudgmentPlayModeFX();
+	[[nodiscard]]
+	JudgmentPlayMode GetJudgmentPlayModeFX() noexcept;
 
-	void SetJudgmentPlayModeFX(JudgmentPlayMode mode);
+	void SetJudgmentPlayModeFX(JudgmentPlayMode mode) noexcept;
 
-	JudgmentPlayMode GetJudgmentPlayModeLaser();
+	[[nodiscard]]
+	JudgmentPlayMode GetJudgmentPlayModeLaser() noexcept;
 
-	void SetJudgmentPlayModeLaser(JudgmentPlayMode mode);
+	void SetJudgmentPlayModeLaser(JudgmentPlayMode mode) noexcept;
 
-	double GetPlaybackSpeed();
+	[[nodiscard]]
+	double GetPlaybackSpeed() noexcept;
 
-	void SetPlaybackSpeed(double speed);
+	void SetPlaybackSpeed(double speed) noexcept;
 
 	// config.iniから判定モードを復元
 	void RestoreJudgmentModesFromConfigIni();

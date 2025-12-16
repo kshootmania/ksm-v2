@@ -7,6 +7,7 @@ namespace
 
 	std::array<std::array<String, I18n::kKeyIdxMax>, I18n::kCategoryMax> s_i18nDictionary;
 
+	[[nodiscard]]
 	StringView TrimZeroPadding(StringView str)
 	{
 		const std::size_t length = str.size();
@@ -20,6 +21,7 @@ namespace
 		return str.substr(cursor);
 	}
 
+	[[nodiscard]]
 	I18n::StandardLanguage ConvertLanguageNameToStandardLanguage(StringView name)
 	{
 		if (name == U"English")
@@ -49,11 +51,13 @@ namespace
 	}
 }
 
+[[nodiscard]]
 FilePath I18n::GetDirectoryPath()
 {
 	return FsUtils::GetResourcePath(U"lang");
 }
 
+[[nodiscard]]
 Array<String> I18n::GetAvailableLanguageList()
 {
 	const FilePath directoryPath = GetDirectoryPath();
@@ -68,7 +72,8 @@ Array<String> I18n::GetAvailableLanguageList()
 	return langList;
 }
 
-I18n::StandardLanguage I18n::CurrentLanguage()
+[[nodiscard]]
+I18n::StandardLanguage I18n::CurrentLanguage() noexcept
 {
 	return s_currentLanguage;
 }
@@ -126,6 +131,7 @@ void I18n::LoadLanguage(StringView name, StringView fallback)
 	AssetManagement::RefreshSystemFontForCurrentLanguage();
 }
 
+[[nodiscard]]
 StringView I18n::Get(Category category, int32 keyIdx)
 {
 	if (category < 0 || kCategoryMax <= category || keyIdx < 0 || kKeyIdxMax <= keyIdx)

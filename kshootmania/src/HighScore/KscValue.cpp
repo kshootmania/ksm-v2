@@ -3,7 +3,8 @@
 namespace
 {
 	template <typename T>
-	T GetFieldValue(const Array<String>& values, std::size_t index, T defaultValue)
+	[[nodiscard]]
+	T GetFieldValue(const Array<String>& values, std::size_t index, T defaultValue) noexcept
 	{
 		if (values.size() <= index)
 		{
@@ -14,7 +15,8 @@ namespace
 	}
 }
 
-KscValue KscValue::applyPlayResult(const MusicGame::PlayResult& playResult) const
+[[nodiscard]]
+KscValue KscValue::applyPlayResult(const MusicGame::PlayResult& playResult) const noexcept
 {
 	return KscValue
 	{
@@ -30,7 +32,8 @@ KscValue KscValue::applyPlayResult(const MusicGame::PlayResult& playResult) cons
 	};
 }
 
-KscValue KscValue::applyPlayResultForCourse(const MusicGame::PlayResult& playResult) const
+[[nodiscard]]
+KscValue KscValue::applyPlayResultForCourse(const MusicGame::PlayResult& playResult) const noexcept
 {
 	// コースモードではフルコンボ未満の場合はachievementを更新しない
 	const Achievement newAchievement = playResult.achievement() >= Achievement::kFullCombo
@@ -51,6 +54,7 @@ KscValue KscValue::applyPlayResultForCourse(const MusicGame::PlayResult& playRes
 	};
 }
 
+[[nodiscard]]
 String KscValue::toString() const
 {
 	return U"{},{},{},{},{},{},{},{},{}"_fmt(
@@ -65,6 +69,7 @@ String KscValue::toString() const
 		perfectCount);
 }
 
+[[nodiscard]]
 KscValue KscValue::FromString(const String& str)
 {
 	const Array<String> values = str.split(U',');

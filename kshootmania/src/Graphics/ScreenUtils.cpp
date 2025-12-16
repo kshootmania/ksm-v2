@@ -1,6 +1,8 @@
 ﻿#include "ScreenUtils.hpp"
+#include "Ini/ConfigIni.hpp"
 
-TextureRegion ScreenUtils::FitToHeight(const Texture& texture)
+[[nodiscard]]
+TextureRegion ScreenUtils::FitToHeight(const Texture& texture) noexcept
 {
 	const double height = Scene::Height();
 	const double width = texture.width() * height / texture.height();
