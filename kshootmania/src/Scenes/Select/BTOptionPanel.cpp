@@ -102,10 +102,10 @@ namespace
 	{
 		switch (mode)
 		{
-		case ConfigIni::Value::JudgmentMode::kOn: return I18n::Get(I18n::Select::kJudgmentModeOn);
-		case ConfigIni::Value::JudgmentMode::kOff: return I18n::Get(I18n::Select::kJudgmentModeOff);
-		case ConfigIni::Value::JudgmentMode::kAuto: return I18n::Get(I18n::Select::kJudgmentModeAuto);
-		case ConfigIni::Value::JudgmentMode::kHide: return I18n::Get(I18n::Select::kJudgmentModeHide);
+		case ConfigIni::Value::JudgmentMode::kOn: return I18n::Get(I18n::Select::JudgmentModeOn);
+		case ConfigIni::Value::JudgmentMode::kOff: return I18n::Get(I18n::Select::JudgmentModeOff);
+		case ConfigIni::Value::JudgmentMode::kAuto: return I18n::Get(I18n::Select::JudgmentModeAuto);
+		case ConfigIni::Value::JudgmentMode::kHide: return I18n::Get(I18n::Select::JudgmentModeHide);
 		default: return U"";
 		}
 	}
@@ -114,9 +114,9 @@ namespace
 	{
 		switch (gauge)
 		{
-		case GaugeType::kEasyGauge: return I18n::Get(I18n::Select::kEffRateEasy);
-		case GaugeType::kNormalGauge: return I18n::Get(I18n::Select::kEffRateNormal);
-		case GaugeType::kHardGauge: return I18n::Get(I18n::Select::kEffRateHard);
+		case GaugeType::kEasyGauge: return I18n::Get(I18n::Select::EffRateEasy);
+		case GaugeType::kNormalGauge: return I18n::Get(I18n::Select::EffRateNormal);
+		case GaugeType::kHardGauge: return I18n::Get(I18n::Select::EffRateHard);
 		default: return U"";
 		}
 	}
@@ -125,9 +125,9 @@ namespace
 	{
 		switch (turn)
 		{
-		case TurnMode::kNormal: return I18n::Get(I18n::Select::kTurnNormal);
-		case TurnMode::kMirror: return I18n::Get(I18n::Select::kTurnMirror);
-		case TurnMode::kRandom: return I18n::Get(I18n::Select::kTurnRandom);
+		case TurnMode::kNormal: return I18n::Get(I18n::Select::TurnNormal);
+		case TurnMode::kMirror: return I18n::Get(I18n::Select::TurnMirror);
+		case TurnMode::kRandom: return I18n::Get(I18n::Select::TurnRandom);
 		default: return U"";
 		}
 	}
@@ -136,8 +136,8 @@ namespace
 	{
 		switch (assistTick)
 		{
-		case AssistTickMode::kOff: return I18n::Get(I18n::Select::kAssistTickOff);
-		case AssistTickMode::kOn: return I18n::Get(I18n::Select::kAssistTickOn);
+		case AssistTickMode::kOff: return I18n::Get(I18n::Select::AssistTickOff);
+		case AssistTickMode::kOn: return I18n::Get(I18n::Select::AssistTickOn);
 		default: return U"";
 		}
 	}
@@ -146,10 +146,10 @@ namespace
 	{
 		switch (autoSync)
 		{
-		case AutoSyncMode::kOff: return I18n::Get(I18n::Select::kAutoSyncOff);
-		case AutoSyncMode::kLow: return I18n::Get(I18n::Select::kAutoSyncOnLow);
-		case AutoSyncMode::kMid: return I18n::Get(I18n::Select::kAutoSyncOnMid);
-		case AutoSyncMode::kHigh: return I18n::Get(I18n::Select::kAutoSyncOnHigh);
+		case AutoSyncMode::kOff: return I18n::Get(I18n::Select::AutoSyncOff);
+		case AutoSyncMode::kLow: return I18n::Get(I18n::Select::AutoSyncOnLow);
+		case AutoSyncMode::kMid: return I18n::Get(I18n::Select::AutoSyncOnMid);
+		case AutoSyncMode::kHigh: return I18n::Get(I18n::Select::AutoSyncOnHigh);
 		default: return U"";
 		}
 	}*/
@@ -158,8 +158,8 @@ namespace
 	{
 		switch (display)
 		{
-		case FastSlowMode::kHide: return I18n::Get(I18n::Select::kFastSlowHide);
-		case FastSlowMode::kShow: return I18n::Get(I18n::Select::kFastSlowShow);
+		case FastSlowMode::kHide: return I18n::Get(I18n::Select::FastSlowHide);
+		case FastSlowMode::kShow: return I18n::Get(I18n::Select::FastSlowShow);
 		default: return U"";
 		}
 	}
@@ -168,8 +168,8 @@ namespace
 	{
 		switch (skin)
 		{
-		case NoteSkinType::kDefault: return I18n::Get(I18n::Select::kNoteSkinDefault);
-		case NoteSkinType::kNote: return I18n::Get(I18n::Select::kNoteSkinNote);
+		case NoteSkinType::kDefault: return I18n::Get(I18n::Select::NoteSkinDefault);
+		case NoteSkinType::kNote: return I18n::Get(I18n::Select::NoteSkinNote);
 		default: return U"";
 		}
 	}
@@ -178,8 +178,8 @@ namespace
 	{
 		switch (display)
 		{
-		case MovieMode::kOff: return I18n::Get(I18n::Select::kMovieOff);
-		case MovieMode::kOn: return I18n::Get(I18n::Select::kMovieOn);
+		case MovieMode::kOff: return I18n::Get(I18n::Select::MovieOff);
+		case MovieMode::kOn: return I18n::Get(I18n::Select::MovieOn);
 		default: return U"";
 		}
 	}
@@ -407,13 +407,13 @@ String BTOptionPanel::generateBTAMenuText() const
 
 	const auto currentItem = m_btAMenu.cursorAs<BTAMenuItem>();
 
-	String text{ I18n::Get(I18n::Select::kJudgment) };
+	String text{ I18n::Get(I18n::Select::Judgment) };
 	text += U"\n";
-	text += FormatMenuLine(I18n::Get(I18n::Select::kJudgmentBT), JudgmentModeToI18nKey(judgmentModeBT), currentItem == BTAMenuItem::kJudgmentBT, m_judgmentModeBT.cursor(), 0, 3);
+	text += FormatMenuLine(I18n::Get(I18n::Select::JudgmentBT), JudgmentModeToI18nKey(judgmentModeBT), currentItem == BTAMenuItem::kJudgmentBT, m_judgmentModeBT.cursor(), 0, 3);
 	text += U"\n";
-	text += FormatMenuLine(I18n::Get(I18n::Select::kJudgmentFX), JudgmentModeToI18nKey(judgmentModeFX), currentItem == BTAMenuItem::kJudgmentFX, m_judgmentModeFX.cursor(), 0, 3);
+	text += FormatMenuLine(I18n::Get(I18n::Select::JudgmentFX), JudgmentModeToI18nKey(judgmentModeFX), currentItem == BTAMenuItem::kJudgmentFX, m_judgmentModeFX.cursor(), 0, 3);
 	text += U"\n";
-	text += FormatMenuLine(I18n::Get(I18n::Select::kJudgmentLaser), JudgmentModeToI18nKey(judgmentModeLaser), currentItem == BTAMenuItem::kJudgmentLaser, m_judgmentModeLaser.cursor(), 0, 3);
+	text += FormatMenuLine(I18n::Get(I18n::Select::JudgmentLaser), JudgmentModeToI18nKey(judgmentModeLaser), currentItem == BTAMenuItem::kJudgmentLaser, m_judgmentModeLaser.cursor(), 0, 3);
 
 	return text;
 }
@@ -427,11 +427,11 @@ String BTOptionPanel::generateBTBMenuText() const
 	const auto currentItem = m_btBMenu.cursorAs<BTBMenuItem>();
 
 	String text = U"";
-	text += FormatMenuLine(I18n::Get(I18n::Select::kEffRate), GaugeTypeToI18nKey(gaugeType), currentItem == BTBMenuItem::kEffRate, m_gaugeType.cursor(), static_cast<int32>(GaugeType::kEasyGauge), static_cast<int32>(GaugeType::kHardGauge));
+	text += FormatMenuLine(I18n::Get(I18n::Select::EffRate), GaugeTypeToI18nKey(gaugeType), currentItem == BTBMenuItem::kEffRate, m_gaugeType.cursor(), static_cast<int32>(GaugeType::kEasyGauge), static_cast<int32>(GaugeType::kHardGauge));
 	text += U"\n";
-	text += FormatMenuLine(I18n::Get(I18n::Select::kTurn), TurnModeToI18nKey(turnMode), currentItem == BTBMenuItem::kTurn, m_turnMode.cursor(), 0, 2);
+	text += FormatMenuLine(I18n::Get(I18n::Select::Turn), TurnModeToI18nKey(turnMode), currentItem == BTBMenuItem::kTurn, m_turnMode.cursor(), 0, 2);
 	text += U"\n";
-	text += FormatMenuLine(I18n::Get(I18n::Select::kPlaybackSpeed), PlaybackSpeedToString(playbackSpeedCursor), currentItem == BTBMenuItem::kPlaybackSpeed, playbackSpeedCursor, kPlaybackSpeedMin, kPlaybackSpeedMax);
+	text += FormatMenuLine(I18n::Get(I18n::Select::PlaybackSpeed), PlaybackSpeedToString(playbackSpeedCursor), currentItem == BTBMenuItem::kPlaybackSpeed, playbackSpeedCursor, kPlaybackSpeedMin, kPlaybackSpeedMax);
 
 	return text;
 }
@@ -447,15 +447,15 @@ String BTOptionPanel::generateBTCMenuText() const
 	const auto currentItem = m_btCMenu.cursorAs<BTCMenuItem>();
 
 	String text = U"";
-	text += FormatMenuLine(I18n::Get(I18n::Select::kAssistTick), AssistTickModeToI18nKey(assistTick), currentItem == BTCMenuItem::kAssistTick, m_assistTick.cursor(), 0, static_cast<int32>(AssistTickMode::kCount) - 1);
+	text += FormatMenuLine(I18n::Get(I18n::Select::AssistTick), AssistTickModeToI18nKey(assistTick), currentItem == BTCMenuItem::kAssistTick, m_assistTick.cursor(), 0, static_cast<int32>(AssistTickMode::kCount) - 1);
 	text += U"\n";
-	/*text += FormatMenuLine(I18n::Get(I18n::Select::kAutoSync), AutoSyncModeToI18nKey(autoSync), currentItem == BTCMenuItem::kAutoSync, m_autoSync.cursor(), 0, static_cast<int32>(AutoSyncMode::kCount) - 1);
+	/*text += FormatMenuLine(I18n::Get(I18n::Select::AutoSync), AutoSyncModeToI18nKey(autoSync), currentItem == BTCMenuItem::kAutoSync, m_autoSync.cursor(), 0, static_cast<int32>(AutoSyncMode::kCount) - 1);
 	text += U"\n";*/
-	text += FormatMenuLine(I18n::Get(I18n::Select::kFastSlow), FastSlowModeToI18nKey(fastSlow), currentItem == BTCMenuItem::kFastSlow, m_fastSlow.cursor(), 0, static_cast<int32>(FastSlowMode::kCount) - 1);
+	text += FormatMenuLine(I18n::Get(I18n::Select::FastSlow), FastSlowModeToI18nKey(fastSlow), currentItem == BTCMenuItem::kFastSlow, m_fastSlow.cursor(), 0, static_cast<int32>(FastSlowMode::kCount) - 1);
 	text += U"\n";
-	text += FormatMenuLine(I18n::Get(I18n::Select::kNoteSkin), NoteSkinTypeToI18nKey(noteSkin), currentItem == BTCMenuItem::kNoteSkin, m_noteSkin.cursor(), 0, static_cast<int32>(NoteSkinType::kCount) - 1);
+	text += FormatMenuLine(I18n::Get(I18n::Select::NoteSkin), NoteSkinTypeToI18nKey(noteSkin), currentItem == BTCMenuItem::kNoteSkin, m_noteSkin.cursor(), 0, static_cast<int32>(NoteSkinType::kCount) - 1);
 	text += U"\n";
-	text += FormatMenuLine(I18n::Get(I18n::Select::kMovie), MovieModeToI18nKey(movie), currentItem == BTCMenuItem::kMovie, m_movie.cursor(), 0, static_cast<int32>(MovieMode::kCount) - 1);
+	text += FormatMenuLine(I18n::Get(I18n::Select::Movie), MovieModeToI18nKey(movie), currentItem == BTCMenuItem::kMovie, m_movie.cursor(), 0, static_cast<int32>(MovieMode::kCount) - 1);
 
 	return text;
 }
@@ -465,7 +465,7 @@ String BTOptionPanel::generateBTDMenuText() const
 	const auto hispeedType = m_hispeedTypeMenu.cursorValue();
 	const int32 hispeedValue = m_hispeedValueMenu.cursor();
 
-	String text{ I18n::Get(I18n::Select::kHispeed) };
+	String text{ I18n::Get(I18n::Select::Hispeed) };
 	text += U"\n";
 	text += U"          ";
 	text += MusicGame::HispeedUtils::ToDisplayString(MusicGame::HispeedSetting{ .type = hispeedType, .value = hispeedValue });

@@ -53,6 +53,7 @@ endif()
 
 target_include_directories(${TARGET_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/ThirdParty
     ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/ThirdParty/CoTaskLib/include
 )
 

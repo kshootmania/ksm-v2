@@ -27,13 +27,13 @@ String PlayStatsPanel::generateStatsText(const HighScoreInfo& highScore, GaugeTy
 	const int32 perfectCount = highScore.perfectCount(gaugeType);
 
 	return U"{}{}\n{}{}\n{}{}\n{}{}"_fmt(
-		I18n::Get(I18n::Select::kPlayStatsPlayCount),
+		I18n::Get(I18n::Select::PlayStatsPlayCount),
 		playCount,
-		I18n::Get(I18n::Select::kPlayStatsClear),
+		I18n::Get(I18n::Select::PlayStatsClear),
 		clearCount,
-		I18n::Get(I18n::Select::kPlayStatsFullCombo),
+		I18n::Get(I18n::Select::PlayStatsFullCombo),
 		fullComboCount,
-		I18n::Get(I18n::Select::kPlayStatsPerfect),
+		I18n::Get(I18n::Select::PlayStatsPerfect),
 		perfectCount
 	);
 }

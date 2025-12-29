@@ -231,15 +231,6 @@
     <ClCompile Include="src\Input\KeyConfig.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="src\Input\LaserInput\AnalogStickXYLaserInput.cpp">
-      <Filter>Source Files\Input\LaserInput</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Input\LaserInput\KeyboardLaserInput.cpp">
-      <Filter>Source Files\Input\LaserInput</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Input\LaserInput\SliderLaserInput.cpp">
-      <Filter>Source Files\Input\LaserInput</Filter>
-    </ClCompile>
     <ClCompile Include="src\I18n\I18n.cpp">
       <Filter>Source Files\I18n</Filter>
     </ClCompile>
@@ -468,11 +459,23 @@
     <ClCompile Include="src\MusicGame\PlayModeUtil.cpp">
       <Filter>Source Files\MusicGame</Filter>
     </ClCompile>
+    <ClCompile Include="src\Input\LaserInput\AnalogStickXYLaserInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\LaserInput\KeyboardLaserInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\LaserInput\SliderLaserInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\NocoExtensions\NocoUtils.cpp">
-      <Filter>Source Files\NocoExtensions</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NocoExtensions\VerticalMarquee.cpp">
-      <Filter>Source Files\NocoExtensions</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\LaserInput\MouseXYLaserInput.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -763,18 +766,6 @@
     <ClInclude Include="src\Input\KeyConfig.hpp">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="src\Input\LaserInput\AnalogStickXYLaserInput.hpp">
-      <Filter>Header Files\Input\LaserInput</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Input\LaserInput\ILaserInputMethod.hpp">
-      <Filter>Header Files\Input\LaserInput</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Input\LaserInput\KeyboardLaserInput.hpp">
-      <Filter>Header Files\Input\LaserInput</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Input\LaserInput\SliderLaserInput.hpp">
-      <Filter>Header Files\Input\LaserInput</Filter>
-    </ClInclude>
     <ClInclude Include="src\Input\PlatformKey.hpp">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -1033,12 +1024,6 @@
     <ClInclude Include="src\MusicGame\TurnUtil.hpp">
       <Filter>Header Files\MusicGame</Filter>
     </ClInclude>
-    <ClInclude Include="src\NocoExtensions\NocoUtils.hpp">
-      <Filter>Header Files\NocoExtensions</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NocoExtensions\VerticalMarquee.hpp">
-      <Filter>Header Files\NocoExtensions</Filter>
-    </ClInclude>
     <ClInclude Include="src\Graphics\FontUtils.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -1077,6 +1062,24 @@
     </ClInclude>
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib\ScreenFade.hpp">
       <Filter>Header Files\ThirdParty\CoTaskLib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\LaserInput\AnalogStickXYLaserInput.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\LaserInput\ILaserInputMethod.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\LaserInput\SliderLaserInput.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\LaserInput\KeyboardLaserInput.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NocoExtensions\NocoUtils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NocoExtensions\VerticalMarquee.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,10 +1,16 @@
 ﻿#pragma once
+#include "Common/EnumUtils.hpp"
 
-// Multi-language support
 namespace I18n
 {
+	/// @brief 言語ファイルの格納ディレクトリパスを取得
+	/// @return 言語ファイルの格納ディレクトリパス
+	[[nodiscard]]
 	FilePath GetDirectoryPath();
 
+	/// @brief 利用可能な言語リストを取得
+	/// @return 利用可能な言語リスト
+	[[nodiscard]]
 	Array<String> GetAvailableLanguageList();
 
 	/// @brief 標準搭載している言語
@@ -19,225 +25,190 @@ namespace I18n
 		TraditionalChinese,
 	};
 
+	/// @brief 現在の言語を取得
+	/// @return 現在の言語
 	[[nodiscard]]
 	StandardLanguage CurrentLanguage();
 
+	/// @brief 言語ファイルを読み込む
 	void LoadLanguage(StringView name, StringView fallback = U"English");
 
-	enum Category : int32
+	/// @brief カテゴリ名
+	enum class Category
 	{
-		kCategoryUnknown = -1,
-		kGeneral = 0,
-		kSelect = 1,
-		kPlay = 2,
-		kOption = 3,
-		kInputGate = 4,
-
-		kCategoryMax,
+		Select,
+		Play,
+		Option,
 	};
 
-	enum class General : int32
+	/// @brief 選曲画面テキストのキー名
+	enum class Select
 	{
-		kFont = 0,
-		kFontP = 1,
-		kError = 2,
-		kAssetPathSuffix = 10,
+		Judgment,
+		JudgmentBT,
+		JudgmentFX,
+		JudgmentLaser,
+		JudgmentModeOn,
+		JudgmentModeOff,
+		JudgmentModeAuto,
+		JudgmentModeHide,
+		EffRate,
+		EffRateEasy,
+		EffRateNormal,
+		EffRateHard,
+		Turn,
+		TurnNormal,
+		TurnMirror,
+		TurnRandom,
+		PlaybackSpeed,
+		AssistTick,
+		AssistTickOff,
+		AssistTickOn,
+		AutoSync,
+		AutoSyncOnHigh,
+		AutoSyncOnMid,
+		AutoSyncOnLow,
+		AutoSyncOff,
+		FastSlow,
+		FastSlowHide,
+		FastSlowShow,
+		NoteSkin,
+		NoteSkinDefault,
+		NoteSkinNote,
+		Movie,
+		MovieOff,
+		MovieOn,
+		Hispeed,
+		PlayStatsPlayCount,
+		PlayStatsClear,
+		PlayStatsFullCombo,
+		PlayStatsPerfect,
 	};
 
-	constexpr int32 kKeyIdxMax = 100;
-
-	enum class Select : int32
+	/// @brief プレイ画面テキストのキー名
+	enum class Play
 	{
-		kSelectGuideTexturePath = 0,
-		kJudgment = 1,
-		kJudgmentBT = 2,
-		kJudgmentFX = 3,
-		kJudgmentLaser = 4,
-		kJudgmentModeOn = 5,
-		kJudgmentModeOff = 6,
-		kJudgmentModeAuto = 7,
-		kJudgmentModeHide = 8,
-		kEffRate = 9,
-		kEffRateEasy = 10,
-		kEffRateNormal = 11,
-		kEffRateHard = 12,
-		kTurn = 15,
-		kTurnNormal = 16,
-		kTurnMirror = 17,
-		kTurnRandom = 18,
-		kPlaybackSpeed = 21,
-		kAssistTick = 30,
-		kAssistTickOn = 31,
-		kAssistTickOff = 32,
-		kAutoSync = 37,
-		kAutoSyncOnHigh = 38,
-		kAutoSyncOnMid = 39,
-		kAutoSyncOnLow = 40,
-		kAutoSyncOff = 41,
-		kFastSlow = 42,
-		kFastSlowHide = 43,
-		kFastSlowShow = 44,
-		kNoteSkin = 45,
-		kNoteSkinDefault = 46,
-		kNoteSkinNote = 47,
-		kMovie = 60,
-		kMovieOff = 61,
-		kMovieOn = 62,
-		kHispeed = 63,
-		kPlayStatsPlayCount = 70,
-		kPlayStatsClear = 71,
-		kPlayStatsFullCombo = 72,
-		kPlayStatsPerfect = 73,
+		ErrorChartFileNotFound,
+		ErrorSomeChartMissingInCourse,
 	};
 
-	enum class Play : int32
+	/// @brief OPTION画面テキストのキー名
+	enum class Option
 	{
-		kErrorFirstMeasureNotFound = 1,
-		kErrorUnspecified = 5,
-		kDummyTitleChartNotFoundInCourse = 10,
-		kErrorChartFileNotFound = 11,
-		kErrorLatestVersionRequiredForCourse = 12,
-		kErrorSomeChartMissingInCourse = 13,
-		kAutoSyncSaveConfirm1 = 50,
-		kAutoSyncSaveConfirm2 = 51,
-		kAutoSyncSaveConfirmYes = 52,
-		kAutoSyncSaveConfirmNo = 53,
-		kAutoSyncSaving = 55,
-		kUnlockedTrack = 70,
+		FullscreenOff,
+		FullscreenOn,
+		TextureSizeLarge,
+		TextureSizeMedium,
+		TextureSizeSmall,
+		AlwaysShowOtherFoldersOff,
+		AlwaysShowOtherFoldersOn,
+		HideAllFolderOff,
+		HideAllFolderOn,
+		BGDisplayModeHide,
+		BGDisplayModeShowNoLayer,
+		BGDisplayModeShowLayer,
+		MasterVolumePercent,
+		VsyncOff,
+		VsyncOn,
+		JudgmentOn,
+		JudgmentOff,
+		JudgmentAuto,
+		JudgmentHide,
+		LaserInputTypeKeyboard,
+		LaserInputTypeMouseXY,
+		LaserInputTypeSlider,
+		LaserInputTypeAnalogStickXY,
+		AssistTickOff,
+		AssistTickOn,
+		DisableIMEOff,
+		DisableIMEOnLow,
+		DisableIMEOnMid,
+		DisableIMEOnHigh,
+		TimingAdjustSuffixNoAdjustment,
+		TimingAdjustSuffixLater,
+		TimingAdjustSuffixEarlier,
+		TimingAdjustMs,
+		LaserTimingAdjustLater,
+		LaserTimingAdjustEarlier,
+		LaserMouseDirectionLeftThenRight,
+		LaserMouseDirectionRightThenRight,
+		LaserMouseDirectionUpThenRight,
+		LaserMouseDirectionDownThenRight,
+		Off,
+		On,
+		SelectCloseFolderKeyBackspace,
+		SelectCloseFolderKeyEsc,
+		HispeedTypeHide,
+		HispeedTypeShow,
+		HideMouseCursorOff,
+		HideMouseCursorOn,
+		UseNumpadAsArrowKeysOff,
+		UseNumpadAsArrowKeysOnKeyboard,
+		UseNumpadAsArrowKeysOnController,
+		KeyConfigNoAssign,
+		KeyConfigGamepadButtonFormat,
+		KeyConfigLaserKeySeparator,
+		KeyConfigStart,
+		KeyConfigBack,
+		KeyConfigCategoryKeyboard,
+		KeyConfigCategoryGamepad,
+		GuideTop,
+		GuideOption,
+		GuideKeyConfig,
 	};
 
-	enum class Option : int32
-	{
-		kFullscreenOff = 0,
-		kFullscreenOn = 1,
-		kResolutionX = 2,
-		kTextureSizeLarge = 3,
-		kTextureSizeMedium = 4,
-		kTextureSizeSmall = 5,
-		kAlwaysShowOtherFoldersOff = 6,
-		kAlwaysShowOtherFoldersOn = 7,
-		kHideAllFolderOff = 8,
-		kHideAllFolderOn = 9,
-		kBGDisplayModeHide = 10,
-		kBGDisplayModeShowNoLayer = 11,
-		kBGDisplayModeShowLayer = 12,
-		kMasterVolumePercent = 13,
-		kVsyncOff = 14,
-		kVsyncOn = 15,
-		kJudgmentOn = 16,
-		kJudgmentOff = 17,
-		kJudgmentAuto = 18,
-		kJudgmentHide = 19,
-		kLaserInputTypeKeyboard = 20,
-		kLaserInputTypeMouseXY = 22,
-		kLaserInputTypeSlider = 24,
-		kLaserInputTypeAnalogStickXY = 25,
-		kAssistTickOff = 28,
-		kAssistTickOn = 29,
-		kDisableIMEOff = 30,
-		kDisableIMEOnLow = 31,
-		kDisableIMEOnMid = 32,
-		kDisableIMEOnHigh = 33,
-		kTimingAdjustSuffixNoAdjustment = 34,
-		kTimingAdjustSuffixLater = 35,
-		kTimingAdjustSuffixEarlier = 36,
-		kTimingAdjustMs = 37,
-		kLaserTimingAdjustLater = 38,
-		kLaserTimingAdjustEarlier = 39,
-		kLaserMouseDirectionLeftThenRight = 40,
-		kLaserMouseDirectionRightThenRight = 41,
-		kLaserMouseDirectionUpThenRight = 42,
-		kLaserMouseDirectionDownThenRight = 43,
-		kLaserSignalSensitivityZero = 44,
-		kDisabled = 45,
-		kEnabled = 46,
-		kSelectCloseFolderKeyBackspace = 47,
-		kSelectCloseFolderKeyEsc = 48,
-		kHispeedTypeHide = 53,
-		kHispeedTypeShow = 54,
-		kHideMouseCursorOff = 55,
-		kHideMouseCursorOn = 56,
-		kUseNumpadAsArrowKeysOff = 57,
-		kUseNumpadAsArrowKeysOnKeyboard = 58,
-		kUseNumpadAsArrowKeysOnController = 59,
-		kKeyConfigKeyboardNoAssign = 61,
-		kKeyConfigLaserKeySeparator = 62,
-		kKeyConfigGamepadNoAssign = 63,
-		kKeyConfigStart = 64,
-		kKeyConfigBack = 65,
-		kKeyConfigAuto = 66,
-		kKeyConfigGamepadHyphen = 67,
-		kKeyConfigCategoryPrefixKeyboard = 70,
-		kKeyConfigCategoryPrefixGamepad = 71,
-		kKeyConfigCategorySuffix = 72,
-		kGuideTop = 90,
-		kGuideOption = 91,
-		kGuideOptionWithRestartRequired = 92,
-		kGuideKeyConfig = 93,
-	};
-
-	enum class InputGate : int32
-	{
-		kErrorServerNotFound = 0,
-		k404NotFound = 1,
-		kErrorFileNotFound = 2,
-		kErrorConnectionDropped = 3,
-		kErrorLatestVersionRequired = 4,
-		kErrorSongNotFound = 5,
-		kErrorInvalidFileVersion = 6,
-		kErrorDuringFileDownload = 8,
-		kFont = 10,
-		kDownloadingChart = 11,
-		kDownloadingChartSlash = 12,
-		kDownloadingFile = 13,
-		kProgress = 14,
-		kProgressPercent = 15,
-		kProgressOpenBracket = 16,
-		kProgressSlash = 17,
-		kProgressClosedBracket = 18,
-		kB = 19,
-		kKB = 20,
-		kMB = 21,
-		kGB = 22,
-	};
-
-	template <typename T>
+	/// @brief カテゴリ名とキー名からテキストを直接取得
+	/// @param category カテゴリ名
+	/// @param key キー名
+	/// @return テキスト
+	/// @remark 内部実装用。こちらではなくGetを利用すること
 	[[nodiscard]]
-	constexpr Category GetCategoryOfEnumType()
-	{
-		if constexpr (std::is_same_v<T, General>)
-		{
-			return kGeneral;
-		}
-		else if constexpr (std::is_same_v<T, Select>)
-		{
-			return kSelect;
-		}
-		else if constexpr (std::is_same_v<T, Play>)
-		{
-			return kPlay;
-		}
-		else if constexpr (std::is_same_v<T, Option>)
-		{
-			return kOption;
-		}
-		else if constexpr (std::is_same_v<T, InputGate>)
-		{
-			return kInputGate;
-		}
-		else
-		{
-			return kCategoryUnknown;
-		}
-	}
+	StringView GetByCategoryAndKey(const String& category, const String& key);
 
+	/// @brief テキストを取得
+	/// @tparam T I18nのenum型
+	/// @param key キー
+	/// @return テキスト
 	template <typename T>
 	[[nodiscard]]
 	StringView Get(T key)
 	{
-		return Get(GetCategoryOfEnumType<T>(), static_cast<int32>(key));
+		if constexpr (std::is_same_v<T, Select>)
+		{
+			return GetByCategoryAndKey(EnumUtils::EnumToString(Category::Select), EnumUtils::EnumToString(key));
+		}
+		else if constexpr (std::is_same_v<T, Play>)
+		{
+			return GetByCategoryAndKey(EnumUtils::EnumToString(Category::Play), EnumUtils::EnumToString(key));
+		}
+		else if constexpr (std::is_same_v<T, Option>)
+		{
+			return GetByCategoryAndKey(EnumUtils::EnumToString(Category::Option), EnumUtils::EnumToString(key));
+		}
+		else
+		{
+			static_assert([] { return false; }(), "I18n::Get(): Unsupported enum type.");
+			return U"";
+		}
 	}
 
+	/// @brief フォーマット文字列からテキストを取得
+	/// @tparam T I18nのenum型
+	/// @tparam ...Args フォーマット引数の型
+	/// @param key キー
+	/// @param ...args フォーマット引数
+	/// @return テキスト
+	template <typename T, typename... Args>
 	[[nodiscard]]
-	StringView Get(Category category, int32 keyIdx);
-};
+	String Get(T key, const Args&... args)
+	{
+		try
+		{
+			return Fmt(Get(key))(args...);
+		}
+		catch (const fmt::format_error&)
+		{
+			return U"[Format Error]";
+		}
+	}
+}

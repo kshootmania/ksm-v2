@@ -5,20 +5,9 @@ namespace
 {
 	I18n::StandardLanguage s_currentLanguage = I18n::StandardLanguage::Unknown;
 
-	std::array<std::array<String, I18n::kKeyIdxMax>, I18n::kCategoryMax> s_i18nDictionary;
-
-	StringView TrimZeroPadding(StringView str)
-	{
-		const std::size_t length = str.size();
-		auto cursor = std::size_t{ 0 };
-
-		while (cursor < length - 1 && str[cursor] == U'0')
-		{
-			++cursor;
-		}
-
-		return str.substr(cursor);
-	}
+	// テキストの辞書
+	// (カテゴリ名 -> キー名 -> テキスト文字列)
+	HashTable<String, HashTable<String, String>> s_dictionary;
 
 	I18n::StandardLanguage ConvertLanguageNameToStandardLanguage(StringView name)
 	{
@@ -47,6 +36,36 @@ namespace
 			return I18n::StandardLanguage::Unknown;
 		}
 	}
+
+	void LoadDictionaryFromJSON(const FilePath& path)
+	{
+		s_dictionary.clear();
+
+		const JSON json = JSON::Load(path);
+		if (!json)
+		{
+			Logger << U"[ksm warning] Failed to load language file '{}'"_fmt(path);
+			return;
+		}
+
+		for (const auto& [category, categoryObj] : json)
+		{
+			if (!categoryObj.isObject())
+			{
+				continue;
+			}
+
+			HashTable<String, String> categoryDict;
+			for (const auto& [key, value] : categoryObj)
+			{
+				if (value.isString())
+				{
+					categoryDict[key] = value.getString();
+				}
+			}
+			s_dictionary[category] = std::move(categoryDict);
+		}
+	}
 }
 
 FilePath I18n::GetDirectoryPath()
@@ -60,7 +79,7 @@ Array<String> I18n::GetAvailableLanguageList()
 	Array<String> langList;
 	for (const auto& path : FileSystem::DirectoryContents(directoryPath, Recursive::No))
 	{
-		if (FileSystem::Extension(path) == U"txt")
+		if (FileSystem::Extension(path) == U"json")
 		{
 			langList.push_back(FileSystem::BaseName(path));
 		}
@@ -76,62 +95,40 @@ I18n::StandardLanguage I18n::CurrentLanguage()
 void I18n::LoadLanguage(StringView name, StringView fallback)
 {
 	const FilePath directoryPath = GetDirectoryPath();
-	String path = U"{}/{}.txt"_fmt(directoryPath, name);
+	String path = U"{}/{}.json"_fmt(directoryPath, name);
 	s_currentLanguage = ::ConvertLanguageNameToStandardLanguage(name);
+
 	if (!FileSystem::Exists(path))
 	{
-		Print << U"Warning: Could not find language file '{}'!"_fmt(path);
-		path = U"{}/{}.txt"_fmt(directoryPath, fallback);
+		Logger << U"[ksm warning] Could not find language file '{}'"_fmt(path);
+		path = U"{}/{}.json"_fmt(directoryPath, fallback);
 		s_currentLanguage = ::ConvertLanguageNameToStandardLanguage(fallback);
 		if (!FileSystem::Exists(path))
 		{
-			throw Error(U"I18n::LoadLanguage(): Could not load language '{}' and could not load fallback '{}'!"_fmt(name, fallback));
+			throw Error{ U"I18n::LoadLanguage(): Could not load language '{}' and could not load fallback '{}'."_fmt(name, fallback) };
 		}
 	}
 
-	TextReader reader(path);
-	String line;
-	int32 lineNumber = 0;
-	while (reader.readLine(line))
-	{
-		lineNumber++;
-
-		constexpr auto kHeaderLength = std::size_t{ 8 }; // Length of "m00-000|"
-
-		if (line.size() >= kHeaderLength && line[0] == U'm' && line[3] == U'-' && line[7] == U'|')
-		{
-			const StringView categoryIdxStr = TrimZeroPadding(line.substrView(1, 2));
-			const StringView keyIdxStr = TrimZeroPadding(line.substrView(4, 3));
-			try
-			{
-				const int32 categoryIdx = Parse<int32>(categoryIdxStr);
-				const int32 keyIdx = Parse<int32>(keyIdxStr);
-
-				if (categoryIdx < 0 || kCategoryMax <= categoryIdx || keyIdx < 0 || kKeyIdxMax <= keyIdx)
-				{
-					Print << U"Warning: Line {} in language file '{}' is ignored! (key: 'm{:0>2}-{:0>3}')"_fmt(lineNumber, path, categoryIdx, keyIdx);
-					continue;
-				}
-
-				s_i18nDictionary[categoryIdx][keyIdx] = line.substr(kHeaderLength);
-			}
-			catch (const ParseError&)
-			{
-				Print << U"Warning: Line {} in language file '{}' is ignored! (Parse error, category:'{}', key:'{}')"_fmt(lineNumber, path, categoryIdxStr, keyIdxStr);
-				continue;
-			}
-		}
-	}
+	LoadDictionaryFromJSON(path);
 
 	AssetManagement::RefreshSystemFontForCurrentLanguage();
 }
 
-StringView I18n::Get(Category category, int32 keyIdx)
+StringView I18n::GetByCategoryAndKey(const String& category, const String& key)
 {
-	if (category < 0 || kCategoryMax <= category || keyIdx < 0 || kKeyIdxMax <= keyIdx)
+	const auto categoryIt = s_dictionary.find(category);
+	if (categoryIt == s_dictionary.end())
 	{
-		Print << U"Warning: Failed to read from language dictionary! (key:'m{:0>2}-{:0>3}')"_fmt(static_cast<std::underlying_type_t<Category>>(category), keyIdx);
+		Logger << U"[ksm warning] Category '{}' not found in language dictionary."_fmt(category);
 		return U"";
 	}
-	return s_i18nDictionary[category][keyIdx];
+
+	const auto keyIt = categoryIt->second.find(key);
+	if (keyIt == categoryIt->second.end())
+	{
+		Logger << U"[ksm warning] Key '{}' not found in category '{}'."_fmt(key, category);
+		return U"";
+	}
+
+	return keyIt->second;
 }

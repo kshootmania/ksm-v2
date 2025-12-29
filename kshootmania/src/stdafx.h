@@ -3,6 +3,7 @@
 #include <Siv3D.hpp>
 #include <CoTaskLib.hpp>
 #include <NocoUI.hpp>
+#include <magic_enum.hpp>
 #include "kson/kson.hpp"
 #include "Common/CommonDefines.hpp"
 #include "Common/AssetManagement.hpp"

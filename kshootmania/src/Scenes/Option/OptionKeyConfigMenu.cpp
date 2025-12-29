@@ -260,7 +260,7 @@ namespace
 	{
 		if (keyCode == 0x00)
 		{
-			return String{ I18n::Get(I18n::Option::kKeyConfigKeyboardNoAssign) };
+			return String{ I18n::Get(I18n::Option::KeyConfigNoAssign) };
 		}
 #ifdef __APPLE__
 		// macOSプラットフォームキーのチェック
@@ -934,14 +934,14 @@ namespace
 	{
 		// デバイス番号(1始まり)-ボタン番号
 		// TODO: 一旦v1と類似仕様にしているが、playerIndexが不定の可能性があるためvendorId,productID等を使うよう要改善
-		return U"{}-{}"_fmt(input.playerIndex() + 1, input.code());
+		return I18n::Get(I18n::Option::KeyConfigGamepadButtonFormat, input.playerIndex() + 1, input.code());
 	}
 
 	String InputToString(const Input& input)
 	{
 		if (input.deviceType() == InputDeviceType::Undefined)
 		{
-			return String{ I18n::Get(I18n::Option::kKeyConfigKeyboardNoAssign) };
+			return String{ I18n::Get(I18n::Option::KeyConfigNoAssign) };
 		}
 		else if (input.deviceType() == InputDeviceType::Gamepad)
 		{
@@ -1312,7 +1312,7 @@ void OptionKeyConfigMenu::draw() const
 
 		// どちらかのキーが重複していたら赤色で表示
 		const Color textColor = (HasDuplicateKey(targetConfigSet(), buttonL) || HasDuplicateKey(targetConfigSet(), buttonR)) ? Palette::Red : Palette::White;
-		m_font(U"{} {} {}"_fmt(InputToString(inputL), I18n::Get(I18n::Option::kKeyConfigLaserKeySeparator), InputToString(inputR))).drawAt(Scaled(16), circle.center + Scaled(0, -50), textColor);
+		m_font(U"{} {} {}"_fmt(InputToString(inputL), I18n::Get(I18n::Option::KeyConfigLaserKeySeparator), InputToString(inputR))).drawAt(Scaled(16), circle.center + Scaled(0, -50), textColor);
 	}
 
 	// Start/Back
@@ -1330,7 +1330,7 @@ void OptionKeyConfigMenu::draw() const
 		const auto button = static_cast<ConfigurableButton>(kButtonStart + i);
 		const Input& input = KeyConfig::GetConfigValue(targetConfigSet(), button);
 		const StringView prefix1Sv = targetConfigSet() == KeyConfig::ConfigSet::kKeyboard1 ? U"*" : U"";
-		const StringView prefix2Sv = i == 0 ? I18n::Get(I18n::Option::kKeyConfigStart) : I18n::Get(I18n::Option::kKeyConfigBack);
+		const StringView prefix2Sv = i == 0 ? I18n::Get(I18n::Option::KeyConfigStart) : I18n::Get(I18n::Option::KeyConfigBack);
 		const Color textColor = HasDuplicateKey(targetConfigSet(), button) ? Palette::Red : Palette::White;
 		m_font(prefix1Sv + prefix2Sv + InputToString(input)).drawAt(Scaled(16), rect.center(), textColor);
 	}
@@ -1346,11 +1346,11 @@ void OptionKeyConfigMenu::draw() const
 		String text;
 		if (targetConfigSet() == KeyConfig::ConfigSet::kKeyboard1 || targetConfigSet() == KeyConfig::ConfigSet::kKeyboard2)
 		{
-			text = leftArrow + I18n::Get(I18n::Option::kKeyConfigCategoryPrefixKeyboard) + Format(static_cast<int32>(targetConfigSet()) - KeyConfig::ConfigSet::kKeyboard1 + 1) + I18n::Get(I18n::Option::kKeyConfigCategorySuffix) + rightArrow;
+			text = leftArrow + I18n::Get(I18n::Option::KeyConfigCategoryKeyboard, static_cast<int32>(targetConfigSet()) - KeyConfig::ConfigSet::kKeyboard1 + 1) + rightArrow;
 		}
 		else
 		{
-			text = leftArrow + I18n::Get(I18n::Option::kKeyConfigCategoryPrefixGamepad) + Format(static_cast<int32>(targetConfigSet()) - KeyConfig::ConfigSet::kGamepad1 + 1) + I18n::Get(I18n::Option::kKeyConfigCategorySuffix) + rightArrow;
+			text = leftArrow + I18n::Get(I18n::Option::KeyConfigCategoryGamepad, static_cast<int32>(targetConfigSet()) - KeyConfig::ConfigSet::kGamepad1 + 1) + rightArrow;
 		}
 		m_font(text).drawAt(Scaled(16), Point{ Scene::Center().x + Scaled(10), Scaled(410) }, fontColor);
 	}
