@@ -1633,6 +1633,7 @@
               ],
               "textureGridColumns": 1,
               "textureGridIndex": 1,
+              "textureGridIndex_paramRef": "settingHeaderIndex",
               "textureGridRows": 5,
               "textureOffset": [
                 0.0,
@@ -2328,7 +2329,7 @@
     },
     "isKeyConfig": {
       "type": "Bool",
-      "value": true
+      "value": false
     },
     "isSetting": {
       "type": "Bool",
@@ -2336,7 +2337,11 @@
     },
     "isTop": {
       "type": "Bool",
-      "value": false
+      "value": true
+    },
+    "settingHeaderIndex": {
+      "type": "Number",
+      "value": 1.0
     }
   },
   "referenceSize": [

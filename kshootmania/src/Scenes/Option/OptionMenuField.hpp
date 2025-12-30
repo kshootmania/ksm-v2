@@ -1,11 +1,11 @@
 ﻿#pragma once
 #include "UI/LinearMenu.hpp"
-#include "Graphics/TiledTexture.hpp"
 
 class OptionMenuField
 {
 private:
 	const String m_configIniKey;
+	const String m_name;
 
 	bool m_isEnum;
 
@@ -22,12 +22,11 @@ private:
 
 	LinearMenu m_menu;
 
-	TextureRegion m_keyTextureRegion;
-
 public:
 	struct CreateInfo
 	{
 		String configIniKey;
+		String name;
 
 		// 数値オプション用
 		int32 valueMin = 0;
@@ -42,43 +41,36 @@ public:
 		// 選択肢オプション用
 		Array<std::pair<String, String>> valueDisplayNamePairs;
 
-		static constexpr int32 kKeyTextureIdxAutoSet = -1;
-		int32 keyTextureIdx = kKeyTextureIdxAutoSet;
-
 		std::function<void()> onChangeCallback = nullptr;
 
-		static CreateInfo Enum(StringView configIniKey, const Array<String>& valueDisplayNames);
+		static CreateInfo Enum(StringView name, StringView configIniKey, const Array<String>& valueDisplayNames);
 
-		static CreateInfo Enum(StringView configIniKey, const Array<StringView>& valueDisplayNames);
+		static CreateInfo Enum(StringView name, StringView configIniKey, const Array<StringView>& valueDisplayNames);
 
-		static CreateInfo Enum(StringView configIniKey, const Array<std::pair<String, String>>& valueDisplayNamePairs);
+		static CreateInfo Enum(StringView name, StringView configIniKey, const Array<std::pair<String, String>>& valueDisplayNamePairs);
 
-		static CreateInfo Enum(StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs);
+		static CreateInfo Enum(StringView name, StringView configIniKey, const Array<std::pair<int, String>>& valueDisplayNamePairs);
 
-		static CreateInfo Enum(StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs);
+		static CreateInfo Enum(StringView name, StringView configIniKey, const Array<std::pair<double, String>>& valueDisplayNamePairs);
 
-		static CreateInfo Int(StringView configIniKey, int32 valueMin = std::numeric_limits<int32>::min(), int32 valueMax = std::numeric_limits<int32>::max(), int32 valueDefault = 0, StringView suffixStr = U"", int32 valueStep = 1);
+		static CreateInfo Int(StringView name, StringView configIniKey, int32 valueMin = std::numeric_limits<int32>::min(), int32 valueMax = std::numeric_limits<int32>::max(), int32 valueDefault = 0, StringView suffixStr = U"", int32 valueStep = 1);
 
 		CreateInfo& setAdditionalSuffixes(StringView zero, StringView positive, StringView negative)&;
 
 		CreateInfo&& setAdditionalSuffixes(StringView zero, StringView positive, StringView negative)&&;
-
-		CreateInfo& setKeyTextureIdx(int32 idx)&;
-
-		CreateInfo&& setKeyTextureIdx(int32 idx)&&;
 
 		CreateInfo& setOnChangeCallback(std::function<void()> callback)&;
 
 		CreateInfo&& setOnChangeCallback(std::function<void()> callback)&&;
 	};
 
-	OptionMenuField(const TextureRegion& keyTextureRegion, const CreateInfo& createInfo);
+	explicit OptionMenuField(const CreateInfo& createInfo);
 
-	void update();
+	/// @brief 更新処理
+	/// @return 値が変更された場合true
+	bool update();
 
-	void draw(const Vec2& position, const TiledTexture& valueTiledTexture, const Font& font) const;
-
-	// 注意: これらの列挙子の値はテクスチャの順番にも使用されるので順番を入れ替えないこと
+	// 注意: これらの列挙子の値はNocoUI側のvalueArrowIndexにも使用されるので順番を入れ替えないこと
 	enum ArrowType
 	{
 		kArrowTypeLeft = 0,
@@ -88,4 +80,13 @@ public:
 
 		kArrowTypeEnumCount,
 	};
+
+	[[nodiscard]]
+	const String& name() const;
+
+	[[nodiscard]]
+	String valueDisplayString() const;
+
+	[[nodiscard]]
+	ArrowType arrowType() const;
 };

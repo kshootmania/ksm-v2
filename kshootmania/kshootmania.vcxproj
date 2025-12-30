@@ -437,7 +437,6 @@
     <ClInclude Include="src\RuntimeConfig.hpp" />
     <ClInclude Include="src\Scenes\Common\CommonAssets.hpp" />
     <ClInclude Include="src\Scenes\Common\ShowLoadingOneFrame.hpp" />
-    <ClInclude Include="src\Scenes\Option\OptionAssets.hpp" />
     <ClInclude Include="src\Scenes\Option\OptionKeyConfigMenu.hpp" />
     <ClInclude Include="src\Scenes\Option\OptionMenu.hpp" />
     <ClInclude Include="src\Scenes\Option\OptionMenuField.hpp" />

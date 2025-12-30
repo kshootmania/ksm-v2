@@ -35,12 +35,9 @@ private:
 	OptionKeyConfigCursor m_cursor = OptionKeyConfigCursor::BT_A;
 	OptionKeyConfigMenuState m_state = OptionKeyConfigMenuState::None;
 	LinearMenu m_configSetMenu;
-	const Font m_font = AssetManagement::SystemFont();
-
-	const TiledTexture m_fxLRTexture;
 
 #ifdef __APPLE__
-	// macOSプラットフォーム特有キーの前フレーム状態を管理
+	// macOSプラットフォーム特有キーの前フレーム状態
 	std::unordered_map<int, bool> m_platformKeyWasPressed;
 #endif
 
@@ -58,7 +55,7 @@ public:
 
 	void update();
 
-	void draw() const;
+	void updateUI(noco::Canvas* pCanvas) const;
 
 	[[nodiscard]]
 	bool isButtonEditingState() const

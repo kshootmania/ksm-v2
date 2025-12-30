@@ -1,29 +1,37 @@
 ﻿#pragma once
 #include "UI/LinearMenu.hpp"
-#include "Graphics/TiledTexture.hpp"
 #include "OptionMenuField.hpp"
 
 class OptionMenu
 {
+public:
+	struct SettingItemParams
+	{
+		String name;
+		String value;
+		bool selected;
+		int32 valueArrowIndex;
+	};
+
 private:
 	LinearMenu m_menu;
 
-	const TiledTexture m_fieldKeyTexture;
-
-	const TiledTexture m_fieldValueTexture;
-
-	const TiledTexture m_fieldCursorTexture;
-
 	Array<OptionMenuField> m_fields;
 
-	const Font m_font;
-
-	Stopwatch m_stopwatch;
-
 public:
-	OptionMenu(StringView fieldKeyTextureAssetKey, const Array<OptionMenuField::CreateInfo>& fieldCreateInfos);
+	explicit OptionMenu(const Array<OptionMenuField::CreateInfo>& fieldCreateInfos);
 
-	void update();
+	/// @brief メニューを更新する
+	/// @return カーソルまたは値に変更があった場合true
+	[[nodiscard]]
+	bool update();
 
-	void draw(const Vec2& position) const;
+	/// @brief 設定項目のパラメータ一覧を取得する
+	[[nodiscard]]
+	Array<SettingItemParams> getSettingItemParamsList() const;
+
+	[[nodiscard]]
+	int32 cursor() const;
+
+	void setCursor(int32 value);
 };

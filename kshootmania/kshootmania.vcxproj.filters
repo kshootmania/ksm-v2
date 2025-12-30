@@ -916,9 +916,6 @@
     <ClInclude Include="src\Scenes\Option\OptionScene.hpp">
       <Filter>Header Files\Scenes\Option</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scenes\Option\OptionAssets.hpp">
-      <Filter>Header Files\Scenes\Option</Filter>
-    </ClInclude>
     <ClInclude Include="src\UI\LinearMenu.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>

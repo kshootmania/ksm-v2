@@ -957,29 +957,28 @@ namespace
 		}
 	}
 
-	Texture CreateFXLRTexture()
+	// 未割り当てかどうか
+	bool IsUnassigned(const Input& input)
 	{
-		Image image{ U"imgs/config_fx.gif" };
-
-		// 黒を透明にする
-		for (Color& colorRef : image)
-		{
-			if (colorRef == Palette::Black)
-			{
-				colorRef = Color{ 255, 0 };
-			}
-		}
-
-		return Texture{ image };
+		return input.deviceType() == InputDeviceType::Undefined || input.code() == 0;
 	}
+
+	// 重複時の赤色の文字色
+	constexpr ColorF kDuplicatedColor{ 1.0, 0.0, 0.0, 1.0 };
+	// 未アサイン時のグレー文字色
+	constexpr ColorF kUnassignedColor{ 0.5, 0.5, 0.5, 1.0 };
+	// BTボタンのデフォルト文字色(黒色)
+	constexpr ColorF kBTDefaultColor{ 0.0, 0.0, 0.0, 1.0 };
+	// その他のデフォルト文字色(白色)
+	constexpr ColorF kDefaultColor{ 1.0, 1.0, 1.0, 1.0 };
 
 	// 指定したConfigurableButtonのキーが他のボタンと重複しているかチェック
 	bool HasDuplicateKey(KeyConfig::ConfigSet targetConfigSet, ConfigurableButton targetButton)
 	{
 		const Input& targetInput = KeyConfig::GetConfigValue(targetConfigSet, targetButton);
 
-		// 未割り当て(code == 0)の場合は重複扱いにしない
-		if (targetInput.deviceType() == InputDeviceType::Undefined || targetInput.code() == 0)
+		// 未割り当ての場合は重複扱いにしない
+		if (IsUnassigned(targetInput))
 		{
 			return false;
 		}
@@ -1204,12 +1203,6 @@ OptionKeyConfigMenu::OptionKeyConfigMenu()
 			.enumCount = KeyConfig::kConfigSetEnumCount,
 			.cyclic = IsCyclicMenuYN::No,
 		})
-	, m_fxLRTexture(CreateFXLRTexture(), TiledTextureSizeInfo
-		{
-			.column = 3,
-			.sourceScale = SourceScale::k1x,
-			.sourceSize = { 192, 192 },
-		})
 {
 }
 
@@ -1231,127 +1224,128 @@ void OptionKeyConfigMenu::update()
 	}
 }
 
-void OptionKeyConfigMenu::draw() const
+void OptionKeyConfigMenu::updateUI(noco::Canvas* pCanvas) const
 {
-	// BT
-	for (int32 i = 0; i < kson::kNumBTLanes; ++i)
-	{
-		const Rect rect{ LeftMargin() + Scaled(95 + i * 120), Scaled(165), Scaled(100), Scaled(100) };
-		const auto matchCursor = static_cast<OptionKeyConfigCursor>(static_cast<int32>(OptionKeyConfigCursor::BT_A) + i);
-		if (m_cursor == matchCursor)
-		{
-			const Color frameColor = m_state == OptionKeyConfigMenuState::SettingButton1 ? Palette::Yellow : Palette::Red;
-			rect.drawFrame(Scaled(5), Scaled(5), frameColor);
-		}
-		rect.draw(Palette::White);
+	const KeyConfig::ConfigSet configSet = targetConfigSet();
 
-		const auto button = static_cast<ConfigurableButton>(kButtonBT_A + i);
-		const Input& input = KeyConfig::GetConfigValue(targetConfigSet(), button);
-		const Color textColor = HasDuplicateKey(targetConfigSet(), button) ? Palette::Red : Palette::Black;
-		m_font(InputToString(input)).drawAt(Scaled(16), rect.center(), textColor);
+	auto getStyleState = [this](OptionKeyConfigCursor itemCursor) -> String
+	{
+		if (m_cursor != itemCursor)
+		{
+			return U"";
+		}
+		if (m_state == OptionKeyConfigMenuState::SettingButton1 || m_state == OptionKeyConfigMenuState::SettingButton2)
+		{
+			return U"editing";
+		}
+		return U"selected";
+	};
+
+	// レーザー用のstyleState
+	auto getLaserStyleState = [this](OptionKeyConfigCursor itemCursor) -> String
+	{
+		if (m_cursor != itemCursor)
+		{
+			return U"";
+		}
+		if (m_state == OptionKeyConfigMenuState::SettingButton1)
+		{
+			return U"editing1";
+		}
+		if (m_state == OptionKeyConfigMenuState::SettingButton2)
+		{
+			return U"editing2";
+		}
+		return U"selected";
+	};
+
+	auto getColor = [configSet](ConfigurableButton button, const ColorF& defaultColor) -> ColorF
+	{
+		if (HasDuplicateKey(configSet, button))
+		{
+			return kDuplicatedColor;
+		}
+		if (IsUnassigned(KeyConfig::GetConfigValue(configSet, button)))
+		{
+			return kUnassignedColor;
+		}
+		return defaultColor;
+	};
+
+	// ConfigSetのテキスト
+	const StringView leftArrow = m_configSetMenu.isCursorMin() ? U" " : U"<";
+	const StringView rightArrow = m_configSetMenu.isCursorMax() ? U" " : U">";
+	String configSetText;
+	if (configSet == KeyConfig::ConfigSet::kKeyboard1 || configSet == KeyConfig::ConfigSet::kKeyboard2)
+	{
+		configSetText = leftArrow + I18n::Get(I18n::Option::KeyConfigCategoryKeyboard, static_cast<int32>(configSet) - KeyConfig::ConfigSet::kKeyboard1 + 1) + rightArrow;
+	}
+	else
+	{
+		configSetText = leftArrow + I18n::Get(I18n::Option::KeyConfigCategoryGamepad, static_cast<int32>(configSet) - KeyConfig::ConfigSet::kGamepad1 + 1) + rightArrow;
 	}
 
-	// FX
-	for (int32 i = 0; i < kson::kNumFXLanes; ++i)
-	{
-		const Rect rect{ LeftMargin() + Scaled(185 + i * 150), Scaled(290), Scaled(130), Scaled(60) };
-		const auto matchCursor = static_cast<OptionKeyConfigCursor>(static_cast<int32>(OptionKeyConfigCursor::FX_L) + i);
-		if (m_cursor == matchCursor)
-		{
-			const Color frameColor = m_state == OptionKeyConfigMenuState::SettingButton1 ? Palette::Yellow : Palette::Red;
-			rect.drawFrame(Scaled(5), Scaled(5), frameColor);
-		}
-		rect.draw(Color{ 96, 96, 96 });
+	// Start/Backのテキスト
+	const StringView prefix1Sv = configSet == KeyConfig::ConfigSet::kKeyboard1 ? U"*" : U"";
+	const String startText = prefix1Sv + I18n::Get(I18n::Option::KeyConfigStart) + InputToString(KeyConfig::GetConfigValue(configSet, kButtonStart));
+	const String backText = prefix1Sv + I18n::Get(I18n::Option::KeyConfigBack) + InputToString(KeyConfig::GetConfigValue(configSet, kButtonBack));
 
-		const auto button = static_cast<ConfigurableButton>(kButtonFX_L + i);
-		const Input& input = KeyConfig::GetConfigValue(targetConfigSet(), button);
-		const Color textColor = HasDuplicateKey(targetConfigSet(), button) ? Palette::Red : Palette::White;
-		m_font(InputToString(input)).drawAt(Scaled(16), rect.center(), textColor);
-	}
+	// BTのテキスト
+	const String btAText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonBT_A));
+	const String btBText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonBT_B));
+	const String btCText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonBT_C));
+	const String btDText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonBT_D));
 
-	// FX-L+R
-	{
-		const Point position{ LeftMargin() + Scaled(540), Scaled(324) };
+	// FXのテキスト
+	const String fxLText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonFX_L));
+	const String fxRText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonFX_R));
+	const String fxLRText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonFX_LR));
 
-		const auto matchCursor = OptionKeyConfigCursor::FX_LR;
-		int32 column;
-		if (m_cursor == matchCursor)
-		{
-			column = m_state == OptionKeyConfigMenuState::SettingButton1 ? 2 : 1;
-		}
-		else
-		{
-			column = 0;
-		}
-		m_fxLRTexture(0, column).resized(Scaled(96, 96)).drawAt(position);
+	// レーザーのテキスト
+	const String laserLKey1Text = InputToString(KeyConfig::GetConfigValue(configSet, kButtonLeftLaserL));
+	const String laserLKey2Text = InputToString(KeyConfig::GetConfigValue(configSet, kButtonLeftLaserR));
+	const String laserRKey1Text = InputToString(KeyConfig::GetConfigValue(configSet, kButtonRightLaserL));
+	const String laserRKey2Text = InputToString(KeyConfig::GetConfigValue(configSet, kButtonRightLaserR));
 
-		const Input& input = KeyConfig::GetConfigValue(targetConfigSet(), kButtonFX_LR);
-		const Color textColor = HasDuplicateKey(targetConfigSet(), kButtonFX_LR) ? Palette::Red : Palette::White;
-		m_font(InputToString(input)).drawAt(Scaled(16), position + Scaled(0, 58), textColor);
-	}
-
-	// Laser
-	for (int32 i = 0; i < kson::kNumLaserLanes; ++i)
-	{
-		const Circle circle{ Point{ LeftMargin() + Scaled(165 + i * 320), Scaled(110) }, Scaled(30) };
-		const auto matchCursor = static_cast<OptionKeyConfigCursor>(static_cast<int32>(OptionKeyConfigCursor::Laser_L) + i);
-		if (m_cursor == matchCursor)
-		{
-			const Color frameColor =
-				m_state == OptionKeyConfigMenuState::SettingButton1 ? Color{ 128, 255, 0 } :
-				m_state == OptionKeyConfigMenuState::SettingButton2 ? Color{ 255, 128, 0 } : Palette::Red;
-			circle.drawFrame(Scaled(5), Scaled(5), frameColor);
-		}
-		const Color fillColor = i == 0 ? Color{ 64, 96, 255 } : Color{ 255, 64, 96 };
-		circle.draw(fillColor);
-
-		const auto buttonL = static_cast<ConfigurableButton>(kButtonLeftLaserL + i * 2);
-		const auto buttonR = static_cast<ConfigurableButton>(kButtonLeftLaserL + i * 2 + 1);
-		const Input& inputL = KeyConfig::GetConfigValue(targetConfigSet(), buttonL);
-		const Input& inputR = KeyConfig::GetConfigValue(targetConfigSet(), buttonR);
-
-		// どちらかのキーが重複していたら赤色で表示
-		const Color textColor = (HasDuplicateKey(targetConfigSet(), buttonL) || HasDuplicateKey(targetConfigSet(), buttonR)) ? Palette::Red : Palette::White;
-		m_font(U"{} {} {}"_fmt(InputToString(inputL), I18n::Get(I18n::Option::KeyConfigLaserKeySeparator), InputToString(inputR))).drawAt(Scaled(16), circle.center + Scaled(0, -50), textColor);
-	}
-
-	// Start/Back
-	for (int32 i = 0; i < 2; ++i)
-	{
-		const Rect rect{ LeftMargin() + Scaled(260), Scaled(56 + 48 * i), Scaled(124), Scaled(32) };
-		const auto matchCursor = static_cast<OptionKeyConfigCursor>(static_cast<int32>(OptionKeyConfigCursor::Start) + i);
-		if (m_cursor == matchCursor)
-		{
-			const Color frameColor = m_state == OptionKeyConfigMenuState::SettingButton1 ? Palette::Yellow : Palette::Red;
-			rect.drawFrame(Scaled(5), Scaled(5), frameColor);
-		}
-		rect.draw(Color{ 0, 24, 128 });
-
-		const auto button = static_cast<ConfigurableButton>(kButtonStart + i);
-		const Input& input = KeyConfig::GetConfigValue(targetConfigSet(), button);
-		const StringView prefix1Sv = targetConfigSet() == KeyConfig::ConfigSet::kKeyboard1 ? U"*" : U"";
-		const StringView prefix2Sv = i == 0 ? I18n::Get(I18n::Option::KeyConfigStart) : I18n::Get(I18n::Option::KeyConfigBack);
-		const Color textColor = HasDuplicateKey(targetConfigSet(), button) ? Palette::Red : Palette::White;
-		m_font(prefix1Sv + prefix2Sv + InputToString(input)).drawAt(Scaled(16), rect.center(), textColor);
-	}
-
-	// ConfigSet
-	{
-		const auto matchCursor = OptionKeyConfigCursor::ConfigSet;
-		const Color fontColor = m_cursor == matchCursor ? Palette::Yellow : Palette::White;
-
-		const StringView leftArrow = m_configSetMenu.isCursorMin() ? U" " : U"<";
-		const StringView rightArrow = m_configSetMenu.isCursorMax() ? U" " : U">";
-
-		String text;
-		if (targetConfigSet() == KeyConfig::ConfigSet::kKeyboard1 || targetConfigSet() == KeyConfig::ConfigSet::kKeyboard2)
-		{
-			text = leftArrow + I18n::Get(I18n::Option::KeyConfigCategoryKeyboard, static_cast<int32>(targetConfigSet()) - KeyConfig::ConfigSet::kKeyboard1 + 1) + rightArrow;
-		}
-		else
-		{
-			text = leftArrow + I18n::Get(I18n::Option::KeyConfigCategoryGamepad, static_cast<int32>(targetConfigSet()) - KeyConfig::ConfigSet::kGamepad1 + 1) + rightArrow;
-		}
-		m_font(text).drawAt(Scaled(16), Point{ Scene::Center().x + Scaled(10), Scaled(410) }, fontColor);
-	}
+	pCanvas->setSubCanvasParamValuesByTag(U"keyConfigMenu", {
+		{ U"startState", getStyleState(OptionKeyConfigCursor::Start) },
+		{ U"startText", startText },
+		{ U"startColor", getColor(kButtonStart, kDefaultColor) },
+		{ U"backState", getStyleState(OptionKeyConfigCursor::Back) },
+		{ U"backText", backText },
+		{ U"backColor", getColor(kButtonBack, kDefaultColor) },
+		{ U"btAState", getStyleState(OptionKeyConfigCursor::BT_A) },
+		{ U"btAText", btAText },
+		{ U"btAColor", getColor(kButtonBT_A, kBTDefaultColor) },
+		{ U"btBState", getStyleState(OptionKeyConfigCursor::BT_B) },
+		{ U"btBText", btBText },
+		{ U"btBColor", getColor(kButtonBT_B, kBTDefaultColor) },
+		{ U"btCState", getStyleState(OptionKeyConfigCursor::BT_C) },
+		{ U"btCText", btCText },
+		{ U"btCColor", getColor(kButtonBT_C, kBTDefaultColor) },
+		{ U"btDState", getStyleState(OptionKeyConfigCursor::BT_D) },
+		{ U"btDText", btDText },
+		{ U"btDColor", getColor(kButtonBT_D, kBTDefaultColor) },
+		{ U"fxLState", getStyleState(OptionKeyConfigCursor::FX_L) },
+		{ U"fxLText", fxLText },
+		{ U"fxLColor", getColor(kButtonFX_L, kDefaultColor) },
+		{ U"fxRState", getStyleState(OptionKeyConfigCursor::FX_R) },
+		{ U"fxRText", fxRText },
+		{ U"fxRColor", getColor(kButtonFX_R, kDefaultColor) },
+		{ U"laserLState", getLaserStyleState(OptionKeyConfigCursor::Laser_L) },
+		{ U"laserL1Text", laserLKey1Text },
+		{ U"laserL1Color", getColor(kButtonLeftLaserL, kDefaultColor) },
+		{ U"laserL2Text", laserLKey2Text },
+		{ U"laserL2Color", getColor(kButtonLeftLaserR, kDefaultColor) },
+		{ U"laserRState", getLaserStyleState(OptionKeyConfigCursor::Laser_R) },
+		{ U"laserR1Text", laserRKey1Text },
+		{ U"laserR1Color", getColor(kButtonRightLaserL, kDefaultColor) },
+		{ U"laserR2Text", laserRKey2Text },
+		{ U"laserR2Color", getColor(kButtonRightLaserR, kDefaultColor) },
+		{ U"fxLRState", getStyleState(OptionKeyConfigCursor::FX_LR) },
+		{ U"fxLRText", fxLRText },
+		{ U"fxLRColor", getColor(kButtonFX_LR, kDefaultColor) },
+		{ U"configSetState", getStyleState(OptionKeyConfigCursor::ConfigSet) },
+		{ U"configSetText", configSetText },
+	});
 }

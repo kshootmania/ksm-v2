@@ -1,15 +1,10 @@
 ﻿#pragma once
-#include "Graphics/TiledTexture.hpp"
 #include "UI/LinearMenu.hpp"
 
 class OptionTopMenu
 {
 private:
 	LinearMenu m_menu;
-
-	TiledTexture m_itemTiledTexture;
-
-	Stopwatch m_stopwatch;
 
 public:
 	enum Item : int32
@@ -26,11 +21,11 @@ public:
 
 	void update();
 
-	void draw() const;
-
 	template <typename T>
 	T cursorAs()
 	{
 		return m_menu.cursorAs<T>();
 	}
+
+	void updateUI(noco::Canvas* pCanvas) const;
 };

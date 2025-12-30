@@ -20,21 +20,25 @@ public:
 	};
 
 private:
-	const Texture m_bgTexture;
-
-	TiledTexture m_headerTiledTexture;
+	std::shared_ptr<noco::Canvas> m_canvas;
 
 	OptionTopMenu m_topMenu;
 
-	std::array<OptionMenu, kOptionMenuTypeEnumCount> m_optionMenus;
+	std::unique_ptr<std::array<OptionMenu, kOptionMenuTypeEnumCount>> m_optionMenus;
 
 	OptionKeyConfigMenu m_keyConfigMenu;
-
-	const Font m_font = AssetManagement::SystemFont();
 
 	Optional<OptionMenuType> m_currentOptionMenuIdx = none;
 
 	ksmaudio::Stream m_bgmStream{ "se/option_bgm.ogg", 1.0, false, false, true };
+
+	std::unique_ptr<std::array<OptionMenu, kOptionMenuTypeEnumCount>> makeOptionMenus();
+
+	void refreshOptionMenusForLanguageChange();
+
+	void createSettingItemNodes();
+
+	void refreshSettingItemParams();
 
 public:
 	explicit OptionScene();
