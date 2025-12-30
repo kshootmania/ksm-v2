@@ -33,9 +33,9 @@ namespace
 	constexpr int32 kTimingAdjustMin = -10000;
 	constexpr int32 kTimingAdjustMax = 10000;
 	constexpr int32 kTimingAdjustDefault = 0;
-	constexpr int32 kLaserSignalSensitivityMin = -10000;
-	constexpr int32 kLaserSignalSensitivityMax = 10000;
-	constexpr int32 kLaserSignalSensitivityDefault = 50;
+	constexpr int32 kLaserInputSensitivityMin = -10000;
+	constexpr int32 kLaserInputSensitivityMax = 10000;
+	constexpr int32 kLaserInputSensitivityDefault = 50;
 }
 
 std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> OptionScene::makeOptionMenus()
@@ -176,15 +176,15 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 					I18n::Get(I18n::Option::TimingAdjustSuffixNoAdjustment),
 					I18n::Get(I18n::Option::LaserTimingAdjustLater),
 					I18n::Get(I18n::Option::LaserTimingAdjustEarlier)),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemMouseXSignalDirection), ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemMouseXInputDirection), ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
 				I18n::Get(I18n::Option::LaserMouseDirectionLeftThenRight),
 				I18n::Get(I18n::Option::LaserMouseDirectionRightThenRight),
 			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemMouseYSignalDirection), ConfigIni::Key::kLaserMouseDirectionY, Array<StringView>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemMouseYInputDirection), ConfigIni::Key::kLaserMouseDirectionY, Array<StringView>{
 				I18n::Get(I18n::Option::LaserMouseDirectionUpThenRight),
 				I18n::Get(I18n::Option::LaserMouseDirectionDownThenRight),
 			}),
-			CreateInfo::Int(I18n::Get(I18n::Option::ItemSliderMouseSignalSensitivity), ConfigIni::Key::kLaserSignalSensitivity, kLaserSignalSensitivityMin, kLaserSignalSensitivityMax, kLaserSignalSensitivityDefault), // TODO: additional suffix for zero value
+			CreateInfo::Int(I18n::Get(I18n::Option::ItemSliderMouseInputSensitivity), ConfigIni::Key::kLaserInputSensitivity, kLaserInputSensitivityMin, kLaserInputSensitivityMax, kLaserInputSensitivityDefault), // TODO: additional suffix for zero value
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemSwapLRLaser), ConfigIni::Key::kSwapLaserLR, Array<StringView>{
 				I18n::Get(I18n::Option::Off),
 				I18n::Get(I18n::Option::On),

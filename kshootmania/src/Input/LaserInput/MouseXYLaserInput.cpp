@@ -24,7 +24,7 @@ double MouseXYLaserInput::getDeltaCursorX([[maybe_unused]] double deltaTimeSec)
 	const bool swapLR = ConfigIni::GetBool(ConfigIni::Key::kSwapLaserLR, false);
 
 	// 入力感度
-	const int32 sensitivity = ConfigIni::GetInt(ConfigIni::Key::kLaserSignalSensitivity, kDefaultSensitivity);
+	const int32 sensitivity = ConfigIni::GetInt(ConfigIni::Key::kLaserInputSensitivity, kDefaultSensitivity);
 	const double sensitivityScale = kBaseSensitivityScale * (sensitivity / static_cast<double>(kDefaultSensitivity));
 
 	// ksmaxisからマウス移動量取得
