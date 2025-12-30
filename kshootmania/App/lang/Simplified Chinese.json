@@ -58,7 +58,7 @@
 		"BGDisplayModeShowNoLayer": "显示 (关闭特效)",
 		"BGDisplayModeShowLayer": "显示 (打开特效)",
 		"MasterVolumePercent": "%",
-		"VsyncOff": "关",
+		"VsyncOffWithFps": "关 ({0}fps)",
 		"VsyncOn": "开",
 		"JudgmentOn": "判定开",
 		"JudgmentOff": "判定关",

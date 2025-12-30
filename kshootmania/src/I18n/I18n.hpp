@@ -108,7 +108,7 @@ namespace I18n
 		BGDisplayModeShowNoLayer,
 		BGDisplayModeShowLayer,
 		MasterVolumePercent,
-		VsyncOff,
+		VsyncOffWithFps,
 		VsyncOn,
 		JudgmentOn,
 		JudgmentOff,

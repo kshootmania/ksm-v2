@@ -58,7 +58,7 @@
 		"BGDisplayModeShowNoLayer": "表示 (アニメーションなし)",
 		"BGDisplayModeShowLayer": "表示 (アニメーションあり)",
 		"MasterVolumePercent": "%",
-		"VsyncOff": "無効",
+		"VsyncOffWithFps": "無効 ({0}fps)",
 		"VsyncOn": "有効",
 		"JudgmentOn": "ON (表示あり・判定あり)",
 		"JudgmentOff": "OFF (表示あり・判定なし)",

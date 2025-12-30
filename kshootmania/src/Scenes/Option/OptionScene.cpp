@@ -115,9 +115,9 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 					ksmaudio::SetMasterVolume(volume / 100.0);
 				}),
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemVSync), ConfigIni::Key::kVsync, Array<StrPair>{
-				StrPair{ U"0;120", U"{}(120fps)"_fmt(I18n::Get(I18n::Option::VsyncOff)) },
-				StrPair{ U"0;144", U"{}(144fps)"_fmt(I18n::Get(I18n::Option::VsyncOff)) },
-				StrPair{ U"0;300", U"{}(300fps)"_fmt(I18n::Get(I18n::Option::VsyncOff)) },
+				StrPair{ U"0;120", I18n::Get(I18n::Option::VsyncOffWithFps, 120) },
+				StrPair{ U"0;144", I18n::Get(I18n::Option::VsyncOffWithFps, 144) },
+				StrPair{ U"0;300", I18n::Get(I18n::Option::VsyncOffWithFps, 300) },
 				StrPair{ U"1", I18n::Get(I18n::Option::VsyncOn) },
 			}),
 		}),

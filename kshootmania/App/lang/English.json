@@ -58,7 +58,7 @@
 		"BGDisplayModeShowNoLayer": "Show (Animation off)",
 		"BGDisplayModeShowLayer": "Show (Animation on)",
 		"MasterVolumePercent": "%",
-		"VsyncOff": "Off",
+		"VsyncOffWithFps": "Off ({0}fps)",
 		"VsyncOn": "On",
 		"JudgmentOn": "Judgement On",
 		"JudgmentOff": "Judgement Off",

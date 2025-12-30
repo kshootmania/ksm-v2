@@ -58,7 +58,7 @@
 		"BGDisplayModeShowNoLayer": "표기 (애니메이션 없음)",
 		"BGDisplayModeShowLayer": "표기 (애니메이션 있음)",
 		"MasterVolumePercent": "%",
-		"VsyncOff": "OFF",
+		"VsyncOffWithFps": "OFF ({0}fps)",
 		"VsyncOn": "ON",
 		"JudgmentOn": "ON (표기/판정)",
 		"JudgmentOff": "OFF (표기/비판정)",
