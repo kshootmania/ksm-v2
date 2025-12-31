@@ -7,7 +7,6 @@ namespace AssetManagement
 		constexpr StringView kFontAssetSystem = U"System";
 		constexpr StringView kFontAssetSystemBold = U"SystemBold";
 		constexpr StringView kFontResourcePathJa = U"assets/font/KSM-JA-Medium.ttf";
-		constexpr StringView kFontResourcePathKr = U"assets/font/KSM-KR-Medium.ttf";
 		constexpr StringView kFontResourcePathSc = U"assets/font/KSM-SC-Medium.ttf";
 		constexpr StringView kFontResourcePathTc = U"assets/font/KSM-TC-Medium.ttf";
 
@@ -20,8 +19,6 @@ namespace AssetManagement
 				return FilePath{ kFontResourcePathSc };
 			case I18n::StandardLanguage::TraditionalChinese:
 				return FilePath{ kFontResourcePathTc };
-			case I18n::StandardLanguage::Korean:
-				return FilePath{ kFontResourcePathKr };
 			default:
 				return FilePath{ kFontResourcePathJa };
 			}
@@ -50,6 +47,14 @@ namespace AssetManagement
 		void RegisterFontAssets()
 		{
 			const FilePath fontPath = GetFontPathForCurrentLanguage();
+			if (FontAsset::IsRegistered(kFontAssetSystem))
+			{
+				FontAsset::Unregister(kFontAssetSystem);
+			}
+			if (FontAsset::IsRegistered(kFontAssetSystemBold))
+			{
+				FontAsset::Unregister(kFontAssetSystemBold);
+			}
 #ifdef __linux
 			constexpr StringView kResourceDir = U"resources/";
 			FontAsset::Register(kFontAssetSystem, FontMethod::MSDF, 44, kResourceDir + fontPath, FontStyle::Default);

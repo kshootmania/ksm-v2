@@ -11,8 +11,14 @@ This merged font file contains glyphs from the following font projects:
    Copyright LOGOTYPE.JP
    Based on Source Han Sans, Copyright 2014-2020 Adobe
 
-3. Noto Sans JP
+3. Noto Sans JP / KR / SC / TC
    Copyright Google Inc. and Adobe Inc.
+
+4. Noto Sans, Noto Sans Math, Noto Sans Symbols, Noto Sans Symbols2, Noto Music
+   Copyright Google Inc.
+
+5. Noto Sans Arabic, Noto Sans Thai, Noto Sans Hebrew, Noto Sans Cherokee
+   Copyright Google Inc.
 
 All component fonts are licensed under the SIL Open Font License, Version 1.1.
 

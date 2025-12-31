@@ -128,7 +128,6 @@ Resource(engine/font/noto-emoji/NotoEmoji-Regular.ttf.zstdcmp)
 //////////////////////////////////////////////////////
 
 Resource(assets/font/KSM-JA-Medium.ttf)
-Resource(assets/font/KSM-KR-Medium.ttf)
 Resource(assets/font/KSM-SC-Medium.ttf)
 Resource(assets/font/KSM-TC-Medium.ttf)
 

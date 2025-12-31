@@ -176,11 +176,11 @@ void OutputLicenseTxt()
 
 	// KSMフォントのライセンス情報を追加
 	LicenseInfo ksmFontLicense;
-	ksmFontLicense.title = U"KSM Fonts (KSM-JA/KR/SC/TC-Medium)";
+	ksmFontLicense.title = U"KSM Fonts (KSM-JA/SC/TC-Medium)";
 	ksmFontLicense.copyright = U"Component fonts:\n"
 		U"1. Tektur (Modified as Tektur-KSM) - Copyright 2023 The Tektur Project Authors, Modified by K-Shoot MANIA Project\n"
 		U"2. Corporate Logo ver3 - Copyright LOGOTYPE.JP, Based on Source Han Sans (Copyright 2014-2020 Adobe)\n"
-		U"3. Noto Sans JP/KR/SC/TC - Copyright Google Inc. and Adobe Inc.";
+		U"3. Noto Sans, Noto Sans JP/KR/SC/TC, Noto Sans Math, Noto Sans Symbols, Noto Music, Arabic, Thai, Hebrew, Cherokee - Copyright Google Inc. and Adobe Inc.";
 	ksmFontLicense.text = U"All component fonts are licensed under the SIL Open Font License, Version 1.1.\n"
 		U"\n"
 		U"Permission is hereby granted, free of charge, to any person obtaining a copy of the Font Software,\n"
