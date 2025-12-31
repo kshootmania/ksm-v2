@@ -960,7 +960,7 @@ namespace
 	// 未割り当てかどうか
 	bool IsUnassigned(const Input& input)
 	{
-		return input.deviceType() == InputDeviceType::Undefined || input.code() == 0;
+		return input.deviceType() == InputDeviceType::Undefined;
 	}
 
 	// 重複時の赤色の文字色
