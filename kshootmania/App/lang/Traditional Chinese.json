@@ -136,6 +136,6 @@
 		"ItemHiSpeedType": "HiSpeed 25 - 2000",
 		"ItemHiSpeedTypeC": "HiSpeed C 25 - 2000",
 		"ItemHideMouseCursor": "隱藏滑鼠游標",
-		"ItemUseNumpadAsArrowKeys": "使用數字鍵盤作為方向鍵"
+		"ItemUseNumpadAsArrowKeys": "使用數字鍵盤作為方向鍵 (用於帶數字鍵盤的控制器)"
 	}
 }

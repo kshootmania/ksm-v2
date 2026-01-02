@@ -122,7 +122,7 @@
 		"ItemLaserObjectInputType": "Laser Object Input Type",
 		"ItemAssistTick": "Assist Tick",
 		"ItemAutoPlaySE": "Auto-play Sound Effects (FX Keysound / Laser Slam Sound)",
-		"ItemDisableIME": "Disable IME (For Non-English PC)",
+		"ItemDisableIME": "Disable IME (for Non-English PC)",
 		"ItemTimingAdjustment": "Timing Adjustment",
 		"ItemLaserObjectTimingAdjustment": "Laser Object Timing Adjustment",
 		"ItemVisualOffset": "Note Display Timing Adjustment (Visual Offset)",
@@ -136,6 +136,6 @@
 		"ItemHiSpeedType": "HiSpeed Type 25 - 2000",
 		"ItemHiSpeedTypeC": "HiSpeed Type C 25 - 2000",
 		"ItemHideMouseCursor": "Hide Mouse Cursor",
-		"ItemUseNumpadAsArrowKeys": "Use Numpad as Arrow Keys"
+		"ItemUseNumpadAsArrowKeys": "Use Numpad as Arrow Keys (for Controllers with Numpad)"
 	}
 }

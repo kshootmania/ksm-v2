@@ -136,6 +136,6 @@
 		"ItemHiSpeedType": "하이스피드 25 - 2000",
 		"ItemHiSpeedTypeC": "하이스피드 C 25 - 2000",
 		"ItemHideMouseCursor": "마우스 커서 숨기기",
-		"ItemUseNumpadAsArrowKeys": "숫자패드를 방향키로 사용"
+		"ItemUseNumpadAsArrowKeys": "숫자패드를 방향키로 사용 (숫자패드가 있는 컨트롤러용)"
 	}
 }
