@@ -11,6 +11,18 @@ namespace MusicGame
 	{
 		constexpr double kPlayFinishFadeOutStartSec = 2.4; // TODO: HARD落ちした場合は赤色表示を加えた上で4.8秒にする
 
+		Audio::BGM CreateBGM(const kson::ChartData& chartData, const FilePath& parentPath, const PlayOption& playOption)
+		{
+			const FilePath filePath = FileSystem::PathAppend(parentPath, Unicode::FromUTF8(chartData.audio.bgm.filename));
+			const double volume = chartData.audio.bgm.vol;
+			const double chartOffsetMs = chartData.audio.bgm.offset;
+			const double playbackSpeed = playOption.nonZeroPlaybackSpeed();
+			const SecondsF offset{ (chartOffsetMs / playbackSpeed + playOption.effectiveGlobalOffsetMs()) / 1000.0 };
+			const Audio::LegacyAudioFPMode legacyMode = Audio::DetermineLegacyAudioFPMode(chartData, parentPath);
+
+			return Audio::BGM{ filePath, volume, offset, legacyMode, chartData, parentPath, playOption.playbackSpeed };
+		}
+
 		bool ShouldStartFadeOut(const GameStatus& gameStatus)
 		{
 			if (!gameStatus.playFinishStatus.has_value())
@@ -164,7 +176,7 @@ namespace MusicGame
 			createInfo.playOption.gameMode)
 		, m_camSystem(m_chartData)
 		, m_highwayScroll(m_chartData)
-		, m_bgm(FileSystem::PathAppend(m_parentPath, Unicode::FromUTF8(m_chartData.audio.bgm.filename)), m_chartData.audio.bgm.vol, SecondsF{ (m_chartData.audio.bgm.offset + createInfo.playOption.effectiveGlobalOffsetMs()) / 1000.0 / createInfo.playOption.nonZeroPlaybackSpeed() }, Audio::DetermineLegacyAudioFPMode(m_chartData, m_parentPath), m_chartData, m_parentPath, createInfo.playOption.playbackSpeed)
+		, m_bgm(CreateBGM(m_chartData, m_parentPath, createInfo.playOption))
 		, m_assistTick(createInfo.assistTickMode)
 		, m_laserSlamSE(m_chartData, m_timingCache, m_parentPath, createInfo.playOption.isAutoPlaySE)
 		, m_fxChipSE(m_chartData, m_timingCache, m_parentPath, createInfo.playOption.isAutoPlaySE)
@@ -177,7 +189,7 @@ namespace MusicGame
 
 	void GameMain::start()
 	{
-		const double globalOffsetSec = m_playOption.effectiveGlobalOffsetMs() / 1000.0 / m_playOption.nonZeroPlaybackSpeed();
+		const double globalOffsetSec = m_playOption.effectiveGlobalOffsetMs() / 1000.0;
 		m_graphicsMain.prepareMovie(globalOffsetSec);
 		m_bgm.seekPosSec(-TimeSecBeforeStart(m_graphicsMain.hasMovie()));
 		m_bgm.play();
