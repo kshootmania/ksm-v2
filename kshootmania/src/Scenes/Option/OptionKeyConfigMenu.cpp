@@ -1299,7 +1299,7 @@ void OptionKeyConfigMenu::updateUI(noco::Canvas* pCanvas) const
 	// FXのテキスト
 	const String fxLText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonFX_L));
 	const String fxRText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonFX_R));
-	const String fxLRText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonFX_LR));
+	const String bothFXText = InputToString(KeyConfig::GetConfigValue(configSet, kButtonFX_LR));
 
 	// レーザーのテキスト
 	const String laserLKey1Text = InputToString(KeyConfig::GetConfigValue(configSet, kButtonLeftLaserL));
@@ -1342,9 +1342,9 @@ void OptionKeyConfigMenu::updateUI(noco::Canvas* pCanvas) const
 		{ U"laserR1Color", getColor(kButtonRightLaserL, kDefaultColor) },
 		{ U"laserR2Text", laserRKey2Text },
 		{ U"laserR2Color", getColor(kButtonRightLaserR, kDefaultColor) },
-		{ U"fxLRState", getStyleState(OptionKeyConfigCursor::FX_LR) },
-		{ U"fxLRText", fxLRText },
-		{ U"fxLRColor", getColor(kButtonFX_LR, kDefaultColor) },
+		{ U"bothFXState", getStyleState(OptionKeyConfigCursor::FX_LR) },
+		{ U"bothFXText", bothFXText },
+		{ U"bothFXColor", getColor(kButtonFX_LR, kDefaultColor) },
 		{ U"configSetState", getStyleState(OptionKeyConfigCursor::ConfigSet) },
 		{ U"configSetText", configSetText },
 	});

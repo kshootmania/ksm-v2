@@ -289,7 +289,7 @@ void OptionScene::update()
 	const bool isSetting = m_currentOptionMenuIdx.has_value() && !isKeyConfig;
 
 	// ガイドテキストの決定
-	StringView guideText;
+	String guideText;
 	if (isTop)
 	{
 		guideText = I18n::Get(I18n::Option::GuideTop);
@@ -303,15 +303,17 @@ void OptionScene::update()
 		guideText = I18n::Get(I18n::Option::GuideOption);
 	}
 
-	const int32 settingHeaderIndex = m_currentOptionMenuIdx.has_value() ? (*m_currentOptionMenuIdx + 1) : 1;
+	const int32 settingHeaderIndex = m_currentOptionMenuIdx.has_value() ? static_cast<int32>(*m_currentOptionMenuIdx) : -1;
 
 	// Canvasパラメータの更新
 	m_canvas->setParamValues({
 		{ U"isTop", isTop },
 		{ U"isSetting", isSetting },
 		{ U"isKeyConfig", isKeyConfig },
-		{ U"guideText", String{ guideText } },
+		{ U"guideText", guideText },
 		{ U"settingHeaderIndex", settingHeaderIndex },
+		{ U"isJapanese", I18n::CurrentLanguage() == I18n::StandardLanguage::Japanese },
+		{ U"isNonJapanese", I18n::CurrentLanguage() != I18n::StandardLanguage::Japanese },
 	});
 
 	// UI更新

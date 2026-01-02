@@ -66,7 +66,7 @@
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
-              "textureFilePath": "imgs/config_item1.gif",
+              "textureFilePath": "imgs/option_setting_item_left.png",
               "textureFilter": "Default",
               "textureGridCellSize": [
                 32.0,
@@ -285,7 +285,7 @@
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
-              "textureFilePath": "imgs/config_item2.gif",
+              "textureFilePath": "imgs/option_setting_item_right.png",
               "textureFilter": "Default",
               "textureGridCellSize": [
                 600.0,
@@ -584,7 +584,7 @@
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
-          "textureFilePath": "imgs/config_item_cur.gif",
+          "textureFilePath": "imgs/option_setting_item_cursor.png",
           "textureFilter": "Default",
           "textureGridCellSize": [
             32.0,

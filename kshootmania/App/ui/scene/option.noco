@@ -321,7 +321,342 @@
           "children": [
             {
               "activeSelf": true,
-              "children": [],
+              "children": [
+                {
+                  "activeSelf": true,
+                  "activeSelf_paramRef": "isNonJapanese",
+                  "children": [],
+                  "childrenLayout": {
+                    "horizontalAlign": "Left",
+                    "padding": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "spacing": [
+                      0.0,
+                      0.0
+                    ],
+                    "type": "FlowLayout",
+                    "verticalAlign": "Top"
+                  },
+                  "clippingEnabled": false,
+                  "components": [
+                    {
+                      "addColor": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "blendMode": "Normal",
+                      "color": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "gridAnimationEndIndex": 0,
+                      "gridAnimationFPS": 10.0,
+                      "gridAnimationStartIndex": 0,
+                      "gridAnimationType": "None",
+                      "nineSliceBottomTiled": false,
+                      "nineSliceCenterTiled": false,
+                      "nineSliceEnabled": false,
+                      "nineSliceFallback": true,
+                      "nineSliceLeftTiled": false,
+                      "nineSliceMargin": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "nineSliceRightTiled": false,
+                      "nineSliceScale": [
+                        1.0,
+                        1.0
+                      ],
+                      "nineSliceTopTiled": false,
+                      "offsetAnimationSpeed": [
+                        0.0,
+                        0.0
+                      ],
+                      "offsetAnimationType": "None",
+                      "preserveAspect": false,
+                      "textureAddressMode": "Default",
+                      "textureAssetName": "",
+                      "textureFilePath": "imgs/option_top_item.png",
+                      "textureFilter": "Default",
+                      "textureGridCellSize": [
+                        960.0,
+                        160.0
+                      ],
+                      "textureGridCellTrim": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "textureGridColumns": 2,
+                      "textureGridIndex": 0,
+                      "textureGridRows": 4,
+                      "textureOffset": [
+                        0.0,
+                        0.0
+                      ],
+                      "textureRegionMode": "Grid",
+                      "textureSize": [
+                        100.0,
+                        100.0
+                      ],
+                      "type": "Sprite"
+                    }
+                  ],
+                  "decelerationRate": 0.2,
+                  "dragScrollEnabled": true,
+                  "hitPadding": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "horizontalScrollable": false,
+                  "inheritChildrenHover": false,
+                  "inheritChildrenPress": false,
+                  "interactable": true,
+                  "isHitTarget": false,
+                  "name": "NonJapanese",
+                  "region": {
+                    "anchorMax": [
+                      0.5,
+                      0.5
+                    ],
+                    "anchorMin": [
+                      0.5,
+                      0.5
+                    ],
+                    "posDelta": [
+                      0.0,
+                      0.0
+                    ],
+                    "sizeDelta": [
+                      480.0,
+                      80.0
+                    ],
+                    "sizeDeltaPivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "type": "AnchorRegion"
+                  },
+                  "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
+                  "styleState": "",
+                  "transform": {
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        100
+                      ],
+                      "styleStates": {
+                        "selected": [
+                          255,
+                          255,
+                          255,
+                          255
+                        ]
+                      }
+                    },
+                    "hitTestAffected": true,
+                    "pivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                      1.0,
+                      1.0
+                    ],
+                    "translate": [
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "verticalScrollable": false,
+                  "wheelScrollEnabled": true,
+                  "zOrderInSiblings": 0
+                },
+                {
+                  "activeSelf": true,
+                  "activeSelf_paramRef": "isJapanese",
+                  "children": [],
+                  "childrenLayout": {
+                    "horizontalAlign": "Left",
+                    "padding": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "spacing": [
+                      0.0,
+                      0.0
+                    ],
+                    "type": "FlowLayout",
+                    "verticalAlign": "Top"
+                  },
+                  "clippingEnabled": false,
+                  "components": [
+                    {
+                      "addColor": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "blendMode": "Normal",
+                      "color": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "gridAnimationEndIndex": 0,
+                      "gridAnimationFPS": 10.0,
+                      "gridAnimationStartIndex": 0,
+                      "gridAnimationType": "None",
+                      "nineSliceBottomTiled": false,
+                      "nineSliceCenterTiled": false,
+                      "nineSliceEnabled": false,
+                      "nineSliceFallback": true,
+                      "nineSliceLeftTiled": false,
+                      "nineSliceMargin": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "nineSliceRightTiled": false,
+                      "nineSliceScale": [
+                        1.0,
+                        1.0
+                      ],
+                      "nineSliceTopTiled": false,
+                      "offsetAnimationSpeed": [
+                        0.0,
+                        0.0
+                      ],
+                      "offsetAnimationType": "None",
+                      "preserveAspect": false,
+                      "textureAddressMode": "Default",
+                      "textureAssetName": "",
+                      "textureFilePath": "imgs/option_top_item.png",
+                      "textureFilter": "Default",
+                      "textureGridCellSize": [
+                        960.0,
+                        160.0
+                      ],
+                      "textureGridCellTrim": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "textureGridColumns": 2,
+                      "textureGridIndex": 1,
+                      "textureGridRows": 4,
+                      "textureOffset": [
+                        0.0,
+                        0.0
+                      ],
+                      "textureRegionMode": "Grid",
+                      "textureSize": [
+                        100.0,
+                        100.0
+                      ],
+                      "type": "Sprite"
+                    }
+                  ],
+                  "decelerationRate": 0.2,
+                  "dragScrollEnabled": true,
+                  "hitPadding": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "horizontalScrollable": false,
+                  "inheritChildrenHover": false,
+                  "inheritChildrenPress": false,
+                  "interactable": true,
+                  "isHitTarget": false,
+                  "name": "Japanese",
+                  "region": {
+                    "anchorMax": [
+                      0.5,
+                      0.5
+                    ],
+                    "anchorMin": [
+                      0.5,
+                      0.5
+                    ],
+                    "posDelta": [
+                      0.0,
+                      0.0
+                    ],
+                    "sizeDelta": [
+                      480.0,
+                      80.0
+                    ],
+                    "sizeDeltaPivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "type": "AnchorRegion"
+                  },
+                  "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
+                  "styleState": "",
+                  "transform": {
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        100
+                      ],
+                      "styleStates": {
+                        "selected": [
+                          255,
+                          255,
+                          255,
+                          255
+                        ]
+                      }
+                    },
+                    "hitTestAffected": true,
+                    "pivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                      1.0,
+                      1.0
+                    ],
+                    "translate": [
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "verticalScrollable": false,
+                  "wheelScrollEnabled": true,
+                  "zOrderInSiblings": 0
+                }
+              ],
               "childrenLayout": {
                 "horizontalAlign": "Left",
                 "padding": [
@@ -339,75 +674,6 @@
               },
               "clippingEnabled": false,
               "components": [
-                {
-                  "addColor": [
-                    0,
-                    0,
-                    0,
-                    0
-                  ],
-                  "blendMode": "Normal",
-                  "color": [
-                    255,
-                    255,
-                    255,
-                    255
-                  ],
-                  "gridAnimationEndIndex": 0,
-                  "gridAnimationFPS": 10.0,
-                  "gridAnimationStartIndex": 0,
-                  "gridAnimationType": "None",
-                  "nineSliceBottomTiled": false,
-                  "nineSliceCenterTiled": false,
-                  "nineSliceEnabled": false,
-                  "nineSliceFallback": true,
-                  "nineSliceLeftTiled": false,
-                  "nineSliceMargin": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ],
-                  "nineSliceRightTiled": false,
-                  "nineSliceScale": [
-                    1.0,
-                    1.0
-                  ],
-                  "nineSliceTopTiled": false,
-                  "offsetAnimationSpeed": [
-                    0.0,
-                    0.0
-                  ],
-                  "offsetAnimationType": "None",
-                  "preserveAspect": false,
-                  "textureAddressMode": "Default",
-                  "textureAssetName": "",
-                  "textureFilePath": "imgs/config_item.gif",
-                  "textureFilter": "Default",
-                  "textureGridCellSize": [
-                    960.0,
-                    160.0
-                  ],
-                  "textureGridCellTrim": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ],
-                  "textureGridColumns": 1,
-                  "textureGridIndex": 0,
-                  "textureGridRows": 4,
-                  "textureOffset": [
-                    0.0,
-                    0.0
-                  ],
-                  "textureRegionMode": "Grid",
-                  "textureSize": [
-                    100.0,
-                    100.0
-                  ],
-                  "type": "Sprite"
-                },
                 {
                   "active": {
                     "default": false,
@@ -551,22 +817,12 @@
               "scrollBarType": "Overlay",
               "styleState": "selected",
               "transform": {
-                "color": {
-                  "default": [
-                    255,
-                    255,
-                    255,
-                    100
-                  ],
-                  "styleStates": {
-                    "selected": [
-                      255,
-                      255,
-                      255,
-                      255
-                    ]
-                  }
-                },
+                "color": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
                 "hitTestAffected": true,
                 "pivot": [
                   0.5,
@@ -588,7 +844,342 @@
             },
             {
               "activeSelf": true,
-              "children": [],
+              "children": [
+                {
+                  "activeSelf": true,
+                  "activeSelf_paramRef": "isNonJapanese",
+                  "children": [],
+                  "childrenLayout": {
+                    "horizontalAlign": "Left",
+                    "padding": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "spacing": [
+                      0.0,
+                      0.0
+                    ],
+                    "type": "FlowLayout",
+                    "verticalAlign": "Top"
+                  },
+                  "clippingEnabled": false,
+                  "components": [
+                    {
+                      "addColor": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "blendMode": "Normal",
+                      "color": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "gridAnimationEndIndex": 0,
+                      "gridAnimationFPS": 10.0,
+                      "gridAnimationStartIndex": 0,
+                      "gridAnimationType": "None",
+                      "nineSliceBottomTiled": false,
+                      "nineSliceCenterTiled": false,
+                      "nineSliceEnabled": false,
+                      "nineSliceFallback": true,
+                      "nineSliceLeftTiled": false,
+                      "nineSliceMargin": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "nineSliceRightTiled": false,
+                      "nineSliceScale": [
+                        1.0,
+                        1.0
+                      ],
+                      "nineSliceTopTiled": false,
+                      "offsetAnimationSpeed": [
+                        0.0,
+                        0.0
+                      ],
+                      "offsetAnimationType": "None",
+                      "preserveAspect": false,
+                      "textureAddressMode": "Default",
+                      "textureAssetName": "",
+                      "textureFilePath": "imgs/option_top_item.png",
+                      "textureFilter": "Default",
+                      "textureGridCellSize": [
+                        960.0,
+                        160.0
+                      ],
+                      "textureGridCellTrim": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "textureGridColumns": 2,
+                      "textureGridIndex": 2,
+                      "textureGridRows": 4,
+                      "textureOffset": [
+                        0.0,
+                        0.0
+                      ],
+                      "textureRegionMode": "Grid",
+                      "textureSize": [
+                        100.0,
+                        100.0
+                      ],
+                      "type": "Sprite"
+                    }
+                  ],
+                  "decelerationRate": 0.2,
+                  "dragScrollEnabled": true,
+                  "hitPadding": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "horizontalScrollable": false,
+                  "inheritChildrenHover": false,
+                  "inheritChildrenPress": false,
+                  "interactable": true,
+                  "isHitTarget": false,
+                  "name": "NonJapanese",
+                  "region": {
+                    "anchorMax": [
+                      0.5,
+                      0.5
+                    ],
+                    "anchorMin": [
+                      0.5,
+                      0.5
+                    ],
+                    "posDelta": [
+                      0.0,
+                      0.0
+                    ],
+                    "sizeDelta": [
+                      480.0,
+                      80.0
+                    ],
+                    "sizeDeltaPivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "type": "AnchorRegion"
+                  },
+                  "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
+                  "styleState": "",
+                  "transform": {
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        100
+                      ],
+                      "styleStates": {
+                        "selected": [
+                          255,
+                          255,
+                          255,
+                          255
+                        ]
+                      }
+                    },
+                    "hitTestAffected": true,
+                    "pivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                      1.0,
+                      1.0
+                    ],
+                    "translate": [
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "verticalScrollable": false,
+                  "wheelScrollEnabled": true,
+                  "zOrderInSiblings": 0
+                },
+                {
+                  "activeSelf": true,
+                  "activeSelf_paramRef": "isJapanese",
+                  "children": [],
+                  "childrenLayout": {
+                    "horizontalAlign": "Left",
+                    "padding": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "spacing": [
+                      0.0,
+                      0.0
+                    ],
+                    "type": "FlowLayout",
+                    "verticalAlign": "Top"
+                  },
+                  "clippingEnabled": false,
+                  "components": [
+                    {
+                      "addColor": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "blendMode": "Normal",
+                      "color": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "gridAnimationEndIndex": 0,
+                      "gridAnimationFPS": 10.0,
+                      "gridAnimationStartIndex": 0,
+                      "gridAnimationType": "None",
+                      "nineSliceBottomTiled": false,
+                      "nineSliceCenterTiled": false,
+                      "nineSliceEnabled": false,
+                      "nineSliceFallback": true,
+                      "nineSliceLeftTiled": false,
+                      "nineSliceMargin": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "nineSliceRightTiled": false,
+                      "nineSliceScale": [
+                        1.0,
+                        1.0
+                      ],
+                      "nineSliceTopTiled": false,
+                      "offsetAnimationSpeed": [
+                        0.0,
+                        0.0
+                      ],
+                      "offsetAnimationType": "None",
+                      "preserveAspect": false,
+                      "textureAddressMode": "Default",
+                      "textureAssetName": "",
+                      "textureFilePath": "imgs/option_top_item.png",
+                      "textureFilter": "Default",
+                      "textureGridCellSize": [
+                        960.0,
+                        160.0
+                      ],
+                      "textureGridCellTrim": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "textureGridColumns": 2,
+                      "textureGridIndex": 3,
+                      "textureGridRows": 4,
+                      "textureOffset": [
+                        0.0,
+                        0.0
+                      ],
+                      "textureRegionMode": "Grid",
+                      "textureSize": [
+                        100.0,
+                        100.0
+                      ],
+                      "type": "Sprite"
+                    }
+                  ],
+                  "decelerationRate": 0.2,
+                  "dragScrollEnabled": true,
+                  "hitPadding": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "horizontalScrollable": false,
+                  "inheritChildrenHover": false,
+                  "inheritChildrenPress": false,
+                  "interactable": true,
+                  "isHitTarget": false,
+                  "name": "Japanese",
+                  "region": {
+                    "anchorMax": [
+                      0.5,
+                      0.5
+                    ],
+                    "anchorMin": [
+                      0.5,
+                      0.5
+                    ],
+                    "posDelta": [
+                      0.0,
+                      0.0
+                    ],
+                    "sizeDelta": [
+                      480.0,
+                      80.0
+                    ],
+                    "sizeDeltaPivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "type": "AnchorRegion"
+                  },
+                  "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
+                  "styleState": "",
+                  "transform": {
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        100
+                      ],
+                      "styleStates": {
+                        "selected": [
+                          255,
+                          255,
+                          255,
+                          255
+                        ]
+                      }
+                    },
+                    "hitTestAffected": true,
+                    "pivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                      1.0,
+                      1.0
+                    ],
+                    "translate": [
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "verticalScrollable": false,
+                  "wheelScrollEnabled": true,
+                  "zOrderInSiblings": 0
+                }
+              ],
               "childrenLayout": {
                 "horizontalAlign": "Left",
                 "padding": [
@@ -606,75 +1197,6 @@
               },
               "clippingEnabled": false,
               "components": [
-                {
-                  "addColor": [
-                    0,
-                    0,
-                    0,
-                    0
-                  ],
-                  "blendMode": "Normal",
-                  "color": [
-                    255,
-                    255,
-                    255,
-                    255
-                  ],
-                  "gridAnimationEndIndex": 0,
-                  "gridAnimationFPS": 10.0,
-                  "gridAnimationStartIndex": 0,
-                  "gridAnimationType": "None",
-                  "nineSliceBottomTiled": false,
-                  "nineSliceCenterTiled": false,
-                  "nineSliceEnabled": false,
-                  "nineSliceFallback": true,
-                  "nineSliceLeftTiled": false,
-                  "nineSliceMargin": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ],
-                  "nineSliceRightTiled": false,
-                  "nineSliceScale": [
-                    1.0,
-                    1.0
-                  ],
-                  "nineSliceTopTiled": false,
-                  "offsetAnimationSpeed": [
-                    0.0,
-                    0.0
-                  ],
-                  "offsetAnimationType": "None",
-                  "preserveAspect": false,
-                  "textureAddressMode": "Default",
-                  "textureAssetName": "",
-                  "textureFilePath": "imgs/config_item.gif",
-                  "textureFilter": "Default",
-                  "textureGridCellSize": [
-                    960.0,
-                    160.0
-                  ],
-                  "textureGridCellTrim": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ],
-                  "textureGridColumns": 1,
-                  "textureGridIndex": 1,
-                  "textureGridRows": 4,
-                  "textureOffset": [
-                    0.0,
-                    0.0
-                  ],
-                  "textureRegionMode": "Grid",
-                  "textureSize": [
-                    100.0,
-                    100.0
-                  ],
-                  "type": "Sprite"
-                },
                 {
                   "active": {
                     "default": false,
@@ -795,7 +1317,7 @@
               "inheritChildrenPress": false,
               "interactable": true,
               "isHitTarget": true,
-              "name": "DisplaySoundSettings",
+              "name": "InputJudgmentSettings",
               "region": {
                 "flexibleWeight": 0.0,
                 "margin": [
@@ -818,22 +1340,12 @@
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
-                "color": {
-                  "default": [
-                    255,
-                    255,
-                    255,
-                    100
-                  ],
-                  "styleStates": {
-                    "selected": [
-                      255,
-                      255,
-                      255,
-                      255
-                    ]
-                  }
-                },
+                "color": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
                 "hitTestAffected": true,
                 "pivot": [
                   0.5,
@@ -855,7 +1367,342 @@
             },
             {
               "activeSelf": true,
-              "children": [],
+              "children": [
+                {
+                  "activeSelf": true,
+                  "activeSelf_paramRef": "isNonJapanese",
+                  "children": [],
+                  "childrenLayout": {
+                    "horizontalAlign": "Left",
+                    "padding": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "spacing": [
+                      0.0,
+                      0.0
+                    ],
+                    "type": "FlowLayout",
+                    "verticalAlign": "Top"
+                  },
+                  "clippingEnabled": false,
+                  "components": [
+                    {
+                      "addColor": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "blendMode": "Normal",
+                      "color": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "gridAnimationEndIndex": 0,
+                      "gridAnimationFPS": 10.0,
+                      "gridAnimationStartIndex": 0,
+                      "gridAnimationType": "None",
+                      "nineSliceBottomTiled": false,
+                      "nineSliceCenterTiled": false,
+                      "nineSliceEnabled": false,
+                      "nineSliceFallback": true,
+                      "nineSliceLeftTiled": false,
+                      "nineSliceMargin": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "nineSliceRightTiled": false,
+                      "nineSliceScale": [
+                        1.0,
+                        1.0
+                      ],
+                      "nineSliceTopTiled": false,
+                      "offsetAnimationSpeed": [
+                        0.0,
+                        0.0
+                      ],
+                      "offsetAnimationType": "None",
+                      "preserveAspect": false,
+                      "textureAddressMode": "Default",
+                      "textureAssetName": "",
+                      "textureFilePath": "imgs/option_top_item.png",
+                      "textureFilter": "Default",
+                      "textureGridCellSize": [
+                        960.0,
+                        160.0
+                      ],
+                      "textureGridCellTrim": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "textureGridColumns": 2,
+                      "textureGridIndex": 4,
+                      "textureGridRows": 4,
+                      "textureOffset": [
+                        0.0,
+                        0.0
+                      ],
+                      "textureRegionMode": "Grid",
+                      "textureSize": [
+                        100.0,
+                        100.0
+                      ],
+                      "type": "Sprite"
+                    }
+                  ],
+                  "decelerationRate": 0.2,
+                  "dragScrollEnabled": true,
+                  "hitPadding": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "horizontalScrollable": false,
+                  "inheritChildrenHover": false,
+                  "inheritChildrenPress": false,
+                  "interactable": true,
+                  "isHitTarget": false,
+                  "name": "NonJapanese",
+                  "region": {
+                    "anchorMax": [
+                      0.5,
+                      0.5
+                    ],
+                    "anchorMin": [
+                      0.5,
+                      0.5
+                    ],
+                    "posDelta": [
+                      0.0,
+                      0.0
+                    ],
+                    "sizeDelta": [
+                      480.0,
+                      80.0
+                    ],
+                    "sizeDeltaPivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "type": "AnchorRegion"
+                  },
+                  "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
+                  "styleState": "",
+                  "transform": {
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        100
+                      ],
+                      "styleStates": {
+                        "selected": [
+                          255,
+                          255,
+                          255,
+                          255
+                        ]
+                      }
+                    },
+                    "hitTestAffected": true,
+                    "pivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                      1.0,
+                      1.0
+                    ],
+                    "translate": [
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "verticalScrollable": false,
+                  "wheelScrollEnabled": true,
+                  "zOrderInSiblings": 0
+                },
+                {
+                  "activeSelf": true,
+                  "activeSelf_paramRef": "isJapanese",
+                  "children": [],
+                  "childrenLayout": {
+                    "horizontalAlign": "Left",
+                    "padding": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "spacing": [
+                      0.0,
+                      0.0
+                    ],
+                    "type": "FlowLayout",
+                    "verticalAlign": "Top"
+                  },
+                  "clippingEnabled": false,
+                  "components": [
+                    {
+                      "addColor": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "blendMode": "Normal",
+                      "color": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "gridAnimationEndIndex": 0,
+                      "gridAnimationFPS": 10.0,
+                      "gridAnimationStartIndex": 0,
+                      "gridAnimationType": "None",
+                      "nineSliceBottomTiled": false,
+                      "nineSliceCenterTiled": false,
+                      "nineSliceEnabled": false,
+                      "nineSliceFallback": true,
+                      "nineSliceLeftTiled": false,
+                      "nineSliceMargin": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "nineSliceRightTiled": false,
+                      "nineSliceScale": [
+                        1.0,
+                        1.0
+                      ],
+                      "nineSliceTopTiled": false,
+                      "offsetAnimationSpeed": [
+                        0.0,
+                        0.0
+                      ],
+                      "offsetAnimationType": "None",
+                      "preserveAspect": false,
+                      "textureAddressMode": "Default",
+                      "textureAssetName": "",
+                      "textureFilePath": "imgs/option_top_item.png",
+                      "textureFilter": "Default",
+                      "textureGridCellSize": [
+                        960.0,
+                        160.0
+                      ],
+                      "textureGridCellTrim": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "textureGridColumns": 2,
+                      "textureGridIndex": 5,
+                      "textureGridRows": 4,
+                      "textureOffset": [
+                        0.0,
+                        0.0
+                      ],
+                      "textureRegionMode": "Grid",
+                      "textureSize": [
+                        100.0,
+                        100.0
+                      ],
+                      "type": "Sprite"
+                    }
+                  ],
+                  "decelerationRate": 0.2,
+                  "dragScrollEnabled": true,
+                  "hitPadding": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "horizontalScrollable": false,
+                  "inheritChildrenHover": false,
+                  "inheritChildrenPress": false,
+                  "interactable": true,
+                  "isHitTarget": false,
+                  "name": "Japanese",
+                  "region": {
+                    "anchorMax": [
+                      0.5,
+                      0.5
+                    ],
+                    "anchorMin": [
+                      0.5,
+                      0.5
+                    ],
+                    "posDelta": [
+                      0.0,
+                      0.0
+                    ],
+                    "sizeDelta": [
+                      480.0,
+                      80.0
+                    ],
+                    "sizeDeltaPivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "type": "AnchorRegion"
+                  },
+                  "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
+                  "styleState": "",
+                  "transform": {
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        100
+                      ],
+                      "styleStates": {
+                        "selected": [
+                          255,
+                          255,
+                          255,
+                          255
+                        ]
+                      }
+                    },
+                    "hitTestAffected": true,
+                    "pivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                      1.0,
+                      1.0
+                    ],
+                    "translate": [
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "verticalScrollable": false,
+                  "wheelScrollEnabled": true,
+                  "zOrderInSiblings": 0
+                }
+              ],
               "childrenLayout": {
                 "horizontalAlign": "Left",
                 "padding": [
@@ -873,75 +1720,6 @@
               },
               "clippingEnabled": false,
               "components": [
-                {
-                  "addColor": [
-                    0,
-                    0,
-                    0,
-                    0
-                  ],
-                  "blendMode": "Normal",
-                  "color": [
-                    255,
-                    255,
-                    255,
-                    255
-                  ],
-                  "gridAnimationEndIndex": 0,
-                  "gridAnimationFPS": 10.0,
-                  "gridAnimationStartIndex": 0,
-                  "gridAnimationType": "None",
-                  "nineSliceBottomTiled": false,
-                  "nineSliceCenterTiled": false,
-                  "nineSliceEnabled": false,
-                  "nineSliceFallback": true,
-                  "nineSliceLeftTiled": false,
-                  "nineSliceMargin": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ],
-                  "nineSliceRightTiled": false,
-                  "nineSliceScale": [
-                    1.0,
-                    1.0
-                  ],
-                  "nineSliceTopTiled": false,
-                  "offsetAnimationSpeed": [
-                    0.0,
-                    0.0
-                  ],
-                  "offsetAnimationType": "None",
-                  "preserveAspect": false,
-                  "textureAddressMode": "Default",
-                  "textureAssetName": "",
-                  "textureFilePath": "imgs/config_item.gif",
-                  "textureFilter": "Default",
-                  "textureGridCellSize": [
-                    960.0,
-                    160.0
-                  ],
-                  "textureGridCellTrim": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ],
-                  "textureGridColumns": 1,
-                  "textureGridIndex": 2,
-                  "textureGridRows": 4,
-                  "textureOffset": [
-                    0.0,
-                    0.0
-                  ],
-                  "textureRegionMode": "Grid",
-                  "textureSize": [
-                    100.0,
-                    100.0
-                  ],
-                  "type": "Sprite"
-                },
                 {
                   "active": {
                     "default": false,
@@ -1062,7 +1840,7 @@
               "inheritChildrenPress": false,
               "interactable": true,
               "isHitTarget": true,
-              "name": "DisplaySoundSettings",
+              "name": "OtherSettings",
               "region": {
                 "flexibleWeight": 0.0,
                 "margin": [
@@ -1085,22 +1863,12 @@
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
-                "color": {
-                  "default": [
-                    255,
-                    255,
-                    255,
-                    100
-                  ],
-                  "styleStates": {
-                    "selected": [
-                      255,
-                      255,
-                      255,
-                      255
-                    ]
-                  }
-                },
+                "color": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
                 "hitTestAffected": true,
                 "pivot": [
                   0.5,
@@ -1122,7 +1890,342 @@
             },
             {
               "activeSelf": true,
-              "children": [],
+              "children": [
+                {
+                  "activeSelf": true,
+                  "activeSelf_paramRef": "isNonJapanese",
+                  "children": [],
+                  "childrenLayout": {
+                    "horizontalAlign": "Left",
+                    "padding": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "spacing": [
+                      0.0,
+                      0.0
+                    ],
+                    "type": "FlowLayout",
+                    "verticalAlign": "Top"
+                  },
+                  "clippingEnabled": false,
+                  "components": [
+                    {
+                      "addColor": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "blendMode": "Normal",
+                      "color": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "gridAnimationEndIndex": 0,
+                      "gridAnimationFPS": 10.0,
+                      "gridAnimationStartIndex": 0,
+                      "gridAnimationType": "None",
+                      "nineSliceBottomTiled": false,
+                      "nineSliceCenterTiled": false,
+                      "nineSliceEnabled": false,
+                      "nineSliceFallback": true,
+                      "nineSliceLeftTiled": false,
+                      "nineSliceMargin": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "nineSliceRightTiled": false,
+                      "nineSliceScale": [
+                        1.0,
+                        1.0
+                      ],
+                      "nineSliceTopTiled": false,
+                      "offsetAnimationSpeed": [
+                        0.0,
+                        0.0
+                      ],
+                      "offsetAnimationType": "None",
+                      "preserveAspect": false,
+                      "textureAddressMode": "Default",
+                      "textureAssetName": "",
+                      "textureFilePath": "imgs/option_top_item.png",
+                      "textureFilter": "Default",
+                      "textureGridCellSize": [
+                        960.0,
+                        160.0
+                      ],
+                      "textureGridCellTrim": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "textureGridColumns": 2,
+                      "textureGridIndex": 6,
+                      "textureGridRows": 4,
+                      "textureOffset": [
+                        0.0,
+                        0.0
+                      ],
+                      "textureRegionMode": "Grid",
+                      "textureSize": [
+                        100.0,
+                        100.0
+                      ],
+                      "type": "Sprite"
+                    }
+                  ],
+                  "decelerationRate": 0.2,
+                  "dragScrollEnabled": true,
+                  "hitPadding": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "horizontalScrollable": false,
+                  "inheritChildrenHover": false,
+                  "inheritChildrenPress": false,
+                  "interactable": true,
+                  "isHitTarget": false,
+                  "name": "NonJapanese",
+                  "region": {
+                    "anchorMax": [
+                      0.5,
+                      0.5
+                    ],
+                    "anchorMin": [
+                      0.5,
+                      0.5
+                    ],
+                    "posDelta": [
+                      0.0,
+                      0.0
+                    ],
+                    "sizeDelta": [
+                      480.0,
+                      80.0
+                    ],
+                    "sizeDeltaPivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "type": "AnchorRegion"
+                  },
+                  "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
+                  "styleState": "",
+                  "transform": {
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        100
+                      ],
+                      "styleStates": {
+                        "selected": [
+                          255,
+                          255,
+                          255,
+                          255
+                        ]
+                      }
+                    },
+                    "hitTestAffected": true,
+                    "pivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                      1.0,
+                      1.0
+                    ],
+                    "translate": [
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "verticalScrollable": false,
+                  "wheelScrollEnabled": true,
+                  "zOrderInSiblings": 0
+                },
+                {
+                  "activeSelf": true,
+                  "activeSelf_paramRef": "isJapanese",
+                  "children": [],
+                  "childrenLayout": {
+                    "horizontalAlign": "Left",
+                    "padding": [
+                      0.0,
+                      0.0,
+                      0.0,
+                      0.0
+                    ],
+                    "spacing": [
+                      0.0,
+                      0.0
+                    ],
+                    "type": "FlowLayout",
+                    "verticalAlign": "Top"
+                  },
+                  "clippingEnabled": false,
+                  "components": [
+                    {
+                      "addColor": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "blendMode": "Normal",
+                      "color": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "gridAnimationEndIndex": 0,
+                      "gridAnimationFPS": 10.0,
+                      "gridAnimationStartIndex": 0,
+                      "gridAnimationType": "None",
+                      "nineSliceBottomTiled": false,
+                      "nineSliceCenterTiled": false,
+                      "nineSliceEnabled": false,
+                      "nineSliceFallback": true,
+                      "nineSliceLeftTiled": false,
+                      "nineSliceMargin": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "nineSliceRightTiled": false,
+                      "nineSliceScale": [
+                        1.0,
+                        1.0
+                      ],
+                      "nineSliceTopTiled": false,
+                      "offsetAnimationSpeed": [
+                        0.0,
+                        0.0
+                      ],
+                      "offsetAnimationType": "None",
+                      "preserveAspect": false,
+                      "textureAddressMode": "Default",
+                      "textureAssetName": "",
+                      "textureFilePath": "imgs/option_top_item.png",
+                      "textureFilter": "Default",
+                      "textureGridCellSize": [
+                        960.0,
+                        160.0
+                      ],
+                      "textureGridCellTrim": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "textureGridColumns": 2,
+                      "textureGridIndex": 7,
+                      "textureGridRows": 4,
+                      "textureOffset": [
+                        0.0,
+                        0.0
+                      ],
+                      "textureRegionMode": "Grid",
+                      "textureSize": [
+                        100.0,
+                        100.0
+                      ],
+                      "type": "Sprite"
+                    }
+                  ],
+                  "decelerationRate": 0.2,
+                  "dragScrollEnabled": true,
+                  "hitPadding": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "horizontalScrollable": false,
+                  "inheritChildrenHover": false,
+                  "inheritChildrenPress": false,
+                  "interactable": true,
+                  "isHitTarget": false,
+                  "name": "Japanese",
+                  "region": {
+                    "anchorMax": [
+                      0.5,
+                      0.5
+                    ],
+                    "anchorMin": [
+                      0.5,
+                      0.5
+                    ],
+                    "posDelta": [
+                      0.0,
+                      0.0
+                    ],
+                    "sizeDelta": [
+                      480.0,
+                      80.0
+                    ],
+                    "sizeDeltaPivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "type": "AnchorRegion"
+                  },
+                  "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
+                  "styleState": "",
+                  "transform": {
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        100
+                      ],
+                      "styleStates": {
+                        "selected": [
+                          255,
+                          255,
+                          255,
+                          255
+                        ]
+                      }
+                    },
+                    "hitTestAffected": true,
+                    "pivot": [
+                      0.5,
+                      0.5
+                    ],
+                    "rotation": 0.0,
+                    "scale": [
+                      1.0,
+                      1.0
+                    ],
+                    "translate": [
+                      0.0,
+                      0.0
+                    ]
+                  },
+                  "verticalScrollable": false,
+                  "wheelScrollEnabled": true,
+                  "zOrderInSiblings": 0
+                }
+              ],
               "childrenLayout": {
                 "horizontalAlign": "Left",
                 "padding": [
@@ -1140,75 +2243,6 @@
               },
               "clippingEnabled": false,
               "components": [
-                {
-                  "addColor": [
-                    0,
-                    0,
-                    0,
-                    0
-                  ],
-                  "blendMode": "Normal",
-                  "color": [
-                    255,
-                    255,
-                    255,
-                    255
-                  ],
-                  "gridAnimationEndIndex": 0,
-                  "gridAnimationFPS": 10.0,
-                  "gridAnimationStartIndex": 0,
-                  "gridAnimationType": "None",
-                  "nineSliceBottomTiled": false,
-                  "nineSliceCenterTiled": false,
-                  "nineSliceEnabled": false,
-                  "nineSliceFallback": true,
-                  "nineSliceLeftTiled": false,
-                  "nineSliceMargin": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ],
-                  "nineSliceRightTiled": false,
-                  "nineSliceScale": [
-                    1.0,
-                    1.0
-                  ],
-                  "nineSliceTopTiled": false,
-                  "offsetAnimationSpeed": [
-                    0.0,
-                    0.0
-                  ],
-                  "offsetAnimationType": "None",
-                  "preserveAspect": false,
-                  "textureAddressMode": "Default",
-                  "textureAssetName": "",
-                  "textureFilePath": "imgs/config_item.gif",
-                  "textureFilter": "Default",
-                  "textureGridCellSize": [
-                    960.0,
-                    160.0
-                  ],
-                  "textureGridCellTrim": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ],
-                  "textureGridColumns": 1,
-                  "textureGridIndex": 3,
-                  "textureGridRows": 4,
-                  "textureOffset": [
-                    0.0,
-                    0.0
-                  ],
-                  "textureRegionMode": "Grid",
-                  "textureSize": [
-                    100.0,
-                    100.0
-                  ],
-                  "type": "Sprite"
-                },
                 {
                   "active": {
                     "default": false,
@@ -1329,7 +2363,7 @@
               "inheritChildrenPress": false,
               "interactable": true,
               "isHitTarget": true,
-              "name": "DisplaySoundSettings",
+              "name": "KeyConfiguration",
               "region": {
                 "flexibleWeight": 0.0,
                 "margin": [
@@ -1352,22 +2386,12 @@
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
-                "color": {
-                  "default": [
-                    255,
-                    255,
-                    255,
-                    100
-                  ],
-                  "styleStates": {
-                    "selected": [
-                      255,
-                      255,
-                      255,
-                      255
-                    ]
-                  }
-                },
+                "color": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
                 "hitTestAffected": true,
                 "pivot": [
                   0.5,
@@ -1414,7 +2438,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": true,
+          "isHitTarget": false,
           "name": "TopMenu",
           "region": {
             "anchorMax": [
@@ -1619,7 +2643,7 @@
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
-              "textureFilePath": "imgs/config_top.png",
+              "textureFilePath": "imgs/option_setting_header.png",
               "textureFilter": "Default",
               "textureGridCellSize": [
                 527.0,
@@ -1632,9 +2656,9 @@
                 0.0
               ],
               "textureGridColumns": 1,
-              "textureGridIndex": 1,
+              "textureGridIndex": 0,
               "textureGridIndex_paramRef": "settingHeaderIndex",
-              "textureGridRows": 5,
+              "textureGridRows": 4,
               "textureOffset": [
                 0.0,
                 0.0
@@ -1659,7 +2683,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": true,
+          "isHitTarget": false,
           "name": "Header",
           "region": {
             "anchorMax": [
@@ -2034,7 +3058,7 @@
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
-              "textureFilePath": "imgs/config_top.png",
+              "textureFilePath": "imgs/option_setting_header.png",
               "textureFilter": "Default",
               "textureGridCellSize": [
                 527.0,
@@ -2047,8 +3071,8 @@
                 0.0
               ],
               "textureGridColumns": 1,
-              "textureGridIndex": 4,
-              "textureGridRows": 5,
+              "textureGridIndex": 3,
+              "textureGridRows": 4,
               "textureOffset": [
                 0.0,
                 0.0
@@ -2327,9 +3351,17 @@
       "type": "String",
       "value": "↑↓:設定項目を選択  Enter:決定  ESC:保存してタイトルに戻る"
     },
+    "isJapanese": {
+      "type": "Bool",
+      "value": false
+    },
     "isKeyConfig": {
       "type": "Bool",
       "value": false
+    },
+    "isNonJapanese": {
+      "type": "Bool",
+      "value": true
     },
     "isSetting": {
       "type": "Bool",
@@ -2341,7 +3373,7 @@
     },
     "settingHeaderIndex": {
       "type": "Number",
-      "value": 1.0
+      "value": 0.0
     }
   },
   "referenceSize": [

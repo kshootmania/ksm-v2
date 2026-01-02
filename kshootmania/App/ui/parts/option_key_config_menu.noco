@@ -3385,7 +3385,7 @@
                     255,
                     255
                   ],
-                  "color_paramRef": "fxLRColor",
+                  "color_paramRef": "bothFXColor",
                   "fontAssetName": "",
                   "fontSize": 16.0,
                   "gradationColor1": [
@@ -3430,7 +3430,7 @@
                   ],
                   "sizingMode": "Fixed",
                   "text": "L / R",
-                  "text_paramRef": "fxLRText",
+                  "text_paramRef": "bothFXText",
                   "type": "Label",
                   "underlineColor": [
                     255,
@@ -3571,7 +3571,7 @@
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
-              "textureFilePath": "imgs/config_fx.png",
+              "textureFilePath": "imgs/option_key_config_both_fx.png",
               "textureFilter": "Default",
               "textureGridCellSize": [
                 192.0,
@@ -3622,7 +3622,7 @@
           "inheritChildrenPress": false,
           "interactable": true,
           "isHitTarget": true,
-          "name": "FX_LR",
+          "name": "BothFX",
           "region": {
             "anchorMax": [
               0.5,
@@ -3649,7 +3649,7 @@
           "rubberBandScrollEnabled": true,
           "scrollBarType": "Overlay",
           "styleState": "",
-          "styleState_paramRef": "fxLRState",
+          "styleState_paramRef": "bothFXState",
           "transform": {
             "color": [
               255,
@@ -3961,6 +3961,14 @@
       "type": "String",
       "value": "*BACK :Esc"
     },
+    "bothFXState": {
+      "type": "String",
+      "value": ""
+    },
+    "bothFXText": {
+      "type": "String",
+      "value": "L / R"
+    },
     "btAColor": {
       "type": "Color",
       "value": [
@@ -4046,7 +4054,7 @@
         255
       ]
     },
-    "fxLRColor": {
+    "bothFXColor": {
       "type": "Color",
       "value": [
         255,
@@ -4054,14 +4062,6 @@
         255,
         255
       ]
-    },
-    "fxLRState": {
-      "type": "String",
-      "value": ""
-    },
-    "fxLRText": {
-      "type": "String",
-      "value": "L / R"
     },
     "fxLState": {
       "type": "String",
