@@ -185,6 +185,7 @@ namespace I18n
 		ItemHiSpeedTypeX,
 		ItemHiSpeedType,
 		ItemHiSpeedTypeC,
+		ItemHideMouseCursor,
 		ItemUseNumpadAsArrowKeys,
 	};
 

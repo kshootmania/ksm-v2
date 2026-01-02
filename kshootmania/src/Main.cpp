@@ -346,6 +346,12 @@ void KSMMain()
 	
 	while (System::Update())
 	{
+		// マウスカーソル非表示設定
+		if (ConfigIni::GetBool(ConfigIni::Key::kHideMouseCursor))
+		{
+			Cursor::RequestStyle(CursorStyle::Hidden);
+		}
+
 		if (ksmaxis::IsInitialized())
 		{
 			ksmaxis::Update();

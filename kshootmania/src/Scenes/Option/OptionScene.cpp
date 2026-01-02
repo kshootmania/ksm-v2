@@ -220,10 +220,10 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 				I18n::Get(I18n::Option::HispeedTypeHide),
 				I18n::Get(I18n::Option::HispeedTypeShow),
 			}),
-			/*CreateInfo::Enum(ConfigIni::Key::kHideMouseCursor, Array<StringView>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHideMouseCursor), ConfigIni::Key::kHideMouseCursor, Array<StringView>{
 				I18n::Get(I18n::Option::HideMouseCursorOff),
 				I18n::Get(I18n::Option::HideMouseCursorOn),
-			}).setName(U"HIDE MOUSE CURSOR"),*/
+			}),
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemUseNumpadAsArrowKeys), ConfigIni::Key::kUseNumpadAsArrowKeys, Array<StringView>{
 				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOff),
 				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOnKeyboard),

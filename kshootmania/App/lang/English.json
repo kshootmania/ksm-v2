@@ -135,6 +135,7 @@
 		"ItemHiSpeedTypeX": "HiSpeed Type x0.5 - x9.9",
 		"ItemHiSpeedType": "HiSpeed Type 25 - 2000",
 		"ItemHiSpeedTypeC": "HiSpeed Type C 25 - 2000",
+		"ItemHideMouseCursor": "Hide Mouse Cursor",
 		"ItemUseNumpadAsArrowKeys": "Use Numpad as Arrow Keys"
 	}
 }

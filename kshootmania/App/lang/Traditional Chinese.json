@@ -135,6 +135,7 @@
 		"ItemHiSpeedTypeX": "HiSpeed x0.5 - x9.9",
 		"ItemHiSpeedType": "HiSpeed 25 - 2000",
 		"ItemHiSpeedTypeC": "HiSpeed C 25 - 2000",
+		"ItemHideMouseCursor": "隱藏滑鼠游標",
 		"ItemUseNumpadAsArrowKeys": "使用數字鍵盤作為方向鍵"
 	}
 }
