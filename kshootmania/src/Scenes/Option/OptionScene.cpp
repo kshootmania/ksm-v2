@@ -108,6 +108,14 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 				I18n::Get(I18n::Option::HideAllFolderOff),
 				I18n::Get(I18n::Option::HideAllFolderOn),
 			}),
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAssistTick), ConfigIni::Key::kAssistTick, Array<StringView>{
+				I18n::Get(I18n::Option::AssistTickOff),
+				I18n::Get(I18n::Option::AssistTickOn),
+			}),
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAutoPlaySE), ConfigIni::Key::kAutoPlaySE, Array<StringView>{
+				I18n::Get(I18n::Option::Off),
+				I18n::Get(I18n::Option::On),
+			}),
 			CreateInfo::Int(I18n::Get(I18n::Option::ItemMasterVolume), ConfigIni::Key::kMasterVolume, kMasterVolumeMin, kMasterVolumeMax, kMasterVolumeDefault, I18n::Get(I18n::Option::MasterVolumePercent), 5)
 				.setOnChangeCallback([]
 				{
@@ -156,10 +164,6 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 			}).setOnChangeCallback([]() {
 				InputUtils::InitKsmaxisForCurrentLaserInput();
 			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAssistTick), ConfigIni::Key::kAssistTick, Array<StringView>{
-				I18n::Get(I18n::Option::AssistTickOff),
-				I18n::Get(I18n::Option::AssistTickOn),
-			}),
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDisableIME), ConfigIni::Key::kDisableIME, Array<StringView>{
 				I18n::Get(I18n::Option::DisableIMEOff),
 				I18n::Get(I18n::Option::DisableIMEOnLow),
@@ -176,6 +180,11 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 					I18n::Get(I18n::Option::TimingAdjustSuffixNoAdjustment),
 					I18n::Get(I18n::Option::LaserTimingAdjustLater),
 					I18n::Get(I18n::Option::LaserTimingAdjustEarlier)),
+			CreateInfo::Int(I18n::Get(I18n::Option::ItemVisualOffset), ConfigIni::Key::kVisualOffset, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
+				.setAdditionalSuffixes(
+					I18n::Get(I18n::Option::VisualOffsetSuffixNoAdjustment),
+					I18n::Get(I18n::Option::VisualOffsetSuffixLater),
+					I18n::Get(I18n::Option::VisualOffsetSuffixEarlier)),
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemMouseXInputDirection), ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
 				I18n::Get(I18n::Option::LaserMouseDirectionLeftThenRight),
 				I18n::Get(I18n::Option::LaserMouseDirectionRightThenRight),
