@@ -72,7 +72,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 				StrPair{ U"1920,1080", U"1920x1080" },
 				StrPair{ U"1920,1200", U"1920x1200" },
 			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemScreenResolutionFullScreen), ConfigIni::Key::kFullScreenResolution, Array<StrPair>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemScreenResolutionFullscreen), ConfigIni::Key::kFullScreenResolution, Array<StrPair>{
 				StrPair{ U"640,480", U"640x480" },
 				StrPair{ U"800,600", U"800x600" },
 				StrPair{ U"1024,600", U"1024x600" },
@@ -122,7 +122,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 					const int32 volume = ConfigIni::GetInt(ConfigIni::Key::kMasterVolume, kMasterVolumeDefault);
 					ksmaudio::SetMasterVolume(volume / 100.0);
 				}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemVSync), ConfigIni::Key::kVsync, Array<StrPair>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemVsync), ConfigIni::Key::kVsync, Array<StrPair>{
 				StrPair{ U"0;120", I18n::Get(I18n::Option::VsyncOffWithFps, 120) },
 				StrPair{ U"0;144", I18n::Get(I18n::Option::VsyncOffWithFps, 144) },
 				StrPair{ U"0;300", I18n::Get(I18n::Option::VsyncOffWithFps, 300) },
@@ -177,9 +177,9 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 					I18n::Get(I18n::Option::TimingAdjustSuffixEarlier)),
 			CreateInfo::Int(I18n::Get(I18n::Option::ItemLaserObjectTimingAdjustment), ConfigIni::Key::kLaserInputDelay, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
 				.setAdditionalSuffixes(
-					I18n::Get(I18n::Option::TimingAdjustSuffixNoAdjustment),
-					I18n::Get(I18n::Option::LaserTimingAdjustLater),
-					I18n::Get(I18n::Option::LaserTimingAdjustEarlier)),
+					I18n::Get(I18n::Option::LaserTimingAdjustSuffixNoAdjustment),
+					I18n::Get(I18n::Option::LaserTimingAdjustSuffixLater),
+					I18n::Get(I18n::Option::LaserTimingAdjustSuffixEarlier)),
 			CreateInfo::Int(I18n::Get(I18n::Option::ItemVisualOffset), ConfigIni::Key::kVisualOffset, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
 				.setAdditionalSuffixes(
 					I18n::Get(I18n::Option::VisualOffsetSuffixNoAdjustment),
@@ -208,15 +208,15 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 			}),
 		}),
 		OptionMenu({
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHiSpeedTypeX), ConfigIni::Key::kHispeedShowXMod, Array<StringView>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHispeedTypeXMod), ConfigIni::Key::kHispeedShowXMod, Array<StringView>{
 				I18n::Get(I18n::Option::HispeedTypeHide),
 				I18n::Get(I18n::Option::HispeedTypeShow),
 			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHiSpeedType), ConfigIni::Key::kHispeedShowOMod, Array<StringView>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHispeedTypeOMod), ConfigIni::Key::kHispeedShowOMod, Array<StringView>{
 				I18n::Get(I18n::Option::HispeedTypeHide),
 				I18n::Get(I18n::Option::HispeedTypeShow),
 			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHiSpeedTypeC), ConfigIni::Key::kHispeedShowCMod, Array<StringView>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHispeedTypeCMod), ConfigIni::Key::kHispeedShowCMod, Array<StringView>{
 				I18n::Get(I18n::Option::HispeedTypeHide),
 				I18n::Get(I18n::Option::HispeedTypeShow),
 			}),
