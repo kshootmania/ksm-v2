@@ -130,7 +130,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 			}),
 		}),
 		OptionMenu({
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemBTObject), ConfigIni::Key::kJudgmentModeBT, Array<StringView>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDefaultBTJudgmentMode), ConfigIni::Key::kJudgmentModeBT, Array<StringView>{
 				I18n::Get(I18n::Option::JudgmentOn),
 				I18n::Get(I18n::Option::JudgmentOff),
 				I18n::Get(I18n::Option::JudgmentAuto),
@@ -138,7 +138,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 			}).setOnChangeCallback([]() {
 				RuntimeConfig::SetJudgmentPlayModeBT(static_cast<JudgmentPlayMode>(ConfigIni::GetInt(ConfigIni::Key::kJudgmentModeBT)));
 			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemFXObject), ConfigIni::Key::kJudgmentModeFX, Array<StringView>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDefaultFXJudgmentMode), ConfigIni::Key::kJudgmentModeFX, Array<StringView>{
 				I18n::Get(I18n::Option::JudgmentOn),
 				I18n::Get(I18n::Option::JudgmentOff),
 				I18n::Get(I18n::Option::JudgmentAuto),
@@ -146,7 +146,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 			}).setOnChangeCallback([]() {
 				RuntimeConfig::SetJudgmentPlayModeFX(static_cast<JudgmentPlayMode>(ConfigIni::GetInt(ConfigIni::Key::kJudgmentModeFX)));
 			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemLaserObject), ConfigIni::Key::kJudgmentModeLaser, Array<StringView>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDefaultLaserJudgmentMode), ConfigIni::Key::kJudgmentModeLaser, Array<StringView>{
 				I18n::Get(I18n::Option::JudgmentOn),
 				I18n::Get(I18n::Option::JudgmentOff),
 				I18n::Get(I18n::Option::JudgmentAuto),
@@ -154,7 +154,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 			}).setOnChangeCallback([]() {
 				RuntimeConfig::SetJudgmentPlayModeLaser(static_cast<JudgmentPlayMode>(ConfigIni::GetInt(ConfigIni::Key::kJudgmentModeLaser)));
 			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemLaserObjectInputType), ConfigIni::Key::kLaserInputType, Array<IntStrPair>{
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemLaserInputType), ConfigIni::Key::kLaserInputType, Array<IntStrPair>{
 				IntStrPair{ ConfigIni::Value::LaserInputType::kKeyboard, I18n::Get(I18n::Option::LaserInputTypeKeyboard) },
 				IntStrPair{ ConfigIni::Value::LaserInputType::kSlider, I18n::Get(I18n::Option::LaserInputTypeSlider) },
 #if !defined(__APPLE__) // macOSではマウスデバイスの取得に入力監視の許可が必要で、配布アプリケーション用に正式なコード署名が必要になる(要Apple Developer Program加入)とみられるため実装済みだが一旦除外
@@ -175,7 +175,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 					I18n::Get(I18n::Option::TimingAdjustSuffixNoAdjustment),
 					I18n::Get(I18n::Option::TimingAdjustSuffixLater),
 					I18n::Get(I18n::Option::TimingAdjustSuffixEarlier)),
-			CreateInfo::Int(I18n::Get(I18n::Option::ItemLaserObjectTimingAdjustment), ConfigIni::Key::kLaserInputDelay, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
+			CreateInfo::Int(I18n::Get(I18n::Option::ItemLaserTimingAdjustment), ConfigIni::Key::kLaserInputDelay, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
 				.setAdditionalSuffixes(
 					I18n::Get(I18n::Option::LaserTimingAdjustSuffixNoAdjustment),
 					I18n::Get(I18n::Option::LaserTimingAdjustSuffixLater),
