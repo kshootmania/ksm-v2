@@ -23,6 +23,9 @@ namespace ksmaudio
 		BASS_CHANNELINFO m_info;
 		double m_volume;
 		bool m_muted;
+		HFX m_hVolumeAmplifyFX = 0; // 100%超音量用のBASS_FX_BFX_VOLUMEエフェクト
+
+		void applyVolume();
 
 	public:
 		explicit Stream(const std::string& filePath, double volume = 1.0, bool enableCompressor = false, bool preload = false, bool loop = false, double playbackSpeed = 1.0);

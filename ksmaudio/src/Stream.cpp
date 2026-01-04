@@ -27,6 +27,7 @@ namespace
 
 	// 各エフェクトの優先順位
 	constexpr int kCompressorFXPriority = 0;
+	constexpr int kVolumeAmplifyFXPriority = 5;
 	constexpr int kVolumeFXPriority = 10;
 
 	std::unique_ptr<std::vector<char>> Preload(const std::string& filePath)
@@ -114,7 +115,7 @@ namespace ksmaudio
 		, m_muted(false)
 	{
 		// 音量を設定
-		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(volume));
+		applyVolume();
 
 		// コンプレッサーを適用
 		if (enableCompressor)
@@ -133,6 +134,32 @@ namespace ksmaudio
 		if (m_hStreamSource.has_value())
 		{
 			BASS_StreamFree(m_hStreamSource.value());
+		}
+	}
+
+	void Stream::applyVolume()
+	{
+		if (m_volume > 1.0)
+		{
+			// 100%超の場合はBASS_FX_BFX_VOLUMEエフェクトで増幅
+			if (m_hVolumeAmplifyFX == 0)
+			{
+				m_hVolumeAmplifyFX = BASS_ChannelSetFX(m_hStream, BASS_FX_BFX_VOLUME, kVolumeAmplifyFXPriority);
+			}
+			const BASS_BFX_VOLUME params{ .lChannel = BASS_BFX_CHANALL, .fVolume = static_cast<float>(m_volume) };
+			BASS_FXSetParameters(m_hVolumeAmplifyFX, &params);
+			BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, 1.0f);
+		}
+		else
+		{
+			// 100%以下の場合はBASS_ATTRIB_VOLを使用
+			if (m_hVolumeAmplifyFX != 0)
+			{
+				// エフェクトを無効化
+				const BASS_BFX_VOLUME params{ .lChannel = BASS_BFX_CHANALL, .fVolume = 1.0f };
+				BASS_FXSetParameters(m_hVolumeAmplifyFX, &params);
+			}
+			BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(m_volume));
 		}
 	}
 
@@ -194,27 +221,29 @@ namespace ksmaudio
 
 	void Stream::setFadeIn(Duration duration) const
 	{
-		// 音量を0からm_volumeまでdurationSec秒かけて推移させる
+		// フェード係数を0から1まで推移させる
 		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, 0.0f);
-		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(m_volume), static_cast<DWORD>(duration.count() * 1000));
+		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, 1.0f, static_cast<DWORD>(duration.count() * 1000));
 	}
 
 	void Stream::setFadeIn(Duration duration, double volume)
 	{
 		m_volume = volume;
+		applyVolume();
 		setFadeIn(duration);
 	}
 
 	void Stream::setFadeOut(Duration duration) const
 	{
-		// 音量をm_volumeから0までdurationSec秒かけて推移させる
-		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(m_volume));
+		// フェード係数を1から0まで推移させる
+		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, 1.0f);
 		BASS_ChannelSlideAttribute(m_hStream, BASS_ATTRIB_VOL, 0.0f, static_cast<DWORD>(duration.count() * 1000));
 	}
 
 	void Stream::setFadeOut(Duration duration, double volume)
 	{
 		m_volume = volume;
+		applyVolume();
 		setFadeOut(duration);
 	}
 	
@@ -234,7 +263,7 @@ namespace ksmaudio
 		m_volume = volume;
 		if (!m_muted)
 		{
-			BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, static_cast<float>(volume));
+			applyVolume();
 		}
 	}
 
@@ -251,7 +280,16 @@ namespace ksmaudio
 	void Stream::setMuted(bool muted)
 	{
 		m_muted = muted;
-		BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, muted ? 0.0f : static_cast<float>(m_volume));
+		if (muted)
+		{
+			BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, 0.0f);
+		}
+		else
+		{
+			// 100%超の場合はフェード係数1.0、100%以下の場合はm_volume
+			const float attribVol = m_volume > 1.0 ? 1.0f : static_cast<float>(m_volume);
+			BASS_ChannelSetAttribute(m_hStream, BASS_ATTRIB_VOL, attribVol);
+		}
 	}
 
 	std::size_t Stream::sampleRate() const
