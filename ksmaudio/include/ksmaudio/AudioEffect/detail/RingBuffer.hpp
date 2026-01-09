@@ -123,29 +123,31 @@ namespace ksmaudio::AudioEffect::detail
 
         T delay(std::size_t delayFrames, std::size_t channel)
         {
-            return safeReadByDelayFrames(delayFrames, channel);
+            return safeReadByDelayFrames((std::max)(delayFrames, std::size_t{ 1 }), channel);
         }
 
         void delay(std::size_t delayFrames, T* pDest)
         {
-            safeCopy(delayCursor(delayFrames) * m_numChannels, m_numChannels, pDest);
+            safeCopy(delayCursor((std::max)(delayFrames, std::size_t{ 1 })) * m_numChannels, m_numChannels, pDest);
         }
 
         template <typename U>
         T lerpedDelay(U floatDelayFrames, std::size_t channel) const
         {
-            const std::size_t delayFrames = static_cast<std::size_t>(floatDelayFrames);
+            const U safeDelayFrames = (std::max)(floatDelayFrames, U{ 1 });
+            const std::size_t delayFrames = static_cast<std::size_t>(safeDelayFrames);
             return std::lerp(
                 safeReadByDelayFrames(delayFrames, channel),
                 safeReadByDelayFrames(delayFrames + 1, channel),
-                DecimalPart(floatDelayFrames));
+                DecimalPart(safeDelayFrames));
         }
 
         template <typename U>
         void lerpedDelay(U floatDelayFrames, T* pDest) const
         {
-            const std::size_t delayFrames = static_cast<std::size_t>(floatDelayFrames);
-            const U lerpRate = DecimalPart(floatDelayFrames);
+            const U safeDelayFrames = (std::max)(floatDelayFrames, U{ 1 });
+            const std::size_t delayFrames = static_cast<std::size_t>(safeDelayFrames);
+            const U lerpRate = DecimalPart(safeDelayFrames);
             for (std::size_t channel = 0U; channel < m_numChannels; ++channel)
             {
                 const T first = safeReadByDelayFrames(delayFrames, channel);
