@@ -10,3 +10,6 @@
 [submodule "ksmaxis"]
 	path = ksmaxis
 	url = https://github.com/kshootmania/ksmaxis.git
+[submodule "ksmaudio"]
+	path = ksmaudio
+	url = https://github.com/kshootmania/ksmaudio.git
