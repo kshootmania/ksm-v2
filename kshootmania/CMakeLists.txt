@@ -16,30 +16,19 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/App)
 # ゲーム本体
 file(GLOB_RECURSE GAME_SRC_FILES src/Scenes/*.cpp)
 
-# エディタ
-file(GLOB_RECURSE EDITOR_SRC_FILES src/Editor/*.cpp)
-
 # 共通
 file(GLOB_RECURSE ALL_SRC_FILES src/*.cpp)
 list(REMOVE_ITEM ALL_SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/stdafx.cpp)
 set(COMMON_SRC_FILES ${ALL_SRC_FILES})
 list(REMOVE_ITEM COMMON_SRC_FILES
 	${GAME_SRC_FILES}
-	${EDITOR_SRC_FILES}
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Main.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/EditorMain.cpp
 )
 
 add_executable(kshootmania
 	${COMMON_SRC_FILES}
 	${GAME_SRC_FILES}
 	src/Main.cpp
-)
-
-add_executable(kshooteditor
-	${COMMON_SRC_FILES}
-	${EDITOR_SRC_FILES}
-	src/EditorMain.cpp
 )
 
 if(APPLE)
@@ -204,153 +193,3 @@ elseif(UNIX)
     endif()
 endif()
 
-# エディタ用の設定
-if(APPLE)
-	set_target_properties(kshooteditor PROPERTIES
-		MACOSX_BUNDLE TRUE
-		MACOSX_BUNDLE_BUNDLE_NAME "K-Shoot MANIA Editor"
-		MACOSX_BUNDLE_BUNDLE_VERSION "2.0.0"
-		MACOSX_BUNDLE_SHORT_VERSION_STRING "2.0.0-alpha5"
-		MACOSX_BUNDLE_ICON_FILE icon_editor.icns
-	)
-
-	set(EDITOR_APP_BUNDLE_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/kshooteditor.app)
-
-	if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/App/engine")
-		add_custom_command(TARGET kshooteditor POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy_directory
-			${CMAKE_CURRENT_SOURCE_DIR}/App/engine
-			${EDITOR_APP_BUNDLE_PATH}/Contents/Resources/engine
-		)
-
-		add_custom_command(TARGET kshooteditor POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E rm -rf
-			${EDITOR_APP_BUNDLE_PATH}/Contents/Resources/engine/font/fontawesome
-			${EDITOR_APP_BUNDLE_PATH}/Contents/Resources/engine/font/materialdesignicons
-			${EDITOR_APP_BUNDLE_PATH}/Contents/Resources/engine/font/mplus
-			${EDITOR_APP_BUNDLE_PATH}/Contents/Resources/engine/font/noto-cjk
-			${EDITOR_APP_BUNDLE_PATH}/Contents/Resources/engine/font/noto-emoji
-		)
-
-		add_custom_command(TARGET kshooteditor POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E rm -rf
-			${EDITOR_APP_BUNDLE_PATH}/Contents/Resources/engine/soundfont
-		)
-	endif()
-
-	if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/App/assets")
-		add_custom_command(TARGET kshooteditor POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy_directory
-			${CMAKE_CURRENT_SOURCE_DIR}/App/assets
-			${EDITOR_APP_BUNDLE_PATH}/Contents/Resources/assets
-		)
-	endif()
-
-	foreach(RESOURCE_FOLDER imgs se ui shaders lang)
-		if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/App/${RESOURCE_FOLDER}")
-			add_custom_command(TARGET kshooteditor POST_BUILD
-				COMMAND ${CMAKE_COMMAND} -E copy_directory
-				${CMAKE_CURRENT_SOURCE_DIR}/App/${RESOURCE_FOLDER}
-				${EDITOR_APP_BUNDLE_PATH}/Contents/Resources/${RESOURCE_FOLDER}
-			)
-		endif()
-	endforeach()
-
-	if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/App/icon_editor.icns)
-		set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/App/icon_editor.icns PROPERTIES
-			MACOSX_PACKAGE_LOCATION "Resources"
-		)
-		target_sources(kshooteditor PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/App/icon_editor.icns)
-	endif()
-
-	add_custom_command(TARGET kshooteditor POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E make_directory
-		${EDITOR_APP_BUNDLE_PATH}/Contents/Frameworks
-	)
-
-	add_custom_command(TARGET kshooteditor POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy
-		${CMAKE_SOURCE_DIR}/ksmaudio/ThirdParty_macOS/bass/libbass.dylib
-		${EDITOR_APP_BUNDLE_PATH}/Contents/Frameworks/libbass.dylib
-	)
-
-	add_custom_command(TARGET kshooteditor POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy
-		${CMAKE_SOURCE_DIR}/ksmaudio/ThirdParty_macOS/bass_fx/libbass_fx.dylib
-		${EDITOR_APP_BUNDLE_PATH}/Contents/Frameworks/libbass_fx.dylib
-	)
-
-	set_target_properties(kshooteditor PROPERTIES
-		BUILD_RPATH "@executable_path/../Frameworks"
-		INSTALL_RPATH "@executable_path/../Frameworks"
-	)
-endif()
-
-target_include_directories(kshooteditor PRIVATE
-	${CMAKE_CURRENT_SOURCE_DIR}/src
-	${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty
-	${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/CoTaskLib/include
-)
-
-target_link_libraries(kshooteditor PRIVATE
-	Siv3D::Siv3D
-	kson
-	ksmaudio
-	ksmaxis
-	NocoUI
-)
-
-if(APPLE)
-	target_link_libraries(kshooteditor PRIVATE ksmplatform_macos)
-endif()
-
-target_compile_features(kshooteditor PRIVATE cxx_std_20)
-
-if(APPLE)
-	target_compile_options(kshooteditor PRIVATE
-		-Wall
-		-Wextra
-		-Wno-unknown-pragmas
-		-include ${CMAKE_CURRENT_SOURCE_DIR}/src/stdafx.h
-	)
-
-	target_compile_definitions(kshooteditor PRIVATE
-		SIV3D_PLATFORM_MACOS
-	)
-elseif(UNIX)
-	target_compile_options(kshooteditor PRIVATE
-		-Wall
-		-Wextra
-		-Wno-unknown-pragmas
-		-include ${CMAKE_CURRENT_SOURCE_DIR}/src/stdafx.h
-	)
-
-	set_target_properties(kshooteditor PROPERTIES
-		BUILD_RPATH "${CMAKE_SOURCE_DIR}/ksmaudio/ThirdParty_Linux/bass:${CMAKE_SOURCE_DIR}/ksmaudio/ThirdParty_Linux/bass_fx"
-		INSTALL_RPATH "$ORIGIN/../lib"
-	)
-
-	# resourcesフォルダがない場合は作成
-	add_custom_command(TARGET kshooteditor POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E make_directory
-		${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources
-	)
-
-	# engineディレクトリをコピー
-	if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/App/engine")
-		add_custom_command(TARGET kshooteditor POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy_directory
-			${CMAKE_CURRENT_SOURCE_DIR}/App/engine
-			${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources/engine
-		)
-	endif()
-
-	# assetsディレクトリをコピー
-	if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/App/assets")
-		add_custom_command(TARGET kshooteditor POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy_directory
-			${CMAKE_CURRENT_SOURCE_DIR}/App/assets
-			${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources/assets
-		)
-	endif()
-endif()
