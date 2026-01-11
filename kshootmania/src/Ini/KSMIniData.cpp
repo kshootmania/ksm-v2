@@ -18,8 +18,8 @@ void KSMIniData::load(FilePathView path)
 	String line;
 	while (reader.readLine(line))
 	{
-		// コメント行を読み飛ばす
-		if (line[0] == U';' || line.substrView(0, 2) == U"//")
+		// 空行・コメント行を読み飛ばす
+		if (line.isEmpty() || line.starts_with(U';') || line.starts_with(U"//"))
 		{
 			continue;
 		}
@@ -152,7 +152,7 @@ double KSMIniData::getDouble(StringView key, double defaultValue) const
 
 	try
 	{
-		return Parse<int32>(m_hashTable.at(key));
+		return Parse<double>(m_hashTable.at(key));
 	}
 	catch (const ParseError&)
 	{
