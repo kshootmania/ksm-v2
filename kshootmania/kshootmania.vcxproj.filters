@@ -300,6 +300,9 @@
     <ClCompile Include="src\Ini\ConfigIni.cpp">
       <Filter>Source Files\Ini</Filter>
     </ClCompile>
+    <ClCompile Include="src\Ini\FolderConfIni.cpp">
+      <Filter>Source Files\Ini</Filter>
+    </ClCompile>
     <ClCompile Include="src\Ini\KSMIniData.cpp">
       <Filter>Source Files\Ini</Filter>
     </ClCompile>
@@ -935,6 +938,9 @@
       <Filter>Header Files\I18n</Filter>
     </ClInclude>
     <ClInclude Include="src\Ini\KSMIniData.hpp">
+      <Filter>Header Files\Ini</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ini\FolderConfIni.hpp">
       <Filter>Header Files\Ini</Filter>
     </ClInclude>
     <ClInclude Include="src\Ini\ConfigIni.hpp">

@@ -11,11 +11,11 @@ namespace MusicGame
 	{
 		constexpr double kPlayFinishFadeOutStartSec = 2.4; // TODO: HARD落ちした場合は赤色表示を加えた上で4.8秒にする
 
-		Audio::BGM CreateBGM(const kson::ChartData& chartData, const FilePath& parentPath, const PlayOption& playOption)
+		Audio::BGM CreateBGM(const kson::ChartData& chartData, const FilePath& parentPath, const PlayOption& playOption, const FolderConfIni& folderConfIni)
 		{
 			const FilePath filePath = FileSystem::PathAppend(parentPath, Unicode::FromUTF8(chartData.audio.bgm.filename));
-			const double volume = chartData.audio.bgm.vol;
-			const double chartOffsetMs = chartData.audio.bgm.offset;
+			const double volume = chartData.audio.bgm.vol * folderConfIni.volumeScale;
+			const double chartOffsetMs = static_cast<double>(chartData.audio.bgm.offset + folderConfIni.offsetMs);
 			const double playbackSpeed = playOption.nonZeroPlaybackSpeed();
 			const SecondsF offset{ (chartOffsetMs / playbackSpeed + playOption.effectiveGlobalOffsetMs()) / 1000.0 };
 			const Audio::LegacyAudioFPMode legacyMode = Audio::DetermineLegacyAudioFPMode(chartData, parentPath);
@@ -176,12 +176,12 @@ namespace MusicGame
 			createInfo.playOption.gameMode)
 		, m_camSystem(m_chartData)
 		, m_highwayScroll(m_chartData)
-		, m_bgm(CreateBGM(m_chartData, m_parentPath, createInfo.playOption))
+		, m_bgm(CreateBGM(m_chartData, m_parentPath, createInfo.playOption, createInfo.folderConfIni))
 		, m_assistTick(createInfo.assistTickMode)
-		, m_laserSlamSE(m_chartData, m_timingCache, m_parentPath, createInfo.playOption.isAutoPlaySE)
-		, m_fxChipSE(m_chartData, m_timingCache, m_parentPath, createInfo.playOption.isAutoPlaySE)
+		, m_laserSlamSE(m_chartData, m_timingCache, m_parentPath, createInfo.playOption.isAutoPlaySE, createInfo.folderConfIni.volumeScale)
+		, m_fxChipSE(m_chartData, m_timingCache, m_parentPath, createInfo.playOption.isAutoPlaySE, createInfo.folderConfIni.volumeScale)
 		, m_hardFailedSound("se/play_hardfailed.wav")
-		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache, m_parentPath, createInfo.playOption.effectiveAudioProcDelayMs() / 1000.0)
+		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache, m_parentPath, createInfo.playOption.effectiveAudioProcDelayMs() / 1000.0, m_chartData.audio.bgm.vol * createInfo.folderConfIni.volumeScale)
 		, m_hispeedSettingMenu(createInfo.playOption.availableHispeedTypes, createInfo.playOption.hispeedSetting, kson::GetEffectiveStdBPM(m_chartData), GetInitialBPM(m_chartData))
 		, m_graphicsMain(m_chartData, m_parentPath, createInfo.playOption)
 	{

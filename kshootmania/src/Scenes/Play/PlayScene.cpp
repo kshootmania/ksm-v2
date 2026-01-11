@@ -85,6 +85,7 @@ namespace
 			},
 			.assistTickMode = static_cast<AssistTickMode>(ConfigIni::GetInt(ConfigIni::Key::kAssistTick, static_cast<int32>(AssistTickMode::kOff))),
 			.courseContinuation = courseState.has_value() && courseState->currentChartIdx() > 0 ? MakeOptional(courseState->continuation()) : none,
+			.folderConfIni = FolderConfIni::Load(chartFilePath),
 		};
 	}
 }

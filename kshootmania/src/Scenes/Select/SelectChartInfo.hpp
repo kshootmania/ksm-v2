@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "kson/ChartData.hpp"
 #include "HighScore/HighScoreInfo.hpp"
+#include "Ini/FolderConfIni.hpp"
 
 class SelectChartInfo
 {
@@ -8,6 +9,8 @@ private:
 	FilePath m_chartFilePath;
 
 	kson::MetaChartData m_chartData;
+
+	FolderConfIni m_folderConfIni;
 
 	// 全条件のハイスコア情報(キー:gaugeType部分を除いたKscKey文字列)
 	HashTable<String, HighScoreInfo> m_highScoreInfoMap;

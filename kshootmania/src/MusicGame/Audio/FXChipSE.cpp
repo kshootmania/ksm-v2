@@ -36,8 +36,9 @@ namespace MusicGame::Audio
 		}
 	}
 
-	FXChipSE::FXChipSE(const kson::ChartData& chartData, const kson::TimingCache& timingCache, FilePathView parentPath, bool isAutoPlaySE)
+	FXChipSE::FXChipSE(const kson::ChartData& chartData, const kson::TimingCache& timingCache, FilePathView parentPath, bool isAutoPlaySE, double folderVolumeScale)
 		: m_isAutoPlaySE(isAutoPlaySE)
+		, m_folderVolumeScale(folderVolumeScale)
 	{
 		// SE自動再生モード用にPulseから秒数への変換マップを作成
 		if (m_isAutoPlaySE)
@@ -131,7 +132,7 @@ namespace MusicGame::Audio
 
 					// キー音を再生
 					const double volume = chipData.vol;
-					m_keySounds.at(filename).play(volume);
+					m_keySounds.at(filename).play(volume * m_folderVolumeScale);
 					m_lastPlayedTimeSecs[laneIdx] = chipTimeSec;
 					m_autoPlaySELastPulses[laneIdx] = chipPulse;
 				}
@@ -183,7 +184,7 @@ namespace MusicGame::Audio
 
 				// キー音を再生
 				const double volume = it->second.vol;
-				m_keySounds.at(filename).play(volume);
+				m_keySounds.at(filename).play(volume * m_folderVolumeScale);
 				m_lastPlayedTimeSecs[laneIdx] = judgmentTimeSec;
 				break;
 			}

@@ -15,6 +15,7 @@
 #include "UI/HispeedSettingMenu.hpp"
 #include "Graphics/GraphicsMain.hpp"
 #include "kson/Util/TimingUtils.hpp"
+#include "Ini/FolderConfIni.hpp"
 
 namespace MusicGame
 {
@@ -27,6 +28,8 @@ namespace MusicGame
 		AssistTickMode assistTickMode = AssistTickMode::kOff;
 
 		Optional<CourseContinuation> courseContinuation = none;
+
+		FolderConfIni folderConfIni;
 	};
 
 	class GameMain

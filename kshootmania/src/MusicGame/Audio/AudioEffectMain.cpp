@@ -50,7 +50,7 @@ namespace MusicGame::Audio
 			return result;
 		}
 
-		void RegisterAudioEffects(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const FilePath& parentPath)
+		void RegisterAudioEffects(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const FilePath& parentPath, double bgmVolume)
 		{
 			using AudioEffectUtils::PrecalculateUpdateTriggerTiming;
 
@@ -169,7 +169,7 @@ namespace MusicGame::Audio
 						{
 							// ファイル名をもとに音声を追加ロード
 							const std::string& filename = def.v.at("filename");
-							bgm.emplaceSwitchAudioStream(true, name, filename, parentPath, chartData.audio.bgm.vol);
+							bgm.emplaceSwitchAudioStream(true, name, filename, parentPath, bgmVolume);
 						}
 					}
 					else
@@ -219,7 +219,7 @@ namespace MusicGame::Audio
 						{
 							// ファイル名をもとに音声を追加ロード
 							const std::string& filename = def.v.at("filename");
-							bgm.emplaceSwitchAudioStream(false, name, filename, parentPath, chartData.audio.bgm.vol);
+							bgm.emplaceSwitchAudioStream(false, name, filename, parentPath, bgmVolume);
 						}
 					}
 					else
@@ -444,8 +444,8 @@ namespace MusicGame::Audio
 		return audioEffectInvocation;
 	}
 
-	AudioEffectMain::AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const FilePath& parentPath, double audioProcDelaySec)
-		: m_longFXNoteInvocations((RegisterAudioEffects(bgm, chartData, timingCache, parentPath), CreateLongFXNoteAudioEffectInvocations(bgm, chartData))) // 先に登録しておく必要があるので、分かりにくいがカンマ演算子を使用している(TODO: もうちょっとどうにかする)
+	AudioEffectMain::AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const FilePath& parentPath, double audioProcDelaySec, double bgmVolume)
+		: m_longFXNoteInvocations((RegisterAudioEffects(bgm, chartData, timingCache, parentPath, bgmVolume), CreateLongFXNoteAudioEffectInvocations(bgm, chartData))) // 先に登録しておく必要があるので、分かりにくいがカンマ演算子を使用している(TODO: もうちょっとどうにかする)
 		, m_laserPulseInvocations(CreateLaserPulseAudioEffectInvocations(bgm, chartData))
 		, m_audioProcDelaySec(audioProcDelaySec)
 		, m_peakingFilterDelaySec(GetEffectivePeakingFilterDelaySec(chartData))
