@@ -22,6 +22,8 @@ namespace MusicGame::Judgment
 
 		void addGaugeValue(int32 add);
 
+		void addGaugeValueNormal(int32 add);
+
 		void subtractGaugeValue(int32 sub);
 
 		double calcGaugePercentageFromValue(int32 gaugeValue, GaugeType gaugeType) const;

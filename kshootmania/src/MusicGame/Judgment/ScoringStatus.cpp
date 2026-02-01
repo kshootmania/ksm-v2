@@ -41,6 +41,11 @@ namespace MusicGame::Judgment
 		}
 
 		// Grade計算用にNORMAL基準のゲージ値も更新
+		addGaugeValueNormal(add);
+	}
+
+	void ScoringStatus::addGaugeValueNormal(int32 add)
+	{
 		const int32 normalAdd = static_cast<int32>(add * kGaugeIncreaseRateNormal);
 		m_gaugeValueNormal = Min(m_gaugeValueNormal + normalAdd, m_gaugeValueMax);
 	}
@@ -131,7 +136,11 @@ namespace MusicGame::Judgment
 				// 通常モードのEASY/NORMALゲージでは、NEARでゲージが増える
 				addGaugeValue(kGaugeValueChipNear);
 			}
-			// 通常モードのHARDゲージでは、NEARでゲージ増減なし
+			else
+			{
+				// 通常モードのHARDゲージでは、実ゲージは増減なしだが、グレード計算用のNORMAL基準ゲージは増やす
+				addGaugeValueNormal(kGaugeValueChipNear);
+			}
 			break;
 
 		case Judgment::JudgmentResult::kError:
