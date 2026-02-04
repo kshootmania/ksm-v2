@@ -155,6 +155,7 @@
     <ClCompile Include="src\Input\LaserInput\SliderLaserInput.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\RuntimeConfig.cpp" />
+    <ClCompile Include="src\TestPlayArgs.cpp" />
     <ClCompile Include="src\MusicGame\Audio\AssistTick.cpp" />
     <ClCompile Include="src\MusicGame\Audio\AudioEffectMain.cpp" />
     <ClCompile Include="src\MusicGame\Audio\AudioEffectUtils.cpp" />
@@ -437,6 +438,7 @@
     <ClInclude Include="src\NocoExtensions\NocoUtils.hpp" />
     <ClInclude Include="src\NocoExtensions\VerticalMarquee.hpp" />
     <ClInclude Include="src\RuntimeConfig.hpp" />
+    <ClInclude Include="src\TestPlayArgs.hpp" />
     <ClInclude Include="src\Scenes\Common\CommonAssets.hpp" />
     <ClInclude Include="src\Scenes\Common\ShowLoadingOneFrame.hpp" />
     <ClInclude Include="src\Scenes\Option\OptionKeyConfigMenu.hpp" />

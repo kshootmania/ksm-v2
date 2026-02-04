@@ -392,6 +392,11 @@ Co::Task<void> ResultScene::start()
 			requestNextScene<PlayPrepareScene>(nextChartPath, m_playResult.playOption.isAutoPlay, m_courseState);
 		}
 	}
+	else if (m_playResult.playOption.testPlayOption.has_value())
+	{
+		// テストプレイの場合はアプリケーション終了
+		requestSceneFinish();
+	}
 	else
 	{
 		requestNextScene<SelectScene>();

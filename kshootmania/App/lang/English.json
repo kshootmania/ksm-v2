@@ -42,6 +42,7 @@
 	},
 	"Play": {
 		"ErrorChartFileNotFound": "Cannot find the chart file.",
+		"ErrorChartLoadFailed": "Failed to load the chart file.",
 		"ErrorSomeChartMissingInCourse": "Some charts in this course are missing."
 	},
 	"Option": {

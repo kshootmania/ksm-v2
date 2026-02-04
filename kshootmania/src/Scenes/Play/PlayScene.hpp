@@ -17,6 +17,9 @@ private:
 
 	Duration m_fadeOutDuration;
 
+	/// @brief テストプレイオプション
+	Optional<MusicGame::TestPlayOption> m_testPlayOption;
+
 	bool m_backButtonPressedDuringFadeOut = false;
 
 	void updateFadeOut();
@@ -24,7 +27,7 @@ private:
 	void processBackButtonInput();
 
 public:
-	explicit PlayScene(FilePathView filePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState = none);
+	explicit PlayScene(FilePathView filePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState = none, const Optional<MusicGame::TestPlayOption>& testPlayOption = none);
 
 	virtual ~PlayScene();
 

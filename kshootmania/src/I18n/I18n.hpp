@@ -89,6 +89,7 @@ namespace I18n
 	enum class Play
 	{
 		ErrorChartFileNotFound,
+		ErrorChartLoadFailed,
 		ErrorSomeChartMissingInCourse,
 	};
 

@@ -49,11 +49,12 @@ namespace
 	}
 }
 
-PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState)
+PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState, const Optional<MusicGame::TestPlayOption>& testPlayOption)
 	: m_chartFilePath(chartFilePath)
 	, m_isAutoPlay(isAutoPlay)
 	, m_chartData(kson::LoadKSHChartData(chartFilePath.narrow()))
 	, m_courseState(courseState)
+	, m_testPlayOption(testPlayOption)
 	, m_canvas(LoadPlayPrepareSceneCanvas())
 	, m_hispeedMenu(ConfigIni::LoadAvailableHispeedTypes(), LoadHispeedSettingFromConfigIni(), kson::GetEffectiveStdBPM(m_chartData), GetInitialBPM(m_chartData))
 	, m_highwayScroll(m_chartData)
@@ -112,7 +113,7 @@ Co::Task<void> PlayPrepareScene::start()
 		{
 			// 自動終了
 			SaveHispeedSettingToConfigIni(m_hispeedMenu.hispeedSetting());
-			requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay, m_courseState);
+			requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay, m_courseState, m_testPlayOption);
 			break;
 		}
 
@@ -120,7 +121,12 @@ Co::Task<void> PlayPrepareScene::start()
 		{
 			SaveHispeedSettingToConfigIni(m_hispeedMenu.hispeedSetting());
 
-			if (m_courseState.has_value() && m_courseState->currentChartIdx() > 0)
+			if (m_testPlayOption.has_value())
+			{
+				// テストプレイの場合はアプリケーション終了
+				requestSceneFinish();
+			}
+			else if (m_courseState.has_value() && m_courseState->currentChartIdx() > 0)
 			{
 				// コースモードの2曲目以降の場合はコースリザルトへ
 				requestNextScene<CourseResultScene>(*m_courseState);
@@ -137,7 +143,7 @@ Co::Task<void> PlayPrepareScene::start()
 		{
 			// 一定時間経過後はStartボタンでスキップ可能
 			SaveHispeedSettingToConfigIni(m_hispeedMenu.hispeedSetting());
-			requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay, m_courseState);
+			requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay, m_courseState, m_testPlayOption);
 			break;
 		}
 

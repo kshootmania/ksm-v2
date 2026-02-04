@@ -42,6 +42,7 @@
 	},
 	"Play": {
 		"ErrorChartFileNotFound": "找不到谱面文件。",
+		"ErrorChartLoadFailed": "谱面文件加载失败。",
 		"ErrorSomeChartMissingInCourse": "此连曲中缺少部分谱面。"
 	},
 	"Option": {

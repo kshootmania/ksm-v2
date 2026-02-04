@@ -11,6 +11,9 @@
 #include <ksmaxis/ksmaxis.hpp>
 #include "RuntimeConfig.hpp"
 #include "Scenes/Title/TitleScene.hpp"
+#include "Scenes/Play/PlayScene.hpp"
+#include "Scenes/PlayPrepare/PlayPrepareScene.hpp"
+#include "TestPlayArgs.hpp"
 #include "Input/KeyConfig.hpp"
 #include "Input/InputUtils.hpp"
 
@@ -341,8 +344,53 @@ void KSMMain()
 	OutputLicenseTxt();
 #endif
 
+	// コマンドライン引数をパース
+	bool shouldExit = false;
+	const auto testPlayArgs = ParseTestPlayArgs(&shouldExit);
+	if (shouldExit)
+	{
+		return;
+	}
+
+	// テストプレイの場合、譜面ファイルの読み込みを事前検証
+	if (testPlayArgs.has_value())
+	{
+		const auto chartData = kson::LoadKSHChartData(testPlayArgs->chartFilePath.narrow());
+		if (chartData.error != kson::ErrorType::None)
+		{
+			System::MessageBoxOK(I18n::Get(I18n::Play::ErrorChartLoadFailed), MessageBoxStyle::Error);
+			return;
+		}
+	}
+
+	// 開始シーンを決定
+	Co::SceneFactory initialSceneFactory;
+	if (testPlayArgs.has_value() && testPlayArgs->testPlayOption.hasStartMeasure())
+	{
+		// テストプレイ(-from指定あり)の場合
+		initialSceneFactory = Co::MakeSceneFactory<PlayScene>(
+			testPlayArgs->chartFilePath,
+			testPlayArgs->isAutoPlay,
+			Optional<CoursePlayState>{ none },
+			MakeOptional(testPlayArgs->testPlayOption));
+	}
+	else if (testPlayArgs.has_value())
+	{
+		// テストプレイ(-fromなし)の場合
+		initialSceneFactory = Co::MakeSceneFactory<PlayPrepareScene>(
+			testPlayArgs->chartFilePath,
+			testPlayArgs->isAutoPlay,
+			Optional<CoursePlayState>{ none },
+			MakeOptional(testPlayArgs->testPlayOption));
+	}
+	else
+	{
+		// 通常起動
+		initialSceneFactory = Co::MakeSceneFactory<TitleScene>(TitleMenuItem::kStart);
+	}
+
 	// メインループ
-	const auto sceneRunner = Co::PlaySceneFrom<TitleScene>(TitleMenuItem::kStart).runScoped();
+	const auto sceneRunner = Co::PlaySceneFrom(std::move(initialSceneFactory)).runScoped();
 	
 	while (System::Update())
 	{

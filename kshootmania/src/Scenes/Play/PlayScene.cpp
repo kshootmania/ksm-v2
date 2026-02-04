@@ -42,9 +42,13 @@ namespace
 		return MusicGame::HispeedUtils::FromConfigStringValue(ConfigIni::GetString(ConfigIni::Key::kHispeed));
 	}
 
-	MusicGame::GameCreateInfo MakeGameCreateInfo(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState)
+	MusicGame::GameCreateInfo MakeGameCreateInfo(
+		FilePathView chartFilePath,
+		MusicGame::IsAutoPlayYN isAutoPlay,
+		const Optional<CoursePlayState>& courseState,
+		const Optional<MusicGame::TestPlayOption>& testPlayOption)
 	{
-		return
+		MusicGame::GameCreateInfo info =
 		{
 			.chartFilePath = FilePath{ chartFilePath },
 			.playOption = MusicGame::PlayOption
@@ -87,14 +91,27 @@ namespace
 			.courseContinuation = courseState.has_value() && courseState->currentChartIdx() > 0 ? MakeOptional(courseState->continuation()) : none,
 			.folderConfIni = FolderConfIni::Load(chartFilePath),
 		};
+
+		// テストプレイオプションを適用
+		if (testPlayOption.has_value())
+		{
+			info.playOption.testPlayOption = testPlayOption;
+			if (testPlayOption->gaugeType.has_value())
+			{
+				info.playOption.gaugeType = *testPlayOption->gaugeType;
+			}
+		}
+
+		return info;
 	}
 }
 
-PlayScene::PlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState)
-	: m_gameMain(MakeGameCreateInfo(chartFilePath, isAutoPlay, courseState))
+PlayScene::PlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState, const Optional<MusicGame::TestPlayOption>& testPlayOption)
+	: m_gameMain(MakeGameCreateInfo(chartFilePath, isAutoPlay, courseState, testPlayOption))
 	, m_isAutoPlay(isAutoPlay)
 	, m_courseState(courseState)
 	, m_fadeOutDuration(kFadeDuration)
+	, m_testPlayOption(testPlayOption)
 {
 	m_gameMain.start();
 
@@ -119,7 +136,12 @@ void PlayScene::update()
 		// 譜面終了時にリザルト画面に遷移
 		m_fadeOutDuration = kPlayFinishFadeOutDuration;
 
-		if (m_isAutoPlay)
+		if (m_testPlayOption.has_value() && m_testPlayOption->hasStartMeasure())
+		{
+			// テストプレイ(-from指定あり)の場合、リザルトスキップしてアプリケーション終了
+			requestSceneFinish();
+		}
+		else if (m_isAutoPlay)
 		{
 			// オートプレイの場合
 			if (m_courseState && m_courseState->hasNextChart())
@@ -170,7 +192,12 @@ void PlayScene::processBackButtonInput()
 	// 次のシーンで多重に反応しないよう、Backボタンの入力をクリア
 	KeyConfig::ClearInput(kButtonBack);
 
-	if (m_isAutoPlay)
+	if (m_testPlayOption.has_value())
+	{
+		// テストプレイの場合はアプリケーション終了
+		requestSceneFinish();
+	}
+	else if (m_isAutoPlay)
 	{
 		requestNextScene<SelectScene>();
 	}

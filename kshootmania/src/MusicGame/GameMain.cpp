@@ -10,6 +10,7 @@ namespace MusicGame
 	namespace
 	{
 		constexpr double kPlayFinishFadeOutStartSec = 2.4; // TODO: HARD落ちした場合は赤色表示を加えた上で4.8秒にする
+		constexpr double kTestPlaySeekMarginSec = 1.0; // テストプレイで開始小節より前にシークするマージン(秒)
 
 		Audio::BGM CreateBGM(const kson::ChartData& chartData, const FilePath& parentPath, const PlayOption& playOption, const FolderConfIni& folderConfIni)
 		{
@@ -50,6 +51,30 @@ namespace MusicGame
 
 			// Off/Hideモードフィルタを適用
 			ApplyPlayModeFilter(chartData, createInfo.playOption);
+
+			// テストプレイの場合、開始小節より手前のノーツを削除
+			if (createInfo.playOption.isTestPlayWithStartMeasure())
+			{
+				const auto tempTimingCache = kson::CreateTimingCache(chartData.beat);
+				const int32 startMeasure = *createInfo.playOption.testPlayOption->startMeasure;
+				const kson::Pulse startPulse = kson::MeasureIdxToPulse(startMeasure, chartData.beat, tempTimingCache);
+
+				// BT/FXノーツ削除
+				for (auto& lane : chartData.note.bt)
+				{
+					lane.erase(lane.begin(), lane.lower_bound(startPulse));
+				}
+				for (auto& lane : chartData.note.fx)
+				{
+					lane.erase(lane.begin(), lane.lower_bound(startPulse));
+				}
+
+				// LASERノーツ削除
+				for (auto& lane : chartData.note.laser)
+				{
+					lane.erase(lane.begin(), lane.lower_bound(startPulse));
+				}
+			}
 
 			// レーザーを非カーブのみのグラフへ展開
 			for (auto& lane : chartData.note.laser)
@@ -191,8 +216,26 @@ namespace MusicGame
 	{
 		const double globalOffsetSec = m_playOption.effectiveGlobalOffsetMs() / 1000.0;
 		m_graphicsMain.prepareMovie(globalOffsetSec);
-		m_bgm.seekPosSec(-TimeSecBeforeStart(m_graphicsMain.hasMovie()));
-		m_bgm.play();
+
+		if (m_playOption.isTestPlayWithStartMeasure())
+		{
+			const int32 startMeasure = *m_playOption.testPlayOption->startMeasure;
+			const kson::Pulse startPulse = kson::MeasureIdxToPulse(
+				startMeasure, m_chartData.beat, m_timingCache);
+			const double startSec = kson::PulseToSec(
+				startPulse, m_chartData.beat, m_timingCache);
+
+			// 少し手前から再生開始
+			const double seekSec = Max(startSec - kTestPlaySeekMarginSec, 0.0);
+			m_bgm.seekPosSec(SecondsF{ seekSec });
+			m_graphicsMain.seekMoviePosSec(SecondsF{ seekSec });
+			m_bgm.play();
+		}
+		else
+		{
+			m_bgm.seekPosSec(-TimeSecBeforeStart(m_graphicsMain.hasMovie()));
+			m_bgm.play();
+		}
 	}
 
 	GameMain::StartFadeOutYN GameMain::update()

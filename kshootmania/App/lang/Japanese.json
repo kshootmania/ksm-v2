@@ -42,6 +42,7 @@
 	},
 	"Play": {
 		"ErrorChartFileNotFound": "指定された譜面ファイルが見つかりません。",
+		"ErrorChartLoadFailed": "譜面ファイルの読み込みに失敗しました。",
 		"ErrorSomeChartMissingInCourse": "指定された譜面ファイルが見つかりません。"
 	},
 	"Option": {

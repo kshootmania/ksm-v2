@@ -42,6 +42,7 @@
 	},
 	"Play": {
 		"ErrorChartFileNotFound": "채보 파일을 찾을 수 없습니다.",
+		"ErrorChartLoadFailed": "채보 파일을 불러오지 못했습니다.",
 		"ErrorSomeChartMissingInCourse": "채보 파일을 찾을 수 없습니다."
 	},
 	"Option": {
