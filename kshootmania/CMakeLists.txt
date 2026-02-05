@@ -33,14 +33,15 @@ add_executable(kshootmania
 
 if(APPLE)
     set_target_properties(kshootmania PROPERTIES
+        OUTPUT_NAME "K-Shoot MANIA"
         MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_BUNDLE_NAME "K-Shoot MANIA"
         MACOSX_BUNDLE_BUNDLE_VERSION "2.0.0"
         MACOSX_BUNDLE_SHORT_VERSION_STRING "2.0.0-alpha5"
         MACOSX_BUNDLE_ICON_FILE icon.icns
     )
-    
-    set(APP_BUNDLE_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/kshootmania.app)
+
+    set(APP_BUNDLE_PATH "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/K-Shoot MANIA.app")
 
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/App/engine")
         # engineディレクトリ全体をコピー
