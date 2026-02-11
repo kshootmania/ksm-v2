@@ -43,7 +43,7 @@ namespace MusicGame
 		// 譜面データを読み込み、Turn変換とPlayModeフィルタを適用
 		kson::ChartData LoadChartDataWithTurn(const GameCreateInfo& createInfo)
 		{
-			auto chartData = kson::LoadKSHChartData(createInfo.chartFilePath.narrow());
+			auto chartData = kson::LoadKshChartData(createInfo.chartFilePath.narrow());
 
 			// Turn変換を適用
 			const TurnTable turnTable = MakeTurnTable(createInfo.playOption.turnMode);

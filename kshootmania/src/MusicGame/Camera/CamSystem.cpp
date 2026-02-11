@@ -16,7 +16,7 @@ namespace MusicGame::Camera
 	}
 
 	CamSystem::CamSystem(const kson::ChartData& chartData)
-		: m_useLegacyZoomRelaxation(chartData.compat.isKSHVersionOlderThan(kZoomRelaxationChangedKSHVersion))
+		: m_useLegacyZoomRelaxation(chartData.compat.isKshVersionOlderThan(kZoomRelaxationChangedKSHVersion))
 	{
 	}
 

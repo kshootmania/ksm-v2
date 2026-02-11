@@ -31,7 +31,7 @@ namespace MusicGame::Audio
 		DWORD GetMaxPolyphony(const kson::ChartData& chartData)
 		{
 			// 旧バージョンの譜面では最大同時再生数が異なる
-			const bool isLegacy = chartData.compat.isKSHVersionOlderThan(kKeySoundMaxPolyphonyLegacyUntilKSHVersion);
+			const bool isLegacy = chartData.compat.isKshVersionOlderThan(kKeySoundMaxPolyphonyLegacyUntilKSHVersion);
 			return isLegacy ? kKeySoundMaxPolyphonyLegacy : kKeySoundMaxPolyphony;
 		}
 	}

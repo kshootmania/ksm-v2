@@ -156,7 +156,7 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 
 				if (FileSystem::Exists(chart.absolutePath))
 				{
-					const kson::MetaChartData chartData = kson::LoadKSHMetaChartData(chart.absolutePath.narrow());
+					const kson::MetaChartData chartData = kson::LoadKshMetaChartData(chart.absolutePath.narrow());
 					if (chartData.error == kson::ErrorType::None)
 					{
 						songTitle = Unicode::FromUTF8(chartData.meta.title);
@@ -183,7 +183,7 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 						{
 							if (FileSystem::Exists(chart.absolutePath))
 							{
-								const kson::MetaChartData chartData = kson::LoadKSHMetaChartData(chart.absolutePath.narrow());
+								const kson::MetaChartData chartData = kson::LoadKshMetaChartData(chart.absolutePath.narrow());
 								if (chartData.error == kson::ErrorType::None && !chartData.meta.jacketFilename.empty())
 								{
 									const FilePath jacketPath = FileSystem::PathAppend(

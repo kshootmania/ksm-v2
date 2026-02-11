@@ -52,7 +52,7 @@ namespace
 PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState, const Optional<MusicGame::TestPlayOption>& testPlayOption)
 	: m_chartFilePath(chartFilePath)
 	, m_isAutoPlay(isAutoPlay)
-	, m_chartData(kson::LoadKSHChartData(chartFilePath.narrow()))
+	, m_chartData(kson::LoadKshChartData(chartFilePath.narrow()))
 	, m_courseState(courseState)
 	, m_testPlayOption(testPlayOption)
 	, m_canvas(LoadPlayPrepareSceneCanvas())
