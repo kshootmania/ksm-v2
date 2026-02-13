@@ -58,6 +58,7 @@ void SelectDifficultyMenu::update()
 
 	// カーソルが存在しない難易度に変更された場合は、他の難易度への変更を試みる
 	int32 newCursor = cursorPrev;
+	int32 newDeltaCursor = 0;
 	if (deltaCursor > 0)
 	{
 		for (int idx = cursor + 1; idx < kNumDifficulties; ++idx)
@@ -65,6 +66,7 @@ void SelectDifficultyMenu::update()
 			if (menuItem.chartInfoPtr(idx) != nullptr)
 			{
 				newCursor = idx;
+				newDeltaCursor = deltaCursor;
 				break;
 			}
 		}
@@ -76,11 +78,14 @@ void SelectDifficultyMenu::update()
 			if (menuItem.chartInfoPtr(idx) != nullptr)
 			{
 				newCursor = idx;
+				newDeltaCursor = deltaCursor;
 				break;
 			}
 		}
 	}
 	m_menu.setCursor(newCursor);
+	m_menu.setDeltaCursor(newDeltaCursor);
+
 }
 
 int32 SelectDifficultyMenu::cursor() const
