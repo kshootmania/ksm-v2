@@ -1,14 +1,5 @@
 ﻿#include "TestPlayArgs.hpp"
 
-namespace
-{
-	bool HasChartExtension(FilePathView path)
-	{
-		const String ext = FileSystem::Extension(path);
-		return ext == U"ksh" || ext == U"kson";
-	}
-}
-
 Optional<TestPlayArgs> ParseTestPlayArgs(bool* pShouldExit)
 {
 	*pShouldExit = false;
@@ -48,7 +39,7 @@ Optional<TestPlayArgs> ParseTestPlayArgs(bool* pShouldExit)
 				result.testPlayOption.startMeasure = Max(*measureOpt, 0);
 			}
 		}
-		else if (HasChartExtension(arg))
+		else if (FsUtils::HasChartExtension(arg))
 		{
 			result.chartFilePath = FilePath{ arg };
 		}

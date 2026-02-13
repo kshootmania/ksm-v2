@@ -113,4 +113,45 @@ namespace FsUtils
 	{
 		return FileSystem::RelativePath(fullPath, SongsDirectoryPath());
 	}
+
+	Array<FilePath> GetChartFilePathsPreferringKson(FilePathView directoryPath)
+	{
+		const Array<FilePath> allChartPaths = FileSystem::DirectoryContents(directoryPath, Recursive::No).filter([](FilePathView p)
+		{
+			return FileSystem::IsFile(p) && HasChartExtension(p);
+		});
+
+		Array<FilePath> result;
+		HashTable<String, size_t> baseNameToIndex;
+		result.reserve(allChartPaths.size());
+		baseNameToIndex.reserve(allChartPaths.size());
+
+		for (const auto& path : allChartPaths)
+		{
+			const String baseName = EliminateExtension(FileSystem::FileName(path));
+			const auto [it, inserted] = baseNameToIndex.insert({ baseName, result.size() });
+
+			if (inserted)
+			{
+				result.emplace_back(path);
+			}
+			else if (HasKsonExtension(path))
+			{
+				result[it->second] = path;
+			}
+		}
+
+		return result;
+	}
+
+	bool HasChartExtension(FilePathView filePath)
+	{
+		const StringView ext = FileSystem::Extension(filePath);
+		return ext == kKSHExtension || ext == kKSONExtension;
+	}
+
+	bool HasKsonExtension(FilePathView filePath)
+	{
+		return FileSystem::Extension(filePath) == kKSONExtension;
+	}
 }

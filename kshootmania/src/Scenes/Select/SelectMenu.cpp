@@ -1290,7 +1290,7 @@ bool SelectMenu::openDirectoryWithLevelSort(FilePathView directoryPath)
 				auto chartInfo = std::make_unique<SelectChartInfo>(chartFile);
 				if (chartInfo->hasError())
 				{
-					Logger << U"[ksm warning] SelectMenu::openDirectoryWithLevelSort: KSH Loading Error (error:'{}', chartFilePath:'{}')"_fmt(chartInfo->errorString(), chartFile);
+					Logger << U"[ksm warning] SelectMenu::openDirectoryWithLevelSort: Chart Loading Error (error:'{}', chartFilePath:'{}')"_fmt(chartInfo->errorString(), chartFile);
 					continue;
 				}
 
@@ -1324,21 +1324,13 @@ bool SelectMenu::openDirectoryWithLevelSort(FilePathView directoryPath)
 			const Array<FilePath> subDirs = GetSubDirectories(songDirectory);
 			for (const auto& subDir : subDirs)
 			{
-				// サブディレクトリ内の.kshファイルを走査
-				const Array<FilePath> chartFiles = FileSystem::DirectoryContents(subDir, Recursive::No).filter([](FilePathView p)
-				{
-					return FileSystem::Extension(p) == kKSHExtension;
-				});
-
+				// サブディレクトリ内の譜面ファイルを走査
+				const Array<FilePath> chartFiles = FsUtils::GetChartFilePathsPreferringKson(subDir);
 				fnProcessChartFiles(subDir, chartFiles);
 			}
 
-			// songDirectory直下の.kshファイルも走査
-			const Array<FilePath> chartFiles = FileSystem::DirectoryContents(songDirectory, Recursive::No).filter([](FilePathView p)
-			{
-				return FileSystem::Extension(p) == kKSHExtension;
-			});
-
+			// songDirectory直下の譜面ファイルも走査
+			const Array<FilePath> chartFiles = FsUtils::GetChartFilePathsPreferringKson(songDirectory);
 			fnProcessChartFiles(songDirectory, chartFiles);
 		}
 
@@ -1569,7 +1561,7 @@ bool SelectMenu::openAllFolderWithLevelSort()
 			auto chartInfo = std::make_unique<SelectChartInfo>(chartFile);
 			if (chartInfo->hasError())
 			{
-				Logger << U"[ksm warning] SelectMenu::openAllFolderWithLevelSort: KSH Loading Error (error:'{}', chartFilePath:'{}')"_fmt(chartInfo->errorString(), chartFile);
+				Logger << U"[ksm warning] SelectMenu::openAllFolderWithLevelSort: Chart Loading Error (error:'{}', chartFilePath:'{}')"_fmt(chartInfo->errorString(), chartFile);
 				continue;
 			}
 
@@ -1617,21 +1609,13 @@ bool SelectMenu::openAllFolderWithLevelSort()
 			const Array<FilePath> subDirs = GetSubDirectories(songDirectory);
 			for (const auto& subDir : subDirs)
 			{
-				// サブディレクトリ内の.kshファイルを走査
-				const Array<FilePath> chartFiles = FileSystem::DirectoryContents(subDir, Recursive::No).filter([](FilePathView p)
-				{
-					return FileSystem::Extension(p) == kKSHExtension;
-				});
-
+				// サブディレクトリ内の譜面ファイルを走査
+				const Array<FilePath> chartFiles = FsUtils::GetChartFilePathsPreferringKson(subDir);
 				fnProcessChartFiles(subDir, chartFiles);
 			}
 
-			// songDirectory直下の.kshファイルも走査
-			const Array<FilePath> chartFiles = FileSystem::DirectoryContents(songDirectory, Recursive::No).filter([](FilePathView p)
-			{
-				return FileSystem::Extension(p) == kKSHExtension;
-			});
-
+			// songDirectory直下の譜面ファイルも走査
+			const Array<FilePath> chartFiles = FsUtils::GetChartFilePathsPreferringKson(songDirectory);
 			fnProcessChartFiles(songDirectory, chartFiles);
 		}
 	}
@@ -1755,7 +1739,7 @@ bool SelectMenu::openFavoriteFolderWithNameSort(FilePathView specialPath)
 				.lowercasedName = FsUtils::DirectoryNameByDirectoryPath(fullPath).lowercased(),
 			});
 		}
-		else if (FileSystem::IsFile(fullPath) && FileSystem::Extension(fullPath) == U"ksh")
+		else if (FileSystem::IsFile(fullPath) && FsUtils::HasChartExtension(fullPath))
 		{
 			pathInfos.push_back(PathInfo{
 				.path = fullPath,
@@ -1824,13 +1808,13 @@ bool SelectMenu::openFavoriteFolderWithLevelSort(FilePathView specialPath)
 	const Array<String> songPaths = LoadFavFile(favFilePath);
 	const FilePath songsDir = FsUtils::SongsDirectoryPath();
 
-	// 各楽曲フォルダまたはKSHファイルから項目を生成
+	// 各楽曲フォルダまたは譜面ファイル(KSH/KSON)から項目を生成
 	Array<std::unique_ptr<SelectMenuSongItem>> songItems;
 	for (const String& relativePath : songPaths)
 	{
 		const FilePath fullPath = FileSystem::PathAppend(songsDir, relativePath);
 
-		if (FileSystem::IsDirectory(fullPath) || (FileSystem::IsFile(fullPath) && FileSystem::Extension(fullPath) == U"ksh"))
+		if (FileSystem::IsDirectory(fullPath) || (FileSystem::IsFile(fullPath) && FsUtils::HasChartExtension(fullPath)))
 		{
 			auto item = std::make_unique<SelectMenuSongItem>(fullPath);
 			if (item->chartExists())

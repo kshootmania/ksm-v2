@@ -16,8 +16,9 @@ namespace KscIO
 				return false;
 			}
 
-			const auto extension = FileSystem::Extension(chartFilePath);
-			if (extension != U"ksh")
+			// Note: ハイスコア情報(.ksc)は、.kshと.ksonで共通とする
+			// (例:"song.ksh"と"song.kson"は両方"song.ksc"を参照)
+			if (!FsUtils::HasChartExtension(chartFilePath))
 			{
 				return false;
 			}

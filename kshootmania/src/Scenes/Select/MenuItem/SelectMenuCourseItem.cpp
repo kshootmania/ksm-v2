@@ -153,16 +153,27 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 				String artistName = U"---";
 				int32 chartDifficultyIdx = 0;
 				int32 levelIdx = 0;
+				Optional<kson::MetaChartData> chartDataOpt;
 
 				if (FileSystem::Exists(chart.absolutePath))
 				{
-					const kson::MetaChartData chartData = kson::LoadKshMetaChartData(chart.absolutePath.narrow());
+					const kson::MetaChartData chartData = FsUtils::HasKsonExtension(chart.absolutePath)
+						? kson::LoadKsonMetaChartData(chart.absolutePath.narrow())
+						: kson::LoadKshMetaChartData(chart.absolutePath.narrow());
+
 					if (chartData.error == kson::ErrorType::None)
 					{
 						songTitle = Unicode::FromUTF8(chartData.meta.title);
 						artistName = Unicode::FromUTF8(chartData.meta.artist);
 						chartDifficultyIdx = chartData.meta.difficulty.idx;
 						levelIdx = chartData.meta.level - 1;
+						chartDataOpt = chartData;
+					}
+					else
+					{
+						Logger << U"[ksm warning] SelectMenuCourseItem: Chart meta loading failed (error:'{}', chartPath:'{}')"_fmt(
+							Unicode::FromUTF8(kson::GetErrorString(chartData.error)),
+							chart.absolutePath);
 					}
 				}
 
@@ -181,28 +192,20 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 					{
 						if (const auto jacketSprite = NocoUtils::GetComponentByPath<noco::Sprite>(itemCanvas.get(), { U"SelectCourseChartItem", U"Jacket" }))
 						{
-							if (FileSystem::Exists(chart.absolutePath))
+							if (chartDataOpt.has_value() && !chartDataOpt->meta.jacketFilename.empty())
 							{
-								const kson::MetaChartData chartData = kson::LoadKshMetaChartData(chart.absolutePath.narrow());
-								if (chartData.error == kson::ErrorType::None && !chartData.meta.jacketFilename.empty())
+								const FilePath jacketPath = FileSystem::PathAppend(
+									FileSystem::ParentPath(chart.absolutePath),
+									Unicode::FromUTF8(chartDataOpt->meta.jacketFilename));
+								const Texture jacketTexture = context.fnGetJacketTexture(jacketPath);
+								jacketSprite->setTexture(jacketTexture);
+								if (jacketTexture.isEmpty())
 								{
-									const FilePath jacketPath = FileSystem::PathAppend(
-										FileSystem::ParentPath(chart.absolutePath),
-										Unicode::FromUTF8(chartData.meta.jacketFilename));
-									const Texture jacketTexture = context.fnGetJacketTexture(jacketPath);
-									jacketSprite->setTexture(jacketTexture);
-									if (jacketTexture.isEmpty())
-									{
-										jacketSprite->setColor(ColorF{ 0.0, 0.0 });
-									}
-									else
-									{
-										jacketSprite->setColor(Palette::White);
-									}
+									jacketSprite->setColor(ColorF{ 0.0, 0.0 });
 								}
 								else
 								{
-									jacketSprite->setColor(ColorF{ 0.0, 0.0 });
+									jacketSprite->setColor(Palette::White);
 								}
 							}
 							else

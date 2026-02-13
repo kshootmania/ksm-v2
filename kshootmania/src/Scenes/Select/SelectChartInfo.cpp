@@ -28,7 +28,9 @@ FilePath SelectChartInfo::toFullPath(const std::string& u8Filename) const
 
 SelectChartInfo::SelectChartInfo(FilePathView chartFilePath)
 	: m_chartFilePath(chartFilePath)
-	, m_chartData(kson::LoadKshMetaChartData(chartFilePath.narrow()))
+	, m_chartData(FsUtils::HasKsonExtension(chartFilePath)
+		? kson::LoadKsonMetaChartData(chartFilePath.narrow())
+		: kson::LoadKshMetaChartData(chartFilePath.narrow()))
 	, m_folderConfIni(FolderConfIni::Load(chartFilePath))
 {
 	KscIO::ReadAllHighScoreInfo(chartFilePath, &m_highScoreInfoMap);

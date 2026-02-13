@@ -77,4 +77,22 @@ namespace FsUtils
 	/// @return songsフォルダからの相対パス
 	[[nodiscard]]
 	String RelativePathFromSongsDir(FilePathView fullPath);
+
+	/// @brief ディレクトリからksonを優先して重複除去した譜面ファイルパス一覧を取得
+	/// @param directoryPath ディレクトリパス
+	/// @return 譜面ファイルパスの配列
+	[[nodiscard]]
+	Array<FilePath> GetChartFilePathsPreferringKson(FilePathView directoryPath);
+
+	/// @brief ファイルパスが譜面ファイルの拡張子(.kshまたは.kson)を持つか
+	/// @param filePath ファイルパス
+	/// @return 譜面ファイルの拡張子の場合true
+	[[nodiscard]]
+	bool HasChartExtension(FilePathView filePath);
+
+	/// @brief ファイルパスがkson形式の拡張子(.kson)を持つか
+	/// @param filePath ファイルパス
+	/// @return kson形式の拡張子の場合true
+	[[nodiscard]]
+	bool HasKsonExtension(FilePathView filePath);
 }

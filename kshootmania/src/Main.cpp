@@ -355,7 +355,9 @@ void KSMMain()
 	// テストプレイの場合、譜面ファイルの読み込みを事前検証
 	if (testPlayArgs.has_value())
 	{
-		const auto chartData = kson::LoadKshChartData(testPlayArgs->chartFilePath.narrow());
+		const auto chartData = FsUtils::HasKsonExtension(testPlayArgs->chartFilePath)
+			? kson::LoadKsonChartData(testPlayArgs->chartFilePath.narrow())
+			: kson::LoadKshChartData(testPlayArgs->chartFilePath.narrow());
 		if (chartData.error != kson::ErrorType::None)
 		{
 			System::MessageBoxOK(I18n::Get(I18n::Play::ErrorChartLoadFailed), MessageBoxStyle::Error);

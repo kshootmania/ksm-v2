@@ -12,7 +12,7 @@ SelectMenuSongItem::SelectMenuSongItem(FilePathView fullPath)
 	if (FileSystem::IsFile(fullPath))
 	{
 		// 個別の譜面ファイルの場合
-		if (FileSystem::Extension(fullPath) == kKSHExtension)
+		if (FsUtils::HasChartExtension(fullPath))
 		{
 			chartFilePaths.emplace_back(fullPath);
 			m_isSingleChartItem = true;
@@ -21,7 +21,7 @@ SelectMenuSongItem::SelectMenuSongItem(FilePathView fullPath)
 	else if (FileSystem::IsDirectory(fullPath))
 	{
 		// ディレクトリの場合
-		chartFilePaths = FileSystem::DirectoryContents(fullPath, Recursive::No);
+		chartFilePaths = FsUtils::GetChartFilePathsPreferringKson(fullPath);
 	}
 	else
 	{
@@ -30,7 +30,7 @@ SelectMenuSongItem::SelectMenuSongItem(FilePathView fullPath)
 
 	for (const auto& chartFilePath : chartFilePaths)
 	{
-		if (FileSystem::Extension(chartFilePath) != kKSHExtension) // Note: FileSystem::Extension()は常に小文字を返すので大文字は考慮不要
+		if (!FsUtils::HasChartExtension(chartFilePath))
 		{
 			continue;
 		}
@@ -39,7 +39,7 @@ SelectMenuSongItem::SelectMenuSongItem(FilePathView fullPath)
 
 		if (chartInfo->hasError())
 		{
-			Logger << U"[ksm warning] SelectMenuSongItem::SelectMenuSongItem: KSH Loading Error (error:'{}', chartFilePath:'{}')"_fmt(chartInfo->errorString(), chartFilePath);
+			Logger << U"[ksm warning] SelectMenuSongItem::SelectMenuSongItem: Chart Loading Error (error:'{}', chartFilePath:'{}')"_fmt(chartInfo->errorString(), chartFilePath);
 			continue;
 		}
 
