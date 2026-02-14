@@ -19,7 +19,7 @@ SelectDifficultyMenu::SelectDifficultyMenu(const SelectMenu* pSelectMenu)
 {
 }
 
-void SelectDifficultyMenu::update()
+void SelectDifficultyMenu::update(bool* pCursorChanged)
 {
 	const int32 cursorPrev = m_menu.cursor();
 
@@ -30,6 +30,10 @@ void SelectDifficultyMenu::update()
 	// カーソルが変更なしの場合は特に何もしなくてOK
 	if (deltaCursor == 0)
 	{
+		if (pCursorChanged != nullptr)
+		{
+			*pCursorChanged = false;
+		}
 		return;
 	}
 
@@ -37,6 +41,10 @@ void SelectDifficultyMenu::update()
 	if (m_pSelectMenu->empty())
 	{
 		m_menu.setCursor(cursorPrev);
+		if (pCursorChanged != nullptr)
+		{
+			*pCursorChanged = false;
+		}
 		return;
 	}
 
@@ -45,6 +53,10 @@ void SelectDifficultyMenu::update()
 	{
 		// 難易度が存在しない項目の場合は難易度カーソルの移動をキャンセル
 		m_menu.setCursor(cursorPrev);
+		if (pCursorChanged != nullptr)
+		{
+			*pCursorChanged = false;
+		}
 		return;
 	}
 
@@ -53,12 +65,15 @@ void SelectDifficultyMenu::update()
 	if (menuItem.chartInfoPtr(cursor) != nullptr)
 	{
 		// カーソルの難易度が存在すればその難易度から変更なしでOK
+		if (pCursorChanged != nullptr)
+		{
+			*pCursorChanged = cursor != cursorPrev;
+		}
 		return;
 	}
 
 	// カーソルが存在しない難易度に変更された場合は、他の難易度への変更を試みる
 	int32 newCursor = cursorPrev;
-	int32 newDeltaCursor = 0;
 	if (deltaCursor > 0)
 	{
 		for (int idx = cursor + 1; idx < kNumDifficulties; ++idx)
@@ -66,7 +81,6 @@ void SelectDifficultyMenu::update()
 			if (menuItem.chartInfoPtr(idx) != nullptr)
 			{
 				newCursor = idx;
-				newDeltaCursor = deltaCursor;
 				break;
 			}
 		}
@@ -78,14 +92,17 @@ void SelectDifficultyMenu::update()
 			if (menuItem.chartInfoPtr(idx) != nullptr)
 			{
 				newCursor = idx;
-				newDeltaCursor = deltaCursor;
 				break;
 			}
 		}
 	}
-	m_menu.setCursor(newCursor);
-	m_menu.setDeltaCursor(newDeltaCursor);
 
+	m_menu.setCursor(newCursor);
+
+	if (pCursorChanged != nullptr)
+	{
+		*pCursorChanged = newCursor != cursorPrev;
+	}
 }
 
 int32 SelectDifficultyMenu::cursor() const
@@ -121,11 +138,6 @@ void SelectDifficultyMenu::setCursor(int32 cursor)
 int32 SelectDifficultyMenu::rawCursor() const
 {
 	return m_menu.cursor();
-}
-
-int32 SelectDifficultyMenu::deltaCursor() const
-{
-	return m_menu.deltaCursor();
 }
 
 // 選択中の曲にカーソルの難易度が存在するとは限らないので、存在する難易度のうちカーソルに最も近いものを代替カーソル値(alternative cursor)として返す

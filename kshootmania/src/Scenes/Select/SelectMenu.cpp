@@ -679,8 +679,9 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 	const bool btBCPressed = KeyConfig::Pressed(kButtonBT_B) && KeyConfig::Pressed(kButtonBT_C);
 	if (!PlatformKey::KeyCommandControl.pressed() && !KeyShift.pressed() && !btBCPressed)
 	{
-		m_difficultyMenu.update();
-		if (m_difficultyMenu.deltaCursor() != 0)
+		bool difficultyChanged = false;
+		m_difficultyMenu.update(&difficultyChanged);
+		if (difficultyChanged)
 		{
 			ConfigIni::SetInt(ConfigIni::Key::kSelectDifficulty, m_difficultyMenu.cursor());
 			m_difficultySelectSe.play();

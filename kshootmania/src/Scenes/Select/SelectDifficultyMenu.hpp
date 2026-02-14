@@ -15,15 +15,13 @@ private:
 public:
 	explicit SelectDifficultyMenu(const SelectMenu* pSelectMenu);
 
-	void update();
+	void update(bool* pCursorChanged);
 
 	int32 cursor() const;
 
 	void setCursor(int32 cursor);
 
 	int32 rawCursor() const;
-
-	int32 deltaCursor() const;
 
 	static int32 GetAlternativeCursor(int32 rawCursor, std::function<bool(int32)> fnDifficultyExists);
 };
