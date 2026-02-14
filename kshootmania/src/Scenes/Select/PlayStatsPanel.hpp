@@ -14,9 +14,11 @@ private:
 	bool m_isVisible = false;
 
 	// BTボタン3つ以上が押されているかチェック
+	[[nodiscard]]
 	bool isThreeBTButtonsPressed() const;
 
 	// 統計情報テキストを生成
+	[[nodiscard]]
 	String generateStatsText(const HighScoreInfo& highScore, GaugeType gaugeType) const;
 
 public:
@@ -26,5 +28,6 @@ public:
 	void update(const Optional<HighScoreInfo>& highScore, GaugeType gaugeType);
 
 	// パネルが表示されているかどうか
+	[[nodiscard]]
 	bool isVisible() const;
 };

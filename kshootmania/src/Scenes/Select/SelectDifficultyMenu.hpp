@@ -17,11 +17,14 @@ public:
 
 	void update(bool* pCursorChanged);
 
+	[[nodiscard]]
 	int32 cursor() const;
 
 	void setCursor(int32 cursor);
 
+	[[nodiscard]]
 	int32 rawCursor() const;
 
+	[[nodiscard]]
 	static int32 GetAlternativeCursor(int32 rawCursor, std::function<bool(int32)> fnDifficultyExists);
 };

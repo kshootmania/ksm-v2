@@ -20,44 +20,64 @@ private:
 public:
 	explicit SelectChartInfo(FilePathView chartFilePath);
 
+	[[nodiscard]]
 	String title() const;
 
+	[[nodiscard]]
 	String artist() const;
 
+	[[nodiscard]]
 	FilePath jacketFilePath() const;
 
+	[[nodiscard]]
 	String jacketAuthor() const;
 
+	[[nodiscard]]
 	FilePathView chartFilePath() const;
 
+	[[nodiscard]]
 	String chartAuthor() const;
 
+	[[nodiscard]]
 	int32 difficultyIdx() const;
 
+	[[nodiscard]]
 	int32 level() const;
 
+	[[nodiscard]]
 	String dispBPM() const;
 
+	[[nodiscard]]
 	double stdBPM() const;
 
+	[[nodiscard]]
 	double stdBPMForHispeedTypeChange() const;
 
+	[[nodiscard]]
 	FilePath previewBGMFilePath() const;
 
+	[[nodiscard]]
 	SecondsF previewBGMOffset() const;
 
+	[[nodiscard]]
 	Duration previewBGMDuration() const;
 
+	[[nodiscard]]
 	double previewBGMVolume() const;
 
+	[[nodiscard]]
 	FilePath iconFilePath() const;
 
+	[[nodiscard]]
 	String information() const;
 
 	// 現在のプレイ設定に対応するハイスコア情報を取得
+	[[nodiscard]]
 	HighScoreInfo highScoreInfo() const;
 
+	[[nodiscard]]
 	bool hasError() const;
 
+	[[nodiscard]]
 	String errorString() const;
 };

@@ -44,18 +44,23 @@ private:
 	bool m_isVisible = false;
 
 	// 現在押されているBTボタンを取得(単独押しの場合のみ)
+	[[nodiscard]]
 	Optional<Button> getCurrentSingleBTButton() const;
 
 	// BT-Aメニューの表示テキスト生成
+	[[nodiscard]]
 	String generateBTAMenuText() const;
 
 	// BT-Bメニューの表示テキスト生成
+	[[nodiscard]]
 	String generateBTBMenuText() const;
 
 	// BT-Cメニューの表示テキスト生成
+	[[nodiscard]]
 	String generateBTCMenuText() const;
 
 	// BT-Dメニューの表示テキスト生成
+	[[nodiscard]]
 	String generateBTDMenuText() const;
 
 public:
@@ -66,6 +71,7 @@ public:
 	bool update(double currentChartStdBPM);
 
 	// メニューが表示されているかどうか
+	[[nodiscard]]
 	bool isVisible() const;
 
 	// ConfigIniから設定値を読み込む

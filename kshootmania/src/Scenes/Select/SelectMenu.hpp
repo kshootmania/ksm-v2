@@ -126,18 +126,23 @@ public:
 
 	void decideAutoPlay();
 
+	[[nodiscard]]
 	bool isFolderOpen() const;
 
 	void closeFolder(PlaySeYN playSe);
 
+	[[nodiscard]]
 	const ISelectMenuItem& cursorMenuItem() const;
 
+	[[nodiscard]]
 	bool empty() const;
 
 	void fadeOutSongPreviewForExit(Duration duration);
 
+	[[nodiscard]]
 	const Texture& getJacketTexture(FilePathView filePath);
 
+	[[nodiscard]]
 	const Texture& getIconTexture(FilePathView filePath);
 
 	void reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::No);
@@ -155,8 +160,10 @@ public:
 
 	void jumpToLast();
 
+	[[nodiscard]]
 	double getCurrentChartStdBPM() const;
 
+	[[nodiscard]]
 	Optional<HighScoreInfo> getCurrentHighScoreInfo() const;
 
 	void showCurrentItemInFileManager();
