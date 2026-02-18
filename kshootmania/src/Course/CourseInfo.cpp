@@ -26,6 +26,19 @@ namespace
 			return fullPath;
 		}
 
+		// 指定された拡張子のファイルが見つからない場合、他方の拡張子も試す
+		if (FsUtils::HasChartExtension(fullPath))
+		{
+			const String basePath = FsUtils::EliminateExtension(fullPath);
+			const FilePath altPath = FsUtils::HasKsonExtension(fullPath)
+				? basePath + U"." + kKSHExtension
+				: basePath + U"." + kKSONExtension;
+			if (FileSystem::IsFile(altPath))
+			{
+				return altPath;
+			}
+		}
+
 		return U"";
 	}
 }
