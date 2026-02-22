@@ -1,4 +1,5 @@
 ﻿#include "IREntryScene.hpp"
+#include "Scenes/Title/TitleScene.hpp"
 #include "Scenes/Select/SelectScene.hpp"
 #include "Scenes/Common/ShowLoadingOneFrame.hpp"
 
@@ -35,7 +36,14 @@ Co::Task<void> IREntryScene::start()
 	const auto updateRunner = Co::UpdaterTask([this] { update(); }).runScoped();
 
 	// メニューが選択されるまで待機
-	co_await m_menu.selectedMenuItemAsync();
+	const auto selectedItem = co_await m_menu.selectedMenuItemAsync();
+
+	if (!selectedItem.has_value())
+	{
+		// Backボタンでタイトルに戻る
+		m_goBackToTitle = true;
+		co_return;
+	}
 
 	// 効果音を鳴らす
 	m_bgmStream->setVolume(0.0);
@@ -64,10 +72,17 @@ Co::Task<void> IREntryScene::fadeOut()
 {
 	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(); }).runScoped();
 
-	// Note: ソースコード公開用にIR関連処理は削除済み
 	co_await Co::ScreenFadeOut(kFadeDuration);
-	requestNextScene<SelectScene>();
 
-	// SelectSceneはコンストラクタの処理に時間がかかるので、ローディングはここで出しておく
-	co_await ShowLoadingOneFrame::Play(HasBgYN::No);
+	if (m_goBackToTitle)
+	{
+		requestNextScene<TitleScene>(TitleMenuItem::kStart);
+	}
+	else
+	{
+		requestNextScene<SelectScene>();
+
+		// SelectSceneはコンストラクタの処理に時間がかかるので、ローディングはここで出しておく
+		co_await ShowLoadingOneFrame::Play(HasBgYN::No);
+	}
 }

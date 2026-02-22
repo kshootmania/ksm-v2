@@ -41,6 +41,11 @@ void IREntryMenu::update()
 			m_selectedMenuItemSource.requestFinish(selectedItem);
 			m_isAlreadySelected = true;
 		}
+		else if (KeyConfig::Down(kButtonBack))
+		{
+			m_selectedMenuItemSource.requestFinish(none);
+			m_isAlreadySelected = true;
+		}
 	}
 
 	if (m_menu.cursor() != beforeCursor)

@@ -24,7 +24,7 @@ private:
 
 	ksmaudio::Sample m_selectSe{ "se/title_sel.wav" };
 
-	Co::TaskFinishSource<MenuItem> m_selectedMenuItemSource;
+	Co::TaskFinishSource<Optional<MenuItem>> m_selectedMenuItemSource;
 
 	void refreshCanvasCursorIndex();
 
@@ -33,7 +33,7 @@ public:
 
 	void update();
 
-	Co::Task<MenuItem> selectedMenuItemAsync()
+	Co::Task<Optional<MenuItem>> selectedMenuItemAsync()
 	{
 		return m_selectedMenuItemSource.waitForResult();
 	}

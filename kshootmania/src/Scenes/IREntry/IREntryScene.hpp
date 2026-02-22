@@ -12,6 +12,8 @@ private:
 
 	IREntryMenu m_menu;
 
+	bool m_goBackToTitle = false;
+
 public:
 	explicit IREntryScene(std::shared_ptr<ksmaudio::Stream> bgmStream);
 
