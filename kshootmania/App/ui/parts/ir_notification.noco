@@ -1,0 +1,729 @@
+﻿{
+  "autoFitMode": "FitHeightMatchWidth",
+  "children": [
+    {
+      "activeSelf": false,
+      "activeSelf_paramRef": "irPanelVisible",
+      "children": [
+        {
+          "activeSelf": true,
+          "children": [
+            {
+              "activeSelf": true,
+              "children": [],
+              "childrenLayout": {
+                "horizontalAlign": "Left",
+                "padding": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "spacing": [
+                  0.0,
+                  0.0
+                ],
+                "type": "FlowLayout",
+                "verticalAlign": "Top"
+              },
+              "clippingEnabled": false,
+              "components": [
+                {
+                  "blendMode": "Normal",
+                  "cornerRadius": 0.0,
+                  "fillColor": [
+                    0,
+                    64,
+                    5,
+                    180
+                  ],
+                  "fillGradationColor1": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ],
+                  "fillGradationColor2": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ],
+                  "fillGradationType": "None",
+                  "outlineColor": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ],
+                  "outlineThicknessInner": 0.0,
+                  "outlineThicknessOuter": 0.0,
+                  "shadowBlur": 0.0,
+                  "shadowColor": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "shadowOffset": [
+                    2.0,
+                    2.0
+                  ],
+                  "shadowSpread": 0.0,
+                  "type": "RectRenderer"
+                },
+                {
+                  "addColor": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "blendMode": "Normal",
+                  "color": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ],
+                  "gridAnimationEndIndex": 0,
+                  "gridAnimationFPS": 10.0,
+                  "gridAnimationStartIndex": 0,
+                  "gridAnimationType": "None",
+                  "nineSliceBottomTiled": false,
+                  "nineSliceCenterTiled": false,
+                  "nineSliceEnabled": true,
+                  "nineSliceFallback": false,
+                  "nineSliceLeftTiled": false,
+                  "nineSliceMargin": [
+                    320.0,
+                    0.0,
+                    40.0,
+                    0.0
+                  ],
+                  "nineSliceRightTiled": false,
+                  "nineSliceScale": [
+                    0.5,
+                    0.5
+                  ],
+                  "nineSliceTopTiled": false,
+                  "offsetAnimationSpeed": [
+                    0.0,
+                    0.0
+                  ],
+                  "offsetAnimationType": "None",
+                  "preserveAspect": false,
+                  "textureAddressMode": "Default",
+                  "textureAssetName": "",
+                  "textureFilePath": "imgs/ir_popup.png",
+                  "textureFilter": "Default",
+                  "textureGridCellSize": [
+                    340.0,
+                    960.0
+                  ],
+                  "textureGridCellTrim": [
+                    0.0,
+                    0.5,
+                    0.0,
+                    0.0
+                  ],
+                  "textureGridColumns": 2,
+                  "textureGridIndex": 0,
+                  "textureGridRows": 1,
+                  "textureOffset": [
+                    0.0,
+                    0.0
+                  ],
+                  "textureRegionMode": "Grid",
+                  "textureSize": [
+                    340.0,
+                    960.0
+                  ],
+                  "type": "Sprite"
+                }
+              ],
+              "decelerationRate": 0.2,
+              "dragScrollEnabled": true,
+              "hitPadding": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "horizontalScrollable": false,
+              "inheritChildrenHover": false,
+              "inheritChildrenPress": false,
+              "interactable": true,
+              "isHitTarget": false,
+              "name": "Background",
+              "region": {
+                "anchorMax": [
+                  1.0,
+                  1.0
+                ],
+                "anchorMin": [
+                  0.0,
+                  0.0
+                ],
+                "posDelta": [
+                  0.0,
+                  0.0
+                ],
+                "sizeDelta": [
+                  0.0,
+                  0.0
+                ],
+                "sizeDeltaPivot": [
+                  0.0,
+                  0.0
+                ],
+                "type": "AnchorRegion"
+              },
+              "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
+              "styleState": "",
+              "transform": {
+                "color": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
+                "hitTestAffected": true,
+                "pivot": [
+                  0.5,
+                  0.5
+                ],
+                "rotation": 0.0,
+                "scale": [
+                  1.0,
+                  1.0
+                ],
+                "translate": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "verticalScrollable": false,
+              "wheelScrollEnabled": true,
+              "zOrderInSiblings": 0
+            },
+            {
+              "activeSelf": true,
+              "children": [],
+              "childrenLayout": {
+                "horizontalAlign": "Left",
+                "padding": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "spacing": [
+                  0.0,
+                  0.0
+                ],
+                "type": "FlowLayout",
+                "verticalAlign": "Top"
+              },
+              "clippingEnabled": false,
+              "components": [
+                {
+                  "characterSpacing": [
+                    0.0,
+                    0.0
+                  ],
+                  "color": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ],
+                  "fontAssetName": "",
+                  "fontSize": 11.0,
+                  "gradationColor1": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ],
+                  "gradationColor2": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ],
+                  "gradationType": "None",
+                  "horizontalAlign": "Left",
+                  "horizontalOverflow": "Wrap",
+                  "minFontSize": 1.0,
+                  "outlineColor": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "outlineFactorInner": 0.0,
+                  "outlineFactorOuter": 0.0,
+                  "padding": [
+                    6.0,
+                    26.0,
+                    4.0,
+                    6.0
+                  ],
+                  "shadowColor": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "shadowOffset": [
+                    1.0,
+                    1.0
+                  ],
+                  "sizingMode": "AutoResizeHeight",
+                  "text": "",
+                  "text_paramRef": "irPanelText",
+                  "type": "Label",
+                  "underlineColor": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ],
+                  "underlineStyle": "None",
+                  "underlineThickness": 1.0,
+                  "verticalAlign": "Top",
+                  "verticalOverflow": "Overflow"
+                }
+              ],
+              "decelerationRate": 0.2,
+              "dragScrollEnabled": true,
+              "hitPadding": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "horizontalScrollable": false,
+              "inheritChildrenHover": false,
+              "inheritChildrenPress": false,
+              "interactable": true,
+              "isHitTarget": false,
+              "name": "NotificationText",
+              "region": {
+                "anchorMax": [
+                  1.0,
+                  0.0
+                ],
+                "anchorMin": [
+                  0.0,
+                  0.0
+                ],
+                "posDelta": [
+                  0.0,
+                  20.0
+                ],
+                "sizeDelta": [
+                  0.0,
+                  27.0
+                ],
+                "sizeDeltaPivot": [
+                  0.0,
+                  0.0
+                ],
+                "type": "AnchorRegion"
+              },
+              "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
+              "styleState": "",
+              "transform": {
+                "color": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
+                "hitTestAffected": true,
+                "pivot": [
+                  0.5,
+                  0.5
+                ],
+                "rotation": 0.0,
+                "scale": [
+                  1.0,
+                  1.0
+                ],
+                "translate": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "verticalScrollable": false,
+              "wheelScrollEnabled": true,
+              "zOrderInSiblings": 0
+            }
+          ],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "characterSpacing": [
+                0.0,
+                0.0
+              ],
+              "color": [
+                255,
+                255,
+                255,
+                0
+              ],
+              "fontAssetName": "",
+              "fontSize": 11.0,
+              "gradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationType": "None",
+              "horizontalAlign": "Left",
+              "horizontalOverflow": "Wrap",
+              "minFontSize": 1.0,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineFactorInner": 0.0,
+              "outlineFactorOuter": 0.0,
+              "padding": [
+                6.0,
+                26.0,
+                24.0,
+                6.0
+              ],
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                1.0,
+                1.0
+              ],
+              "sizingMode": "AutoResize",
+              "text": "",
+              "text_paramRef": "irPanelText",
+              "type": "Label",
+              "underlineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "underlineStyle": "None",
+              "underlineThickness": 1.0,
+              "verticalAlign": "Top",
+              "verticalOverflow": "Overflow"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "NotificationTextForSizing",
+          "region": {
+            "flexibleWeight": 0.0,
+            "margin": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "minWidth": 170.0,
+            "sizeDelta": [
+              32.0,
+              47.0
+            ],
+            "sizeRatio": [
+              0.0,
+              0.0
+            ],
+            "type": "InlineRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        }
+      ],
+      "childrenLayout": {
+        "horizontalAlign": "Right",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Bottom"
+      },
+      "clippingEnabled": true,
+      "components": [
+        {
+          "active": false,
+          "applyDuringDelay": true,
+          "colorEnabled": true,
+          "colorFrom": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "colorTo": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "delay": 0.0,
+          "duration": 0.2,
+          "easing": "Linear",
+          "loopDuration": 0.0,
+          "loopType": "None",
+          "manualMode": false,
+          "manualTime": 0.0,
+          "restartOnActive": true,
+          "rotationEnabled": false,
+          "rotationFrom": 0.0,
+          "rotationTo": 0.0,
+          "scaleEnabled": false,
+          "scaleFrom": [
+            1.0,
+            1.0
+          ],
+          "scaleTo": [
+            1.0,
+            1.0
+          ],
+          "tag": "in_irPanel",
+          "translateEnabled": true,
+          "translateFrom": [
+            40.0,
+            0.0
+          ],
+          "translateTo": [
+            0.0,
+            0.0
+          ],
+          "type": "Tween"
+        },
+        {
+          "active": false,
+          "applyDuringDelay": false,
+          "colorEnabled": true,
+          "colorFrom": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "colorTo": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "delay": 0.0,
+          "duration": 0.2,
+          "easing": "Linear",
+          "loopDuration": 0.0,
+          "loopType": "None",
+          "manualMode": false,
+          "manualTime": 0.0,
+          "restartOnActive": true,
+          "rotationEnabled": false,
+          "rotationFrom": 0.0,
+          "rotationTo": 0.0,
+          "scaleEnabled": false,
+          "scaleFrom": [
+            1.0,
+            1.0
+          ],
+          "scaleTo": [
+            1.0,
+            1.0
+          ],
+          "tag": "out_irPanel",
+          "translateEnabled": true,
+          "translateFrom": [
+            0.0,
+            0.0
+          ],
+          "translateTo": [
+            40.0,
+            0.0
+          ],
+          "type": "Tween"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "IRNotificationPanel",
+      "region": {
+        "anchorMax": [
+          1.0,
+          1.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDeltaPivot": [
+          0.0,
+          0.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    }
+  ],
+  "childrenLayout": {
+    "horizontalAlign": "Left",
+    "padding": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "spacing": [
+      0.0,
+      0.0
+    ],
+    "type": "FlowLayout",
+    "verticalAlign": "Top"
+  },
+  "defaultFontAssetName": "",
+  "params": {
+    "irPanelText": {
+      "type": "String",
+      "value": ""
+    },
+    "irPanelVisible": {
+      "type": "Bool",
+      "value": true
+    }
+  },
+  "referenceSize": [
+    640.0,
+    480.0
+  ],
+  "serializedVersion": 5,
+  "version": "0.3.1"
+}
