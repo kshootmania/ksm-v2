@@ -7,7 +7,7 @@
 class TitleScene : public Co::SceneBase
 {
 private:
-	ksmaudio::Stream m_bgmStream{ "se/title_bgm.ogg", 1.0, false, false, true };
+	std::shared_ptr<ksmaudio::Stream> m_bgmStream = std::make_shared<ksmaudio::Stream>("se/title_bgm.ogg", 1.0, false, false, true);
 
 	std::shared_ptr<noco::Canvas> m_canvas;
 

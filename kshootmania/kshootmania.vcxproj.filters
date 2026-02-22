@@ -67,11 +67,17 @@
     <Filter Include="Header Files\Scenes\Title">
       <UniqueIdentifier>{06d51002-dabe-4b44-93eb-624f6e54ae0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scenes\IREntry">
+      <UniqueIdentifier>{a1b2c3d4-1111-2222-3333-444455556666}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Scenes">
       <UniqueIdentifier>{dbad57e1-4485-46df-8f1d-e630dda5500c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Scenes\Title">
       <UniqueIdentifier>{987a87ef-3722-4f47-983d-5905a3fa05b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes\IREntry">
+      <UniqueIdentifier>{a1b2c3d4-5555-6666-7777-888899990000}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{c63c36d9-9448-45ea-8e1d-40978dc6d13d}</UniqueIdentifier>
@@ -272,6 +278,12 @@
     </ClCompile>
     <ClCompile Include="src\Scenes\Title\TitleMenu.cpp">
       <Filter>Source Files\Scenes\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\IREntry\IREntryMenu.cpp">
+      <Filter>Source Files\Scenes\IREntry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\IREntry\IREntryScene.cpp">
+      <Filter>Source Files\Scenes\IREntry</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\TiledTexture.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -912,6 +924,12 @@
     </ClInclude>
     <ClInclude Include="src\Scenes\Title\TitleAssets.hpp">
       <Filter>Header Files\Scenes\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\IREntry\IREntryMenu.hpp">
+      <Filter>Header Files\Scenes\IREntry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\IREntry\IREntryScene.hpp">
+      <Filter>Header Files\Scenes\IREntry</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\TiledTexture.hpp">
       <Filter>Header Files\Graphics</Filter>

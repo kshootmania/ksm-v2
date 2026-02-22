@@ -238,6 +238,8 @@
     <ClCompile Include="src\Scenes\Select\SelectMenu.cpp" />
     <ClCompile Include="src\Scenes\Select\SelectScene.cpp" />
     <ClCompile Include="src\Scenes\Select\SelectSongPreview.cpp" />
+    <ClCompile Include="src\Scenes\IREntry\IREntryMenu.cpp" />
+    <ClCompile Include="src\Scenes\IREntry\IREntryScene.cpp" />
     <ClCompile Include="src\Scenes\Title\TitleMenu.cpp" />
     <ClCompile Include="src\Scenes\Title\TitleScene.cpp" />
     <ClCompile Include="src\stdafx.cpp">
@@ -479,6 +481,8 @@
     <ClInclude Include="src\Scenes\Select\SelectMenu.hpp" />
     <ClInclude Include="src\Scenes\Select\SelectScene.hpp" />
     <ClInclude Include="src\Scenes\Select\SelectSongPreview.hpp" />
+    <ClInclude Include="src\Scenes\IREntry\IREntryMenu.hpp" />
+    <ClInclude Include="src\Scenes\IREntry\IREntryScene.hpp" />
     <ClInclude Include="src\Scenes\Title\TitleAssets.hpp" />
     <ClInclude Include="src\Scenes\Title\TitleMenu.hpp" />
     <ClInclude Include="src\Scenes\Title\TitleScene.hpp" />
