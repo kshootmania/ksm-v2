@@ -106,6 +106,12 @@
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{406ff180-8949-463e-859b-981e95f59292}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\IR">
+      <UniqueIdentifier>{b3f2a1c4-5d6e-7f8a-9b0c-1d2e3f4a5b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\IR">
+      <UniqueIdentifier>{c4a3b2d1-6e5f-8a7b-0c9d-2e1f3a4b5c6d}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Ini">
       <UniqueIdentifier>{a58e93a7-4cc8-4fb5-928d-dd58599a0eec}</UniqueIdentifier>
     </Filter>
@@ -308,6 +314,9 @@
     </ClCompile>
     <ClCompile Include="src\I18n\I18n.cpp">
       <Filter>Source Files\I18n</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IR\IRHash.cpp">
+      <Filter>Source Files\IR</Filter>
     </ClCompile>
     <ClCompile Include="src\Ini\ConfigIni.cpp">
       <Filter>Source Files\Ini</Filter>
@@ -960,6 +969,9 @@
     </ClInclude>
     <ClInclude Include="src\I18n\I18n.hpp">
       <Filter>Header Files\I18n</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IR\IRHash.hpp">
+      <Filter>Header Files\IR</Filter>
     </ClInclude>
     <ClInclude Include="src\Ini\KSMIniData.hpp">
       <Filter>Header Files\Ini</Filter>

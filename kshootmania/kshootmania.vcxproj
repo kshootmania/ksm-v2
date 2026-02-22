@@ -140,6 +140,7 @@
     <ClCompile Include="src\HighScore\KscValue.cpp" />
     <ClCompile Include="src\HighScore\KscIO.cpp" />
     <ClCompile Include="src\I18n\I18n.cpp" />
+    <ClCompile Include="src\IR\IRHash.cpp" />
     <ClCompile Include="src\Ini\ConfigIni.cpp" />
     <ClCompile Include="src\Ini\FolderConfIni.cpp" />
     <ClCompile Include="src\Ini\KSMIniData.cpp" />
@@ -364,6 +365,7 @@
     <ClInclude Include="src\HighScore\KscValue.hpp" />
     <ClInclude Include="src\HighScore\KscIO.hpp" />
     <ClInclude Include="src\I18n\I18n.hpp" />
+    <ClInclude Include="src\IR\IRHash.hpp" />
     <ClInclude Include="src\Ini\ConfigIni.hpp" />
     <ClInclude Include="src\Ini\FolderConfIni.hpp" />
     <ClInclude Include="src\Ini\KSMIniData.hpp" />

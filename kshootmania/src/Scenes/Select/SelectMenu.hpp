@@ -168,6 +168,8 @@ public:
 
 	void showCurrentItemInFileManager();
 
+	void openCurrentChartIRPage();
+
 	[[nodiscard]]
 	Optional<String> currentItemRelativePathToCopy() const;
 

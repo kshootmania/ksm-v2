@@ -315,6 +315,12 @@ void SelectScene::update()
 		m_menu.showCurrentItemInFileManager();
 	}
 
+	// Ctrl+I: 選択中の譜面のIRランキングページをブラウザで開く
+	if (PlatformKey::KeyCommandControl.pressed() && KeyI.down())
+	{
+		m_menu.openCurrentChartIRPage();
+	}
+
 	if (anyPanelVisible)
 	{
 		// パネル表示中は選曲画面の操作を無効化

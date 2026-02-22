@@ -1,6 +1,7 @@
 ﻿#include "SelectMenu.hpp"
 #include <cassert>
 #include "kson/kson.hpp"
+#include "IR/IRHash.hpp"
 #include "MenuItem/SelectMenuSongItem.hpp"
 #include "MenuItem/SelectMenuAllFolderItem.hpp"
 #include "MenuItem/SelectMenuDirFolderItem.hpp"
@@ -2200,6 +2201,26 @@ void SelectMenu::showCurrentItemInFileManager()
 
 	// 現在選択中の項目のshowInFileManagerを呼び出す
 	m_menu.cursorValue()->showInFileManager(m_difficultyMenu.cursor());
+}
+
+void SelectMenu::openCurrentChartIRPage()
+{
+	if (m_menu.empty())
+	{
+		return;
+	}
+
+	const SelectChartInfo* pChartInfo = m_menu.cursorValue()->chartInfoPtr(m_difficultyMenu.cursor());
+	if (pChartInfo == nullptr)
+	{
+		return;
+	}
+
+	const String irHash = IRHash::Calculate(pChartInfo->chartFilePath());
+	if (!irHash.isEmpty())
+	{
+		System::LaunchBrowser(U"https://ir.kshootmania.com/md5/" + irHash);
+	}
 }
 
 Optional<String> SelectMenu::currentItemRelativePathToCopy() const
