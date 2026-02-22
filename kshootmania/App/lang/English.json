@@ -139,5 +139,11 @@
 		"ItemHispeedTypeCMod": "HiSpeed Type C 25 - 2000",
 		"ItemHideMouseCursor": "Hide Mouse Cursor",
 		"ItemUseNumpadAsArrowKeys": "Use Numpad as Arrow Keys (for Controllers with Numpad)"
+	},
+	"IR": {
+		"WaitingForLogin": "Waiting for login in browser...\n\nPress Back (Esc key) to cancel",
+		"ErrorMaintenance": "The server is under maintenance.\n{0}",
+		"ErrorVersionTooOld": "A newer version of K-Shoot MANIA is required to use Internet Ranking.",
+		"ErrorLoginFailed": "Login failed.\n{0}"
 	}
 }

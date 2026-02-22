@@ -39,6 +39,7 @@ namespace I18n
 		Select,
 		Play,
 		Option,
+		IR,
 	};
 
 	/// @brief 選曲画面テキストのキー名
@@ -91,6 +92,15 @@ namespace I18n
 		ErrorChartFileNotFound,
 		ErrorChartLoadFailed,
 		ErrorSomeChartMissingInCourse,
+	};
+
+	/// @brief IR関連テキストのキー名
+	enum class IR
+	{
+		WaitingForLogin,
+		ErrorMaintenance,
+		ErrorVersionTooOld,
+		ErrorLoginFailed,
 	};
 
 	/// @brief OPTION画面テキストのキー名
@@ -218,6 +228,10 @@ namespace I18n
 		else if constexpr (std::is_same_v<T, Option>)
 		{
 			return GetByCategoryAndKey(EnumUtils::EnumToString(Category::Option), EnumUtils::EnumToString(key));
+		}
+		else if constexpr (std::is_same_v<T, IR>)
+		{
+			return GetByCategoryAndKey(EnumUtils::EnumToString(Category::IR), EnumUtils::EnumToString(key));
 		}
 		else
 		{

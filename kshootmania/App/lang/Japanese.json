@@ -139,5 +139,11 @@
 		"ItemHispeedTypeCMod": "ハイスピード C 25 - 2000",
 		"ItemHideMouseCursor": "マウスカーソルを非表示化",
 		"ItemUseNumpadAsArrowKeys": "テンキーを方向キーとして使用(テンキー付き専用コントローラー向け)"
+	},
+	"IR": {
+		"WaitingForLogin": "ブラウザ上でのログインを待っています…\n\nBackボタン(Escキー)でキャンセル",
+		"ErrorMaintenance": "メンテナンス中です\n{0}",
+		"ErrorVersionTooOld": "インターネットランキングの利用には新しいバージョンのK-Shoot MANIAが必要です",
+		"ErrorLoginFailed": "ログインに失敗しました\n{0}"
 	}
 }

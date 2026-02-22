@@ -139,5 +139,11 @@
 		"ItemHispeedTypeCMod": "HiSpeed C 25 - 2000",
 		"ItemHideMouseCursor": "隱藏滑鼠游標",
 		"ItemUseNumpadAsArrowKeys": "使用數字鍵盤作為方向鍵 (用於帶數字鍵盤的控制器)"
+	},
+	"IR": {
+		"WaitingForLogin": "等待瀏覽器登入中…\n\n按Back鍵(Esc鍵)取消",
+		"ErrorMaintenance": "伺服器維護中\n{0}",
+		"ErrorVersionTooOld": "使用網路排行榜需要更新版本的K-Shoot MANIA。",
+		"ErrorLoginFailed": "登入失敗\n{0}"
 	}
 }
