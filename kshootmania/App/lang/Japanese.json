@@ -141,9 +141,15 @@
 		"ItemUseNumpadAsArrowKeys": "テンキーを方向キーとして使用(テンキー付き専用コントローラー向け)"
 	},
 	"IR": {
-		"WaitingForLogin": "ブラウザ上でのログインを待っています…\n\nBackボタン(Escキー)でキャンセル",
+		"WaitingForLogin": "ブラウザでログインするのを待っています…\n\nBackボタン(Escキー)でキャンセル",
 		"ErrorMaintenance": "メンテナンス中です\n{0}",
 		"ErrorVersionTooOld": "インターネットランキングの利用には新しいバージョンのK-Shoot MANIAが必要です",
-		"ErrorLoginFailed": "ログインに失敗しました\n{0}"
+		"ErrorLoginFailed": "ログインに失敗しました\n{0}",
+		"ConnectionFailed": "IRサーバーへの接続に失敗しました",
+		"UnregisteredChart": "未登録の譜面です\nFX-L+Rボタン長押しで譜面を登録できます\n\n重要: 無断配布された楽曲を譜面登録した場合は\nアカウントを凍結します",
+		"ChartRegistered": "譜面を登録しました",
+		"SessionExpiredRelogin": "セッションが切れました。\nブラウザで再ログインするのを待っています…",
+		"ReloginSuccess": "再ログイン成功",
+		"ReloginFailed": "再ログインをキャンセルしたため、\nインターネットランキングからログアウトしました"
 	}
 }

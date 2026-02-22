@@ -144,6 +144,12 @@
 		"WaitingForLogin": "브라우저에서 로그인 대기 중…\n\nBack 버튼(Esc 키)으로 취소",
 		"ErrorMaintenance": "서버 점검 중입니다.\n{0}",
 		"ErrorVersionTooOld": "인터넷 랭킹을 이용하려면 새 버전의 K-Shoot MANIA가 필요합니다.",
-		"ErrorLoginFailed": "로그인에 실패했습니다.\n{0}"
+		"ErrorLoginFailed": "로그인에 실패했습니다.\n{0}",
+		"ConnectionFailed": "IR 서버에 연결할 수 없습니다",
+		"UnregisteredChart": "등록되지 않은 채보입니다\nFX-L+R 버튼을 길게 눌러 채보를 등록하세요\n\n중요: 무단 배포된 곡으로 채보를 등록할 경우\n계정이 정지됩니다",
+		"ChartRegistered": "채보가 등록되었습니다",
+		"SessionExpiredRelogin": "세션이 만료되었습니다.\n브라우저에서 재로그인 대기 중…\n\nBack 버튼(Esc 키)으로 취소",
+		"ReloginSuccess": "재로그인 성공",
+		"ReloginFailed": "재로그인이 취소되어\n인터넷 랭킹에서 로그아웃되었습니다"
 	}
 }

@@ -144,6 +144,12 @@
 		"WaitingForLogin": "Waiting for login in browser...\n\nPress Back (Esc key) to cancel",
 		"ErrorMaintenance": "The server is under maintenance.\n{0}",
 		"ErrorVersionTooOld": "A newer version of K-Shoot MANIA is required to use Internet Ranking.",
-		"ErrorLoginFailed": "Login failed.\n{0}"
+		"ErrorLoginFailed": "Login failed.\n{0}",
+		"ConnectionFailed": "Failed to connect to IR server",
+		"UnregisteredChart": "Unregistered chart\nHold FX-L+R to register this chart\n\nImportant: Your account will be suspended\nif you register charts using songs\ndistributed without permission",
+		"ChartRegistered": "Chart registered successfully",
+		"SessionExpiredRelogin": "Session expired.\nWaiting for re-login in browser...\n\nPress Back (Esc key) to cancel",
+		"ReloginSuccess": "Relogin successful",
+		"ReloginFailed": "Relogin cancelled\nYou have been logged out from Internet Ranking"
 	}
 }

@@ -101,6 +101,12 @@ namespace I18n
 		ErrorMaintenance,
 		ErrorVersionTooOld,
 		ErrorLoginFailed,
+		ConnectionFailed,
+		UnregisteredChart,
+		ChartRegistered,
+		SessionExpiredRelogin,
+		ReloginSuccess,
+		ReloginFailed,
 	};
 
 	/// @brief OPTION画面テキストのキー名

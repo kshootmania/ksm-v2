@@ -144,6 +144,12 @@
 		"WaitingForLogin": "等待瀏覽器登入中…\n\n按Back鍵(Esc鍵)取消",
 		"ErrorMaintenance": "伺服器維護中\n{0}",
 		"ErrorVersionTooOld": "使用網路排行榜需要更新版本的K-Shoot MANIA。",
-		"ErrorLoginFailed": "登入失敗\n{0}"
+		"ErrorLoginFailed": "登入失敗\n{0}",
+		"ConnectionFailed": "無法連線至IR伺服器",
+		"UnregisteredChart": "未註冊的譜面\n長按FX-L+R按鈕註冊此譜面\n\n重要: 使用未經授權散佈的歌曲\n註冊譜面將導致帳號被凍結",
+		"ChartRegistered": "譜面註冊成功",
+		"SessionExpiredRelogin": "工作階段已過期。\n等待瀏覽器重新登入中…\n\n按Back鍵(Esc鍵)取消",
+		"ReloginSuccess": "重新登入成功",
+		"ReloginFailed": "已取消重新登入\n已從網路排行榜登出"
 	}
 }
