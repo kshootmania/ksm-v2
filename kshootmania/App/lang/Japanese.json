@@ -156,8 +156,8 @@
 		"SessionExpiredRelogin": "セッションが切れました。\nブラウザで再ログインするのを待っています…",
 		"ReloginSuccess": "再ログイン成功",
 		"ReloginFailed": "再ログインをキャンセルしたため、\nインターネットランキングからログアウトしました",
-		"ScoreNotSentPlaybackSpeed": "再生速度が変更されているため、\nスコア送信されませんでした",
-		"ScoreNotSentCMod": "ハイスピードの種類「C」が使用されたため、\nスコア送信されませんでした",
-		"ScoreNotSentPlaybackControl": "一時停止または早送りが使用されたため、\nスコア送信されませんでした"
+		"ScoreNotSentPlaybackSpeed": "再生速度が変更されているため、\nIRのスコア集計対象外",
+		"ScoreNotSentCMod": "ハイスピードの種類「C」が使用されたため、\nIRのスコア集計対象外",
+		"ScoreNotSentPlaybackControl": "一時停止または早送りが使用されたため、\nIRのスコア集計対象外"
 	}
 }

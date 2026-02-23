@@ -156,8 +156,8 @@
 		"SessionExpiredRelogin": "Session expired.\nWaiting for re-login in browser...\n\nPress Back (Esc key) to cancel",
 		"ReloginSuccess": "Relogin successful",
 		"ReloginFailed": "Relogin cancelled\nYou have been logged out from Internet Ranking",
-		"ScoreNotSentPlaybackSpeed": "Score was not sent because\nsong speed has been changed",
-		"ScoreNotSentCMod": "Score was not sent because\nHi-Speed Type \"C\" was used",
-		"ScoreNotSentPlaybackControl": "Score was not sent because\npause or fast-forward was used"
+		"ScoreNotSentPlaybackSpeed": "IR score not recorded:\nsong speed has been changed",
+		"ScoreNotSentCMod": "IR score not recorded:\nHi-Speed Type \"C\" was used",
+		"ScoreNotSentPlaybackControl": "IR score not recorded:\npause or fast-forward was used"
 	}
 }

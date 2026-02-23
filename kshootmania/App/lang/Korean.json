@@ -156,8 +156,8 @@
 		"SessionExpiredRelogin": "세션이 만료되었습니다.\n브라우저에서 재로그인 대기 중…\n\nBack 버튼(Esc 키)으로 취소",
 		"ReloginSuccess": "재로그인 성공",
 		"ReloginFailed": "재로그인이 취소되어\n인터넷 랭킹에서 로그아웃되었습니다",
-		"ScoreNotSentPlaybackSpeed": "재생 속도가 변경되어\n스코어가 전송되지 않았습니다",
-		"ScoreNotSentCMod": "하이스피드 종류 \"C\"가 사용되어\n스코어가 전송되지 않았습니다",
-		"ScoreNotSentPlaybackControl": "일시 정지 또는 빨리 감기가 사용되어\n스코어가 전송되지 않았습니다"
+		"ScoreNotSentPlaybackSpeed": "재생 속도가 변경되어\nIR 스코어 집계 대상 외",
+		"ScoreNotSentCMod": "하이스피드 종류 \"C\"가 사용되어\nIR 스코어 집계 대상 외",
+		"ScoreNotSentPlaybackControl": "일시 정지 또는 빨리 감기가 사용되어\nIR 스코어 집계 대상 외"
 	}
 }

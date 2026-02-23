@@ -156,8 +156,8 @@
 		"SessionExpiredRelogin": "会话已过期。\n等待浏览器重新登录中…\n\n按Back键(Esc键)取消",
 		"ReloginSuccess": "重新登录成功",
 		"ReloginFailed": "已取消重新登录\n已从网络排行榜退出登录",
-		"ScoreNotSentPlaybackSpeed": "由于播放速度已更改，\n成绩未提交",
-		"ScoreNotSentCMod": "由于使用了Hi-Speed类型\"C\"，\n成绩未提交",
-		"ScoreNotSentPlaybackControl": "由于使用了暂停或快进，\n成绩未提交"
+		"ScoreNotSentPlaybackSpeed": "由于播放速度已更改，\n不纳入IR成绩统计",
+		"ScoreNotSentCMod": "由于使用了Hi-Speed类型\"C\"，\n不纳入IR成绩统计",
+		"ScoreNotSentPlaybackControl": "由于使用了暂停或快进，\n不纳入IR成绩统计"
 	}
 }

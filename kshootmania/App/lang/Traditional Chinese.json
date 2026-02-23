@@ -156,8 +156,8 @@
 		"SessionExpiredRelogin": "工作階段已過期。\n等待瀏覽器重新登入中…\n\n按Back鍵(Esc鍵)取消",
 		"ReloginSuccess": "重新登入成功",
 		"ReloginFailed": "已取消重新登入\n已從網路排行榜登出",
-		"ScoreNotSentPlaybackSpeed": "由於播放速度已更改，\n成績未提交",
-		"ScoreNotSentCMod": "由於使用了Hi-Speed類型\"C\"，\n成績未提交",
-		"ScoreNotSentPlaybackControl": "由於使用了暫停或快進，\n成績未提交"
+		"ScoreNotSentPlaybackSpeed": "由於播放速度已更改，\n不納入IR成績統計",
+		"ScoreNotSentCMod": "由於使用了Hi-Speed類型\"C\"，\n不納入IR成績統計",
+		"ScoreNotSentPlaybackControl": "由於使用了暫停或快進，\n不納入IR成績統計"
 	}
 }
