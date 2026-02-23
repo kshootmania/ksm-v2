@@ -140,6 +140,7 @@ namespace MusicGame
 	constexpr double kGaugeDecreaseRateCourseHardLow = 0.59; // 41%軽減
 
 	constexpr double kTiltRadians = 10_deg;
+	constexpr double kBgLayerTiltMaxRadians = 14_deg;
 
 	using IsAutoPlayYN = YesNo<struct IsAutoPlayYN_tag>;
 	using IsHardFailedYN = YesNo<struct IsHardFailedYN_tag>;

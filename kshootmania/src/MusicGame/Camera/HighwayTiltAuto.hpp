@@ -20,5 +20,7 @@ namespace MusicGame::Camera
 		void update(const kson::LaserLane<kson::LaserSection>& lanes, const kson::ByPulse<kson::TiltValue>& tilt, kson::Pulse currentPulse);
 
 		double radians() const;
+
+		double radiansForBgLayer() const;
 	};
 }

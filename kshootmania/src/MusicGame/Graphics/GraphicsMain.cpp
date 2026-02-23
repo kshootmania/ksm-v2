@@ -142,7 +142,7 @@ namespace MusicGame::Graphics
 		const int32 percentThreshold = (m_playOption.gaugeType == GaugeType::kHardGauge || m_playOption.gameMode == GameMode::kCourseMode) ? kGaugePercentageThresholdHardWarning : kGaugePercentageThreshold;
 		const int32 bgTextureIndex = viewStatus.gaugePercentageInt >= percentThreshold ? 1 : 0;
 
-		double bgTiltRadians = viewStatus.tiltRadians / 3;
+		double bgTiltRadians = viewStatus.tiltRadiansForBgLayer / 3;
 		m_bgBillboardMesh.draw(m_bgTransform * TiltTransformMatrix(bgTiltRadians, kBGBillboardPosition), m_bgTextures[bgTextureIndex]);
 	}
 
@@ -154,7 +154,7 @@ namespace MusicGame::Graphics
 		double layerTiltRadians = 0.0;
 		if (chartData.bg.legacy.layer.rotation.tilt)
 		{
-			layerTiltRadians += viewStatus.tiltRadians * 0.8;
+			layerTiltRadians += viewStatus.tiltRadiansForBgLayer * 0.8;
 		}
 		if (chartData.bg.legacy.layer.rotation.spin)
 		{

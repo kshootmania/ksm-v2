@@ -8,6 +8,7 @@ namespace MusicGame
 	struct ViewStatus
 	{
 		double tiltRadians = 0.0;
+		double tiltRadiansForBgLayer = 0.0;
 
 		Camera::CamStatus camStatus;
 

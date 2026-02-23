@@ -16,6 +16,8 @@ namespace MusicGame::Camera
 
 		double radians() const;
 
+		double radiansForBgLayer() const;
+
 		double lerpRate() const;
 	};
 }

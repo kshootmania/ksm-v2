@@ -138,4 +138,9 @@ namespace MusicGame::Camera
 	{
 		return kTiltRadians * m_smoothedTiltFactor * m_tiltScale;
 	}
+
+	double HighwayTiltAuto::radiansForBgLayer() const
+	{
+		return m_smoothedTiltFactor * Min(kTiltRadians * m_tiltScale, kBgLayerTiltMaxRadians);
+	}
 }

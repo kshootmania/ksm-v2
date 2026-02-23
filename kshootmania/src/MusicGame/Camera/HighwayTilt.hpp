@@ -17,5 +17,7 @@ namespace MusicGame::Camera
 		void update(const kson::ChartData& chartData, kson::Pulse currentPulse);
 
 		double radians() const;
+
+		double radiansForBgLayer() const;
 	};
 }

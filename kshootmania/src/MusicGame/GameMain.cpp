@@ -144,6 +144,7 @@ namespace MusicGame
 		// 傾きを更新
 		m_highwayTilt.update(m_chartData, m_gameStatus.currentPulse);
 		m_viewStatus.tiltRadians = m_highwayTilt.radians();
+		m_viewStatus.tiltRadiansForBgLayer = m_highwayTilt.radiansForBgLayer();
 
 		// 判定の更新
 		m_judgmentMain.update(m_chartData, m_gameStatus, m_viewStatus);

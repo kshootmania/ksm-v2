@@ -12,4 +12,9 @@ namespace MusicGame::Camera
 	{
 		return std::lerp(m_auto.radians(), m_manual.radians(), m_manual.lerpRate());
 	}
+
+	double HighwayTilt::radiansForBgLayer() const
+	{
+		return std::lerp(m_auto.radiansForBgLayer(), m_manual.radiansForBgLayer(), m_manual.lerpRate());
+	}
 }
