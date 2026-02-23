@@ -34,7 +34,7 @@
 		"Movie": "MOVIE:        ",
 		"MovieOff": "     关     ",
 		"MovieOn": "     开     ",
-		"Hispeed": "HiSPEED:",
+		"Hispeed": "Hi-Speed:",
 		"PlayStatsPlayCount": "PLAYCOUNT: ",
 		"PlayStatsClear": "  CLEAR  : ",
 		"PlayStatsFullCombo": "FULLCOMBO: ",
@@ -138,9 +138,9 @@
 		"ItemSwapLRLaser": "交换左右LASER",
 		"ItemCloseDirectoryKey": "关闭文件夹按键",
 		"Item3BTKeysStartBack": "同时按3个BT + Start键作为Back键",
-		"ItemHispeedTypeXMod": "HiSpeed x0.5 - x9.9",
-		"ItemHispeedTypeOMod": "HiSpeed 25 - 2000",
-		"ItemHispeedTypeCMod": "HiSpeed C 25 - 2000",
+		"ItemHispeedTypeXMod": "Hi-Speed x0.5 - x9.9",
+		"ItemHispeedTypeOMod": "Hi-Speed 25 - 2000",
+		"ItemHispeedTypeCMod": "Hi-Speed C 25 - 2000",
 		"ItemHideMouseCursor": "隐藏鼠标光标",
 		"ItemUseNumpadAsArrowKeys": "使用数字键盘作为方向键 (用于带数字键盘的控制器)"
 	},
@@ -155,6 +155,9 @@
 		"ChartRegistered": "谱面注册成功",
 		"SessionExpiredRelogin": "会话已过期。\n等待浏览器重新登录中…\n\n按Back键(Esc键)取消",
 		"ReloginSuccess": "重新登录成功",
-		"ReloginFailed": "已取消重新登录\n已从网络排行榜退出登录"
+		"ReloginFailed": "已取消重新登录\n已从网络排行榜退出登录",
+		"ScoreNotSentPlaybackSpeed": "由于播放速度已更改，\n成绩未提交",
+		"ScoreNotSentCMod": "由于使用了Hi-Speed类型\"C\"，\n成绩未提交",
+		"ScoreNotSentPlaybackControl": "由于使用了暂停或快进，\n成绩未提交"
 	}
 }

@@ -34,7 +34,7 @@
 		"Movie": "Movie:        ",
 		"MovieOff": "    Off     ",
 		"MovieOn": "     On     ",
-		"Hispeed": "Hispeed: ",
+		"Hispeed": "Hi-Speed: ",
 		"PlayStatsPlayCount": "Play count: ",
 		"PlayStatsClear": "  Clear   : ",
 		"PlayStatsFullCombo": "Full combo: ",
@@ -138,9 +138,9 @@
 		"ItemSwapLRLaser": "Swap L/R Laser",
 		"ItemCloseDirectoryKey": "Close Directory Key",
 		"Item3BTKeysStartBack": "3 BT Keys + Start as Back Button",
-		"ItemHispeedTypeXMod": "HiSpeed Type x0.5 - x9.9",
-		"ItemHispeedTypeOMod": "HiSpeed Type 25 - 2000",
-		"ItemHispeedTypeCMod": "HiSpeed Type C 25 - 2000",
+		"ItemHispeedTypeXMod": "Hi-Speed Type x0.5 - x9.9",
+		"ItemHispeedTypeOMod": "Hi-Speed Type 25 - 2000",
+		"ItemHispeedTypeCMod": "Hi-Speed Type C 25 - 2000",
 		"ItemHideMouseCursor": "Hide Mouse Cursor",
 		"ItemUseNumpadAsArrowKeys": "Use Numpad as Arrow Keys (for Controllers with Numpad)"
 	},
@@ -155,6 +155,9 @@
 		"ChartRegistered": "Chart registered successfully",
 		"SessionExpiredRelogin": "Session expired.\nWaiting for re-login in browser...\n\nPress Back (Esc key) to cancel",
 		"ReloginSuccess": "Relogin successful",
-		"ReloginFailed": "Relogin cancelled\nYou have been logged out from Internet Ranking"
+		"ReloginFailed": "Relogin cancelled\nYou have been logged out from Internet Ranking",
+		"ScoreNotSentPlaybackSpeed": "Score was not sent because\nsong speed has been changed",
+		"ScoreNotSentCMod": "Score was not sent because\nHi-Speed Type \"C\" was used",
+		"ScoreNotSentPlaybackControl": "Score was not sent because\npause or fast-forward was used"
 	}
 }

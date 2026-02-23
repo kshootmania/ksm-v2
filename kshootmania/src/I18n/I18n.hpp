@@ -115,6 +115,9 @@ namespace I18n
 		SessionExpiredRelogin,
 		ReloginSuccess,
 		ReloginFailed,
+		ScoreNotSentPlaybackSpeed,
+		ScoreNotSentCMod,
+		ScoreNotSentPlaybackControl,
 	};
 
 	/// @brief OPTION画面テキストのキー名
