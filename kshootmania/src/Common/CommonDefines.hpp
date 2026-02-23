@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+inline constexpr StringView kAppVersion = U"v2.0.0-alpha5";
+
 enum DifficultyIdx : int32
 {
 	kDifficultyIdxLight = 0,

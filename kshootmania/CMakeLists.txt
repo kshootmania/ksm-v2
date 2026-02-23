@@ -138,9 +138,7 @@ endif()
 
 target_compile_features(kshootmania PRIVATE cxx_std_20)
 
-target_compile_definitions(kshootmania PRIVATE
-	KSHOOTMANIA_VERSION="${CMAKE_PROJECT_VERSION}${PROJECT_VERSION_SUFFIX}"
-)
+target_compile_definitions(kshootmania PRIVATE)
 
 if(OUTPUT_LICENSE_TXT)
 	target_compile_definitions(kshootmania PRIVATE OUTPUT_LICENSE_TXT)
