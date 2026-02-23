@@ -26,7 +26,7 @@ void ResultSNSShare::update(noco::Canvas* pCanvas)
 		System::LaunchBrowser(U"https://x.com/intent/tweet?text=" + encodedText);
 	}
 
-	if (pCanvas->isEventFiredWithTag(U"onClickSNSButton") || KeyConfig::Down(kButtonAutoPlay))
+	if (pCanvas->isEventFiredWithTag(U"onClickSNSButton") || KeyConfig::Down(kButtonAutoPlay) || (KeyShift.pressed() && KeyConfig::Down(kButtonStart)))
 	{
 		// スクリーンショット用に一時的にバージョン番号表示、SNSボタン非表示
 		pCanvas->setParamValue(U"bottomRightText", String{ kAppVersion });

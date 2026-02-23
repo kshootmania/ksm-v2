@@ -123,9 +123,18 @@ Co::Task<void> CourseResultScene::start()
 
 	if (!userPressedStartOrBack)
 	{
-		co_await Co::Any(
-			KeyConfig::WaitUntilDown(kButtonStart),
-			KeyConfig::WaitUntilDown(kButtonBack));
+		while (true)
+		{
+			co_await Co::NextFrame();
+			if (KeyConfig::Down(kButtonBack))
+			{
+				break;
+			}
+			if (KeyConfig::Down(kButtonStart) && !KeyShift.pressed())
+			{
+				break;
+			}
+		}
 	}
 
 	requestNextScene<SelectScene>();
@@ -148,9 +157,9 @@ Co::Task<bool> CourseResultScene::waitForNewRecordPanelClose()
 		}
 		fxLRPressedPrev = fxLRPressed;
 
-		// 3秒経過またはSTART/Backで終了
+		// 3秒経過またはSTART/Backで終了(Shift+STARTはツイート機能用なので除外)
 		if (displayStopwatch.sF() >= 3.0 ||
-			KeyConfig::Down(kButtonStart) ||
+			(KeyConfig::Down(kButtonStart) && !KeyShift.pressed()) ||
 			KeyConfig::Down(kButtonBack))
 		{
 			break;
@@ -172,7 +181,7 @@ Co::Task<bool> CourseResultScene::waitForNewRecordPanelClose()
 		}
 		fxLRPressedPrev = fxLRPressed;
 
-		if (KeyConfig::Down(kButtonStart) || KeyConfig::Down(kButtonBack))
+		if ((KeyConfig::Down(kButtonStart) && !KeyShift.pressed()) || KeyConfig::Down(kButtonBack))
 		{
 			co_return true;
 		}
