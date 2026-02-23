@@ -38,6 +38,7 @@ namespace I18n
 	{
 		Select,
 		Play,
+		Result,
 		Option,
 		IR,
 	};
@@ -92,6 +93,12 @@ namespace I18n
 		ErrorChartFileNotFound,
 		ErrorChartLoadFailed,
 		ErrorSomeChartMissingInCourse,
+	};
+
+	/// @brief リザルト画面テキストのキー名
+	enum class Result
+	{
+		ScreenshotCopied,
 	};
 
 	/// @brief IR関連テキストのキー名
@@ -231,6 +238,10 @@ namespace I18n
 		else if constexpr (std::is_same_v<T, Play>)
 		{
 			return GetByCategoryAndKey(EnumUtils::EnumToString(Category::Play), EnumUtils::EnumToString(key));
+		}
+		else if constexpr (std::is_same_v<T, Result>)
+		{
+			return GetByCategoryAndKey(EnumUtils::EnumToString(Category::Result), EnumUtils::EnumToString(key));
 		}
 		else if constexpr (std::is_same_v<T, Option>)
 		{

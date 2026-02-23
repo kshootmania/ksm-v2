@@ -222,6 +222,7 @@
     <ClCompile Include="src\Scenes\CourseResult\CourseResultScene.cpp" />
     <ClCompile Include="src\Scenes\Result\ResultNewRecordPanel.cpp" />
     <ClCompile Include="src\Scenes\Result\ResultScene.cpp" />
+    <ClCompile Include="src\Scenes\Result\ResultSNSShare.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuAllFolderItem.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuCourseItem.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuCoursesFolderItem.cpp" />
@@ -463,6 +464,7 @@
     <ClInclude Include="src\Scenes\CourseResult\CourseResultScene.hpp" />
     <ClInclude Include="src\Scenes\Result\ResultNewRecordPanel.hpp" />
     <ClInclude Include="src\Scenes\Result\ResultScene.hpp" />
+    <ClInclude Include="src\Scenes\Result\ResultSNSShare.hpp" />
     <ClInclude Include="src\Scenes\Result\ResultSceneArgs.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\ISelectMenuItem.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuAllFolderItem.hpp" />

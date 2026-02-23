@@ -45,6 +45,10 @@
 		"ErrorChartLoadFailed": "譜面ファイルの読み込みに失敗しました。",
 		"ErrorSomeChartMissingInCourse": "指定された譜面ファイルが見つかりません。"
 	},
+	"Result": {
+		"ScreenshotCopied": "スクリーンショットをクリップボードにコピーしました。\n投稿画面でCtrl+Vを押すと画像を添付できます。",
+		"ScreenshotCopied@macOS": "スクリーンショットをクリップボードにコピーしました。\n投稿画面でCmd+Vを押すと画像を添付できます。"
+	},
 	"Option": {
 		"FullscreenOff": "ウィンドウモード",
 		"FullscreenOn": "フルスクリーン",

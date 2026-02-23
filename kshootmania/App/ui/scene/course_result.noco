@@ -129,6 +129,7 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
         "color": [
@@ -147,6 +148,200 @@
           1.0,
           1.0
         ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": {
+            "default": [
+              255,
+              255,
+              255,
+              0
+            ],
+            "hovered": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "pressed": [
+              200,
+              240,
+              255,
+              255
+            ],
+            "smoothTime": 0.04
+          },
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/result_tweetbtn.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            180.0,
+            48.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 3,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Grid",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        },
+        {
+          "cursorStyle": "Hand",
+          "includingDisabled": false,
+          "recursive": false,
+          "type": "CursorChanger"
+        },
+        {
+          "recursive": false,
+          "tag": "onClickSNSButton",
+          "triggerType": "Click",
+          "type": "EventTrigger"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": true,
+      "name": "SNSButton",
+      "region": {
+        "anchorMax": [
+          1.0,
+          0.0
+        ],
+        "anchorMin": [
+          1.0,
+          0.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          90.0,
+          24.0
+        ],
+        "sizeDeltaPivot": [
+          1.0,
+          0.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          1.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": {
+          "default": [
+            0.96,
+            0.96
+          ],
+          "hovered": [
+            1.0,
+            1.0
+          ],
+          "pressed": [
+            0.98,
+            0.98
+          ],
+          "smoothTime": 0.04
+        },
         "translate": [
           0.0,
           0.0
@@ -286,6 +481,7 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -443,6 +639,7 @@
                     "type": "InlineRegion"
                   },
                   "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
                   "styleState": "",
                   "transform": {
                     "color": [
@@ -518,6 +715,7 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -598,6 +796,7 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -744,6 +943,7 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -900,6 +1100,7 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -1056,6 +1257,7 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -1148,6 +1350,7 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -1237,6 +1440,7 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -1326,6 +1530,7 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -1415,6 +1620,7 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -1547,6 +1753,7 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -1700,6 +1907,7 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
         "color": [
@@ -1856,6 +2064,7 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
         "color": [
@@ -1873,6 +2082,161 @@
         "scale": [
           0.5874,
           0.5874
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "characterSpacing": [
+            0.0,
+            0.0
+          ],
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "fontAssetName": "",
+          "fontSize": 10.0,
+          "gradationColor1": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gradationColor2": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gradationType": "None",
+          "horizontalAlign": "Center",
+          "horizontalOverflow": "Wrap",
+          "minFontSize": 1.0,
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineFactorInner": 0.0,
+          "outlineFactorOuter": 0.0,
+          "padding": [
+            4.0,
+            6.0,
+            2.0,
+            4.0
+          ],
+          "shadowColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "shadowOffset": [
+            1.0,
+            1.0
+          ],
+          "sizingMode": "AutoResize",
+          "text": "",
+          "text_paramRef": "bottomRightText",
+          "type": "Label",
+          "underlineColor": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "underlineStyle": "None",
+          "underlineThickness": 1.0,
+          "verticalAlign": "Middle",
+          "verticalOverflow": "Overflow"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": true,
+      "name": "BottomRightText",
+      "region": {
+        "anchorMax": [
+          1.0,
+          1.0
+        ],
+        "anchorMin": [
+          1.0,
+          1.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          38.0,
+          21.0
+        ],
+        "sizeDeltaPivot": [
+          1.0,
+          1.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
         ],
         "translate": [
           0.0,
@@ -2012,6 +2376,7 @@
                     "type": "AnchorRegion"
                   },
                   "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
                   "styleState": "",
                   "transform": {
                     "color": [
@@ -2158,6 +2523,7 @@
                     "type": "AnchorRegion"
                   },
                   "rubberBandScrollEnabled": true,
+                  "scrollBarType": "Overlay",
                   "styleState": "",
                   "transform": {
                     "color": [
@@ -2455,6 +2821,7 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -2512,7 +2879,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": true,
+          "isHitTarget": false,
           "name": "NewRecordPanel",
           "region": {
             "anchorMax": [
@@ -2538,6 +2905,7 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -2621,6 +2989,7 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
         "color": [
@@ -2674,6 +3043,10 @@
       "type": "Bool",
       "value": false
     },
+    "bottomRightText": {
+      "type": "String",
+      "value": "vX.X.X"
+    },
     "chartItem1Visible": {
       "type": "Bool",
       "value": true
@@ -2724,5 +3097,5 @@
     480.0
   ],
   "serializedVersion": 5,
-  "version": "0.3.0-beta1"
+  "version": "0.3.1"
 }

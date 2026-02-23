@@ -123,6 +123,15 @@ StringView I18n::GetByCategoryAndKey(const String& category, const String& key)
 		return U"";
 	}
 
+#ifdef __APPLE__
+	// macOSではキー名の末尾に"@macOS"が付いたエントリがあれば優先して使用
+	const auto platformKeyIt = categoryIt->second.find(key + U"@macOS");
+	if (platformKeyIt != categoryIt->second.end())
+	{
+		return platformKeyIt->second;
+	}
+#endif
+
 	const auto keyIt = categoryIt->second.find(key);
 	if (keyIt == categoryIt->second.end())
 	{

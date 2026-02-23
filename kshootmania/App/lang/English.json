@@ -45,6 +45,10 @@
 		"ErrorChartLoadFailed": "Failed to load the chart file.",
 		"ErrorSomeChartMissingInCourse": "Some charts in this course are missing."
 	},
+	"Result": {
+		"ScreenshotCopied": "Screenshot has been copied to clipboard.\nPress Ctrl+V on the post screen to attach the image.",
+		"ScreenshotCopied@macOS": "Screenshot has been copied to clipboard.\nPress Cmd+V on the post screen to attach the image."
+	},
 	"Option": {
 		"FullscreenOff": "Window",
 		"FullscreenOn": "Fullscreen",

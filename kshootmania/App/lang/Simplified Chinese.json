@@ -45,6 +45,10 @@
 		"ErrorChartLoadFailed": "谱面文件加载失败。",
 		"ErrorSomeChartMissingInCourse": "此连曲中缺少部分谱面。"
 	},
+	"Result": {
+		"ScreenshotCopied": "截图已复制到剪贴板。\n在发布页面按Ctrl+V即可附加图片。",
+		"ScreenshotCopied@macOS": "截图已复制到剪贴板。\n在发布页面按Cmd+V即可附加图片。"
+	},
 	"Option": {
 		"FullscreenOff": "窗口化",
 		"FullscreenOn": "全屏",

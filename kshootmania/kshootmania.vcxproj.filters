@@ -567,6 +567,9 @@
     <ClCompile Include="src\Scenes\Result\ResultScene.cpp">
       <Filter>Source Files\Scenes\Result</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\Result\ResultSNSShare.cpp">
+      <Filter>Source Files\Scenes\Result</Filter>
+    </ClCompile>
     <ClCompile Include="src\HighScore\KscKey.cpp">
       <Filter>Source Files\HighScore</Filter>
     </ClCompile>
@@ -1253,6 +1256,9 @@
       <Filter>Header Files\Scenes\Result</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\Result\ResultScene.hpp">
+      <Filter>Header Files\Scenes\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\Result\ResultSNSShare.hpp">
       <Filter>Header Files\Scenes\Result</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\Result\ResultSceneArgs.hpp">

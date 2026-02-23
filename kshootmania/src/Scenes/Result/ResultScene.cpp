@@ -5,6 +5,7 @@
 #include "Scenes/Common/ShowLoadingOneFrame.hpp"
 #include "HighScore/KscIO.hpp"
 #include "Common/CommonDefines.hpp"
+#include "Ini/FolderConfIni.hpp"
 
 namespace
 {
@@ -57,6 +58,111 @@ namespace
 		kTopTextureRowAssistHardFailed,
 		kTopTextureRowAssistHardClear,
 	};
+
+	constexpr std::array<StringView, kNumDifficulties> kDifficultyAbbreviations = {
+		U"LT", U"CH", U"EX", U"IN",
+	};
+
+	constexpr StringView ClearStatusText(Achievement achievement, GaugeType gaugeType, bool isAssist)
+	{
+		switch (achievement)
+		{
+		case Achievement::kNone:
+			switch (gaugeType)
+			{
+			case GaugeType::kNormalGauge:
+				return isAssist ? U"ASSIST FAILED..." : U"FAILED...";
+			case GaugeType::kEasyGauge:
+				return isAssist ? U"ASSIST EASY FAILED..." : U"EASY FAILED...";
+			case GaugeType::kHardGauge:
+				return isAssist ? U"ASSIST HARD FAILED..." : U"HARD FAILED...";
+			default:
+				return U"FAILED...";
+			}
+
+		case Achievement::kCleared:
+			switch (gaugeType)
+			{
+			case GaugeType::kNormalGauge:
+				return isAssist ? U"ASSIST CLEARED!" : U"CLEARED!";
+			case GaugeType::kEasyGauge:
+				return isAssist ? U"ASSIST EASY CLEAR!" : U"EASY CLEAR!";
+			case GaugeType::kHardGauge:
+				return isAssist ? U"ASSIST HARD CLEAR!" : U"HARD CLEAR!";
+			default:
+				return U"CLEARED!";
+			}
+
+		case Achievement::kFullCombo:
+			switch (gaugeType)
+			{
+			case GaugeType::kNormalGauge:
+			case GaugeType::kHardGauge:
+				return isAssist ? U"ASSIST FULL COMBO!" : U"FULL COMBO!";
+			case GaugeType::kEasyGauge:
+				return isAssist ? U"ASSIST EASY FULL COMBO!" : U"EASY FULL COMBO!";
+			default:
+				return U"FULL COMBO!";
+			}
+
+		case Achievement::kPerfect:
+			switch (gaugeType)
+			{
+			case GaugeType::kNormalGauge:
+			case GaugeType::kHardGauge:
+				return isAssist ? U"ASSIST PERFECT!" : U"PERFECT!";
+			case GaugeType::kEasyGauge:
+				return isAssist ? U"ASSIST EASY PERFECT!" : U"EASY PERFECT!";
+			default:
+				return U"PERFECT!";
+			}
+
+		default:
+			return U"";
+		}
+	}
+
+	String BuildResultTweetText(const kson::ChartData& chartData, const MusicGame::PlayResult& playResult, FilePathView chartFilePath, const Optional<CoursePlayState>& courseState)
+	{
+		const String title = Unicode::FromUTF8(chartData.meta.title);
+		const String artist = Unicode::FromUTF8(chartData.meta.artist);
+
+		const int32 diffIdx = chartData.meta.difficulty.idx;
+		const StringView diffAbbr = 0 <= diffIdx && diffIdx < kNumDifficulties
+			? kDifficultyAbbreviations[diffIdx]
+			: U"??";
+
+		const StringView clearStatus = ClearStatusText(
+			playResult.achievement(),
+			playResult.playOption.gaugeType,
+			playResult.playOption.isAssist());
+
+		const String tweetOption = FolderConfIni::Load(chartFilePath).tweetOption;
+
+		String text;
+
+		// コースモード中は1行目にコース名を入れる
+		if (courseState)
+		{
+			text += courseState->courseInfo().title + U"\n";
+		}
+
+		text += U"{} / {}\n[{}] Lv{} {} (SCORE: {:08d})\n"_fmt(
+			title,
+			artist,
+			diffAbbr,
+			chartData.meta.level,
+			clearStatus,
+			playResult.score);
+
+		if (!tweetOption.isEmpty())
+		{
+			text += tweetOption + U" ";
+		}
+		text += U"#kshootmania";
+
+		return text;
+	}
 
 	int32 TopTextureRow(const MusicGame::PlayResult& playResult)
 	{
@@ -218,6 +324,7 @@ ResultScene::ResultScene(const ResultSceneArgs& args)
 	, m_chartData(args.chartData)
 	, m_playResult(args.playResult)
 	, m_newRecordPanel(m_canvas)
+	, m_snsShare(BuildResultTweetText(args.chartData, args.playResult, args.chartFilePath, args.courseState))
 	, m_courseState(args.courseState)
 {
 	// コースモードの場合は結果を記録
@@ -318,6 +425,7 @@ void ResultScene::updateCanvasParams()
 		{ U"errorCount", U"{:04d}"_fmt(errorCountWithUnjudged) },
 		{ U"gaugePercentageNumber", U"{}"_fmt(static_cast<int32>(m_playResult.gaugePercentage)) },
 		{ U"gaugeTextureIndex", static_cast<double>(gaugeTextureIndex) },
+		{ U"bottomRightText", U"" },
 	});
 
 	// ゲージのバーの高さをパーセンテージに応じて変更
@@ -454,6 +562,7 @@ Co::Task<bool> ResultScene::waitForNewRecordPanelClose()
 void ResultScene::update()
 {
 	m_canvas->update();
+	m_snsShare.update(m_canvas.get());
 }
 
 void ResultScene::draw() const

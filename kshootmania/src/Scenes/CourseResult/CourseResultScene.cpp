@@ -27,6 +27,17 @@ namespace
 		}
 		return canvas;
 	}
+
+	String BuildCourseTweetText(const CoursePlayState& courseState)
+	{
+		const StringView clearStatus = courseState.isCleared() ? U"CLEARED!" : U"FAILED...";
+		const int32 achievementRate = courseState.achievementRate();
+
+		return U"{}\n{} (ACHIEVEMENT RATE: {}%)\n#kshootmania"_fmt(
+			courseState.courseInfo().title,
+			clearStatus,
+			achievementRate);
+	}
 }
 
 CourseResultScene::CourseResultScene(const CoursePlayState& courseState)
@@ -34,6 +45,7 @@ CourseResultScene::CourseResultScene(const CoursePlayState& courseState)
 	, m_courseState(courseState)
 	, m_newRecordPanel(m_canvas)
 	, m_chartList(m_canvas, m_courseState)
+	, m_snsShare(BuildCourseTweetText(m_courseState))
 {
 	// 前回までのAchievementRateを読み込んでNewRecordパネルを設定
 	const FilePath courseFilePath = m_courseState.courseInfo().filePath;
@@ -66,6 +78,7 @@ void CourseResultScene::updateCanvasParams()
 		{ U"resultTopIndex", m_courseState.isCleared() ? 1.0 : 0.0 },
 		{ U"gaugePercentageNumber", U"{}"_fmt(newAchievementRate) },
 		{ U"gaugeTextureIndex", 1.0 },
+		{ U"bottomRightText", U"" },
 	});
 
 	// ゲージのバーの幅をパーセンテージに応じて変更
@@ -170,6 +183,7 @@ void CourseResultScene::update()
 {
 	m_canvas->update();
 	m_chartList.update(m_courseState);
+	m_snsShare.update(m_canvas.get());
 }
 
 void CourseResultScene::draw() const
