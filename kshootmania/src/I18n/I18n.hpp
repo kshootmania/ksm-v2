@@ -101,6 +101,7 @@ namespace I18n
 		ErrorMaintenance,
 		ErrorVersionTooOld,
 		ErrorLoginFailed,
+		ErrorSendFailed,
 		ConnectionFailed,
 		UnregisteredChart,
 		ChartRegistered,
