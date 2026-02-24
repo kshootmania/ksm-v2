@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-inline constexpr StringView kAppVersion = U"v2.0.0-alpha5";
+inline constexpr StringView kAppVersion = U"v2.0.0-alpha6";
 
 enum DifficultyIdx : int32
 {
