@@ -75,7 +75,7 @@ namespace MusicGame::Audio
 				continue;
 			}
 
-			m_keySounds.emplace(filename, ksmaudio::Sample{ filePath.narrow(), GetMaxPolyphony(chartData) });
+			m_keySounds.emplace(filename, ksmaudio::Sample{ filePath.toUTF8(), GetMaxPolyphony(chartData) });
 		}
 	}
 

@@ -1,5 +1,6 @@
 ﻿#include "IRHash.hpp"
 #include <Siv3D/MD5.hpp>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include "kson/IO/KsonIO.hpp"
@@ -105,7 +106,10 @@ namespace
 	// KSHファイルからIRハッシュを計算
 	String CalculateFromKshFile(FilePathView chartFilePath)
 	{
-		std::ifstream ifs(chartFilePath.narrow(), std::ios_base::binary);
+		const auto utf8 = chartFilePath.toUTF8();
+		const std::filesystem::path fsPath(std::u8string_view(
+			reinterpret_cast<const char8_t*>(utf8.data()), utf8.size()));
+		std::ifstream ifs(fsPath, std::ios_base::binary);
 		if (!ifs.good())
 		{
 			return {};
@@ -131,7 +135,7 @@ namespace
 	String CalculateFromKsonFile(FilePathView chartFilePath)
 	{
 		// KSON読み込み
-		const kson::ChartData chartData = kson::LoadKsonChartData(chartFilePath.narrow());
+		const kson::ChartData chartData = kson::LoadKsonChartData(chartFilePath.toUTF8());
 		if (chartData.error != kson::ErrorType::None)
 		{
 			return {};

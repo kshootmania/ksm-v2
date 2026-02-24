@@ -356,8 +356,8 @@ void KSMMain()
 	if (testPlayArgs.has_value())
 	{
 		const auto chartData = FsUtils::HasKsonExtension(testPlayArgs->chartFilePath)
-			? kson::LoadKsonChartData(testPlayArgs->chartFilePath.narrow())
-			: kson::LoadKshChartData(testPlayArgs->chartFilePath.narrow());
+			? kson::LoadKsonChartData(testPlayArgs->chartFilePath.toUTF8())
+			: kson::LoadKshChartData(testPlayArgs->chartFilePath.toUTF8());
 		if (chartData.error != kson::ErrorType::None)
 		{
 			System::MessageBoxOK(I18n::Get(I18n::Play::ErrorChartLoadFailed), MessageBoxStyle::Error);

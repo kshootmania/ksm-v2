@@ -116,9 +116,9 @@ namespace MusicGame::Audio
 
 		if (mode == LegacyAudioFPMode::kFP)
 		{
-			streamF = std::make_unique<ksmaudio::StreamWithEffects>(pathF.narrow(), volume, true, true, playbackSpeed);
-			streamP = std::make_unique<ksmaudio::StreamWithEffects>(pathP.narrow(), volume, true, true, playbackSpeed);
-			streamFP = std::make_unique<ksmaudio::StreamWithEffects>(pathFP.narrow(), volume, true, true, playbackSpeed);
+			streamF = std::make_unique<ksmaudio::StreamWithEffects>(pathF.toUTF8(), volume, true, true, playbackSpeed);
+			streamP = std::make_unique<ksmaudio::StreamWithEffects>(pathP.toUTF8(), volume, true, true, playbackSpeed);
+			streamFP = std::make_unique<ksmaudio::StreamWithEffects>(pathFP.toUTF8(), volume, true, true, playbackSpeed);
 
 			streamF->setMuted(true);
 			streamP->setMuted(true);
@@ -126,7 +126,7 @@ namespace MusicGame::Audio
 		}
 		else if (mode == LegacyAudioFPMode::kF)
 		{
-			streamF = std::make_unique<ksmaudio::StreamWithEffects>(pathF.narrow(), volume, true, true, playbackSpeed);
+			streamF = std::make_unique<ksmaudio::StreamWithEffects>(pathF.toUTF8(), volume, true, true, playbackSpeed);
 			pAudioEffectBusLaserForF = streamF->emplaceAudioEffectBusLaser();
 
 			streamF->setMuted(true);
@@ -316,7 +316,7 @@ namespace MusicGame::Audio
 	}
 
 	BGM::BGM(FilePathView filePath, double volume, SecondsF offset, LegacyAudioFPMode legacyMode, const kson::ChartData& chartData, const FilePath& parentPath, double playbackSpeed)
-		: m_stream(filePath.narrow(), volume, true, true, playbackSpeed)
+		: m_stream(filePath.toUTF8(), volume, true, true, playbackSpeed)
 		, m_playbackSpeed(playbackSpeed)
 		, m_duration(m_stream.duration())
 		, m_offset(offset)
@@ -559,7 +559,7 @@ namespace MusicGame::Audio
 		auto& targetStreams = isFX ? m_switchAudioStreamsFX : m_switchAudioStreamsLaser;
 		targetStreams.emplace_back(std::make_unique<SwitchAudioStream>(
 			effectName,
-			fullPath.narrow(),
+			fullPath.toUTF8(),
 			volume,
 			true,  // コンプレッサー有効
 			true,  // プリロード

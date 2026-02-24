@@ -1,5 +1,6 @@
 ﻿#include "Encoding.hpp"
 #include "kson/Encoding/Encoding.hpp"
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 
@@ -9,8 +10,10 @@ namespace Encoding
 	{
 		Array<String> lines;
 
-		const std::string filePathNarrow = filePath.narrow();
-		std::ifstream ifs(filePathNarrow, std::ios_base::binary);
+		const auto utf8 = filePath.toUTF8();
+		const std::filesystem::path fsPath(std::u8string_view(
+			reinterpret_cast<const char8_t*>(utf8.data()), utf8.size()));
+		std::ifstream ifs(fsPath, std::ios_base::binary);
 		if (!ifs.good())
 		{
 			return lines;

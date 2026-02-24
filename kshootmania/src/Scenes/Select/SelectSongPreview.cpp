@@ -22,7 +22,7 @@ void SelectSongPreview::update()
 	if (!m_songPreviewFilename.empty() && (m_songPreviewStartTimer.reachedZero() || m_isFirst))
 	{
 		// フェードインして再生開始
-		m_songPreviewStream = std::make_unique<ksmaudio::Stream>(m_songPreviewFilename.narrow(), m_songPreviewVolume, true, false);
+		m_songPreviewStream = std::make_unique<ksmaudio::Stream>(m_songPreviewFilename.toUTF8(), m_songPreviewVolume, true, false);
 		m_songPreviewStream->lockBegin();
 		m_songPreviewStream->seekPosSec(m_songPreviewOffset);
 		const Duration fadeInDuration = m_isFirst ? kFadeInDurationFirst : kFadeInDuration;

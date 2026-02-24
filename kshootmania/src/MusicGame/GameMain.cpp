@@ -44,8 +44,8 @@ namespace MusicGame
 		kson::ChartData LoadChartDataWithTurn(const GameCreateInfo& createInfo)
 		{
 			auto chartData = FsUtils::HasKsonExtension(createInfo.chartFilePath)
-				? kson::LoadKsonChartData(createInfo.chartFilePath.narrow())
-				: kson::LoadKshChartData(createInfo.chartFilePath.narrow());
+				? kson::LoadKsonChartData(createInfo.chartFilePath.toUTF8())
+				: kson::LoadKshChartData(createInfo.chartFilePath.toUTF8());
 
 			// Turn変換を適用
 			const TurnTable turnTable = MakeTurnTable(createInfo.playOption.turnMode);
