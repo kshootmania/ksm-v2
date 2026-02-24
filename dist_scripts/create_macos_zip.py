@@ -20,7 +20,7 @@ def get_project_root():
 def get_version_from_cmake():
 	"""CMakeLists.txtからバージョン文字列を取得"""
 	project_root = get_project_root()
-	cmake_path = project_root / "kshootmania" / "CMakeLists.txt"
+	cmake_path = project_root / "CMakeLists.txt"
 
 	if not cmake_path.exists():
 		print(f"警告: {cmake_path} が見つかりません")
@@ -29,9 +29,13 @@ def get_version_from_cmake():
 	with open(cmake_path, "r", encoding="utf-8") as f:
 		content = f.read()
 
-	match = re.search(r'MACOSX_BUNDLE_SHORT_VERSION_STRING\s+"([^"]+)"', content)
-	if match:
-		return match.group(1)
+	version_match = re.search(r'project\(\s*kshootmania\s+VERSION\s+(\S+)\s*\)', content)
+	suffix_match = re.search(r'set\(\s*PROJECT_VERSION_SUFFIX\s+"([^"]*)"\s*\)', content)
+
+	if version_match:
+		version = version_match.group(1)
+		suffix = suffix_match.group(1) if suffix_match else ""
+		return version + suffix
 
 	print("警告: CMakeLists.txtからバージョンを取得できませんでした")
 	return "unknown"
