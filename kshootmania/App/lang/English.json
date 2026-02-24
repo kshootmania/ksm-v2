@@ -158,6 +158,8 @@
 		"ReloginFailed": "Relogin cancelled\nYou have been logged out from Internet Ranking",
 		"ScoreNotSentPlaybackSpeed": "IR score not recorded:\nsong speed has been changed",
 		"ScoreNotSentCMod": "IR score not recorded:\nHi-Speed Type \"C\" was used",
-		"ScoreNotSentPlaybackControl": "IR score not recorded:\npause or fast-forward was used"
+		"ScoreNotSentPlaybackControl": "IR score not recorded:\npause or fast-forward was used",
+		"ScoreNotSentTurn": "IR score not recorded:\nTurn option was used",
+		"ScoreNotSentAssist": "IR score not recorded:\nJudgment Mode option has been changed"
 	}
 }

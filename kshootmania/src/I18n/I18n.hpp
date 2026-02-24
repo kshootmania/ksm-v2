@@ -118,6 +118,8 @@ namespace I18n
 		ScoreNotSentPlaybackSpeed,
 		ScoreNotSentCMod,
 		ScoreNotSentPlaybackControl,
+		ScoreNotSentTurn,
+		ScoreNotSentAssist,
 	};
 
 	/// @brief OPTION画面テキストのキー名

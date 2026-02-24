@@ -158,6 +158,8 @@
 		"ReloginFailed": "재로그인이 취소되어\n인터넷 랭킹에서 로그아웃되었습니다",
 		"ScoreNotSentPlaybackSpeed": "재생 속도가 변경되어\nIR 스코어 집계 대상 외",
 		"ScoreNotSentCMod": "하이스피드 종류 \"C\"가 사용되어\nIR 스코어 집계 대상 외",
-		"ScoreNotSentPlaybackControl": "일시 정지 또는 빨리 감기가 사용되어\nIR 스코어 집계 대상 외"
+		"ScoreNotSentPlaybackControl": "일시 정지 또는 빨리 감기가 사용되어\nIR 스코어 집계 대상 외",
+		"ScoreNotSentTurn": "Turn 옵션이 사용되어\nIR 스코어 집계 대상 외",
+		"ScoreNotSentAssist": "판정 모드 옵션이 변경되어\nIR 스코어 집계 대상 외"
 	}
 }
