@@ -22,12 +22,7 @@ namespace MusicGame::Camera
 	double HighwayTiltManual::radiansForBgLayer() const
 	{
 		const double deg = Math::ToDegrees(m_radians);
-		double wrapped = std::fmod(deg + 180.0, 360.0);
-		if (wrapped < 0.0)
-		{
-			wrapped += 360.0;
-		}
-		wrapped -= 180.0;
+		const double wrapped = MathUtils::WrappedFmod(deg + 180.0, 360.0) - 180.0;
 		const double clamped = Clamp(wrapped, -14.0, 14.0);
 		const double absWrapped = Abs(wrapped);
 		const double factor1 = 1.0 - Max(absWrapped, 90.0) / 180.0;
