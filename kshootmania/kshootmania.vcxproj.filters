@@ -277,6 +277,24 @@
     <Filter Include="Header Files\Scenes\Common">
       <UniqueIdentifier>{a681aa53-9c48-413f-9f33-8c2fec87e745}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input\LaserInput">
+      <UniqueIdentifier>{5f868033-daab-4587-b0ab-94f9ceddb6bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input\LaserInput">
+      <UniqueIdentifier>{b168436a-7591-41b7-acf7-091d6939ac07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Course">
+      <UniqueIdentifier>{4e3e9668-aae6-4f39-98db-b23fddc9e8f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scenes\CourseResult">
+      <UniqueIdentifier>{686b9990-3ee2-43d4-b6f3-5a7059ea657c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Course">
+      <UniqueIdentifier>{307037fd-110f-4f3e-86ad-0142c12d8886}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\CourseResult">
+      <UniqueIdentifier>{42d69b58-6212-4ddd-8139-e2320779d5b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Scenes\Title\TitleScene.cpp">
@@ -625,34 +643,34 @@
       <Filter>Source Files\NocoExtensions</Filter>
     </ClCompile>
     <ClCompile Include="src\Input\LaserInput\AnalogStickXYLaserInput.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Input\LaserInput</Filter>
     </ClCompile>
     <ClCompile Include="src\Input\LaserInput\KeyboardLaserInput.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Input\LaserInput</Filter>
     </ClCompile>
     <ClCompile Include="src\Input\LaserInput\MouseXYLaserInput.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Input\LaserInput</Filter>
     </ClCompile>
     <ClCompile Include="src\Input\LaserInput\SliderLaserInput.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Input\LaserInput</Filter>
     </ClCompile>
     <ClCompile Include="src\Course\CourseInfo.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Course</Filter>
     </ClCompile>
     <ClCompile Include="src\Course\CoursePlayResult.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Course</Filter>
     </ClCompile>
     <ClCompile Include="src\Course\CoursePlayState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Course</Filter>
     </ClCompile>
     <ClCompile Include="src\Scenes\CourseResult\CourseResultChartList.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes\CourseResult</Filter>
     </ClCompile>
     <ClCompile Include="src\Scenes\CourseResult\CourseResultNewRecordPanel.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes\CourseResult</Filter>
     </ClCompile>
     <ClCompile Include="src\Scenes\CourseResult\CourseResultScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scenes\CourseResult</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1367,40 +1385,40 @@
       <Filter>Header Files\ThirdParty\CoTaskLib</Filter>
     </ClInclude>
     <ClInclude Include="src\Input\LaserInput\AnalogStickXYLaserInput.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Input\LaserInput\ILaserInputMethod.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Input\LaserInput</Filter>
     </ClInclude>
     <ClInclude Include="src\Input\LaserInput\MouseXYLaserInput.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Input\LaserInput\SliderLaserInput.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Input\LaserInput</Filter>
     </ClInclude>
     <ClInclude Include="src\Input\LaserInput\KeyboardLaserInput.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Input\LaserInput</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\LaserInput\ILaserInputMethod.hpp">
+      <Filter>Header Files\Input\LaserInput</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\LaserInput\SliderLaserInput.hpp">
+      <Filter>Header Files\Input\LaserInput</Filter>
     </ClInclude>
     <ClInclude Include="src\Course\CourseContinuation.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Course</Filter>
     </ClInclude>
     <ClInclude Include="src\Course\CourseInfo.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Course</Filter>
     </ClInclude>
     <ClInclude Include="src\Course\CoursePlayResult.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Course</Filter>
     </ClInclude>
     <ClInclude Include="src\Course\CoursePlayState.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Course</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\CourseResult\CourseResultChartList.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scenes\CourseResult</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\CourseResult\CourseResultNewRecordPanel.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scenes\CourseResult</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\CourseResult\CourseResultScene.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scenes\CourseResult</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
