@@ -4,11 +4,9 @@ dist_scripts/assets_win/readme.txt	readme.txt
 dist_scripts/assets_win/license.txt	license.txt
 dist_scripts/assets_win/config.ini	config.ini
 kshootmania/App/assets/font/KSM-JA-Medium.ttf	assets/font/KSM-JA-Medium.ttf
-kshootmania/App/assets/font/KSM-KR-Medium.ttf	assets/font/KSM-KR-Medium.ttf
 kshootmania/App/assets/font/KSM-SC-Medium.ttf	assets/font/KSM-SC-Medium.ttf
 kshootmania/App/assets/font/KSM-TC-Medium.ttf	assets/font/KSM-TC-Medium.ttf
 kshootmania/App/assets/font/LICENSE-KSM-JA-Medium.txt	assets/font/LICENSE-KSM-JA-Medium.txt
-kshootmania/App/assets/font/LICENSE-KSM-KR-Medium.txt	assets/font/LICENSE-KSM-KR-Medium.txt
 kshootmania/App/assets/font/LICENSE-KSM-SC-Medium.txt	assets/font/LICENSE-KSM-SC-Medium.txt
 kshootmania/App/assets/font/LICENSE-KSM-TC-Medium.txt	assets/font/LICENSE-KSM-TC-Medium.txt
 kshootmania/App/bass.dll	bass.dll
@@ -125,14 +123,6 @@ kshootmania/App/imgs/cg.gif	imgs/cg.gif
 kshootmania/App/imgs/cg_header.png	imgs/cg_header.png
 kshootmania/App/imgs/cline.png	imgs/cline.png
 kshootmania/App/imgs/combonum.gif	imgs/combonum.gif
-kshootmania/App/imgs/config_fx.gif	imgs/config_fx.gif
-kshootmania/App/imgs/config_item.gif	imgs/config_item.gif
-kshootmania/App/imgs/config_item2.gif	imgs/config_item2.gif
-kshootmania/App/imgs/config_item_0.gif	imgs/config_item_0.gif
-kshootmania/App/imgs/config_item_1.gif	imgs/config_item_1.gif
-kshootmania/App/imgs/config_item_2.gif	imgs/config_item_2.gif
-kshootmania/App/imgs/config_item_cur.gif	imgs/config_item_cur.gif
-kshootmania/App/imgs/config_top.png	imgs/config_top.png
 kshootmania/App/imgs/courseresult_arrow.png	imgs/courseresult_arrow.png
 kshootmania/App/imgs/courseresult_gauge.png	imgs/courseresult_gauge.png
 kshootmania/App/imgs/courseresult_info.png	imgs/courseresult_info.png
@@ -250,6 +240,12 @@ kshootmania/App/imgs/num0.png	imgs/num0.png
 kshootmania/App/imgs/num1.png	imgs/num1.png
 kshootmania/App/imgs/num2.png	imgs/num2.png
 kshootmania/App/imgs/num2_large.png	imgs/num2_large.png
+kshootmania/App/imgs/option_key_config_both_fx.png	imgs/option_key_config_both_fx.png
+kshootmania/App/imgs/option_setting_header.png	imgs/option_setting_header.png
+kshootmania/App/imgs/option_setting_item_cursor.png	imgs/option_setting_item_cursor.png
+kshootmania/App/imgs/option_setting_item_left.png	imgs/option_setting_item_left.png
+kshootmania/App/imgs/option_setting_item_right.png	imgs/option_setting_item_right.png
+kshootmania/App/imgs/option_top_item.png	imgs/option_top_item.png
 kshootmania/App/imgs/pl_difficulty.png	imgs/pl_difficulty.png
 kshootmania/App/imgs/pl_hispeed.png	imgs/pl_hispeed.png
 kshootmania/App/imgs/pl_minfo.png	imgs/pl_minfo.png
@@ -270,11 +266,11 @@ kshootmania/App/imgs/timingadjust.png	imgs/timingadjust.png
 kshootmania/App/imgs/timingadjust_ms.png	imgs/timingadjust_ms.png
 kshootmania/App/imgs/timingadjust_sign.png	imgs/timingadjust_sign.png
 kshootmania/App/kshootmania.exe	kshootmania.exe
-kshootmania/App/lang/English.txt	lang/English.txt
-kshootmania/App/lang/Japanese.txt	lang/Japanese.txt
-kshootmania/App/lang/Korean.txt	lang/Korean.txt
-kshootmania/App/lang/Simplified Chinese.txt	lang/Simplified Chinese.txt
-kshootmania/App/lang/Traditional Chinese.txt	lang/Traditional Chinese.txt
+kshootmania/App/lang/English.json	lang/English.json
+kshootmania/App/lang/Japanese.json	lang/Japanese.json
+kshootmania/App/lang/Korean.json	lang/Korean.json
+kshootmania/App/lang/Simplified Chinese.json	lang/Simplified Chinese.json
+kshootmania/App/lang/Traditional Chinese.json	lang/Traditional Chinese.json
 kshootmania/App/se/chokkaku.wav	se/chokkaku.wav
 kshootmania/App/se/chokkaku_down.wav	se/chokkaku_down.wav
 kshootmania/App/se/chokkaku_mute.wav	se/chokkaku_mute.wav
@@ -373,11 +369,17 @@ kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_ch.ksh	songs/K-Shoot M
 kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_ex.ksh	songs/K-Shoot MANIA/time4dance/time4dance_ex.ksh
 kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_lt.ksh	songs/K-Shoot MANIA/time4dance/time4dance_lt.ksh
 kshootmania/App/ui/parts/course_result_chart_item.noco	ui/parts/course_result_chart_item.noco
+kshootmania/App/ui/parts/ir_notification.noco	ui/parts/ir_notification.noco
+kshootmania/App/ui/parts/ir_waiting_overlay.noco	ui/parts/ir_waiting_overlay.noco
+kshootmania/App/ui/parts/option_key_config_menu.noco	ui/parts/option_key_config_menu.noco
+kshootmania/App/ui/parts/option_setting_item.noco	ui/parts/option_setting_item.noco
 kshootmania/App/ui/parts/select_course_chart_item.noco	ui/parts/select_course_chart_item.noco
 kshootmania/App/ui/parts/select_item_bottom.noco	ui/parts/select_item_bottom.noco
 kshootmania/App/ui/parts/select_item_center.noco	ui/parts/select_item_center.noco
 kshootmania/App/ui/parts/select_item_top.noco	ui/parts/select_item_top.noco
 kshootmania/App/ui/scene/course_result.noco	ui/scene/course_result.noco
+kshootmania/App/ui/scene/ir_entry.noco	ui/scene/ir_entry.noco
+kshootmania/App/ui/scene/option.noco	ui/scene/option.noco
 kshootmania/App/ui/scene/play_prepare.noco	ui/scene/play_prepare.noco
 kshootmania/App/ui/scene/result.noco	ui/scene/result.noco
 kshootmania/App/ui/scene/select.noco	ui/scene/select.noco
