@@ -146,7 +146,7 @@ namespace FsUtils
 
 	bool HasChartExtension(FilePathView filePath)
 	{
-		const StringView ext = FileSystem::Extension(filePath);
+		const String ext = FileSystem::Extension(filePath);
 		return ext == kKSHExtension || ext == kKSONExtension;
 	}
 
