@@ -101,8 +101,9 @@ Co::Task<void> TitleScene::fadeOut()
 		break;
 
 	case TitleMenuItem::kInputGate:
-		// TODO: INPUT GATEへ遷移
+		// Note: ソースコード公開用にINPUT GATE関連処理は削除済み
 		co_await Co::ScreenFadeOut(kFadeDuration);
+		System::MessageBoxOK(U"This version does not support INPUT GATE.");
 		requestNextScene<TitleScene>(TitleMenuItem::kInputGate);
 		break;
 
