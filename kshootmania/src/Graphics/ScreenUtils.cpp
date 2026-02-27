@@ -1,4 +1,7 @@
 ﻿#include "ScreenUtils.hpp"
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
 TextureRegion ScreenUtils::FitToHeight(const Texture& texture)
 {
@@ -25,4 +28,16 @@ void ScreenUtils::ApplyScreenSizeConfig()
 		Window::Resize(800, 600);
 	}
 	Window::SetFullscreen(isFullScreen);
+
+#ifdef _WIN32
+	// 他のウィンドウに切り替えられるようTOPMOSTを解除
+	if (isFullScreen)
+	{
+		const auto hWnd = static_cast<HWND>(Platform::Windows::Window::GetHWND());
+		if (hWnd != NULL)
+		{
+			SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+		}
+	}
+#endif
 }
