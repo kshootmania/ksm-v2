@@ -32,7 +32,15 @@ namespace
 }
 
 TitleScene::TitleScene(TitleMenuItem defaultMenuitem)
-	: m_canvas(LoadTitleSceneCanvas())
+	: m_bgmStream(std::make_shared<ksmaudio::Stream>("se/title_bgm.ogg", 1.0, false, false, true))
+	, m_canvas(LoadTitleSceneCanvas())
+	, m_menu(defaultMenuitem, m_canvas)
+{
+}
+
+TitleScene::TitleScene(TitleMenuItem defaultMenuitem, std::shared_ptr<ksmaudio::Stream> bgmStream)
+	: m_bgmStream(std::move(bgmStream))
+	, m_canvas(LoadTitleSceneCanvas())
 	, m_menu(defaultMenuitem, m_canvas)
 {
 }
@@ -41,7 +49,10 @@ Co::Task<void> TitleScene::start()
 {
 	const auto updateRunner = Co::UpdaterTask([this] { update(); }).runScoped();
 
-	m_bgmStream->play();
+	if (!m_bgmStream->isPlaying())
+	{
+		m_bgmStream->play();
+	}
 	AutoMuteAddon::SetEnabled(true);
 
 	// メニューが選択されるまで待機

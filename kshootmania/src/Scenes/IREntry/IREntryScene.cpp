@@ -76,7 +76,7 @@ Co::Task<void> IREntryScene::fadeOut()
 
 	if (m_goBackToTitle)
 	{
-		requestNextScene<TitleScene>(TitleMenuItem::kStart);
+		requestNextScene<TitleScene>(TitleMenuItem::kStart, std::move(m_bgmStream));
 	}
 	else
 	{

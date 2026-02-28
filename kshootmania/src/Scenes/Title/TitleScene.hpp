@@ -7,7 +7,7 @@
 class TitleScene : public Co::SceneBase
 {
 private:
-	std::shared_ptr<ksmaudio::Stream> m_bgmStream = std::make_shared<ksmaudio::Stream>("se/title_bgm.ogg", 1.0, false, false, true);
+	std::shared_ptr<ksmaudio::Stream> m_bgmStream;
 
 	std::shared_ptr<noco::Canvas> m_canvas;
 
@@ -17,6 +17,8 @@ private:
 
 public:
 	explicit TitleScene(TitleMenuItem defaultMenuitem);
+
+	TitleScene(TitleMenuItem defaultMenuitem, std::shared_ptr<ksmaudio::Stream> bgmStream);
 
 	virtual Co::Task<void> start() override;
 
