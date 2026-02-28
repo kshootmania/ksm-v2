@@ -1,0 +1,3053 @@
+﻿{
+  "autoFitMode": "FitHeightMatchWidth",
+  "children": [
+    {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/gate/gate_bg.jpg",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            32.0,
+            32.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 1,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Full",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "Background",
+      "region": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          853.0,
+          480.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "activeSelf_paramRef": "chartItemsVisible",
+      "children": [
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "canvasPath": "ui/parts/gate_item.noco",
+              "propagateEvents": true,
+              "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
+              "tag": "chartItem0",
+              "type": "SubCanvas"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "ChartItem0",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -148.5,
+              -160.0
+            ],
+            "sizeDelta": [
+              315.0,
+              60.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "canvasPath": "ui/parts/gate_item.noco",
+              "propagateEvents": true,
+              "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
+              "tag": "chartItem1",
+              "type": "SubCanvas"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "ChartItem1",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -153.5,
+              -100.0
+            ],
+            "sizeDelta": [
+              315.0,
+              60.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "canvasPath": "ui/parts/gate_item.noco",
+              "propagateEvents": true,
+              "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
+              "tag": "chartItem2",
+              "type": "SubCanvas"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "ChartItem2",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -156.5,
+              -40.0
+            ],
+            "sizeDelta": [
+              315.0,
+              60.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "canvasPath": "ui/parts/gate_item.noco",
+              "propagateEvents": true,
+              "serializedParamsJSON": "{}",
+              "tag": "chartItem3",
+              "type": "SubCanvas"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "ChartItem3",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -157.5,
+              20.0
+            ],
+            "sizeDelta": [
+              315.0,
+              60.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "canvasPath": "ui/parts/gate_item.noco",
+              "propagateEvents": true,
+              "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
+              "tag": "chartItem4",
+              "type": "SubCanvas"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "ChartItem4",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -156.5,
+              80.0
+            ],
+            "sizeDelta": [
+              315.0,
+              60.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "canvasPath": "ui/parts/gate_item.noco",
+              "propagateEvents": true,
+              "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
+              "tag": "chartItem5",
+              "type": "SubCanvas"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "ChartItem5",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -153.5,
+              140.0
+            ],
+            "sizeDelta": [
+              315.0,
+              60.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "canvasPath": "ui/parts/gate_item.noco",
+              "propagateEvents": true,
+              "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
+              "tag": "chartItem6",
+              "type": "SubCanvas"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "ChartItem6",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -148.5,
+              200.0
+            ],
+            "sizeDelta": [
+              315.0,
+              60.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        }
+      ],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "ChartItems",
+      "region": {
+        "anchorMax": [
+          1.0,
+          1.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "activeSelf_paramRef": "emptyItemVisible",
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/gate/gate_item_empty.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            32.0,
+            32.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 1,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Full",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "EmptyItem",
+      "region": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          -157.5,
+          20.0
+        ],
+        "sizeDelta": [
+          280.0,
+          60.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "addColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "blendMode": "Normal",
+              "color": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gridAnimationEndIndex": 0,
+              "gridAnimationFPS": 10.0,
+              "gridAnimationStartIndex": 0,
+              "gridAnimationType": "None",
+              "nineSliceBottomTiled": false,
+              "nineSliceCenterTiled": false,
+              "nineSliceEnabled": false,
+              "nineSliceFallback": true,
+              "nineSliceLeftTiled": false,
+              "nineSliceMargin": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "nineSliceRightTiled": false,
+              "nineSliceScale": [
+                1.0,
+                1.0
+              ],
+              "nineSliceTopTiled": false,
+              "offsetAnimationSpeed": [
+                0.0,
+                0.0
+              ],
+              "offsetAnimationType": "None",
+              "preserveAspect": false,
+              "textureAddressMode": "Default",
+              "textureAssetName": "",
+              "textureFilePath": "imgs/gate/gate_item_cur.png",
+              "textureFilter": "Default",
+              "textureGridCellSize": [
+                580.0,
+                140.0
+              ],
+              "textureGridCellTrim": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "textureGridColumns": 1,
+              "textureGridIndex": 1,
+              "textureGridRows": 2,
+              "textureOffset": [
+                0.0,
+                0.0
+              ],
+              "textureRegionMode": "Grid",
+              "textureSize": [
+                100.0,
+                100.0
+              ],
+              "type": "Sprite"
+            },
+            {
+              "active": true,
+              "applyDuringDelay": false,
+              "colorEnabled": true,
+              "colorFrom": [
+                255,
+                255,
+                255,
+                0
+              ],
+              "colorTo": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "delay": 0.0,
+              "duration": 0.4713,
+              "easing": "Linear",
+              "loopDuration": 0.0,
+              "loopType": "PingPong",
+              "manualMode": false,
+              "manualTime": 0.0,
+              "restartOnActive": true,
+              "rotationEnabled": false,
+              "rotationFrom": 0.0,
+              "rotationTo": 0.0,
+              "scaleEnabled": false,
+              "scaleFrom": [
+                1.0,
+                1.0
+              ],
+              "scaleTo": [
+                1.0,
+                1.0
+              ],
+              "tag": "",
+              "translateEnabled": false,
+              "translateFrom": [
+                0.0,
+                0.0
+              ],
+              "translateTo": [
+                0.0,
+                0.0
+              ],
+              "type": "Tween"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "CursorAnim",
+          "region": {
+            "anchorMax": [
+              1.0,
+              1.0
+            ],
+            "anchorMin": [
+              0.0,
+              0.0
+            ],
+            "posDelta": [
+              0.0,
+              0.0
+            ],
+            "sizeDelta": [
+              0.0,
+              0.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        }
+      ],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/gate/gate_item_cur.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            580.0,
+            140.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 2,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Grid",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "Cursor",
+      "region": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          -140.0,
+          20.0
+        ],
+        "sizeDelta": [
+          290.0,
+          70.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/gate/gate_bg_mask_overlay.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            32.0,
+            32.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 1,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Full",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "BackgroundMask",
+      "region": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          853.0,
+          480.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/gate/gate_top.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            480.0,
+            80.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 1,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Full",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "Title",
+      "region": {
+        "anchorMax": [
+          0.0,
+          0.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "posDelta": [
+          10.0,
+          5.0
+        ],
+        "sizeDelta": [
+          240.0,
+          40.0
+        ],
+        "sizeDeltaPivot": [
+          0.0,
+          0.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "characterSpacing": [
+                0.0,
+                0.0
+              ],
+              "color": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fontAssetName": "",
+              "fontSize": 14.0,
+              "gradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationType": "None",
+              "horizontalAlign": "Left",
+              "horizontalOverflow": "Wrap",
+              "minFontSize": 1.0,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineFactorInner": 0.0,
+              "outlineFactorOuter": 0.0,
+              "padding": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                1.0,
+                1.0
+              ],
+              "sizingMode": "AutoShrink",
+              "text": "",
+              "text_paramRef": "informationText",
+              "type": "Label",
+              "underlineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "underlineStyle": "None",
+              "underlineThickness": 1.0,
+              "verticalAlign": "Top",
+              "verticalOverflow": "Overflow"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "Label",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              0.0,
+              10.0
+            ],
+            "sizeDelta": [
+              240.0,
+              370.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        }
+      ],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/gate/gate_info.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            32.0,
+            32.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 1,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Full",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "InformationPanel",
+      "region": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          170.0,
+          8.0
+        ],
+        "sizeDelta": [
+          260.0,
+          412.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/gate/gate_keyinfo.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            32.0,
+            32.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 1,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Full",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "KeyInfo",
+      "region": {
+        "anchorMax": [
+          0.0,
+          1.0
+        ],
+        "anchorMin": [
+          0.0,
+          1.0
+        ],
+        "posDelta": [
+          7.0,
+          -2.0
+        ],
+        "sizeDelta": [
+          400.0,
+          24.0
+        ],
+        "sizeDeltaPivot": [
+          0.0,
+          1.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/gate/gate_sort.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            400.0,
+            76.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridIndex_paramRef": "sortTypeIndex",
+          "textureGridRows": 3,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Grid",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "SortType",
+      "region": {
+        "anchorMax": [
+          1.0,
+          0.0
+        ],
+        "anchorMin": [
+          1.0,
+          0.0
+        ],
+        "posDelta": [
+          -20.0,
+          2.0
+        ],
+        "sizeDelta": [
+          200.0,
+          38.0
+        ],
+        "sizeDeltaPivot": [
+          1.0,
+          0.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "addColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "blendMode": "Normal",
+              "color": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gridAnimationEndIndex": 0,
+              "gridAnimationFPS": 10.0,
+              "gridAnimationStartIndex": 0,
+              "gridAnimationType": "None",
+              "nineSliceBottomTiled": false,
+              "nineSliceCenterTiled": false,
+              "nineSliceEnabled": false,
+              "nineSliceFallback": true,
+              "nineSliceLeftTiled": false,
+              "nineSliceMargin": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "nineSliceRightTiled": false,
+              "nineSliceScale": [
+                1.0,
+                1.0
+              ],
+              "nineSliceTopTiled": false,
+              "offsetAnimationSpeed": [
+                0.0,
+                0.0
+              ],
+              "offsetAnimationType": "None",
+              "preserveAspect": false,
+              "textureAddressMode": "Default",
+              "textureAssetName": "",
+              "textureFilePath": "imgs/msel_barcur.png",
+              "textureFilter": "Default",
+              "textureGridCellSize": [
+                32.0,
+                32.0
+              ],
+              "textureGridCellTrim": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "textureGridColumns": 1,
+              "textureGridIndex": 0,
+              "textureGridRows": 1,
+              "textureOffset": [
+                0.0,
+                0.0
+              ],
+              "textureRegionMode": "Full",
+              "textureSize": [
+                100.0,
+                100.0
+              ],
+              "type": "Sprite"
+            },
+            {
+              "active": true,
+              "applyDuringDelay": false,
+              "colorEnabled": false,
+              "colorFrom": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "colorTo": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "delay": 0.0,
+              "duration": 1.0,
+              "easing": "Linear",
+              "loopDuration": 0.0,
+              "loopType": "None",
+              "manualMode": true,
+              "manualTime": 0.0,
+              "manualTime_paramRef": "scrollBarCursorRate",
+              "restartOnActive": true,
+              "rotationEnabled": false,
+              "rotationFrom": 0.0,
+              "rotationTo": 0.0,
+              "scaleEnabled": false,
+              "scaleFrom": [
+                1.0,
+                1.0
+              ],
+              "scaleTo": [
+                1.0,
+                1.0
+              ],
+              "tag": "",
+              "translateEnabled": true,
+              "translateFrom": [
+                0.0,
+                0.0
+              ],
+              "translateTo": [
+                0.0,
+                460.0
+              ],
+              "type": "Tween"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "Cursor",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              0.0,
+              -230.0
+            ],
+            "sizeDelta": [
+              20.0,
+              20.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        }
+      ],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/msel_bar.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            32.0,
+            32.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 1,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Full",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "ScrollBar",
+      "region": {
+        "anchorMax": [
+          1.0,
+          0.5
+        ],
+        "anchorMin": [
+          1.0,
+          0.5
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          20.0,
+          480.0
+        ],
+        "sizeDeltaPivot": [
+          1.0,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [
+        {
+          "activeSelf": false,
+          "activeSelf_paramRef": "overlay_settingsVisible",
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "canvasPath": "ui/parts/gate_settings.noco",
+              "propagateEvents": true,
+              "serializedParamsJSON": "{}",
+              "tag": "",
+              "type": "SubCanvas"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "SettingsOverlay",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              0.0,
+              0.0
+            ],
+            "sizeDelta": [
+              480.0,
+              320.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": false,
+          "activeSelf_paramRef": "overlay_downloadingVisible",
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "canvasPath": "ui/parts/gate_downloading.noco",
+              "propagateEvents": true,
+              "serializedParamsJSON": "{}",
+              "tag": "",
+              "type": "SubCanvas"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "DownloadingOverlay",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              0.0,
+              0.0
+            ],
+            "sizeDelta": [
+              240.0,
+              160.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        }
+      ],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "Overlay",
+      "region": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    }
+  ],
+  "childrenLayout": {
+    "horizontalAlign": "Left",
+    "padding": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "spacing": [
+      0.0,
+      0.0
+    ],
+    "type": "FlowLayout",
+    "verticalAlign": "Top"
+  },
+  "defaultFontAssetName": "System",
+  "params": {
+    "chartItemsVisible": {
+      "type": "Bool",
+      "value": true
+    },
+    "emptyItemVisible": {
+      "type": "Bool",
+      "value": false
+    },
+    "informationText": {
+      "type": "String",
+      "value": ""
+    },
+    "overlay_downloadingVisible": {
+      "type": "Bool",
+      "value": false
+    },
+    "overlay_settingsVisible": {
+      "type": "Bool",
+      "value": false
+    },
+    "scrollBarCursorRate": {
+      "type": "Number",
+      "value": 0.0
+    },
+    "sortTypeIndex": {
+      "type": "Number",
+      "value": 0.0
+    }
+  },
+  "referenceSize": [
+    640.0,
+    480.0
+  ],
+  "serializedVersion": 5,
+  "version": "0.3.1"
+}

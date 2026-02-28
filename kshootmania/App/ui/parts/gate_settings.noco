@@ -1,0 +1,1324 @@
+﻿{
+  "children": [
+    {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/gate/gate_settings.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            32.0,
+            32.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 1,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Full",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "DialogBase",
+      "region": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          480.0,
+          320.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "addColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "blendMode": "Normal",
+              "color": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gridAnimationEndIndex": 0,
+              "gridAnimationFPS": 10.0,
+              "gridAnimationStartIndex": 0,
+              "gridAnimationType": "None",
+              "nineSliceBottomTiled": false,
+              "nineSliceCenterTiled": false,
+              "nineSliceEnabled": false,
+              "nineSliceFallback": true,
+              "nineSliceLeftTiled": false,
+              "nineSliceMargin": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "nineSliceRightTiled": false,
+              "nineSliceScale": [
+                1.0,
+                1.0
+              ],
+              "nineSliceTopTiled": false,
+              "offsetAnimationSpeed": [
+                0.0,
+                0.0
+              ],
+              "offsetAnimationType": "None",
+              "preserveAspect": false,
+              "textureAddressMode": "Default",
+              "textureAssetName": "",
+              "textureFilePath": "imgs/gate/gate_checkbox.png",
+              "textureFilter": "Default",
+              "textureGridCellSize": [
+                60.0,
+                60.0
+              ],
+              "textureGridCellTrim": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "textureGridColumns": 2,
+              "textureGridIndex": 0,
+              "textureGridIndex_paramRef": "difficulty0CheckboxIndex",
+              "textureGridRows": 2,
+              "textureOffset": [
+                0.0,
+                0.0
+              ],
+              "textureRegionMode": "Grid",
+              "textureSize": [
+                100.0,
+                100.0
+              ],
+              "type": "Sprite"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "Difficulty0Checkbox",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -135.0,
+              -70.0
+            ],
+            "sizeDelta": [
+              30.0,
+              30.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "addColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "blendMode": "Normal",
+              "color": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gridAnimationEndIndex": 0,
+              "gridAnimationFPS": 10.0,
+              "gridAnimationStartIndex": 0,
+              "gridAnimationType": "None",
+              "nineSliceBottomTiled": false,
+              "nineSliceCenterTiled": false,
+              "nineSliceEnabled": false,
+              "nineSliceFallback": true,
+              "nineSliceLeftTiled": false,
+              "nineSliceMargin": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "nineSliceRightTiled": false,
+              "nineSliceScale": [
+                1.0,
+                1.0
+              ],
+              "nineSliceTopTiled": false,
+              "offsetAnimationSpeed": [
+                0.0,
+                0.0
+              ],
+              "offsetAnimationType": "None",
+              "preserveAspect": false,
+              "textureAddressMode": "Default",
+              "textureAssetName": "",
+              "textureFilePath": "imgs/gate/gate_checkbox.png",
+              "textureFilter": "Default",
+              "textureGridCellSize": [
+                60.0,
+                60.0
+              ],
+              "textureGridCellTrim": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "textureGridColumns": 2,
+              "textureGridIndex": 0,
+              "textureGridIndex_paramRef": "difficulty1CheckboxIndex",
+              "textureGridRows": 2,
+              "textureOffset": [
+                0.0,
+                0.0
+              ],
+              "textureRegionMode": "Grid",
+              "textureSize": [
+                100.0,
+                100.0
+              ],
+              "type": "Sprite"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "Difficulty1Checkbox",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              45.0,
+              -70.0
+            ],
+            "sizeDelta": [
+              30.0,
+              30.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "addColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "blendMode": "Normal",
+              "color": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gridAnimationEndIndex": 0,
+              "gridAnimationFPS": 10.0,
+              "gridAnimationStartIndex": 0,
+              "gridAnimationType": "None",
+              "nineSliceBottomTiled": false,
+              "nineSliceCenterTiled": false,
+              "nineSliceEnabled": false,
+              "nineSliceFallback": true,
+              "nineSliceLeftTiled": false,
+              "nineSliceMargin": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "nineSliceRightTiled": false,
+              "nineSliceScale": [
+                1.0,
+                1.0
+              ],
+              "nineSliceTopTiled": false,
+              "offsetAnimationSpeed": [
+                0.0,
+                0.0
+              ],
+              "offsetAnimationType": "None",
+              "preserveAspect": false,
+              "textureAddressMode": "Default",
+              "textureAssetName": "",
+              "textureFilePath": "imgs/gate/gate_checkbox.png",
+              "textureFilter": "Default",
+              "textureGridCellSize": [
+                60.0,
+                60.0
+              ],
+              "textureGridCellTrim": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "textureGridColumns": 2,
+              "textureGridIndex": 0,
+              "textureGridIndex_paramRef": "difficulty2CheckboxIndex",
+              "textureGridRows": 2,
+              "textureOffset": [
+                0.0,
+                0.0
+              ],
+              "textureRegionMode": "Grid",
+              "textureSize": [
+                100.0,
+                100.0
+              ],
+              "type": "Sprite"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "Difficulty2Checkbox",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -135.0,
+              -14.0
+            ],
+            "sizeDelta": [
+              30.0,
+              30.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "addColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "blendMode": "Normal",
+              "color": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gridAnimationEndIndex": 0,
+              "gridAnimationFPS": 10.0,
+              "gridAnimationStartIndex": 0,
+              "gridAnimationType": "None",
+              "nineSliceBottomTiled": false,
+              "nineSliceCenterTiled": false,
+              "nineSliceEnabled": false,
+              "nineSliceFallback": true,
+              "nineSliceLeftTiled": false,
+              "nineSliceMargin": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "nineSliceRightTiled": false,
+              "nineSliceScale": [
+                1.0,
+                1.0
+              ],
+              "nineSliceTopTiled": false,
+              "offsetAnimationSpeed": [
+                0.0,
+                0.0
+              ],
+              "offsetAnimationType": "None",
+              "preserveAspect": false,
+              "textureAddressMode": "Default",
+              "textureAssetName": "",
+              "textureFilePath": "imgs/gate/gate_checkbox.png",
+              "textureFilter": "Default",
+              "textureGridCellSize": [
+                60.0,
+                60.0
+              ],
+              "textureGridCellTrim": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "textureGridColumns": 2,
+              "textureGridIndex": 0,
+              "textureGridIndex_paramRef": "difficulty3CheckboxIndex",
+              "textureGridRows": 2,
+              "textureOffset": [
+                0.0,
+                0.0
+              ],
+              "textureRegionMode": "Grid",
+              "textureSize": [
+                100.0,
+                100.0
+              ],
+              "type": "Sprite"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "Difficulty3Checkbox",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              45.0,
+              -14.0
+            ],
+            "sizeDelta": [
+              30.0,
+              30.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        }
+      ],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "DifficultyFilter",
+      "region": {
+        "anchorMax": [
+          1.0,
+          1.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "addColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "blendMode": "Normal",
+              "color": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gridAnimationEndIndex": 0,
+              "gridAnimationFPS": 10.0,
+              "gridAnimationStartIndex": 0,
+              "gridAnimationType": "None",
+              "nineSliceBottomTiled": false,
+              "nineSliceCenterTiled": false,
+              "nineSliceEnabled": false,
+              "nineSliceFallback": true,
+              "nineSliceLeftTiled": false,
+              "nineSliceMargin": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "nineSliceRightTiled": false,
+              "nineSliceScale": [
+                1.0,
+                1.0
+              ],
+              "nineSliceTopTiled": false,
+              "offsetAnimationSpeed": [
+                0.0,
+                0.0
+              ],
+              "offsetAnimationType": "None",
+              "preserveAspect": false,
+              "textureAddressMode": "Default",
+              "textureAssetName": "",
+              "textureFilePath": "imgs/gate/gate_checkbox.png",
+              "textureFilter": "Default",
+              "textureGridCellSize": [
+                60.0,
+                60.0
+              ],
+              "textureGridCellTrim": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "textureGridColumns": 2,
+              "textureGridIndex": 0,
+              "textureGridIndex_paramRef": "hideDownloadedCheckboxIndex",
+              "textureGridRows": 2,
+              "textureOffset": [
+                0.0,
+                0.0
+              ],
+              "textureRegionMode": "Grid",
+              "textureSize": [
+                100.0,
+                100.0
+              ],
+              "type": "Sprite"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "HideDownloadedCheckbox",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -177.0,
+              35.0
+            ],
+            "sizeDelta": [
+              30.0,
+              30.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "addColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "blendMode": "Normal",
+              "color": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gridAnimationEndIndex": 0,
+              "gridAnimationFPS": 10.0,
+              "gridAnimationStartIndex": 0,
+              "gridAnimationType": "None",
+              "nineSliceBottomTiled": false,
+              "nineSliceCenterTiled": false,
+              "nineSliceEnabled": false,
+              "nineSliceFallback": true,
+              "nineSliceLeftTiled": false,
+              "nineSliceMargin": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "nineSliceRightTiled": false,
+              "nineSliceScale": [
+                1.0,
+                1.0
+              ],
+              "nineSliceTopTiled": false,
+              "offsetAnimationSpeed": [
+                0.0,
+                0.0
+              ],
+              "offsetAnimationType": "None",
+              "preserveAspect": false,
+              "textureAddressMode": "Default",
+              "textureAssetName": "",
+              "textureFilePath": "imgs/gate/gate_checkbox.png",
+              "textureFilter": "Default",
+              "textureGridCellSize": [
+                60.0,
+                60.0
+              ],
+              "textureGridCellTrim": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "textureGridColumns": 2,
+              "textureGridIndex": 0,
+              "textureGridIndex_paramRef": "allowRedownloadCheckboxIndex",
+              "textureGridRows": 2,
+              "textureOffset": [
+                0.0,
+                0.0
+              ],
+              "textureRegionMode": "Grid",
+              "textureSize": [
+                100.0,
+                100.0
+              ],
+              "type": "Sprite"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "AllowRedownloadCheckbox",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -177.0,
+              100.0
+            ],
+            "sizeDelta": [
+              30.0,
+              30.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        }
+      ],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "Options",
+      "region": {
+        "anchorMax": [
+          1.0,
+          1.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    }
+  ],
+  "childrenLayout": {
+    "horizontalAlign": "Left",
+    "padding": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "spacing": [
+      0.0,
+      0.0
+    ],
+    "type": "FlowLayout",
+    "verticalAlign": "Top"
+  },
+  "defaultFontAssetName": "",
+  "params": {
+    "allowRedownloadCheckboxIndex": {
+      "type": "Number",
+      "value": 0.0
+    },
+    "difficulty0CheckboxIndex": {
+      "type": "Number",
+      "value": 0.0
+    },
+    "difficulty1CheckboxIndex": {
+      "type": "Number",
+      "value": 0.0
+    },
+    "difficulty2CheckboxIndex": {
+      "type": "Number",
+      "value": 0.0
+    },
+    "difficulty3CheckboxIndex": {
+      "type": "Number",
+      "value": 0.0
+    },
+    "hideDownloadedCheckboxIndex": {
+      "type": "Number",
+      "value": 0.0
+    }
+  },
+  "referenceSize": [
+    480.0,
+    320.0
+  ],
+  "serializedVersion": 5,
+  "version": "0.3.1"
+}
