@@ -155,7 +155,7 @@ kshootmania/App/imgs/fx_chip.gif	imgs/fx_chip.gif
 kshootmania/App/imgs/fx_chip_se.gif	imgs/fx_chip_se.gif
 kshootmania/App/imgs/fx_long.gif	imgs/fx_long.gif
 kshootmania/App/imgs/gate/gate_bg.jpg	imgs/gate/gate_bg.jpg
-kshootmania/App/imgs/gate/gate_bg_mask.gif	imgs/gate/gate_bg_mask.gif
+kshootmania/App/imgs/gate/gate_bg_mask_overlay.png	imgs/gate/gate_bg_mask_overlay.png
 kshootmania/App/imgs/gate/gate_checkbox.png	imgs/gate/gate_checkbox.png
 kshootmania/App/imgs/gate/gate_downloading.png	imgs/gate/gate_downloading.png
 kshootmania/App/imgs/gate/gate_info.png	imgs/gate/gate_info.png
@@ -174,7 +174,7 @@ kshootmania/App/imgs/gate/gate_item_updated.png	imgs/gate/gate_item_updated.png
 kshootmania/App/imgs/gate/gate_keyinfo.png	imgs/gate/gate_keyinfo.png
 kshootmania/App/imgs/gate/gate_settings.png	imgs/gate/gate_settings.png
 kshootmania/App/imgs/gate/gate_sort.png	imgs/gate/gate_sort.png
-kshootmania/App/imgs/gate/gate_top.gif	imgs/gate/gate_top.gif
+kshootmania/App/imgs/gate/gate_top.png	imgs/gate/gate_top.png
 kshootmania/App/imgs/icon/happypophardcore_react.png	imgs/icon/happypophardcore_react.png
 kshootmania/App/imgs/icon/happypophardcore_reborn.png	imgs/icon/happypophardcore_reborn.png
 kshootmania/App/imgs/icon/slimatsushi.png	imgs/icon/slimatsushi.png
@@ -368,7 +368,10 @@ kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance.ogg	songs/K-Shoot MANI
 kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_ch.ksh	songs/K-Shoot MANIA/time4dance/time4dance_ch.ksh
 kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_ex.ksh	songs/K-Shoot MANIA/time4dance/time4dance_ex.ksh
 kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_lt.ksh	songs/K-Shoot MANIA/time4dance/time4dance_lt.ksh
+kshootmania/App/ui/dialog/gate_downloading.noco	ui/dialog/gate_downloading.noco
 kshootmania/App/ui/parts/course_result_chart_item.noco	ui/parts/course_result_chart_item.noco
+kshootmania/App/ui/parts/gate_item.noco	ui/parts/gate_item.noco
+kshootmania/App/ui/dialog/gate_settings.noco	ui/dialog/gate_settings.noco
 kshootmania/App/ui/parts/ir_notification.noco	ui/parts/ir_notification.noco
 kshootmania/App/ui/parts/ir_waiting_overlay.noco	ui/parts/ir_waiting_overlay.noco
 kshootmania/App/ui/parts/option_key_config_menu.noco	ui/parts/option_key_config_menu.noco
@@ -378,6 +381,7 @@ kshootmania/App/ui/parts/select_item_bottom.noco	ui/parts/select_item_bottom.noc
 kshootmania/App/ui/parts/select_item_center.noco	ui/parts/select_item_center.noco
 kshootmania/App/ui/parts/select_item_top.noco	ui/parts/select_item_top.noco
 kshootmania/App/ui/scene/course_result.noco	ui/scene/course_result.noco
+kshootmania/App/ui/scene/gate.noco	ui/scene/gate.noco
 kshootmania/App/ui/scene/ir_entry.noco	ui/scene/ir_entry.noco
 kshootmania/App/ui/scene/option.noco	ui/scene/option.noco
 kshootmania/App/ui/scene/play_prepare.noco	ui/scene/play_prepare.noco

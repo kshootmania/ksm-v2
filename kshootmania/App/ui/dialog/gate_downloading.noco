@@ -1,4 +1,5 @@
 ﻿{
+  "autoFitMode": "FitHeightMatchWidth",
   "children": [
     {
       "activeSelf": true,
@@ -103,7 +104,7 @@
       "inheritChildrenPress": false,
       "interactable": true,
       "isHitTarget": false,
-      "name": "Background",
+      "name": "DialogBase",
       "region": {
         "anchorMax": [
           0.5,
@@ -335,8 +336,8 @@
     }
   },
   "referenceSize": [
-    240.0,
-    160.0
+    640.0,
+    480.0
   ],
   "serializedVersion": 5,
   "version": "0.3.1"
