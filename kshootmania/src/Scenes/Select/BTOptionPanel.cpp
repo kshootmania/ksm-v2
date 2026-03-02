@@ -214,7 +214,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_btAMenu(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Vertical,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = static_cast<int32>(BTAMenuItem::kCount),
 		.cyclic = IsCyclicMenuYN::No,
@@ -222,7 +222,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_btBMenu(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Vertical,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = static_cast<int32>(BTBMenuItem::kCount),
 		.cyclic = IsCyclicMenuYN::No,
@@ -230,7 +230,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_btCMenu(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Vertical,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = static_cast<int32>(BTCMenuItem::kCount),
 		.cyclic = IsCyclicMenuYN::No,
@@ -240,7 +240,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_judgmentModeBT(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = 4, // JudgmentModeの値の数(On, Off, Auto, Hide)
 		.cyclic = IsCyclicMenuYN::No,
@@ -248,7 +248,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_judgmentModeFX(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = 4, // JudgmentModeの値の数(On, Off, Auto, Hide)
 		.cyclic = IsCyclicMenuYN::No,
@@ -256,7 +256,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_judgmentModeLaser(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = 4, // JudgmentModeの値の数(On, Off, Auto, Hide)
 		.cyclic = IsCyclicMenuYN::No,
@@ -266,7 +266,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_gaugeType(LinearMenu::CreateInfoWithCursorMinMax{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.cursorMin = static_cast<int32>(GaugeType::kEasyGauge),
 		.cursorMax = static_cast<int32>(GaugeType::kHardGauge),
@@ -275,7 +275,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_turnMode(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = static_cast<int32>(3),
 		.cyclic = IsCyclicMenuYN::No,
@@ -283,7 +283,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_playbackSpeed(LinearMenu::CreateInfoWithCursorMinMax{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 			.buttonIntervalSec = 0.1,
 			.buttonIntervalSecFirst = 0.4,
 		},
@@ -297,7 +297,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_assistTick(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = static_cast<int32>(AssistTickMode::kCount),
 		.cyclic = IsCyclicMenuYN::No,
@@ -305,7 +305,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	/*, m_autoSync(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = static_cast<int32>(AutoSyncMode::kCount),
 		.cyclic = IsCyclicMenuYN::No,
@@ -313,7 +313,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_fastSlow(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = static_cast<int32>(FastSlowMode::kCount),
 		.cyclic = IsCyclicMenuYN::No,
@@ -321,7 +321,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_noteSkin(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = static_cast<int32>(NoteSkinType::kCount),
 		.cyclic = IsCyclicMenuYN::No,
@@ -329,7 +329,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 	, m_movie(LinearMenu::CreateInfoWithEnumCount{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Horizontal,
-			.buttonFlags = CursorButtonFlags::kArrow,
+			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
 		.enumCount = static_cast<int32>(MovieMode::kCount),
 		.cyclic = IsCyclicMenuYN::No,
@@ -341,7 +341,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 		LinearMenu::CreateInfoWithCursorMinMax{
 			.cursorInputCreateInfo = {
 				.type = CursorInput::Type::Horizontal,
-				.buttonFlags = CursorButtonFlags::kArrow,
+				.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 				.buttonIntervalSec = 0.12,
 			},
 			.cyclic = IsCyclicMenuYN::No,
@@ -350,7 +350,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 		LinearMenu::CreateInfoWithCursorMinMax{
 			.cursorInputCreateInfo = {
 				.type = CursorInput::Type::Vertical,
-				.buttonFlags = CursorButtonFlags::kArrow,
+				.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 				.flipArrowKeyDirection = FlipArrowKeyDirectionYN::Yes, // 上向きで増加、下向きで減少
 				.buttonIntervalSec = 0.06,
 			},
