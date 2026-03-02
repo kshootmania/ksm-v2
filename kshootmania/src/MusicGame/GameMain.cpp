@@ -71,10 +71,37 @@ namespace MusicGame
 					lane.erase(lane.begin(), lane.lower_bound(startPulse));
 				}
 
-				// LASERノーツ削除
+				// LASERセクションのトリミング
 				for (auto& lane : chartData.note.laser)
 				{
-					lane.erase(lane.begin(), lane.lower_bound(startPulse));
+					auto it = lane.begin();
+					while (it != lane.end() && it->first < startPulse)
+					{
+						const kson::Pulse sectionY = it->first;
+						const kson::LaserSection& section = it->second;
+						const kson::RelPulse relStart = startPulse - sectionY;
+
+						// セクション全体が開始位置以前にある場合はセクションごと削除
+						if (section.v.rbegin()->first <= relStart)
+						{
+							it = lane.erase(it);
+							continue;
+						}
+
+						// 開始位置以降の点でセクションを作り直す
+						const double valueAtStart = kson::GraphValueAt(section.v, relStart);
+						kson::LaserSection newSection;
+						newSection.w = section.w;
+						newSection.v[0] = kson::GraphPoint(valueAtStart);
+						for (auto pointIt = section.v.upper_bound(relStart); pointIt != section.v.end(); ++pointIt)
+						{
+							newSection.v[pointIt->first - relStart] = pointIt->second;
+						}
+
+						it = lane.erase(it);
+						lane[startPulse] = std::move(newSection);
+						it = lane.upper_bound(startPulse);
+					}
 				}
 			}
 
