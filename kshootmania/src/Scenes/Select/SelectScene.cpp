@@ -206,15 +206,31 @@ void SelectScene::updateAlphabetJump()
 	{
 		m_menu.jumpToLast();
 	}
-	// FX-Lを単独で離した時は前のアルファベットグループにジャンプ
-	else if (m_fxButtonUpDetection.up(kButtonFX_L))
+	else if (m_fxButtonUpDetection.up(kButtonFX_L)) // FX-Lを単体で離した時
 	{
-		m_menu.jumpToPrevAlphabet();
+		if (m_menu.folderState().sortMode == SelectFolderState::SortMode::kLevel)
+		{
+			// 前のレベル見出しにジャンプ
+			m_menu.moveToPrevSubDirSection();
+		}
+		else
+		{
+			// 前のアルファベットの先頭にジャンプ
+			m_menu.jumpToPrevAlphabet();
+		}
 	}
-	// FX-Rを単独で離した時は次のアルファベットグループにジャンプ
-	else if (m_fxButtonUpDetection.up(kButtonFX_R))
+	else if (m_fxButtonUpDetection.up(kButtonFX_R)) // FX-Rを単体で離した時
 	{
-		m_menu.jumpToNextAlphabet();
+		if (m_menu.folderState().sortMode == SelectFolderState::SortMode::kLevel)
+		{
+			// 次のレベル見出しにジャンプ
+			m_menu.moveToNextSubDirSection();
+		}
+		else
+		{
+			// 次のアルファベットの先頭にジャンプ
+			m_menu.jumpToNextAlphabet();
+		}
 	}
 }
 
