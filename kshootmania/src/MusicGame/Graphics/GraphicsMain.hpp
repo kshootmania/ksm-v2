@@ -59,7 +59,7 @@ namespace MusicGame::Graphics
 
 		void update(const GameStatus& gameStatus, const ViewStatus& viewStatus, const kson::TimingCache& timingCache);
 
-		void draw(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext, Duration bgmDuration) const;
+		void draw(const kson::ChartData& chartData, const std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ>& laserCurvedPulses, const kson::TimingCache& timingCache, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext, Duration bgmDuration) const;
 
 		[[nodiscard]]
 		bool hasMovie() const;

@@ -47,6 +47,7 @@ namespace MusicGame
 		bool m_isFirstUpdate = true;
 
 		// 譜面情報
+		std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ> m_laserCurvedPulses;
 		const kson::ChartData m_chartData;
 		const kson::TimingCache m_timingCache;
 

@@ -41,7 +41,7 @@ namespace MusicGame
 		}
 
 		// 譜面データを読み込み、Turn変換とPlayModeフィルタを適用
-		kson::ChartData LoadChartDataWithTurn(const GameCreateInfo& createInfo)
+		kson::ChartData LoadChartDataWithTurn(const GameCreateInfo& createInfo, std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ>* pLaserCurvedPulses)
 		{
 			auto chartData = FsUtils::HasKsonExtension(createInfo.chartFilePath)
 				? kson::LoadKsonChartData(createInfo.chartFilePath.toUTF8())
@@ -101,6 +101,24 @@ namespace MusicGame
 						it = lane.erase(it);
 						lane[startPulse] = std::move(newSection);
 						it = lane.upper_bound(startPulse);
+					}
+				}
+			}
+
+			// 曲線を持つレーザー点のPulseを列挙
+			if (pLaserCurvedPulses != nullptr)
+			{
+				for (std::size_t laneIdx = 0; laneIdx < kson::kNumLaserLanesSZ; ++laneIdx)
+				{
+					for (const auto& [y, section] : chartData.note.laser[laneIdx])
+					{
+						for (const auto& [ry, point] : section.v)
+						{
+							if (!point.curve.isLinear())
+							{
+								pLaserCurvedPulses->at(laneIdx).insert(y + ry);
+							}
+						}
 					}
 				}
 			}
@@ -220,7 +238,7 @@ namespace MusicGame
 	GameMain::GameMain(const GameCreateInfo& createInfo)
 		: m_chartFilePath(createInfo.chartFilePath)
 		, m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
-		, m_chartData(LoadChartDataWithTurn(createInfo))
+		, m_chartData(LoadChartDataWithTurn(createInfo, &m_laserCurvedPulses))
 		, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
 		, m_playOption(createInfo.playOption)
 		, m_judgmentMain(
@@ -318,7 +336,7 @@ namespace MusicGame
 		const Scroll::HighwayScrollContext highwayScrollContext(&m_highwayScroll, &m_chartData.beat, &m_timingCache, &m_gameStatus);
 
 		// 描画実行
-		m_graphicsMain.draw(m_chartData, m_timingCache, m_gameStatus, m_viewStatus, highwayScrollContext, m_bgm.duration());
+		m_graphicsMain.draw(m_chartData, m_laserCurvedPulses, m_timingCache, m_gameStatus, m_viewStatus, highwayScrollContext, m_bgm.duration());
 	}
 
 	void GameMain::lockForExit()

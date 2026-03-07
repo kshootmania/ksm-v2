@@ -114,7 +114,7 @@ namespace MusicGame::Graphics
 		m_mesh.fill(m_meshData);
 	}
 
-	void Highway3DGraphics::draw2D(const kson::ChartData& chartData, const PlayOption& playOption, const kson::TimingCache& timingCache, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const
+	void Highway3DGraphics::draw2D(const kson::ChartData& chartData, const std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ>& laserCurvedPulses, const PlayOption& playOption, const kson::TimingCache& timingCache, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
 		m_renderTexture.drawBaseTexture(viewStatus.camStatus.centerSplit);
 
@@ -191,7 +191,7 @@ namespace MusicGame::Graphics
 		m_keyBeamGraphics.draw(gameStatus, viewStatus, m_renderTexture);
 
 		// レーザーノーツの描画
-		m_laserNoteGraphics.draw(chartData, playOption, gameStatus, highwayScrollContext, m_renderTexture);
+		m_laserNoteGraphics.draw(chartData, laserCurvedPulses, playOption, gameStatus, highwayScrollContext, m_renderTexture);
 	}
 
 	void Highway3DGraphics::draw3D(const ViewStatus& viewStatus) const
