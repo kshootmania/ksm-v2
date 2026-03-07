@@ -413,6 +413,7 @@ void SelectMenuSongItem::setDifficultyLevelDisplayParams(noco::Canvas& canvas) c
 		canvas.setSubCanvasParamValuesByTag(U"center", {
 			{ U"difficulty{}Enabled"_fmt(i), exists },
 			{ U"difficulty{}LevelIndex"_fmt(i), levelIndex },
+			{ U"difficulty{}StyleState"_fmt(i), U"" },
 		});
 	}
 }

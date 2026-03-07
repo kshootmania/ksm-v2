@@ -161,6 +161,7 @@ void SelectMenuLevelSongItem::setCanvasParamsCenter(const SelectMenuEventContext
 		canvas.setSubCanvasParamValuesByTag(U"center", {
 			{ U"difficulty{}Enabled"_fmt(i), exists },
 			{ U"difficulty{}LevelIndex"_fmt(i), levelIndex },
+			{ U"difficulty{}StyleState"_fmt(i), i == m_difficultyIdx ? U"" : U"levelSortOther" },
 		});
 	}
 

@@ -1066,13 +1066,24 @@
                   "rubberBandScrollEnabled": true,
                   "scrollBarType": "Overlay",
                   "styleState": "",
+                  "styleState_paramRef": "difficulty0StyleState",
                   "transform": {
-                    "color": [
-                      255,
-                      255,
-                      255,
-                      255
-                    ],
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "styleStates": {
+                        "levelSortOther": [
+                          140,
+                          140,
+                          140,
+                          255
+                        ]
+                      }
+                    },
                     "hitTestAffected": true,
                     "pivot": [
                       0.5,
@@ -1380,13 +1391,24 @@
                   "rubberBandScrollEnabled": true,
                   "scrollBarType": "Overlay",
                   "styleState": "",
+                  "styleState_paramRef": "difficulty1StyleState",
                   "transform": {
-                    "color": [
-                      255,
-                      255,
-                      255,
-                      255
-                    ],
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "styleStates": {
+                        "levelSortOther": [
+                          140,
+                          140,
+                          140,
+                          255
+                        ]
+                      }
+                    },
                     "hitTestAffected": true,
                     "pivot": [
                       0.5,
@@ -1694,13 +1716,24 @@
                   "rubberBandScrollEnabled": true,
                   "scrollBarType": "Overlay",
                   "styleState": "",
+                  "styleState_paramRef": "difficulty2StyleState",
                   "transform": {
-                    "color": [
-                      255,
-                      255,
-                      255,
-                      255
-                    ],
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "styleStates": {
+                        "levelSortOther": [
+                          140,
+                          140,
+                          140,
+                          255
+                        ]
+                      }
+                    },
                     "hitTestAffected": true,
                     "pivot": [
                       0.5,
@@ -2008,13 +2041,24 @@
                   "rubberBandScrollEnabled": true,
                   "scrollBarType": "Overlay",
                   "styleState": "",
+                  "styleState_paramRef": "difficulty3StyleState",
                   "transform": {
-                    "color": [
-                      255,
-                      255,
-                      255,
-                      255
-                    ],
+                    "color": {
+                      "default": [
+                        255,
+                        255,
+                        255,
+                        255
+                      ],
+                      "styleStates": {
+                        "levelSortOther": [
+                          140,
+                          140,
+                          140,
+                          255
+                        ]
+                      }
+                    },
                     "hitTestAffected": true,
                     "pivot": [
                       0.5,
@@ -5478,6 +5522,10 @@
       "type": "Number",
       "value": 3.0
     },
+    "difficulty0StyleState": {
+      "type": "String",
+      "value": ""
+    },
     "difficulty1Enabled": {
       "type": "Bool",
       "value": true
@@ -5485,6 +5533,10 @@
     "difficulty1LevelIndex": {
       "type": "Number",
       "value": 7.0
+    },
+    "difficulty1StyleState": {
+      "type": "String",
+      "value": ""
     },
     "difficulty2Enabled": {
       "type": "Bool",
@@ -5494,6 +5546,10 @@
       "type": "Number",
       "value": 14.0
     },
+    "difficulty2StyleState": {
+      "type": "String",
+      "value": ""
+    },
     "difficulty3Enabled": {
       "type": "Bool",
       "value": true
@@ -5501,6 +5557,10 @@
     "difficulty3LevelIndex": {
       "type": "Number",
       "value": 17.0
+    },
+    "difficulty3StyleState": {
+      "type": "String",
+      "value": ""
     },
     "difficultyCursorState": {
       "type": "String",
@@ -5556,5 +5616,5 @@
     378.0
   ],
   "serializedVersion": 5,
-  "version": "0.3.0-beta1"
+  "version": "0.3.1"
 }
