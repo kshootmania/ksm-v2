@@ -933,7 +933,8 @@ void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview)
 {
 	// 現在選択中の譜面ファイルパスと難易度を保持
 	FilePath currentChartFilePath;
-	int32 currentDifficultyIdx = m_difficultyMenu.rawCursor();
+	const int32 difficultyCursor = m_difficultyMenu.cursor();
+	int32 currentDifficultyIdx = difficultyCursor >= 0 ? difficultyCursor : m_difficultyMenu.rawCursor();
 	int32 currentCursorIndex = m_menu.cursor();
 	if (!m_menu.empty() && m_menu.cursorValue() != nullptr)
 	{
