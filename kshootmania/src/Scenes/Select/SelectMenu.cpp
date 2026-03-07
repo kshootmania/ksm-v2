@@ -351,7 +351,13 @@ namespace
 			// ソートキーの昇順でソート
 			charts.sort_by([](const LevelSortChartFileInfo& a, const LevelSortChartFileInfo& b)
 			{
-				return a.sortKey < b.sortKey;
+				if (a.sortKey != b.sortKey)
+				{
+					return a.sortKey < b.sortKey;
+				}
+
+				// 同一楽曲内は難易度順
+				return a.difficultyIdx < b.difficultyIdx;
 			});
 
 			// レベル見出し項目を追加
