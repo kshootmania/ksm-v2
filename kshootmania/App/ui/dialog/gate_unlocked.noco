@@ -1,0 +1,600 @@
+﻿{
+  "autoFitMode": "FitHeightMatchWidth",
+  "children": [
+    {
+      "activeSelf": true,
+      "children": [
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "spacing": [
+              0,
+              0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "characterSpacing": [
+                0,
+                0
+              ],
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "fontAssetName": "SystemBold",
+              "fontSize": 19,
+              "gradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationType": "None",
+              "horizontalAlign": "Center",
+              "horizontalOverflow": "Wrap",
+              "minFontSize": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineFactorInner": 0,
+              "outlineFactorOuter": 0,
+              "padding": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                1,
+                1
+              ],
+              "sizingMode": "AutoShrinkWidth",
+              "text": "",
+              "text_paramRef": "titleText",
+              "type": "Label",
+              "underlineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "underlineStyle": "None",
+              "underlineThickness": 1,
+              "verticalAlign": "Middle",
+              "verticalOverflow": "Overflow"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "TitleText",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0
+            ],
+            "anchorMin": [
+              0.5,
+              0
+            ],
+            "posDelta": [
+              0,
+              15
+            ],
+            "sizeDelta": [
+              260,
+              20
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ],
+            "translate": [
+              0,
+              0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "spacing": [
+              0,
+              0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "characterSpacing": [
+                0,
+                0
+              ],
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "fontAssetName": "",
+              "fontSize": 19,
+              "gradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationType": "None",
+              "horizontalAlign": "Center",
+              "horizontalOverflow": "Wrap",
+              "minFontSize": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineFactorInner": 0,
+              "outlineFactorOuter": 0,
+              "padding": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                1,
+                1
+              ],
+              "sizingMode": "AutoShrink",
+              "text": "",
+              "text_paramRef": "messageText",
+              "type": "Label",
+              "underlineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "underlineStyle": "None",
+              "underlineThickness": 1,
+              "verticalAlign": "Middle",
+              "verticalOverflow": "Overflow"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": false,
+          "name": "MessageText",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              0,
+              10
+            ],
+            "sizeDelta": [
+              260,
+              106
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ],
+            "translate": [
+              0,
+              0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        }
+      ],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1,
+            1
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0,
+            0
+          ],
+          "offsetAnimationType": "None",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/result_unlocked.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            32,
+            32
+          ],
+          "textureGridCellTrim": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 1,
+          "textureOffset": [
+            0,
+            0
+          ],
+          "textureRegionMode": "Full",
+          "textureSize": [
+            100,
+            100
+          ],
+          "type": "Sprite"
+        },
+        {
+          "active": false,
+          "applyDuringDelay": true,
+          "colorEnabled": true,
+          "colorFrom": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "colorTo": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "delay": 0.35,
+          "duration": 0.15,
+          "easing": "Linear",
+          "loopDuration": 0,
+          "loopType": "None",
+          "manualMode": false,
+          "manualTime": 0,
+          "restartOnActive": true,
+          "rotationEnabled": false,
+          "rotationFrom": 0,
+          "rotationTo": 0,
+          "scaleEnabled": false,
+          "scaleFrom": [
+            1,
+            1
+          ],
+          "scaleTo": [
+            1,
+            1
+          ],
+          "tag": "in_unlock",
+          "translateEnabled": false,
+          "translateFrom": [
+            0,
+            0
+          ],
+          "translateTo": [
+            0,
+            0
+          ],
+          "type": "Tween"
+        },
+        {
+          "active": false,
+          "applyDuringDelay": false,
+          "colorEnabled": true,
+          "colorFrom": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "colorTo": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "delay": 0,
+          "duration": 0.15,
+          "easing": "Linear",
+          "loopDuration": 0,
+          "loopType": "None",
+          "manualMode": false,
+          "manualTime": 0,
+          "restartOnActive": true,
+          "rotationEnabled": false,
+          "rotationFrom": 0,
+          "rotationTo": 0,
+          "scaleEnabled": false,
+          "scaleFrom": [
+            1,
+            1
+          ],
+          "scaleTo": [
+            1,
+            1
+          ],
+          "tag": "out_unlock",
+          "translateEnabled": false,
+          "translateFrom": [
+            0,
+            0
+          ],
+          "translateTo": [
+            0,
+            0
+          ],
+          "type": "Tween"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "DialogBase",
+      "region": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          0,
+          0
+        ],
+        "sizeDelta": [
+          300,
+          169
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "scale": [
+          1,
+          1
+        ],
+        "translate": [
+          0,
+          0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    }
+  ],
+  "childrenLayout": {
+    "horizontalAlign": "Left",
+    "padding": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "spacing": [
+      0,
+      0
+    ],
+    "type": "FlowLayout",
+    "verticalAlign": "Top"
+  },
+  "defaultFontAssetName": "System",
+  "params": {
+    "messageText": {
+      "type": "String",
+      "value": ""
+    },
+    "titleText": {
+      "type": "String",
+      "value": ""
+    }
+  },
+  "referenceSize": [
+    640,
+    480
+  ],
+  "serializedVersion": 5,
+  "version": "0.3.1"
+}
