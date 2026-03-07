@@ -229,6 +229,7 @@
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuDirFolderItem.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuFavFolderItem.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuLevelSectionItem.cpp" />
+    <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuLevelSongItem.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuSongItem.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuSubDirSectionItem.cpp" />
     <ClCompile Include="src\Scenes\Select\BTOptionPanel.cpp" />
@@ -473,6 +474,7 @@
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuDirFolderItem.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuFavFolderItem.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuLevelSectionItem.hpp" />
+    <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuLevelSongItem.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuSongItem.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuSubDirSectionItem.hpp" />
     <ClInclude Include="src\Scenes\Select\BTOptionPanel.hpp" />

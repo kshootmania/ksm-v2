@@ -36,6 +36,8 @@ struct SelectMenuEventContext
 	std::function<const Texture&(FilePathView)> fnGetIconTexture;
 	std::function<void()> fnMoveToNextSubDirSection;
 	std::function<void()> fnMoveToPrevSubDirSection;
+	std::function<void(int32)> fnChangeDifficulty;
+	std::function<void(int32, int32)> fnJumpToItemWithDifficulty;
 };
 
 class SelectMenu

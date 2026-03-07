@@ -1,21 +1,23 @@
 ﻿#pragma once
-#include "UI/LinearMenu.hpp"
+#include "Input/Cursor/CursorInput.hpp"
 
 class SelectMenu;
 
 class SelectDifficultyMenu
 {
 private:
-	LinearMenu m_menu;
+	CursorInput m_cursorInput;
 
 	const SelectMenu* const m_pSelectMenu;
 
-	Stopwatch m_stopwatch;
+	int32 m_cursor = kDifficultyIdxLight;
 
 public:
 	explicit SelectDifficultyMenu(const SelectMenu* pSelectMenu);
 
-	void update(bool* pCursorChanged);
+	/// @brief 入力を処理して入力デルタを返す(カーソル位置は変更しない)
+	[[nodiscard]]
+	int32 updateAndGetInputDelta();
 
 	[[nodiscard]]
 	int32 cursor() const;

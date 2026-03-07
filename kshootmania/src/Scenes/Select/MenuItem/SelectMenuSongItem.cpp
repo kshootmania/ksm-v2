@@ -156,15 +156,7 @@ void SelectMenuSongItem::setCanvasParamsCenter(const SelectMenuEventContext& con
 	});
 
 	// 各難易度の存在有無とレベルを設定
-	for (int32 i = 0; i < kNumDifficulties; ++i)
-	{
-		const bool exists = m_chartInfos[i] != nullptr;
-		const int32 levelIndex = exists ? m_chartInfos[i]->level() - 1 : -1;
-		canvas.setSubCanvasParamValuesByTag(U"center", {
-			{ U"difficulty{}Enabled"_fmt(i), exists },
-			{ U"difficulty{}LevelIndex"_fmt(i), levelIndex },
-		});
-	}
+	setDifficultyLevelDisplayParams(canvas);
 
 	// 選択中の難易度の情報を設定
 	const SelectChartInfo* pChartInfo = nullptr;
@@ -373,4 +365,54 @@ Optional<String> SelectMenuSongItem::relativePathToCopy(int32 difficultyIdx) con
 	String relativePath = FsUtils::RelativePathFromSongsDir(chartInfo->chartFilePath());
 	relativePath.replace(U'\\', U'/');
 	return relativePath;
+}
+
+bool SelectMenuSongItem::handleDifficultyChange(
+	const SelectMenuEventContext& context,
+	int32 currentDifficultyIdx,
+	int32 delta) const
+{
+	if (m_isSingleChartItem)
+	{
+		return false;
+	}
+
+	// 入力方向に存在する次の難易度を探す
+	if (delta > 0)
+	{
+		for (int32 i = currentDifficultyIdx + 1; i < kNumDifficulties; ++i)
+		{
+			if (m_chartInfos[i] != nullptr)
+			{
+				context.fnChangeDifficulty(i);
+				return true;
+			}
+		}
+	}
+	else if (delta < 0)
+	{
+		for (int32 i = currentDifficultyIdx - 1; i >= 0; --i)
+		{
+			if (m_chartInfos[i] != nullptr)
+			{
+				context.fnChangeDifficulty(i);
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void SelectMenuSongItem::setDifficultyLevelDisplayParams(noco::Canvas& canvas) const
+{
+	for (int32 i = 0; i < kNumDifficulties; ++i)
+	{
+		const bool exists = m_chartInfos[i] != nullptr;
+		const int32 levelIndex = exists ? m_chartInfos[i]->level() - 1 : -1;
+		canvas.setSubCanvasParamValuesByTag(U"center", {
+			{ U"difficulty{}Enabled"_fmt(i), exists },
+			{ U"difficulty{}LevelIndex"_fmt(i), levelIndex },
+		});
+	}
 }

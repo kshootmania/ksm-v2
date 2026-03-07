@@ -15,6 +15,9 @@ private:
 	// 単一譜面項目の譜面情報を取得(存在しない場合はnullptrを返す)
 	const SelectChartInfo* chartInfoForSingleChartItem() const;
 
+	// 各難易度の存在有無とレベルの表示パラメータを設定
+	void setDifficultyLevelDisplayParams(noco::Canvas& canvas) const;
+
 public:
 	// fullPathはディレクトリパスの場合は楽曲フォルダ、ファイルパスの場合は単体難易度の譜面として読み込む
 	explicit SelectMenuSongItem(FilePathView fullPath);
@@ -80,4 +83,10 @@ public:
 	/// @param difficultyIdx 難易度のインデックス(0～3)
 	/// @return ハイスコア情報(存在しない場合はnone)
 	virtual Optional<HighScoreInfo> highScoreInfo(int32 difficultyIdx) const override;
+
+	virtual bool handleDifficultyChange(
+		const SelectMenuEventContext& context,
+		int32 currentDifficultyIdx,
+		int32 delta) const override;
+
 };

@@ -70,6 +70,25 @@ public:
 		return false;
 	}
 
+	/// @brief この項目自体が表す難易度インデックス(レベルソート項目等で使用)
+	virtual Optional<int32> itemDifficultyIdx() const
+	{
+		return none;
+	}
+
+	/// @brief 難易度変更入力を処理
+	/// @param context イベントコンテキスト
+	/// @param currentDifficultyIdx 現在の難易度カーソル値(0～3)
+	/// @param delta カーソルの変化量(正:右, 負:左)
+	/// @return 難易度変更が行われた場合はtrue
+	virtual bool handleDifficultyChange(
+		[[maybe_unused]] const SelectMenuEventContext& context,
+		[[maybe_unused]] int32 currentDifficultyIdx,
+		[[maybe_unused]] int32 delta) const
+	{
+		return false;
+	}
+
 	virtual bool isSubFolderHeading() const
 	{
 		return false;
