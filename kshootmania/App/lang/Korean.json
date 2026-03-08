@@ -144,6 +144,9 @@
 		"ItemHideMouseCursor": "마우스 커서 숨기기",
 		"ItemUseNumpadAsArrowKeys": "숫자패드를 방향키로 사용 (숫자패드가 있는 컨트롤러용)"
 	},
+	"InputGate": {
+		"BulkDownloadConfirm": "입력 가능한 채보가 {0}개 있습니다.\n일괄 다운로드하시겠습니까?"
+	},
 	"IR": {
 		"WaitingForLogin": "브라우저에서 로그인 대기 중…\n\nBack 버튼(Esc 키)으로 취소",
 		"ErrorMaintenance": "서버 점검 중입니다.\n{0}",

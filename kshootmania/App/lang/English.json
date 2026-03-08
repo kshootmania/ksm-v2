@@ -144,6 +144,9 @@
 		"ItemHideMouseCursor": "Hide Mouse Cursor",
 		"ItemUseNumpadAsArrowKeys": "Use Numpad as Arrow Keys (for Controllers with Numpad)"
 	},
+	"InputGate": {
+		"BulkDownloadConfirm": "There are {0} charts available for input.\nWould you like to download them all at once?"
+	},
 	"IR": {
 		"WaitingForLogin": "Waiting for login in browser...\n\nPress Back (Esc key) to cancel",
 		"ErrorMaintenance": "The server is under maintenance.\n{0}",

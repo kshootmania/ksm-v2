@@ -144,6 +144,9 @@
 		"ItemHideMouseCursor": "隱藏滑鼠游標",
 		"ItemUseNumpadAsArrowKeys": "使用數字鍵盤作為方向鍵 (用於帶數字鍵盤的控制器)"
 	},
+	"InputGate": {
+		"BulkDownloadConfirm": "有{0}個可輸入的譜面。\n是否一次性全部下載？"
+	},
 	"IR": {
 		"WaitingForLogin": "等待瀏覽器登入中…\n\n按Back鍵(Esc鍵)取消",
 		"ErrorMaintenance": "伺服器維護中\n{0}",

@@ -41,6 +41,7 @@ namespace I18n
 		Result,
 		Option,
 		IR,
+		InputGate,
 	};
 
 	/// @brief 選曲画面テキストのキー名
@@ -120,6 +121,12 @@ namespace I18n
 		ScoreNotSentPlaybackControl,
 		ScoreNotSentTurn,
 		ScoreNotSentAssist,
+	};
+
+	/// @brief INPUT GATEテキストのキー名
+	enum class InputGate
+	{
+		BulkDownloadConfirm,
 	};
 
 	/// @brief OPTION画面テキストのキー名
@@ -255,6 +262,10 @@ namespace I18n
 		else if constexpr (std::is_same_v<T, IR>)
 		{
 			return GetByCategoryAndKey(EnumUtils::EnumToString(Category::IR), EnumUtils::EnumToString(key));
+		}
+		else if constexpr (std::is_same_v<T, InputGate>)
+		{
+			return GetByCategoryAndKey(EnumUtils::EnumToString(Category::InputGate), EnumUtils::EnumToString(key));
 		}
 		else
 		{
