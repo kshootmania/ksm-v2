@@ -208,6 +208,7 @@ void KSMPlatformMacOS_SetIsEditingText(bool isEditing)
 void KSMPlatformMacOS_ActivateWindow()
 {
 	[NSApp activateIgnoringOtherApps:YES];
+	[[NSApp mainWindow] makeKeyAndOrderFront:nil];
 }
 
 bool KSMPlatformMacOS_CopyDirectory(const char* srcPath, const char* dstPath)
