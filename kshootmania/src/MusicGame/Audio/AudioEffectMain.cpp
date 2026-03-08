@@ -62,9 +62,11 @@ namespace MusicGame::Audio
 				+ 1/* インデックスを要素数にするために1を足す */;
 
 			// legacy.filterGainに0.5以外の値が存在する場合、ビルトインのフィルタエフェクトのgain・qのパラメータ変更として反映
+			// (p音源が指定されているがファイルが存在しない場合、pfiltergainの値を無視して50%で適用)
 			kson::Dict<kson::Dict<kson::ByPulse<std::string>>> laserParamChangeDict = chartData.audio.audioEffect.laser.paramChange;
 			const auto& filterGain = chartData.audio.audioEffect.laser.legacy.filterGain;
-			if (!filterGain.empty())
+			const bool isLaserFallback = !chartData.audio.bgm.legacy.filenameP.empty() && legacyMode != LegacyAudioFPMode::kFP;
+			if (!filterGain.empty() && !isLaserFallback)
 			{
 				// 0.5以外の値が含まれているかチェック
 				bool hasNonDefaultValue = std::any_of(
