@@ -10,14 +10,14 @@
           "childrenLayout": {
             "horizontalAlign": "Left",
             "padding": [
-              0,
-              0,
-              0,
-              0
+              0.0,
+              0.0,
+              0.0,
+              0.0
             ],
             "spacing": [
-              0,
-              0
+              0.0,
+              0.0
             ],
             "type": "FlowLayout",
             "verticalAlign": "Top"
@@ -26,17 +26,17 @@
           "components": [
             {
               "characterSpacing": [
-                0,
-                0
+                0.0,
+                0.0
               ],
               "color": [
                 0,
-                0,
-                0,
+                50,
+                18,
                 255
               ],
               "fontAssetName": "SystemBold",
-              "fontSize": 19,
+              "fontSize": 18.0,
               "gradationColor1": [
                 255,
                 255,
@@ -52,20 +52,20 @@
               "gradationType": "None",
               "horizontalAlign": "Center",
               "horizontalOverflow": "Wrap",
-              "minFontSize": 1,
+              "minFontSize": 1.0,
               "outlineColor": [
                 0,
                 0,
                 0,
                 255
               ],
-              "outlineFactorInner": 0,
-              "outlineFactorOuter": 0,
+              "outlineFactorInner": 0.0,
+              "outlineFactorOuter": 0.0,
               "padding": [
-                0,
-                0,
-                0,
-                0
+                0.0,
+                0.0,
+                0.0,
+                0.0
               ],
               "shadowColor": [
                 0,
@@ -74,8 +74,8 @@
                 0
               ],
               "shadowOffset": [
-                1,
-                1
+                1.0,
+                1.0
               ],
               "sizingMode": "AutoShrinkWidth",
               "text": "",
@@ -88,7 +88,7 @@
                 255
               ],
               "underlineStyle": "None",
-              "underlineThickness": 1,
+              "underlineThickness": 1.0,
               "verticalAlign": "Middle",
               "verticalOverflow": "Overflow"
             }
@@ -96,10 +96,10 @@
           "decelerationRate": 0.2,
           "dragScrollEnabled": true,
           "hitPadding": [
-            0,
-            0,
-            0,
-            0
+            0.0,
+            0.0,
+            0.0,
+            0.0
           ],
           "horizontalScrollable": false,
           "inheritChildrenHover": false,
@@ -110,23 +110,23 @@
           "region": {
             "anchorMax": [
               0.5,
-              0
+              0.0
             ],
             "anchorMin": [
               0.5,
-              0
+              0.0
             ],
             "posDelta": [
-              0,
-              15
+              0.0,
+              15.0
             ],
             "sizeDelta": [
-              260,
-              20
+              260.0,
+              20.0
             ],
             "sizeDeltaPivot": [
               0.5,
-              0
+              0.0
             ],
             "type": "AnchorRegion"
           },
@@ -145,14 +145,14 @@
               0.5,
               0.5
             ],
-            "rotation": 0,
+            "rotation": 0.0,
             "scale": [
-              1,
-              1
+              1.0,
+              1.0
             ],
             "translate": [
-              0,
-              0
+              0.0,
+              0.0
             ]
           },
           "verticalScrollable": false,
@@ -165,14 +165,14 @@
           "childrenLayout": {
             "horizontalAlign": "Left",
             "padding": [
-              0,
-              0,
-              0,
-              0
+              0.0,
+              0.0,
+              0.0,
+              0.0
             ],
             "spacing": [
-              0,
-              0
+              0.0,
+              0.0
             ],
             "type": "FlowLayout",
             "verticalAlign": "Top"
@@ -181,17 +181,17 @@
           "components": [
             {
               "characterSpacing": [
-                0,
-                0
+                0.0,
+                0.0
               ],
               "color": [
                 0,
-                0,
-                0,
+                50,
+                18,
                 255
               ],
               "fontAssetName": "",
-              "fontSize": 19,
+              "fontSize": 16.0,
               "gradationColor1": [
                 255,
                 255,
@@ -207,20 +207,20 @@
               "gradationType": "None",
               "horizontalAlign": "Center",
               "horizontalOverflow": "Wrap",
-              "minFontSize": 1,
+              "minFontSize": 1.0,
               "outlineColor": [
                 0,
                 0,
                 0,
                 255
               ],
-              "outlineFactorInner": 0,
-              "outlineFactorOuter": 0,
+              "outlineFactorInner": 0.0,
+              "outlineFactorOuter": 0.0,
               "padding": [
-                0,
-                0,
-                0,
-                0
+                0.0,
+                0.0,
+                0.0,
+                0.0
               ],
               "shadowColor": [
                 0,
@@ -229,8 +229,8 @@
                 0
               ],
               "shadowOffset": [
-                1,
-                1
+                1.0,
+                1.0
               ],
               "sizingMode": "AutoShrink",
               "text": "",
@@ -243,7 +243,7 @@
                 255
               ],
               "underlineStyle": "None",
-              "underlineThickness": 1,
+              "underlineThickness": 1.0,
               "verticalAlign": "Middle",
               "verticalOverflow": "Overflow"
             }
@@ -251,10 +251,10 @@
           "decelerationRate": 0.2,
           "dragScrollEnabled": true,
           "hitPadding": [
-            0,
-            0,
-            0,
-            0
+            0.0,
+            0.0,
+            0.0,
+            0.0
           ],
           "horizontalScrollable": false,
           "inheritChildrenHover": false,
@@ -272,12 +272,12 @@
               0.5
             ],
             "posDelta": [
-              0,
-              10
+              0.0,
+              5.0
             ],
             "sizeDelta": [
-              260,
-              106
+              260.0,
+              90.0
             ],
             "sizeDeltaPivot": [
               0.5,
@@ -300,14 +300,14 @@
               0.5,
               0.5
             ],
-            "rotation": 0,
+            "rotation": 0.0,
             "scale": [
-              1,
-              1
+              1.0,
+              1.0
             ],
             "translate": [
-              0,
-              0
+              0.0,
+              0.0
             ]
           },
           "verticalScrollable": false,
@@ -318,14 +318,14 @@
       "childrenLayout": {
         "horizontalAlign": "Left",
         "padding": [
-          0,
-          0,
-          0,
-          0
+          0.0,
+          0.0,
+          0.0,
+          0.0
         ],
         "spacing": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "type": "FlowLayout",
         "verticalAlign": "Top"
@@ -347,7 +347,7 @@
             255
           ],
           "gridAnimationEndIndex": 0,
-          "gridAnimationFPS": 10,
+          "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
           "nineSliceBottomTiled": false,
@@ -356,20 +356,20 @@
           "nineSliceFallback": true,
           "nineSliceLeftTiled": false,
           "nineSliceMargin": [
-            0,
-            0,
-            0,
-            0
+            0.0,
+            0.0,
+            0.0,
+            0.0
           ],
           "nineSliceRightTiled": false,
           "nineSliceScale": [
-            1,
-            1
+            1.0,
+            1.0
           ],
           "nineSliceTopTiled": false,
           "offsetAnimationSpeed": [
-            0,
-            0
+            0.0,
+            0.0
           ],
           "offsetAnimationType": "None",
           "preserveAspect": false,
@@ -378,26 +378,26 @@
           "textureFilePath": "imgs/result_unlocked.png",
           "textureFilter": "Default",
           "textureGridCellSize": [
-            32,
-            32
+            32.0,
+            32.0
           ],
           "textureGridCellTrim": [
-            0,
-            0,
-            0,
-            0
+            0.0,
+            0.0,
+            0.0,
+            0.0
           ],
           "textureGridColumns": 1,
           "textureGridIndex": 0,
           "textureGridRows": 1,
           "textureOffset": [
-            0,
-            0
+            0.0,
+            0.0
           ],
           "textureRegionMode": "Full",
           "textureSize": [
-            100,
-            100
+            100.0,
+            100.0
           ],
           "type": "Sprite"
         },
@@ -420,32 +420,32 @@
           "delay": 0.35,
           "duration": 0.15,
           "easing": "Linear",
-          "loopDuration": 0,
+          "loopDuration": 0.0,
           "loopType": "None",
           "manualMode": false,
-          "manualTime": 0,
+          "manualTime": 0.0,
           "restartOnActive": true,
           "rotationEnabled": false,
-          "rotationFrom": 0,
-          "rotationTo": 0,
+          "rotationFrom": 0.0,
+          "rotationTo": 0.0,
           "scaleEnabled": false,
           "scaleFrom": [
-            1,
-            1
+            1.0,
+            1.0
           ],
           "scaleTo": [
-            1,
-            1
+            1.0,
+            1.0
           ],
           "tag": "in",
           "translateEnabled": false,
           "translateFrom": [
-            0,
-            0
+            0.0,
+            0.0
           ],
           "translateTo": [
-            0,
-            0
+            0.0,
+            0.0
           ],
           "type": "Tween"
         },
@@ -465,35 +465,35 @@
             255,
             0
           ],
-          "delay": 0,
+          "delay": 0.0,
           "duration": 0.15,
           "easing": "Linear",
-          "loopDuration": 0,
+          "loopDuration": 0.0,
           "loopType": "None",
           "manualMode": false,
-          "manualTime": 0,
+          "manualTime": 0.0,
           "restartOnActive": true,
           "rotationEnabled": false,
-          "rotationFrom": 0,
-          "rotationTo": 0,
+          "rotationFrom": 0.0,
+          "rotationTo": 0.0,
           "scaleEnabled": false,
           "scaleFrom": [
-            1,
-            1
+            1.0,
+            1.0
           ],
           "scaleTo": [
-            1,
-            1
+            1.0,
+            1.0
           ],
           "tag": "out",
           "translateEnabled": false,
           "translateFrom": [
-            0,
-            0
+            0.0,
+            0.0
           ],
           "translateTo": [
-            0,
-            0
+            0.0,
+            0.0
           ],
           "type": "Tween"
         }
@@ -501,10 +501,10 @@
       "decelerationRate": 0.2,
       "dragScrollEnabled": true,
       "hitPadding": [
-        0,
-        0,
-        0,
-        0
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ],
       "horizontalScrollable": false,
       "inheritChildrenHover": false,
@@ -522,12 +522,12 @@
           0.5
         ],
         "posDelta": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "sizeDelta": [
-          300,
-          169
+          300.0,
+          169.0
         ],
         "sizeDeltaPivot": [
           0.5,
@@ -550,14 +550,14 @@
           0.5,
           0.5
         ],
-        "rotation": 0,
+        "rotation": 0.0,
         "scale": [
-          1,
-          1
+          1.0,
+          1.0
         ],
         "translate": [
-          0,
-          0
+          0.0,
+          0.0
         ]
       },
       "verticalScrollable": false,
@@ -568,14 +568,14 @@
   "childrenLayout": {
     "horizontalAlign": "Left",
     "padding": [
-      0,
-      0,
-      0,
-      0
+      0.0,
+      0.0,
+      0.0,
+      0.0
     ],
     "spacing": [
-      0,
-      0
+      0.0,
+      0.0
     ],
     "type": "FlowLayout",
     "verticalAlign": "Top"
@@ -584,16 +584,16 @@
   "params": {
     "messageText": {
       "type": "String",
-      "value": ""
+      "value": "messageText"
     },
     "titleText": {
       "type": "String",
-      "value": ""
+      "value": "titleText"
     }
   },
   "referenceSize": [
-    640,
-    480
+    640.0,
+    480.0
   ],
   "serializedVersion": 5,
   "version": "0.3.1"
