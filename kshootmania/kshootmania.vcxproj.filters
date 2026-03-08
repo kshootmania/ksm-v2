@@ -384,6 +384,9 @@
     <ClCompile Include="src\Common\MathUtils.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="src\Common\MessageBoxUtils.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
     <ClCompile Include="src\MusicGame\Audio\BGM.cpp">
       <Filter>Source Files\MusicGame\Audio</Filter>
     </ClCompile>
@@ -1058,6 +1061,9 @@
       <Filter>Header Files\MusicGame\Judgment</Filter>
     </ClInclude>
     <ClInclude Include="src\Common\MathUtils.hpp">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common\MessageBoxUtils.hpp">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="src\MusicGame\GameDefines.hpp">

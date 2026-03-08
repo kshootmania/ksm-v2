@@ -50,7 +50,7 @@ void SelectMenuLevelSongItem::decide(const SelectMenuEventContext& context, [[ma
 	const FilePath chartFilePath = FilePath{ m_chartInfo->chartFilePath() };
 	if (!FileSystem::Exists(chartFilePath))
 	{
-		System::MessageBoxOK(I18n::Get(I18n::Play::ErrorChartFileNotFound), MessageBoxStyle::Error);
+		MessageBoxUtils::ShowOK(I18n::Get(I18n::Play::ErrorChartFileNotFound), MessageBoxStyle::Error);
 		return;
 	}
 
@@ -67,7 +67,7 @@ void SelectMenuLevelSongItem::decideAutoPlay(const SelectMenuEventContext& conte
 	const FilePath chartFilePath = FilePath{ m_chartInfo->chartFilePath() };
 	if (!FileSystem::Exists(chartFilePath))
 	{
-		System::MessageBoxOK(I18n::Get(I18n::Play::ErrorChartFileNotFound), MessageBoxStyle::Error);
+		MessageBoxUtils::ShowOK(I18n::Get(I18n::Play::ErrorChartFileNotFound), MessageBoxStyle::Error);
 		return;
 	}
 

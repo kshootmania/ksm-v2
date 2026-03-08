@@ -267,7 +267,7 @@ SelectScene::SelectScene()
 
 	if (m_menu.empty())
 	{
-		System::MessageBoxOK(U"譜面データが見つかりませんでした。", MessageBoxStyle::Warning);
+		MessageBoxUtils::ShowOK(U"譜面データが見つかりませんでした。", MessageBoxStyle::Warning);
 		m_skipFadeout = true;
 		requestNextScene<TitleScene>(TitleMenuItem::kStart);
 	}

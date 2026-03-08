@@ -130,6 +130,7 @@
     <ClCompile Include="src\Common\FsUtils.cpp" />
     <ClCompile Include="src\Common\IMEUtils.cpp" />
     <ClCompile Include="src\Common\MathUtils.cpp" />
+    <ClCompile Include="src\Common\MessageBoxUtils.cpp" />
     <ClCompile Include="src\Graphics\FontUtils.cpp" />
     <ClCompile Include="src\Graphics\TextureFontTextLayout.cpp" />
     <ClCompile Include="src\Graphics\NumberTextureFont.cpp" />
@@ -357,6 +358,7 @@
     <ClInclude Include="src\Common\FsUtils.hpp" />
     <ClInclude Include="src\Common\IMEUtils.hpp" />
     <ClInclude Include="src\Common\MathUtils.hpp" />
+    <ClInclude Include="src\Common\MessageBoxUtils.hpp" />
     <ClInclude Include="src\Graphics\FontUtils.hpp" />
     <ClInclude Include="src\Graphics\TextureFontTextLayout.hpp" />
     <ClInclude Include="src\Graphics\NumberTextureFont.hpp" />

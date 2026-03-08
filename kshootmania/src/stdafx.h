@@ -9,6 +9,7 @@
 #include "Common/AssetManagement.hpp"
 #include "Common/MathUtils.hpp"
 #include "Common/FsUtils.hpp"
+#include "Common/MessageBoxUtils.hpp"
 #include "Addon/AutoMuteAddon.hpp"
 #include "Addon/CommonSEAddon.hpp"
 #include "Graphics/ScreenUtils.hpp"

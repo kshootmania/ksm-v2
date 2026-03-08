@@ -20,7 +20,7 @@ void ResultSNSShare::update(noco::Canvas* pCanvas)
 			snsButton->setActive(true);
 		}
 
-		System::MessageBoxOK(I18n::Get(I18n::Result::ScreenshotCopied));
+		MessageBoxUtils::ShowOK(I18n::Get(I18n::Result::ScreenshotCopied));
 
 		const String encodedText = PercentEncode(m_tweetText);
 		System::LaunchBrowser(U"https://x.com/intent/tweet?text=" + encodedText);
