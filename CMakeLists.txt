@@ -7,7 +7,7 @@ if(APPLE)
 endif()
 
 project(kshootmania VERSION 2.0.0)
-set(PROJECT_VERSION_SUFFIX "-alpha6")
+set(PROJECT_VERSION_SUFFIX "-alpha7")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
