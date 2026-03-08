@@ -119,8 +119,16 @@ Optional<CourseInfo> CourseInfo::Load(FilePathView kcoFilePath)
 				CourseChartEntry entry;
 				entry.relativePath = chartPath;
 
-				entry.absolutePath = ResolveChartPath(chartPath, songsDir);
-				entry.exists = !entry.absolutePath.isEmpty();
+				// バックスラッシュを含むパスはファイルが存在しない扱いとする
+				if (chartPath.includes(U'\\'))
+				{
+					entry.exists = false;
+				}
+				else
+				{
+					entry.absolutePath = ResolveChartPath(chartPath, songsDir);
+					entry.exists = !entry.absolutePath.isEmpty();
+				}
 				if (!entry.exists)
 				{
 					Logger << U"[ksm warning] Chart file not found in course: {}"_fmt(chartPath);

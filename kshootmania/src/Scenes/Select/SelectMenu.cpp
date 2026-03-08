@@ -175,7 +175,9 @@ namespace
 			{
 				continue;
 			}
-			result.push_back(trimmed);
+
+			// バックスラッシュをスラッシュに置換(v1ではバックスラッシュを受け付けていたため)
+			result.push_back(trimmed.replaced(U'\\', U'/'));
 		}
 
 		return result;
