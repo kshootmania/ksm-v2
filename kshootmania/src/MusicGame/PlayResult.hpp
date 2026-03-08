@@ -29,7 +29,7 @@ namespace MusicGame
 
 		IsHardFailedYN isHardFailed = IsHardFailedYN::No; // HARDゲージ/コースモードで途中落ちしたかどうか
 
-		bool isAborted() const;
+		bool isAborted = false; // Backボタンで途中終了したかどうか
 
 		Achievement achievement() const;
 

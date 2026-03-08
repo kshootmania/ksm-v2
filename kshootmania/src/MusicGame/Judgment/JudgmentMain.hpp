@@ -31,8 +31,9 @@ namespace MusicGame::Judgment
 		/// @param timingCache タイミングキャッシュ
 		/// @param currentTimeSec 現在時刻(秒)
 		/// @param isHardFailed HARDゲージ/コースモードで途中落ちしたかどうか
+		/// @param isAborted Backボタンで途中終了したかどうか
 		/// @return PlayResult
-		PlayResult playResult(const kson::ChartData& chartData, const kson::TimingCache& timingCache, double currentTimeSec, IsHardFailedYN isHardFailed) const;
+		PlayResult playResult(const kson::ChartData& chartData, const kson::TimingCache& timingCache, double currentTimeSec, IsHardFailedYN isHardFailed, bool isAborted) const;
 
 		/// @brief 全てのノーツが判定済みかどうか
 		/// @return 全てのノーツが判定済みならtrue

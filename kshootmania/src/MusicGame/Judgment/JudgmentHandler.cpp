@@ -191,7 +191,7 @@ namespace MusicGame::Judgment
 		return m_totalCombo <= m_scoringStatus.totalJudgedCombo();
 	}
 
-	PlayResult JudgmentHandler::playResult(double currentTimeSec, double chartEndTimeSec, IsHardFailedYN isHardFailed) const
+	PlayResult JudgmentHandler::playResult(double currentTimeSec, double chartEndTimeSec, IsHardFailedYN isHardFailed, bool isAborted) const
 	{
 		const double chartTimeProgress = chartEndTimeSec > 0.0 ? Clamp(currentTimeSec / chartEndTimeSec, 0.0, 1.0) : 1.0;
 
@@ -208,6 +208,7 @@ namespace MusicGame::Judgment
 			.gaugeValue = m_scoringStatus.gaugeValue(),
 			.chartTimeProgress = chartTimeProgress,
 			.isHardFailed = isHardFailed,
+			.isAborted = isAborted,
 		};
 	}
 }

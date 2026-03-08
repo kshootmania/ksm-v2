@@ -218,7 +218,7 @@ namespace MusicGame
 			m_gameStatus.playFinishStatus = PlayFinishStatus
 			{
 				.finishTimeSec = currentTimeSec,
-				.achievement = m_judgmentMain.playResult(m_chartData, m_timingCache, currentTimeSec, IsHardFailedYN::No).achievement(),
+				.achievement = m_judgmentMain.playResult(m_chartData, m_timingCache, currentTimeSec, IsHardFailedYN::No, false).achievement(),
 			};
 		}
 	}
@@ -341,6 +341,7 @@ namespace MusicGame
 
 	void GameMain::lockForExit()
 	{
+		m_isAborted = !m_judgmentMain.isFinished();
 		m_judgmentMain.lockForExit();
 	}
 
@@ -362,7 +363,7 @@ namespace MusicGame
 	PlayResult GameMain::playResult() const
 	{
 		const IsHardFailedYN isHardFailed{ m_gameStatus.playFinishStatus.has_value() && m_gameStatus.playFinishStatus->isHardFailed };
-		return m_judgmentMain.playResult(m_chartData, m_timingCache, m_gameStatus.currentTimeSec, isHardFailed);
+		return m_judgmentMain.playResult(m_chartData, m_timingCache, m_gameStatus.currentTimeSec, isHardFailed, m_isAborted);
 	}
 
 	void GameMain::startBGMFadeOut(Duration duration)

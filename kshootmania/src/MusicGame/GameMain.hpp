@@ -85,6 +85,9 @@ namespace MusicGame
 		ViewStatus m_viewStatus;
 		bool m_isFinishedPrev = false;
 
+		// Backボタンによる途中終了かどうか(未判定ノーツが残った状態でlockForExitが呼ばれた場合にtrue)
+		bool m_isAborted = false;
+
 		// 再生制御
 		bool m_isPaused = false;
 		Stopwatch m_fastForwardStopwatch;

@@ -165,7 +165,7 @@ public:
 		// プレイした曲のみチェック
 		for (size_t i = 0; i <= m_currentChartIdx && i < m_results.size(); ++i)
 		{
-			if (m_results[i].isAborted())
+			if (m_results[i].isAborted)
 			{
 				return true;
 			}

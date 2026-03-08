@@ -213,8 +213,9 @@ TEST_CASE("Achievement when play is aborted", "[PlayResult][Achievement]")
 {
 	PlayResult result;
 	result.totalCombo = 1000;
+	result.isAborted = true;
 
-	// 判定数がtotalComboに満たない場合はプレイ中断
+	// プレイ中断の場合はゲージに関わらずNone
 	result.comboStats = ComboStats
 	{
 		.critical = 500,
@@ -224,7 +225,6 @@ TEST_CASE("Achievement when play is aborted", "[PlayResult][Achievement]")
 	};
 	result.maxCombo = 500;
 	result.gaugePercentage = 100.0;
-	REQUIRE(result.isAborted() == true);
 	REQUIRE(result.achievement() == Achievement::kNone);
 
 	// プレイ中断の場合はゲージに関わらずNone
@@ -237,10 +237,10 @@ TEST_CASE("Achievement when play is aborted", "[PlayResult][Achievement]")
 	};
 	result.maxCombo = 100;
 	result.gaugePercentage = 100.0;
-	REQUIRE(result.isAborted() == true);
 	REQUIRE(result.achievement() == Achievement::kNone);
 
-	// 判定数がtotalComboと同じなら最後までプレイ
+	// isAbortedがfalseなら最後までプレイ
+	result.isAborted = false;
 	result.comboStats = ComboStats
 	{
 		.critical = 1000,
@@ -250,6 +250,5 @@ TEST_CASE("Achievement when play is aborted", "[PlayResult][Achievement]")
 	};
 	result.maxCombo = 1000;
 	result.gaugePercentage = 100.0;
-	REQUIRE(result.isAborted() == false);
 	REQUIRE(result.achievement() == Achievement::kPerfect);
 }

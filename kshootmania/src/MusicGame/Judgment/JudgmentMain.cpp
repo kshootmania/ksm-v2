@@ -65,11 +65,11 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	PlayResult JudgmentMain::playResult(const kson::ChartData& chartData, const kson::TimingCache& timingCache, double currentTimeSec, IsHardFailedYN isHardFailed) const
+	PlayResult JudgmentMain::playResult(const kson::ChartData& chartData, const kson::TimingCache& timingCache, double currentTimeSec, IsHardFailedYN isHardFailed, bool isAborted) const
 	{
 		const kson::Pulse lastNoteEndY = kson::LastNoteEndY(chartData.note);
 		const double chartEndTimeSec = kson::PulseToSec(lastNoteEndY, chartData.beat, timingCache);
-		return m_judgmentHandler.playResult(currentTimeSec, chartEndTimeSec, isHardFailed);
+		return m_judgmentHandler.playResult(currentTimeSec, chartEndTimeSec, isHardFailed, isAborted);
 	}
 
 	bool JudgmentMain::isFinished() const

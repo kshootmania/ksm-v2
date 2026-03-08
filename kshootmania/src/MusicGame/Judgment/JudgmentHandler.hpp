@@ -73,7 +73,8 @@ namespace MusicGame::Judgment
 		/// @param currentTimeSec 現在時刻(秒)
 		/// @param chartEndTimeSec 譜面終了時刻(秒)
 		/// @param isHardFailed HARDゲージ/コースモードで途中落ちしたかどうか
+		/// @param isAborted Backボタンで途中終了したかどうか
 		/// @return PlayResult
-		PlayResult playResult(double currentTimeSec, double chartEndTimeSec, IsHardFailedYN isHardFailed) const;
+		PlayResult playResult(double currentTimeSec, double chartEndTimeSec, IsHardFailedYN isHardFailed, bool isAborted) const;
 	};
 }
