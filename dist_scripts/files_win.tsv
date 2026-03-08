@@ -369,6 +369,7 @@ kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_ch.ksh	songs/K-Shoot M
 kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_ex.ksh	songs/K-Shoot MANIA/time4dance/time4dance_ex.ksh
 kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_lt.ksh	songs/K-Shoot MANIA/time4dance/time4dance_lt.ksh
 kshootmania/App/ui/dialog/gate_downloading.noco	ui/dialog/gate_downloading.noco
+kshootmania/App/ui/dialog/gate_unlocked.noco	ui/dialog/gate_unlocked.noco
 kshootmania/App/ui/parts/course_result_chart_item.noco	ui/parts/course_result_chart_item.noco
 kshootmania/App/ui/parts/gate_item.noco	ui/parts/gate_item.noco
 kshootmania/App/ui/dialog/gate_settings.noco	ui/dialog/gate_settings.noco
