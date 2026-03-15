@@ -71,6 +71,7 @@ namespace ConfigIni
 		constexpr StringView kAudioProcDelay = U"soundfx_delay";
 		constexpr StringView kVisualOffset = U"visual_offset";
 		constexpr StringView kAutoPlaySE = U"auto_play_se";
+		constexpr StringView kAutoSync = U"autosync";
 
 		constexpr StringView kMuteAudioInInactiveWindow = U"automaticmute";
 

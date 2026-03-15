@@ -94,6 +94,7 @@ namespace I18n
 		ErrorChartFileNotFound,
 		ErrorChartLoadFailed,
 		ErrorSomeChartMissingInCourse,
+		AutoSyncSaveConfirm,
 	};
 
 	/// @brief リザルト画面テキストのキー名

@@ -420,6 +420,9 @@
     <ClCompile Include="src\MusicGame\Graphics\HUD\FrameRateMonitor.cpp">
       <Filter>Source Files\MusicGame\Graphics\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="src\MusicGame\Graphics\HUD\TimingAdjustPanel.cpp">
+      <Filter>Source Files\MusicGame\Graphics\HUD</Filter>
+    </ClCompile>
     <ClCompile Include="src\MusicGame\Graphics\HUD\ScorePanel.cpp">
       <Filter>Source Files\MusicGame\Graphics\HUD</Filter>
     </ClCompile>
@@ -1103,6 +1106,9 @@
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\MusicGame\Graphics\HUD\FrameRateMonitor.hpp">
+      <Filter>Header Files\MusicGame\Graphics\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MusicGame\Graphics\HUD\TimingAdjustPanel.hpp">
       <Filter>Header Files\MusicGame\Graphics\HUD</Filter>
     </ClInclude>
     <ClInclude Include="src\MusicGame\Graphics\HUD\ScorePanel.hpp">

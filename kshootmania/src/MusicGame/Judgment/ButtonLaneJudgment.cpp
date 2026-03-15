@@ -267,6 +267,13 @@ namespace MusicGame::Judgment
 				chipAnimType = ChipAnimType::kError;
 			}
 
+			// AutoSyncによるタイミング調整(CRITICAL/NEAR判定時のみ)
+			if (minDistance < ChipNote::kWindowSecNear)
+			{
+				const double diffSec = isFast ? minDistance : -minDistance;
+				judgmentHandlerRef.applyAutoSyncTimingAdjust(diffSec);
+			}
+
 			if (chipAnimType.has_value())
 			{
 				laneStatusRef.chipAnim.push({

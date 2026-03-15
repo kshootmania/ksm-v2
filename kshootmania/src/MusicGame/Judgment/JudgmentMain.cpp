@@ -76,4 +76,14 @@ namespace MusicGame::Judgment
 	{
 		return m_judgmentHandler.isFinished();
 	}
+
+	double JudgmentMain::timingAdjustOffsetSec() const
+	{
+		return m_judgmentHandler.timingAdjustOffsetSec();
+	}
+
+	void JudgmentMain::addTimingAdjustOffset(double offsetSec)
+	{
+		m_judgmentHandler.addTimingAdjustOffset(offsetSec);
+	}
 }

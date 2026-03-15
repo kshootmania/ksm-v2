@@ -10,6 +10,7 @@
 #include "HUD/FrameRateMonitor.hpp"
 #include "HUD/AchievementPanel.hpp"
 #include "HUD/LaserApproachIndicator.hpp"
+#include "HUD/TimingAdjustPanel.hpp"
 #include "HUD/MoviePanel.hpp"
 #include "MusicGame/GameStatus.hpp"
 #include "MusicGame/ViewStatus.hpp"
@@ -44,6 +45,7 @@ namespace MusicGame::Graphics
 		FrameRateMonitor m_frameRateMonitor;
 		AchievementPanel m_achievementPanel;
 		LaserApproachIndicator m_laserApproachIndicator;
+		TimingAdjustPanel m_timingAdjustPanel;
 		MoviePanel m_moviePanel;
 
 		const PlayOption m_playOption;

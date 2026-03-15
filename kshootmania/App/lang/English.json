@@ -43,7 +43,8 @@
 	"Play": {
 		"ErrorChartFileNotFound": "Cannot find the chart file.",
 		"ErrorChartLoadFailed": "Failed to load the chart file.",
-		"ErrorSomeChartMissingInCourse": "Some charts in this course are missing."
+		"ErrorSomeChartMissingInCourse": "Some charts in this course are missing.",
+		"AutoSyncSaveConfirm": "Save the chart with the timing adjustment?\n(Offset timing: {0}ms)\n\nBefore: {1}ms → After: {2}ms"
 	},
 	"Result": {
 		"ScreenshotCopied": "Screenshot has been copied to clipboard.\nPress Ctrl+V on the post screen to attach the image.",

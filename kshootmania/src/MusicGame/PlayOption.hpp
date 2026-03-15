@@ -47,6 +47,8 @@ namespace MusicGame
 
 		NoteSkinType noteSkin = NoteSkinType::kDefault;
 
+		AutoSyncMode autoSyncMode = AutoSyncMode::kOff;
+
 		FastSlowMode fastSlowMode = FastSlowMode::kHide;
 
 		Array<HispeedType> availableHispeedTypes = { HispeedType::OMod };

@@ -17,5 +17,6 @@ namespace MusicGame
 		int32 gaugePercentageInt = 0; // 切り捨てで整数化したゲージパーセンテージ
 		int32 displayCombo = 0;
 		bool displayIsNoError = true;
+		int32 timingAdjustMs = 0;
 	};
 }

@@ -191,6 +191,25 @@ namespace MusicGame::Judgment
 		return m_totalCombo <= m_scoringStatus.totalJudgedCombo();
 	}
 
+	double JudgmentHandler::timingAdjustOffsetSec() const
+	{
+		return m_timingAdjustOffsetSec;
+	}
+
+	void JudgmentHandler::applyAutoSyncTimingAdjust(double diffSec)
+	{
+		const int32 autoSyncLevel = static_cast<int32>(m_playOption.autoSyncMode);
+		if (autoSyncLevel > 0)
+		{
+			m_timingAdjustOffsetSec += diffSec * autoSyncLevel / 90.0;
+		}
+	}
+
+	void JudgmentHandler::addTimingAdjustOffset(double offsetSec)
+	{
+		m_timingAdjustOffsetSec += offsetSec;
+	}
+
 	PlayResult JudgmentHandler::playResult(double currentTimeSec, double chartEndTimeSec, IsHardFailedYN isHardFailed, bool isAborted) const
 	{
 		const double chartTimeProgress = chartEndTimeSec > 0.0 ? Clamp(currentTimeSec / chartEndTimeSec, 0.0, 1.0) : 1.0;

@@ -38,5 +38,12 @@ namespace MusicGame::Judgment
 		/// @brief 全てのノーツが判定済みかどうか
 		/// @return 全てのノーツが判定済みならtrue
 		bool isFinished() const;
+
+		/// @brief タイミング調整オフセットを取得(秒)
+		[[nodiscard]]
+		double timingAdjustOffsetSec() const;
+
+		/// @brief タイミング調整オフセットを加算(秒)
+		void addTimingAdjustOffset(double offsetSec);
 	};
 }

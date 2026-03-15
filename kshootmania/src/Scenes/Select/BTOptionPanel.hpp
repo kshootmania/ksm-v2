@@ -29,7 +29,7 @@ private:
 
 	// BT-Cメニューの各項目の値変更用LinearMenu
 	LinearMenu m_assistTick;
-	// LinearMenu m_autoSync; // TODO: 未実装
+	LinearMenu m_autoSync;
 	LinearMenu m_fastSlow;
 	LinearMenu m_noteSkin;
 	LinearMenu m_movie;

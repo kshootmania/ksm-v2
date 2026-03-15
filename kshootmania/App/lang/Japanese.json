@@ -43,7 +43,8 @@
 	"Play": {
 		"ErrorChartFileNotFound": "指定された譜面ファイルが見つかりません。",
 		"ErrorChartLoadFailed": "譜面ファイルの読み込みに失敗しました。",
-		"ErrorSomeChartMissingInCourse": "指定された譜面ファイルが見つかりません。"
+		"ErrorSomeChartMissingInCourse": "指定された譜面ファイルが見つかりません。",
+		"AutoSyncSaveConfirm": "曲のタイミング修正を譜面ファイルに保存しますか?\n(曲のオフセットのずれ: {0}ms)\n\n変更前: {1}ms → 変更後: {2}ms"
 	},
 	"Result": {
 		"ScreenshotCopied": "スクリーンショットをクリップボードにコピーしました。\n投稿画面でCtrl+Vを押すと画像を添付できます。",

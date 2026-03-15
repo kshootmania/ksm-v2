@@ -91,6 +91,7 @@ namespace MusicGame
 		// 再生制御
 		bool m_isPaused = false;
 		Stopwatch m_fastForwardStopwatch;
+		Stopwatch m_syncAdjustStopwatch;
 
 		void updateStatus();
 
@@ -117,6 +118,10 @@ namespace MusicGame
 		const kson::ChartData& chartData() const;
 
 		PlayResult playResult() const;
+
+		/// @brief タイミング調整オフセット
+		[[nodiscard]]
+		int32 timingAdjustOffsetMs() const;
 
 		void startBGMFadeOut(Duration duration);
 	};

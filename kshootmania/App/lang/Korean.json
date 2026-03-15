@@ -43,7 +43,8 @@
 	"Play": {
 		"ErrorChartFileNotFound": "채보 파일을 찾을 수 없습니다.",
 		"ErrorChartLoadFailed": "채보 파일을 불러오지 못했습니다.",
-		"ErrorSomeChartMissingInCourse": "채보 파일을 찾을 수 없습니다."
+		"ErrorSomeChartMissingInCourse": "채보 파일을 찾을 수 없습니다.",
+		"AutoSyncSaveConfirm": "악곡 재생 시작 타이밍을 채보 파일에 수정하여 저장하시겠습니까?\n(오프셋 타이밍: {0}ms)\n\n변경 전: {1}ms → 변경 후: {2}ms"
 	},
 	"Result": {
 		"ScreenshotCopied": "스크린샷이 클립보드에 복사되었습니다.\n게시 화면에서 Ctrl+V를 눌러 이미지를 첨부할 수 있습니다.",

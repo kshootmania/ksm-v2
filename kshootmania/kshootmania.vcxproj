@@ -185,6 +185,7 @@
     <ClCompile Include="src\MusicGame\Graphics\HUD\ComboOverlay.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\HUD\FrameRateMonitor.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\HUD\LaserApproachIndicator.cpp" />
+    <ClCompile Include="src\MusicGame\Graphics\HUD\TimingAdjustPanel.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\HUD\GaugePanel.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\HUD\HispeedSettingPanel.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\HUD\MoviePanel.cpp" />
@@ -414,6 +415,7 @@
     <ClInclude Include="src\MusicGame\Graphics\HUD\ComboOverlay.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\HUD\LaserApproachIndicator.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\HUD\FrameRateMonitor.hpp" />
+    <ClInclude Include="src\MusicGame\Graphics\HUD\TimingAdjustPanel.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\HUD\GaugePanel.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\HUD\HispeedSettingPanel.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\HUD\MoviePanel.hpp" />

@@ -93,7 +93,6 @@ enum class AssistTickMode : int32
 	kCount,
 };
 
-// TODO: プレイ側で実装
 enum class AutoSyncMode : int32
 {
 	kOff = 0,

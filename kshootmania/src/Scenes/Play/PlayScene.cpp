@@ -4,6 +4,7 @@
 #include "Scenes/Result/ResultScene.hpp"
 #include "RuntimeConfig.hpp"
 #include "MusicGame/HispeedUtils.hpp"
+#include "Common/MessageBoxUtils.hpp"
 
 namespace
 {
@@ -72,6 +73,7 @@ namespace
 					const StringView noteSkinStr = ConfigIni::GetString(ConfigIni::Key::kNoteSkin, U"default");
 					return noteSkinStr == U"note" ? NoteSkinType::kNote : NoteSkinType::kDefault;
 				}(),
+				.autoSyncMode = static_cast<AutoSyncMode>(ConfigIni::GetInt(ConfigIni::Key::kAutoSync, static_cast<int32>(AutoSyncMode::kOff))),
 				.fastSlowMode = static_cast<FastSlowMode>(ConfigIni::GetInt(ConfigIni::Key::kShowFastSlow, static_cast<int32>(FastSlowMode::kHide))),
 				.availableHispeedTypes = LoadAvailableHispeedTypesFromConfigIni(),
 				.hispeedSetting = LoadHispeedSettingFromConfigIni(),
@@ -175,6 +177,8 @@ void PlayScene::update()
 		}
 		else
 		{
+			showAutoSyncSaveDialog();
+
 			const ResultSceneArgs args =
 			{
 				.chartFilePath = FilePath(m_gameMain.chartFilePath()),
@@ -214,6 +218,8 @@ void PlayScene::processBackButtonInput()
 	}
 	else
 	{
+		showAutoSyncSaveDialog();
+
 		const ResultSceneArgs args =
 		{
 			.chartFilePath = FilePath(m_gameMain.chartFilePath()),
@@ -242,6 +248,91 @@ void PlayScene::draw() const
 inline Co::Task<void> PlayScene::fadeIn()
 {
 	co_await Co::ScreenFadeIn(kFadeDuration);
+}
+
+namespace
+{
+	// KSHファイルのo=フィールドを書き換え
+	void UpdateKshOffset(const FilePath& chartFilePath, int32 newOffset)
+	{
+		TextReader reader(chartFilePath);
+		if (!reader)
+		{
+			Logger << U"[ksm error] AutoSync: Failed to open KSH file for reading: '{}'"_fmt(chartFilePath);
+			return;
+		}
+
+		Array<String> lines;
+		String line;
+		bool replaced = false;
+		while (reader.readLine(line))
+		{
+			if (!replaced && line.starts_with(U"o="))
+			{
+				lines.push_back(U"o={}"_fmt(newOffset));
+				replaced = true;
+			}
+			else
+			{
+				lines.push_back(line);
+			}
+		}
+		reader.close();
+
+		BinaryWriter writer(chartFilePath);
+		if (writer)
+		{
+			for (std::size_t i = 0; i < lines.size(); ++i)
+			{
+				const std::string utf8 = lines[i].toUTF8();
+				writer.write(utf8.data(), utf8.size());
+				writer.write("\r\n", 2);
+			}
+		}
+	}
+
+	// KSONファイルのaudio.bgm.offsetを書き換え
+	void UpdateKsonOffset(const FilePath& chartFilePath, int32 newOffset)
+	{
+		JSON json = JSON::Load(chartFilePath);
+		if (!json)
+		{
+			Logger << U"[ksm error] AutoSync: Failed to load KSON file: '{}'"_fmt(chartFilePath);
+			return;
+		}
+
+		json[U"audio"][U"bgm"][U"offset"] = newOffset;
+		json.save(chartFilePath);
+	}
+}
+
+void PlayScene::showAutoSyncSaveDialog()
+{
+	const int32 offsetMs = m_gameMain.timingAdjustOffsetMs();
+	if (offsetMs == 0 || m_isAutoPlay || m_testPlayOption.has_value())
+	{
+		return;
+	}
+
+	const int32 currentOffset = m_gameMain.chartData().audio.bgm.offset;
+	const int32 newOffset = currentOffset + offsetMs;
+
+	const String offsetStr = U"{:+}"_fmt(offsetMs);
+	const String message = I18n::Get(I18n::Play::AutoSyncSaveConfirm, offsetStr, currentOffset, newOffset);
+
+	const auto result = MessageBoxUtils::ShowYesNo(message, MessageBoxStyle::Question);
+	if (result == MessageBoxResult::OK)
+	{
+		const FilePath chartFilePath{ m_gameMain.chartFilePath() };
+		if (FsUtils::HasKsonExtension(chartFilePath))
+		{
+			UpdateKsonOffset(chartFilePath, newOffset);
+		}
+		else
+		{
+			UpdateKshOffset(chartFilePath, newOffset);
+		}
+	}
 }
 
 Co::Task<void> PlayScene::fadeOut()

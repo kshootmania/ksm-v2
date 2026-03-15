@@ -25,6 +25,9 @@ namespace MusicGame::Judgment
 
 		Camera::CamPatternMain m_camPatternMain;
 
+		// タイミング調整オフセット(秒)
+		double m_timingAdjustOffsetSec = 0.0;
+
 	public:
 		/// @brief コンストラクタ
 		/// @param chartData 譜面データ
@@ -76,5 +79,16 @@ namespace MusicGame::Judgment
 		/// @param isAborted Backボタンで途中終了したかどうか
 		/// @return PlayResult
 		PlayResult playResult(double currentTimeSec, double chartEndTimeSec, IsHardFailedYN isHardFailed, bool isAborted) const;
+
+		/// @brief タイミング調整オフセットを取得(秒)
+		[[nodiscard]]
+		double timingAdjustOffsetSec() const;
+
+		/// @brief AutoSyncによるタイミング調整を適用
+		/// @param diffSec 判定タイミング差分(秒単位、FAST側が正、SLOW側が負)
+		void applyAutoSyncTimingAdjust(double diffSec);
+
+		/// @brief タイミング調整オフセットを加算(秒)
+		void addTimingAdjustOffset(double offsetSec);
 	};
 }

@@ -163,8 +163,9 @@ namespace MusicGame
 		const double inputDelaySec = m_playOption.effectiveInputDelayMs() / 1000.0;
 		const double laserInputDelaySec = m_playOption.effectiveLaserInputDelayMs() / 1000.0;
 		const double audioProcDelaySec = m_playOption.effectiveAudioProcDelayMs() / 1000.0;
-		const double currentTimeSecForButtonJudgment = currentTimeSec - inputDelaySec;
-		const double currentTimeSecForLaserJudgment = currentTimeSec - inputDelaySec - laserInputDelaySec;
+		const double timingAdjustSec = m_judgmentMain.timingAdjustOffsetSec();
+		const double currentTimeSecForButtonJudgment = currentTimeSec - inputDelaySec + timingAdjustSec;
+		const double currentTimeSecForLaserJudgment = currentTimeSec - inputDelaySec - laserInputDelaySec + timingAdjustSec;
 		const double currentTimeSecForAudioProc = currentTimeSec - audioProcDelaySec;
 		const kson::Pulse currentPulse = kson::SecToPulse(currentTimeSec, m_chartData.beat, m_timingCache);
 		const double currentPulseDouble = kson::SecToPulseDouble(currentTimeSec, m_chartData.beat, m_timingCache);
@@ -193,6 +194,8 @@ namespace MusicGame
 
 		// 判定の更新
 		m_judgmentMain.update(m_chartData, m_gameStatus, m_viewStatus);
+
+		m_viewStatus.timingAdjustMs = timingAdjustOffsetMs();
 
 		// HARDゲージ/コースモード落ち判定
 		if (!m_gameStatus.playFinishStatus.has_value() &&
@@ -366,6 +369,11 @@ namespace MusicGame
 		return m_judgmentMain.playResult(m_chartData, m_timingCache, m_gameStatus.currentTimeSec, isHardFailed, m_isAborted);
 	}
 
+	int32 GameMain::timingAdjustOffsetMs() const
+	{
+		return static_cast<int32>(Round(-m_judgmentMain.timingAdjustOffsetSec() * 1000.0));
+	}
+
 	void GameMain::startBGMFadeOut(Duration duration)
 	{
 		m_bgm.setFadeOut(duration);
@@ -374,6 +382,7 @@ namespace MusicGame
 	void GameMain::processPlaybackControl()
 	{
 		const bool isCtrlPressed = PlatformKey::KeyCommandControl.pressed();
+		const bool isAltPressed = KeyAlt.pressed();
 
 		// 一時停止/再開(Ctrl+Enter)
 		if (isCtrlPressed && KeyEnter.down())
@@ -392,7 +401,7 @@ namespace MusicGame
 		}
 
 		// 早送り(Ctrl+Right)
-		if (!m_isPaused && isCtrlPressed && KeyRight.pressed())
+		if (!m_isPaused && isCtrlPressed && !isAltPressed && KeyRight.pressed())
 		{
 			if (m_fastForwardStopwatch.ms() >= 60)
 			{
@@ -406,6 +415,30 @@ namespace MusicGame
 		else
 		{
 			m_fastForwardStopwatch.restart();
+		}
+
+		// 手動タイミング調整(Ctrl+Alt+矢印で±5ms、Ctrl+Alt+Shift+矢印で±1ms)
+		if (isCtrlPressed && isAltPressed)
+		{
+			if (m_syncAdjustStopwatch.ms() >= 120)
+			{
+				const bool isShiftPressed = KeyShift.pressed();
+				const double stepMs = isShiftPressed ? 1.0 : 5.0;
+				if (KeyRight.pressed())
+				{
+					m_judgmentMain.addTimingAdjustOffset(stepMs / 1000.0);
+					m_syncAdjustStopwatch.restart();
+				}
+				else if (KeyLeft.pressed())
+				{
+					m_judgmentMain.addTimingAdjustOffset(-stepMs / 1000.0);
+					m_syncAdjustStopwatch.restart();
+				}
+			}
+		}
+		else
+		{
+			m_syncAdjustStopwatch.restart();
 		}
 	}
 }

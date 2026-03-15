@@ -26,6 +26,9 @@ private:
 
 	void processBackButtonInput();
 
+	// タイミング調整結果の譜面保存確認
+	void showAutoSyncSaveDialog();
+
 public:
 	explicit PlayScene(FilePathView filePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState = none, const Optional<MusicGame::TestPlayOption>& testPlayOption = none);
 

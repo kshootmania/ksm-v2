@@ -256,6 +256,7 @@ namespace MusicGame::Graphics
 		m_gaugePanel.draw(viewStatus.gaugePercentage, gameStatus.currentPulse);
 		m_comboOverlay.draw();
 		m_frameRateMonitor.draw();
+		m_timingAdjustPanel.draw(viewStatus.timingAdjustMs);
 		m_achievementPanel.draw(gameStatus);
 		m_laserApproachIndicator.draw(gameStatus.currentTimeSec);
 		m_moviePanel.draw();

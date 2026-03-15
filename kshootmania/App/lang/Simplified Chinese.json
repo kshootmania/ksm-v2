@@ -43,7 +43,8 @@
 	"Play": {
 		"ErrorChartFileNotFound": "找不到谱面文件。",
 		"ErrorChartLoadFailed": "谱面文件加载失败。",
-		"ErrorSomeChartMissingInCourse": "此连曲中缺少部分谱面。"
+		"ErrorSomeChartMissingInCourse": "此连曲中缺少部分谱面。",
+		"AutoSyncSaveConfirm": "保存时间调整后的谱面\n(时间偏移量: {0}ms)\n\n变更前: {1}ms → 变更后: {2}ms"
 	},
 	"Result": {
 		"ScreenshotCopied": "截图已复制到剪贴板。\n在发布页面按Ctrl+V即可附加图片。",
