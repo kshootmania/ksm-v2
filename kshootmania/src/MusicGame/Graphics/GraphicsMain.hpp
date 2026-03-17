@@ -3,14 +3,10 @@
 #include "Jdgline/Jdgline3DGraphics.hpp"
 #include "Jdgline/Jdgoverlay3DGraphics.hpp"
 #include "Jdgline/LaserCursor3DGraphics.hpp"
-#include "HUD/SongInfoPanel.hpp"
-#include "HUD/ScorePanel.hpp"
 #include "HUD/GaugePanel.hpp"
 #include "HUD/ComboOverlay.hpp"
-#include "HUD/FrameRateMonitor.hpp"
 #include "HUD/AchievementPanel.hpp"
 #include "HUD/LaserApproachIndicator.hpp"
-#include "HUD/TimingAdjustPanel.hpp"
 #include "HUD/MoviePanel.hpp"
 #include "MusicGame/GameStatus.hpp"
 #include "MusicGame/ViewStatus.hpp"
@@ -20,6 +16,24 @@
 
 namespace MusicGame::Graphics
 {
+	/// @brief スコア表示のアニメーション補間
+	class ScoreAnimator
+	{
+	private:
+		int32 m_targetScore = 0;
+		int32 m_startScore = 0;
+		int32 m_displayedScore = 0;
+		Stopwatch m_animationTimer;
+
+		static constexpr Duration kAnimationDuration = 0.2s;
+
+	public:
+		void update(int32 score);
+
+		[[nodiscard]]
+		int32 displayedScore() const;
+	};
+
 	class GraphicsMain
 	{
 	private:
@@ -38,14 +52,13 @@ namespace MusicGame::Graphics
 		Jdgoverlay3DGraphics m_jdgoverlay3DGraphics;
 		LaserCursor3DGraphics m_laserCursor3DGraphics;
 
-		SongInfoPanel m_songInfoPanel;
-		ScorePanel m_scorePanel;
+		std::shared_ptr<noco::Canvas> m_hudCanvas;
+		ScoreAnimator m_scoreAnimator;
+
 		GaugePanel m_gaugePanel;
 		ComboOverlay m_comboOverlay;
-		FrameRateMonitor m_frameRateMonitor;
 		AchievementPanel m_achievementPanel;
 		LaserApproachIndicator m_laserApproachIndicator;
-		TimingAdjustPanel m_timingAdjustPanel;
 		MoviePanel m_moviePanel;
 
 		const PlayOption m_playOption;
