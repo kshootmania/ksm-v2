@@ -42,7 +42,6 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 {
 	using StrPair = std::pair<String, String>;
 	using IntStrPair = std::pair<int32, String>;
-	using DoubleStrPair = std::pair<double, String>;
 	using CreateInfo = OptionMenuField::CreateInfo;
 
 	Array<StrPair> availableLanguageStrPairs;

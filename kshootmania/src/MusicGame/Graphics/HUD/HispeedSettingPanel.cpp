@@ -5,7 +5,6 @@ namespace MusicGame::Graphics
 	namespace
 	{
 		constexpr StringView kNumberTextureFontFilename = U"num2.png";
-		constexpr StringView kFPSTextureFilename = U"fps.png";
 
 		enum LetterTextureRow : int32
 		{

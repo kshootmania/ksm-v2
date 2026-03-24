@@ -8,40 +8,10 @@ namespace MusicGame
 	{
 		constexpr int32 kHispeedMin = 25;
 		constexpr int32 kHispeedMax = 2000;
-		constexpr int32 kHispeedDefault = 400;
 		constexpr int32 kHispeedStep = 25;
 		constexpr int32 kHispeedXModValueMin = 1; // x0.1
 		constexpr int32 kHispeedXModValueMax = 99; // x9.9
-		constexpr int32 kHispeedXModValueDefault = 10; // x1.0
 		constexpr int32 kHispeedXModValueStep = 1;
-
-		Array<HispeedType> LoadAvailableTypesFromConfigIni()
-		{
-			Array<HispeedType> availableTypes;
-			availableTypes.reserve(static_cast<std::size_t>(HispeedType::EnumCount));
-
-			if (ConfigIni::GetBool(ConfigIni::Key::kHispeedShowXMod, true))
-			{
-				availableTypes.push_back(HispeedType::XMod);
-			}
-			if (ConfigIni::GetBool(ConfigIni::Key::kHispeedShowOMod, true))
-			{
-				availableTypes.push_back(HispeedType::OMod);
-			}
-			if (ConfigIni::GetBool(ConfigIni::Key::kHispeedShowCMod, false)) // C-modのみデフォルトでは非表示のためfalse
-			{
-				availableTypes.push_back(HispeedType::CMod);
-			}
-
-			// 1つも有効でない場合はデフォルトのもの(x-mod、o-mod)を追加
-			if (availableTypes.empty())
-			{
-				availableTypes.push_back(HispeedType::XMod);
-				availableTypes.push_back(HispeedType::OMod);
-			}
-
-			return availableTypes;
-		}
 
 		int32 CursorMin(HispeedType hispeedType)
 		{

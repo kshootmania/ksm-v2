@@ -53,7 +53,6 @@ namespace
 	// 再生速度の範囲
 	constexpr int32 kPlaybackSpeedMin = 10; // 10%
 	constexpr int32 kPlaybackSpeedMax = 300; // 300%
-	constexpr int32 kPlaybackSpeedDefault = 100; // 100%
 	constexpr int32 kPlaybackSpeedStep = 5; // 5%刻み
 
 	int32 CursorMin(HispeedType hispeedType)
