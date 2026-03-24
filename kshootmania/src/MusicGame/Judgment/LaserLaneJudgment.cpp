@@ -379,10 +379,19 @@ namespace MusicGame::Judgment
 		const int32 direction = Sign(deltaCursorX);
 		if (direction != 0)
 		{
-			if (Abs(cursorX - noteCursorX) < kLaserAutoFitMaxDeltaCursorX && (noteDirection == 0 || direction != noteDirection))
+			if (Abs(cursorX - noteCursorX) < kLaserAutoFitMaxDeltaCursorX)
 			{
-				// LASERカーソルが理想位置に近い場合はカーソルを逆方向に動かさない
-				nextCursorX = cursorX;
+				if (direction == noteDirection)
+				{
+					// ノーツと同方向の入力をしている場合は理想位置に吸い付かせる
+					nextCursorX = noteCursorX;
+					m_lastCorrectMovementSec = currentTimeSec;
+				}
+				else
+				{
+					// ノーツと逆方向の入力をしている場合はカーソルを動かさない
+					nextCursorX = cursorX;
+				}
 			}
 			else
 			{
