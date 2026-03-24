@@ -52,7 +52,7 @@ namespace MusicGame::Audio
 				{
 					for (const auto& [slamRy, graphPoint] : graphSection.v)
 					{
-						if (graphPoint.v.vf == graphPoint.v.v)
+						if (kson::AlmostEquals(graphPoint.v.vf, graphPoint.v.v))
 						{
 							// 直角ではない
 							continue;
@@ -143,7 +143,7 @@ namespace MusicGame::Audio
 			{
 				for (const auto& [slamRy, graphPoint] : graphSection.v)
 				{
-					if (graphPoint.v.vf == graphPoint.v.v)
+					if (kson::AlmostEquals(graphPoint.v.vf, graphPoint.v.v))
 					{
 						// 直角ではない
 						continue;
