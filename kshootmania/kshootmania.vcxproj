@@ -190,7 +190,6 @@
     <ClCompile Include="src\MusicGame\Graphics\HUD\HispeedSettingPanel.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\HUD\MoviePanel.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\HUD\ScorePanel.cpp" />
-    <ClCompile Include="src\MusicGame\Graphics\HUD\SongInfoPanel.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\Jdgline\Jdgline3DGraphics.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\Jdgline\Jdgoverlay3DGraphics.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\Jdgline\LaserCursor3DGraphics.cpp" />
@@ -420,7 +419,6 @@
     <ClInclude Include="src\MusicGame\Graphics\HUD\HispeedSettingPanel.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\HUD\MoviePanel.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\HUD\ScorePanel.hpp" />
-    <ClInclude Include="src\MusicGame\Graphics\HUD\SongInfoPanel.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\Jdgline\Jdgline3DGraphics.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\Jdgline\Jdgoverlay3DGraphics.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\Jdgline\LaserCursor3DGraphics.hpp" />

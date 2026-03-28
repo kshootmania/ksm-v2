@@ -432,9 +432,6 @@
     <ClCompile Include="src\MusicGame\Graphics\HUD\MoviePanel.cpp">
       <Filter>Source Files\MusicGame\Graphics\HUD</Filter>
     </ClCompile>
-    <ClCompile Include="src\MusicGame\Graphics\HUD\SongInfoPanel.cpp">
-      <Filter>Source Files\MusicGame\Graphics\HUD</Filter>
-    </ClCompile>
     <ClCompile Include="src\Graphics\NumberTextureFont.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
@@ -1118,9 +1115,6 @@
       <Filter>Header Files\MusicGame\Graphics\HUD</Filter>
     </ClInclude>
     <ClInclude Include="src\MusicGame\Graphics\HUD\MoviePanel.hpp">
-      <Filter>Header Files\MusicGame\Graphics\HUD</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MusicGame\Graphics\HUD\SongInfoPanel.hpp">
       <Filter>Header Files\MusicGame\Graphics\HUD</Filter>
     </ClInclude>
     <ClInclude Include="src\MusicGame\Judgment\ButtonLaneJudgment.hpp">
