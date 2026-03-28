@@ -19,6 +19,9 @@ namespace MusicGame::Graphics
 		constexpr double kLongNoteSourceYPressed2 = 9.0;
 		constexpr double kLongNoteSourceYNotPressed = 10.0;
 
+		constexpr double kLongNoteStartTextureY = 1.0;
+		constexpr int32 kLongNoteStartTextureHeight = 7;
+
 		double PressedLongNoteSourceY(double currentTimeSec)
 		{
 			return (MathUtils::WrappedFmod(currentTimeSec, 0.1) < 0.05) ? kLongNoteSourceYPressed1 : kLongNoteSourceYPressed2;
@@ -183,7 +186,6 @@ namespace MusicGame::Graphics
 						// 現在判定対象でないロングノーツ
 						sourceY = kLongNoteSourceYDefault;
 					}
-					// TODO: 始点テクスチャの描画
 					const Texture& sourceTexture = isBT ? m_longBTNoteTexture : m_longFXNoteTexture;
 					const int32 width = isBT ? 40 : 82;
 					// scroll_speedが負の場合、positionStartYとpositionEndYが逆転するため、小さい方を使用
@@ -191,6 +193,14 @@ namespace MusicGame::Graphics
 					sourceTexture(width * i, sourceY + kOnePixelTextureSourceOffset, width, kOnePixelTextureSourceSize)
 						.resized(width, absHeight)
 						.draw(position);
+
+					// 始点テクスチャの描画
+					const int32 startTextureY = height >= 0
+						? positionStartY - kLongNoteStartTextureHeight
+						: positionStartY;
+					const Vec2 startPosition = offsetPosition + Vec2::Right(centerSplitShiftX) + Vec2::Down(startTextureY);
+					sourceTexture(width * i, kLongNoteStartTextureY, width, kLongNoteStartTextureHeight)
+						.draw(startPosition);
 				}
 			}
 		}
