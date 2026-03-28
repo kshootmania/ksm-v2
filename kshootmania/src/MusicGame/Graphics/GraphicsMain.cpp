@@ -159,6 +159,26 @@ namespace MusicGame::Graphics
 			return renderTextures;
 		}
 
+		/// @brief BPMを文字列にフォーマット(小数部分がある場合のみ小数を表示)
+		String FormatBPM(double bpm)
+		{
+			const int32 bpmInt = static_cast<int32>(bpm * 1000);
+			const int32 integerPart = bpmInt / 1000;
+			const int32 decimalPart = bpmInt % 1000;
+			if (decimalPart == 0)
+			{
+				return Format(integerPart);
+			}
+
+			// 末尾のゼロを除去
+			String result = U"{}.{:03d}"_fmt(integerPart, decimalPart);
+			while (result.back() == U'0')
+			{
+				result.pop_back();
+			}
+			return result;
+		}
+
 		std::shared_ptr<noco::Canvas> LoadHUDCanvas()
 		{
 			const FilePath uiFilePath = FsUtils::GetResourcePath(U"ui/scene/play_hud.noco");
@@ -270,7 +290,7 @@ namespace MusicGame::Graphics
 			{ U"title", Unicode::FromUTF8(chartData.meta.title) },
 			{ U"artist", Unicode::FromUTF8(chartData.meta.artist) },
 			{ U"levelNumber", Format(chartData.meta.level) },
-			{ U"bpmNumber", Format(static_cast<int32>(startBPM)) },
+			{ U"bpmNumber", FormatBPM(startBPM) },
 			{ U"difficultyIndex", chartData.meta.difficulty.idx },
 			{ U"hispeedValue", HispeedUtils::ToDisplayString(playOption.hispeedSetting) },
 			{ U"hispeedValueEffective", Format(playOption.hispeedSetting.value) },
@@ -305,7 +325,7 @@ namespace MusicGame::Graphics
 		m_hudCanvas->setParamValues({
 			{ U"scoreNumber", U"{:08d}"_fmt(m_scoreAnimator.displayedScore()) },
 			{ U"fpsNumber", Format(Profiler::FPS()) },
-			{ U"bpmNumber", Format(static_cast<int32>(gameStatus.currentBPM)) },
+			{ U"bpmNumber", FormatBPM(gameStatus.currentBPM) },
 			{ U"timingAdjustVisible", viewStatus.timingAdjustMs != 0 },
 			{ U"timingAdjustSignIndex", viewStatus.timingAdjustMs > 0 ? 1 : 0 },
 			{ U"timingAdjustNumber", Format(Abs(viewStatus.timingAdjustMs)) },
