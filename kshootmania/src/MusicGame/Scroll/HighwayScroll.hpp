@@ -54,6 +54,10 @@ namespace MusicGame::Scroll
 		/// @param pulse Pulse位置
 		/// @return scrollSpeedが0以上ならtrue
 		bool isScrollSpeedPositiveAt(kson::Pulse pulse) const;
+
+		/// @brief scroll_speedを考慮した現在のハイスピード値を返す
+		/// @return scroll_speed適用済みのハイスピード値(負のscroll_speedは絶対値で計算)
+		int32 currentHispeedWithScrollSpeed() const;
 	};
 
 	/// @brief Highway上のスクロール計算(ハイスピードおよびscroll_speedの計算)

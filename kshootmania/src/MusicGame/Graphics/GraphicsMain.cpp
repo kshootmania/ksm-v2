@@ -365,7 +365,7 @@ namespace MusicGame::Graphics
 			m_hudCanvas->setParamValues({
 				{ U"positionMarkerProgress", progress },
 				{ U"hispeedValue", HispeedUtils::ToDisplayString(highwayScrollContext.highwayScroll().hispeedSetting()) },
-				{ U"hispeedValueEffective", Format(highwayScrollContext.highwayScroll().currentHispeed()) },
+				{ U"hispeedValueEffective", Format(highwayScrollContext.currentHispeedWithScrollSpeed()) },
 			});
 		}
 
