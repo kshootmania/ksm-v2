@@ -867,6 +867,18 @@ namespace
 		{
 			return U"@";
 		}
+		if (keyCode == 0xD8)
+		{
+			return U"Command";
+		}
+		if (keyCode == 0xD9)
+		{
+			return U"LeftCommand";
+		}
+		if (keyCode == 0xDA)
+		{
+			return U"RightCommand";
+		}
 		if (keyCode == 0xDB)
 		{
 			return U"[";
@@ -1130,6 +1142,12 @@ void OptionKeyConfigMenu::updateSettingButtonState()
 		{
 			if (key.down())
 			{
+				// 汎用の修飾キーはスキップして左右を区別するキーコードを使う
+				const uint8 code = key.code();
+				if (code == KeyShift.code() || code == KeyControl.code() || code == KeyAlt.code() || code == KeyCommand.code())
+				{
+					continue;
+				}
 				setInput(key);
 				break;
 			}
