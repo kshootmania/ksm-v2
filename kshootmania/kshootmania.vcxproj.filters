@@ -630,6 +630,9 @@
     <ClCompile Include="src\Graphics\FontUtils.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\ImageUtils.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scenes\PlayPrepare\PlayPrepareScene.cpp">
       <Filter>Source Files\Scenes\PlayPrepare</Filter>
     </ClCompile>
@@ -1343,6 +1346,9 @@
       <Filter>Header Files\NocoExtensions</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\FontUtils.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ImageUtils.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\PlayPrepare\PlayPrepareScene.hpp">

@@ -43,7 +43,7 @@ namespace MusicGame::Graphics
 		const Mesh m_bgBillboardMesh;
 		std::array<Texture, 2> m_bgTextures;
 		const Mat4x4 m_bgTransform;
-		std::array<Array<RenderTexture>, 2> m_layerFrameTextures;
+		std::array<Array<Texture>, 2> m_layerFrameTextures;
 		const Mat4x4 m_layerTransform;
 
 		Highway3DGraphics m_highway3DGraphics;
