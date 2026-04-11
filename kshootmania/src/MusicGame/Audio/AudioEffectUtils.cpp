@@ -4,9 +4,12 @@ namespace MusicGame::Audio::AudioEffectUtils
 {
 	namespace
 	{
-		const std::string kUpdatePeriodKey = "update_period";
+		const std::string kUpdatePeriodKeyRetrigger = "update_period";
 		const std::string kUpdatePeriodDefaultRetrigger = "1/2";
 		const std::string kUpdatePeriodDefaultOther = "0"; // Echoで使用
+
+		const std::string kUpdatePeriodKeySidechain = "period";
+		const std::string kUpdatePeriodDefaultSidechain = "1/4";
 
 		const std::string kUpdateTriggerKey = "update_trigger";
 
@@ -60,21 +63,15 @@ namespace MusicGame::Audio::AudioEffectUtils
 			return timingSet;
 		}
 
-		std::set<float> PrecalculateUpdateTriggerTimingBeatOnly(std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
-		{
-			std::set<float> timingSet;
-			for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
-			{
-				const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
-				for (kson::Pulse y = startY; startY <= y && y < endY; y += kson::kResolution)
-				{
-					timingSet.insert(static_cast<float>(kson::PulseToSec(y, chartData.beat, timingCache)));
-				}
-			}
-			return timingSet;
-		}
-
-		std::set<float> PrecalculateUpdateTriggerTimingRetrigger(const kson::AudioEffectDef& def, const kson::Dict<kson::ByPulse<std::string>>& paramChange, std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+		// updatePeriod系パラメータ(update_period, period)の値を小節単位でリセットしつつトリガタイミングを生成
+		std::set<float> PrecalculateUpdateTriggerTimingByUpdatePeriodKey(
+			const kson::AudioEffectDef& def,
+			const kson::Dict<kson::ByPulse<std::string>>& paramChange,
+			const std::string& updatePeriodKey,
+			const std::string& updatePeriodDefault,
+			std::int64_t totalMeasures,
+			const kson::ChartData& chartData,
+			const kson::TimingCache& timingCache)
 		{
 			std::set<float> timingSet;
 
@@ -85,13 +82,13 @@ namespace MusicGame::Audio::AudioEffectUtils
 				timingSet.insert(sec);
 			};
 
-			// "update_period"のトリガタイミングをあらかじめ計算して記録
-			// (ksonの仕様上、"update_period"については"Off>OnMin-OnMax"のうちOnMinとOnMaxの値(ノーツ判定による変化)は無視することが許容されているので、無視してOffの値のみを使用する)
-			if (paramChange.contains(kUpdatePeriodKey) && !paramChange.at(kUpdatePeriodKey).empty())
+			// updatePeriod系パラメータのトリガタイミングをあらかじめ計算して記録
+			// (ksonの仕様上、updatePeriod系については"Off>OnMin-OnMax"のうちOffとOnMaxの値を無視してOnMinの値のみを使用することが許容されているので、ここではOnMinの値のみを使用する)
+			if (paramChange.contains(updatePeriodKey) && !paramChange.at(updatePeriodKey).empty())
 			{
-				// "update_period"の値に途中変更がある場合、それを加味して計算
-				const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : UpdatePeriodDefaultForAudioEffect(def.type));
-				const auto& updatePeriodChanges = paramChange.at(kUpdatePeriodKey);
+				// 値に途中変更がある場合、それを加味して計算
+				const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(updatePeriodKey) ? def.v.at(updatePeriodKey) : updatePeriodDefault);
+				const auto& updatePeriodChanges = paramChange.at(updatePeriodKey);
 				for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
 				{
 					const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
@@ -99,7 +96,7 @@ namespace MusicGame::Audio::AudioEffectUtils
 					if (count == 0U) [[likely]]
 					{
 						const kson::RelPulse dy = ParamChangeUpdatePeriodDyAt(updatePeriodChanges, startY, defDy);
-						if (dy > 0) // "update_period"が0の場合はトリガ更新しない
+						if (dy > 0) // 値が0の場合はトリガ更新しない
 						{
 							for (kson::Pulse y = startY; y < endY; y += dy)
 							{
@@ -109,7 +106,7 @@ namespace MusicGame::Audio::AudioEffectUtils
 					}
 					else
 					{
-						// Pulse値を1ずつ巡回していてやや非効率だが、この処理が実行されるのは"update_period"の途中変更を含む小節のみなので大した問題ではない
+						// Pulse値を1ずつ巡回していてやや非効率だが、この処理が実行されるのは値の途中変更を含む小節のみなので大した問題ではない
 						for (kson::Pulse ry = 0; ry < endY - startY; ++ry)
 						{
 							const kson::Pulse y = startY + ry;
@@ -124,9 +121,9 @@ namespace MusicGame::Audio::AudioEffectUtils
 			}
 			else
 			{
-				// "update_period"の値に途中変更がない場合、簡易的な計算のみでOKになる
-				const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(kUpdatePeriodKey) ? def.v.at(kUpdatePeriodKey) : UpdatePeriodDefaultForAudioEffect(def.type));
-				if (defDy > 0) // "update_period"が0の場合はトリガ更新しない
+				// 値に途中変更がない場合、簡易的な計算のみでOKになる
+				const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(updatePeriodKey) ? def.v.at(updatePeriodKey) : updatePeriodDefault);
+				if (defDy > 0) // 値が0の場合はトリガ更新しない
 				{
 					for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
 					{
@@ -139,9 +136,23 @@ namespace MusicGame::Audio::AudioEffectUtils
 				}
 			}
 
+			return timingSet;
+		}
+
+		std::set<float> PrecalculateUpdateTriggerTimingRetrigger(const kson::AudioEffectDef& def, const kson::Dict<kson::ByPulse<std::string>>& paramChange, std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+		{
+			std::set<float> timingSet = PrecalculateUpdateTriggerTimingByUpdatePeriodKey(
+				def,
+				paramChange,
+				kUpdatePeriodKeyRetrigger,
+				UpdatePeriodDefaultForAudioEffect(def.type),
+				totalMeasures,
+				chartData,
+				timingCache);
+
 			// "update_trigger"の"Off>OnMin-OnMax"のOff・OnMin・OnMaxのすべてが"on"の場合のトリガタイミングをあらかじめ計算して記録
 			// (これらのうち1つでも"off"の場合はプレイ中に"off"→"on"に変化しうるので事前計算の対象にしない)
-			// 
+			//
 			// 本来はOff・OnMin・OnMaxのそれぞれに対してトリガタイミングを事前計算して、現在がOff・OnMin・OnMaxのいずれの状況かをもとにそれらを使い分ける方が一貫性のある挙動となるが、
 			// 実用上Off基準で考えてしまっても問題が出る場面はほとんどないので、そこまでする必要はない
 			if (paramChange.contains(kUpdateTriggerKey))
@@ -151,12 +162,25 @@ namespace MusicGame::Audio::AudioEffectUtils
 					const float offValue = ksmaudio::AudioEffect::StrToValueSet(ksmaudio::AudioEffect::Type::kSwitch, vStr).off;
 					if (ksmaudio::AudioEffect::ValueAsBool(offValue))
 					{
-						fnInsertTiming(y);
+						const float sec = static_cast<float>(kson::PulseToSec(y, chartData.beat, timingCache));
+						timingSet.insert(sec);
 					}
 				}
 			}
 
 			return timingSet;
+		}
+
+		std::set<float> PrecalculateUpdateTriggerTimingSidechain(const kson::AudioEffectDef& def, const kson::Dict<kson::ByPulse<std::string>>& paramChange, std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+		{
+			return PrecalculateUpdateTriggerTimingByUpdatePeriodKey(
+				def,
+				paramChange,
+				kUpdatePeriodKeySidechain,
+				kUpdatePeriodDefaultSidechain,
+				totalMeasures,
+				chartData,
+				timingCache);
 		}
 	}
 
@@ -179,7 +203,7 @@ namespace MusicGame::Audio::AudioEffectUtils
 			return PrecalculateUpdateTriggerTimingBarLineOnly(totalMeasures, chartData, timingCache);
 
 		case kson::AudioEffectType::Sidechain:
-			return PrecalculateUpdateTriggerTimingBeatOnly(totalMeasures, chartData, timingCache);
+			return PrecalculateUpdateTriggerTimingSidechain(def, paramChange, totalMeasures, chartData, timingCache);
 
 		default:
 			return {};
@@ -203,7 +227,7 @@ namespace MusicGame::Audio::AudioEffectUtils
 			return PrecalculateUpdateTriggerTimingBarLineOnly(totalMeasures, chartData, timingCache);
 
 		case kson::AudioEffectType::Sidechain:
-			return PrecalculateUpdateTriggerTimingBeatOnly(totalMeasures, chartData, timingCache);
+			return PrecalculateUpdateTriggerTimingSidechain(def, {}, totalMeasures, chartData, timingCache);
 
 		default:
 			return {};
