@@ -443,12 +443,12 @@ ON AN "AS IS" BASIS, AND THE COPYRIGHT HOLDER HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 ====================
-KSM Fonts (KSM-JA/KR/SC/TC-Medium)
+KSM Fonts (KSM-JA/SC/TC-Medium)
 ====================
 Component fonts:
 1. Tektur (Modified as Tektur-KSM) - Copyright 2023 The Tektur Project Authors, Modified by K-Shoot MANIA Project
 2. Corporate Logo ver3 - Copyright LOGOTYPE.JP, Based on Source Han Sans (Copyright 2014-2020 Adobe)
-3. Noto Sans JP/KR/SC/TC - Copyright Google Inc. and Adobe Inc.
+3. Noto Sans, Noto Sans JP/KR/SC/TC, Noto Sans Math, Noto Sans Symbols, Noto Music, Arabic, Thai, Hebrew, Cherokee - Copyright Google Inc. and Adobe Inc.
 
 All component fonts are licensed under the SIL Open Font License, Version 1.1.
 
@@ -816,7 +816,7 @@ THE SOFTWARE.
 ====================
 The Parallel Hashmap
 ====================
-Copyright 2018 The Abseil Authors.
+Copyright (c) 2019, Gregory Popovitch - greg7mdp@gmail.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -833,7 +833,7 @@ limitations under the License.
 ====================
 The Parallel Hashmap
 ====================
-Copyright (c) 2019, Gregory Popovitch - greg7mdp@gmail.com
+Copyright 2018 The Abseil Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -1295,11 +1295,6 @@ in this Software without prior written authorization of the copyright holder.
 ====================
 libjpeg-turbo
 ====================
-This software is based in part on the work of the Independent JPEG Group.
-
-====================
-libjpeg-turbo
-====================
 Copyright (C)2009-2021 D. R. Commander. All Rights Reserved.
 Copyright (C)2015 Viktor Szathmáry. All Rights Reserved.
 
@@ -1326,6 +1321,11 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
+
+====================
+libjpeg-turbo
+====================
+This software is based in part on the work of the Independent JPEG Group.
 
 ====================
 libkson
@@ -2086,6 +2086,31 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+====================
+stb_image
+====================
+Copyright (c) 2017 Sean Barrett
+https://github.com/nothings/stb
+Licensed under the MIT License (ALTERNATIVE A of stb's dual license).
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ====================
 stduuid

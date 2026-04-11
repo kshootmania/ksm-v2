@@ -507,6 +507,7 @@
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib\SimpleDialog.hpp" />
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib\Tween.hpp" />
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib\Typewriter.hpp" />
+    <ClInclude Include="ThirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\kson\kson.vcxproj">
