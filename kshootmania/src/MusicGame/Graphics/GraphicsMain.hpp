@@ -63,12 +63,16 @@ namespace MusicGame::Graphics
 
 		const PlayOption m_playOption;
 
+		const double m_layerFrameOriginTimeSec;
+
+		const kson::Pulse m_layerFrameOriginPulse;
+
 		void drawBG(const ViewStatus& viewStatus) const;
 
 		void drawLayer(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus) const;
 
 	public:
-		explicit GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath, const PlayOption& playOption);
+		explicit GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, FilePathView parentPath, const PlayOption& playOption);
 
 		void prepareMovie(double globalOffsetSec);
 

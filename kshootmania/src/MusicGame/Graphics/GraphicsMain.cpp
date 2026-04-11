@@ -264,13 +264,14 @@ namespace MusicGame::Graphics
 			if (duration == 0)
 			{
 				// duration == 0の場合、テンポ同期(1フレーム = 0.035小節)
-				layerFrame = MathUtils::WrappedMod(static_cast<int32>(gameStatus.currentPulse * 1000 / 35 / kson::kResolution4), static_cast<int32>(m_layerFrameTextures[layerTextureIndex].size()));
+				const kson::Pulse relativePulse = gameStatus.currentPulse - m_layerFrameOriginPulse;
+				layerFrame = MathUtils::WrappedMod(static_cast<int32>(relativePulse * 1000 / 35 / kson::kResolution4), static_cast<int32>(m_layerFrameTextures[layerTextureIndex].size()));
 			}
 			else
 			{
 				// duration != 0の場合、固定速度(ミリ秒単位)
 				const double absDuration = std::abs(duration);
-				const double frameTimeMs = gameStatus.currentTimeSec * 1000.0;
+				const double frameTimeMs = (gameStatus.currentTimeSec - m_layerFrameOriginTimeSec) * 1000.0;
 				const int32 frameCount = static_cast<int32>(m_layerFrameTextures[layerTextureIndex].size());
 
 				if (duration > 0)
@@ -289,7 +290,7 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	GraphicsMain::GraphicsMain(const kson::ChartData& chartData, FilePathView parentPath, const PlayOption& playOption)
+	GraphicsMain::GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, FilePathView parentPath, const PlayOption& playOption)
 		: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 		, m_bgBillboardMesh(MeshData::Billboard())
 		, m_bgTextures(LoadBGTextures(chartData, parentPath))
@@ -302,6 +303,8 @@ namespace MusicGame::Graphics
 		, m_laserApproachIndicator(chartData)
 		, m_moviePanel(MovieFilePath(chartData, parentPath), chartData.bg.legacy.movie.offset / 1000.0 / playOption.nonZeroPlaybackSpeed(), playOption.playbackSpeed, playOption.movieEnabled)
 		, m_playOption(playOption)
+		, m_layerFrameOriginTimeSec(-TimeSecBeforeStart(m_moviePanel.isEnabled()).count())
+		, m_layerFrameOriginPulse(static_cast<kson::Pulse>(kson::SecToPulseDouble(m_layerFrameOriginTimeSec, chartData.beat, timingCache)))
 	{
 		// HUDのCanvasパラメータを初期設定
 		const double startBPM = chartData.beat.bpm.contains(0) ? chartData.beat.bpm.at(0) : kDefaultBPM;

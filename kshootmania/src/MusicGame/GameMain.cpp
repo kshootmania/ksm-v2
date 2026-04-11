@@ -259,7 +259,7 @@ namespace MusicGame
 		, m_hardFailedSound("se/play_hardfailed.wav")
 		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache, m_parentPath, createInfo.playOption.effectiveAudioProcDelayMs() / 1000.0, m_chartData.audio.bgm.vol * createInfo.folderConfIni.volumeScale)
 		, m_hispeedSettingMenu(createInfo.playOption.availableHispeedTypes, createInfo.playOption.hispeedSetting, kson::GetEffectiveStdBPM(m_chartData), GetInitialBPM(m_chartData))
-		, m_graphicsMain(m_chartData, m_parentPath, createInfo.playOption)
+		, m_graphicsMain(m_chartData, m_timingCache, m_parentPath, createInfo.playOption)
 	{
 	}
 
