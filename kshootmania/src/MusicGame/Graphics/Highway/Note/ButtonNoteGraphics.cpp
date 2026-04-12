@@ -2,6 +2,7 @@
 #include "NoteGraphicsUtils.hpp"
 #include "MusicGame/Graphics/GraphicsDefines.hpp"
 #include "MusicGame/Camera/CameraMath.hpp"
+#include "Graphics/ImageUtils.hpp"
 
 namespace MusicGame::Graphics
 {
@@ -25,6 +26,12 @@ namespace MusicGame::Graphics
 		double PressedLongNoteSourceY(double currentTimeSec)
 		{
 			return (MathUtils::WrappedFmod(currentTimeSec, 0.1) < 0.05) ? kLongNoteSourceYPressed1 : kLongNoteSourceYPressed2;
+		}
+
+		Texture CreateLongNoteStartTexture(StringView filename)
+		{
+			const Image source{ FileSystem::PathAppend(FsUtils::GetResourcePath(U"imgs"), filename) };
+			return Texture{ ImageUtils::ReplaceBlackWithTransparent(source.clipped(0, static_cast<int32>(kLongNoteStartTextureY), source.width(), kLongNoteStartTextureHeight)) };
 		}
 	}
 
@@ -199,7 +206,8 @@ namespace MusicGame::Graphics
 						? positionStartY - kLongNoteStartTextureHeight
 						: positionStartY;
 					const Vec2 startPosition = offsetPosition + Vec2::Right(centerSplitShiftX) + Vec2::Down(startTextureY);
-					sourceTexture(width * i, kLongNoteStartTextureY, width, kLongNoteStartTextureHeight)
+					const Texture& startTexture = isBT ? m_longBTNoteStartTexture : m_longFXNoteStartTexture;
+					startTexture(width * i, 0, width, kLongNoteStartTextureHeight)
 						.draw(startPosition);
 				}
 			}
@@ -223,6 +231,7 @@ namespace MusicGame::Graphics
 				.sourceSize = { 40, 14 },
 			}))
 		, m_longBTNoteTexture(TextureAsset(kLongBTNoteTextureFilename))
+		, m_longBTNoteStartTexture(CreateLongNoteStartTexture(kLongBTNoteTextureFilename))
 		, m_chipFXNoteTexture(NoteGraphicsUtils::ApplyAlphaToNoteTexture(TextureAsset(kChipFXNoteTextureFilename),
 			{
 				.column = kNumTextureColumnsMainSub,
@@ -234,6 +243,7 @@ namespace MusicGame::Graphics
 				.sourceSize = { 82, 14 },
 			}))
 		, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
+		, m_longFXNoteStartTexture(CreateLongNoteStartTexture(kLongFXNoteTextureFilename))
 	{
 	}
 

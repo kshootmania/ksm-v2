@@ -12,10 +12,12 @@ namespace MusicGame::Graphics
 	private:
 		const TiledTexture m_chipBTNoteTexture;
 		const Texture m_longBTNoteTexture;
+		const Texture m_longBTNoteStartTexture;
 
 		const TiledTexture m_chipFXNoteTexture;
 		const TiledTexture m_chipFXSENoteTexture;
 		const Texture m_longFXNoteTexture;
+		const Texture m_longFXNoteStartTexture;
 
 		void drawChipNotesCommon(const kson::ChartData& chartData, const ViewStatus& viewStatus, const PlayOption& playOption, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const;
 

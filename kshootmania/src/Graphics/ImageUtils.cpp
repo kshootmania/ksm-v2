@@ -32,6 +32,19 @@ namespace ImageUtils
 		return tiles;
 	}
 
+	Image ReplaceBlackWithTransparent(const Image& image)
+	{
+		Image result = image;
+		for (auto& pixel : result)
+		{
+			if (pixel.r == 0 && pixel.g == 0 && pixel.b == 0)
+			{
+				pixel.a = 0;
+			}
+		}
+		return result;
+	}
+
 	Grid<Image> LoadAsTileGrid(FilePathView filePath, Size tileSize)
 	{
 		if (tileSize.x <= 0 || tileSize.y <= 0)
