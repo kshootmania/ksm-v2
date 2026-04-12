@@ -184,9 +184,16 @@ void SelectMenuSongItem::setCanvasParamsCenter([[maybe_unused]] const SelectMenu
 		const FilePath jacketPath = pChartInfo->jacketFilePath();
 		const FilePath iconPath = pChartInfo->iconFilePath();
 
+		const FilePath titleImgPath = pChartInfo->titleImgFilePath();
+		const bool hasTitleImg = !titleImgPath.isEmpty() && FileSystem::IsFile(titleImgPath);
+		const FilePath artistImgPath = pChartInfo->artistImgFilePath();
+		const bool hasArtistImg = !artistImgPath.isEmpty() && FileSystem::IsFile(artistImgPath);
+
 		canvas.setSubCanvasParamValuesByTag(U"center", {
-			{ U"title", pChartInfo->title() },
-			{ U"artist", pChartInfo->artist() },
+			{ U"title", hasTitleImg ? U"" : pChartInfo->title() },
+			{ U"titleImgFilePath", titleImgPath },
+			{ U"artist", hasArtistImg ? U"" : pChartInfo->artist() },
+			{ U"artistImgFilePath", artistImgPath },
 			{ U"bpm", pChartInfo->dispBPM() },
 			{ U"jacketAuthor", pChartInfo->jacketAuthor() },
 			{ U"information", pChartInfo->information() },
@@ -201,8 +208,6 @@ void SelectMenuSongItem::setCanvasParamsCenter([[maybe_unused]] const SelectMenu
 			{ U"iconFilePath", iconPath },
 			{ U"iconActive", !iconPath.isEmpty() && FileSystem::IsFile(iconPath) },
 		});
-
-		// TODO: title_img, artist_imgの設定
 	}
 	else
 	{
@@ -249,13 +254,20 @@ void SelectMenuSongItem::setCanvasParamsTopBottom([[maybe_unused]] const SelectM
 	const FilePath jacketPath = pAltChartInfo->jacketFilePath();
 	const FilePath iconPath = pAltChartInfo->iconFilePath();
 
+	const FilePath titleImgPath = pAltChartInfo->titleImgFilePath();
+	const bool hasTitleImg = !titleImgPath.isEmpty() && FileSystem::IsFile(titleImgPath);
+	const FilePath artistImgPath = pAltChartInfo->artistImgFilePath();
+	const bool hasArtistImg = !artistImgPath.isEmpty() && FileSystem::IsFile(artistImgPath);
+
 	canvas.setSubCanvasParamValuesByTag(tag, {
 		{ U"isSong", true },
 		{ U"isDirectory", false },
 		{ U"isSubDirectory", false },
 		{ U"isCourse", false },
-		{ U"title", pAltChartInfo->title() },
-		{ U"artist", pAltChartInfo->artist() },
+		{ U"title", hasTitleImg ? U"" : pAltChartInfo->title() },
+		{ U"titleImgFilePath", titleImgPath },
+		{ U"artist", hasArtistImg ? U"" : pAltChartInfo->artist() },
+		{ U"artistImgFilePath", artistImgPath },
 		{ U"levelIndex", levelIndex },
 		{ U"medalIndex", medalIndex },
 		{ U"highScoreGradeIndex", highScoreGradeIndex },
@@ -265,8 +277,6 @@ void SelectMenuSongItem::setCanvasParamsTopBottom([[maybe_unused]] const SelectM
 		{ U"iconFilePath", iconPath },
 		{ U"iconActive", !iconPath.isEmpty() && FileSystem::IsFile(iconPath) },
 	});
-
-	// TODO: title_img, artist_imgの設定
 }
 
 void SelectMenuSongItem::showInFileManager(int32 difficultyIdx) const

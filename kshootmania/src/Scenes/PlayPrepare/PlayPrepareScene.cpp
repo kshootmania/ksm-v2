@@ -69,9 +69,42 @@ PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAuto
 	const FilePath parentPath = FileSystem::ParentPath(chartFilePath);
 	const FilePath jacketPath = FsUtils::ResolveJacketPath(parentPath, Unicode::FromUTF8(m_chartData.meta.jacketFilename));
 
+	String title = Unicode::FromUTF8(m_chartData.meta.title);
+	String artist = Unicode::FromUTF8(m_chartData.meta.artist);
+	FilePath titleImgPath;
+	FilePath artistImgPath;
+
+	if (!m_chartData.meta.titleImgFilename.empty())
+	{
+		titleImgPath = FileSystem::PathAppend(parentPath, Unicode::FromUTF8(m_chartData.meta.titleImgFilename));
+		if (FileSystem::IsFile(titleImgPath))
+		{
+			title = U"";
+		}
+		else
+		{
+			titleImgPath.clear();
+		}
+	}
+
+	if (!m_chartData.meta.artistImgFilename.empty())
+	{
+		artistImgPath = FileSystem::PathAppend(parentPath, Unicode::FromUTF8(m_chartData.meta.artistImgFilename));
+		if (FileSystem::IsFile(artistImgPath))
+		{
+			artist = U"";
+		}
+		else
+		{
+			artistImgPath.clear();
+		}
+	}
+
 	m_canvas->setParamValues({
-		{ U"title", Unicode::FromUTF8(m_chartData.meta.title) },
-		{ U"artist", Unicode::FromUTF8(m_chartData.meta.artist) },
+		{ U"title", title },
+		{ U"titleImgFilePath", titleImgPath },
+		{ U"artist", artist },
+		{ U"artistImgFilePath", artistImgPath },
 		{ U"levelNumber", Format(m_chartData.meta.level) },
 		{ U"bpmNumber", Format(static_cast<int32>(startBPM)) },
 		{ U"difficultyIndex", m_chartData.meta.difficulty.idx },

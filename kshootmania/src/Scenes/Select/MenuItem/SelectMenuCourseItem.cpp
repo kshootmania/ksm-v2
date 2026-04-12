@@ -139,6 +139,8 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 				int32 levelIdx = 0;
 				FilePath chartJacketPath;
 				bool chartJacketActive = false;
+				FilePath songTitleImgPath;
+				FilePath artistNameImgPath;
 
 				if (FileSystem::Exists(chart.absolutePath))
 				{
@@ -153,12 +155,40 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 						chartDifficultyIdx = chartData.meta.difficulty.idx;
 						levelIdx = chartData.meta.level - 1;
 
+						const FilePath chartDir = FileSystem::ParentPath(chart.absolutePath);
+
 						if (!chartData.meta.jacketFilename.empty())
 						{
 							chartJacketPath = FsUtils::ResolveJacketPath(
-								FileSystem::ParentPath(chart.absolutePath),
+								chartDir,
 								Unicode::FromUTF8(chartData.meta.jacketFilename));
 							chartJacketActive = !chartJacketPath.isEmpty() && FileSystem::IsFile(chartJacketPath);
+						}
+
+						if (!chartData.meta.titleImgFilename.empty())
+						{
+							songTitleImgPath = FileSystem::PathAppend(chartDir, Unicode::FromUTF8(chartData.meta.titleImgFilename));
+							if (FileSystem::IsFile(songTitleImgPath))
+							{
+								songTitle = U"";
+							}
+							else
+							{
+								songTitleImgPath.clear();
+							}
+						}
+
+						if (!chartData.meta.artistImgFilename.empty())
+						{
+							artistNameImgPath = FileSystem::PathAppend(chartDir, Unicode::FromUTF8(chartData.meta.artistImgFilename));
+							if (FileSystem::IsFile(artistNameImgPath))
+							{
+								artistName = U"";
+							}
+							else
+							{
+								artistNameImgPath.clear();
+							}
 						}
 					}
 					else
@@ -173,7 +203,9 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 					U"ui/parts/select_course_chart_item.noco",
 					{
 						{ U"songTitle", songTitle },
+						{ U"songTitleImgFilePath", songTitleImgPath },
 						{ U"artistName", artistName },
+						{ U"artistNameImgFilePath", artistNameImgPath },
 						{ U"difficultyIndex", chartDifficultyIdx },
 						{ U"levelIndex", levelIdx },
 						{ U"jacketFilePath", chartJacketPath },

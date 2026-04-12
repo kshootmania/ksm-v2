@@ -296,9 +296,43 @@ namespace MusicGame::Graphics
 	{
 		// HUDのCanvasパラメータを初期設定
 		const double startBPM = chartData.beat.bpm.contains(0) ? chartData.beat.bpm.at(0) : kDefaultBPM;
+
+		String title = Unicode::FromUTF8(chartData.meta.title);
+		String artist = Unicode::FromUTF8(chartData.meta.artist);
+		FilePath titleImgPath;
+		FilePath artistImgPath;
+
+		if (!chartData.meta.titleImgFilename.empty())
+		{
+			titleImgPath = FileSystem::PathAppend(parentPath, Unicode::FromUTF8(chartData.meta.titleImgFilename));
+			if (FileSystem::IsFile(titleImgPath))
+			{
+				title = U"";
+			}
+			else
+			{
+				titleImgPath.clear();
+			}
+		}
+
+		if (!chartData.meta.artistImgFilename.empty())
+		{
+			artistImgPath = FileSystem::PathAppend(parentPath, Unicode::FromUTF8(chartData.meta.artistImgFilename));
+			if (FileSystem::IsFile(artistImgPath))
+			{
+				artist = U"";
+			}
+			else
+			{
+				artistImgPath.clear();
+			}
+		}
+
 		m_hudCanvas->setParamValues({
-			{ U"title", Unicode::FromUTF8(chartData.meta.title) },
-			{ U"artist", Unicode::FromUTF8(chartData.meta.artist) },
+			{ U"title", title },
+			{ U"titleImgFilePath", titleImgPath },
+			{ U"artist", artist },
+			{ U"artistImgFilePath", artistImgPath },
 			{ U"levelNumber", Format(chartData.meta.level) },
 			{ U"bpmNumber", FormatBPM(startBPM) },
 			{ U"difficultyIndex", chartData.meta.difficulty.idx },

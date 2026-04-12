@@ -46,6 +46,24 @@ String SelectChartInfo::artist() const
 	return Unicode::FromUTF8(m_chartData.meta.artist);
 }
 
+FilePath SelectChartInfo::titleImgFilePath() const
+{
+	if (m_chartData.meta.titleImgFilename.empty())
+	{
+		return FilePath{};
+	}
+	return toFullPath(m_chartData.meta.titleImgFilename);
+}
+
+FilePath SelectChartInfo::artistImgFilePath() const
+{
+	if (m_chartData.meta.artistImgFilename.empty())
+	{
+		return FilePath{};
+	}
+	return toFullPath(m_chartData.meta.artistImgFilename);
+}
+
 FilePath SelectChartInfo::jacketFilePath() const
 {
 	return FsUtils::ResolveJacketPath(FileSystem::ParentPath(m_chartFilePath), Unicode::FromUTF8(m_chartData.meta.jacketFilename));

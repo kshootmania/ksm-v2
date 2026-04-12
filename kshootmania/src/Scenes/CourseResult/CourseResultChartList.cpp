@@ -103,9 +103,16 @@ void CourseResultChartList::refreshCanvasParams(const CoursePlayState& courseSta
 
 		const SelectChartInfo chartInfo{ chartPath };
 
+		const FilePath titleImgPath = chartInfo.titleImgFilePath();
+		const bool hasTitleImg = !titleImgPath.isEmpty() && FileSystem::IsFile(titleImgPath);
+		const FilePath artistImgPath = chartInfo.artistImgFilePath();
+		const bool hasArtistImg = !artistImgPath.isEmpty() && FileSystem::IsFile(artistImgPath);
+
 		m_canvas->setSubCanvasParamValuesByTag(U"chartItem{}"_fmt(i + 1), {
-			{ U"title", chartInfo.title() },
-			{ U"artist", chartInfo.artist() },
+			{ U"title", hasTitleImg ? U"" : chartInfo.title() },
+			{ U"titleImgFilePath", titleImgPath },
+			{ U"artist", hasArtistImg ? U"" : chartInfo.artist() },
+			{ U"artistImgFilePath", artistImgPath },
 			{ U"jacketFilePath", chartInfo.jacketFilePath() },
 			{ U"difficultyIndex", static_cast<double>(chartInfo.difficultyIdx()) },
 			{ U"levelNumber", U"{}"_fmt(chartInfo.level()) },
