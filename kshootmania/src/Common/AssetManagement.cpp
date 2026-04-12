@@ -44,6 +44,14 @@ namespace AssetManagement
 			}
 		}
 
+		void RegisterPixelShaderAssets()
+		{
+			const FilePath shaderDir = FsUtils::GetResourcePath(U"shaders");
+			PixelShaderAsset::Register(U"MonochromeAlpha",
+				HLSL{ FilePath{ FileSystem::PathAppend(shaderDir, U"monochrome_alpha.hlsl") }, U"PS" }
+				| GLSL{ FilePath{ FileSystem::PathAppend(shaderDir, U"monochrome_alpha.frag") }, { { U"PSConstants2D", 0 } } });
+		}
+
 		void RegisterFontAssets()
 		{
 			const FilePath fontPath = GetFontPathForCurrentLanguage();
@@ -71,6 +79,7 @@ namespace AssetManagement
 		// 注意: アセットの実際のロードはここではなく、各シーンでの使用時に実施される
 		RegisterTextureAssets();
 		RegisterAudioAssets();
+		RegisterPixelShaderAssets();
 		// フォントは言語読み込み後にRefreshSystemFontForCurrentLanguage()で登録される
 	}
 
