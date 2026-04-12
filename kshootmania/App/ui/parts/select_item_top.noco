@@ -404,7 +404,8 @@
                     100.0,
                     100.0
                   ],
-                  "type": "Sprite"
+                  "type": "Sprite",
+                  "textureFilePath_paramRef": "jacketFilePath"
                 }
               ],
               "decelerationRate": 0.2,
@@ -471,7 +472,8 @@
               },
               "verticalScrollable": false,
               "wheelScrollEnabled": true,
-              "zOrderInSiblings": 0
+              "zOrderInSiblings": 0,
+              "activeSelf_paramRef": "jacketActive"
             },
             {
               "activeSelf": true,
@@ -1031,7 +1033,8 @@
                     100.0,
                     100.0
                   ],
-                  "type": "Sprite"
+                  "type": "Sprite",
+                  "textureFilePath_paramRef": "iconFilePath"
                 }
               ],
               "decelerationRate": 0.2,
@@ -1098,7 +1101,8 @@
               },
               "verticalScrollable": false,
               "wheelScrollEnabled": true,
-              "zOrderInSiblings": 0
+              "zOrderInSiblings": 0,
+              "activeSelf_paramRef": "iconActive"
             }
           ],
           "childrenLayout": {
@@ -2430,7 +2434,8 @@
                     100.0,
                     100.0
                   ],
-                  "type": "Sprite"
+                  "type": "Sprite",
+                  "textureFilePath_paramRef": "iconFilePath"
                 }
               ],
               "decelerationRate": 0.2,
@@ -2497,7 +2502,8 @@
               },
               "verticalScrollable": false,
               "wheelScrollEnabled": true,
-              "zOrderInSiblings": 0
+              "zOrderInSiblings": 0,
+              "activeSelf_paramRef": "iconActive"
             }
           ],
           "childrenLayout": {
@@ -2794,6 +2800,22 @@
     "title": {
       "type": "String",
       "value": "title"
+    },
+    "jacketFilePath": {
+      "type": "String",
+      "value": ""
+    },
+    "jacketActive": {
+      "type": "Bool",
+      "value": true
+    },
+    "iconFilePath": {
+      "type": "String",
+      "value": ""
+    },
+    "iconActive": {
+      "type": "Bool",
+      "value": true
     }
   },
   "referenceSize": [

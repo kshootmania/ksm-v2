@@ -376,7 +376,7 @@
               "textureAddressMode": "Default",
               "textureAssetName": "",
               "textureFilePath": "",
-              "textureFilePath_paramRef": "jacketImageFilePath",
+              "textureFilePath_paramRef": "jacketFilePath",
               "textureFilter": "Default",
               "textureGridCellSize": [
                 32.0,
@@ -1250,10 +1250,6 @@
       "type": "Number",
       "value": 6.0
     },
-    "jacketImageFilePath": {
-      "type": "String",
-      "value": "imgs/jacket/nowprinting1.jpg"
-    },
     "levelNumber": {
       "type": "String",
       "value": "15"
@@ -1265,6 +1261,10 @@
     "title": {
       "type": "String",
       "value": "title"
+    },
+    "jacketFilePath": {
+      "type": "String",
+      "value": "imgs/jacket/nowprinting1.jpg"
     }
   },
   "referenceSize": [

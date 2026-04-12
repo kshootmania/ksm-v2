@@ -66,6 +66,9 @@ PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAuto
 	// ハイスピード設定でHighwayScrollを更新
 	m_highwayScroll.update(m_hispeedMenu.hispeedSetting(), startBPM);
 
+	const FilePath parentPath = FileSystem::ParentPath(chartFilePath);
+	const FilePath jacketPath = FsUtils::ResolveJacketPath(parentPath, Unicode::FromUTF8(m_chartData.meta.jacketFilename));
+
 	m_canvas->setParamValues({
 		{ U"title", Unicode::FromUTF8(m_chartData.meta.title) },
 		{ U"artist", Unicode::FromUTF8(m_chartData.meta.artist) },
@@ -74,31 +77,8 @@ PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAuto
 		{ U"difficultyIndex", m_chartData.meta.difficulty.idx },
 		{ U"hispeedValue", MusicGame::HispeedUtils::ToDisplayString(m_hispeedMenu.hispeedSetting()) },
 		{ U"hispeedValueEffective", Format(m_highwayScroll.currentHispeed()) },
+		{ U"jacketFilePath", jacketPath },
 	});
-
-	// ジャケット画像を設定
-	const FilePath parentPath = FileSystem::ParentPath(chartFilePath);
-	const String jacketFilename = Unicode::FromUTF8(m_chartData.meta.jacketFilename);
-	FilePath jacketPath;
-
-	// 拡張子なしの場合はimgs/jacket内の画像を使用
-	if (FileSystem::Extension(jacketFilename).isEmpty())
-	{
-		jacketPath = FileSystem::PathAppend(U"imgs/jacket", jacketFilename + U".jpg");
-	}
-	else
-	{
-		jacketPath = FileSystem::PathAppend(parentPath, jacketFilename);
-	}
-
-	const Texture jacketTexture{ jacketPath };
-	if (const auto jacketNode = m_canvas->findByName(U"Jacket"))
-	{
-		if (const auto sprite = jacketNode->getComponent<noco::Sprite>())
-		{
-			sprite->setTexture(jacketTexture);
-		}
-	}
 }
 
 Co::Task<void> PlayPrepareScene::start()

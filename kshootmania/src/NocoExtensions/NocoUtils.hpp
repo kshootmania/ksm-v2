@@ -62,6 +62,9 @@ namespace NocoUtils
 	[[nodiscard]]
 	std::shared_ptr<noco::Node> GetSubCanvasNodeByName(noco::Canvas* pCanvas, StringView tag, StringView nodeName);
 
+	/// @brief imgsフォルダ外のテクスチャキャッシュをクリア
+	void UnloadExternalTextures();
+
 	/// @brief SubCanvas内のコンポーネントを名前で取得
 	/// @tparam TComponent 取得するコンポーネントの型
 	/// @param pCanvas キャンバスのポインタ

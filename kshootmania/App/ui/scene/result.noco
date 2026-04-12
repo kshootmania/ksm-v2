@@ -751,7 +751,8 @@
                 100.0,
                 100.0
               ],
-              "type": "Sprite"
+              "type": "Sprite",
+              "textureFilePath_paramRef": "jacketFilePath"
             }
           ],
           "decelerationRate": 0.2,
@@ -818,7 +819,8 @@
           },
           "verticalScrollable": false,
           "wheelScrollEnabled": true,
-          "zOrderInSiblings": 0
+          "zOrderInSiblings": 0,
+          "activeSelf_paramRef": "jacketActive"
         },
         {
           "activeSelf": true,
@@ -3658,6 +3660,14 @@
     "songTitle": {
       "type": "String",
       "value": "songTitle"
+    },
+    "jacketFilePath": {
+      "type": "String",
+      "value": ""
+    },
+    "jacketActive": {
+      "type": "Bool",
+      "value": true
     }
   },
   "referenceSize": [

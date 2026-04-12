@@ -88,7 +88,8 @@
             100.0,
             100.0
           ],
-          "type": "Sprite"
+          "type": "Sprite",
+          "textureFilePath_paramRef": "jacketFilePath"
         }
       ],
       "decelerationRate": 0.2,
@@ -3179,6 +3180,10 @@
     "title": {
       "type": "String",
       "value": "title"
+    },
+    "jacketFilePath": {
+      "type": "String",
+      "value": ""
     }
   },
   "referenceSize": [

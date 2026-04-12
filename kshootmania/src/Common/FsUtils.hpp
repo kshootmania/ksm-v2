@@ -95,4 +95,18 @@ namespace FsUtils
 	/// @return kson形式の拡張子の場合true
 	[[nodiscard]]
 	bool HasKsonExtension(FilePathView filePath);
+
+	/// @brief ジャケット画像のファイルパスを解決
+	/// @param parentPath 譜面ファイルの親ディレクトリ
+	/// @param jacketFilename ジャケットファイル名(拡張子なしの場合はimgs/jacket内を参照)
+	/// @return 解決後の絶対パス(jacketFilenameが空の場合は空文字列)
+	[[nodiscard]]
+	FilePath ResolveJacketPath(FilePathView parentPath, StringView jacketFilename);
+
+	/// @brief アイコン画像のファイルパスを解決
+	/// @param parentPath 譜面ファイルの親ディレクトリ
+	/// @param iconFilename アイコンファイル名(拡張子なしの場合はimgs/icon内を参照)
+	/// @return 解決後の絶対パス(iconFilenameが空の場合は空文字列)
+	[[nodiscard]]
+	FilePath ResolveIconPath(FilePathView parentPath, StringView iconFilename);
 }

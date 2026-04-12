@@ -32,8 +32,6 @@ struct SelectMenuEventContext
 	std::function<void(FilePath)> fnOpenFavoriteFolder;
 	std::function<void()> fnOpenCoursesFolder;
 	std::function<void()> fnCloseFolder;
-	std::function<const Texture&(FilePathView)> fnGetJacketTexture;
-	std::function<const Texture&(FilePathView)> fnGetIconTexture;
 	std::function<void()> fnMoveToNextSubDirSection;
 	std::function<void()> fnMoveToPrevSubDirSection;
 	std::function<void(int32)> fnChangeDifficulty;
@@ -64,10 +62,6 @@ private:
 	const ksmaudio::Sample m_difficultySelectSe{"se/sel_l.wav"};
 
 	const ksmaudio::Sample m_folderSelectSe{"se/sel_dir.wav"};
-
-	HashTable<String, Texture> m_jacketTextureCache;
-
-	HashTable<String, Texture> m_iconTextureCache;
 
 	bool openDirectory(FilePathView directoryPath, PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::Yes, SaveToConfigIniYN saveToConfigIni = SaveToConfigIniYN::Yes);
 
@@ -136,12 +130,6 @@ public:
 	bool empty() const;
 
 	void fadeOutSongPreviewForExit(Duration duration);
-
-	[[nodiscard]]
-	const Texture& getJacketTexture(FilePathView filePath);
-
-	[[nodiscard]]
-	const Texture& getIconTexture(FilePathView filePath);
 
 	void reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::No);
 

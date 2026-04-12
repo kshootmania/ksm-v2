@@ -92,7 +92,7 @@ void CourseResultChartList::refreshCanvasParams(const CoursePlayState& courseSta
 			m_canvas->setSubCanvasParamValuesByTag(U"chartItem{}"_fmt(i + 1), {
 				{ U"title", U"---" },
 				{ U"artist", U"---" },
-				{ U"jacketImageFilePath", U"" },
+				{ U"jacketFilePath", U"" },
 				{ U"difficultyIndex", 0 },
 				{ U"levelNumber", U"0" },
 				{ U"gradeIndex", static_cast<double>(GradeToIndex(result.grade())) },
@@ -106,7 +106,7 @@ void CourseResultChartList::refreshCanvasParams(const CoursePlayState& courseSta
 		m_canvas->setSubCanvasParamValuesByTag(U"chartItem{}"_fmt(i + 1), {
 			{ U"title", chartInfo.title() },
 			{ U"artist", chartInfo.artist() },
-			{ U"jacketImageFilePath", chartInfo.jacketFilePath() },
+			{ U"jacketFilePath", chartInfo.jacketFilePath() },
 			{ U"difficultyIndex", static_cast<double>(chartInfo.difficultyIdx()) },
 			{ U"levelNumber", U"{}"_fmt(chartInfo.level()) },
 			{ U"gradeIndex", static_cast<double>(GradeToIndex(result.grade())) },

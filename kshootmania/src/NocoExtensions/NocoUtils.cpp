@@ -2,6 +2,14 @@
 
 namespace NocoUtils
 {
+	void UnloadExternalTextures()
+	{
+		noco::Asset::UnloadTexturesIf([](const auto& pair)
+		{
+			return !pair.first.starts_with(U"imgs/");
+		});
+	}
+
 	Co::Task<void> WaitForTweenByTag(std::shared_ptr<noco::Canvas> canvas, const char32* tag)
 	{
 		co_await Co::WaitUntil([canvas, tag]

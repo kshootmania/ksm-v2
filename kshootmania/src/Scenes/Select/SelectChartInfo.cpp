@@ -48,7 +48,7 @@ String SelectChartInfo::artist() const
 
 FilePath SelectChartInfo::jacketFilePath() const
 {
-	return toFullPath(m_chartData.meta.jacketFilename);
+	return FsUtils::ResolveJacketPath(FileSystem::ParentPath(m_chartFilePath), Unicode::FromUTF8(m_chartData.meta.jacketFilename));
 }
 
 String SelectChartInfo::jacketAuthor() const
@@ -133,7 +133,7 @@ double SelectChartInfo::previewBGMVolume() const
 
 FilePath SelectChartInfo::iconFilePath() const
 {
-	return toFullPath(m_chartData.meta.iconFilename);
+	return FsUtils::ResolveIconPath(FileSystem::ParentPath(m_chartFilePath), Unicode::FromUTF8(m_chartData.meta.iconFilename));
 }
 
 String SelectChartInfo::information() const

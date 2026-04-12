@@ -15,6 +15,7 @@
 #include "Common/Encoding.hpp"
 #include "Input/PlatformKey.hpp"
 #include "Course/CourseInfo.hpp"
+#include "NocoExtensions/NocoUtils.hpp"
 
 namespace
 {
@@ -463,8 +464,7 @@ bool SelectMenu::openDirectoryWithNameSort(FilePathView directoryPath)
 		}
 
 		m_menu.clear();
-		m_jacketTextureCache.clear();
-		m_iconTextureCache.clear();
+		NocoUtils::UnloadExternalTextures();
 
 		// ディレクトリの見出し項目を追加
 		m_menu.push_back(std::make_unique<SelectMenuDirFolderItem>(IsCurrentFolderYN::Yes, FileSystem::FullPath(directoryPath)));
@@ -537,8 +537,7 @@ bool SelectMenu::openDirectoryWithNameSort(FilePathView directoryPath)
 	else
 	{
 		m_menu.clear();
-		m_jacketTextureCache.clear();
-		m_iconTextureCache.clear();
+		NocoUtils::UnloadExternalTextures();
 
 		m_folderState.folderType = SelectFolderState::kNone;
 		m_folderState.fullPath = U"";
@@ -669,8 +668,6 @@ SelectMenu::SelectMenu(const std::shared_ptr<noco::Canvas>& selectSceneCanvas, s
 			.fnOpenFavoriteFolder = [this](FilePath specialPath) { openFavoriteFolder(specialPath, PlaySeYN::Yes); },
 			.fnOpenCoursesFolder = [this]() { openCoursesFolder(PlaySeYN::Yes); },
 			.fnCloseFolder = [this]() { closeFolder(PlaySeYN::Yes); },
-			.fnGetJacketTexture = [this](FilePathView path) -> const Texture& { return getJacketTexture(path); },
-			.fnGetIconTexture = [this](FilePathView path) -> const Texture& { return getIconTexture(path); },
 			.fnMoveToNextSubDirSection = [this]() { moveToNextSubDirSection(); },
 			.fnMoveToPrevSubDirSection = [this]() { moveToPrevSubDirSection(); },
 			.fnChangeDifficulty = [this](int32 newDifficultyIdx)
@@ -1057,70 +1054,6 @@ void SelectMenu::refreshHighScoreDisplay()
 	refreshContentCanvasParams();
 }
 
-const Texture& SelectMenu::getJacketTexture(FilePathView filePath)
-{
-	if (auto it = m_jacketTextureCache.find(filePath); it != m_jacketTextureCache.end())
-	{
-		return it->second;
-	}
-
-	Texture texture;
-	FilePath actualFilePath{ filePath };
-
-	// 拡張子なしの場合はimgs/jacket内の画像を使用
-	if (FileSystem::Extension(actualFilePath).isEmpty())
-	{
-		const String baseName = FileSystem::BaseName(actualFilePath);
-		if (!baseName.isEmpty())
-		{
-			actualFilePath = FileSystem::PathAppend(U"imgs/jacket", baseName + U".jpg");
-		}
-	}
-
-	if (FileSystem::IsFile(actualFilePath))
-	{
-		texture = Texture{ actualFilePath };
-	}
-	else
-	{
-		Logger << U"[ksm warning] SelectMenu::getJacketTexture: Jacket image file not found (filePath:'{}')"_fmt(filePath);
-	}
-
-	return m_jacketTextureCache.emplace(filePath, std::move(texture)).first->second;
-}
-
-const Texture& SelectMenu::getIconTexture(FilePathView filePath)
-{
-	if (auto it = m_iconTextureCache.find(filePath); it != m_iconTextureCache.end())
-	{
-		return it->second;
-	}
-
-	Texture texture;
-	FilePath actualFilePath{ filePath };
-
-	// 拡張子なしの場合はimgs/icon内の画像を使用
-	if (FileSystem::Extension(actualFilePath).isEmpty())
-	{
-		const String baseName = FileSystem::BaseName(actualFilePath);
-		if (!baseName.isEmpty())
-		{
-			actualFilePath = FileSystem::PathAppend(U"imgs/icon", baseName + U".png");
-		}
-	}
-
-	if (FileSystem::IsFile(actualFilePath))
-	{
-		texture = Texture{ actualFilePath };
-	}
-	else
-	{
-		Logger << U"[ksm warning] SelectMenu::getIconTexture: Icon image file not found (filePath:'{}')"_fmt(filePath);
-	}
-
-	return m_iconTextureCache.emplace(filePath, std::move(texture)).first->second;
-}
-
 void SelectMenu::moveToNextSubDirSection()
 {
 	if (m_menu.empty())
@@ -1423,8 +1356,7 @@ bool SelectMenu::openDirectoryWithLevelSort(FilePathView directoryPath)
 		}
 
 		m_menu.clear();
-		m_jacketTextureCache.clear();
-		m_iconTextureCache.clear();
+		NocoUtils::UnloadExternalTextures();
 
 		// ディレクトリの見出し項目を追加
 		m_menu.push_back(std::make_unique<SelectMenuDirFolderItem>(IsCurrentFolderYN::Yes, FileSystem::FullPath(directoryPath)));
@@ -1465,8 +1397,7 @@ bool SelectMenu::openDirectoryWithLevelSort(FilePathView directoryPath)
 	else
 	{
 		m_menu.clear();
-		m_jacketTextureCache.clear();
-		m_iconTextureCache.clear();
+		NocoUtils::UnloadExternalTextures();
 
 		m_folderState.folderType = SelectFolderState::kNone;
 		m_folderState.fullPath = U"";
@@ -1547,8 +1478,7 @@ bool SelectMenu::openAllFolderWithNameSort()
 	};
 
 	m_menu.clear();
-	m_jacketTextureCache.clear();
-	m_iconTextureCache.clear();
+	NocoUtils::UnloadExternalTextures();
 
 	// Allフォルダの見出し項目を追加
 	m_menu.push_back(std::make_unique<SelectMenuAllFolderItem>(IsCurrentFolderYN::Yes));
@@ -1632,8 +1562,7 @@ bool SelectMenu::openAllFolderWithNameSort()
 bool SelectMenu::openAllFolderWithLevelSort()
 {
 	m_menu.clear();
-	m_jacketTextureCache.clear();
-	m_iconTextureCache.clear();
+	NocoUtils::UnloadExternalTextures();
 
 	// Allフォルダの見出し項目を追加
 	m_menu.push_back(std::make_unique<SelectMenuAllFolderItem>(IsCurrentFolderYN::Yes));
@@ -1737,8 +1666,7 @@ bool SelectMenu::openFavoriteFolderWithNameSort(FilePathView specialPath)
 	}
 
 	m_menu.clear();
-	m_jacketTextureCache.clear();
-	m_iconTextureCache.clear();
+	NocoUtils::UnloadExternalTextures();
 
 	// お気に入りフォルダの見出し項目を追加
 	m_menu.push_back(std::make_unique<SelectMenuFavFolderItem>(IsCurrentFolderYN::Yes, specialPath));
@@ -1816,8 +1744,7 @@ bool SelectMenu::openFavoriteFolderWithLevelSort(FilePathView specialPath)
 	}
 
 	m_menu.clear();
-	m_jacketTextureCache.clear();
-	m_iconTextureCache.clear();
+	NocoUtils::UnloadExternalTextures();
 
 	// お気に入りフォルダの見出し項目を追加
 	m_menu.push_back(std::make_unique<SelectMenuFavFolderItem>(IsCurrentFolderYN::Yes, specialPath));
@@ -1935,8 +1862,7 @@ bool SelectMenu::openCoursesFolder(PlaySeYN playSe, RefreshSongPreviewYN refresh
 bool SelectMenu::openCoursesFolderWithNameSort()
 {
 	m_menu.clear();
-	m_jacketTextureCache.clear();
-	m_iconTextureCache.clear();
+	NocoUtils::UnloadExternalTextures();
 
 	// コースフォルダの見出し項目を追加
 	m_menu.push_back(std::make_unique<SelectMenuCoursesFolderItem>(IsCurrentFolderYN::Yes));
@@ -1974,8 +1900,7 @@ bool SelectMenu::openCoursesFolderWithNameSort()
 bool SelectMenu::openCoursesFolderWithLevelSort()
 {
 	m_menu.clear();
-	m_jacketTextureCache.clear();
-	m_iconTextureCache.clear();
+	NocoUtils::UnloadExternalTextures();
 
 	// コースフォルダの見出し項目を追加
 	m_menu.push_back(std::make_unique<SelectMenuCoursesFolderItem>(IsCurrentFolderYN::Yes));

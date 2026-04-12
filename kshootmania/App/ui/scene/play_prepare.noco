@@ -243,7 +243,8 @@
             100.0,
             100.0
           ],
-          "type": "Sprite"
+          "type": "Sprite",
+          "textureFilePath_paramRef": "jacketFilePath"
         },
         {
           "active": true,
@@ -1678,7 +1679,7 @@
           1.0
         ],
         "posDelta": [
-          -0.0,
+          0.0,
           0.0
         ],
         "sizeDelta": [
@@ -1764,6 +1765,10 @@
     "title": {
       "type": "String",
       "value": "title"
+    },
+    "jacketFilePath": {
+      "type": "String",
+      "value": ""
     }
   },
   "referenceSize": [

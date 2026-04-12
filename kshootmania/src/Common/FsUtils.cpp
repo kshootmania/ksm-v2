@@ -154,4 +154,34 @@ namespace FsUtils
 	{
 		return FileSystem::Extension(filePath) == kKSONExtension;
 	}
+
+	FilePath ResolveJacketPath(FilePathView parentPath, StringView jacketFilename)
+	{
+		if (jacketFilename.isEmpty())
+		{
+			return U"";
+		}
+
+		if (FileSystem::Extension(jacketFilename).isEmpty())
+		{
+			return FileSystem::PathAppend(U"imgs/jacket", String{ jacketFilename } + U".jpg");
+		}
+
+		return FileSystem::PathAppend(parentPath, jacketFilename);
+	}
+
+	FilePath ResolveIconPath(FilePathView parentPath, StringView iconFilename)
+	{
+		if (iconFilename.isEmpty())
+		{
+			return U"";
+		}
+
+		if (FileSystem::Extension(iconFilename).isEmpty())
+		{
+			return FileSystem::PathAppend(U"imgs/icon", String{ iconFilename } + U".png");
+		}
+
+		return FileSystem::PathAppend(parentPath, iconFilename);
+	}
 }

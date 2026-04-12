@@ -362,35 +362,12 @@ ResultScene::ResultScene(const ResultSceneArgs& args)
 	updateCanvasParams();
 
 	// ジャケット画像を設定
-	FilePath jacketFilePath = FileSystem::PathAppend(FileSystem::ParentPath(args.chartFilePath), Unicode::FromUTF8(m_chartData.meta.jacketFilename));
-
-	// 拡張子なしの場合はimgs/jacket内の画像を使用
-	if (FileSystem::Extension(jacketFilePath).isEmpty())
-	{
-		const String baseName = FileSystem::BaseName(jacketFilePath);
-		if (!baseName.isEmpty())
-		{
-			jacketFilePath = FileSystem::PathAppend(U"imgs/jacket", baseName + U".jpg");
-		}
-	}
-
-	Texture jacketTexture;
-	if (FileSystem::IsFile(jacketFilePath))
-	{
-		jacketTexture = Texture{ jacketFilePath };
-	}
-
-	if (const auto jacketNode = m_canvas->findByName(U"JacketImage"))
-	{
-		if (const auto sprite = jacketNode->getComponent<noco::Sprite>())
-		{
-			sprite->setTexture(jacketTexture);
-			if (jacketTexture.isEmpty())
-			{
-				sprite->setColor(ColorF{ 0.0, 0.0 });
-			}
-		}
-	}
+	const FilePath jacketPath = FsUtils::ResolveJacketPath(FileSystem::ParentPath(args.chartFilePath), Unicode::FromUTF8(m_chartData.meta.jacketFilename));
+	const bool jacketExists = !jacketPath.isEmpty() && FileSystem::IsFile(jacketPath);
+	m_canvas->setParamValues({
+		{ U"jacketFilePath", jacketPath },
+		{ U"jacketActive", jacketExists },
+	});
 
 	m_bgmStream.play();
 

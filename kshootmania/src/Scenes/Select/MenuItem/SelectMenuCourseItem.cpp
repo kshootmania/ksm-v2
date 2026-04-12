@@ -101,6 +101,8 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 	const int32 achievementRate = info.percent(kscKey.gaugeType);
 
 	// コース情報を設定
+	const FilePath iconPath = m_courseInfo.iconPath;
+
 	canvas.setSubCanvasParamValuesByTag(U"center", {
 		{ U"title", m_courseInfo.title },
 		{ U"artist", U"COURSE ({} charts)"_fmt(m_courseInfo.chartCount()) },
@@ -113,31 +115,13 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 		{ U"highScoreGradeIndex", -1 },
 		{ U"highScore", U"" },
 		{ U"gaugePercentage", ToString(achievementRate) },
+		{ U"iconFilePath", iconPath },
+		{ U"iconActive", !iconPath.isEmpty() && FileSystem::IsFile(iconPath) },
 	});
 
 	// Course用のノードを取得
 	if (const auto courseNode = NocoUtils::GetSubCanvasNodeByName(&canvas, U"center", U"Course"))
 	{
-		// アイコン画像を設定
-		if (const auto iconNode = courseNode->findByName(U"Icon"))
-		{
-			if (m_courseInfo.iconPath.isEmpty())
-			{
-				// アイコンが指定されていない場合は非表示
-				iconNode->setActive(false);
-			}
-			else
-			{
-				// アイコンが指定されている場合はテクスチャロードして表示
-				const Texture iconTexture = context.fnGetIconTexture(m_courseInfo.iconPath);
-				iconNode->setActive(!iconTexture.isEmpty());
-				if (const auto sprite = iconNode->getComponent<noco::Sprite>())
-				{
-					sprite->setTexture(iconTexture);
-				}
-			}
-		}
-
 		// コースの各曲をSubCanvasノードとして追加
 		if (const auto chartItemRoot = courseNode->findByName(U"ChartItemRoot"))
 		{
@@ -153,7 +137,8 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 				String artistName = U"---";
 				int32 chartDifficultyIdx = 0;
 				int32 levelIdx = 0;
-				Optional<kson::MetaChartData> chartDataOpt;
+				FilePath chartJacketPath;
+				bool chartJacketActive = false;
 
 				if (FileSystem::Exists(chart.absolutePath))
 				{
@@ -167,7 +152,14 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 						artistName = Unicode::FromUTF8(chartData.meta.artist);
 						chartDifficultyIdx = chartData.meta.difficulty.idx;
 						levelIdx = chartData.meta.level - 1;
-						chartDataOpt = chartData;
+
+						if (!chartData.meta.jacketFilename.empty())
+						{
+							chartJacketPath = FsUtils::ResolveJacketPath(
+								FileSystem::ParentPath(chart.absolutePath),
+								Unicode::FromUTF8(chartData.meta.jacketFilename));
+							chartJacketActive = !chartJacketPath.isEmpty() && FileSystem::IsFile(chartJacketPath);
+						}
 					}
 					else
 					{
@@ -177,44 +169,16 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 					}
 				}
 
-				const auto& node = chartItemRoot->addSubCanvasNodeAsChild(
+				chartItemRoot->addSubCanvasNodeAsChild(
 					U"ui/parts/select_course_chart_item.noco",
 					{
 						{ U"songTitle", songTitle },
 						{ U"artistName", artistName },
 						{ U"difficultyIndex", chartDifficultyIdx },
 						{ U"levelIndex", levelIdx },
+						{ U"jacketFilePath", chartJacketPath },
+						{ U"jacketActive", chartJacketActive },
 					});
-
-				if (const auto subCanvas = node->getComponent<noco::SubCanvas>())
-				{
-					if (auto itemCanvas = subCanvas->canvas())
-					{
-						if (const auto jacketSprite = NocoUtils::GetComponentByPath<noco::Sprite>(itemCanvas.get(), { U"SelectCourseChartItem", U"Jacket" }))
-						{
-							if (chartDataOpt.has_value() && !chartDataOpt->meta.jacketFilename.empty())
-							{
-								const FilePath jacketPath = FileSystem::PathAppend(
-									FileSystem::ParentPath(chart.absolutePath),
-									Unicode::FromUTF8(chartDataOpt->meta.jacketFilename));
-								const Texture jacketTexture = context.fnGetJacketTexture(jacketPath);
-								jacketSprite->setTexture(jacketTexture);
-								if (jacketTexture.isEmpty())
-								{
-									jacketSprite->setColor(ColorF{ 0.0, 0.0 });
-								}
-								else
-								{
-									jacketSprite->setColor(Palette::White);
-								}
-							}
-							else
-							{
-								jacketSprite->setColor(ColorF{ 0.0, 0.0 });
-							}
-						}
-					}
-				}
 			}
 
 			chartItemRoot->setVerticalScrollable(true);
@@ -232,6 +196,8 @@ void SelectMenuCourseItem::setCanvasParamsTopBottom([[maybe_unused]] const Selec
 	const int32 medalIndex = static_cast<int32>(info.medal());
 	const int32 achievementRate = info.percent(kscKey.gaugeType);
 
+	const FilePath iconPath = m_courseInfo.iconPath;
+
 	canvas.setSubCanvasParamValuesByTag(tag, {
 		{ U"isSong", false },
 		{ U"isDirectory", false },
@@ -243,30 +209,9 @@ void SelectMenuCourseItem::setCanvasParamsTopBottom([[maybe_unused]] const Selec
 		{ U"medalIndex", medalIndex },
 		{ U"highScoreGradeIndex", -1 },
 		{ U"gaugePercentage", ToString(achievementRate) },
+		{ U"iconFilePath", iconPath },
+		{ U"iconActive", !iconPath.isEmpty() && FileSystem::IsFile(iconPath) },
 	});
-
-	// Course用のノードを取得してアイコン画像を設定
-	if (const auto courseNode = NocoUtils::GetSubCanvasNodeByName(&canvas, tag, U"Course"))
-	{
-		if (const auto iconNode = courseNode->findByName(U"Icon"))
-		{
-			if (m_courseInfo.iconPath.isEmpty())
-			{
-				// アイコンが指定されていない場合は非表示
-				iconNode->setActive(false);
-			}
-			else
-			{
-				// アイコンが指定されている場合はテクスチャロードして表示
-				const Texture iconTexture = context.fnGetIconTexture(m_courseInfo.iconPath);
-				iconNode->setActive(!iconTexture.isEmpty());
-				if (const auto sprite = iconNode->getComponent<noco::Sprite>())
-				{
-					sprite->setTexture(iconTexture);
-				}
-			}
-		}
-	}
 }
 
 void SelectMenuCourseItem::showInFileManager([[maybe_unused]] int32 difficultyIdx) const

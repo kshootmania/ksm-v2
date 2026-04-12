@@ -209,18 +209,6 @@ namespace MusicGame::Graphics
 			return canvas;
 		}
 
-		FilePath GetJacketPath(FilePathView parentPath, const String& jacketFilename)
-		{
-			if (FileSystem::Extension(jacketFilename).isEmpty())
-			{
-				return FileSystem::PathAppend(U"imgs/jacket", jacketFilename + U".jpg");
-			}
-			else
-			{
-				return FileSystem::PathAppend(parentPath, jacketFilename);
-			}
-		}
-
 		constexpr double kPreStartOffsetSec = 3.4;
 		constexpr double kPreStartOffsetWithMovieSec = 4.4;
 	}
@@ -316,18 +304,8 @@ namespace MusicGame::Graphics
 			{ U"difficultyIndex", chartData.meta.difficulty.idx },
 			{ U"hispeedValue", HispeedUtils::ToDisplayString(playOption.hispeedSetting) },
 			{ U"hispeedValueEffective", Format(playOption.hispeedSetting.value) },
+			{ U"jacketFilePath", FsUtils::ResolveJacketPath(parentPath, Unicode::FromUTF8(chartData.meta.jacketFilename)) },
 		});
-
-		// ジャケット画像をSpriteに設定
-		const String jacketFilename = Unicode::FromUTF8(chartData.meta.jacketFilename);
-		const Texture jacketTexture{ GetJacketPath(parentPath, jacketFilename) };
-		if (const auto jacketNode = m_hudCanvas->findByName(U"Jacket"))
-		{
-			if (const auto sprite = jacketNode->getComponent<noco::Sprite>())
-			{
-				sprite->setTexture(jacketTexture);
-			}
-		}
 	}
 
 	void GraphicsMain::prepareMovie(double globalOffsetSec)
