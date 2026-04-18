@@ -442,6 +442,17 @@ namespace MusicGame::Judgment
 	{
 		// 直角LASERはまだカーソルが出ていなくても先行判定するので、カーソルの存在チェックはしない
 
+		// 既に判定済みの直角LASERをスキップしてカーソルを進める
+		while (m_slamJudgmentArrayCursor != m_slamJudgmentArray.end())
+		{
+			const auto& [_, judgmentRef] = *m_slamJudgmentArrayCursor;
+			if (judgmentRef.result() == JudgmentResult::kUnspecified)
+			{
+				break;
+			}
+			++m_slamJudgmentArrayCursor;
+		}
+
 		if (m_slamJudgmentArrayCursor == m_slamJudgmentArray.end())
 		{
 			// 残りの直角LASER判定がない場合は何もしない
@@ -454,12 +465,6 @@ namespace MusicGame::Judgment
 
 		// 移動量を現在判定対象になっている直角LASERへ反映
 		auto& [laserSlamPulse, laserSlamJudgmentRef] = *m_slamJudgmentArrayCursor;
-
-		// 既に判定済みの場合は何もしない
-		if (laserSlamJudgmentRef.result() != JudgmentResult::kUnspecified)
-		{
-			return;
-		}
 
 		laserSlamJudgmentRef.addDeltaCursorX(deltaCursorX, currentTimeSec);
 
