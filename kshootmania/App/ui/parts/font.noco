@@ -1,0 +1,566 @@
+﻿{
+  "autoFitMode": "MatchSize",
+  "children": [
+    {
+      "activeSelf": true,
+      "activeSelf_paramRef": "hasShadow",
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "addColor_paramRef": "shadowColor",
+          "blendMode": "Normal",
+          "characterSet": "0123456789\nABCDEFGHIJ\nKLMNOPQRST\nUVWXYZ!?.,\n:<>()\"'+-/\n ",
+          "characterSize": [
+            64.0,
+            64.0
+          ],
+          "characterSize_paramRef": "characterSize",
+          "characterSpacing": [
+            4.0,
+            0.0
+          ],
+          "characterSpacing_paramRef": "characterSpacing",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "horizontalAlign": "Left",
+          "horizontalAlign_paramRef": "horizontalAlign",
+          "horizontalOverflow": "Wrap",
+          "padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "padding_paramRef": "padding",
+          "preserveAspect": false,
+          "sizingMode": "AutoShrinkWidthResizeHeight",
+          "sizingMode_paramRef": "sizingMode",
+          "text": "",
+          "text_paramRef": "text",
+          "textureAddressMode": "Clamp",
+          "textureAssetName": "",
+          "textureCellSize": [
+            64.0,
+            64.0
+          ],
+          "textureCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureCellTrimByCharacterJSON": "{\" \":[25.0,25.0,0.0,0.0],\"!\":[18.0,17.0,0.0,0.0],\"\\\"\":[19.0,18.0,0.0,0.0],\"'\":[25.0,23.0,0.0,0.0],\"(\":[19.0,18.0,0.0,0.0],\")\":[19.0,18.0,0.0,0.0],\"+\":[13.0,14.0,0.0,0.0],\",\":[23.0,25.0,0.0,0.0],\"-\":[14.0,13.0,0.0,0.0],\".\":[22.0,25.0,0.0,0.0],\"/\":[11.0,9.0,0.0,0.0],\"0\":[8.0,6.0,0.0,0.0],\"1\":[19.0,19.0,0.0,0.0],\"2\":[8.0,6.0,0.0,0.0],\"3\":[8.0,6.0,0.0,0.0],\"4\":[8.0,6.0,0.0,0.0],\"5\":[8.0,6.0,0.0,0.0],\"6\":[8.0,6.0,0.0,0.0],\"7\":[8.0,6.0,0.0,0.0],\"8\":[7.0,7.0,0.0,0.0],\"9\":[7.0,7.0,0.0,0.0],\":\":[24.0,23.0,0.0,0.0],\"<\":[16.0,15.0,0.0,0.0],\">\":[16.0,15.0,0.0,0.0],\"?\":[14.0,12.0,0.0,0.0],\"A\":[8.0,6.0,0.0,0.0],\"B\":[8.0,6.0,0.0,0.0],\"C\":[8.0,6.0,0.0,0.0],\"D\":[8.0,6.0,0.0,0.0],\"E\":[8.0,6.0,0.0,0.0],\"F\":[8.0,6.0,0.0,0.0],\"G\":[8.0,6.0,0.0,0.0],\"H\":[8.0,6.0,0.0,0.0],\"I\":[15.0,16.0,0.0,0.0],\"J\":[7.0,7.0,0.0,0.0],\"K\":[8.0,6.0,0.0,0.0],\"L\":[8.0,6.0,0.0,0.0],\"M\":[5.0,4.0,0.0,0.0],\"N\":[7.0,7.0,0.0,0.0],\"O\":[8.0,6.0,0.0,0.0],\"P\":[8.0,6.0,0.0,0.0],\"Q\":[8.0,6.0,0.0,0.0],\"R\":[8.0,6.0,0.0,0.0],\"S\":[7.0,7.0,0.0,0.0],\"T\":[7.0,8.0,0.0,0.0],\"U\":[8.0,7.0,0.0,0.0],\"V\":[8.0,6.0,0.0,0.0],\"W\":[5.0,4.0,0.0,0.0],\"X\":[8.0,6.0,0.0,0.0],\"Y\":[8.0,6.0,0.0,0.0],\"Z\":[8.0,6.0,0.0,0.0]}",
+          "textureCellTrimClip": false,
+          "textureFilePath": "imgs/font_shadow.png",
+          "textureFilter": "Default",
+          "textureGridColumns": 10,
+          "textureGridRows": 6,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "type": "TextureFontLabel",
+          "verticalAlign": "Middle",
+          "verticalAlign_paramRef": "verticalAlign",
+          "verticalOverflow": "Overflow"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "FontShadow",
+      "region": {
+        "anchorMax": [
+          1.0,
+          0.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          0.0,
+          64.0
+        ],
+        "sizeDeltaPivot": [
+          0.0,
+          0.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "activeSelf_paramRef": "isNormal",
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "characterSet": "0123456789\nABCDEFGHIJ\nKLMNOPQRST\nUVWXYZ!?.,\n:<>()\"'+-/\n ",
+          "characterSize": [
+            64.0,
+            64.0
+          ],
+          "characterSize_paramRef": "characterSize",
+          "characterSpacing": [
+            4.0,
+            0.0
+          ],
+          "characterSpacing_paramRef": "characterSpacing",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "color_paramRef": "color",
+          "horizontalAlign": "Left",
+          "horizontalAlign_paramRef": "horizontalAlign",
+          "horizontalOverflow": "Wrap",
+          "padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "padding_paramRef": "padding",
+          "preserveAspect": false,
+          "sizingMode": "AutoShrinkWidthResizeHeight",
+          "sizingMode_paramRef": "sizingMode",
+          "text": "",
+          "text_paramRef": "text",
+          "textureAddressMode": "Clamp",
+          "textureAssetName": "",
+          "textureCellSize": [
+            64.0,
+            64.0
+          ],
+          "textureCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureCellTrimByCharacterJSON": "{\" \":[25.0,25.0,0.0,0.0],\"!\":[18.0,17.0,0.0,0.0],\"\\\"\":[19.0,18.0,0.0,0.0],\"'\":[25.0,23.0,0.0,0.0],\"(\":[19.0,18.0,0.0,0.0],\")\":[19.0,18.0,0.0,0.0],\"+\":[13.0,14.0,0.0,0.0],\",\":[23.0,25.0,0.0,0.0],\"-\":[14.0,13.0,0.0,0.0],\".\":[22.0,25.0,0.0,0.0],\"/\":[11.0,9.0,0.0,0.0],\"0\":[8.0,6.0,0.0,0.0],\"1\":[19.0,19.0,0.0,0.0],\"2\":[8.0,6.0,0.0,0.0],\"3\":[8.0,6.0,0.0,0.0],\"4\":[8.0,6.0,0.0,0.0],\"5\":[8.0,6.0,0.0,0.0],\"6\":[8.0,6.0,0.0,0.0],\"7\":[8.0,6.0,0.0,0.0],\"8\":[7.0,7.0,0.0,0.0],\"9\":[7.0,7.0,0.0,0.0],\":\":[24.0,23.0,0.0,0.0],\"<\":[16.0,15.0,0.0,0.0],\">\":[16.0,15.0,0.0,0.0],\"?\":[14.0,12.0,0.0,0.0],\"A\":[8.0,6.0,0.0,0.0],\"B\":[8.0,6.0,0.0,0.0],\"C\":[8.0,6.0,0.0,0.0],\"D\":[8.0,6.0,0.0,0.0],\"E\":[8.0,6.0,0.0,0.0],\"F\":[8.0,6.0,0.0,0.0],\"G\":[8.0,6.0,0.0,0.0],\"H\":[8.0,6.0,0.0,0.0],\"I\":[15.0,16.0,0.0,0.0],\"J\":[7.0,7.0,0.0,0.0],\"K\":[8.0,6.0,0.0,0.0],\"L\":[8.0,6.0,0.0,0.0],\"M\":[5.0,4.0,0.0,0.0],\"N\":[7.0,7.0,0.0,0.0],\"O\":[8.0,6.0,0.0,0.0],\"P\":[8.0,6.0,0.0,0.0],\"Q\":[8.0,6.0,0.0,0.0],\"R\":[8.0,6.0,0.0,0.0],\"S\":[7.0,7.0,0.0,0.0],\"T\":[7.0,8.0,0.0,0.0],\"U\":[8.0,7.0,0.0,0.0],\"V\":[8.0,6.0,0.0,0.0],\"W\":[5.0,4.0,0.0,0.0],\"X\":[8.0,6.0,0.0,0.0],\"Y\":[8.0,6.0,0.0,0.0],\"Z\":[8.0,6.0,0.0,0.0]}",
+          "textureCellTrimClip": false,
+          "textureFilePath": "imgs/font.png",
+          "textureFilter": "Default",
+          "textureGridColumns": 10,
+          "textureGridRows": 6,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "type": "TextureFontLabel",
+          "verticalAlign": "Middle",
+          "verticalAlign_paramRef": "verticalAlign",
+          "verticalOverflow": "Overflow"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "Font",
+      "region": {
+        "anchorMax": [
+          1.0,
+          0.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          0.0,
+          64.0
+        ],
+        "sizeDeltaPivot": [
+          0.0,
+          0.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": false,
+      "activeSelf_paramRef": "isTitle",
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "characterSet": "0123456789\nABCDEFGHIJ\nKLMNOPQRST\nUVWXYZ!?.,\n:<>()\"'+-/\n ",
+          "characterSize": [
+            64.0,
+            64.0
+          ],
+          "characterSize_paramRef": "characterSize",
+          "characterSpacing": [
+            4.0,
+            0.0
+          ],
+          "characterSpacing_paramRef": "characterSpacing",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "color_paramRef": "color",
+          "horizontalAlign": "Left",
+          "horizontalAlign_paramRef": "horizontalAlign",
+          "horizontalOverflow": "Wrap",
+          "padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "padding_paramRef": "padding",
+          "preserveAspect": false,
+          "sizingMode": "AutoShrinkWidthResizeHeight",
+          "sizingMode_paramRef": "sizingMode",
+          "text": "",
+          "text_paramRef": "text",
+          "textureAddressMode": "Clamp",
+          "textureAssetName": "",
+          "textureCellSize": [
+            64.0,
+            64.0
+          ],
+          "textureCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureCellTrimByCharacterJSON": "{\" \":[25.0,25.0,0.0,0.0],\"!\":[18.0,17.0,0.0,0.0],\"\\\"\":[19.0,18.0,0.0,0.0],\"'\":[25.0,23.0,0.0,0.0],\"(\":[19.0,18.0,0.0,0.0],\")\":[19.0,18.0,0.0,0.0],\"+\":[13.0,14.0,0.0,0.0],\",\":[23.0,25.0,0.0,0.0],\"-\":[14.0,13.0,0.0,0.0],\".\":[22.0,25.0,0.0,0.0],\"/\":[11.0,9.0,0.0,0.0],\"0\":[8.0,6.0,0.0,0.0],\"1\":[19.0,19.0,0.0,0.0],\"2\":[8.0,6.0,0.0,0.0],\"3\":[8.0,6.0,0.0,0.0],\"4\":[8.0,6.0,0.0,0.0],\"5\":[8.0,6.0,0.0,0.0],\"6\":[8.0,6.0,0.0,0.0],\"7\":[8.0,6.0,0.0,0.0],\"8\":[7.0,7.0,0.0,0.0],\"9\":[7.0,7.0,0.0,0.0],\":\":[24.0,23.0,0.0,0.0],\"<\":[16.0,15.0,0.0,0.0],\">\":[16.0,15.0,0.0,0.0],\"?\":[14.0,12.0,0.0,0.0],\"A\":[8.0,6.0,0.0,0.0],\"B\":[8.0,6.0,0.0,0.0],\"C\":[8.0,6.0,0.0,0.0],\"D\":[8.0,6.0,0.0,0.0],\"E\":[8.0,6.0,0.0,0.0],\"F\":[8.0,6.0,0.0,0.0],\"G\":[8.0,6.0,0.0,0.0],\"H\":[8.0,6.0,0.0,0.0],\"I\":[15.0,16.0,0.0,0.0],\"J\":[7.0,7.0,0.0,0.0],\"K\":[8.0,6.0,0.0,0.0],\"L\":[8.0,6.0,0.0,0.0],\"M\":[5.0,4.0,0.0,0.0],\"N\":[7.0,7.0,0.0,0.0],\"O\":[8.0,6.0,0.0,0.0],\"P\":[8.0,6.0,0.0,0.0],\"Q\":[8.0,6.0,0.0,0.0],\"R\":[8.0,6.0,0.0,0.0],\"S\":[7.0,7.0,0.0,0.0],\"T\":[7.0,8.0,0.0,0.0],\"U\":[8.0,7.0,0.0,0.0],\"V\":[8.0,6.0,0.0,0.0],\"W\":[5.0,4.0,0.0,0.0],\"X\":[8.0,6.0,0.0,0.0],\"Y\":[8.0,6.0,0.0,0.0],\"Z\":[8.0,6.0,0.0,0.0]}",
+          "textureCellTrimClip": false,
+          "textureFilePath": "imgs/font_title.png",
+          "textureFilter": "Default",
+          "textureGridColumns": 10,
+          "textureGridRows": 6,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "type": "TextureFontLabel",
+          "verticalAlign": "Middle",
+          "verticalAlign_paramRef": "verticalAlign",
+          "verticalOverflow": "Overflow"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "FontTitle",
+      "region": {
+        "anchorMax": [
+          1.0,
+          0.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          0.0,
+          64.0
+        ],
+        "sizeDeltaPivot": [
+          0.0,
+          0.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    }
+  ],
+  "childrenLayout": {
+    "horizontalAlign": "Left",
+    "padding": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "spacing": [
+      0.0,
+      0.0
+    ],
+    "type": "FlowLayout",
+    "verticalAlign": "Top"
+  },
+  "defaultFontAssetName": "",
+  "params": {
+    "characterSize": {
+      "type": "Vec2",
+      "value": [
+        64.0,
+        64.0
+      ]
+    },
+    "characterSpacing": {
+      "type": "Vec2",
+      "value": [
+        2.0,
+        0.0
+      ]
+    },
+    "color": {
+      "type": "Color",
+      "value": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "hasShadow": {
+      "type": "Bool",
+      "value": false
+    },
+    "horizontalAlign": {
+      "type": "String",
+      "value": "Left"
+    },
+    "isNormal": {
+      "type": "Bool",
+      "value": true
+    },
+    "isTitle": {
+      "type": "Bool",
+      "value": false
+    },
+    "padding": {
+      "type": "LRTB",
+      "value": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "shadowColor": {
+      "type": "Color",
+      "value": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "sizingMode": {
+      "type": "String",
+      "value": "AutoShrinkWidthResizeHeight"
+    },
+    "text": {
+      "type": "String",
+      "value": "TEXT"
+    },
+    "verticalAlign": {
+      "type": "String",
+      "value": "Middle"
+    }
+  },
+  "referenceSize": [
+    400.0,
+    64.0
+  ],
+  "serializedVersion": 7,
+  "version": "0.3.3"
+}

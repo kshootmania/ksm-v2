@@ -29,9 +29,7 @@ private:
 
 	PlayStatsPanel m_playStatsPanel;
 
-	FavoriteAddDialog m_favoriteAddDialog;
-
-	FavoriteRemoveDialog m_favoriteRemoveDialog;
+	Optional<Co::ScopedTaskRunner> m_dialogRunner;
 
 	// Startボタン長押し検出
 	Stopwatch m_startKeyPressStopwatch;
@@ -48,11 +46,6 @@ private:
 	void updateAlphabetJump();
 
 	void updateStartKeyLongPress();
-
-	void updateDialogs();
-
-	[[nodiscard]]
-	bool anyDialogVisible() const;
 
 public:
 	SelectScene();

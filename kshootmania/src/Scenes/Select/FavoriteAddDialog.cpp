@@ -2,6 +2,8 @@
 #include "Common/FsUtils.hpp"
 #include "Common/Encoding.hpp"
 #include "Input/Cursor/CursorInput.hpp"
+#include "Input/KeyConfig.hpp"
+#include "Graphics/ScreenUtils.hpp"
 
 namespace
 {
@@ -20,69 +22,89 @@ namespace
 
 		return 9;
 	}
-
-	FilePath GetFavoriteFilePath(int32 favoriteNumber)
-	{
-		const FilePath songsDir = FsUtils::SongsDirectoryPath();
-		return FileSystem::PathAppend(songsDir, U"Favorite{}.fav"_fmt(favoriteNumber));
-	}
 }
 
-FavoriteAddDialog::FavoriteAddDialog(const std::shared_ptr<noco::Canvas>& canvas)
-	: m_canvas(canvas)
-	, m_menu(LinearMenu::CreateInfoWithCursorMinMax{
+FavoriteAddDialog::FavoriteAddDialog()
+	: m_menu(LinearMenu::CreateInfoWithCursorMinMax{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Vertical,
 			.buttonFlags = CursorButtonFlags::kArrowOrBT,
 		},
 		.cursorMin = 1,
-		.cursorMax = 1, // show()時に動的に設定
+		.cursorMax = 1,
 		.cyclic = IsCyclicMenuYN::Yes,
 		.defaultCursor = 1,
 	})
-	, m_maxSelectableNumber(1)
 {
 }
 
-void FavoriteAddDialog::show()
+Co::Task<Optional<int32>> FavoriteAddDialog::start()
 {
-	m_maxSelectableNumber = CalculateMaxSelectableNumber();
-	m_menu.setCursorMax(m_maxSelectableNumber);
+	// Canvasをロード
+	const FilePath uiFilePath = FsUtils::GetResourcePath(U"ui/dialog/favorite_add_dialog.noco");
+	m_canvas = noco::Canvas::LoadFromFile(uiFilePath);
+	if (!m_canvas)
+	{
+		co_return none;
+	}
+
+	// 最大選択可能番号を算出してメニュー設定
+	const int32 maxNumber = CalculateMaxSelectableNumber();
+	m_menu.setCursorMax(maxNumber);
 	m_menu.setCursor(1);
 
-	m_isVisible = true;
-	m_canvas->setParamValue(U"dialog_favoriteAddDialogVisible", true);
+	// 選択確定までループ
+	while (true)
+	{
+		m_menu.update();
+
+		// Canvasパラメータに反映(UIは0始まりなので-1)
+		m_canvas->setParamValue(U"numberIndex", m_menu.cursor() - 1);
+
+		m_canvas->update(m_canvas->referenceSize());
+
+		if (KeyConfig::Down(kButtonStart))
+		{
+			co_return m_menu.cursor();
+		}
+
+		if (KeyConfig::Down(kButtonBack))
+		{
+			co_return none;
+		}
+
+		co_await Co::NextFrame();
+	}
 }
 
-void FavoriteAddDialog::hide()
+void FavoriteAddDialog::draw() const
 {
-	m_isVisible = false;
-	m_canvas->setParamValue(U"dialog_favoriteAddDialogVisible", false);
-}
-
-bool FavoriteAddDialog::isVisible() const
-{
-	return m_isVisible;
-}
-
-void FavoriteAddDialog::update()
-{
-	if (!m_isVisible)
+	if (!m_canvas)
 	{
 		return;
 	}
 
-	m_menu.update();
+	const Transformer2D resetTransform{ Mat3x2::Identity(), Transformer2D::Target::SetLocal };
 
-	// Canvasパラメータに反映(UIは0始まりなので-1)
-	m_canvas->setParamValue(
-		U"dialog_favoriteAddDialogNumberIndex",
-		static_cast<double>(m_menu.cursor() - 1));
+	// 半透明オーバーレイ
+	Scene::Rect().draw(ColorF{ 0.0, 0.0, 0.0, 0.5 });
+
+	// ダイアログを画面中央にスケーリング描画
+	const double scale = ScreenUtils::Scaled(1.0);
+	const Vec2 dialogSize = m_canvas->referenceSize() * scale;
+	const Vec2 pos = (Scene::Size() - dialogSize) / 2.0;
+	const Transformer2D dialogTransform{ Mat3x2::Scale(scale).translated(pos) };
+	m_canvas->draw();
 }
 
-bool FavoriteAddDialog::addToFavorite(StringView songPath)
+FilePath GetFavoriteFilePath(int32 favoriteNumber)
 {
-	const int32 favoriteNumber = m_menu.cursor();
+	const FilePath songsDir = FsUtils::SongsDirectoryPath();
+	return FileSystem::PathAppend(songsDir, U"Favorite{}.fav"_fmt(favoriteNumber));
+}
+
+bool AddSongToFavorite(int32 favoriteNumber, StringView songPath)
+{
 	const FilePath favPath = GetFavoriteFilePath(favoriteNumber);
 
 	// パス区切りは/に統一
@@ -128,9 +150,4 @@ bool FavoriteAddDialog::addToFavorite(StringView songPath)
 	}
 
 	return true;
-}
-
-int32 FavoriteAddDialog::selectedNumber() const
-{
-	return m_menu.cursor();
 }

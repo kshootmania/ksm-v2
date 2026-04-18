@@ -251,6 +251,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\UI\LinearMenu.cpp" />
+    <ClCompile Include="src\UI\SimpleDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -496,7 +497,9 @@
     <ClInclude Include="src\Scenes\Title\TitleScene.hpp" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\UI\ArrayWithLinearMenu.hpp" />
+    <ClInclude Include="src\UI\DialogBase.hpp" />
     <ClInclude Include="src\UI\LinearMenu.hpp" />
+    <ClInclude Include="src\UI\SimpleDialog.hpp" />
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib.hpp" />
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib\Core.hpp" />
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib\Ease.hpp" />

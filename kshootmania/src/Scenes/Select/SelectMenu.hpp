@@ -36,6 +36,7 @@ struct SelectMenuEventContext
 	std::function<void()> fnMoveToPrevSubDirSection;
 	std::function<void(int32)> fnChangeDifficulty;
 	std::function<void(int32, int32)> fnJumpToItemWithDifficulty;
+	std::function<void(StringView)> fnShowErrorDialog;
 };
 
 class SelectMenu
@@ -108,7 +109,10 @@ private:
 	void addOtherFolderItemsSimple();
 
 public:
-	explicit SelectMenu(const std::shared_ptr<noco::Canvas>& selectSceneCanvas, std::function<void(FilePathView, MusicGame::IsAutoPlayYN, const Optional<CoursePlayState>&)> fnMoveToPlayScene);
+	explicit SelectMenu(
+		const std::shared_ptr<noco::Canvas>& selectSceneCanvas,
+		std::function<void(FilePathView, MusicGame::IsAutoPlayYN, const Optional<CoursePlayState>&)> fnMoveToPlayScene,
+		std::function<void(StringView)> fnShowErrorDialog);
 
 	~SelectMenu(); // ヘッダではISelectMenuItemが不完全型なのでソースファイル側で定義
 

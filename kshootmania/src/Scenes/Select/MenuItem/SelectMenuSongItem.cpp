@@ -82,7 +82,7 @@ void SelectMenuSongItem::decide(const SelectMenuEventContext& context, int32 dif
 	// 譜面ファイルの存在チェック
 	if (!FileSystem::Exists(chartFilePath))
 	{
-		MessageBoxUtils::ShowOK(I18n::Get(I18n::Play::ErrorChartFileNotFound), MessageBoxStyle::Error);
+		context.fnShowErrorDialog(I18n::Get(I18n::Play::ErrorChartFileNotFound));
 		return;
 	}
 
@@ -109,7 +109,7 @@ void SelectMenuSongItem::decideAutoPlay(const SelectMenuEventContext& context, i
 	// 譜面ファイルの存在チェック
 	if (!FileSystem::Exists(chartFilePath))
 	{
-		MessageBoxUtils::ShowOK(I18n::Get(I18n::Play::ErrorChartFileNotFound), MessageBoxStyle::Error);
+		context.fnShowErrorDialog(I18n::Get(I18n::Play::ErrorChartFileNotFound));
 		return;
 	}
 

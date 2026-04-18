@@ -659,7 +659,10 @@ void SelectMenu::playShakeDownTween()
 	m_selectSceneCanvas->setTweenActiveByTag(U"shakeDown", true);
 }
 
-SelectMenu::SelectMenu(const std::shared_ptr<noco::Canvas>& selectSceneCanvas, std::function<void(FilePathView, MusicGame::IsAutoPlayYN, const Optional<CoursePlayState>&)> fnMoveToPlayScene)
+SelectMenu::SelectMenu(
+	const std::shared_ptr<noco::Canvas>& selectSceneCanvas,
+	std::function<void(FilePathView, MusicGame::IsAutoPlayYN, const Optional<CoursePlayState>&)> fnMoveToPlayScene,
+	std::function<void(StringView)> fnShowErrorDialog)
 	: m_eventContext
 		{
 			.fnMoveToPlayScene = [fnMoveToPlayScene](FilePath path, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState) { fnMoveToPlayScene(path, isAutoPlay, courseState); },
@@ -691,6 +694,7 @@ SelectMenu::SelectMenu(const std::shared_ptr<noco::Canvas>& selectSceneCanvas, s
 					playShakeUpTween();
 				}
 			},
+			.fnShowErrorDialog = std::move(fnShowErrorDialog),
 		}
 	, m_selectSceneCanvas(selectSceneCanvas)
 	, m_menu(

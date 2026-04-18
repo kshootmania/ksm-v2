@@ -1,0 +1,232 @@
+﻿{
+  "autoFitMode": "MatchSize",
+  "children": [
+    {
+      "name": "Body",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": false,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          0,
+          0
+        ],
+        "sizeDelta": [
+          288,
+          96
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ]
+      },
+      "components": [
+        {
+          "type": "Sprite",
+          "textureFilePath": "imgs/msel_fav_add.png",
+          "textureSize": [
+            100,
+            100
+          ]
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
+    },
+    {
+      "name": "Number",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": false,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          75,
+          5
+        ],
+        "sizeDelta": [
+          33,
+          33
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ]
+      },
+      "components": [
+        {
+          "type": "Sprite",
+          "textureFilePath": "imgs/msel_fav_add_num.png",
+          "textureSize": [
+            100,
+            100
+          ],
+          "textureRegionMode": "Grid",
+          "textureGridColumns": 1,
+          "textureGridRows": 9,
+          "textureGridIndex": 0,
+          "textureGridCellSize": [
+            66,
+            66
+          ],
+          "textureGridIndex_paramRef": "numberIndex"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
+    }
+  ],
+  "childrenLayout": {
+    "horizontalAlign": "Left",
+    "padding": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "spacing": [
+      0,
+      0
+    ],
+    "type": "FlowLayout",
+    "verticalAlign": "Top"
+  },
+  "defaultFontAssetName": "System",
+  "params": {
+    "numberIndex": {
+      "type": "Number",
+      "value": 0
+    }
+  },
+  "referenceSize": [
+    288.0,
+    96.0
+  ],
+  "serializedVersion": 7,
+  "version": "0.3.3"
+}

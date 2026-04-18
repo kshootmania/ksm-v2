@@ -35,7 +35,7 @@ void SelectMenuCourseItem::decide(const SelectMenuEventContext& context, [[maybe
 	// コースの全譜面が存在するかチェック
 	if (!m_courseInfo.isValid())
 	{
-		MessageBoxUtils::ShowOK(I18n::Get(I18n::Play::ErrorSomeChartMissingInCourse), MessageBoxStyle::Error);
+		context.fnShowErrorDialog(I18n::Get(I18n::Play::ErrorSomeChartMissingInCourse));
 		return;
 	}
 
@@ -43,7 +43,7 @@ void SelectMenuCourseItem::decide(const SelectMenuEventContext& context, [[maybe
 	const FilePath firstChartPath = m_courseInfo.charts[0].absolutePath;
 	if (!FileSystem::Exists(firstChartPath))
 	{
-		MessageBoxUtils::ShowOK(I18n::Get(I18n::Play::ErrorChartFileNotFound), MessageBoxStyle::Error);
+		context.fnShowErrorDialog(I18n::Get(I18n::Play::ErrorChartFileNotFound));
 		return;
 	}
 
@@ -58,7 +58,7 @@ void SelectMenuCourseItem::decideAutoPlay(const SelectMenuEventContext& context,
 	// コースの全譜面が存在するかチェック
 	if (!m_courseInfo.isValid())
 	{
-		MessageBoxUtils::ShowOK(I18n::Get(I18n::Play::ErrorSomeChartMissingInCourse), MessageBoxStyle::Error);
+		context.fnShowErrorDialog(I18n::Get(I18n::Play::ErrorSomeChartMissingInCourse));
 		return;
 	}
 
@@ -66,7 +66,7 @@ void SelectMenuCourseItem::decideAutoPlay(const SelectMenuEventContext& context,
 	const FilePath firstChartPath = m_courseInfo.charts[0].absolutePath;
 	if (!FileSystem::Exists(firstChartPath))
 	{
-		MessageBoxUtils::ShowOK(I18n::Get(I18n::Play::ErrorChartFileNotFound), MessageBoxStyle::Error);
+		context.fnShowErrorDialog(I18n::Get(I18n::Play::ErrorChartFileNotFound));
 		return;
 	}
 

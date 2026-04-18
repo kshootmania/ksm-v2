@@ -351,6 +351,9 @@
     <ClCompile Include="src\UI\LinearMenu.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="src\UI\SimpleDialog.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scenes\Option\OptionMenuField.cpp">
       <Filter>Source Files\Scenes\Option</Filter>
     </ClCompile>
@@ -982,7 +985,13 @@
     <ClInclude Include="src\Scenes\Option\OptionScene.hpp">
       <Filter>Header Files\Scenes\Option</Filter>
     </ClInclude>
+    <ClInclude Include="src\UI\DialogBase.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
     <ClInclude Include="src\UI\LinearMenu.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\SimpleDialog.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\Input\FXButtonUpDetection.hpp">

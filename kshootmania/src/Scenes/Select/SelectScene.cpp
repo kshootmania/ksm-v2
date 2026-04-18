@@ -8,6 +8,8 @@
 #include "Input/PlatformKey.hpp"
 #include "MenuItem/ISelectMenuItem.hpp"
 #include "SelectChartInfo.hpp"
+#include "UI/SimpleDialog.hpp"
+#include "Input/KeyConfig.hpp"
 
 namespace
 {
@@ -54,12 +56,6 @@ namespace
 		});
 
 		return playerNames;
-	}
-
-	FilePath GetFavoriteFilePath(int32 favoriteNumber)
-	{
-		const FilePath songsDir = FsUtils::SongsDirectoryPath();
-		return FileSystem::PathAppend(songsDir, U"Favorite{}.fav"_fmt(favoriteNumber));
 	}
 
 	bool RemoveFromFavorite(StringView favoriteName, StringView songPath)
@@ -240,13 +236,14 @@ SelectScene::SelectScene()
 			? static_cast<Button>(kButtonBack)
 			: static_cast<Button>(kButtonBackspace))
 	, m_canvas(LoadSelectSceneCanvas())
-	, m_menu(m_canvas, [this](FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlayYN, Optional<CoursePlayState> courseState) { moveToPlayScene(chartFilePath, isAutoPlayYN, courseState); })
+	, m_menu(
+		m_canvas,
+		[this](FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlayYN, Optional<CoursePlayState> courseState) { moveToPlayScene(chartFilePath, isAutoPlayYN, courseState); },
+		[this](StringView msg) { m_dialogRunner = Co::Play<SimpleDialog>(String{ U"ERROR" }, String{ msg }).runScoped(); })
 	, m_playerNames(GetPlayerNames())
 	, m_fxButtonUpDetection({ KeyShift })
 	, m_btOptionPanel(m_canvas)
 	, m_playStatsPanel(m_canvas)
-	, m_favoriteAddDialog(m_canvas)
-	, m_favoriteRemoveDialog(m_canvas)
 {
 	AutoMuteAddon::SetEnabled(true);
 
@@ -275,10 +272,9 @@ SelectScene::SelectScene()
 
 void SelectScene::update()
 {
-	// ダイアログ表示中はダイアログ更新のみ実行
-	if (anyDialogVisible())
+	// ダイアログ表示中はCanvas更新のみ実行
+	if (Co::HasActiveModal())
 	{
-		updateDialogs();
 		m_canvas->update();
 		return;
 	}
@@ -448,13 +444,77 @@ void SelectScene::updateStartKeyLongPress()
 
 			if (m_menu.folderState().folderType == SelectFolderState::kFavorite)
 			{
-				// 削除ダイアログ(お気に入り内の場合)
-				m_favoriteRemoveDialog.show();
+				// 削除ダイアログ
+				// お気に入り名を取得(例: "?Favorite1" → "Favorite1")
+				String favoriteName = m_menu.folderState().fullPath;
+				if (favoriteName.starts_with(U'?'))
+				{
+					favoriteName = favoriteName.substr(1);
+				}
+				const FilePath songFullPath{ m_menu.cursorMenuItem().fullPath() };
+				const String songRelativePath = FsUtils::RelativePathFromSongsDir(songFullPath);
+
+				m_dialogRunner = Co::Play<FavoriteRemoveDialog>().runScoped(
+					[this, favoriteName, songRelativePath](const Optional<FavoriteRemoveChoice>& choice)
+					{
+						if (!choice.has_value())
+						{
+							// キャンセル時は何もしない
+							return;
+						}
+						if (*choice == FavoriteRemoveChoice::Yes)
+						{
+							const bool fileRemoved = RemoveFromFavorite(favoriteName, songRelativePath);
+							if (fileRemoved)
+							{
+								const FilePath songsDir = FsUtils::SongsDirectoryPath();
+								const FilePath favPath = FileSystem::PathAppend(songsDir, favoriteName + U".fav");
+								if (!FileSystem::Exists(favPath))
+								{
+									m_menu.closeFolder(PlaySeYN::No);
+								}
+								else
+								{
+									m_menu.reloadCurrentDirectory(RefreshSongPreviewYN::Yes);
+								}
+							}
+						}
+						m_ignoreNextStartUp = true;
+					});
 			}
 			else
 			{
 				// 追加ダイアログ
-				m_favoriteAddDialog.show();
+				const FilePath songFullPath{ m_menu.cursorMenuItem().fullPath() };
+				FilePath songFolderFullPath = songFullPath;
+				if (!FileSystem::IsDirectory(songFullPath))
+				{
+					songFolderFullPath = FileSystem::ParentPath(songFullPath);
+				}
+				const String songRelativePath = FsUtils::RelativePathFromSongsDir(songFolderFullPath);
+
+				m_dialogRunner = Co::Play<FavoriteAddDialog>().runScoped(
+					[this, songRelativePath](const Optional<int32>& selectedNumber)
+					{
+						if (!selectedNumber.has_value())
+						{
+							// キャンセル時は何もしない
+							return;
+						}
+
+						// .favファイルが新規作成される場合、他フォルダ表示の更新が必要
+						const bool needsReloadAfterAdd =
+							ConfigIni::GetBool(ConfigIni::Key::kAlwaysShowOtherFolders) &&
+							!FileSystem::Exists(GetFavoriteFilePath(*selectedNumber));
+
+						const bool added = AddSongToFavorite(*selectedNumber, songRelativePath);
+
+						if (added && needsReloadAfterAdd)
+						{
+							m_menu.reloadCurrentDirectory();
+						}
+						m_ignoreNextStartUp = true;
+					});
 			}
 
 			m_startKeyPressStopwatch.reset();
@@ -464,107 +524,6 @@ void SelectScene::updateStartKeyLongPress()
 	{
 		m_startKeyPressStopwatch.reset();
 	}
-}
-
-void SelectScene::updateDialogs()
-{
-	if (m_favoriteAddDialog.isVisible())
-	{
-		m_favoriteAddDialog.update();
-
-		// Startボタンで決定
-		if (KeyConfig::Down(kButtonStart))
-		{
-			// 楽曲の相対パス
-			const FilePath songFullPath{ m_menu.cursorMenuItem().fullPath() };
-
-			// ゲーム上では楽曲単位での登録のみ対応するため、単一譜面の場合は親フォルダを取得
-			FilePath songFolderFullPath = songFullPath;
-			if (!FileSystem::IsDirectory(songFullPath))
-			{
-				songFolderFullPath = FileSystem::ParentPath(songFullPath);
-			}
-
-			const String songRelativePath = FsUtils::RelativePathFromSongsDir(songFolderFullPath);
-
-			// .favファイルが新規作成される場合、他フォルダ表示の更新が必要
-			// (ファイル存在判定するため、お気に入り追加実行より前で判定する必要があるので注意)
-			const bool needsReloadAfterAdd =
-				ConfigIni::GetBool(ConfigIni::Key::kAlwaysShowOtherFolders) &&
-				!FileSystem::Exists(GetFavoriteFilePath(m_favoriteAddDialog.selectedNumber()));
-
-			// お気に入り追加実行
-			const bool added = m_favoriteAddDialog.addToFavorite(songRelativePath);
-
-			if (added && needsReloadAfterAdd)
-			{
-				m_menu.reloadCurrentDirectory();
-			}
-
-			m_favoriteAddDialog.hide();
-			m_ignoreNextStartUp = true;
-		}
-		// Backボタンでキャンセル
-		else if (KeyConfig::Down(kButtonBack))
-		{
-			m_favoriteAddDialog.hide();
-		}
-	}
-	else if (m_favoriteRemoveDialog.isVisible())
-	{
-		m_favoriteRemoveDialog.update();
-
-		// Startボタンで決定
-		if (KeyConfig::Down(kButtonStart))
-		{
-			if (m_favoriteRemoveDialog.selectedChoice() == FavoriteRemoveChoice::Yes)
-			{
-				// お気に入り名を取得
-				// (例: "?Favorite1" → "Favorite1")
-				String favoriteName = m_menu.folderState().fullPath;
-				if (favoriteName.starts_with(U'?'))
-				{
-					favoriteName = favoriteName.substr(1);
-				}
-
-				// 楽曲の相対パスを取得
-				const FilePath songFullPath{ m_menu.cursorMenuItem().fullPath() };
-				const String songRelativePath = FsUtils::RelativePathFromSongsDir(songFullPath);
-
-				// お気に入り削除実行
-				const bool fileRemoved = RemoveFromFavorite(favoriteName, songRelativePath);
-
-				if (fileRemoved)
-				{
-					// .favファイルが削除された場合はフォルダを閉じる
-					const FilePath songsDir = FsUtils::SongsDirectoryPath();
-					const FilePath favPath = FileSystem::PathAppend(songsDir, favoriteName + U".fav");
-					if (!FileSystem::Exists(favPath))
-					{
-						m_menu.closeFolder(PlaySeYN::No);
-					}
-					else
-					{
-						// リロード
-						m_menu.reloadCurrentDirectory(RefreshSongPreviewYN::Yes);
-					}
-				}
-			}
-
-			m_favoriteRemoveDialog.hide();
-			m_ignoreNextStartUp = true;
-		}
-		// Backボタンでキャンセル
-		else if (KeyConfig::Down(kButtonBack))
-		{
-			m_favoriteRemoveDialog.hide();
-		}
-	}
-}
-
-bool SelectScene::anyDialogVisible() const
-{
-	return m_favoriteAddDialog.isVisible() || m_favoriteRemoveDialog.isVisible();
 }
 
 void SelectScene::draw() const
