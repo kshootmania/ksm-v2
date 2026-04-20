@@ -178,74 +178,12 @@
       "clippingEnabled": false,
       "components": [
         {
-          "addColor": [
-            0,
-            0,
-            0,
-            0
-          ],
-          "blendMode": "Normal",
-          "color": [
-            255,
-            255,
-            255,
-            255
-          ],
-          "gridAnimationEndIndex": 0,
-          "gridAnimationFPS": 10.0,
-          "gridAnimationStartIndex": 0,
-          "gridAnimationType": "None",
-          "nineSliceBottomTiled": false,
-          "nineSliceCenterTiled": false,
-          "nineSliceEnabled": false,
-          "nineSliceFallback": true,
-          "nineSliceLeftTiled": false,
-          "nineSliceMargin": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "nineSliceRightTiled": false,
-          "nineSliceScale": [
-            1.0,
-            1.0
-          ],
-          "nineSliceTopTiled": false,
-          "offsetAnimationSpeed": [
-            0.0,
-            0.0
-          ],
-          "offsetAnimationType": "None",
-          "preserveAspect": false,
-          "textureAddressMode": "Default",
-          "textureAssetName": "",
-          "textureFilePath": "imgs/gate/gate_checkbox.png",
-          "textureFilter": "Default",
-          "textureGridCellSize": [
-            60.0,
-            60.0
-          ],
-          "textureGridCellTrim": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "textureGridColumns": 2,
-          "textureGridIndex": 0,
-          "textureGridIndex_paramRef": "checkboxIndex",
-          "textureGridRows": 2,
-          "textureOffset": [
-            0.0,
-            0.0
-          ],
-          "textureRegionMode": "Grid",
-          "textureSize": [
-            100.0,
-            100.0
-          ],
-          "type": "Sprite"
+          "canvasPath": "ui/parts/checkbox.noco",
+          "propagateEvents": true,
+          "serializedParamBindingsJSON": "{\"checkboxIndex\":\"checkboxIndex\"}",
+          "serializedParamsJSON": "{}",
+          "tag": "",
+          "type": "SubCanvas"
         }
       ],
       "decelerationRate": 0.2,
@@ -2061,6 +1999,6 @@
     315.0,
     60.0
   ],
-  "serializedVersion": 5,
-  "version": "0.3.1"
+  "serializedVersion": 8,
+  "version": "0.3.4-beta1"
 }
