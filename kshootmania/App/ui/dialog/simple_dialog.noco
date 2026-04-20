@@ -187,7 +187,7 @@
               "clippingEnabled": false,
               "components": [
                 {
-                  "canvasPath": "ui/parts/font.noco",
+                  "canvasPath": "ui/font/font.noco",
                   "propagateEvents": true,
                   "serializedParamBindingsJSON": "{\"text\":\"titleText\"}",
                   "serializedParamsJSON": "{\"characterSize\":[20.0,20.0],\"characterSpacing\":[1.0,0.0],\"hasShadow\":true,\"isNormal\":false,\"isTitle\":true}",

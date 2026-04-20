@@ -1,0 +1,242 @@
+﻿{
+  "autoFitMode": "MatchSize",
+  "children": [
+    {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "characterSet": "0123456789.-",
+          "characterSize": [
+            24.0,
+            24.0
+          ],
+          "characterSize_paramRef": "characterSize",
+          "characterSpacing": [
+            1.0,
+            0.0
+          ],
+          "characterSpacing_paramRef": "characterSpacing",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "color_paramRef": "color",
+          "horizontalAlign": "Left",
+          "horizontalAlign_paramRef": "horizontalAlign",
+          "horizontalOverflow": "Overflow",
+          "horizontalOverflow_paramRef": "horizontalOverflow",
+          "padding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "preserveAspect": false,
+          "preserveAspect_paramRef": "preserveAspect",
+          "sizingMode": "AutoShrinkWidth",
+          "sizingMode_paramRef": "sizingMode",
+          "text": "",
+          "text_paramRef": "text",
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureCellSize": [
+            45.0,
+            41.0
+          ],
+          "textureCellTrim": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "textureCellTrimByCharacterJSON": "{\".\":[27.0,0.0,0.5,0.5]}",
+          "textureCellTrimClip": false,
+          "textureCellTrim_paramRef": "textureCellTrim",
+          "textureFilePath": "imgs/msel_0_bpmnum.png",
+          "textureFilter": "Default",
+          "textureGridColumns": 1,
+          "textureGridRows": 12,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "type": "TextureFontLabel",
+          "verticalAlign": "Middle",
+          "verticalAlign_paramRef": "verticalAlign",
+          "verticalOverflow": "Overflow"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "BpmNum",
+      "region": {
+        "anchorMax": [
+          1.0,
+          1.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDeltaPivot": [
+          0.0,
+          0.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    }
+  ],
+  "childrenLayout": {
+    "horizontalAlign": "Left",
+    "padding": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "spacing": [
+      0.0,
+      0.0
+    ],
+    "type": "FlowLayout",
+    "verticalAlign": "Top"
+  },
+  "defaultFontAssetName": "",
+  "params": {
+    "characterSize": {
+      "type": "Vec2",
+      "value": [
+        24.0,
+        24.0
+      ]
+    },
+    "characterSpacing": {
+      "type": "Vec2",
+      "value": [
+        1.0,
+        0.0
+      ]
+    },
+    "color": {
+      "type": "Color",
+      "value": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "horizontalAlign": {
+      "type": "String",
+      "value": "Left"
+    },
+    "horizontalOverflow": {
+      "type": "String",
+      "value": "Overflow"
+    },
+    "preserveAspect": {
+      "type": "Bool",
+      "value": false
+    },
+    "sizingMode": {
+      "type": "String",
+      "value": "AutoShrinkWidth"
+    },
+    "text": {
+      "type": "String",
+      "value": "123-456"
+    },
+    "textureCellTrim": {
+      "type": "LRTB",
+      "value": [
+        0.0,
+        0.0,
+        0.5,
+        0.5
+      ]
+    },
+    "verticalAlign": {
+      "type": "String",
+      "value": "Middle"
+    }
+  },
+  "referenceSize": [
+    200.0,
+    30.0
+  ],
+  "serializedVersion": 8,
+  "version": "0.3.4-beta1"
+}

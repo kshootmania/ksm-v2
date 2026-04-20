@@ -2557,64 +2557,12 @@
               "clippingEnabled": false,
               "components": [
                 {
-                  "addColor": [
-                    0,
-                    0,
-                    0,
-                    0
-                  ],
-                  "blendMode": "Normal",
-                  "characterSet": "0123456789",
-                  "characterSize": [
-                    16.0,
-                    18.0
-                  ],
-                  "characterSpacing": [
-                    2.0,
-                    0.0
-                  ],
-                  "color": [
-                    255,
-                    255,
-                    255,
-                    255
-                  ],
-                  "horizontalAlign": "Right",
-                  "horizontalOverflow": "Wrap",
-                  "padding": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ],
-                  "preserveAspect": false,
-                  "sizingMode": "Fixed",
-                  "text": "198",
-                  "text_paramRef": "gaugePercentage",
-                  "textureAddressMode": "Default",
-                  "textureAssetName": "",
-                  "textureCellSize": [
-                    136.0,
-                    120.0
-                  ],
-                  "textureCellTrim": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                  ],
-                  "textureCellTrimByCharacterJSON": "{}",
-                  "textureFilePath": "imgs/num0.png",
-                  "textureFilter": "Default",
-                  "textureGridColumns": 1,
-                  "textureGridRows": 10,
-                  "textureOffset": [
-                    0.0,
-                    0.0
-                  ],
-                  "type": "TextureFontLabel",
-                  "verticalAlign": "Middle",
-                  "verticalOverflow": "Overflow"
+                  "canvasPath": "ui/font/num0.noco",
+                  "propagateEvents": true,
+                  "serializedParamBindingsJSON": "{\"text\":\"gaugePercentage\"}",
+                  "serializedParamsJSON": "{\"characterSize\":[16.0,18.0],\"horizontalAlign\":\"Right\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.0,0.0]}",
+                  "tag": "",
+                  "type": "SubCanvas"
                 }
               ],
               "decelerationRate": 0.2,
@@ -3170,6 +3118,6 @@
     816.0,
     228.0
   ],
-  "serializedVersion": 6,
-  "version": "0.3.2"
+  "serializedVersion": 8,
+  "version": "0.3.4-beta1"
 }

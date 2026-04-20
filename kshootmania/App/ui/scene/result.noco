@@ -1644,64 +1644,12 @@
           "clippingEnabled": false,
           "components": [
             {
-              "addColor": [
-                0,
-                0,
-                0,
-                0
-              ],
-              "blendMode": "Normal",
-              "characterSet": "0123456789",
-              "characterSize": [
-                64.0,
-                64.0
-              ],
-              "characterSpacing": [
-                -14.0,
-                0.0
-              ],
-              "color": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "horizontalAlign": "Center",
-              "horizontalOverflow": "Wrap",
-              "padding": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "preserveAspect": true,
-              "sizingMode": "Fixed",
-              "text": "09777778",
-              "text_paramRef": "scoreNumber",
-              "textureAddressMode": "Default",
-              "textureAssetName": "",
-              "textureCellSize": [
-                64.0,
-                64.0
-              ],
-              "textureCellTrim": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "textureCellTrimByCharacterJSON": "{}",
-              "textureFilePath": "imgs/result_scorenum.png",
-              "textureFilter": "Default",
-              "textureGridColumns": 1,
-              "textureGridRows": 10,
-              "textureOffset": [
-                0.0,
-                0.0
-              ],
-              "type": "TextureFontLabel",
-              "verticalAlign": "Top",
-              "verticalOverflow": "Overflow"
+              "canvasPath": "ui/font/result_scorenum.noco",
+              "propagateEvents": true,
+              "serializedParamBindingsJSON": "{\"text\":\"scoreNumber\"}",
+              "serializedParamsJSON": "{\"characterSize\":[64.0,64.0],\"characterSpacing\":[-14.0,0.0],\"horizontalAlign\":\"Center\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.0,0.0],\"verticalAlign\":\"Top\"}",
+              "tag": "",
+              "type": "SubCanvas"
             }
           ],
           "decelerationRate": 0.2,
@@ -1791,64 +1739,12 @@
           "clippingEnabled": false,
           "components": [
             {
-              "addColor": [
-                0,
-                0,
-                0,
-                0
-              ],
-              "blendMode": "Normal",
-              "characterSet": "0123456789",
-              "characterSize": [
-                20.0,
-                20.0
-              ],
-              "characterSpacing": [
-                7.0,
-                0.0
-              ],
-              "color": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "horizontalAlign": "Center",
-              "horizontalOverflow": "Wrap",
-              "padding": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "preserveAspect": false,
-              "sizingMode": "AutoShrinkWidth",
-              "text": "0345",
-              "text_paramRef": "maxComboNumber",
-              "textureAddressMode": "Default",
-              "textureAssetName": "",
-              "textureCellSize": [
-                136.0,
-                120.0
-              ],
-              "textureCellTrim": [
-                0.0,
-                0.0,
-                1.5,
-                1.5
-              ],
-              "textureCellTrimByCharacterJSON": "{}",
-              "textureFilePath": "imgs/num1.png",
-              "textureFilter": "Nearest",
-              "textureGridColumns": 1,
-              "textureGridRows": 10,
-              "textureOffset": [
-                0.0,
-                0.0
-              ],
-              "type": "TextureFontLabel",
-              "verticalAlign": "Middle",
-              "verticalOverflow": "Overflow"
+              "canvasPath": "ui/font/num1.noco",
+              "propagateEvents": true,
+              "serializedParamBindingsJSON": "{\"text\":\"maxComboNumber\"}",
+              "serializedParamsJSON": "{\"characterSize\":[20.0,20.0],\"characterSpacing\":[7.0,0.0],\"horizontalAlign\":\"Center\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":false,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Middle\"}",
+              "tag": "",
+              "type": "SubCanvas"
             }
           ],
           "decelerationRate": 0.2,
@@ -1938,64 +1834,12 @@
           "clippingEnabled": false,
           "components": [
             {
-              "addColor": [
-                0,
-                0,
-                0,
-                0
-              ],
-              "blendMode": "Normal",
-              "characterSet": "0123456789",
-              "characterSize": [
-                26.0,
-                24.0
-              ],
-              "characterSpacing": [
-                4.0,
-                0.0
-              ],
-              "color": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "horizontalAlign": "Right",
-              "horizontalOverflow": "Wrap",
-              "padding": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "preserveAspect": true,
-              "sizingMode": "AutoShrinkWidth",
-              "text": "0123",
-              "text_paramRef": "criticalCount",
-              "textureAddressMode": "Default",
-              "textureAssetName": "",
-              "textureCellSize": [
-                136.0,
-                120.0
-              ],
-              "textureCellTrim": [
-                0.0,
-                0.0,
-                1.5,
-                1.5
-              ],
-              "textureCellTrimByCharacterJSON": "{}",
-              "textureFilePath": "imgs/num0.png",
-              "textureFilter": "Nearest",
-              "textureGridColumns": 1,
-              "textureGridRows": 10,
-              "textureOffset": [
-                0.0,
-                0.0
-              ],
-              "type": "TextureFontLabel",
-              "verticalAlign": "Top",
-              "verticalOverflow": "Overflow"
+              "canvasPath": "ui/font/num0.noco",
+              "propagateEvents": true,
+              "serializedParamBindingsJSON": "{\"text\":\"criticalCount\"}",
+              "serializedParamsJSON": "{\"characterSize\":[26.0,24.0],\"characterSpacing\":[4.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Top\"}",
+              "tag": "",
+              "type": "SubCanvas"
             }
           ],
           "decelerationRate": 0.2,
@@ -2085,64 +1929,12 @@
           "clippingEnabled": false,
           "components": [
             {
-              "addColor": [
-                0,
-                0,
-                0,
-                0
-              ],
-              "blendMode": "Normal",
-              "characterSet": "0123456789",
-              "characterSize": [
-                26.0,
-                24.0
-              ],
-              "characterSpacing": [
-                4.0,
-                0.0
-              ],
-              "color": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "horizontalAlign": "Right",
-              "horizontalOverflow": "Wrap",
-              "padding": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "preserveAspect": true,
-              "sizingMode": "AutoShrinkWidth",
-              "text": "0123",
-              "text_paramRef": "nearCount",
-              "textureAddressMode": "Default",
-              "textureAssetName": "",
-              "textureCellSize": [
-                136.0,
-                120.0
-              ],
-              "textureCellTrim": [
-                0.0,
-                0.0,
-                1.5,
-                1.5
-              ],
-              "textureCellTrimByCharacterJSON": "{}",
-              "textureFilePath": "imgs/num0.png",
-              "textureFilter": "Nearest",
-              "textureGridColumns": 1,
-              "textureGridRows": 10,
-              "textureOffset": [
-                0.0,
-                0.0
-              ],
-              "type": "TextureFontLabel",
-              "verticalAlign": "Top",
-              "verticalOverflow": "Overflow"
+              "canvasPath": "ui/font/num0.noco",
+              "propagateEvents": true,
+              "serializedParamBindingsJSON": "{\"text\":\"nearCount\"}",
+              "serializedParamsJSON": "{\"characterSize\":[26.0,24.0],\"characterSpacing\":[4.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Top\"}",
+              "tag": "",
+              "type": "SubCanvas"
             }
           ],
           "decelerationRate": 0.2,
@@ -2232,64 +2024,12 @@
           "clippingEnabled": false,
           "components": [
             {
-              "addColor": [
-                0,
-                0,
-                0,
-                0
-              ],
-              "blendMode": "Normal",
-              "characterSet": "0123456789",
-              "characterSize": [
-                26.0,
-                24.0
-              ],
-              "characterSpacing": [
-                4.0,
-                0.0
-              ],
-              "color": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "horizontalAlign": "Right",
-              "horizontalOverflow": "Wrap",
-              "padding": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "preserveAspect": true,
-              "sizingMode": "AutoShrinkWidth",
-              "text": "0123",
-              "text_paramRef": "errorCount",
-              "textureAddressMode": "Default",
-              "textureAssetName": "",
-              "textureCellSize": [
-                136.0,
-                120.0
-              ],
-              "textureCellTrim": [
-                0.0,
-                0.0,
-                1.5,
-                1.5
-              ],
-              "textureCellTrimByCharacterJSON": "{}",
-              "textureFilePath": "imgs/num0.png",
-              "textureFilter": "Nearest",
-              "textureGridColumns": 1,
-              "textureGridRows": 10,
-              "textureOffset": [
-                0.0,
-                0.0
-              ],
-              "type": "TextureFontLabel",
-              "verticalAlign": "Top",
-              "verticalOverflow": "Overflow"
+              "canvasPath": "ui/font/num0.noco",
+              "propagateEvents": true,
+              "serializedParamBindingsJSON": "{\"text\":\"errorCount\"}",
+              "serializedParamsJSON": "{\"characterSize\":[26.0,24.0],\"characterSpacing\":[4.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Top\"}",
+              "tag": "",
+              "type": "SubCanvas"
             }
           ],
           "decelerationRate": 0.2,
@@ -2696,64 +2436,12 @@
           "clippingEnabled": false,
           "components": [
             {
-              "addColor": [
-                0,
-                0,
-                0,
-                0
-              ],
-              "blendMode": "Normal",
-              "characterSet": "0123456789",
-              "characterSize": [
-                13.0,
-                15.0
-              ],
-              "characterSpacing": [
-                1.0,
-                0.0
-              ],
-              "color": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "horizontalAlign": "Right",
-              "horizontalOverflow": "Wrap",
-              "padding": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "preserveAspect": false,
-              "sizingMode": "AutoShrinkWidth",
-              "text": "100",
-              "text_paramRef": "gaugePercentageNumber",
-              "textureAddressMode": "Default",
-              "textureAssetName": "",
-              "textureCellSize": [
-                136.0,
-                120.0
-              ],
-              "textureCellTrim": [
-                0.0,
-                0.0,
-                3.0,
-                3.0
-              ],
-              "textureCellTrimByCharacterJSON": "{}",
-              "textureFilePath": "imgs/num0.png",
-              "textureFilter": "Nearest",
-              "textureGridColumns": 1,
-              "textureGridRows": 10,
-              "textureOffset": [
-                0.0,
-                0.0
-              ],
-              "type": "TextureFontLabel",
-              "verticalAlign": "Top",
-              "verticalOverflow": "Overflow"
+              "canvasPath": "ui/font/num0.noco",
+              "propagateEvents": true,
+              "serializedParamBindingsJSON": "{\"text\":\"gaugePercentageNumber\"}",
+              "serializedParamsJSON": "{\"characterSize\":[13.0,15.0],\"characterSpacing\":[1.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":false,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,3.0,3.0],\"verticalAlign\":\"Top\"}",
+              "tag": "",
+              "type": "SubCanvas"
             }
           ],
           "decelerationRate": 0.2,
@@ -3323,64 +3011,12 @@
                   "clippingEnabled": false,
                   "components": [
                     {
-                      "addColor": [
-                        0,
-                        0,
-                        0,
-                        0
-                      ],
-                      "blendMode": "Normal",
-                      "characterSet": "0123456789",
-                      "characterSize": [
-                        30.0,
-                        30.0
-                      ],
-                      "characterSpacing": [
-                        8.0,
-                        0.0
-                      ],
-                      "color": [
-                        255,
-                        255,
-                        255,
-                        255
-                      ],
-                      "horizontalAlign": "Right",
-                      "horizontalOverflow": "Wrap",
-                      "padding": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                      ],
-                      "preserveAspect": false,
-                      "sizingMode": "Fixed",
-                      "text": "09876543",
-                      "text_paramRef": "overlay_newRecordNumber",
-                      "textureAddressMode": "Default",
-                      "textureAssetName": "",
-                      "textureCellSize": [
-                        136.0,
-                        120.0
-                      ],
-                      "textureCellTrim": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                      ],
-                      "textureCellTrimByCharacterJSON": "{}",
-                      "textureFilePath": "imgs/num0.png",
-                      "textureFilter": "Nearest",
-                      "textureGridColumns": 1,
-                      "textureGridRows": 10,
-                      "textureOffset": [
-                        0.0,
-                        0.0
-                      ],
-                      "type": "TextureFontLabel",
-                      "verticalAlign": "Top",
-                      "verticalOverflow": "Overflow"
+                      "canvasPath": "ui/font/num0.noco",
+                      "propagateEvents": true,
+                      "serializedParamBindingsJSON": "{\"text\":\"overlay_newRecordNumber\"}",
+                      "serializedParamsJSON": "{\"characterSize\":[30.0,30.0],\"characterSpacing\":[8.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.0,0.0],\"verticalAlign\":\"Top\"}",
+                      "tag": "",
+                      "type": "SubCanvas"
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -4020,6 +3656,6 @@
     640.0,
     480.0
   ],
-  "serializedVersion": 6,
-  "version": "0.3.2"
+  "serializedVersion": 8,
+  "version": "0.3.4-beta1"
 }
