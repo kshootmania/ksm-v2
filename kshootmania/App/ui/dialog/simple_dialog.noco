@@ -190,7 +190,7 @@
                   "canvasPath": "ui/font/font.noco",
                   "propagateEvents": true,
                   "serializedParamBindingsJSON": "{\"text\":\"titleText\"}",
-                  "serializedParamsJSON": "{\"characterSize\":[20.0,20.0],\"characterSpacing\":[1.0,0.0],\"hasShadow\":true,\"isNormal\":false,\"isTitle\":true}",
+                  "serializedParamsJSON": "{\"characterSize\":[20.0,20.0],\"characterSpacing\":[1.0,0.0],\"hasShadow\":true,\"isTitle\":true}",
                   "tag": "",
                   "type": "SubCanvas"
                 }
@@ -679,5 +679,5 @@
     240.0
   ],
   "serializedVersion": 8,
-  "version": "0.3.4-beta1"
+  "version": "0.3.4-beta2"
 }

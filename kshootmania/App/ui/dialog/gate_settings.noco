@@ -182,7 +182,7 @@
             {
               "canvasPath": "ui/parts/checkbox.noco",
               "propagateEvents": true,
-              "serializedParamBindingsJSON": "{\"checkboxIndex\":\"difficulty0CheckboxIndex\"}",
+              "serializedParamBindingsJSON": "{\"checked\":\"difficulty0Checked\",\"selected\":\"difficulty0Selected\"}",
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
@@ -277,7 +277,7 @@
             {
               "canvasPath": "ui/parts/checkbox.noco",
               "propagateEvents": true,
-              "serializedParamBindingsJSON": "{\"checkboxIndex\":\"difficulty1CheckboxIndex\"}",
+              "serializedParamBindingsJSON": "{\"checked\":\"difficulty1Checked\",\"selected\":\"difficulty1Selected\"}",
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
@@ -372,7 +372,7 @@
             {
               "canvasPath": "ui/parts/checkbox.noco",
               "propagateEvents": true,
-              "serializedParamBindingsJSON": "{\"checkboxIndex\":\"difficulty2CheckboxIndex\"}",
+              "serializedParamBindingsJSON": "{\"checked\":\"difficulty2Checked\",\"selected\":\"difficulty2Selected\"}",
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
@@ -467,7 +467,7 @@
             {
               "canvasPath": "ui/parts/checkbox.noco",
               "propagateEvents": true,
-              "serializedParamBindingsJSON": "{\"checkboxIndex\":\"difficulty3CheckboxIndex\"}",
+              "serializedParamBindingsJSON": "{\"checked\":\"difficulty3Checked\",\"selected\":\"difficulty3Selected\"}",
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
@@ -649,7 +649,7 @@
             {
               "canvasPath": "ui/parts/checkbox.noco",
               "propagateEvents": true,
-              "serializedParamBindingsJSON": "{\"checkboxIndex\":\"hideDownloadedCheckboxIndex\"}",
+              "serializedParamBindingsJSON": "{\"checked\":\"hideDownloadedChecked\",\"selected\":\"hideDownloadedSelected\"}",
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
@@ -744,7 +744,7 @@
             {
               "canvasPath": "ui/parts/checkbox.noco",
               "propagateEvents": true,
-              "serializedParamBindingsJSON": "{\"checkboxIndex\":\"allowRedownloadCheckboxIndex\"}",
+              "serializedParamBindingsJSON": "{\"checked\":\"allowRedownloadChecked\",\"selected\":\"allowRedownloadSelected\"}",
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
@@ -918,29 +918,53 @@
   },
   "defaultFontAssetName": "",
   "params": {
-    "allowRedownloadCheckboxIndex": {
-      "type": "Number",
-      "value": 0.0
+    "allowRedownloadChecked": {
+      "type": "Bool",
+      "value": false
     },
-    "difficulty0CheckboxIndex": {
-      "type": "Number",
-      "value": 0.0
+    "allowRedownloadSelected": {
+      "type": "Bool",
+      "value": false
     },
-    "difficulty1CheckboxIndex": {
-      "type": "Number",
-      "value": 0.0
+    "difficulty0Checked": {
+      "type": "Bool",
+      "value": false
     },
-    "difficulty2CheckboxIndex": {
-      "type": "Number",
-      "value": 0.0
+    "difficulty0Selected": {
+      "type": "Bool",
+      "value": false
     },
-    "difficulty3CheckboxIndex": {
-      "type": "Number",
-      "value": 0.0
+    "difficulty1Checked": {
+      "type": "Bool",
+      "value": false
     },
-    "hideDownloadedCheckboxIndex": {
-      "type": "Number",
-      "value": 0.0
+    "difficulty1Selected": {
+      "type": "Bool",
+      "value": false
+    },
+    "difficulty2Checked": {
+      "type": "Bool",
+      "value": false
+    },
+    "difficulty2Selected": {
+      "type": "Bool",
+      "value": false
+    },
+    "difficulty3Checked": {
+      "type": "Bool",
+      "value": false
+    },
+    "difficulty3Selected": {
+      "type": "Bool",
+      "value": false
+    },
+    "hideDownloadedChecked": {
+      "type": "Bool",
+      "value": false
+    },
+    "hideDownloadedSelected": {
+      "type": "Bool",
+      "value": false
     }
   },
   "referenceSize": [
@@ -948,5 +972,5 @@
     320.0
   ],
   "serializedVersion": 8,
-  "version": "0.3.4-beta1"
+  "version": "0.3.4-beta2"
 }

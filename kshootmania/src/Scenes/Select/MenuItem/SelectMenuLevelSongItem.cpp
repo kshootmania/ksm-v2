@@ -182,7 +182,7 @@ void SelectMenuLevelSongItem::setCanvasParamsCenter([[maybe_unused]] const Selec
 		{ U"jacketAuthor", m_chartInfo->jacketAuthor() },
 		{ U"information", m_chartInfo->information() },
 		{ U"chartAuthor", m_chartInfo->chartAuthor() },
-		{ U"difficultyCursorState", U"difficulty{}"_fmt(m_difficultyIdx) },
+		{ U"difficultyIdx", m_difficultyIdx },
 		{ U"medalIndex", static_cast<int32>(highScore.medal()) },
 		{ U"highScoreGradeIndex", static_cast<int32>(highScore.grade(gaugeType)) },
 		{ U"highScore", U"{:08d}"_fmt(highScore.score(gaugeType)) },

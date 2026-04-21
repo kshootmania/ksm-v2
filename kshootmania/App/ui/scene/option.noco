@@ -324,7 +324,8 @@
               "children": [
                 {
                   "activeSelf": true,
-                  "activeSelf_paramRef": "isNonJapanese",
+                  "activeSelf_paramRef": "isJapanese",
+                  "activeSelf_paramRefMode": "Inverted",
                   "children": [],
                   "childrenLayout": {
                     "horizontalAlign": "Left",
@@ -847,7 +848,8 @@
               "children": [
                 {
                   "activeSelf": true,
-                  "activeSelf_paramRef": "isNonJapanese",
+                  "activeSelf_paramRef": "isJapanese",
+                  "activeSelf_paramRefMode": "Inverted",
                   "children": [],
                   "childrenLayout": {
                     "horizontalAlign": "Left",
@@ -1370,7 +1372,8 @@
               "children": [
                 {
                   "activeSelf": true,
-                  "activeSelf_paramRef": "isNonJapanese",
+                  "activeSelf_paramRef": "isJapanese",
+                  "activeSelf_paramRefMode": "Inverted",
                   "children": [],
                   "childrenLayout": {
                     "horizontalAlign": "Left",
@@ -1893,7 +1896,8 @@
               "children": [
                 {
                   "activeSelf": true,
-                  "activeSelf_paramRef": "isNonJapanese",
+                  "activeSelf_paramRef": "isJapanese",
+                  "activeSelf_paramRefMode": "Inverted",
                   "children": [],
                   "childrenLayout": {
                     "horizontalAlign": "Left",
@@ -3359,10 +3363,6 @@
       "type": "Bool",
       "value": false
     },
-    "isNonJapanese": {
-      "type": "Bool",
-      "value": true
-    },
     "isSetting": {
       "type": "Bool",
       "value": false
@@ -3380,6 +3380,6 @@
     640.0,
     480.0
   ],
-  "serializedVersion": 5,
-  "version": "0.3.1"
+  "serializedVersion": 8,
+  "version": "0.3.4-beta2"
 }

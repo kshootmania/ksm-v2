@@ -198,7 +198,7 @@ void SelectMenuSongItem::setCanvasParamsCenter([[maybe_unused]] const SelectMenu
 			{ U"jacketAuthor", pChartInfo->jacketAuthor() },
 			{ U"information", pChartInfo->information() },
 			{ U"chartAuthor", pChartInfo->chartAuthor() },
-			{ U"difficultyCursorState", U"difficulty{}"_fmt(difficultyIdx) },
+			{ U"difficultyIdx", difficultyIdx },
 			{ U"medalIndex", static_cast<int32>(highScoreInfo.medal()) },
 			{ U"highScoreGradeIndex", static_cast<int32>(highScoreInfo.grade(gaugeType)) },
 			{ U"highScore", U"{:08d}"_fmt(highScoreInfo.score(gaugeType)) },

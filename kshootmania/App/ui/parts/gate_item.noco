@@ -180,7 +180,7 @@
         {
           "canvasPath": "ui/parts/checkbox.noco",
           "propagateEvents": true,
-          "serializedParamBindingsJSON": "{\"checkboxIndex\":\"checkboxIndex\"}",
+          "serializedParamBindingsJSON": "{\"checked\":\"checked\",\"selected\":\"selected\"}",
           "serializedParamsJSON": "{}",
           "tag": "",
           "type": "SubCanvas"
@@ -1942,9 +1942,9 @@
       "type": "String",
       "value": "artist"
     },
-    "checkboxIndex": {
-      "type": "Number",
-      "value": 0.0
+    "checked": {
+      "type": "Bool",
+      "value": false
     },
     "checkboxVisible": {
       "type": "Bool",
@@ -1974,6 +1974,10 @@
       "type": "Bool",
       "value": false
     },
+    "selected": {
+      "type": "Bool",
+      "value": false
+    },
     "statusInstalled": {
       "type": "Bool",
       "value": false
@@ -2000,5 +2004,5 @@
     60.0
   ],
   "serializedVersion": 8,
-  "version": "0.3.4-beta1"
+  "version": "0.3.4-beta2"
 }

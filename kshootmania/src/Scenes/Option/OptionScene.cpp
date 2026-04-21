@@ -321,7 +321,6 @@ void OptionScene::update()
 		{ U"guideText", guideText },
 		{ U"settingHeaderIndex", settingHeaderIndex },
 		{ U"isJapanese", I18n::CurrentLanguage() == I18n::StandardLanguage::Japanese },
-		{ U"isNonJapanese", I18n::CurrentLanguage() != I18n::StandardLanguage::Japanese },
 	});
 
 	// UI更新

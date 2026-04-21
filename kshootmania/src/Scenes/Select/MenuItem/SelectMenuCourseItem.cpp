@@ -110,7 +110,7 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 		{ U"jacketAuthor", U"" },
 		{ U"information", m_courseInfo.information },
 		{ U"chartAuthor", U"" },
-		{ U"difficultyCursorState", U"difficulty0" },
+		{ U"difficultyIdx", 0 },
 		{ U"medalIndex", medalIndex },
 		{ U"highScoreGradeIndex", -1 },
 		{ U"highScore", U"" },

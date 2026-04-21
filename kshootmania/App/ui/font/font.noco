@@ -159,7 +159,8 @@
     },
     {
       "activeSelf": true,
-      "activeSelf_paramRef": "isNormal",
+      "activeSelf_paramRef": "isTitle",
+      "activeSelf_paramRefMode": "Inverted",
       "children": [],
       "childrenLayout": {
         "horizontalAlign": "Left",
@@ -518,10 +519,6 @@
       "type": "String",
       "value": "Left"
     },
-    "isNormal": {
-      "type": "Bool",
-      "value": true
-    },
     "isTitle": {
       "type": "Bool",
       "value": false
@@ -561,6 +558,6 @@
     400.0,
     64.0
   ],
-  "serializedVersion": 7,
-  "version": "0.3.3"
+  "serializedVersion": 8,
+  "version": "0.3.4-beta2"
 }
