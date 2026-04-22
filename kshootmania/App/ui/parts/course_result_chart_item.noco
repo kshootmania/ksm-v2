@@ -1477,12 +1477,12 @@
       "value": ""
     },
     "difficultyIndex": {
-      "type": "Number",
-      "value": 2.0
+      "type": "Int",
+      "value": 2
     },
     "gradeIndex": {
-      "type": "Number",
-      "value": 6.0
+      "type": "Int",
+      "value": 6
     },
     "jacketFilePath": {
       "type": "String",
@@ -1510,5 +1510,5 @@
     128.0
   ],
   "serializedVersion": 8,
-  "version": "0.3.4-beta1"
+  "version": "0.4.0"
 }

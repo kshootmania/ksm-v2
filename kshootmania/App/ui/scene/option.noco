@@ -3372,8 +3372,8 @@
       "value": true
     },
     "settingHeaderIndex": {
-      "type": "Number",
-      "value": 0.0
+      "type": "Int",
+      "value": 0
     }
   },
   "referenceSize": [
@@ -3381,5 +3381,5 @@
     480.0
   ],
   "serializedVersion": 8,
-  "version": "0.3.4-beta2"
+  "version": "0.4.0"
 }

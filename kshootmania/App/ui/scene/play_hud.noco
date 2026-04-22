@@ -3116,8 +3116,8 @@
       "value": "180"
     },
     "difficultyIndex": {
-      "type": "Number",
-      "value": 2.0
+      "type": "Int",
+      "value": 2
     },
     "fpsNumber": {
       "type": "String",
@@ -3140,7 +3140,7 @@
       "value": "15"
     },
     "positionMarkerProgress": {
-      "type": "Number",
+      "type": "Double",
       "value": 0.0
     },
     "scoreNumber": {
@@ -3152,8 +3152,8 @@
       "value": "0"
     },
     "timingAdjustSignIndex": {
-      "type": "Number",
-      "value": 0.0
+      "type": "Int",
+      "value": 0
     },
     "timingAdjustVisible": {
       "type": "Bool",
@@ -3173,5 +3173,5 @@
     480.0
   ],
   "serializedVersion": 8,
-  "version": "0.3.4-beta1"
+  "version": "0.4.0"
 }

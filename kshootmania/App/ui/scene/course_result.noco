@@ -2916,8 +2916,8 @@
       "value": "198"
     },
     "gaugeTextureIndex": {
-      "type": "Number",
-      "value": 3.0
+      "type": "Int",
+      "value": 3
     },
     "overlay_newRecordAchievementRateAfter": {
       "type": "String",
@@ -2932,8 +2932,8 @@
       "value": false
     },
     "resultTopIndex": {
-      "type": "Number",
-      "value": 1.0
+      "type": "Int",
+      "value": 1
     }
   },
   "referenceSize": [
@@ -2941,5 +2941,5 @@
     480.0
   ],
   "serializedVersion": 8,
-  "version": "0.3.4-beta1"
+  "version": "0.4.0"
 }

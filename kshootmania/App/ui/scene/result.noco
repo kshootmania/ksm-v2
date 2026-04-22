@@ -3588,8 +3588,8 @@
       "value": "0123"
     },
     "difficultyIndex": {
-      "type": "Number",
-      "value": 2.0
+      "type": "Int",
+      "value": 2
     },
     "errorCount": {
       "type": "String",
@@ -3600,12 +3600,12 @@
       "value": "100"
     },
     "gaugeTextureIndex": {
-      "type": "Number",
-      "value": 3.0
+      "type": "Int",
+      "value": 3
     },
     "gradeIndex": {
-      "type": "Number",
-      "value": 5.0
+      "type": "Int",
+      "value": 5
     },
     "jacketActive": {
       "type": "Bool",
@@ -3616,8 +3616,8 @@
       "value": ""
     },
     "levelIndex": {
-      "type": "Number",
-      "value": 14.0
+      "type": "Int",
+      "value": 14
     },
     "maxComboNumber": {
       "type": "String",
@@ -3636,8 +3636,8 @@
       "value": false
     },
     "resultTopIndex": {
-      "type": "Number",
-      "value": 1.0
+      "type": "Int",
+      "value": 1
     },
     "scoreNumber": {
       "type": "String",
@@ -3657,5 +3657,5 @@
     480.0
   ],
   "serializedVersion": 8,
-  "version": "0.3.4-beta1"
+  "version": "0.4.0"
 }

@@ -756,14 +756,14 @@
       "value": "value"
     },
     "valueArrowIndex": {
-      "type": "Number",
-      "value": 2.0
+      "type": "Int",
+      "value": 2
     }
   },
   "referenceSize": [
     600.0,
     24.0
   ],
-  "serializedVersion": 5,
-  "version": "0.3.1"
+  "serializedVersion": 8,
+  "version": "0.4.0"
 }

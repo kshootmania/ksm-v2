@@ -2579,7 +2579,7 @@
               },
               "rubberBandScrollEnabled": true,
               "scrollBarType": "Overlay",
-              "styleState": "difficulty{:.0f}",
+              "styleState": "difficulty{}",
               "styleState_paramRef": "difficultyIdx",
               "styleState_paramRefMode": "Format",
               "transform": {
@@ -5678,8 +5678,8 @@
       "value": true
     },
     "difficulty0LevelIndex": {
-      "type": "Number",
-      "value": 3.0
+      "type": "Int",
+      "value": 3
     },
     "difficulty0StyleState": {
       "type": "String",
@@ -5690,8 +5690,8 @@
       "value": true
     },
     "difficulty1LevelIndex": {
-      "type": "Number",
-      "value": 7.0
+      "type": "Int",
+      "value": 7
     },
     "difficulty1StyleState": {
       "type": "String",
@@ -5702,8 +5702,8 @@
       "value": true
     },
     "difficulty2LevelIndex": {
-      "type": "Number",
-      "value": 14.0
+      "type": "Int",
+      "value": 14
     },
     "difficulty2StyleState": {
       "type": "String",
@@ -5714,15 +5714,15 @@
       "value": true
     },
     "difficulty3LevelIndex": {
-      "type": "Number",
-      "value": 17.0
+      "type": "Int",
+      "value": 17
     },
     "difficulty3StyleState": {
       "type": "String",
       "value": ""
     },
     "difficultyIdx": {
-      "type": "Number",
+      "type": "Int",
       "value": 0
     },
     "gaugePercentage": {
@@ -5734,8 +5734,8 @@
       "value": "09876543"
     },
     "highScoreGradeIndex": {
-      "type": "Number",
-      "value": 6.0
+      "type": "Int",
+      "value": 6
     },
     "iconActive": {
       "type": "Bool",
@@ -5778,8 +5778,8 @@
       "value": ""
     },
     "medalIndex": {
-      "type": "Number",
-      "value": 4.0
+      "type": "Int",
+      "value": 4
     },
     "title": {
       "type": "String",
@@ -5795,5 +5795,5 @@
     378.0
   ],
   "serializedVersion": 8,
-  "version": "0.3.4-beta2"
+  "version": "0.4.0"
 }

@@ -3062,8 +3062,8 @@
       "value": "98"
     },
     "highScoreGradeIndex": {
-      "type": "Number",
-      "value": 0.0
+      "type": "Int",
+      "value": 0
     },
     "iconActive": {
       "type": "Bool",
@@ -3098,12 +3098,12 @@
       "value": ""
     },
     "levelIndex": {
-      "type": "Number",
-      "value": 0.0
+      "type": "Int",
+      "value": 0
     },
     "medalIndex": {
-      "type": "Number",
-      "value": 0.0
+      "type": "Int",
+      "value": 0
     },
     "title": {
       "type": "String",
@@ -3119,5 +3119,5 @@
     228.0
   ],
   "serializedVersion": 8,
-  "version": "0.3.4-beta1"
+  "version": "0.4.0"
 }

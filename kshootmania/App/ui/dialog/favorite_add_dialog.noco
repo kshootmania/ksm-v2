@@ -219,7 +219,7 @@
   "defaultFontAssetName": "System",
   "params": {
     "numberIndex": {
-      "type": "Number",
+      "type": "Int",
       "value": 0
     }
   },
@@ -227,6 +227,6 @@
     288.0,
     96.0
   ],
-  "serializedVersion": 7,
-  "version": "0.3.3"
+  "serializedVersion": 8,
+  "version": "0.4.0"
 }

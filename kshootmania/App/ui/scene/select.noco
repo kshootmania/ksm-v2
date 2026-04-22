@@ -4671,7 +4671,7 @@
       "value": "playerName"
     },
     "scrollBarCursorRate": {
-      "type": "Number",
+      "type": "Double",
       "value": 0.0
     }
   },
@@ -4679,6 +4679,6 @@
     640.0,
     480.0
   ],
-  "serializedVersion": 5,
-  "version": "0.3.0-beta1"
+  "serializedVersion": 8,
+  "version": "0.4.0"
 }
