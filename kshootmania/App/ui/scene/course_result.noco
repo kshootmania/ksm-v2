@@ -39,6 +39,7 @@
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -61,6 +62,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": true,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -210,6 +212,7 @@
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -232,6 +235,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -553,6 +557,7 @@
                       "gridAnimationFPS": 10.0,
                       "gridAnimationStartIndex": 0,
                       "gridAnimationType": "None",
+                      "hideIfTextureEmpty": false,
                       "nineSliceBottomTiled": false,
                       "nineSliceCenterTiled": false,
                       "nineSliceEnabled": false,
@@ -575,6 +580,7 @@
                         0.0
                       ],
                       "offsetAnimationType": "None",
+                      "pixelShaderAssetName": "",
                       "preserveAspect": false,
                       "textureAddressMode": "Default",
                       "textureAssetName": "",
@@ -847,6 +853,7 @@
             {
               "canvasPath": "ui/font/num0.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
               "serializedParamBindingsJSON": "{\"text\":\"gaugePercentageNumber\"}",
               "serializedParamsJSON": "{\"characterSize\":[22.5,24.0],\"horizontalAlign\":\"Right\",\"preserveAspect\":false,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,1.5,1.5]}",
               "tag": "",
@@ -958,6 +965,7 @@
               "gridAnimationFPS": 10.0,
               "gridAnimationStartIndex": 0,
               "gridAnimationType": "None",
+              "hideIfTextureEmpty": false,
               "nineSliceBottomTiled": false,
               "nineSliceCenterTiled": false,
               "nineSliceEnabled": false,
@@ -980,6 +988,7 @@
                 0.0
               ],
               "offsetAnimationType": "None",
+              "pixelShaderAssetName": "",
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
@@ -1115,6 +1124,7 @@
               "gridAnimationFPS": 10.0,
               "gridAnimationStartIndex": 0,
               "gridAnimationType": "None",
+              "hideIfTextureEmpty": false,
               "nineSliceBottomTiled": false,
               "nineSliceCenterTiled": false,
               "nineSliceEnabled": false,
@@ -1137,6 +1147,7 @@
                 0.0
               ],
               "offsetAnimationType": "None",
+              "pixelShaderAssetName": "",
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
@@ -1260,6 +1271,8 @@
                 {
                   "canvasPath": "ui/parts/course_result_chart_item.noco",
                   "propagateEvents": true,
+                  "serializedParamBindingModesJSON": "{}",
+                  "serializedParamBindingsJSON": "{}",
                   "serializedParamsJSON": "{}",
                   "tag": "chartItem1",
                   "type": "SubCanvas"
@@ -1350,6 +1363,8 @@
                 {
                   "canvasPath": "ui/parts/course_result_chart_item.noco",
                   "propagateEvents": true,
+                  "serializedParamBindingModesJSON": "{}",
+                  "serializedParamBindingsJSON": "{}",
                   "serializedParamsJSON": "{}",
                   "tag": "chartItem2",
                   "type": "SubCanvas"
@@ -1440,6 +1455,8 @@
                 {
                   "canvasPath": "ui/parts/course_result_chart_item.noco",
                   "propagateEvents": true,
+                  "serializedParamBindingModesJSON": "{}",
+                  "serializedParamBindingsJSON": "{}",
                   "serializedParamsJSON": "{}",
                   "tag": "chartItem3",
                   "type": "SubCanvas"
@@ -1530,6 +1547,8 @@
                 {
                   "canvasPath": "ui/parts/course_result_chart_item.noco",
                   "propagateEvents": true,
+                  "serializedParamBindingModesJSON": "{}",
+                  "serializedParamBindingsJSON": "{}",
                   "serializedParamsJSON": "{}",
                   "tag": "chartItem4",
                   "type": "SubCanvas"
@@ -1765,6 +1784,7 @@
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -1787,6 +1807,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -1921,6 +1942,7 @@
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -1943,6 +1965,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -2228,6 +2251,7 @@
                     {
                       "canvasPath": "ui/font/num0.noco",
                       "propagateEvents": true,
+                      "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
                       "serializedParamBindingsJSON": "{\"text\":\"overlay_newRecordAchievementRateBefore\"}",
                       "serializedParamsJSON": "{\"characterSize\":[25.0,24.0],\"characterSpacing\":[3.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.0,0.0],\"verticalAlign\":\"Middle\"}",
                       "tag": "",
@@ -2323,6 +2347,7 @@
                     {
                       "canvasPath": "ui/font/num0.noco",
                       "propagateEvents": true,
+                      "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
                       "serializedParamBindingsJSON": "{\"text\":\"overlay_newRecordAchievementRateAfter\"}",
                       "serializedParamsJSON": "{\"characterSize\":[25.0,24.0],\"characterSpacing\":[3.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.0,0.0],\"verticalAlign\":\"Middle\"}",
                       "tag": "",
@@ -2431,6 +2456,7 @@
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
+                  "hideIfTextureEmpty": false,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -2453,6 +2479,7 @@
                     0.0
                   ],
                   "offsetAnimationType": "None",
+                  "pixelShaderAssetName": "",
                   "preserveAspect": false,
                   "textureAddressMode": "Default",
                   "textureAssetName": "",
@@ -2912,20 +2939,20 @@
       "value": "courseTitle"
     },
     "gaugePercentageNumber": {
-      "type": "String",
-      "value": "198"
+      "type": "Int",
+      "value": 198
     },
     "gaugeTextureIndex": {
       "type": "Int",
       "value": 3
     },
     "overlay_newRecordAchievementRateAfter": {
-      "type": "String",
-      "value": "198"
+      "type": "Int",
+      "value": 198
     },
     "overlay_newRecordAchievementRateBefore": {
-      "type": "String",
-      "value": "123"
+      "type": "Int",
+      "value": 123
     },
     "overlay_newRecordPanelVisible": {
       "type": "Bool",
@@ -2940,6 +2967,6 @@
     640.0,
     480.0
   ],
-  "serializedVersion": 8,
-  "version": "0.4.0"
+  "serializedVersion": 9,
+  "version": "0.4.1"
 }

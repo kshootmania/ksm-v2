@@ -2559,6 +2559,7 @@
                 {
                   "canvasPath": "ui/font/num0.noco",
                   "propagateEvents": true,
+                  "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
                   "serializedParamBindingsJSON": "{\"text\":\"gaugePercentage\"}",
                   "serializedParamsJSON": "{\"characterSize\":[16.0,18.0],\"horizontalAlign\":\"Right\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.0,0.0]}",
                   "tag": "",
@@ -3058,8 +3059,8 @@
       "value": ""
     },
     "gaugePercentage": {
-      "type": "String",
-      "value": "98"
+      "type": "Int",
+      "value": 98
     },
     "highScoreGradeIndex": {
       "type": "Int",
@@ -3118,6 +3119,6 @@
     816.0,
     228.0
   ],
-  "serializedVersion": 8,
-  "version": "0.4.0"
+  "serializedVersion": 9,
+  "version": "0.4.1"
 }

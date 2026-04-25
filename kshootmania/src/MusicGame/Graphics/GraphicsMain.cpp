@@ -333,11 +333,11 @@ namespace MusicGame::Graphics
 			{ U"titleImgFilePath", titleImgPath },
 			{ U"artist", artist },
 			{ U"artistImgFilePath", artistImgPath },
-			{ U"levelNumber", Format(chartData.meta.level) },
-			{ U"bpmNumber", FormatBPM(startBPM) },
+			{ U"levelNumber", chartData.meta.level },
+			{ U"bpmNumberText", FormatBPM(startBPM) },
 			{ U"difficultyIndex", chartData.meta.difficulty.idx },
-			{ U"hispeedValue", HispeedUtils::ToDisplayString(playOption.hispeedSetting) },
-			{ U"hispeedValueEffective", Format(playOption.hispeedSetting.value) },
+			{ U"hispeedValueText", HispeedUtils::ToDisplayString(playOption.hispeedSetting) },
+			{ U"hispeedValueTextEffective", Format(playOption.hispeedSetting.value) },
 			{ U"jacketFilePath", FsUtils::ResolveJacketPath(parentPath, Unicode::FromUTF8(chartData.meta.jacketFilename)) },
 		});
 	}
@@ -357,12 +357,12 @@ namespace MusicGame::Graphics
 
 		// HUDのCanvasパラメータを更新
 		m_hudCanvas->setParamValues({
-			{ U"scoreNumber", U"{:08d}"_fmt(m_scoreAnimator.displayedScore()) },
-			{ U"fpsNumber", Format(Profiler::FPS()) },
-			{ U"bpmNumber", FormatBPM(gameStatus.currentBPM) },
+			{ U"scoreNumber", m_scoreAnimator.displayedScore() },
+			{ U"fpsNumber", static_cast<int32>(Profiler::FPS()) },
+			{ U"bpmNumberText", FormatBPM(gameStatus.currentBPM) },
 			{ U"timingAdjustVisible", viewStatus.timingAdjustMs != 0 },
 			{ U"timingAdjustSignIndex", viewStatus.timingAdjustMs > 0 ? 1 : 0 },
-			{ U"timingAdjustNumber", Format(Abs(viewStatus.timingAdjustMs)) },
+			{ U"timingAdjustNumber", Abs(viewStatus.timingAdjustMs) },
 		});
 
 		m_hudCanvas->update();
@@ -398,8 +398,8 @@ namespace MusicGame::Graphics
 
 			m_hudCanvas->setParamValues({
 				{ U"positionMarkerProgress", progress },
-				{ U"hispeedValue", HispeedUtils::ToDisplayString(highwayScrollContext.highwayScroll().hispeedSetting()) },
-				{ U"hispeedValueEffective", Format(highwayScrollContext.currentHispeedWithScrollSpeed()) },
+				{ U"hispeedValueText", HispeedUtils::ToDisplayString(highwayScrollContext.highwayScroll().hispeedSetting()) },
+				{ U"hispeedValueTextEffective", Format(highwayScrollContext.currentHispeedWithScrollSpeed()) },
 			});
 		}
 

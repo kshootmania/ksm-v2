@@ -39,6 +39,7 @@
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -61,6 +62,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": true,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -69,6 +71,12 @@
           "textureGridCellSize": [
             32.0,
             32.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
           ],
           "textureGridColumns": 1,
           "textureGridIndex": 0,
@@ -123,6 +131,7 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
         "color": [
@@ -191,6 +200,7 @@
               "gridAnimationFPS": 10.0,
               "gridAnimationStartIndex": 0,
               "gridAnimationType": "None",
+              "hideIfTextureEmpty": false,
               "nineSliceBottomTiled": false,
               "nineSliceCenterTiled": false,
               "nineSliceEnabled": false,
@@ -213,6 +223,7 @@
                 0.0
               ],
               "offsetAnimationType": "None",
+              "pixelShaderAssetName": "",
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
@@ -221,6 +232,12 @@
               "textureGridCellSize": [
                 32.0,
                 32.0
+              ],
+              "textureGridCellTrim": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
               ],
               "textureGridColumns": 1,
               "textureGridIndex": 0,
@@ -323,6 +340,7 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -412,6 +430,7 @@
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
+                  "hideIfTextureEmpty": false,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -434,6 +453,7 @@
                     0.0
                   ],
                   "offsetAnimationType": "None",
+                  "pixelShaderAssetName": "",
                   "preserveAspect": false,
                   "textureAddressMode": "Default",
                   "textureAssetName": "",
@@ -442,6 +462,12 @@
                   "textureGridCellSize": [
                     525.0,
                     75.0
+                  ],
+                  "textureGridCellTrim": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
                   ],
                   "textureGridColumns": 2,
                   "textureGridIndex": 1,
@@ -496,6 +522,7 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -561,6 +588,7 @@
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
+                  "hideIfTextureEmpty": false,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -583,6 +611,7 @@
                     0.0
                   ],
                   "offsetAnimationType": "None",
+                  "pixelShaderAssetName": "",
                   "preserveAspect": false,
                   "textureAddressMode": "Default",
                   "textureAssetName": "",
@@ -591,6 +620,12 @@
                   "textureGridCellSize": [
                     525.0,
                     75.0
+                  ],
+                  "textureGridCellTrim": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
                   ],
                   "textureGridColumns": 2,
                   "textureGridIndex": 0,
@@ -645,6 +680,7 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -723,6 +759,7 @@
             "type": "InlineRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -791,6 +828,7 @@
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
+                  "hideIfTextureEmpty": false,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -813,6 +851,7 @@
                     0.0
                   ],
                   "offsetAnimationType": "None",
+                  "pixelShaderAssetName": "",
                   "preserveAspect": false,
                   "textureAddressMode": "Default",
                   "textureAssetName": "",
@@ -821,6 +860,12 @@
                   "textureGridCellSize": [
                     525.0,
                     75.0
+                  ],
+                  "textureGridCellTrim": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
                   ],
                   "textureGridColumns": 2,
                   "textureGridIndex": 3,
@@ -875,6 +920,7 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -940,6 +986,7 @@
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
+                  "hideIfTextureEmpty": false,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -962,6 +1009,7 @@
                     0.0
                   ],
                   "offsetAnimationType": "None",
+                  "pixelShaderAssetName": "",
                   "preserveAspect": false,
                   "textureAddressMode": "Default",
                   "textureAssetName": "",
@@ -970,6 +1018,12 @@
                   "textureGridCellSize": [
                     525.0,
                     75.0
+                  ],
+                  "textureGridCellTrim": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
                   ],
                   "textureGridColumns": 2,
                   "textureGridIndex": 2,
@@ -1024,6 +1078,7 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -1102,6 +1157,7 @@
             "type": "InlineRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -1170,6 +1226,7 @@
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
+                  "hideIfTextureEmpty": false,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -1192,6 +1249,7 @@
                     0.0
                   ],
                   "offsetAnimationType": "None",
+                  "pixelShaderAssetName": "",
                   "preserveAspect": false,
                   "textureAddressMode": "Default",
                   "textureAssetName": "",
@@ -1200,6 +1258,12 @@
                   "textureGridCellSize": [
                     525.0,
                     75.0
+                  ],
+                  "textureGridCellTrim": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
                   ],
                   "textureGridColumns": 2,
                   "textureGridIndex": 5,
@@ -1254,6 +1318,7 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -1319,6 +1384,7 @@
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
+                  "hideIfTextureEmpty": false,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -1341,6 +1407,7 @@
                     0.0
                   ],
                   "offsetAnimationType": "None",
+                  "pixelShaderAssetName": "",
                   "preserveAspect": false,
                   "textureAddressMode": "Default",
                   "textureAssetName": "",
@@ -1349,6 +1416,12 @@
                   "textureGridCellSize": [
                     525.0,
                     75.0
+                  ],
+                  "textureGridCellTrim": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
                   ],
                   "textureGridColumns": 2,
                   "textureGridIndex": 4,
@@ -1403,6 +1476,7 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -1481,6 +1555,7 @@
             "type": "InlineRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -1549,6 +1624,7 @@
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
+                  "hideIfTextureEmpty": false,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -1571,6 +1647,7 @@
                     0.0
                   ],
                   "offsetAnimationType": "None",
+                  "pixelShaderAssetName": "",
                   "preserveAspect": false,
                   "textureAddressMode": "Default",
                   "textureAssetName": "",
@@ -1579,6 +1656,12 @@
                   "textureGridCellSize": [
                     525.0,
                     75.0
+                  ],
+                  "textureGridCellTrim": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
                   ],
                   "textureGridColumns": 2,
                   "textureGridIndex": 7,
@@ -1633,6 +1716,7 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -1698,6 +1782,7 @@
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
+                  "hideIfTextureEmpty": false,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -1720,6 +1805,7 @@
                     0.0
                   ],
                   "offsetAnimationType": "None",
+                  "pixelShaderAssetName": "",
                   "preserveAspect": false,
                   "textureAddressMode": "Default",
                   "textureAssetName": "",
@@ -1728,6 +1814,12 @@
                   "textureGridCellSize": [
                     525.0,
                     75.0
+                  ],
+                  "textureGridCellTrim": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
                   ],
                   "textureGridColumns": 2,
                   "textureGridIndex": 6,
@@ -1782,6 +1874,7 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
                 "color": [
@@ -1860,6 +1953,7 @@
             "type": "InlineRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
             "color": [
@@ -1940,6 +2034,7 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
       "styleState": "0",
       "styleState_paramRef": "menuCursor",
       "transform": {
@@ -1984,16 +2079,17 @@
     "type": "FlowLayout",
     "verticalAlign": "Top"
   },
+  "defaultFontAssetName": "",
   "params": {
     "menuCursor": {
-      "type": "String",
-      "value": "0"
+      "type": "Int",
+      "value": 0
     }
   },
   "referenceSize": [
     640.0,
     480.0
   ],
-  "serializedVersion": 3,
-  "version": "0.2.1"
+  "serializedVersion": 9,
+  "version": "0.4.1"
 }

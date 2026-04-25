@@ -1020,6 +1020,7 @@
             {
               "canvasPath": "ui/font/num2.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
               "serializedParamBindingsJSON": "{\"text\":\"levelNumber\"}",
               "serializedParamsJSON": "{\"characterSize\":[34.0,42.0],\"characterSpacing\":[0.0,0.0],\"horizontalAlign\":\"Left\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,0.5,0.5],\"verticalAlign\":\"Middle\"}",
               "tag": "",
@@ -1115,7 +1116,8 @@
             {
               "canvasPath": "ui/font/num2.noco",
               "propagateEvents": true,
-              "serializedParamBindingsJSON": "{\"text\":\"bpmNumber\"}",
+              "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
+              "serializedParamBindingsJSON": "{\"text\":\"bpmNumberText\"}",
               "serializedParamsJSON": "{\"characterSize\":[34.0,42.0],\"characterSpacing\":[0.0,0.0],\"horizontalAlign\":\"Left\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,0.5,0.5],\"verticalAlign\":\"Middle\"}",
               "tag": "",
               "type": "SubCanvas"
@@ -1528,7 +1530,8 @@
             {
               "canvasPath": "ui/font/num2.noco",
               "propagateEvents": true,
-              "serializedParamBindingsJSON": "{\"text\":\"hispeedValue\"}",
+              "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
+              "serializedParamBindingsJSON": "{\"text\":\"hispeedValueText\"}",
               "serializedParamsJSON": "{\"characterSize\":[20.0,18.0],\"characterSpacing\":[0.5,0.0],\"horizontalAlign\":\"Center\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.5,0.5,0.5,0.5],\"verticalAlign\":\"Middle\"}",
               "tag": "",
               "type": "SubCanvas"
@@ -1623,7 +1626,8 @@
             {
               "canvasPath": "ui/font/num2.noco",
               "propagateEvents": true,
-              "serializedParamBindingsJSON": "{\"text\":\"hispeedValueEffective\"}",
+              "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
+              "serializedParamBindingsJSON": "{\"text\":\"hispeedValueTextEffective\"}",
               "serializedParamsJSON": "{\"characterSize\":[20.0,18.0],\"characterSpacing\":[0.5,0.0],\"horizontalAlign\":\"Center\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.5,0.5,0.5,0.5],\"verticalAlign\":\"Middle\"}",
               "tag": "",
               "type": "SubCanvas"
@@ -1877,7 +1881,7 @@
       "type": "String",
       "value": ""
     },
-    "bpmNumber": {
+    "bpmNumberText": {
       "type": "String",
       "value": "180"
     },
@@ -1885,11 +1889,11 @@
       "type": "Int",
       "value": 2
     },
-    "hispeedValue": {
+    "hispeedValueText": {
       "type": "String",
       "value": "725"
     },
-    "hispeedValueEffective": {
+    "hispeedValueTextEffective": {
       "type": "String",
       "value": "725"
     },
@@ -1898,8 +1902,8 @@
       "value": ""
     },
     "levelNumber": {
-      "type": "String",
-      "value": "15"
+      "type": "Int",
+      "value": 15
     },
     "title": {
       "type": "String",
@@ -1914,6 +1918,6 @@
     640.0,
     480.0
   ],
-  "serializedVersion": 8,
-  "version": "0.4.0"
+  "serializedVersion": 9,
+  "version": "0.4.1"
 }

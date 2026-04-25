@@ -12,8 +12,8 @@ void CourseResultNewRecordPanel::setValue(int32 oldAchievementRate, int32 newAch
 
 	if (shouldBeVisible)
 	{
-		m_canvas->setParamValue(U"overlay_newRecordAchievementRateBefore", U"{}"_fmt(oldAchievementRate));
-		m_canvas->setParamValue(U"overlay_newRecordAchievementRateAfter", U"{}"_fmt(newAchievementRate));
+		m_canvas->setParamValue(U"overlay_newRecordAchievementRateBefore", oldAchievementRate);
+		m_canvas->setParamValue(U"overlay_newRecordAchievementRateAfter", newAchievementRate);
 	}
 
 	m_isVisible = shouldBeVisible;

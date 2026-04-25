@@ -94,9 +94,9 @@ void CourseResultChartList::refreshCanvasParams(const CoursePlayState& courseSta
 				{ U"artist", U"---" },
 				{ U"jacketFilePath", U"" },
 				{ U"difficultyIndex", 0 },
-				{ U"levelNumber", U"0" },
+				{ U"levelNumber", 0 },
 				{ U"gradeIndex", static_cast<double>(GradeToIndex(result.grade())) },
-				{ U"scoreNumber", U"{:08d}"_fmt(result.score) },
+				{ U"scoreNumber", result.score },
 			});
 			continue;
 		}
@@ -115,9 +115,9 @@ void CourseResultChartList::refreshCanvasParams(const CoursePlayState& courseSta
 			{ U"artistImgFilePath", artistImgPath },
 			{ U"jacketFilePath", chartInfo.jacketFilePath() },
 			{ U"difficultyIndex", static_cast<double>(chartInfo.difficultyIdx()) },
-			{ U"levelNumber", U"{}"_fmt(chartInfo.level()) },
+			{ U"levelNumber", chartInfo.level() },
 			{ U"gradeIndex", static_cast<double>(GradeToIndex(result.grade())) },
-			{ U"scoreNumber", U"{:08d}"_fmt(result.score) },
+			{ U"scoreNumber", result.score },
 		});
 	}
 }

@@ -105,11 +105,11 @@ PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAuto
 		{ U"titleImgFilePath", titleImgPath },
 		{ U"artist", artist },
 		{ U"artistImgFilePath", artistImgPath },
-		{ U"levelNumber", Format(m_chartData.meta.level) },
-		{ U"bpmNumber", Format(static_cast<int32>(startBPM)) },
+		{ U"levelNumber", m_chartData.meta.level },
+		{ U"bpmNumberText", Format(static_cast<int32>(startBPM)) },
 		{ U"difficultyIndex", m_chartData.meta.difficulty.idx },
-		{ U"hispeedValue", MusicGame::HispeedUtils::ToDisplayString(m_hispeedMenu.hispeedSetting()) },
-		{ U"hispeedValueEffective", Format(m_highwayScroll.currentHispeed()) },
+		{ U"hispeedValueText", MusicGame::HispeedUtils::ToDisplayString(m_hispeedMenu.hispeedSetting()) },
+		{ U"hispeedValueTextEffective", Format(m_highwayScroll.currentHispeed()) },
 		{ U"jacketFilePath", jacketPath },
 	});
 }
@@ -183,8 +183,8 @@ void PlayPrepareScene::update()
 
 		// ハイスピード表示を更新
 		m_canvas->setParamValues({
-			{ U"hispeedValue", MusicGame::HispeedUtils::ToDisplayString(m_hispeedMenu.hispeedSetting()) },
-			{ U"hispeedValueEffective", Format(m_highwayScroll.currentHispeed()) },
+			{ U"hispeedValueText", MusicGame::HispeedUtils::ToDisplayString(m_hispeedMenu.hispeedSetting()) },
+			{ U"hispeedValueTextEffective", Format(m_highwayScroll.currentHispeed()) },
 		});
 	}
 }

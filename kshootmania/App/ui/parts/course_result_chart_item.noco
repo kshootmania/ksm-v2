@@ -973,8 +973,9 @@
             {
               "canvasPath": "ui/font/num0.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{\"text\":\"Format\"}",
               "serializedParamBindingsJSON": "{\"text\":\"scoreNumber\"}",
-              "serializedParamsJSON": "{\"characterSize\":[18.0,15.0],\"horizontalAlign\":\"Center\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.0,0.0]}",
+              "serializedParamsJSON": "{\"characterSize\":[18.0,15.0],\"horizontalAlign\":\"Center\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"text\":\"{:08}\",\"textureCellTrim\":[0.0,0.0,0.0,0.0]}",
               "tag": "",
               "type": "SubCanvas"
             }
@@ -1227,6 +1228,7 @@
             {
               "canvasPath": "ui/font/num2.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
               "serializedParamBindingsJSON": "{\"text\":\"levelNumber\"}",
               "serializedParamsJSON": "{\"characterSize\":[20.0,18.0],\"characterSpacing\":[0.0,0.0],\"horizontalAlign\":\"Left\",\"horizontalOverflow\":\"Overflow\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.5,0.5],\"verticalAlign\":\"Middle\"}",
               "tag": "",
@@ -1489,12 +1491,12 @@
       "value": "imgs/jacket/nowprinting1.jpg"
     },
     "levelNumber": {
-      "type": "String",
-      "value": "15"
+      "type": "Int",
+      "value": 15
     },
     "scoreNumber": {
-      "type": "String",
-      "value": "00000000"
+      "type": "Int",
+      "value": 0
     },
     "title": {
       "type": "String",
@@ -1509,6 +1511,6 @@
     720.0,
     128.0
   ],
-  "serializedVersion": 8,
-  "version": "0.4.0"
+  "serializedVersion": 9,
+  "version": "0.4.1"
 }

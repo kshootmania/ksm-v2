@@ -76,7 +76,7 @@ void CourseResultScene::updateCanvasParams()
 	m_canvas->setParamValues({
 		{ U"courseTitle", courseInfo.title },
 		{ U"resultTopIndex", m_courseState.isCleared() ? 1.0 : 0.0 },
-		{ U"gaugePercentageNumber", U"{}"_fmt(newAchievementRate) },
+		{ U"gaugePercentageNumber", newAchievementRate },
 		{ U"gaugeTextureIndex", 1.0 },
 		{ U"bottomRightText", U"" },
 	});

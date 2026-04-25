@@ -8,7 +8,7 @@ namespace
 
 void TitleMenu::refreshCanvasMenuCursor()
 {
-	m_titleSceneCanvas->setParamValue(U"menuCursor", ToString(m_menu.cursor()));
+	m_titleSceneCanvas->setParamValue(U"menuCursor", m_menu.cursor());
 }
 
 TitleMenu::TitleMenu(TitleMenuItem defaultMenuitem, const std::shared_ptr<noco::Canvas>& titleSceneCanvas)

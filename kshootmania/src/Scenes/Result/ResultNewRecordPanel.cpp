@@ -1,14 +1,6 @@
 ﻿#include "ResultNewRecordPanel.hpp"
 #include "NocoExtensions/NocoUtils.hpp"
 
-namespace
-{
-	String FormatScoreDelta(int32 delta)
-	{
-		return U"{:08d}"_fmt(delta);
-	}
-}
-
 ResultNewRecordPanel::ResultNewRecordPanel(std::shared_ptr<noco::Canvas> canvas)
 	: m_canvas(canvas)
 {
@@ -21,7 +13,7 @@ void ResultNewRecordPanel::setValue(int32 oldScore, int32 newScore)
 	if (shouldBeVisible)
 	{
 		const int32 scoreDelta = newScore - oldScore;
-		m_canvas->setParamValue(U"overlay_newRecordNumber", FormatScoreDelta(scoreDelta));
+		m_canvas->setParamValue(U"overlay_newRecordNumber", scoreDelta);
 	}
 
 	m_isVisible = shouldBeVisible;

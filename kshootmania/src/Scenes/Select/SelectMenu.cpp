@@ -591,7 +591,7 @@ void SelectMenu::refreshContentCanvasParams()
 	const int32 difficultyCursor = m_difficultyMenu.cursor(); // この値は-1にもなり得る
 	const int32 difficultyIdx = difficultyCursor >= 0 ? difficultyCursor : m_difficultyMenu.rawCursor();
 	m_selectSceneCanvas->setParamValues({
-		{ U"difficultyIdx", difficultyIdx },
+		{ U"difficultyIndex", difficultyIdx },
 		{ U"scrollBarCursorRate", m_menu.cursorRate() },
 	});
 

@@ -1646,8 +1646,9 @@
             {
               "canvasPath": "ui/font/result_scorenum.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{\"text\":\"Format\"}",
               "serializedParamBindingsJSON": "{\"text\":\"scoreNumber\"}",
-              "serializedParamsJSON": "{\"characterSize\":[64.0,64.0],\"characterSpacing\":[-14.0,0.0],\"horizontalAlign\":\"Center\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.0,0.0],\"verticalAlign\":\"Top\"}",
+              "serializedParamsJSON": "{\"characterSize\":[64.0,64.0],\"characterSpacing\":[-14.0,0.0],\"horizontalAlign\":\"Center\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"Fixed\",\"text\":\"{:08}\",\"textureCellTrim\":[0.0,0.0,0.0,0.0],\"verticalAlign\":\"Top\"}",
               "tag": "",
               "type": "SubCanvas"
             }
@@ -1741,8 +1742,9 @@
             {
               "canvasPath": "ui/font/num1.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{\"text\":\"Format\"}",
               "serializedParamBindingsJSON": "{\"text\":\"maxComboNumber\"}",
-              "serializedParamsJSON": "{\"characterSize\":[20.0,20.0],\"characterSpacing\":[7.0,0.0],\"horizontalAlign\":\"Center\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":false,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Middle\"}",
+              "serializedParamsJSON": "{\"characterSize\":[20.0,20.0],\"characterSpacing\":[7.0,0.0],\"horizontalAlign\":\"Center\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":false,\"sizingMode\":\"AutoShrinkWidth\",\"text\":\"{:04}\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Middle\"}",
               "tag": "",
               "type": "SubCanvas"
             }
@@ -1836,8 +1838,9 @@
             {
               "canvasPath": "ui/font/num0.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{\"text\":\"Format\"}",
               "serializedParamBindingsJSON": "{\"text\":\"criticalCount\"}",
-              "serializedParamsJSON": "{\"characterSize\":[26.0,24.0],\"characterSpacing\":[4.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Top\"}",
+              "serializedParamsJSON": "{\"characterSize\":[26.0,24.0],\"characterSpacing\":[4.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"text\":\"{:04}\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Top\"}",
               "tag": "",
               "type": "SubCanvas"
             }
@@ -1931,8 +1934,9 @@
             {
               "canvasPath": "ui/font/num0.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{\"text\":\"Format\"}",
               "serializedParamBindingsJSON": "{\"text\":\"nearCount\"}",
-              "serializedParamsJSON": "{\"characterSize\":[26.0,24.0],\"characterSpacing\":[4.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Top\"}",
+              "serializedParamsJSON": "{\"characterSize\":[26.0,24.0],\"characterSpacing\":[4.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"text\":\"{:04}\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Top\"}",
               "tag": "",
               "type": "SubCanvas"
             }
@@ -2026,8 +2030,9 @@
             {
               "canvasPath": "ui/font/num0.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{\"text\":\"Format\"}",
               "serializedParamBindingsJSON": "{\"text\":\"errorCount\"}",
-              "serializedParamsJSON": "{\"characterSize\":[26.0,24.0],\"characterSpacing\":[4.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Top\"}",
+              "serializedParamsJSON": "{\"characterSize\":[26.0,24.0],\"characterSpacing\":[4.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"text\":\"{:04}\",\"textureCellTrim\":[0.0,0.0,1.5,1.5],\"verticalAlign\":\"Top\"}",
               "tag": "",
               "type": "SubCanvas"
             }
@@ -2438,6 +2443,7 @@
             {
               "canvasPath": "ui/font/num0.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
               "serializedParamBindingsJSON": "{\"text\":\"gaugePercentageNumber\"}",
               "serializedParamsJSON": "{\"characterSize\":[13.0,15.0],\"characterSpacing\":[1.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":false,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,3.0,3.0],\"verticalAlign\":\"Top\"}",
               "tag": "",
@@ -3013,8 +3019,9 @@
                     {
                       "canvasPath": "ui/font/num0.noco",
                       "propagateEvents": true,
+                      "serializedParamBindingModesJSON": "{\"text\":\"Format\"}",
                       "serializedParamBindingsJSON": "{\"text\":\"overlay_newRecordNumber\"}",
-                      "serializedParamsJSON": "{\"characterSize\":[30.0,30.0],\"characterSpacing\":[8.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.0,0.0],\"verticalAlign\":\"Top\"}",
+                      "serializedParamsJSON": "{\"characterSize\":[30.0,30.0],\"characterSpacing\":[8.0,0.0],\"horizontalAlign\":\"Right\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"text\":\"{:08}\",\"textureCellTrim\":[0.0,0.0,0.0,0.0],\"verticalAlign\":\"Top\"}",
                       "tag": "",
                       "type": "SubCanvas"
                     }
@@ -3584,20 +3591,20 @@
       "value": "vX.X.X"
     },
     "criticalCount": {
-      "type": "String",
-      "value": "0123"
+      "type": "Int",
+      "value": 123
     },
     "difficultyIndex": {
       "type": "Int",
       "value": 2
     },
     "errorCount": {
-      "type": "String",
-      "value": "0123"
+      "type": "Int",
+      "value": 123
     },
     "gaugePercentageNumber": {
-      "type": "String",
-      "value": "100"
+      "type": "Int",
+      "value": 100
     },
     "gaugeTextureIndex": {
       "type": "Int",
@@ -3620,16 +3627,16 @@
       "value": 14
     },
     "maxComboNumber": {
-      "type": "String",
-      "value": "0345"
+      "type": "Int",
+      "value": 345
     },
     "nearCount": {
-      "type": "String",
-      "value": "0123"
+      "type": "Int",
+      "value": 123
     },
     "overlay_newRecordNumber": {
-      "type": "String",
-      "value": "09876543"
+      "type": "Int",
+      "value": 9876543
     },
     "overlay_newRecordPanelVisible": {
       "type": "Bool",
@@ -3640,8 +3647,8 @@
       "value": 1
     },
     "scoreNumber": {
-      "type": "String",
-      "value": "09777778"
+      "type": "Int",
+      "value": 9777778
     },
     "songTitle": {
       "type": "String",
@@ -3656,6 +3663,6 @@
     640.0,
     480.0
   ],
-  "serializedVersion": 8,
-  "version": "0.4.0"
+  "serializedVersion": 9,
+  "version": "0.4.1"
 }

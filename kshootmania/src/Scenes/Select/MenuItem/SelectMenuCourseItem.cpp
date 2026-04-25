@@ -110,11 +110,11 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 		{ U"jacketAuthor", U"" },
 		{ U"information", m_courseInfo.information },
 		{ U"chartAuthor", U"" },
-		{ U"difficultyIdx", 0 },
+		{ U"difficultyIndex", 0 },
 		{ U"medalIndex", medalIndex },
 		{ U"highScoreGradeIndex", -1 },
-		{ U"highScore", U"" },
-		{ U"gaugePercentage", ToString(achievementRate) },
+		{ U"highScore", 0 },
+		{ U"gaugePercentage", achievementRate },
 		{ U"iconFilePath", iconPath },
 		{ U"iconActive", !iconPath.isEmpty() && FileSystem::IsFile(iconPath) },
 	});
@@ -240,7 +240,7 @@ void SelectMenuCourseItem::setCanvasParamsTopBottom([[maybe_unused]] const Selec
 		{ U"levelIndex", -1 },
 		{ U"medalIndex", medalIndex },
 		{ U"highScoreGradeIndex", -1 },
-		{ U"gaugePercentage", ToString(achievementRate) },
+		{ U"gaugePercentage", achievementRate },
 		{ U"iconFilePath", iconPath },
 		{ U"iconActive", !iconPath.isEmpty() && FileSystem::IsFile(iconPath) },
 	});

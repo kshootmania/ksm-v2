@@ -658,6 +658,7 @@
                 {
                   "canvasPath": "ui/font/msel_0_bpmnum.noco",
                   "propagateEvents": true,
+                  "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
                   "serializedParamBindingsJSON": "{\"text\":\"bpm\"}",
                   "serializedParamsJSON": "{\"characterSize\":[24.0,24.0],\"horizontalAlign\":\"Left\",\"preserveAspect\":false,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.0,0.0,0.5,0.5]}",
                   "tag": "",
@@ -2580,7 +2581,7 @@
               "rubberBandScrollEnabled": true,
               "scrollBarType": "Overlay",
               "styleState": "difficulty{}",
-              "styleState_paramRef": "difficultyIdx",
+              "styleState_paramRef": "difficultyIndex",
               "styleState_paramRefMode": "Format",
               "transform": {
                 "color": [
@@ -3124,8 +3125,9 @@
                 {
                   "canvasPath": "ui/font/num0.noco",
                   "propagateEvents": true,
+                  "serializedParamBindingModesJSON": "{\"text\":\"Format\"}",
                   "serializedParamBindingsJSON": "{\"text\":\"highScore\"}",
-                  "serializedParamsJSON": "{\"characterSize\":[18.0,15.0],\"horizontalAlign\":\"Center\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,1.5,1.5]}",
+                  "serializedParamsJSON": "{\"characterSize\":[18.0,15.0],\"horizontalAlign\":\"Center\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"text\":\"{:08}\",\"textureCellTrim\":[0.0,0.0,1.5,1.5]}",
                   "tag": "",
                   "type": "SubCanvas"
                 }
@@ -3219,6 +3221,7 @@
                 {
                   "canvasPath": "ui/font/num0.noco",
                   "propagateEvents": true,
+                  "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
                   "serializedParamBindingsJSON": "{\"text\":\"gaugePercentage\"}",
                   "serializedParamsJSON": "{\"characterSize\":[16.0,18.0],\"horizontalAlign\":\"Right\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,1.5,1.5]}",
                   "tag": "",
@@ -4733,6 +4736,7 @@
                 {
                   "canvasPath": "ui/font/num0.noco",
                   "propagateEvents": true,
+                  "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
                   "serializedParamBindingsJSON": "{\"text\":\"gaugePercentage\"}",
                   "serializedParamsJSON": "{\"characterSize\":[16.0,18.0],\"horizontalAlign\":\"Right\",\"preserveAspect\":false,\"sizingMode\":\"Fixed\",\"textureCellTrim\":[0.0,0.0,0.0,0.0]}",
                   "tag": "",
@@ -5721,17 +5725,17 @@
       "type": "String",
       "value": ""
     },
-    "difficultyIdx": {
+    "difficultyIndex": {
       "type": "Int",
       "value": 0
     },
     "gaugePercentage": {
-      "type": "String",
-      "value": "98"
+      "type": "Int",
+      "value": 98
     },
     "highScore": {
-      "type": "String",
-      "value": "09876543"
+      "type": "Int",
+      "value": 9876543
     },
     "highScoreGradeIndex": {
       "type": "Int",
@@ -5794,6 +5798,6 @@
     766.0,
     378.0
   ],
-  "serializedVersion": 8,
-  "version": "0.4.0"
+  "serializedVersion": 9,
+  "version": "0.4.1"
 }
