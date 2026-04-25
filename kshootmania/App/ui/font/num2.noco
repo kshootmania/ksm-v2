@@ -89,7 +89,8 @@
           "type": "TextureFontLabel",
           "verticalAlign": "Middle",
           "verticalAlign_paramRef": "verticalAlign",
-          "verticalOverflow": "Overflow"
+          "verticalOverflow": "Overflow",
+          "textureOffset_paramRef": "textureOffset"
         }
       ],
       "decelerationRate": 0.2,
@@ -231,6 +232,13 @@
     "verticalAlign": {
       "type": "String",
       "value": "Middle"
+    },
+    "textureOffset": {
+      "type": "Vec2",
+      "value": [
+        0,
+        0
+      ]
     }
   },
   "referenceSize": [

@@ -1422,7 +1422,7 @@
               "propagateEvents": true,
               "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
               "serializedParamBindingsJSON": "{\"text\":\"hispeedValueTextEffective\"}",
-              "serializedParamsJSON": "{\"characterSize\":[10.0,9.0],\"characterSpacing\":[0.5,0.0],\"horizontalAlign\":\"Center\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.5,0.5,0.5,0.5],\"verticalAlign\":\"Middle\"}",
+              "serializedParamsJSON": "{\"characterSize\":[10.0,9.0],\"characterSpacing\":[0.5,0.0],\"horizontalAlign\":\"Center\",\"horizontalOverflow\":\"Wrap\",\"preserveAspect\":true,\"sizingMode\":\"AutoShrinkWidth\",\"textureCellTrim\":[0.5,0.5,0.5,0.5],\"verticalAlign\":\"Middle\",\"textureOffset\":[20.0,0.0]}",
               "tag": "",
               "type": "SubCanvas"
             }
