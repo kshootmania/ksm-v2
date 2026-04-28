@@ -100,7 +100,7 @@ Co::Task<void> TitleScene::fadeOut()
 #ifdef NO_IR_ENTRY_SCENE
 		requestNextScene<SelectScene>();
 		// SelectSceneはコンストラクタの処理に時間がかかるので、ローディングはここで出しておく
-		co_await ShowLoadingOneFrame::Play(HasBgYN::No);
+		co_await ShowLoadingOneFrame::Play(LoadingBgMode::kBlack);
 #else
 		requestNextScene<IREntryScene>(m_bgmStream);
 #endif

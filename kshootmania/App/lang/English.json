@@ -38,7 +38,8 @@
 		"PlayStatsPlayCount": "Play count: ",
 		"PlayStatsClear": "  Clear   : ",
 		"PlayStatsFullCombo": "Full combo: ",
-		"PlayStatsPerfect": " Perfect  : "
+		"PlayStatsPerfect": " Perfect  : ",
+		"SearchCloseResult": "Close Search Results"
 	},
 	"Play": {
 		"ErrorChartFileNotFound": "Cannot find the chart file.",

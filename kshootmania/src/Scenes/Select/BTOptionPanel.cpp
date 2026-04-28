@@ -692,6 +692,15 @@ bool BTOptionPanel::isVisible() const
 	return m_isVisible;
 }
 
+void BTOptionPanel::hide()
+{
+	m_isVisible = false;
+	m_canvas->setParamValue(U"overlay_btOptionPanelVisible_A", false);
+	m_canvas->setParamValue(U"overlay_btOptionPanelVisible_B", false);
+	m_canvas->setParamValue(U"overlay_btOptionPanelVisible_C", false);
+	m_canvas->setParamValue(U"overlay_btOptionPanelVisible_D", false);
+}
+
 void BTOptionPanel::loadFromConfigIni()
 {
 

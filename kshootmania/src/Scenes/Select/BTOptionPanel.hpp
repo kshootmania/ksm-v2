@@ -74,6 +74,9 @@ public:
 	[[nodiscard]]
 	bool isVisible() const;
 
+	// パネルを非表示にする
+	void hide();
+
 	// ConfigIniから設定値を読み込む
 	void loadFromConfigIni();
 

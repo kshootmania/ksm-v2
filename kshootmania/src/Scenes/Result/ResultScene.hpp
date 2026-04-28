@@ -23,6 +23,8 @@ private:
 
 	Optional<CoursePlayState> m_courseState;
 
+	Optional<SelectSceneSearchParams> m_selectSearchParams;
+
 	void updateCanvasParams();
 
 	void update();

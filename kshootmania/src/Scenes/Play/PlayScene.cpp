@@ -108,12 +108,13 @@ namespace
 	}
 }
 
-PlayScene::PlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState, const Optional<MusicGame::TestPlayOption>& testPlayOption)
+PlayScene::PlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState, const Optional<MusicGame::TestPlayOption>& testPlayOption, const Optional<SelectSceneSearchParams>& selectSearchParams)
 	: m_gameMain(MakeGameCreateInfo(chartFilePath, isAutoPlay, courseState, testPlayOption))
 	, m_isAutoPlay(isAutoPlay)
 	, m_courseState(courseState)
 	, m_fadeOutDuration(kFadeDuration)
 	, m_testPlayOption(testPlayOption)
+	, m_selectSearchParams(selectSearchParams)
 {
 	m_gameMain.start();
 
@@ -151,6 +152,7 @@ void PlayScene::update()
 				.chartFilePath = FilePath(m_gameMain.chartFilePath()),
 				.chartData = m_gameMain.chartData(),
 				.playResult = m_gameMain.playResult(),
+				.selectSearchParams = m_selectSearchParams,
 			};
 			requestNextScene<ResultScene>(args);
 		}
@@ -167,12 +169,12 @@ void PlayScene::update()
 				// 次の曲へ
 				m_courseState->advanceToNextChart();
 				const FilePath nextChartPath = m_courseState->currentChartPath();
-				requestNextScene<PlayPrepareScene>(nextChartPath, MusicGame::IsAutoPlayYN::Yes, m_courseState);
+				requestNextScene<PlayPrepareScene>(nextChartPath, MusicGame::IsAutoPlayYN::Yes, m_courseState, none, m_selectSearchParams);
 			}
 			else
 			{
 				// 次の曲がない場合は選曲画面へ
-				requestNextScene<SelectScene>();
+				requestNextScene<SelectScene>(m_selectSearchParams);
 			}
 		}
 		else
@@ -185,6 +187,7 @@ void PlayScene::update()
 				.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
 				.playResult = m_gameMain.playResult(),
 				.courseState = m_courseState,
+				.selectSearchParams = m_selectSearchParams,
 			};
 			requestNextScene<ResultScene>(args);
 		}
@@ -214,7 +217,7 @@ void PlayScene::processBackButtonInput()
 	}
 	else if (m_isAutoPlay)
 	{
-		requestNextScene<SelectScene>();
+		requestNextScene<SelectScene>(m_selectSearchParams);
 	}
 	else
 	{
@@ -226,6 +229,7 @@ void PlayScene::processBackButtonInput()
 			.chartData = m_gameMain.chartData(), // TODO: shared_ptrでコピーを避ける?
 			.playResult = m_gameMain.playResult(),
 			.courseState = m_courseState,
+			.selectSearchParams = m_selectSearchParams,
 		};
 		requestNextScene<ResultScene>(args);
 	}

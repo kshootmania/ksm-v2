@@ -58,3 +58,9 @@ bool PlayStatsPanel::isVisible() const
 {
 	return m_isVisible;
 }
+
+void PlayStatsPanel::hide()
+{
+	m_isVisible = false;
+	m_canvas->setParamValue(U"overlay_playStatsPanelVisible", false);
+}

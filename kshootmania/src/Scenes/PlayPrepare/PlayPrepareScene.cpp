@@ -49,7 +49,7 @@ namespace
 	}
 }
 
-PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState, const Optional<MusicGame::TestPlayOption>& testPlayOption)
+PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState, const Optional<MusicGame::TestPlayOption>& testPlayOption, const Optional<SelectSceneSearchParams>& selectSearchParams)
 	: m_chartFilePath(chartFilePath)
 	, m_isAutoPlay(isAutoPlay)
 	, m_chartData(FsUtils::HasKsonExtension(chartFilePath)
@@ -57,6 +57,7 @@ PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAuto
 		: kson::LoadKshChartData(chartFilePath.toUTF8()))
 	, m_courseState(courseState)
 	, m_testPlayOption(testPlayOption)
+	, m_selectSearchParams(selectSearchParams)
 	, m_canvas(LoadPlayPrepareSceneCanvas())
 	, m_hispeedMenu(ConfigIni::LoadAvailableHispeedTypes(), LoadHispeedSettingFromConfigIni(), kson::GetEffectiveStdBPM(m_chartData), GetInitialBPM(m_chartData))
 	, m_highwayScroll(m_chartData)
@@ -128,7 +129,7 @@ Co::Task<void> PlayPrepareScene::start()
 		{
 			// 自動終了
 			SaveHispeedSettingToConfigIni(m_hispeedMenu.hispeedSetting());
-			requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay, m_courseState, m_testPlayOption);
+			requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay, m_courseState, m_testPlayOption, m_selectSearchParams);
 			break;
 		}
 
@@ -144,12 +145,12 @@ Co::Task<void> PlayPrepareScene::start()
 			else if (m_courseState.has_value() && m_courseState->currentChartIdx() > 0)
 			{
 				// コースモードの2曲目以降の場合はコースリザルトへ
-				requestNextScene<CourseResultScene>(*m_courseState);
+				requestNextScene<CourseResultScene>(*m_courseState, m_selectSearchParams);
 			}
 			else
 			{
 				// 通常モードまたはコースの1曲目の場合は選曲画面へ
-				requestNextScene<SelectScene>();
+				requestNextScene<SelectScene>(m_selectSearchParams);
 			}
 			break;
 		}
@@ -158,7 +159,7 @@ Co::Task<void> PlayPrepareScene::start()
 		{
 			// 一定時間経過後はStartボタンでスキップ可能
 			SaveHispeedSettingToConfigIni(m_hispeedMenu.hispeedSetting());
-			requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay, m_courseState, m_testPlayOption);
+			requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay, m_courseState, m_testPlayOption, m_selectSearchParams);
 			break;
 		}
 
@@ -212,5 +213,5 @@ Co::Task<void> PlayPrepareScene::fadeIn()
 
 Co::Task<void> PlayPrepareScene::postFadeOut()
 {
-	co_await ShowLoadingOneFrame::Play(HasBgYN::No);
+	co_await ShowLoadingOneFrame::Play(LoadingBgMode::kBlack);
 }

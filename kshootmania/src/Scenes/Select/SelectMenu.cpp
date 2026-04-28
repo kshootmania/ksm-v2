@@ -11,6 +11,7 @@
 #include "MenuItem/SelectMenuSubDirSectionItem.hpp"
 #include "MenuItem/SelectMenuLevelSectionItem.hpp"
 #include "MenuItem/SelectMenuLevelSongItem.hpp"
+#include "MenuItem/SelectMenuBackToFolderItem.hpp"
 #include "Common/FsUtils.hpp"
 #include "Common/Encoding.hpp"
 #include "Input/PlatformKey.hpp"
@@ -406,6 +407,8 @@ bool SelectMenu::openDirectory(FilePathView directoryPath, PlaySeYN playSe, Refr
 		return false;
 	}
 
+	applySearchModeFilter();
+
 	if (saveToConfigIni)
 	{
 		// songsフォルダからの相対パスとして保存
@@ -662,7 +665,8 @@ void SelectMenu::playShakeDownTween()
 SelectMenu::SelectMenu(
 	const std::shared_ptr<noco::Canvas>& selectSceneCanvas,
 	std::function<void(FilePathView, MusicGame::IsAutoPlayYN, const Optional<CoursePlayState>&)> fnMoveToPlayScene,
-	std::function<void(StringView)> fnShowErrorDialog)
+	std::function<void(StringView)> fnShowErrorDialog,
+	std::function<void()> fnExitSearchMode)
 	: m_eventContext
 		{
 			.fnMoveToPlayScene = [fnMoveToPlayScene](FilePath path, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState) { fnMoveToPlayScene(path, isAutoPlay, courseState); },
@@ -671,6 +675,7 @@ SelectMenu::SelectMenu(
 			.fnOpenFavoriteFolder = [this](FilePath specialPath) { openFavoriteFolder(specialPath, PlaySeYN::Yes); },
 			.fnOpenCoursesFolder = [this]() { openCoursesFolder(PlaySeYN::Yes); },
 			.fnCloseFolder = [this]() { closeFolder(PlaySeYN::Yes); },
+			.fnExitSearch = std::move(fnExitSearchMode),
 			.fnMoveToNextSubDirSection = [this]() { moveToNextSubDirSection(); },
 			.fnMoveToPrevSubDirSection = [this]() { moveToPrevSubDirSection(); },
 			.fnChangeDifficulty = [this](int32 newDifficultyIdx)
@@ -934,12 +939,17 @@ void SelectMenu::fadeOutSongPreviewForExit(Duration duration)
 
 void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview)
 {
-	// 現在選択中の譜面ファイルパスと難易度を保持
 	FilePath currentChartFilePath;
 	const int32 difficultyCursor = m_difficultyMenu.cursor();
 	int32 currentDifficultyIdx = difficultyCursor >= 0 ? difficultyCursor : m_difficultyMenu.rawCursor();
 	int32 currentCursorIndex = m_menu.cursor();
-	if (!m_menu.empty() && m_menu.cursorValue() != nullptr)
+	const bool searchFilterApplied = m_searchActive && !m_searchQuery.isEmpty();
+	if (searchFilterApplied && m_searchPreservedChartPath.has_value())
+	{
+		// 検索中は検索前のカーソル楽曲を優先してカーソル保持
+		currentChartFilePath = *m_searchPreservedChartPath;
+	}
+	else if (!m_menu.empty() && m_menu.cursorValue() != nullptr)
 	{
 		const auto* pItem = m_menu.cursorValue().get();
 		const auto pChartInfo = pItem->chartInfoPtr(currentDifficultyIdx);
@@ -1004,9 +1014,9 @@ void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview)
 	}
 
 	// 譜面ファイルパスから項目を探してフォーカスを復元
+	bool found = false;
 	if (!currentChartFilePath.isEmpty())
 	{
-		bool found = false;
 		for (std::size_t i = 0U; i < m_menu.size(); ++i)
 		{
 			const auto& pItem = m_menu[i];
@@ -1033,17 +1043,21 @@ void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview)
 				break;
 			}
 		}
+	}
 
-		// 譜面ファイルパスで復元できなかった場合はカーソルインデックスで復元
-		if (!found && currentCursorIndex < static_cast<int32>(m_menu.size()))
+	if (!found)
+	{
+		if (searchFilterApplied)
+		{
+			// BackToFolderItemの直後の楽曲項目へカーソル移動
+			// (楽曲が1つもなければBackToFolderItem自身)
+			const int32 fallbackIndex = m_menu.size() > 1 ? 1 : 0;
+			m_menu.setCursor(fallbackIndex);
+		}
+		else if (currentCursorIndex < static_cast<int32>(m_menu.size()))
 		{
 			m_menu.setCursor(currentCursorIndex);
 		}
-	}
-	else if (currentCursorIndex < static_cast<int32>(m_menu.size()))
-	{
-		// 譜面ファイルパスがない場合もカーソルインデックスで復元
-		m_menu.setCursor(currentCursorIndex);
 	}
 
 	refreshContentCanvasParams();
@@ -1440,6 +1454,8 @@ bool SelectMenu::openAllFolder(PlaySeYN playSe, RefreshSongPreviewYN refreshSong
 		return false;
 	}
 
+	applySearchModeFilter();
+
 	if (saveToConfigIni)
 	{
 		ConfigIni::SetString(ConfigIni::Key::kSelectDirectory, SelectMenuAllFolderItem::kAllFolderSpecialPath);
@@ -1645,6 +1661,8 @@ bool SelectMenu::openFavoriteFolder(FilePathView specialPath, PlaySeYN playSe, R
 		return false;
 	}
 
+	applySearchModeFilter();
+
 	if (saveToConfigIni)
 	{
 		ConfigIni::SetString(ConfigIni::Key::kSelectDirectory, specialPath);
@@ -1846,6 +1864,8 @@ bool SelectMenu::openCoursesFolder(PlaySeYN playSe, RefreshSongPreviewYN refresh
 	{
 		return false;
 	}
+
+	applySearchModeFilter();
 
 	if (saveToConfigIni)
 	{
@@ -2158,4 +2178,142 @@ Optional<String> SelectMenu::currentItemRelativePathToCopy() const
 const SelectFolderState& SelectMenu::folderState() const
 {
 	return m_folderState;
+}
+
+void SelectMenu::setCursorByChartFilePath(FilePathView chartFilePath)
+{
+	if (chartFilePath.isEmpty())
+	{
+		return;
+	}
+	for (std::size_t i = 0U; i < m_menu.size(); ++i)
+	{
+		const auto& pItem = m_menu[i];
+		if (pItem == nullptr)
+		{
+			continue;
+		}
+		for (int32 difficultyIdx = 0; difficultyIdx < kNumDifficulties; ++difficultyIdx)
+		{
+			const auto pChartInfo = pItem->chartInfoPtr(difficultyIdx);
+			if (pChartInfo != nullptr && pChartInfo->chartFilePath() == chartFilePath)
+			{
+				m_menu.setCursor(static_cast<int32>(i));
+				m_difficultyMenu.setCursor(difficultyIdx);
+				refreshContentCanvasParams();
+				refreshSongPreview();
+				return;
+			}
+		}
+	}
+}
+
+void SelectMenu::applySearchModeFilter()
+{
+	// 検索クエリ未入力時はフィルタ適用しない
+	if (!m_searchActive || m_searchQuery.isEmpty())
+	{
+		return;
+	}
+
+	const String lowerQuery = m_searchQuery.lowercased();
+
+	Array<std::unique_ptr<ISelectMenuItem>> songItems;
+	for (std::size_t i = 0U; i < m_menu.size(); ++i)
+	{
+		auto& pItem = m_menu[i];
+		if (pItem == nullptr)
+		{
+			continue;
+		}
+		if (!pItem->isFavoriteRegisterableItemType())
+		{
+			continue;
+		}
+
+		bool matched = false;
+		for (int32 difficultyIdx = 0; difficultyIdx < kNumDifficulties; ++difficultyIdx)
+		{
+			const SelectChartInfo* pInfo = pItem->chartInfoPtr(difficultyIdx, FallbackForSingleChartYN::Yes);
+			if (pInfo == nullptr)
+			{
+				continue;
+			}
+			if (pInfo->title().lowercased().includes(lowerQuery) || pInfo->artist().lowercased().includes(lowerQuery))
+			{
+				matched = true;
+				break;
+			}
+		}
+		if (!matched)
+		{
+			continue;
+		}
+
+		songItems.push_back(std::move(pItem));
+	}
+
+	m_menu.clear();
+	m_menu.push_back(std::make_unique<SelectMenuBackToFolderItem>());
+	for (auto& pItem : songItems)
+	{
+		m_menu.push_back(std::move(pItem));
+	}
+}
+
+void SelectMenu::enterSearchMode(const Optional<FilePath>& preservedChartPath)
+{
+	if (m_searchActive)
+	{
+		return;
+	}
+	m_searchActive = true;
+	m_searchQuery.clear();
+	m_searchPreservedChartPath = preservedChartPath;
+}
+
+void SelectMenu::exitSearchMode()
+{
+	if (!m_searchActive)
+	{
+		return;
+	}
+	const bool wasFiltered = !m_searchQuery.isEmpty();
+	m_searchActive = false;
+	m_searchQuery.clear();
+	m_searchPreservedChartPath.reset();
+	if (wasFiltered)
+	{
+		reloadCurrentDirectory(RefreshSongPreviewYN::Yes);
+	}
+}
+
+void SelectMenu::setSearchPreservedChartPath(const Optional<FilePath>& chartPath)
+{
+	m_searchPreservedChartPath = chartPath;
+}
+
+void SelectMenu::setSearchQuery(StringView query)
+{
+	if (!m_searchActive)
+	{
+		return;
+	}
+	const String newQuery{ query };
+	if (m_searchQuery == newQuery)
+	{
+		return;
+	}
+	m_searchQuery = newQuery;
+	reloadCurrentDirectory(RefreshSongPreviewYN::Yes);
+}
+
+bool SelectMenu::isSearchActive() const
+{
+	return m_searchActive;
+}
+
+const String& SelectMenu::searchQuery() const
+{
+	return m_searchQuery;
 }

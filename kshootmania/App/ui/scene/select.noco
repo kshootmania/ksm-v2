@@ -4607,19 +4607,532 @@
       "verticalScrollable": false,
       "wheelScrollEnabled": true,
       "zOrderInSiblings": 0
+    },
+    {
+      "name": "SearchResult",
+      "activeSelf": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0,
+          0
+        ],
+        "anchorMax": [
+          0,
+          0
+        ],
+        "posDelta": [
+          8,
+          8
+        ],
+        "sizeDelta": [
+          180,
+          108
+        ],
+        "sizeDeltaPivot": [
+          0,
+          0
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          4
+        ]
+      },
+      "components": [],
+      "children": [
+        {
+          "name": "SearchResultTitle",
+          "activeSelf": true,
+          "interactable": true,
+          "isHitTarget": false,
+          "region": {
+            "type": "AnchorRegion",
+            "anchorMin": [
+              0,
+              0
+            ],
+            "anchorMax": [
+              1,
+              0
+            ],
+            "posDelta": [
+              0,
+              0
+            ],
+            "sizeDelta": [
+              0,
+              24
+            ],
+            "sizeDeltaPivot": [
+              0,
+              0
+            ]
+          },
+          "transform": {
+            "translate": [
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0,
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true
+          },
+          "childrenLayout": {
+            "type": "FlowLayout",
+            "horizontalAlign": "Left",
+            "verticalAlign": "Top",
+            "padding": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "spacing": [
+              0,
+              0
+            ]
+          },
+          "components": [],
+          "children": [
+            {
+              "name": "SearchResultTitleHead",
+              "activeSelf": true,
+              "interactable": true,
+              "isHitTarget": false,
+              "region": {
+                "type": "AnchorRegion",
+                "anchorMin": [
+                  0,
+                  0
+                ],
+                "anchorMax": [
+                  0,
+                  0
+                ],
+                "posDelta": [
+                  0,
+                  0
+                ],
+                "sizeDelta": [
+                  22,
+                  22
+                ],
+                "sizeDeltaPivot": [
+                  0,
+                  0
+                ]
+              },
+              "transform": {
+                "translate": [
+                  0,
+                  0
+                ],
+                "scale": [
+                  1,
+                  1
+                ],
+                "pivot": [
+                  0.5,
+                  0.5
+                ],
+                "rotation": 0,
+                "color": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
+                "hitTestAffected": true
+              },
+              "childrenLayout": {
+                "type": "FlowLayout",
+                "horizontalAlign": "Left",
+                "verticalAlign": "Top",
+                "padding": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "spacing": [
+                  0,
+                  0
+                ]
+              },
+              "components": [
+                {
+                  "type": "Sprite",
+                  "textureFilePath": "imgs/dialog_title_head.png"
+                }
+              ],
+              "children": [],
+              "clippingEnabled": false,
+              "horizontalScrollable": false,
+              "verticalScrollable": false,
+              "dragScrollEnabled": true,
+              "wheelScrollEnabled": true,
+              "rubberBandScrollEnabled": true,
+              "decelerationRate": 0.2,
+              "scrollBarType": "Overlay",
+              "zOrderInSiblings": 0,
+              "styleState": "",
+              "hitPadding": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "inheritChildrenHover": false,
+              "inheritChildrenPress": false
+            },
+            {
+              "name": "SearchResultTitleText",
+              "activeSelf": true,
+              "interactable": true,
+              "isHitTarget": false,
+              "region": {
+                "type": "AnchorRegion",
+                "anchorMin": [
+                  0,
+                  0
+                ],
+                "anchorMax": [
+                  1,
+                  0
+                ],
+                "posDelta": [
+                  26,
+                  -2
+                ],
+                "sizeDelta": [
+                  -26,
+                  22
+                ],
+                "sizeDeltaPivot": [
+                  0,
+                  0
+                ]
+              },
+              "transform": {
+                "translate": [
+                  0,
+                  0
+                ],
+                "scale": [
+                  1,
+                  1
+                ],
+                "pivot": [
+                  0.5,
+                  0.5
+                ],
+                "rotation": 0,
+                "color": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
+                "hitTestAffected": true
+              },
+              "childrenLayout": {
+                "type": "FlowLayout",
+                "horizontalAlign": "Left",
+                "verticalAlign": "Top",
+                "padding": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "spacing": [
+                  0,
+                  0
+                ]
+              },
+              "components": [
+                {
+                  "type": "SubCanvas",
+                  "canvasPath": "ui/font/font.noco",
+                  "propagateEvents": true,
+                  "serializedParamsJSON": "{\"characterSize\": [24.0, 24.0], \"characterSpacing\": [1.0, 0.0], \"hasShadow\": true, \"isTitle\": true, \"text\": \"SEARCH RESULTS\"}"
+                }
+              ],
+              "children": [],
+              "clippingEnabled": false,
+              "horizontalScrollable": false,
+              "verticalScrollable": false,
+              "dragScrollEnabled": true,
+              "wheelScrollEnabled": true,
+              "rubberBandScrollEnabled": true,
+              "decelerationRate": 0.2,
+              "scrollBarType": "Overlay",
+              "zOrderInSiblings": 0,
+              "styleState": "",
+              "hitPadding": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "inheritChildrenHover": false,
+              "inheritChildrenPress": false
+            }
+          ],
+          "clippingEnabled": false,
+          "horizontalScrollable": false,
+          "verticalScrollable": false,
+          "dragScrollEnabled": true,
+          "wheelScrollEnabled": true,
+          "rubberBandScrollEnabled": true,
+          "decelerationRate": 0.2,
+          "scrollBarType": "Overlay",
+          "zOrderInSiblings": 0,
+          "styleState": "",
+          "hitPadding": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false
+        },
+        {
+          "name": "SearchResultLabel",
+          "activeSelf": true,
+          "interactable": true,
+          "isHitTarget": false,
+          "region": {
+            "type": "AnchorRegion",
+            "anchorMin": [
+              0,
+              0
+            ],
+            "anchorMax": [
+              1,
+              0
+            ],
+            "posDelta": [
+              0,
+              28
+            ],
+            "sizeDelta": [
+              0,
+              72
+            ],
+            "sizeDeltaPivot": [
+              0,
+              0
+            ]
+          },
+          "transform": {
+            "translate": [
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0,
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true
+          },
+          "childrenLayout": {
+            "type": "FlowLayout",
+            "horizontalAlign": "Left",
+            "verticalAlign": "Top",
+            "padding": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "spacing": [
+              0,
+              0
+            ]
+          },
+          "components": [
+            {
+              "type": "Label",
+              "text": "",
+              "text_paramRef": "searchQueryText",
+              "fontAssetName": "",
+              "fontSize": 18.0,
+              "color": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "characterSpacing": [
+                0.0,
+                0.0
+              ],
+              "gradationType": "None",
+              "gradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "sizingMode": "AutoShrink",
+              "minFontSize": 1.0,
+              "horizontalAlign": "Left",
+              "verticalAlign": "Top",
+              "horizontalOverflow": "Wrap",
+              "verticalOverflow": "Overflow",
+              "padding": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "underlineStyle": "None",
+              "underlineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "underlineThickness": 1.0,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineFactorInner": 0.0,
+              "outlineFactorOuter": 0.0,
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                1.0,
+                1.0
+              ]
+            }
+          ],
+          "children": [],
+          "clippingEnabled": false,
+          "horizontalScrollable": false,
+          "verticalScrollable": false,
+          "dragScrollEnabled": true,
+          "wheelScrollEnabled": true,
+          "rubberBandScrollEnabled": true,
+          "decelerationRate": 0.2,
+          "scrollBarType": "Overlay",
+          "zOrderInSiblings": 0,
+          "styleState": "",
+          "hitPadding": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false
+        }
+      ],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
     }
   ],
   "childrenLayout": {
     "horizontalAlign": "Left",
     "padding": [
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0
     ],
     "spacing": [
-      0.0,
-      0.0
+      0,
+      0
     ],
     "type": "FlowLayout",
     "verticalAlign": "Top"
@@ -4673,6 +5186,10 @@
     "scrollBarCursorRate": {
       "type": "Double",
       "value": 0.0
+    },
+    "searchQueryText": {
+      "type": "String",
+      "value": ""
     }
   },
   "referenceSize": [

@@ -4,6 +4,7 @@
 #include "Scenes/CourseResult/CourseResultNewRecordPanel.hpp"
 #include "Scenes/CourseResult/CourseResultChartList.hpp"
 #include "Scenes/Result/ResultSNSShare.hpp"
+#include "Scenes/Select/SelectSceneSearchParams.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
 class CourseResultScene : public Co::SceneBase
@@ -14,6 +15,8 @@ private:
 	std::shared_ptr<noco::Canvas> m_canvas;
 
 	const CoursePlayState m_courseState;
+
+	Optional<SelectSceneSearchParams> m_selectSearchParams;
 
 	CourseResultNewRecordPanel m_newRecordPanel;
 
@@ -28,7 +31,7 @@ private:
 	Co::Task<bool> waitForNewRecordPanelClose();
 
 public:
-	explicit CourseResultScene(const CoursePlayState& courseState);
+	explicit CourseResultScene(const CoursePlayState& courseState, const Optional<SelectSceneSearchParams>& selectSearchParams = none);
 
 	virtual ~CourseResultScene() = default;
 

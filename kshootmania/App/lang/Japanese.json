@@ -38,7 +38,8 @@
 		"PlayStatsPlayCount": "PLAYCOUNT: ",
 		"PlayStatsClear": "  CLEAR  : ",
 		"PlayStatsFullCombo": "FULLCOMBO: ",
-		"PlayStatsPerfect": " PERFECT : "
+		"PlayStatsPerfect": " PERFECT : ",
+		"SearchCloseResult": "検索結果を閉じる"
 	},
 	"Play": {
 		"ErrorChartFileNotFound": "指定された譜面ファイルが見つかりません。",

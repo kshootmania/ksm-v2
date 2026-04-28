@@ -83,6 +83,6 @@ Co::Task<void> IREntryScene::fadeOut()
 		requestNextScene<SelectScene>();
 
 		// SelectSceneはコンストラクタの処理に時間がかかるので、ローディングはここで出しておく
-		co_await ShowLoadingOneFrame::Play(HasBgYN::No);
+		co_await ShowLoadingOneFrame::Play(LoadingBgMode::kBlack);
 	}
 }

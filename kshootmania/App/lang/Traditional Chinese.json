@@ -38,7 +38,8 @@
 		"PlayStatsPlayCount": "PLAYCOUNT: ",
 		"PlayStatsClear": "  CLEAR  : ",
 		"PlayStatsFullCombo": "FULLCOMBO: ",
-		"PlayStatsPerfect": " PERFECT : "
+		"PlayStatsPerfect": " PERFECT : ",
+		"SearchCloseResult": "關閉搜尋結果"
 	},
 	"Play": {
 		"ErrorChartFileNotFound": "找不到譜面文件。",

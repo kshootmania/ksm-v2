@@ -38,7 +38,8 @@
 		"PlayStatsPlayCount": "PLAYCOUNT: ",
 		"PlayStatsClear": "  CLEAR  : ",
 		"PlayStatsFullCombo": "FULLCOMBO: ",
-		"PlayStatsPerfect": " PERFECT : "
+		"PlayStatsPerfect": " PERFECT : ",
+		"SearchCloseResult": "검색 결과 닫기"
 	},
 	"Play": {
 		"ErrorChartFileNotFound": "채보 파일을 찾을 수 없습니다.",

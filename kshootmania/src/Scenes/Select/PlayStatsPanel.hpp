@@ -30,4 +30,7 @@ public:
 	// パネルが表示されているかどうか
 	[[nodiscard]]
 	bool isVisible() const;
+
+	// パネルを非表示にする
+	void hide();
 };

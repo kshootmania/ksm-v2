@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "MusicGame/PlayResult.hpp"
 #include "Course/CoursePlayState.hpp"
+#include "Scenes/Select/SelectSceneSearchParams.hpp"
 
 struct ResultSceneArgs
 {
@@ -11,4 +12,6 @@ struct ResultSceneArgs
 	MusicGame::PlayResult playResult;
 
 	Optional<CoursePlayState> courseState;
+
+	Optional<SelectSceneSearchParams> selectSearchParams;
 };

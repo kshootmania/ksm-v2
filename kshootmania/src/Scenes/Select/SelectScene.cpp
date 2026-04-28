@@ -10,6 +10,8 @@
 #include "SelectChartInfo.hpp"
 #include "UI/SimpleDialog.hpp"
 #include "Input/KeyConfig.hpp"
+#include "NocoExtensions/NocoUtils.hpp"
+#include "SearchInputDialog.hpp"
 
 namespace
 {
@@ -129,8 +131,26 @@ namespace
 
 void SelectScene::moveToPlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState)
 {
+	// 復元用に検索パラメータを保持
+	Optional<SelectSceneSearchParams> searchParams;
+	if (m_searchPhase == SelectSceneSearchPhase::kResult)
+	{
+		SelectSceneSearchParams params;
+		params.phase = m_searchPhase;
+		params.query = m_searchResultQuery;
+		if (!m_menu.empty())
+		{
+			const auto* pChartInfo = m_menu.cursorMenuItem().chartInfoPtr(0, FallbackForSingleChartYN::Yes);
+			if (pChartInfo != nullptr)
+			{
+				params.cursorChartPath = FilePath{ pChartInfo->chartFilePath() };
+			}
+		}
+		searchParams = std::move(params);
+	}
+
 	m_fadeOutColor = Palette::White;
-	requestNextScene<PlayPrepareScene>(FilePath{ chartFilePath }, isAutoPlay, courseState);
+	requestNextScene<PlayPrepareScene>(FilePath{ chartFilePath }, isAutoPlay, courseState, none, searchParams);
 }
 
 void SelectScene::refreshCanvasPlayerName()
@@ -230,7 +250,120 @@ void SelectScene::updateAlphabetJump()
 	}
 }
 
-SelectScene::SelectScene()
+void SelectScene::enterSearchInputPhase()
+{
+	if (m_searchPhase == SelectSceneSearchPhase::kInput)
+	{
+		return;
+	}
+
+	const bool wasNone = m_searchPhase == SelectSceneSearchPhase::kNone;
+
+	if (m_searchResultNode)
+	{
+		m_searchResultNode->setActive(false);
+	}
+
+	// Ctrl+Fと同フレームでBTボタンが押されていた場合にパネル表示が残らないようにする
+	m_btOptionPanel.hide();
+	m_playStatsPanel.hide();
+
+	Optional<FilePath> preservedChartPath;
+	if (!m_menu.empty())
+	{
+		const auto* pChartInfo = m_menu.cursorMenuItem().chartInfoPtr(0, FallbackForSingleChartYN::Yes);
+		if (pChartInfo != nullptr)
+		{
+			preservedChartPath = pChartInfo->chartFilePath();
+		}
+	}
+
+	if (wasNone)
+	{
+		m_menu.enterSearchMode(preservedChartPath);
+	}
+	else
+	{
+		m_menu.setSearchPreservedChartPath(preservedChartPath);
+	}
+
+	m_searchInputReentryFromResult = !wasNone;
+	m_searchPhase = SelectSceneSearchPhase::kInput;
+
+	const String initialQuery = wasNone ? String{} : m_searchResultQuery;
+	m_dialogRunner = Co::Play<SearchInputDialog>(
+		initialQuery,
+		[this](StringView q) { m_menu.setSearchQuery(q); }
+	).runScoped([this](const Optional<String>& result) { onSearchInputDialogClosed(result); });
+}
+
+void SelectScene::onSearchInputDialogClosed(const Optional<String>& result)
+{
+	if (m_searchPhase != SelectSceneSearchPhase::kInput)
+	{
+		return;
+	}
+
+	m_menu.setSearchPreservedChartPath(none);
+
+	const bool reentryFromResult = m_searchInputReentryFromResult;
+	m_searchInputReentryFromResult = false;
+
+	if (result.has_value())
+	{
+		m_searchResultQuery = *result;
+		m_canvas->setParamValue(U"searchQueryText", m_searchResultQuery);
+		if (m_searchResultNode)
+		{
+			m_searchResultNode->setActive(true);
+		}
+		m_searchPhase = SelectSceneSearchPhase::kResult;
+
+		// ダイアログ確定のStartボタンのUpで誤って曲決定が走らないよう抑制
+		m_ignoreNextStartUp = true;
+	}
+	else if (reentryFromResult)
+	{
+		// 検索結果から再度検索入力ダイアログを開いてEscで閉じた時は、復帰先は検索結果とする
+		m_menu.setSearchQuery(m_searchResultQuery);
+		if (m_searchResultNode)
+		{
+			m_searchResultNode->setActive(true);
+		}
+		m_searchPhase = SelectSceneSearchPhase::kResult;
+	}
+	else
+	{
+		// 検索入力ダイアログを抜ける
+		m_searchPhase = SelectSceneSearchPhase::kNone;
+		if (m_searchResultNode)
+		{
+			m_searchResultNode->setActive(false);
+		}
+		m_searchResultQuery.clear();
+		m_menu.exitSearchMode();
+	}
+}
+
+void SelectScene::exitSearchMode()
+{
+	if (m_searchPhase == SelectSceneSearchPhase::kNone)
+	{
+		return;
+	}
+
+	m_searchPhase = SelectSceneSearchPhase::kNone;
+	m_searchResultQuery.clear();
+
+	if (m_searchResultNode)
+	{
+		m_searchResultNode->setActive(false);
+	}
+
+	m_menu.exitSearchMode();
+}
+
+SelectScene::SelectScene(const Optional<SelectSceneSearchParams>& initialSearchParams)
 	: m_folderCloseButton(
 		ConfigIni::GetInt(ConfigIni::Key::kSelectCloseFolderKey) == ConfigIni::Value::SelectCloseFolderKey::kBackButton
 			? static_cast<Button>(kButtonBack)
@@ -239,13 +372,17 @@ SelectScene::SelectScene()
 	, m_menu(
 		m_canvas,
 		[this](FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlayYN, Optional<CoursePlayState> courseState) { moveToPlayScene(chartFilePath, isAutoPlayYN, courseState); },
-		[this](StringView msg) { m_dialogRunner = Co::Play<SimpleDialog>(String{ U"ERROR" }, String{ msg }).runScoped(); })
+		[this](StringView msg) { m_dialogRunner = Co::Play<SimpleDialog>(String{ U"ERROR" }, String{ msg }).runScoped(); },
+		[this]() { exitSearchMode(); })
 	, m_playerNames(GetPlayerNames())
 	, m_fxButtonUpDetection({ KeyShift })
 	, m_btOptionPanel(m_canvas)
 	, m_playStatsPanel(m_canvas)
 {
 	AutoMuteAddon::SetEnabled(true);
+
+	// 検索結果表示ノードを取得
+	m_searchResultNode = NocoUtils::GetNodeByPath(m_canvas, { U"SearchResult" });
 
 	// iniから読み込んだプレイヤー名が空文字列の場合は"PLAYER"に修正
 	const String currentPlayer{ ConfigIni::GetString(ConfigIni::Key::kCurrentPlayer) };
@@ -267,6 +404,43 @@ SelectScene::SelectScene()
 		MessageBoxUtils::ShowOK(U"譜面データが見つかりませんでした。", MessageBoxStyle::Warning);
 		m_skipFadeout = true;
 		requestNextScene<TitleScene>(TitleMenuItem::kStart);
+		return;
+	}
+
+	// 検索の初期状態を復元
+	if (initialSearchParams.has_value() && initialSearchParams->phase != SelectSceneSearchPhase::kNone)
+	{
+		const String& restoreQuery = initialSearchParams->query;
+		const Optional<FilePath>& cursorPath = initialSearchParams->cursorChartPath;
+
+		m_menu.enterSearchMode(cursorPath);
+		if (!restoreQuery.isEmpty())
+		{
+			m_menu.setSearchQuery(restoreQuery);
+		}
+		if (cursorPath.has_value())
+		{
+			m_menu.setCursorByChartFilePath(*cursorPath);
+		}
+
+		if (initialSearchParams->phase == SelectSceneSearchPhase::kInput)
+		{
+			m_searchPhase = SelectSceneSearchPhase::kInput;
+			m_dialogRunner = Co::Play<SearchInputDialog>(
+				restoreQuery,
+				[this](StringView q) { m_menu.setSearchQuery(q); }
+			).runScoped([this](const Optional<String>& result) { onSearchInputDialogClosed(result); });
+		}
+		else
+		{
+			m_searchResultQuery = restoreQuery;
+			m_canvas->setParamValue(U"searchQueryText", m_searchResultQuery);
+			if (m_searchResultNode)
+			{
+				m_searchResultNode->setActive(true);
+			}
+			m_searchPhase = SelectSceneSearchPhase::kResult;
+		}
 	}
 }
 
@@ -293,8 +467,22 @@ void SelectScene::update()
 	// いずれかのパネルが表示中かチェック
 	const bool anyPanelVisible = m_btOptionPanel.isVisible() || m_playStatsPanel.isVisible();
 
-	// Backキー処理(パネル表示中でも有効にする)
-	const bool closeFolder = m_menu.isFolderOpen() && KeyConfig::Down(m_folderCloseButton/* ← kBackspace・kBackのいずれかが入っている */);
+	// 検索結果表示中はBackキーで検索モードを終了
+	if (m_searchPhase == SelectSceneSearchPhase::kResult && KeyConfig::Down(kButtonBack))
+	{
+		exitSearchMode();
+		m_canvas->update();
+		return;
+	}
+
+	// Ctrl+Fで検索入力へ
+	if (PlatformKey::KeyCommandControl.pressed() && KeyF.down() && m_menu.isFolderOpen())
+	{
+		enterSearchInputPhase();
+	}
+
+	const bool inSearchMode = m_searchPhase != SelectSceneSearchPhase::kNone;
+	const bool closeFolder = !inSearchMode && m_menu.isFolderOpen() && KeyConfig::Down(m_folderCloseButton/* ← kBackspace・kBackのいずれかが入っている */);
 
 	// BackSpaceキーまたはBackボタン(Escキー)でフォルダを閉じる
 	if (closeFolder)

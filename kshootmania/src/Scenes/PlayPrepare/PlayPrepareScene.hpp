@@ -4,6 +4,7 @@
 #include "MusicGame/UI/HispeedSettingMenu.hpp"
 #include "MusicGame/Scroll/HighwayScroll.hpp"
 #include "Course/CoursePlayState.hpp"
+#include "Scenes/Select/SelectSceneSearchParams.hpp"
 
 class PlayPrepareScene : public Co::SceneBase
 {
@@ -18,6 +19,8 @@ private:
 
 	Optional<MusicGame::TestPlayOption> m_testPlayOption;
 
+	Optional<SelectSceneSearchParams> m_selectSearchParams;
+
 	std::shared_ptr<noco::Canvas> m_canvas;
 
 	MusicGame::HispeedSettingMenu m_hispeedMenu;
@@ -27,7 +30,7 @@ private:
 	Stopwatch m_stopwatchSinceHispeedChange{ StartImmediately::Yes };
 
 public:
-	explicit PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState = none, const Optional<MusicGame::TestPlayOption>& testPlayOption = none);
+	explicit PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState = none, const Optional<MusicGame::TestPlayOption>& testPlayOption = none, const Optional<SelectSceneSearchParams>& selectSearchParams = none);
 
 	virtual ~PlayPrepareScene() = default;
 

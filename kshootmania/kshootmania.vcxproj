@@ -225,6 +225,7 @@
     <ClCompile Include="src\Scenes\Result\ResultScene.cpp" />
     <ClCompile Include="src\Scenes\Result\ResultSNSShare.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuAllFolderItem.cpp" />
+    <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuBackToFolderItem.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuCourseItem.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuCoursesFolderItem.cpp" />
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuDirFolderItem.cpp" />
@@ -237,6 +238,7 @@
     <ClCompile Include="src\Scenes\Select\FavoriteAddDialog.cpp" />
     <ClCompile Include="src\Scenes\Select\FavoriteRemoveDialog.cpp" />
     <ClCompile Include="src\Scenes\Select\PlayStatsPanel.cpp" />
+    <ClCompile Include="src\Scenes\Select\SearchInputDialog.cpp" />
     <ClCompile Include="src\Scenes\Select\SelectChartInfo.cpp" />
     <ClCompile Include="src\Scenes\Select\SelectDifficultyMenu.cpp" />
     <ClCompile Include="src\Scenes\Select\SelectMenu.cpp" />
@@ -472,6 +474,9 @@
     <ClInclude Include="src\Scenes\Result\ResultSceneArgs.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\ISelectMenuItem.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuAllFolderItem.hpp" />
+    <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuBackToFolderItem.hpp" />
+    <ClInclude Include="src\Scenes\Select\SelectSceneSearchParams.hpp" />
+    <ClInclude Include="src\Scenes\Select\SearchInputDialog.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuCourseItem.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuCoursesFolderItem.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuDirFolderItem.hpp" />

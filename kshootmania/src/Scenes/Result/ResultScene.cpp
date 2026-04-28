@@ -326,6 +326,7 @@ ResultScene::ResultScene(const ResultSceneArgs& args)
 	, m_newRecordPanel(m_canvas)
 	, m_snsShare(BuildResultTweetText(args.chartData, args.playResult, args.chartFilePath, args.courseState))
 	, m_courseState(args.courseState)
+	, m_selectSearchParams(args.selectSearchParams)
 {
 	// コースモードの場合は結果を記録
 	if (m_courseState)
@@ -501,8 +502,8 @@ Co::Task<void> ResultScene::start()
 			const FilePath nextChartPath = m_courseState->currentChartPath();
 
 			// 次の曲へ
-			co_await ShowLoadingOneFrame::Play(HasBgYN::Yes);
-			requestNextScene<PlayPrepareScene>(nextChartPath, m_playResult.playOption.isAutoPlay, m_courseState);
+			co_await ShowLoadingOneFrame::Play(LoadingBgMode::kMainBg);
+			requestNextScene<PlayPrepareScene>(nextChartPath, m_playResult.playOption.isAutoPlay, m_courseState, none, m_selectSearchParams);
 		}
 	}
 	else if (m_playResult.playOption.testPlayOption.has_value())
@@ -512,7 +513,7 @@ Co::Task<void> ResultScene::start()
 	}
 	else
 	{
-		requestNextScene<SelectScene>();
+		requestNextScene<SelectScene>(m_selectSearchParams);
 	}
 }
 
@@ -585,5 +586,5 @@ Co::Task<void> ResultScene::fadeIn()
 Co::Task<void> ResultScene::postFadeOut()
 {
 	// SelectSceneはコンストラクタの処理に時間がかかるので、ローディングはここで出しておく
-	return ShowLoadingOneFrame::Play(HasBgYN::Yes);
+	return ShowLoadingOneFrame::Play(LoadingBgMode::kMainBg);
 }

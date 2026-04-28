@@ -588,6 +588,12 @@
     <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuLevelSongItem.cpp">
       <Filter>Source Files\Scenes\Select\MenuItem</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\Select\MenuItem\SelectMenuBackToFolderItem.cpp">
+      <Filter>Source Files\Scenes\Select\MenuItem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scenes\Select\SearchInputDialog.cpp">
+      <Filter>Source Files\Scenes\Select</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scenes\Result\ResultNewRecordPanel.cpp">
       <Filter>Source Files\Scenes\Result</Filter>
     </ClCompile>
@@ -1290,6 +1296,15 @@
     </ClInclude>
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuFavFolderItem.hpp">
       <Filter>Header Files\Scenes\Select\MenuItem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuBackToFolderItem.hpp">
+      <Filter>Header Files\Scenes\Select\MenuItem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\Select\SelectSceneSearchParams.hpp">
+      <Filter>Header Files\Scenes\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\Select\SearchInputDialog.hpp">
+      <Filter>Header Files\Scenes\Select</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\Result\ResultNewRecordPanel.hpp">
       <Filter>Header Files\Scenes\Result</Filter>

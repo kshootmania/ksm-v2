@@ -62,6 +62,17 @@ bool DisableIMEAddon::update()
 		return true;
 	}
 
+	// テキストボックス編集中はIME無効化をスキップ
+	if (noco::IsEditingTextBox())
+	{
+		if (m_detachStopwatch.isStarted())
+		{
+			m_detachStopwatch.reset();
+		}
+
+		return true;
+	}
+
 	const double intervalSec = GetDisableIMEIntervalSec(m_mode);
 	if (!m_detachStopwatch.isStarted())
 	{
