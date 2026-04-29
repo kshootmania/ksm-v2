@@ -467,8 +467,8 @@ void SelectScene::update()
 	// いずれかのパネルが表示中かチェック
 	const bool anyPanelVisible = m_btOptionPanel.isVisible() || m_playStatsPanel.isVisible();
 
-	// 検索結果表示中はBackキーで検索モードを終了
-	if (m_searchPhase == SelectSceneSearchPhase::kResult && KeyConfig::Down(kButtonBack))
+	// 検索結果表示中はBackキーまたはBackspaceキーで検索モードを終了
+	if (m_searchPhase == SelectSceneSearchPhase::kResult && (KeyConfig::Down(kButtonBack) || KeyConfig::Down(kButtonBackspace)))
 	{
 		exitSearchMode();
 		m_canvas->update();
