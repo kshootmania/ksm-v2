@@ -16,6 +16,34 @@ namespace
 	// レーザー入力方式のインスタンス
 	std::array<std::unique_ptr<ILaserInputMethod>, kson::kNumLaserLanesSZ> s_laserInputMethods;
 
+	// IMEで編集中のテキストがあるかどうかに前フレームを加味するための変数
+	bool s_currentEditingTextExists = false;
+	bool s_prevEditingTextExists = false;
+	int32 s_lastEditingTextUpdateFrame = -1;
+
+	[[nodiscard]]
+	bool ShouldIgnoreKeyboardInput()
+	{
+		if (!noco::IsEditingTextBox())
+		{
+			s_currentEditingTextExists = false;
+			s_prevEditingTextExists = false;
+			return false;
+		}
+
+		const int32 currentFrame = Scene::FrameCount();
+		if (s_lastEditingTextUpdateFrame != currentFrame)
+		{
+			s_lastEditingTextUpdateFrame = currentFrame;
+			s_prevEditingTextExists = s_currentEditingTextExists;
+			s_currentEditingTextExists = !TextInput::GetEditingText().empty();
+		}
+
+		// IMEで編集中のテキストがある場合はキーボード入力はボタン入力としては無視
+		// (Enter確定時はGetEditingTextが空になるため前フレームも確認)
+		return s_currentEditingTextExists || s_prevEditingTextExists;
+	}
+
 #ifdef __APPLE__
 	struct PlatformKeyState
 	{
@@ -205,10 +233,15 @@ namespace
 			return false;
 		}
 
+		const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
 		bool startPressed = false;
-		for (const auto& configSet : s_configSetArray)
+		for (int32 i = 0; i < kConfigSetEnumCount; ++i)
 		{
-			if (configSet[kButtonStart].pressed())
+			if (ignoreKeyboard && kConfigSetDeviceTypes[i] == InputDeviceType::Keyboard)
+			{
+				continue;
+			}
+			if (s_configSetArray[i][kButtonStart].pressed())
 			{
 				startPressed = true;
 				break;
@@ -222,9 +255,13 @@ namespace
 		int32 btPressedCount = 0;
 		for (int32 btIdx = kButtonBT_A; btIdx <= kButtonBT_D; ++btIdx)
 		{
-			for (const auto& configSet : s_configSetArray)
+			for (int32 i = 0; i < kConfigSetEnumCount; ++i)
 			{
-				if (configSet[btIdx].pressed())
+				if (ignoreKeyboard && kConfigSetDeviceTypes[i] == InputDeviceType::Keyboard)
+				{
+					continue;
+				}
+				if (s_configSetArray[i][btIdx].pressed())
 				{
 					++btPressedCount;
 					break;
@@ -242,9 +279,15 @@ namespace
 			return false;
 		}
 
-		for (const auto& configSet : s_configSetArray)
+		const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
+
+		for (int32 i = 0; i < kConfigSetEnumCount; ++i)
 		{
-			if (configSet[kButtonStart].down())
+			if (ignoreKeyboard && kConfigSetDeviceTypes[i] == InputDeviceType::Keyboard)
+			{
+				continue;
+			}
+			if (s_configSetArray[i][kButtonStart].down())
 			{
 				return true;
 			}
@@ -252,9 +295,13 @@ namespace
 
 		for (int32 btIdx = kButtonBT_A; btIdx <= kButtonBT_D; ++btIdx)
 		{
-			for (const auto& configSet : s_configSetArray)
+			for (int32 i = 0; i < kConfigSetEnumCount; ++i)
 			{
-				if (configSet[btIdx].down())
+				if (ignoreKeyboard && kConfigSetDeviceTypes[i] == InputDeviceType::Keyboard)
+				{
+					continue;
+				}
+				if (s_configSetArray[i][btIdx].down())
 				{
 					return true;
 				}
@@ -271,9 +318,15 @@ namespace
 			return false;
 		}
 
-		for (const auto& configSet : s_configSetArray)
+		const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
+
+		for (int32 i = 0; i < kConfigSetEnumCount; ++i)
 		{
-			if (configSet[kButtonStart].up())
+			if (ignoreKeyboard && kConfigSetDeviceTypes[i] == InputDeviceType::Keyboard)
+			{
+				continue;
+			}
+			if (s_configSetArray[i][kButtonStart].up())
 			{
 				return true;
 			}
@@ -281,9 +334,13 @@ namespace
 
 		for (int32 btIdx = kButtonBT_A; btIdx <= kButtonBT_D; ++btIdx)
 		{
-			for (const auto& configSet : s_configSetArray)
+			for (int32 i = 0; i < kConfigSetEnumCount; ++i)
 			{
-				if (configSet[btIdx].up())
+				if (ignoreKeyboard && kConfigSetDeviceTypes[i] == InputDeviceType::Keyboard)
+				{
+					continue;
+				}
+				if (s_configSetArray[i][btIdx].up())
 				{
 					return true;
 				}
@@ -435,11 +492,17 @@ bool KeyConfig::Pressed(Button button)
 		return false;
 	}
 
+	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
+
 	for (const auto& configSet : s_configSetArray)
 	{
 		const auto& input = GetConfigSetInputApplyingSwap(configSet, button);
 		if (input.deviceType() == InputDeviceType::Keyboard)
 		{
+			if (ignoreKeyboard)
+			{
+				continue;
+			}
 #ifdef __APPLE__
 			bool isPlatformKey = false;
 			for (size_t i = 0; i < kPlatformKeys.size(); ++i)
@@ -476,7 +539,12 @@ bool KeyConfig::Pressed(Button button)
 	{
 		for (const auto& configSet : s_configSetArray)
 		{
-			if (configSet[kButtonFX_LR].pressed())
+			const auto& fxLRInput = configSet[kButtonFX_LR];
+			if (ignoreKeyboard && fxLRInput.deviceType() == InputDeviceType::Keyboard)
+			{
+				continue;
+			}
+			if (fxLRInput.pressed())
 			{
 				return true;
 			}
@@ -494,7 +562,7 @@ bool KeyConfig::Pressed(Button button)
 	// 矢印キーの場合、Numpadキーの状態も確認
 	if (button == kButtonUp || button == kButtonDown || button == kButtonLeft || button == kButtonRight)
 	{
-		if (IsNumpadArrowKeyPressed(button))
+		if (!ignoreKeyboard && IsNumpadArrowKeyPressed(button))
 		{
 			return true;
 		}
@@ -536,11 +604,17 @@ bool KeyConfig::Down(Button button)
 		return false;
 	}
 
+	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
+
 	for (const auto& configSet : s_configSetArray)
 	{
 		const auto& input = GetConfigSetInputApplyingSwap(configSet, button);
 		if (input.deviceType() == InputDeviceType::Keyboard)
 		{
+			if (ignoreKeyboard)
+			{
+				continue;
+			}
 #ifdef __APPLE__
 			bool isPlatformKey = false;
 			for (size_t i = 0; i < kPlatformKeys.size(); ++i)
@@ -577,7 +651,12 @@ bool KeyConfig::Down(Button button)
 	{
 		for (const auto& configSet : s_configSetArray)
 		{
-			if (configSet[kButtonFX_LR].down())
+			const auto& fxLRInput = configSet[kButtonFX_LR];
+			if (ignoreKeyboard && fxLRInput.deviceType() == InputDeviceType::Keyboard)
+			{
+				continue;
+			}
+			if (fxLRInput.down())
 			{
 				return true;
 			}
@@ -595,7 +674,7 @@ bool KeyConfig::Down(Button button)
 	// 矢印キーの場合、Numpadキーの状態も確認
 	if (button == kButtonUp || button == kButtonDown || button == kButtonLeft || button == kButtonRight)
 	{
-		if (IsNumpadArrowKeyDown(button))
+		if (!ignoreKeyboard && IsNumpadArrowKeyDown(button))
 		{
 			return true;
 		}
@@ -647,11 +726,17 @@ bool KeyConfig::Up(Button button)
 		return false;
 	}
 
+	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
+
 	for (const auto& configSet : s_configSetArray)
 	{
 		const auto& input = GetConfigSetInputApplyingSwap(configSet, button);
 		if (input.deviceType() == InputDeviceType::Keyboard)
 		{
+			if (ignoreKeyboard)
+			{
+				continue;
+			}
 #ifdef __APPLE__
 			bool isPlatformKey = false;
 			for (size_t i = 0; i < kPlatformKeys.size(); ++i)
@@ -694,7 +779,7 @@ bool KeyConfig::Up(Button button)
 	// 矢印キーの場合、Numpadキーの状態も確認
 	if (button == kButtonUp || button == kButtonDown || button == kButtonLeft || button == kButtonRight)
 	{
-		if (IsNumpadArrowKeyUp(button))
+		if (!ignoreKeyboard && IsNumpadArrowKeyUp(button))
 		{
 			return true;
 		}
