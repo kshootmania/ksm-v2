@@ -449,7 +449,7 @@ void SelectScene::update()
 	// ダイアログ表示中はCanvas更新のみ実行
 	if (Co::HasActiveModal())
 	{
-		m_canvas->update();
+		m_canvas->update(noco::HitTestEnabledYN::No);
 		return;
 	}
 
