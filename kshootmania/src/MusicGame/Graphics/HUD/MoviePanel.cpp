@@ -76,17 +76,14 @@ namespace MusicGame::Graphics
 		if (!m_started && currentTimeSec >= m_startTimeSec)
 		{
 			m_started = true;
-
-			if (currentTimeSec > m_startTimeSec)
-			{
-				const double seekSec = (currentTimeSec - m_startTimeSec) * m_playbackSpeed;
-				m_movie.setPosSec(seekSec);
-			}
 		}
 
 		if (m_started && !isPaused)
 		{
-			m_movie.advance(Scene::DeltaTime() * m_playbackSpeed);
+			const double targetMoviePosSec = currentTimeSec - m_startTimeSec;
+			const double currentMoviePosSec = m_movie.posSec();
+			const double deltaSec = Max(targetMoviePosSec - currentMoviePosSec, 0.0);
+			m_movie.advance(deltaSec);
 		}
 	}
 
@@ -155,7 +152,7 @@ namespace MusicGame::Graphics
 			return;
 		}
 
-		const double moviePosSec = (posSec.count() - m_startTimeSec) * m_playbackSpeed;
+		const double moviePosSec = posSec.count() - m_startTimeSec;
 		if (moviePosSec >= 0.0)
 		{
 			m_movie.setPosSec(moviePosSec);
