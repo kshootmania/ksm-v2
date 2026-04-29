@@ -48,6 +48,7 @@ bool DisableIMEAddon::update()
 		{
 			m_detachStopwatch.reset();
 		}
+		m_wasEditingTextBox = false;
 
 		return true;
 	}
@@ -58,18 +59,33 @@ bool DisableIMEAddon::update()
 		{
 			m_detachStopwatch.reset();
 		}
+		m_wasEditingTextBox = false;
 
 		return true;
 	}
 
-	// テキストボックス編集中はIME無効化をスキップ
-	if (noco::IsEditingTextBox())
+	// テキストボックス編集中はIME無効化しない
+	const bool isEditing = noco::IsEditingTextBox();
+	if (isEditing)
 	{
+		if (!m_wasEditingTextBox)
+		{
+			IMEUtils::AttachIMEContext();
+			m_wasEditingTextBox = true;
+		}
 		if (m_detachStopwatch.isStarted())
 		{
 			m_detachStopwatch.reset();
 		}
+		return true;
+	}
 
+	// テキストボックス編集終了時はIME無効化を再開
+	if (m_wasEditingTextBox)
+	{
+		IMEUtils::DetachIMEContext();
+		m_wasEditingTextBox = false;
+		m_detachStopwatch.restart();
 		return true;
 	}
 

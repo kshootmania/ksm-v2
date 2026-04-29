@@ -18,6 +18,7 @@ public:
 private:
 	DisableIMEMode m_mode = DisableIMEMode::kHigh;
 	Stopwatch m_detachStopwatch{ StartImmediately::No };
+	bool m_wasEditingTextBox = false;
 
 public:
 	DisableIMEAddon();
