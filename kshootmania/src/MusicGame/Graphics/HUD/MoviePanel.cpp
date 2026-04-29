@@ -44,7 +44,12 @@ namespace MusicGame::Graphics
 				ComPtr<IMFSample> pSample;
 
 				const HRESULT hr = pReader->ReadSample(
-					MF_SOURCE_READER_FIRST_VIDEO_STREAM, 0, &streamIndex, &flags, &pts, &pSample);
+					static_cast<DWORD>(MF_SOURCE_READER_FIRST_VIDEO_STREAM),
+					0,
+					&streamIndex,
+					&flags,
+					&pts,
+					&pSample);
 				if (FAILED(hr) || (flags & MF_SOURCE_READERF_ENDOFSTREAM))
 				{
 					break;
