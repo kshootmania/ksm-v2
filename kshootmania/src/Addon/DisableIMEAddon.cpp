@@ -71,8 +71,8 @@ bool DisableIMEAddon::update()
 		if (!m_wasEditingTextBox)
 		{
 			IMEUtils::AttachIMEContext();
-			m_wasEditingTextBox = true;
 		}
+		m_wasEditingTextBox = true;
 		if (m_detachStopwatch.isStarted())
 		{
 			m_detachStopwatch.reset();
@@ -112,7 +112,9 @@ void DisableIMEAddon::SetMode(DisableIMEMode mode)
 
 		if (mode == DisableIMEMode::kOff)
 		{
+			IMEUtils::AttachIMEContext();
 			pAddon->m_detachStopwatch.reset();
+			pAddon->m_wasEditingTextBox = false;
 		}
 		else
 		{
