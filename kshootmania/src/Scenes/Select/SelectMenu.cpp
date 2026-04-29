@@ -2239,7 +2239,7 @@ void SelectMenu::applySearchModeFilter()
 			{
 				continue;
 			}
-			if (pInfo->title().lowercased().includes(lowerQuery) || pInfo->artist().lowercased().includes(lowerQuery))
+			if (pInfo->joinedTextForSearch().includes(lowerQuery))
 			{
 				matched = true;
 				break;

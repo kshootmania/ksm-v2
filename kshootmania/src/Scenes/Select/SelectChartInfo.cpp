@@ -34,6 +34,16 @@ SelectChartInfo::SelectChartInfo(FilePathView chartFilePath)
 	, m_folderConfIni(FolderConfIni::Load(chartFilePath))
 {
 	KscIO::ReadAllHighScoreInfo(chartFilePath, &m_highScoreInfoMap);
+
+	// 検索用文字列をあらかじめ用意
+	const String songFolderName = FsUtils::DirectoryNameByDirectoryPath(FileSystem::ParentPath(chartFilePath));
+	const char32_t separator = U'\n';
+	m_joinedTextForSearch = (
+		Unicode::FromUTF8(m_chartData.meta.title) + separator +
+		Unicode::FromUTF8(m_chartData.meta.titleTranslit) + separator +
+		Unicode::FromUTF8(m_chartData.meta.artist) + separator +
+		Unicode::FromUTF8(m_chartData.meta.artistTranslit) + separator +
+		songFolderName).lowercased();
 }
 
 String SelectChartInfo::title() const
@@ -41,9 +51,19 @@ String SelectChartInfo::title() const
 	return Unicode::FromUTF8(m_chartData.meta.title);
 }
 
+String SelectChartInfo::titleTranslit() const
+{
+	return Unicode::FromUTF8(m_chartData.meta.titleTranslit);
+}
+
 String SelectChartInfo::artist() const
 {
 	return Unicode::FromUTF8(m_chartData.meta.artist);
+}
+
+String SelectChartInfo::artistTranslit() const
+{
+	return Unicode::FromUTF8(m_chartData.meta.artistTranslit);
 }
 
 FilePath SelectChartInfo::titleImgFilePath() const
@@ -177,4 +197,9 @@ bool SelectChartInfo::hasError() const
 String SelectChartInfo::errorString() const
 {
 	return Unicode::FromUTF8(kson::GetErrorString(m_chartData.error));
+}
+
+StringView SelectChartInfo::joinedTextForSearch() const
+{
+	return m_joinedTextForSearch;
 }
