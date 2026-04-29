@@ -446,9 +446,10 @@ SelectScene::SelectScene(const Optional<SelectSceneSearchParams>& initialSearchP
 
 void SelectScene::update()
 {
-	// ダイアログ表示中はCanvas更新のみ実行
+	// ダイアログ表示中は必要な更新のみ実行
 	if (Co::HasActiveModal())
 	{
+		m_menu.update(SongPreviewOnlyYN::Yes);
 		m_canvas->update(noco::HitTestEnabledYN::No);
 		return;
 	}
