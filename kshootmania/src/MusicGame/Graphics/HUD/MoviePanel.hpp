@@ -11,6 +11,7 @@ namespace MusicGame::Graphics
 		double m_movieOffsetSec = 0.0;
 		double m_startTimeSec = 0.0;
 		double m_playbackSpeed = 1.0;
+		double m_fpsScale = 1.0;
 		bool m_enabled = false;
 
 		static constexpr int32 kVideoOffsetFromCenterX = -302;
