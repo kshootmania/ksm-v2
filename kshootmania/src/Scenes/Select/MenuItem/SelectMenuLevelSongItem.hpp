@@ -14,12 +14,17 @@ class SelectMenuLevelSongItem : public ISelectMenuItem
 private:
 	FilePath m_songDirectoryPath;
 	int32 m_difficultyIdx;
-	std::unique_ptr<SelectChartInfo> m_chartInfo;
+	std::shared_ptr<const SelectChartInfo> m_chartInfo;
 	std::array<SiblingDifficultyInfo, kNumDifficulties> m_siblings = {};
 
 public:
 	SelectMenuLevelSongItem(
 		FilePathView chartFilePath,
+		FilePathView songDirectoryPath,
+		int32 difficultyIdx);
+
+	SelectMenuLevelSongItem(
+		std::shared_ptr<const SelectChartInfo> chartInfo,
 		FilePathView songDirectoryPath,
 		int32 difficultyIdx);
 

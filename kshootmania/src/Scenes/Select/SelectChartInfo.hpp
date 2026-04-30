@@ -23,6 +23,8 @@ private:
 public:
 	explicit SelectChartInfo(FilePathView chartFilePath);
 
+	SelectChartInfo(FilePathView chartFilePath, const kson::MetaChartData& chartData, const FolderConfIni& folderConfIni);
+
 	[[nodiscard]]
 	String title() const;
 

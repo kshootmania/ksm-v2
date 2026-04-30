@@ -64,6 +64,7 @@ target_link_libraries(${TARGET_NAME} PRIVATE
     ksmaudio
     ksmaxis
     NocoUI
+    SQLiteCpp
     Catch2::Catch2
 )
 

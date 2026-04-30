@@ -483,6 +483,15 @@ void SelectScene::update()
 	}
 
 	const bool inSearchMode = m_searchPhase != SelectSceneSearchPhase::kNone;
+
+	// F5で現在のディレクトリのキャッシュを破棄して再読み込み
+	if (!inSearchMode && KeyF5.down())
+	{
+		m_menu.forceReloadCurrentDirectory();
+		m_canvas->update();
+		return;
+	}
+
 	const bool closeFolder = !inSearchMode && m_menu.isFolderOpen() && KeyConfig::Down(m_folderCloseButton/* ← kBackspace・kBackのいずれかが入っている */);
 
 	// BackSpaceキーまたはBackボタン(Escキー)でフォルダを閉じる

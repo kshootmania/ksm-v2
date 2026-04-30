@@ -149,6 +149,8 @@ public:
 
 	void reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk);
 
+	void forceReloadCurrentDirectory();
+
 	// ハイスコア表示を更新
 	void refreshHighScoreDisplay();
 

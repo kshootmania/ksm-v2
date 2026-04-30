@@ -8,14 +8,31 @@ SelectMenuLevelSongItem::SelectMenuLevelSongItem(
 	: m_songDirectoryPath(songDirectoryPath)
 	, m_difficultyIdx(difficultyIdx)
 {
-	auto chartInfo = std::make_unique<SelectChartInfo>(chartFilePath);
+	auto chartInfo = std::make_shared<SelectChartInfo>(chartFilePath);
 	if (!chartInfo->hasError())
 	{
-		m_chartInfo = std::move(chartInfo);
+		m_chartInfo = chartInfo;
 	}
 	else
 	{
 		Logger << U"[ksm warning] SelectMenuLevelSongItem: Chart Loading Error (error:'{}', chartFilePath:'{}')"_fmt(chartInfo->errorString(), chartFilePath);
+	}
+}
+
+SelectMenuLevelSongItem::SelectMenuLevelSongItem(
+	std::shared_ptr<const SelectChartInfo> chartInfo,
+	FilePathView songDirectoryPath,
+	int32 difficultyIdx)
+	: m_songDirectoryPath(songDirectoryPath)
+	, m_difficultyIdx(difficultyIdx)
+{
+	if (chartInfo != nullptr && !chartInfo->hasError())
+	{
+		m_chartInfo = std::move(chartInfo);
+	}
+	else if (chartInfo != nullptr)
+	{
+		Logger << U"[ksm warning] SelectMenuLevelSongItem: Chart Loading Error (error:'{}', chartFilePath:'{}')"_fmt(chartInfo->errorString(), chartInfo->chartFilePath());
 	}
 }
 

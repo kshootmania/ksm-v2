@@ -378,6 +378,9 @@
     <ClCompile Include="src\Scenes\Select\SelectMenu.cpp">
       <Filter>Source Files\Scenes\Select</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\Select\SelectMenuCacheDb.cpp">
+      <Filter>Source Files\Scenes\Select</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scenes\Select\SelectDifficultyMenu.cpp">
       <Filter>Source Files\Scenes\Select</Filter>
     </ClCompile>
@@ -1052,6 +1055,9 @@
       <Filter>Header Files\Scenes\Select</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\Select\SelectMenu.hpp">
+      <Filter>Header Files\Scenes\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\Select\SelectMenuCacheDb.hpp">
       <Filter>Header Files\Scenes\Select</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\Select\SelectFolderState.hpp">

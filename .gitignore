@@ -418,6 +418,7 @@ kshootmania/App/resources/
 **/App/songs/K-Shoot MANIA/*
 !**/App/songs/K-Shoot MANIA/.gitkeep
 **/App/config.ini
+**/App/cache/
 **/App/score/
 **/App/score_backup/
 

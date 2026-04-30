@@ -34,7 +34,7 @@ SelectMenuSongItem::SelectMenuSongItem(FilePathView fullPath)
 			continue;
 		}
 
-		auto chartInfo = std::make_unique<SelectChartInfo>(chartFilePath);
+		auto chartInfo = std::make_shared<SelectChartInfo>(chartFilePath);
 
 		if (chartInfo->hasError())
 		{
@@ -56,10 +56,18 @@ SelectMenuSongItem::SelectMenuSongItem(FilePathView fullPath)
 			continue;
 		}
 
-		m_chartInfos[difficultyIdx] = std::move(chartInfo);
+		m_chartInfos[difficultyIdx] = chartInfo;
 
 		m_chartExists = true;
 	}
+}
+
+SelectMenuSongItem::SelectMenuSongItem(FilePathView fullPath, const std::array<std::shared_ptr<const SelectChartInfo>, kNumDifficulties>& chartInfos, IsSingleChartItemYN isSingleChartItem)
+	: m_fullPath(fullPath)
+	, m_chartExists(std::any_of(chartInfos.begin(), chartInfos.end(), [](const auto& chartInfo) { return chartInfo != nullptr; }))
+	, m_isSingleChartItem(isSingleChartItem)
+	, m_chartInfos(chartInfos)
+{
 }
 
 void SelectMenuSongItem::decide(const SelectMenuEventContext& context, int32 difficultyIdx)

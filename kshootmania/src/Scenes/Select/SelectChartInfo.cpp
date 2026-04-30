@@ -46,6 +46,23 @@ SelectChartInfo::SelectChartInfo(FilePathView chartFilePath)
 		songFolderName).lowercased();
 }
 
+SelectChartInfo::SelectChartInfo(FilePathView chartFilePath, const kson::MetaChartData& chartData, const FolderConfIni& folderConfIni)
+	: m_chartFilePath(chartFilePath)
+	, m_chartData(chartData)
+	, m_folderConfIni(folderConfIni)
+{
+	KscIO::ReadAllHighScoreInfo(chartFilePath, &m_highScoreInfoMap);
+
+	const String songFolderName = FsUtils::DirectoryNameByDirectoryPath(FileSystem::ParentPath(chartFilePath));
+	const char32_t separator = U'\n';
+	m_joinedTextForSearch = (
+		Unicode::FromUTF8(m_chartData.meta.title) + separator +
+		Unicode::FromUTF8(m_chartData.meta.titleTranslit) + separator +
+		Unicode::FromUTF8(m_chartData.meta.artist) + separator +
+		Unicode::FromUTF8(m_chartData.meta.artistTranslit) + separator +
+		songFolderName).lowercased();
+}
+
 String SelectChartInfo::title() const
 {
 	return Unicode::FromUTF8(m_chartData.meta.title);

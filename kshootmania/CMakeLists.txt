@@ -130,6 +130,7 @@ target_link_libraries(kshootmania PRIVATE
     ksmaudio
     ksmaxis
     NocoUI
+    SQLiteCpp
 )
 
 if(APPLE)
@@ -195,4 +196,3 @@ elseif(UNIX)
         )
     endif()
 endif()
-

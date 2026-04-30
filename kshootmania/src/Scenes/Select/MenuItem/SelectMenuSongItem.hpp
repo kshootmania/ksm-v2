@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "ISelectMenuItem.hpp"
 
+using IsSingleChartItemYN = YesNo<struct IsSingleChartItemYN_tag>;
+
 class SelectMenuSongItem : public ISelectMenuItem
 {
 private:
@@ -10,7 +12,7 @@ private:
 
 	bool m_isSingleChartItem = false;
 
-	std::array<std::unique_ptr<SelectChartInfo>, kNumDifficulties> m_chartInfos;
+	std::array<std::shared_ptr<const SelectChartInfo>, kNumDifficulties> m_chartInfos;
 
 	// 単一譜面項目の譜面情報を取得(存在しない場合はnullptrを返す)
 	const SelectChartInfo* chartInfoForSingleChartItem() const;
@@ -21,6 +23,8 @@ private:
 public:
 	// fullPathはディレクトリパスの場合は楽曲フォルダ、ファイルパスの場合は単体難易度の譜面として読み込む
 	explicit SelectMenuSongItem(FilePathView fullPath);
+
+	SelectMenuSongItem(FilePathView fullPath, const std::array<std::shared_ptr<const SelectChartInfo>, kNumDifficulties>& chartInfos, IsSingleChartItemYN isSingleChartItem);
 
 	virtual ~SelectMenuSongItem() = default;
 
