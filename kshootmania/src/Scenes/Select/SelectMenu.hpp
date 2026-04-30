@@ -12,6 +12,7 @@ using PlaySeYN = YesNo<struct PlaySeYN_tag>;
 using RefreshSongPreviewYN = YesNo<struct RefreshSongPreviewYN_tag>;
 using SaveToConfigIniYN = YesNo<struct SaveToConfigIniYN_tag>;
 using SongPreviewOnlyYN = YesNo<struct SongPreviewOnlyYN_tag>;
+using ReloadFromDiskYN = YesNo<struct ReloadFromDiskYN_tag>;
 
 enum class SelectMenuShakeDirection
 {
@@ -146,7 +147,7 @@ public:
 
 	void fadeOutSongPreviewForExit(Duration duration);
 
-	void reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::No);
+	void reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk);
 
 	// ハイスコア表示を更新
 	void refreshHighScoreDisplay();

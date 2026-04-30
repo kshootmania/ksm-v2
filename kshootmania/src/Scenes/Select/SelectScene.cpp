@@ -194,7 +194,7 @@ void SelectScene::updatePlayerSwitching()
 	ConfigIni::Save();
 
 	refreshCanvasPlayerName();
-	m_menu.reloadCurrentDirectory();
+	m_menu.reloadCurrentDirectory(RefreshSongPreviewYN::No, ReloadFromDiskYN::Yes);
 }
 
 void SelectScene::updateAlphabetJump()
@@ -664,7 +664,7 @@ void SelectScene::updateStartKeyLongPress()
 								}
 								else
 								{
-									m_menu.reloadCurrentDirectory(RefreshSongPreviewYN::Yes);
+									m_menu.reloadCurrentDirectory(RefreshSongPreviewYN::Yes, ReloadFromDiskYN::Yes);
 								}
 							}
 						}
@@ -700,7 +700,7 @@ void SelectScene::updateStartKeyLongPress()
 
 						if (added && needsReloadAfterAdd)
 						{
-							m_menu.reloadCurrentDirectory();
+							m_menu.reloadCurrentDirectory(RefreshSongPreviewYN::No, ReloadFromDiskYN::Yes);
 						}
 						m_ignoreNextStartUp = true;
 					});

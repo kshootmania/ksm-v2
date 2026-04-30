@@ -834,7 +834,7 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 		}
 
 		// 現在のディレクトリを再読み込み
-		reloadCurrentDirectory(RefreshSongPreviewYN::Yes);
+		reloadCurrentDirectory(RefreshSongPreviewYN::Yes, ReloadFromDiskYN::Yes);
 	}
 	fxLRPressed = fxLRPressedNow;
 
@@ -937,7 +937,7 @@ void SelectMenu::fadeOutSongPreviewForExit(Duration duration)
 	m_songPreview.fadeOutForExit(duration);
 }
 
-void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview)
+void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk)
 {
 	FilePath currentChartFilePath;
 	const int32 difficultyCursor = m_difficultyMenu.cursor();
@@ -993,24 +993,31 @@ void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview)
 		}
 	}
 
-	const FilePath currentDirectory = m_folderState.fullPath;
-	const SelectFolderState::FolderType currentFolderType = m_folderState.folderType;
+	if (reloadFromDisk)
+	{
+		const FilePath currentDirectory = m_folderState.fullPath;
+		const SelectFolderState::FolderType currentFolderType = m_folderState.folderType;
 
-	if (currentFolderType == SelectFolderState::kAll)
-	{
-		openAllFolder(PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
-	}
-	else if (currentFolderType == SelectFolderState::kFavorite)
-	{
-		openFavoriteFolder(currentDirectory, PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
-	}
-	else if (currentFolderType == SelectFolderState::kCourses)
-	{
-		openCoursesFolder(PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
+		if (currentFolderType == SelectFolderState::kAll)
+		{
+			openAllFolder(PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
+		}
+		else if (currentFolderType == SelectFolderState::kFavorite)
+		{
+			openFavoriteFolder(currentDirectory, PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
+		}
+		else if (currentFolderType == SelectFolderState::kCourses)
+		{
+			openCoursesFolder(PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
+		}
+		else
+		{
+			openDirectory(currentDirectory, PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
+		}
 	}
 	else
 	{
-		openDirectory(currentDirectory, PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
+		applySearchModeFilter();
 	}
 
 	// 譜面ファイルパスから項目を探してフォーカスを復元
@@ -2284,7 +2291,7 @@ void SelectMenu::exitSearchMode()
 	m_searchPreservedChartPath.reset();
 	if (wasFiltered)
 	{
-		reloadCurrentDirectory(RefreshSongPreviewYN::Yes);
+		reloadCurrentDirectory(RefreshSongPreviewYN::Yes, ReloadFromDiskYN::Yes);
 	}
 }
 
@@ -2304,8 +2311,13 @@ void SelectMenu::setSearchQuery(StringView query)
 	{
 		return;
 	}
+
+	// 前回の検索文字列を含むなら、既存の検索結果に対してさらに絞り込むだけで良い
+	const bool containsPrevQuery = newQuery.includes(m_searchQuery);
 	m_searchQuery = newQuery;
-	reloadCurrentDirectory(RefreshSongPreviewYN::Yes);
+	reloadCurrentDirectory(
+		RefreshSongPreviewYN::Yes,
+		containsPrevQuery ? ReloadFromDiskYN::No : ReloadFromDiskYN::Yes);
 }
 
 bool SelectMenu::isSearchActive() const
