@@ -66,7 +66,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_ENABLE_EXTENDED_ALIGNED_STORAGE;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_ENABLE_EXTENDED_ALIGNED_STORAGE;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;SQLITE_ENABLE_COLUMN_METADATA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -75,7 +75,7 @@
       <AdditionalOptions>/utf-8 /Zc:__cplusplus /Zm500 /MP3 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>$(ProjectDir)src\stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <BuildStlModules>false</BuildStlModules>
-      <AdditionalIncludeDirectories>$(SolutionDir)kson\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\ThirdParty_Windows\bass;$(SolutionDir)ksmaudio\ThirdParty_Windows\bass_fx;$(ProjectDir)\src;$(ProjectDir)\ThirdParty\CoTaskLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)kson\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\ThirdParty_Windows\bass;$(SolutionDir)ksmaudio\ThirdParty_Windows\bass_fx;$(ProjectDir)\src;$(ProjectDir)\ThirdParty\CoTaskLib\include;$(ProjectDir)\ThirdParty\SQLiteCpp\include;$(ProjectDir)\ThirdParty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>$(ProjectDir)src\stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
@@ -95,7 +95,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_ENABLE_EXTENDED_ALIGNED_STORAGE;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_ENABLE_EXTENDED_ALIGNED_STORAGE;_SILENCE_CXX20_CISO646_REMOVED_WARNING;_SILENCE_ALL_CXX23_DEPRECATION_WARNINGS;SQLITE_ENABLE_COLUMN_METADATA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -104,7 +104,7 @@
       <AdditionalOptions>/utf-8 /Zc:__cplusplus /Zm500 /MP7 %(AdditionalOptions)</AdditionalOptions>
       <ForcedIncludeFiles>$(ProjectDir)src\stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <BuildStlModules>false</BuildStlModules>
-      <AdditionalIncludeDirectories>$(SolutionDir)kson\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\ThirdParty_Windows\bass;$(SolutionDir)ksmaudio\ThirdParty_Windows\bass_fx;$(ProjectDir)\src;$(ProjectDir)\ThirdParty\CoTaskLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)kson\include;$(SolutionDir)ksmaudio\include;$(SolutionDir)ksmaudio\ThirdParty_Windows\bass;$(SolutionDir)ksmaudio\ThirdParty_Windows\bass_fx;$(ProjectDir)\src;$(ProjectDir)\ThirdParty\CoTaskLib\include;$(ProjectDir)\ThirdParty\SQLiteCpp\include;$(ProjectDir)\ThirdParty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>$(ProjectDir)src\stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
@@ -121,6 +121,54 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ThirdParty\SQLiteCpp\sqlite3\sqlite3.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Backup.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Column.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Database.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Exception.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Savepoint.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Statement.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Transaction.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></ForcedIncludeFiles>
+    </ClCompile>
     <ClCompile Include="src\Addon\AutoMuteAddon.cpp" />
     <ClCompile Include="src\Addon\CommonSEAddon.cpp" />
     <ClCompile Include="src\Addon\DisableIMEAddon.cpp" />
@@ -521,6 +569,20 @@
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib\SimpleDialog.hpp" />
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib\Tween.hpp" />
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib\Typewriter.hpp" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Assertion.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Backup.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Column.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Database.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Exception.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\ExecuteMany.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Savepoint.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\SQLiteCpp.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\SQLiteCppExport.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Statement.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Transaction.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Utils.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\VariadicBind.h" />
+    <ClInclude Include="ThirdParty\SQLiteCpp\sqlite3\sqlite3.h" />
     <ClInclude Include="ThirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>

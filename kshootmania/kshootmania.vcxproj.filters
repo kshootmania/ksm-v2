@@ -79,6 +79,24 @@
     <Filter Include="Source Files\Scenes\IREntry">
       <UniqueIdentifier>{a1b2c3d4-5555-6666-7777-888899990000}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ThirdParty">
+      <UniqueIdentifier>{d904a2d0-89d4-4139-a752-fbc332e49f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ThirdParty\SQLiteCpp">
+      <UniqueIdentifier>{af038a11-908b-462d-b562-30ce472c717b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ThirdParty\SQLiteCpp\sqlite3">
+      <UniqueIdentifier>{ead397f2-6353-47ec-bb96-d2cb915e893a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ThirdParty">
+      <UniqueIdentifier>{7945e7bb-14be-470c-a128-0bec6225e671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ThirdParty\SQLiteCpp">
+      <UniqueIdentifier>{c980f4ec-709c-4e25-9e7f-7b406b4c5ad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ThirdParty\SQLiteCpp\sqlite3">
+      <UniqueIdentifier>{c722e6b9-425f-41fa-8b67-c6924c6bde28}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{c63c36d9-9448-45ea-8e1d-40978dc6d13d}</UniqueIdentifier>
     </Filter>
@@ -300,6 +318,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ThirdParty\SQLiteCpp\sqlite3\sqlite3.c">
+      <Filter>Source Files\ThirdParty\SQLiteCpp\sqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Backup.cpp">
+      <Filter>Source Files\ThirdParty\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Column.cpp">
+      <Filter>Source Files\ThirdParty\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Database.cpp">
+      <Filter>Source Files\ThirdParty\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Exception.cpp">
+      <Filter>Source Files\ThirdParty\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Savepoint.cpp">
+      <Filter>Source Files\ThirdParty\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Statement.cpp">
+      <Filter>Source Files\ThirdParty\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SQLiteCpp\src\Transaction.cpp">
+      <Filter>Source Files\ThirdParty\SQLiteCpp</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scenes\Title\TitleScene.cpp">
       <Filter>Source Files\Scenes\Title</Filter>
     </ClCompile>
@@ -1065,6 +1107,48 @@
     </ClInclude>
     <ClInclude Include="src\Scenes\Select\SelectHighScoreCache.hpp">
       <Filter>Header Files\Scenes\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Assertion.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Backup.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Column.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Database.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Exception.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\ExecuteMany.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Savepoint.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\SQLiteCpp.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\SQLiteCppExport.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Statement.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Transaction.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\Utils.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\include\SQLiteCpp\VariadicBind.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SQLiteCpp\sqlite3\sqlite3.h">
+      <Filter>Header Files\ThirdParty\SQLiteCpp\sqlite3</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\Select\SelectFolderState.hpp">
       <Filter>Header Files\Scenes\Select</Filter>
