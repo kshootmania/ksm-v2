@@ -194,6 +194,7 @@ void SelectScene::updatePlayerSwitching()
 	ConfigIni::Save();
 
 	refreshCanvasPlayerName();
+	m_menu.clearHighScoreCache();
 	m_menu.reloadCurrentDirectory(RefreshSongPreviewYN::No, ReloadFromDiskYN::Yes);
 }
 

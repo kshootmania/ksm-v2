@@ -1,24 +1,10 @@
 ﻿#include "SelectChartInfo.hpp"
-#include "HighScore/KscIO.hpp"
-#include "HighScore/KscKey.hpp"
 #include "Ini/ConfigIni.hpp"
 #include "kson/IO/KshIO.hpp"
-#include "RuntimeConfig.hpp"
 
 namespace
 {
-	KscKey CreateKscKeyFromConfig()
-	{
-		return KscKey
-		{
-			.gaugeType = RuntimeConfig::GetGaugeType(),
-			.turnMode = RuntimeConfig::GetTurnMode(),
-			.playbackSpeed = RuntimeConfig::GetPlaybackSpeed(),
-			.btPlayMode = RuntimeConfig::GetJudgmentPlayModeBT(),
-			.fxPlayMode = RuntimeConfig::GetJudgmentPlayModeFX(),
-			.laserPlayMode = RuntimeConfig::GetJudgmentPlayModeLaser(),
-		};
-	}
+	constexpr char32_t kSearchTextSeparator = U'\n';
 }
 
 FilePath SelectChartInfo::toFullPath(const std::string& u8Filename) const
@@ -32,34 +18,28 @@ SelectChartInfo::SelectChartInfo(FilePathView chartFilePath)
 		? kson::LoadKsonMetaChartData(chartFilePath.toUTF8())
 		: kson::LoadKshMetaChartData(chartFilePath.toUTF8()))
 	, m_folderConfIni(FolderConfIni::Load(chartFilePath))
-{
-	KscIO::ReadAllHighScoreInfo(chartFilePath, &m_highScoreInfoMap);
-
-	// 検索用文字列をあらかじめ用意
-	const String songFolderName = FsUtils::DirectoryNameByDirectoryPath(FileSystem::ParentPath(chartFilePath));
-	const char32_t separator = U'\n';
-	m_joinedTextForSearch = (
-		Unicode::FromUTF8(m_chartData.meta.title) + separator +
-		Unicode::FromUTF8(m_chartData.meta.titleTranslit) + separator +
-		Unicode::FromUTF8(m_chartData.meta.artist) + separator +
-		Unicode::FromUTF8(m_chartData.meta.artistTranslit) + separator +
-		songFolderName).lowercased();
-}
+	{
+		// 検索用文字列をあらかじめ用意
+		const String songFolderName = FsUtils::DirectoryNameByDirectoryPath(FileSystem::ParentPath(chartFilePath));
+		m_joinedTextForSearch = (
+			Unicode::FromUTF8(m_chartData.meta.title) + kSearchTextSeparator +
+			Unicode::FromUTF8(m_chartData.meta.titleTranslit) + kSearchTextSeparator +
+			Unicode::FromUTF8(m_chartData.meta.artist) + kSearchTextSeparator +
+			Unicode::FromUTF8(m_chartData.meta.artistTranslit) + kSearchTextSeparator +
+			songFolderName).lowercased();
+	}
 
 SelectChartInfo::SelectChartInfo(FilePathView chartFilePath, const kson::MetaChartData& chartData, const FolderConfIni& folderConfIni)
 	: m_chartFilePath(chartFilePath)
 	, m_chartData(chartData)
 	, m_folderConfIni(folderConfIni)
 {
-	KscIO::ReadAllHighScoreInfo(chartFilePath, &m_highScoreInfoMap);
-
 	const String songFolderName = FsUtils::DirectoryNameByDirectoryPath(FileSystem::ParentPath(chartFilePath));
-	const char32_t separator = U'\n';
 	m_joinedTextForSearch = (
-		Unicode::FromUTF8(m_chartData.meta.title) + separator +
-		Unicode::FromUTF8(m_chartData.meta.titleTranslit) + separator +
-		Unicode::FromUTF8(m_chartData.meta.artist) + separator +
-		Unicode::FromUTF8(m_chartData.meta.artistTranslit) + separator +
+		Unicode::FromUTF8(m_chartData.meta.title) + kSearchTextSeparator +
+		Unicode::FromUTF8(m_chartData.meta.titleTranslit) + kSearchTextSeparator +
+		Unicode::FromUTF8(m_chartData.meta.artist) + kSearchTextSeparator +
+		Unicode::FromUTF8(m_chartData.meta.artistTranslit) + kSearchTextSeparator +
 		songFolderName).lowercased();
 }
 
@@ -194,16 +174,6 @@ FilePath SelectChartInfo::iconFilePath() const
 String SelectChartInfo::information() const
 {
 	return Unicode::FromUTF8(m_chartData.meta.information);
-}
-
-HighScoreInfo SelectChartInfo::highScoreInfo() const
-{
-	const String key = CreateKscKeyFromConfig().toStringWithoutGaugeType();
-	if (auto it = m_highScoreInfoMap.find(key); it != m_highScoreInfoMap.end())
-	{
-		return it->second;
-	}
-	return HighScoreInfo{};
 }
 
 bool SelectChartInfo::hasError() const

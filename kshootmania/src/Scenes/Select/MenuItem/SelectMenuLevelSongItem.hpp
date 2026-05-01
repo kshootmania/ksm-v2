@@ -53,7 +53,7 @@ public:
 	virtual const SelectChartInfo* chartInfoPtr(int difficultyIdx, FallbackForSingleChartYN fallbackForSingleChart = FallbackForSingleChartYN::Yes) const override;
 
 	[[nodiscard]]
-	virtual Optional<HighScoreInfo> highScoreInfo(int32 difficultyIdx) const override;
+	virtual Optional<HighScoreInfo> highScoreInfo(const SelectMenuEventContext& context, int32 difficultyIdx) const override;
 
 	[[nodiscard]]
 	virtual bool difficultyMenuExists() const override;

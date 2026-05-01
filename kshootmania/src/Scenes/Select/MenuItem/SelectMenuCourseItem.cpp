@@ -3,7 +3,6 @@
 #include "I18n/I18n.hpp"
 #include "RuntimeConfig.hpp"
 #include "HighScore/KscKey.hpp"
-#include "HighScore/KscIO.hpp"
 #include "NocoExtensions/NocoUtils.hpp"
 #include "NocoExtensions/VerticalMarquee.hpp"
 
@@ -27,7 +26,6 @@ namespace
 SelectMenuCourseItem::SelectMenuCourseItem(const CourseInfo& courseInfo)
 	: m_courseInfo(courseInfo)
 {
-	KscIO::ReadAllCourseHighScoreInfo(courseInfo.filePath, &m_highScoreInfoMap);
 }
 
 void SelectMenuCourseItem::decide(const SelectMenuEventContext& context, [[maybe_unused]] int32 difficultyIdx)
@@ -76,7 +74,7 @@ void SelectMenuCourseItem::decideAutoPlay(const SelectMenuEventContext& context,
 	context.fnMoveToPlayScene(firstChartPath, MusicGame::IsAutoPlayYN::Yes, courseState);
 }
 
-void SelectMenuCourseItem::setCanvasParamsCenter([[maybe_unused]] const SelectMenuEventContext& context, noco::Canvas& canvas, [[maybe_unused]] int32 difficultyIdx) const
+void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& context, noco::Canvas& canvas, [[maybe_unused]] int32 difficultyIdx) const
 {
 	canvas.setSubCanvasParamValuesByTag(U"center", {
 		{ U"isSong", false },
@@ -96,7 +94,7 @@ void SelectMenuCourseItem::setCanvasParamsCenter([[maybe_unused]] const SelectMe
 
 	// コースのハイスコア情報を取得
 	const KscKey kscKey = CreateKscKeyFromConfig();
-	const HighScoreInfo info = highScoreInfo(0).value_or(HighScoreInfo{});
+	const HighScoreInfo info = highScoreInfo(context, 0).value_or(HighScoreInfo{});
 	const int32 medalIndex = static_cast<int32>(info.medal());
 	const int32 achievementRate = info.percent(kscKey.gaugeType);
 
@@ -220,11 +218,11 @@ void SelectMenuCourseItem::setCanvasParamsCenter([[maybe_unused]] const SelectMe
 	}
 }
 
-void SelectMenuCourseItem::setCanvasParamsTopBottom([[maybe_unused]] const SelectMenuEventContext& context, noco::Canvas& canvas, [[maybe_unused]] int32 difficultyIdx, StringView tag) const
+void SelectMenuCourseItem::setCanvasParamsTopBottom(const SelectMenuEventContext& context, noco::Canvas& canvas, [[maybe_unused]] int32 difficultyIdx, StringView tag) const
 {
 	// コースのハイスコア情報を取得
 	const KscKey kscKey = CreateKscKeyFromConfig();
-	const HighScoreInfo info = highScoreInfo(0).value_or(HighScoreInfo{});
+	const HighScoreInfo info = highScoreInfo(context, 0).value_or(HighScoreInfo{});
 	const int32 medalIndex = static_cast<int32>(info.medal());
 	const int32 achievementRate = info.percent(kscKey.gaugeType);
 
@@ -252,12 +250,7 @@ void SelectMenuCourseItem::showInFileManager([[maybe_unused]] int32 difficultyId
 	System::ShowInFileManager(m_courseInfo.filePath);
 }
 
-Optional<HighScoreInfo> SelectMenuCourseItem::highScoreInfo([[maybe_unused]] int32 difficultyIdx) const
+Optional<HighScoreInfo> SelectMenuCourseItem::highScoreInfo(const SelectMenuEventContext& context, [[maybe_unused]] int32 difficultyIdx) const
 {
-	const String key = CreateKscKeyFromConfig().toStringWithoutGaugeType();
-	if (auto it = m_highScoreInfoMap.find(key); it != m_highScoreInfoMap.end())
-	{
-		return it->second;
-	}
-	return HighScoreInfo{};
+	return context.fnGetCourseHighScore(m_courseInfo.filePath);
 }

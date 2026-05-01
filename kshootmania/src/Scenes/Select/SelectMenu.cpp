@@ -12,15 +12,30 @@
 #include "MenuItem/SelectMenuLevelSectionItem.hpp"
 #include "MenuItem/SelectMenuLevelSongItem.hpp"
 #include "MenuItem/SelectMenuBackToFolderItem.hpp"
+#include "HighScore/KscKey.hpp"
 #include "Common/FsUtils.hpp"
 #include "Common/Encoding.hpp"
 #include "Input/PlatformKey.hpp"
 #include "Course/CourseInfo.hpp"
 #include "NocoExtensions/NocoUtils.hpp"
+#include "RuntimeConfig.hpp"
 #include "SelectMenuCacheDb.hpp"
 
 namespace
 {
+	KscKey CreateKscKeyFromConfig()
+	{
+		return KscKey
+		{
+			.gaugeType = RuntimeConfig::GetGaugeType(),
+			.turnMode = RuntimeConfig::GetTurnMode(),
+			.playbackSpeed = RuntimeConfig::GetPlaybackSpeed(),
+			.btPlayMode = RuntimeConfig::GetJudgmentPlayModeBT(),
+			.fxPlayMode = RuntimeConfig::GetJudgmentPlayModeFX(),
+			.laserPlayMode = RuntimeConfig::GetJudgmentPlayModeLaser(),
+		};
+	}
+
 	Array<FilePath> GetSubDirectories(FilePathView path)
 	{
 		Array<FilePath> directories =
@@ -576,6 +591,14 @@ SelectMenu::SelectMenu(
 				}
 			},
 			.fnShowErrorDialog = std::move(fnShowErrorDialog),
+			.fnGetHighScore = [this](FilePathView chartFilePath) -> HighScoreInfo
+			{
+				return m_highScoreCache.getChartHighScore(chartFilePath, CreateKscKeyFromConfig());
+			},
+			.fnGetCourseHighScore = [this](FilePathView courseFilePath) -> HighScoreInfo
+			{
+				return m_highScoreCache.getCourseHighScore(courseFilePath, CreateKscKeyFromConfig());
+			},
 		}
 	, m_selectSceneCanvas(selectSceneCanvas)
 	, m_menu(
@@ -952,6 +975,8 @@ void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview,
 
 void SelectMenu::forceReloadCurrentDirectory()
 {
+	clearHighScoreCache();
+
 	if (m_folderState.folderType == SelectFolderState::kDirectory)
 	{
 		SelectMenuCacheDb::Invalidate(m_folderState.fullPath);
@@ -962,6 +987,11 @@ void SelectMenu::forceReloadCurrentDirectory()
 	}
 
 	reloadCurrentDirectory(RefreshSongPreviewYN::Yes, ReloadFromDiskYN::Yes);
+}
+
+void SelectMenu::clearHighScoreCache()
+{
+	m_highScoreCache.clear();
 }
 
 void SelectMenu::refreshHighScoreDisplay()
@@ -2038,7 +2068,7 @@ Optional<HighScoreInfo> SelectMenu::getCurrentHighScoreInfo() const
 		return none;
 	}
 
-	return m_menu.cursorValue()->highScoreInfo(m_difficultyMenu.cursor());
+	return m_menu.cursorValue()->highScoreInfo(m_eventContext, m_difficultyMenu.cursor());
 }
 
 void SelectMenu::showCurrentItemInFileManager()

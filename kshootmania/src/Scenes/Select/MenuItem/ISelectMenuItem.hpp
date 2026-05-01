@@ -58,9 +58,10 @@ public:
 	}
 
 	/// @brief ハイスコア情報を取得
+	/// @param context イベントコンテキスト
 	/// @param difficultyIdx 難易度のインデックス(0～3)
 	/// @return ハイスコア情報(存在しない場合はnone)
-	virtual Optional<HighScoreInfo> highScoreInfo([[maybe_unused]] int32 difficultyIdx) const
+	virtual Optional<HighScoreInfo> highScoreInfo([[maybe_unused]] const SelectMenuEventContext& context, [[maybe_unused]] int32 difficultyIdx) const
 	{
 		return none;
 	}

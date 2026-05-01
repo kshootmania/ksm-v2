@@ -84,9 +84,10 @@ public:
 	virtual Optional<String> relativePathToCopy(int32 difficultyIdx) const override;
 
 	/// @brief ハイスコア情報を取得
+	/// @param context イベントコンテキスト
 	/// @param difficultyIdx 難易度のインデックス(0～3)
 	/// @return ハイスコア情報(存在しない場合はnone)
-	virtual Optional<HighScoreInfo> highScoreInfo(int32 difficultyIdx) const override;
+	virtual Optional<HighScoreInfo> highScoreInfo(const SelectMenuEventContext& context, int32 difficultyIdx) const override;
 
 	virtual bool handleDifficultyChange(
 		const SelectMenuEventContext& context,
