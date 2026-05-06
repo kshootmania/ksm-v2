@@ -121,6 +121,7 @@ kshootmania/App/imgs/bt_chip.gif	K-Shoot MANIA.app/Contents/Resources/imgs/bt_ch
 kshootmania/App/imgs/bt_long.gif	K-Shoot MANIA.app/Contents/Resources/imgs/bt_long.gif
 kshootmania/App/imgs/cg.gif	K-Shoot MANIA.app/Contents/Resources/imgs/cg.gif
 kshootmania/App/imgs/cg_header.png	K-Shoot MANIA.app/Contents/Resources/imgs/cg_header.png
+kshootmania/App/imgs/checkbox.png	K-Shoot MANIA.app/Contents/Resources/imgs/checkbox.png
 kshootmania/App/imgs/cline.png	K-Shoot MANIA.app/Contents/Resources/imgs/cline.png
 kshootmania/App/imgs/combonum.gif	K-Shoot MANIA.app/Contents/Resources/imgs/combonum.gif
 kshootmania/App/imgs/courseresult_arrow.png	K-Shoot MANIA.app/Contents/Resources/imgs/courseresult_arrow.png
@@ -128,6 +129,7 @@ kshootmania/App/imgs/courseresult_gauge.png	K-Shoot MANIA.app/Contents/Resources
 kshootmania/App/imgs/courseresult_info.png	K-Shoot MANIA.app/Contents/Resources/imgs/courseresult_info.png
 kshootmania/App/imgs/courseresult_item.png	K-Shoot MANIA.app/Contents/Resources/imgs/courseresult_item.png
 kshootmania/App/imgs/courseresult_newrecord.png	K-Shoot MANIA.app/Contents/Resources/imgs/courseresult_newrecord.png
+kshootmania/App/imgs/dialog_title_head.png	K-Shoot MANIA.app/Contents/Resources/imgs/dialog_title_head.png
 kshootmania/App/imgs/editor/chokkakusamples.gif	K-Shoot MANIA.app/Contents/Resources/imgs/editor/chokkakusamples.gif
 kshootmania/App/imgs/editor/keyinfo.gif	K-Shoot MANIA.app/Contents/Resources/imgs/editor/keyinfo.gif
 kshootmania/App/imgs/editor/keyinfo_en.gif	K-Shoot MANIA.app/Contents/Resources/imgs/editor/keyinfo_en.gif
@@ -150,13 +152,16 @@ kshootmania/App/imgs/er.png	K-Shoot MANIA.app/Contents/Resources/imgs/er.png
 kshootmania/App/imgs/er_g.gif	K-Shoot MANIA.app/Contents/Resources/imgs/er_g.gif
 kshootmania/App/imgs/er_g_pattern.gif	K-Shoot MANIA.app/Contents/Resources/imgs/er_g_pattern.gif
 kshootmania/App/imgs/er_p.png	K-Shoot MANIA.app/Contents/Resources/imgs/er_p.png
+kshootmania/App/imgs/font.png	K-Shoot MANIA.app/Contents/Resources/imgs/font.png
+kshootmania/App/imgs/font_shadow.png	K-Shoot MANIA.app/Contents/Resources/imgs/font_shadow.png
+kshootmania/App/imgs/font_title.png	K-Shoot MANIA.app/Contents/Resources/imgs/font_title.png
 kshootmania/App/imgs/fps.png	K-Shoot MANIA.app/Contents/Resources/imgs/fps.png
+kshootmania/App/imgs/frame_01.png	K-Shoot MANIA.app/Contents/Resources/imgs/frame_01.png
 kshootmania/App/imgs/fx_chip.gif	K-Shoot MANIA.app/Contents/Resources/imgs/fx_chip.gif
 kshootmania/App/imgs/fx_chip_se.gif	K-Shoot MANIA.app/Contents/Resources/imgs/fx_chip_se.gif
 kshootmania/App/imgs/fx_long.gif	K-Shoot MANIA.app/Contents/Resources/imgs/fx_long.gif
 kshootmania/App/imgs/gate/gate_bg.jpg	K-Shoot MANIA.app/Contents/Resources/imgs/gate/gate_bg.jpg
 kshootmania/App/imgs/gate/gate_bg_mask_overlay.png	K-Shoot MANIA.app/Contents/Resources/imgs/gate/gate_bg_mask_overlay.png
-kshootmania/App/imgs/gate/gate_checkbox.png	K-Shoot MANIA.app/Contents/Resources/imgs/gate/gate_checkbox.png
 kshootmania/App/imgs/gate/gate_downloading.png	K-Shoot MANIA.app/Contents/Resources/imgs/gate/gate_downloading.png
 kshootmania/App/imgs/gate/gate_info.png	K-Shoot MANIA.app/Contents/Resources/imgs/gate/gate_info.png
 kshootmania/App/imgs/gate/gate_item.png	K-Shoot MANIA.app/Contents/Resources/imgs/gate/gate_item.png
@@ -299,6 +304,8 @@ kshootmania/App/se/title_bgm_re16.ogg	K-Shoot MANIA.app/Contents/Resources/se/ti
 kshootmania/App/se/title_bgm_re8.ogg	K-Shoot MANIA.app/Contents/Resources/se/title_bgm_re8.ogg
 kshootmania/App/se/title_enter.wav	K-Shoot MANIA.app/Contents/Resources/se/title_enter.wav
 kshootmania/App/se/title_sel.wav	K-Shoot MANIA.app/Contents/Resources/se/title_sel.wav
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/shaders/monochrome_alpha.frag	K-Shoot MANIA.app/Contents/Resources/shaders/monochrome_alpha.frag
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/shaders/monochrome_alpha.hlsl	K-Shoot MANIA.app/Contents/Resources/shaders/monochrome_alpha.hlsl
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/shaders/multi_texture_mask.frag	K-Shoot MANIA.app/Contents/Resources/shaders/multi_texture_mask.frag
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/shaders/multi_texture_mask.hlsl	K-Shoot MANIA.app/Contents/Resources/shaders/multi_texture_mask.hlsl
 kshootmania/App/songs/K-Shoot MANIA/azdrei/azdrei.jpg	K-Shoot MANIA.app/Contents/Resources/songs_default/K-Shoot MANIA/azdrei/azdrei.jpg
@@ -369,6 +376,17 @@ kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_ex.ksh	K-Shoot MANIA.a
 kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_lt.ksh	K-Shoot MANIA.app/Contents/Resources/songs_default/K-Shoot MANIA/time4dance/time4dance_lt.ksh
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/gate_downloading.noco	K-Shoot MANIA.app/Contents/Resources/ui/dialog/gate_downloading.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/gate_unlocked.noco	K-Shoot MANIA.app/Contents/Resources/ui/dialog/gate_unlocked.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/favorite_add_dialog.noco	K-Shoot MANIA.app/Contents/Resources/ui/dialog/favorite_add_dialog.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/favorite_remove_dialog.noco	K-Shoot MANIA.app/Contents/Resources/ui/dialog/favorite_remove_dialog.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/search_input_dialog.noco	K-Shoot MANIA.app/Contents/Resources/ui/dialog/search_input_dialog.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/simple_dialog.noco	K-Shoot MANIA.app/Contents/Resources/ui/dialog/simple_dialog.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/font.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/font.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/msel_0_bpmnum.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/msel_0_bpmnum.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/num0.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/num0.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/num1.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/num1.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/num2.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/num2.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/result_scorenum.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/result_scorenum.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/checkbox.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/checkbox.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/course_result_chart_item.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/course_result_chart_item.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/gate_item.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/gate_item.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/gate_settings.noco	K-Shoot MANIA.app/Contents/Resources/ui/dialog/gate_settings.noco
@@ -384,6 +402,7 @@ kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/course_result.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/gate.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/gate.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/ir_entry.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/ir_entry.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/option.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/option.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/play_hud.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/play_hud.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/play_prepare.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/play_prepare.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/result.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/result.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/select.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/select.noco

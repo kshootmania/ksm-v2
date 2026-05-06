@@ -121,6 +121,7 @@ kshootmania/App/imgs/bt_chip.gif	imgs/bt_chip.gif
 kshootmania/App/imgs/bt_long.gif	imgs/bt_long.gif
 kshootmania/App/imgs/cg.gif	imgs/cg.gif
 kshootmania/App/imgs/cg_header.png	imgs/cg_header.png
+kshootmania/App/imgs/checkbox.png	imgs/checkbox.png
 kshootmania/App/imgs/cline.png	imgs/cline.png
 kshootmania/App/imgs/combonum.gif	imgs/combonum.gif
 kshootmania/App/imgs/courseresult_arrow.png	imgs/courseresult_arrow.png
@@ -128,6 +129,7 @@ kshootmania/App/imgs/courseresult_gauge.png	imgs/courseresult_gauge.png
 kshootmania/App/imgs/courseresult_info.png	imgs/courseresult_info.png
 kshootmania/App/imgs/courseresult_item.png	imgs/courseresult_item.png
 kshootmania/App/imgs/courseresult_newrecord.png	imgs/courseresult_newrecord.png
+kshootmania/App/imgs/dialog_title_head.png	imgs/dialog_title_head.png
 kshootmania/App/imgs/editor/chokkakusamples.gif	imgs/editor/chokkakusamples.gif
 kshootmania/App/imgs/editor/keyinfo.gif	imgs/editor/keyinfo.gif
 kshootmania/App/imgs/editor/keyinfo_en.gif	imgs/editor/keyinfo_en.gif
@@ -150,13 +152,16 @@ kshootmania/App/imgs/er.png	imgs/er.png
 kshootmania/App/imgs/er_g.gif	imgs/er_g.gif
 kshootmania/App/imgs/er_g_pattern.gif	imgs/er_g_pattern.gif
 kshootmania/App/imgs/er_p.png	imgs/er_p.png
+kshootmania/App/imgs/font.png	imgs/font.png
+kshootmania/App/imgs/font_shadow.png	imgs/font_shadow.png
+kshootmania/App/imgs/font_title.png	imgs/font_title.png
 kshootmania/App/imgs/fps.png	imgs/fps.png
+kshootmania/App/imgs/frame_01.png	imgs/frame_01.png
 kshootmania/App/imgs/fx_chip.gif	imgs/fx_chip.gif
 kshootmania/App/imgs/fx_chip_se.gif	imgs/fx_chip_se.gif
 kshootmania/App/imgs/fx_long.gif	imgs/fx_long.gif
 kshootmania/App/imgs/gate/gate_bg.jpg	imgs/gate/gate_bg.jpg
 kshootmania/App/imgs/gate/gate_bg_mask_overlay.png	imgs/gate/gate_bg_mask_overlay.png
-kshootmania/App/imgs/gate/gate_checkbox.png	imgs/gate/gate_checkbox.png
 kshootmania/App/imgs/gate/gate_downloading.png	imgs/gate/gate_downloading.png
 kshootmania/App/imgs/gate/gate_info.png	imgs/gate/gate_info.png
 kshootmania/App/imgs/gate/gate_item.png	imgs/gate/gate_item.png
@@ -300,6 +305,8 @@ kshootmania/App/se/title_bgm_re16.ogg	se/title_bgm_re16.ogg
 kshootmania/App/se/title_bgm_re8.ogg	se/title_bgm_re8.ogg
 kshootmania/App/se/title_enter.wav	se/title_enter.wav
 kshootmania/App/se/title_sel.wav	se/title_sel.wav
+kshootmania/App/shaders/monochrome_alpha.frag	shaders/monochrome_alpha.frag
+kshootmania/App/shaders/monochrome_alpha.hlsl	shaders/monochrome_alpha.hlsl
 kshootmania/App/shaders/multi_texture_mask.frag	shaders/multi_texture_mask.frag
 kshootmania/App/shaders/multi_texture_mask.hlsl	shaders/multi_texture_mask.hlsl
 kshootmania/App/songs/K-Shoot MANIA/azdrei/azdrei.jpg	songs/K-Shoot MANIA/azdrei/azdrei.jpg
@@ -370,6 +377,17 @@ kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_ex.ksh	songs/K-Shoot M
 kshootmania/App/songs/K-Shoot MANIA/time4dance/time4dance_lt.ksh	songs/K-Shoot MANIA/time4dance/time4dance_lt.ksh
 kshootmania/App/ui/dialog/gate_downloading.noco	ui/dialog/gate_downloading.noco
 kshootmania/App/ui/dialog/gate_unlocked.noco	ui/dialog/gate_unlocked.noco
+kshootmania/App/ui/dialog/favorite_add_dialog.noco	ui/dialog/favorite_add_dialog.noco
+kshootmania/App/ui/dialog/favorite_remove_dialog.noco	ui/dialog/favorite_remove_dialog.noco
+kshootmania/App/ui/dialog/search_input_dialog.noco	ui/dialog/search_input_dialog.noco
+kshootmania/App/ui/dialog/simple_dialog.noco	ui/dialog/simple_dialog.noco
+kshootmania/App/ui/font/font.noco	ui/font/font.noco
+kshootmania/App/ui/font/msel_0_bpmnum.noco	ui/font/msel_0_bpmnum.noco
+kshootmania/App/ui/font/num0.noco	ui/font/num0.noco
+kshootmania/App/ui/font/num1.noco	ui/font/num1.noco
+kshootmania/App/ui/font/num2.noco	ui/font/num2.noco
+kshootmania/App/ui/font/result_scorenum.noco	ui/font/result_scorenum.noco
+kshootmania/App/ui/parts/checkbox.noco	ui/parts/checkbox.noco
 kshootmania/App/ui/parts/course_result_chart_item.noco	ui/parts/course_result_chart_item.noco
 kshootmania/App/ui/parts/gate_item.noco	ui/parts/gate_item.noco
 kshootmania/App/ui/dialog/gate_settings.noco	ui/dialog/gate_settings.noco
@@ -385,6 +403,7 @@ kshootmania/App/ui/scene/course_result.noco	ui/scene/course_result.noco
 kshootmania/App/ui/scene/gate.noco	ui/scene/gate.noco
 kshootmania/App/ui/scene/ir_entry.noco	ui/scene/ir_entry.noco
 kshootmania/App/ui/scene/option.noco	ui/scene/option.noco
+kshootmania/App/ui/scene/play_hud.noco	ui/scene/play_hud.noco
 kshootmania/App/ui/scene/play_prepare.noco	ui/scene/play_prepare.noco
 kshootmania/App/ui/scene/result.noco	ui/scene/result.noco
 kshootmania/App/ui/scene/select.noco	ui/scene/select.noco
