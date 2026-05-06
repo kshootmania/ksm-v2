@@ -121,6 +121,7 @@ namespace I18n
 		ScoreNotSentPlaybackSpeed,
 		ScoreNotSentCMod,
 		ScoreNotSentPlaybackControl,
+		ScoreNotSentTimingAdjust,
 		ScoreNotSentTurn,
 		ScoreNotSentAssist,
 	};

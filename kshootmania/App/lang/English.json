@@ -164,6 +164,7 @@
 		"ScoreNotSentPlaybackSpeed": "IR score not recorded:\nsong speed has been changed",
 		"ScoreNotSentCMod": "IR score not recorded:\nHi-Speed Type \"C\" was used",
 		"ScoreNotSentPlaybackControl": "IR score not recorded:\npause or fast-forward was used",
+		"ScoreNotSentTimingAdjust": "IR score not recorded:\nAuto Sync or manual timing adjustment was used",
 		"ScoreNotSentTurn": "IR score not recorded:\nTurn option was used",
 		"ScoreNotSentAssist": "IR score not recorded:\nJudgment Mode option has been changed"
 	}

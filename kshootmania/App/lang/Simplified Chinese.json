@@ -164,6 +164,7 @@
 		"ScoreNotSentPlaybackSpeed": "由于播放速度已更改，\n不纳入IR成绩统计",
 		"ScoreNotSentCMod": "由于使用了Hi-Speed类型\"C\"，\n不纳入IR成绩统计",
 		"ScoreNotSentPlaybackControl": "由于使用了暂停或快进，\n不纳入IR成绩统计",
+		"ScoreNotSentTimingAdjust": "由于使用了Auto Sync或手动时间调整，\n不纳入IR成绩统计",
 		"ScoreNotSentTurn": "由于使用了Turn选项，\n不纳入IR成绩统计",
 		"ScoreNotSentAssist": "由于判定模式选项已更改，\n不纳入IR成绩统计"
 	}

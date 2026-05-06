@@ -164,6 +164,7 @@
 		"ScoreNotSentPlaybackSpeed": "再生速度が変更されているため、\nIRのスコア集計対象外",
 		"ScoreNotSentCMod": "ハイスピードの種類「C」が使用されたため、\nIRのスコア集計対象外",
 		"ScoreNotSentPlaybackControl": "一時停止または早送りが使用されたため、\nIRのスコア集計対象外",
+		"ScoreNotSentTimingAdjust": "AUTO SYNCまたは手動タイミング調整が使用されたため、\nIRのスコア集計対象外",
 		"ScoreNotSentTurn": "Turnオプションが使用されたため、\nIRのスコア集計対象外",
 		"ScoreNotSentAssist": "判定モードオプションが変更されているため、\nIRのスコア集計対象外"
 	}
