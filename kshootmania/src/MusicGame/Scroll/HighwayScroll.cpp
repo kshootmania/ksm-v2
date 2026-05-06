@@ -255,7 +255,22 @@ namespace MusicGame::Scroll
 			return hispeed;
 		}
 
-		const double scrollSpeed = kson::GraphValueAt(m_pBeatInfo->scrollSpeed, m_pGameStatus->currentPulse);
+		// 譜面停止中は0ではなく元のハイスピード値を採用
+		const kson::Pulse currentPulse = m_pGameStatus->currentPulse;
+		if (!m_pBeatInfo->stop.empty())
+		{
+			const auto it = m_pBeatInfo->stop.upper_bound(currentPulse);
+			if (it != m_pBeatInfo->stop.begin())
+			{
+				const auto prevIt = std::prev(it);
+				if (currentPulse < prevIt->first + prevIt->second)
+				{
+					return hispeed;
+				}
+			}
+		}
+
+		const double scrollSpeed = kson::GraphValueAt(m_pBeatInfo->scrollSpeed, currentPulse);
 		return static_cast<int32>(hispeed * Abs(scrollSpeed));
 	}
 
