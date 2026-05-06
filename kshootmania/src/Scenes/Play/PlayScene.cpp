@@ -179,8 +179,6 @@ void PlayScene::update()
 		}
 		else
 		{
-			showAutoSyncSaveDialog();
-
 			const ResultSceneArgs args =
 			{
 				.chartFilePath = FilePath(m_gameMain.chartFilePath()),
@@ -221,8 +219,6 @@ void PlayScene::processBackButtonInput()
 	}
 	else
 	{
-		showAutoSyncSaveDialog();
-
 		const ResultSceneArgs args =
 		{
 			.chartFilePath = FilePath(m_gameMain.chartFilePath()),
@@ -349,4 +345,6 @@ Co::Task<void> PlayScene::fadeOut()
 	co_await Co::Any(
 		Co::ScreenFadeOut(m_fadeOutDuration),
 		Co::WaitUntil([this] { return m_backButtonPressedDuringFadeOut; }));
+
+	showAutoSyncSaveDialog();
 }
