@@ -252,52 +252,96 @@ inline Co::Task<void> PlayScene::fadeIn()
 
 namespace
 {
-	// KSHファイルのo=フィールドを書き換え
-	void UpdateKshOffset(const FilePath& chartFilePath, int32 newOffset)
+	// KSHファイルの"o="の行を書き換え
+	void ReplaceKshOffset(const FilePath& chartFilePath, int32 newOffset)
 	{
-		TextReader reader(chartFilePath);
+		BinaryReader reader{ chartFilePath };
 		if (!reader)
 		{
-			Logger << U"[ksm error] AutoSync: Failed to open KSH file for reading: '{}'"_fmt(chartFilePath);
+			Logger << U"[ksm error] AutoSync: Failed to open KSH file for reading '{}'"_fmt(chartFilePath);
 			return;
 		}
 
-		Array<String> lines;
-		String line;
-		bool replaced = false;
-		while (reader.readLine(line))
+		std::string content(static_cast<std::size_t>(reader.size()), '\0');
+		if (!content.empty())
 		{
-			if (!replaced && line.starts_with(U"o="))
-			{
-				lines.push_back(U"o={}"_fmt(newOffset));
-				replaced = true;
-			}
-			else
-			{
-				lines.push_back(line);
-			}
+			reader.read(content.data(), static_cast<int64>(content.size()));
 		}
 		reader.close();
 
-		BinaryWriter writer(chartFilePath);
+		std::size_t searchStart = 0;
+		if (content.size() >= 3 &&
+			static_cast<uint8_t>(content[0]) == 0xEF &&
+			static_cast<uint8_t>(content[1]) == 0xBB &&
+			static_cast<uint8_t>(content[2]) == 0xBF)
+		{
+			searchStart = 3;
+		}
+
+		const auto isOEqualsAt = [&content](std::size_t pos) -> bool
+		{
+			return pos + 1 < content.size() && content[pos] == 'o' && content[pos + 1] == '=';
+		};
+
+		std::size_t lineStart = std::string::npos;
+		if (isOEqualsAt(searchStart))
+		{
+			lineStart = searchStart;
+		}
+		else
+		{
+			std::size_t pos = searchStart;
+			while (pos < content.size())
+			{
+				const std::size_t newlinePos = content.find('\n', pos);
+				if (newlinePos == std::string::npos)
+				{
+					break;
+				}
+				const std::size_t candidate = newlinePos + 1;
+				if (isOEqualsAt(candidate))
+				{
+					lineStart = candidate;
+					break;
+				}
+				pos = newlinePos + 1;
+			}
+		}
+
+		if (lineStart == std::string::npos)
+		{
+			Logger << U"[ksm error] AutoSync: 'o=' line not found in KSH file '{}'"_fmt(chartFilePath);
+			return;
+		}
+
+		std::size_t lineEnd = lineStart;
+		while (lineEnd < content.size() && content[lineEnd] != '\r' && content[lineEnd] != '\n')
+		{
+			++lineEnd;
+		}
+
+		// "o="の行を置換
+		const std::string newLine = "o=" + std::to_string(newOffset);
+		content.replace(lineStart, lineEnd - lineStart, newLine);
+
+		BinaryWriter writer{ chartFilePath };
 		if (writer)
 		{
-			for (std::size_t i = 0; i < lines.size(); ++i)
-			{
-				const std::string utf8 = lines[i].toUTF8();
-				writer.write(utf8.data(), utf8.size());
-				writer.write("\r\n", 2);
-			}
+			writer.write(content.data(), static_cast<int64>(content.size()));
+		}
+		else
+		{
+			Logger << U"[ksm error] AutoSync: Failed to open KSH file for writing '{}'"_fmt(chartFilePath);
 		}
 	}
 
 	// KSONファイルのaudio.bgm.offsetを書き換え
-	void UpdateKsonOffset(const FilePath& chartFilePath, int32 newOffset)
+	void ReplaceKsonOffset(const FilePath& chartFilePath, int32 newOffset)
 	{
 		JSON json = JSON::Load(chartFilePath);
 		if (!json)
 		{
-			Logger << U"[ksm error] AutoSync: Failed to load KSON file: '{}'"_fmt(chartFilePath);
+			Logger << U"[ksm error] AutoSync: Failed to load KSON file '{}'"_fmt(chartFilePath);
 			return;
 		}
 
@@ -326,11 +370,11 @@ void PlayScene::showAutoSyncSaveDialog()
 		const FilePath chartFilePath{ m_gameMain.chartFilePath() };
 		if (FsUtils::HasKsonExtension(chartFilePath))
 		{
-			UpdateKsonOffset(chartFilePath, newOffset);
+			ReplaceKsonOffset(chartFilePath, newOffset);
 		}
 		else
 		{
-			UpdateKshOffset(chartFilePath, newOffset);
+			ReplaceKshOffset(chartFilePath, newOffset);
 		}
 	}
 }
