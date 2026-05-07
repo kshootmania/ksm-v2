@@ -220,6 +220,75 @@ namespace
 		std::shared_ptr<const SelectChartInfo> chartInfo;
 	};
 
+	struct FavoriteSongInfo
+	{
+		FilePath path;
+		String sortKey;
+		bool isSingleChartItem = false;
+		std::array<std::shared_ptr<const SelectChartInfo>, kNumDifficulties> chartInfos = {};
+	};
+
+	Optional<FavoriteSongInfo> LoadFavoriteSongInfo(FilePathView fullPath)
+	{
+		FavoriteSongInfo result{
+			.path = FileSystem::FullPath(fullPath),
+		};
+
+		Array<FilePath> chartFilePaths;
+		if (FileSystem::IsFile(fullPath) && FsUtils::HasChartExtension(fullPath))
+		{
+			chartFilePaths.emplace_back(fullPath);
+			result.sortKey = FileSystem::FileName(fullPath).lowercased();
+			result.isSingleChartItem = true;
+		}
+		else if (FileSystem::IsDirectory(fullPath))
+		{
+			chartFilePaths = FsUtils::GetChartFilePathsPreferringKson(fullPath);
+			result.sortKey = FsUtils::DirectoryNameByDirectoryPath(fullPath).lowercased();
+		}
+		else
+		{
+			return none;
+		}
+
+		for (const auto& chartFilePath : chartFilePaths)
+		{
+			if (!FsUtils::HasChartExtension(chartFilePath))
+			{
+				continue;
+			}
+
+			auto chartInfo = std::make_shared<SelectChartInfo>(chartFilePath);
+			if (chartInfo->hasError())
+			{
+				Logger << U"[ksm warning] SelectMenu::LoadFavoriteSongInfo: Chart Loading Error (error:'{}', chartFilePath:'{}')"_fmt(chartInfo->errorString(), chartFilePath);
+				continue;
+			}
+
+			int32 difficultyIdx = chartInfo->difficultyIdx();
+			if (difficultyIdx < 0 || kNumDifficulties <= difficultyIdx)
+			{
+				Logger << U"[ksm warning] SelectMenu::LoadFavoriteSongInfo: Difficulty index out of range (difficultyIdx:{}, chartFilePath:'{}')"_fmt(difficultyIdx, chartFilePath);
+				difficultyIdx = kNumDifficulties - 1;
+			}
+
+			if (result.chartInfos[difficultyIdx] != nullptr)
+			{
+				Logger << U"[ksm warning] SelectMenu::LoadFavoriteSongInfo: Skip duplication (difficultyIdx:{}, chartFilePath:'{}')"_fmt(difficultyIdx, chartFilePath);
+				continue;
+			}
+
+			result.chartInfos[difficultyIdx] = chartInfo;
+		}
+
+		if (!std::any_of(result.chartInfos.begin(), result.chartInfos.end(), [](const auto& chartInfo) { return chartInfo != nullptr; }))
+		{
+			return none;
+		}
+
+		return result;
+	}
+
 	/// @brief 楽曲フォルダごとに兄弟難易度情報を構築してリンク
 	void LinkLevelSortSiblings(const Array<std::pair<int32, SelectMenuLevelSongItem*>>& levelItems)
 	{
@@ -301,24 +370,6 @@ namespace
 	bool PushCachedSongItem(ArrayWithLinearMenu<std::unique_ptr<ISelectMenuItem>>* pMenu, const SelectCachedSong& song)
 	{
 		auto item = std::make_unique<SelectMenuSongItem>(song.songDirectoryPath, song.chartInfos, IsSingleChartItemYN::No);
-		if (!item->chartExists())
-		{
-			return false;
-		}
-		pMenu->push_back(std::move(item));
-		return true;
-	}
-
-	bool PushCachedSingleChartItem(ArrayWithLinearMenu<std::unique_ptr<ISelectMenuItem>>* pMenu, const SelectCachedChart& chart)
-	{
-		if (chart.chartInfo == nullptr || chart.difficultyIdx < 0 || chart.difficultyIdx >= kNumDifficulties)
-		{
-			return false;
-		}
-
-		std::array<std::shared_ptr<const SelectChartInfo>, kNumDifficulties> chartInfos = {};
-		chartInfos[chart.difficultyIdx] = chart.chartInfo;
-		auto item = std::make_unique<SelectMenuSongItem>(chart.chartFilePath, chartInfos, IsSingleChartItemYN::Yes);
 		if (!item->chartExists())
 		{
 			return false;
@@ -1600,31 +1651,18 @@ bool SelectMenu::openFavoriteFolderWithNameSort(FilePathView specialPath)
 	const Array<String> songPaths = LoadFavFile(favFilePath);
 	const FilePath songsDir = FsUtils::SongsDirectoryPath();
 
-	// パス情報を収集
-	struct PathInfo
-	{
-		FilePath path;
-		String lowercasedName;
-	};
-	Array<PathInfo> pathInfos;
+	Array<FavoriteSongInfo> favoriteSongInfos;
 
 	for (const String& relativePath : songPaths)
 	{
 		const FilePath fullPath = FileSystem::PathAppend(songsDir, relativePath);
 
-		if (FileSystem::IsDirectory(fullPath))
+		if (FileSystem::IsDirectory(fullPath) || (FileSystem::IsFile(fullPath) && FsUtils::HasChartExtension(fullPath)))
 		{
-			pathInfos.push_back(PathInfo{
-				.path = fullPath,
-				.lowercasedName = FsUtils::DirectoryNameByDirectoryPath(fullPath).lowercased(),
-			});
-		}
-		else if (FileSystem::IsFile(fullPath) && FsUtils::HasChartExtension(fullPath))
-		{
-			pathInfos.push_back(PathInfo{
-				.path = fullPath,
-				.lowercasedName = FileSystem::FileName(fullPath).lowercased(),
-			});
+			if (auto favoriteSongInfo = LoadFavoriteSongInfo(fullPath))
+			{
+				favoriteSongInfos.push_back(std::move(*favoriteSongInfo));
+			}
 		}
 		else
 		{
@@ -1633,25 +1671,21 @@ bool SelectMenu::openFavoriteFolderWithNameSort(FilePathView specialPath)
 	}
 
 	// 名前(小文字変換)の昇順でソート
-	pathInfos.sort_by([](const PathInfo& a, const PathInfo& b)
+	favoriteSongInfos.sort_by([](const FavoriteSongInfo& a, const FavoriteSongInfo& b)
 	{
-		return a.lowercasedName < b.lowercasedName;
+		return a.sortKey < b.sortKey;
 	});
 
 	// 項目を追加
-	for (const auto& pathInfo : pathInfos)
+	for (const auto& favoriteSongInfo : favoriteSongInfos)
 	{
-		if (FileSystem::IsFile(pathInfo.path) && FsUtils::HasChartExtension(pathInfo.path))
+		auto item = std::make_unique<SelectMenuSongItem>(favoriteSongInfo.path, favoriteSongInfo.chartInfos, favoriteSongInfo.isSingleChartItem ? IsSingleChartItemYN::Yes : IsSingleChartItemYN::No);
+		if (!item->chartExists())
 		{
-			if (const auto cachedChart = SelectMenuCacheDb::FindChart(pathInfo.path, false))
-			{
-				PushCachedSingleChartItem(&m_menu, *cachedChart);
-			}
+			continue;
 		}
-		else if (const auto cachedSong = SelectMenuCacheDb::FindSong(pathInfo.path, false))
-		{
-			PushCachedSongItem(&m_menu, *cachedSong);
-		}
+
+		m_menu.push_back(std::move(item));
 	}
 
 	m_folderState.folderType = SelectFolderState::kFavorite;
@@ -1687,24 +1721,18 @@ bool SelectMenu::openFavoriteFolderWithLevelSort(FilePathView specialPath)
 	const Array<String> songPaths = LoadFavFile(favFilePath);
 	const FilePath songsDir = FsUtils::SongsDirectoryPath();
 
-	Array<SelectCachedSong> cachedSongs;
-	Array<SelectCachedChart> cachedCharts;
+	Array<FavoriteSongInfo> favoriteSongInfos;
+
+	// 各エントリから譜面情報を取得
 	for (const String& relativePath : songPaths)
 	{
 		const FilePath fullPath = FileSystem::PathAppend(songsDir, relativePath);
 
-		if (FileSystem::IsFile(fullPath) && FsUtils::HasChartExtension(fullPath))
+		if (FileSystem::IsDirectory(fullPath) || (FileSystem::IsFile(fullPath) && FsUtils::HasChartExtension(fullPath)))
 		{
-			if (const auto cachedChart = SelectMenuCacheDb::FindChart(fullPath, false))
+			if (auto favoriteSongInfo = LoadFavoriteSongInfo(fullPath))
 			{
-				cachedCharts.push_back(*cachedChart);
-			}
-		}
-		else if (FileSystem::IsDirectory(fullPath))
-		{
-			if (const auto cachedSong = SelectMenuCacheDb::FindSong(fullPath, false))
-			{
-				cachedSongs.push_back(*cachedSong);
+				favoriteSongInfos.push_back(std::move(*favoriteSongInfo));
 			}
 		}
 		else
@@ -1713,53 +1741,29 @@ bool SelectMenu::openFavoriteFolderWithLevelSort(FilePathView specialPath)
 		}
 	}
 
-	for (const auto& chart : cachedCharts)
-	{
-		if (chart.chartInfo == nullptr)
-		{
-			continue;
-		}
-
-		const int32 level = chart.chartInfo->level();
-		if (level < kLevelMin || level > kLevelMax)
-		{
-			Logger << U"[ksm warning] SelectMenu::openFavoriteFolderWithLevelSort: Level out of range (level:{}, chartFilePath:'{}')"_fmt(level, chart.chartInfo->chartFilePath());
-			continue;
-		}
-
-		chartsByLevel[level - 1].push_back(LevelSortChartFileInfo{
-			.filePath = FilePath{ chart.chartInfo->chartFilePath() },
-			.difficultyIdx = chart.difficultyIdx,
-			.sortKey = FileSystem::FileName(chart.chartFilePath).lowercased(),
-			.chartInfo = chart.chartInfo,
-		});
-	}
-
 	// 各項目から譜面情報を取得してレベル別に分類
-	for (const auto& song : cachedSongs)
+	for (const auto& favoriteSongInfo : favoriteSongInfos)
 	{
-		const String songName = FsUtils::DirectoryNameByDirectoryPath(song.songDirectoryPath);
-
-		for (int32 diffIdx = 0; diffIdx < kNumDifficulties; ++diffIdx)
+		for (int32 difficultyIdx = 0; difficultyIdx < kNumDifficulties; ++difficultyIdx)
 		{
-			const auto pChartInfo = song.chartInfos[diffIdx].get();
-			if (pChartInfo == nullptr)
+			const auto& chartInfo = favoriteSongInfo.chartInfos[difficultyIdx];
+			if (chartInfo == nullptr)
 			{
 				continue;
 			}
 
-			const int32 level = pChartInfo->level();
+			const int32 level = chartInfo->level();
 			if (level < kLevelMin || level > kLevelMax)
 			{
-				Logger << U"[ksm warning] SelectMenu::openFavoriteFolderWithLevelSort: Level out of range (level:{}, chartFilePath:'{}')"_fmt(level, pChartInfo->chartFilePath());
+				Logger << U"[ksm warning] SelectMenu::openFavoriteFolderWithLevelSort: Level out of range (level:{}, chartFilePath:'{}')"_fmt(level, chartInfo->chartFilePath());
 				continue;
 			}
 
 			chartsByLevel[level - 1].push_back(LevelSortChartFileInfo{
-				.filePath = FilePath{ pChartInfo->chartFilePath() },
-				.difficultyIdx = diffIdx,
-				.sortKey = songName.lowercased(),
-				.chartInfo = song.chartInfos[diffIdx],
+				.filePath = FilePath{ chartInfo->chartFilePath() },
+				.difficultyIdx = difficultyIdx,
+				.sortKey = favoriteSongInfo.sortKey,
+				.chartInfo = chartInfo,
 			});
 		}
 	}

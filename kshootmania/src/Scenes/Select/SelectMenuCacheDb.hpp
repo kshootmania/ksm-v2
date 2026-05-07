@@ -15,14 +15,6 @@ struct SelectCachedSong
 	std::array<std::shared_ptr<const SelectChartInfo>, kNumDifficulties> chartInfos = {};
 };
 
-struct SelectCachedChart
-{
-	FilePath chartFilePath;
-	FilePath songDirectoryPath;
-	int32 difficultyIdx = -1;
-	std::shared_ptr<const SelectChartInfo> chartInfo;
-};
-
 class SelectMenuCacheDb
 {
 public:
@@ -34,12 +26,6 @@ public:
 
 	[[nodiscard]]
 	static Array<SelectCachedSong> LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild);
-
-	[[nodiscard]]
-	static Optional<SelectCachedSong> FindSong(FilePathView songOrChartPath, bool forceRebuild);
-
-	[[nodiscard]]
-	static Optional<SelectCachedChart> FindChart(FilePathView chartPath, bool forceRebuild);
 
 	static void Invalidate(FilePathView directoryPath);
 
