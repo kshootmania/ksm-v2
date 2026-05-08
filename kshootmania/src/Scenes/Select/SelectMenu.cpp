@@ -306,6 +306,12 @@ namespace
 			for (const auto& [index, item] : items)
 			{
 				const int32 diffIdx = item->difficultyIdx();
+				if (diffIdx < 0 || kNumDifficulties <= diffIdx || siblings[diffIdx].menuIndex >= 0)
+				{
+					// 同一難易度の譜面が複数ある場合、兄弟難易度には先に追加された項目を採用するためスキップ
+					continue;
+				}
+
 				const SelectChartInfo* chartInfo = item->chartInfoPtr(diffIdx);
 				siblings[diffIdx] = {
 					.menuIndex = index,
@@ -1369,31 +1375,28 @@ bool SelectMenu::openDirectoryWithLevelSort(FilePathView directoryPath)
 		// レベルごとに譜面を分類
 		std::array<Array<LevelSortChartFileInfo>, kNumLevels> chartsByLevel;
 
-		const Array<SelectCachedSong> cachedSongs = SelectMenuCacheDb::LoadDirectory(directoryPath, false);
-		for (const auto& song : cachedSongs)
+		const Array<SelectCachedChartEntry> cachedCharts = SelectMenuCacheDb::LoadDirectoryForLevelSort(directoryPath, false);
+		for (const auto& entry : cachedCharts)
 		{
-			for (int32 difficultyIdx = 0; difficultyIdx < kNumDifficulties; ++difficultyIdx)
+			const auto& chartInfo = entry.chartInfo;
+			if (chartInfo == nullptr)
 			{
-				const auto& chartInfo = song.chartInfos[difficultyIdx];
-				if (chartInfo == nullptr)
-				{
-					continue;
-				}
-
-				const int32 level = chartInfo->level();
-				if (level < kLevelMin || level > kLevelMax)
-				{
-					Logger << U"[ksm warning] SelectMenu::openDirectoryWithLevelSort: Level out of range (level:{}, chartFilePath:'{}')"_fmt(level, chartInfo->chartFilePath());
-					continue;
-				}
-
-				chartsByLevel[level - 1].push_back(LevelSortChartFileInfo{
-					.filePath = FilePath{ chartInfo->chartFilePath() },
-					.difficultyIdx = difficultyIdx,
-					.sortKey = song.songSortKey,
-					.chartInfo = chartInfo,
-				});
+				continue;
 			}
+
+			const int32 level = chartInfo->level();
+			if (level < kLevelMin || level > kLevelMax)
+			{
+				Logger << U"[ksm warning] SelectMenu::openDirectoryWithLevelSort: Level out of range (level:{}, chartFilePath:'{}')"_fmt(level, chartInfo->chartFilePath());
+				continue;
+			}
+
+			chartsByLevel[level - 1].push_back(LevelSortChartFileInfo{
+				.filePath = FilePath{ chartInfo->chartFilePath() },
+				.difficultyIdx = entry.difficultyIdx,
+				.sortKey = entry.songSortKey,
+				.chartInfo = chartInfo,
+			});
 		}
 
 		// 見出しと項目を追加し、兄弟難易度をリンク
@@ -1548,31 +1551,28 @@ bool SelectMenu::openAllFolderWithLevelSort()
 
 	for (const auto& folderDirectory : allFolderDirectories)
 	{
-		const Array<SelectCachedSong> cachedSongs = SelectMenuCacheDb::LoadDirectory(folderDirectory, false);
-		for (const auto& song : cachedSongs)
+		const Array<SelectCachedChartEntry> cachedCharts = SelectMenuCacheDb::LoadDirectoryForLevelSort(folderDirectory, false);
+		for (const auto& entry : cachedCharts)
 		{
-			for (int32 difficultyIdx = 0; difficultyIdx < kNumDifficulties; ++difficultyIdx)
+			const auto& chartInfo = entry.chartInfo;
+			if (chartInfo == nullptr)
 			{
-				const auto& chartInfo = song.chartInfos[difficultyIdx];
-				if (chartInfo == nullptr)
-				{
-					continue;
-				}
-
-				const int32 level = chartInfo->level();
-				if (level < kLevelMin || level > kLevelMax)
-				{
-					Logger << U"[ksm warning] SelectMenu::openAllFolderWithLevelSort: Level out of range (level:{}, chartFilePath:'{}')"_fmt(level, chartInfo->chartFilePath());
-					continue;
-				}
-
-				chartsByLevel[level - 1].push_back(LevelSortChartFileInfo{
-					.filePath = FilePath{ chartInfo->chartFilePath() },
-					.difficultyIdx = difficultyIdx,
-					.sortKey = song.songSortKey,
-					.chartInfo = chartInfo,
-				});
+				continue;
 			}
+
+			const int32 level = chartInfo->level();
+			if (level < kLevelMin || level > kLevelMax)
+			{
+				Logger << U"[ksm warning] SelectMenu::openAllFolderWithLevelSort: Level out of range (level:{}, chartFilePath:'{}')"_fmt(level, chartInfo->chartFilePath());
+				continue;
+			}
+
+			chartsByLevel[level - 1].push_back(LevelSortChartFileInfo{
+				.filePath = FilePath{ chartInfo->chartFilePath() },
+				.difficultyIdx = entry.difficultyIdx,
+				.sortKey = entry.songSortKey,
+				.chartInfo = chartInfo,
+			});
 		}
 	}
 

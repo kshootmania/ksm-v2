@@ -524,10 +524,24 @@ namespace
 		transaction.commit();
 	}
 
-	Array<SelectCachedSong> LoadSongsFromDb(SQLite::Database& db, FilePathView baseDirectoryPath, StringView whereClause, StringView orderByClause)
+	struct ChartRowResult
 	{
-		Array<SelectCachedSong> songs;
-		HashTable<FilePath, size_t> songDirToIndex;
+		std::shared_ptr<const SelectChartInfo> chartInfo;
+		int32 difficultyIdx = 0;
+		String songSortKey;
+		FilePath songDirectoryPath;
+		FilePath sectionDirectoryPath;
+		Optional<String> sectionDisplayName;
+		bool skipSectionHeading = false;
+		bool visibleInDirectoryNameSort = true;
+		bool visibleInAllNameSort = true;
+		int32 sectionDirectoryIndex = -1;
+		int32 songDirectoryIndex = -1;
+	};
+
+	Array<ChartRowResult> ReadChartRows(SQLite::Database& db, FilePathView baseDirectoryPath, StringView whereClause, StringView orderByClause)
+	{
+		Array<ChartRowResult> rows;
 
 		const std::string sql = "SELECT * FROM charts "
 			+ whereClause.toUTF8()
@@ -536,33 +550,6 @@ namespace
 		SQLite::Statement query(db, sql);
 		while (query.executeStep())
 		{
-			const FilePath songDirRel = Unicode::FromUTF8(query.getColumn("song_dir").getString());
-			const FilePath songDirPath = FileSystem::PathAppend(baseDirectoryPath, songDirRel);
-
-			auto [it, inserted] = songDirToIndex.emplace(songDirRel, songs.size());
-			if (inserted)
-			{
-				songs.push_back(SelectCachedSong{});
-			}
-
-			auto& song = songs[it->second];
-			if (song.songDirectoryPath.isEmpty())
-			{
-				song.songDirectoryPath = songDirPath;
-				const FilePath sectionDirRel = Unicode::FromUTF8(query.getColumn("section_dir").getString());
-				song.sectionDirectoryPath = sectionDirRel.isEmpty() ? FilePath{} : FileSystem::PathAppend(baseDirectoryPath, sectionDirRel);
-				if (!query.getColumn("section_display_name").isNull())
-				{
-					song.sectionDisplayName = Unicode::FromUTF8(query.getColumn("section_display_name").getString());
-				}
-				song.skipSectionHeading = query.getColumn("skip_section_heading").getInt() != 0;
-				song.visibleInDirectoryNameSort = query.getColumn("visible_in_directory_name_sort").getInt() != 0;
-				song.visibleInAllNameSort = query.getColumn("visible_in_all_name_sort").getInt() != 0;
-				song.sectionDirectoryIndex = query.getColumn("section_directory_index").getInt();
-				song.songDirectoryIndex = query.getColumn("song_directory_index").getInt();
-				song.songSortKey = Unicode::FromUTF8(query.getColumn("song_sort_key").getString());
-			}
-
 			kson::MetaChartData chartData;
 			auto& meta = chartData.meta;
 			meta.difficulty.idx = query.getColumn("difficulty_idx").getInt();
@@ -591,101 +578,141 @@ namespace
 			folderConfIni.tweetOption = Unicode::FromUTF8(query.getColumn("folder_tweet_option").getString());
 
 			const FilePath chartPath = FileSystem::PathAppend(baseDirectoryPath, Unicode::FromUTF8(query.getColumn("chart_path").getString()));
-			const int32 difficultyIdx = meta.difficulty.idx;
-			if (0 <= difficultyIdx && difficultyIdx < kNumDifficulties && song.chartInfos[difficultyIdx] == nullptr)
+			const FilePath songDirRel = Unicode::FromUTF8(query.getColumn("song_dir").getString());
+			const FilePath sectionDirRel = Unicode::FromUTF8(query.getColumn("section_dir").getString());
+
+			rows.push_back(ChartRowResult{
+				.chartInfo = std::make_shared<SelectChartInfo>(chartPath, chartData, folderConfIni),
+				.difficultyIdx = meta.difficulty.idx,
+				.songSortKey = Unicode::FromUTF8(query.getColumn("song_sort_key").getString()),
+				.songDirectoryPath = FileSystem::PathAppend(baseDirectoryPath, songDirRel),
+				.sectionDirectoryPath = sectionDirRel.isEmpty() ? FilePath{} : FileSystem::PathAppend(baseDirectoryPath, sectionDirRel),
+				.sectionDisplayName = query.getColumn("section_display_name").isNull()
+					? Optional<String>{}
+					: Optional<String>{ Unicode::FromUTF8(query.getColumn("section_display_name").getString()) },
+				.skipSectionHeading = query.getColumn("skip_section_heading").getInt() != 0,
+				.visibleInDirectoryNameSort = query.getColumn("visible_in_directory_name_sort").getInt() != 0,
+				.visibleInAllNameSort = query.getColumn("visible_in_all_name_sort").getInt() != 0,
+				.sectionDirectoryIndex = query.getColumn("section_directory_index").getInt(),
+				.songDirectoryIndex = query.getColumn("song_directory_index").getInt(),
+			});
+		}
+
+		return rows;
+	}
+
+	Array<ChartRowResult> LoadDirectoryRows(FilePathView directoryPath, bool forceRebuild, StringView whereClause, StringView orderByClause, StringView fnName)
+	{
+		const FilePath baseDirectoryPath = FileSystem::FullPath(directoryPath);
+		const FilePath dbPath = DbPath(baseDirectoryPath);
+
+		const auto loadOnce = [&](bool rebuild) -> Array<ChartRowResult>
+		{
+			const Array<SourceFileInfo> sourceFiles = CollectSourceFiles(baseDirectoryPath);
+			FileSystem::CreateDirectories(FileSystem::ParentPath(dbPath));
+			SQLite::Database db(dbPath.toUTF8(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+			CreateSchema(db);
+			if (rebuild || !IsCacheValid(db, baseDirectoryPath, sourceFiles))
 			{
-				song.chartInfos[difficultyIdx] = std::make_shared<SelectChartInfo>(chartPath, chartData, folderConfIni);
+				Rebuild(db, baseDirectoryPath, sourceFiles);
 			}
-			else if (0 <= difficultyIdx && difficultyIdx < kNumDifficulties)
+			return ReadChartRows(db, baseDirectoryPath, whereClause, orderByClause);
+		};
+
+		try
+		{
+			return loadOnce(forceRebuild);
+		}
+		catch (const std::exception& e)
+		{
+			Logger << U"[ksm warning] SelectMenuCacheDb::{} failed. Fallback to rebuild. (path:'{}', error:'{}')"_fmt(fnName, directoryPath, Unicode::FromUTF8(e.what()));
+			FileSystem::Remove(dbPath);
+			return loadOnce(true);
+		}
+	}
+
+	Array<SelectCachedSong> GroupRowsAsSongs(const Array<ChartRowResult>& rows)
+	{
+		Array<SelectCachedSong> songs;
+		HashTable<FilePath, size_t> songDirToIndex;
+
+		for (const auto& row : rows)
+		{
+			auto [it, inserted] = songDirToIndex.emplace(row.songDirectoryPath, songs.size());
+			if (inserted)
 			{
-				Logger << U"[ksm warning] SelectMenuCacheDb: Skip duplication (difficultyIdx:{}, chartFilePath:'{}')"_fmt(difficultyIdx, chartPath);
+				songs.push_back(SelectCachedSong{
+					.songDirectoryPath = row.songDirectoryPath,
+					.sectionDirectoryPath = row.sectionDirectoryPath,
+					.sectionDisplayName = row.sectionDisplayName,
+					.skipSectionHeading = row.skipSectionHeading,
+					.visibleInDirectoryNameSort = row.visibleInDirectoryNameSort,
+					.visibleInAllNameSort = row.visibleInAllNameSort,
+					.sectionDirectoryIndex = row.sectionDirectoryIndex,
+					.songDirectoryIndex = row.songDirectoryIndex,
+					.songSortKey = row.songSortKey,
+				});
+			}
+
+			auto& song = songs[it->second];
+			const int32 d = row.difficultyIdx;
+			if (0 <= d && d < kNumDifficulties && song.chartInfos[d] == nullptr)
+			{
+				song.chartInfos[d] = row.chartInfo;
+			}
+			else if (0 <= d && d < kNumDifficulties)
+			{
+				Logger << U"[ksm warning] SelectMenuCacheDb: Skip duplication (difficultyIdx:{}, chartFilePath:'{}')"_fmt(d, row.chartInfo->chartFilePath());
 			}
 		}
 
 		return songs;
 	}
 
-	Array<SelectCachedSong> LoadDirectoryImpl(FilePathView directoryPath, bool forceRebuild, StringView whereClause, StringView orderByClause)
+	Array<SelectCachedChartEntry> RowsToChartEntries(const Array<ChartRowResult>& rows)
 	{
-		const FilePath baseDirectoryPath = FileSystem::FullPath(directoryPath);
-		const FilePath dbPath = DbPath(baseDirectoryPath);
-		const Array<SourceFileInfo> sourceFiles = CollectSourceFiles(baseDirectoryPath);
-
-		FileSystem::CreateDirectories(FileSystem::ParentPath(dbPath));
-		SQLite::Database db(dbPath.toUTF8(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-		CreateSchema(db);
-		if (forceRebuild || !IsCacheValid(db, baseDirectoryPath, sourceFiles))
+		Array<SelectCachedChartEntry> entries;
+		entries.reserve(rows.size());
+		for (const auto& row : rows)
 		{
-			Rebuild(db, baseDirectoryPath, sourceFiles);
+			entries.push_back(SelectCachedChartEntry{
+				.chartInfo = row.chartInfo,
+				.difficultyIdx = row.difficultyIdx,
+				.songSortKey = row.songSortKey,
+			});
 		}
-		return LoadSongsFromDb(db, baseDirectoryPath, whereClause, orderByClause);
-	}
-}
-
-Array<SelectCachedSong> SelectMenuCacheDb::LoadDirectory(FilePathView directoryPath, bool forceRebuild)
-{
-	try
-	{
-		return LoadDirectoryImpl(
-			directoryPath,
-			forceRebuild,
-			U"",
-			U"section_directory_index, song_directory_index, chart_file_index");
-	}
-	catch (const std::exception& e)
-	{
-		Logger << U"[ksm warning] SelectMenuCacheDb::LoadDirectory failed. Fallback to rebuild. (path:'{}', error:'{}')"_fmt(directoryPath, Unicode::FromUTF8(e.what()));
-		FileSystem::Remove(DbPath(directoryPath));
-		return LoadDirectoryImpl(
-			directoryPath,
-			true,
-			U"",
-			U"section_directory_index, song_directory_index, chart_file_index");
+		return entries;
 	}
 }
 
 Array<SelectCachedSong> SelectMenuCacheDb::LoadDirectoryForNameSort(FilePathView directoryPath, bool forceRebuild)
 {
-	try
-	{
-		return LoadDirectoryImpl(
-			directoryPath,
-			forceRebuild,
-			U"WHERE visible_in_directory_name_sort != 0",
-			U"CASE WHEN section_directory_index < 0 THEN 0 ELSE 1 END, section_directory_index, song_directory_index, chart_file_index");
-	}
-	catch (const std::exception& e)
-	{
-		Logger << U"[ksm warning] SelectMenuCacheDb::LoadDirectoryForNameSort failed. Fallback to rebuild. (path:'{}', error:'{}')"_fmt(directoryPath, Unicode::FromUTF8(e.what()));
-		FileSystem::Remove(DbPath(directoryPath));
-		return LoadDirectoryImpl(
-			directoryPath,
-			true,
-			U"WHERE visible_in_directory_name_sort != 0",
-			U"CASE WHEN section_directory_index < 0 THEN 0 ELSE 1 END, section_directory_index, song_directory_index, chart_file_index");
-	}
+	return GroupRowsAsSongs(LoadDirectoryRows(
+		directoryPath,
+		forceRebuild,
+		U"WHERE visible_in_directory_name_sort != 0",
+		U"CASE WHEN section_directory_index < 0 THEN 0 ELSE 1 END, section_directory_index, song_directory_index, chart_file_index",
+		U"LoadDirectoryForNameSort"));
 }
 
 Array<SelectCachedSong> SelectMenuCacheDb::LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild)
 {
-	try
-	{
-		return LoadDirectoryImpl(
-			directoryPath,
-			forceRebuild,
-			U"WHERE visible_in_all_name_sort != 0",
-			U"song_sort_key, section_directory_index, song_directory_index, chart_file_index");
-	}
-	catch (const std::exception& e)
-	{
-		Logger << U"[ksm warning] SelectMenuCacheDb::LoadDirectoryForAllNameSort failed. Fallback to rebuild. (path:'{}', error:'{}')"_fmt(directoryPath, Unicode::FromUTF8(e.what()));
-		FileSystem::Remove(DbPath(directoryPath));
-		return LoadDirectoryImpl(
-			directoryPath,
-			true,
-			U"WHERE visible_in_all_name_sort != 0",
-			U"song_sort_key, section_directory_index, song_directory_index, chart_file_index");
-	}
+	return GroupRowsAsSongs(LoadDirectoryRows(
+		directoryPath,
+		forceRebuild,
+		U"WHERE visible_in_all_name_sort != 0",
+		U"song_sort_key, section_directory_index, song_directory_index, chart_file_index",
+		U"LoadDirectoryForAllNameSort"));
+}
+
+Array<SelectCachedChartEntry> SelectMenuCacheDb::LoadDirectoryForLevelSort(FilePathView directoryPath, bool forceRebuild)
+{
+	return RowsToChartEntries(LoadDirectoryRows(
+		directoryPath,
+		forceRebuild,
+		U"",
+		U"section_directory_index, song_directory_index, chart_file_index",
+		U"LoadDirectoryForLevelSort"));
 }
 
 void SelectMenuCacheDb::Invalidate(FilePathView directoryPath)
