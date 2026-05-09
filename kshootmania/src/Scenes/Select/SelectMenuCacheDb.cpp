@@ -631,17 +631,40 @@ namespace
 		}
 	}
 
-	Array<SelectCachedSong> GroupRowsAsSongs(const Array<ChartRowResult>& rows)
+	Array<SelectCachedSongEntry> GroupRowsAsSongEntries(const Array<ChartRowResult>& rows)
 	{
-		Array<SelectCachedSong> songs;
-		HashTable<FilePath, size_t> songDirToIndex;
+		Array<SelectCachedSongEntry> entries;
+		HashTable<FilePath, size_t> songDirToEntryIndex;
 
 		for (const auto& row : rows)
 		{
-			auto [it, inserted] = songDirToIndex.emplace(row.songDirectoryPath, songs.size());
+			auto [it, inserted] = songDirToEntryIndex.emplace(row.songDirectoryPath, entries.size());
 			if (inserted)
 			{
-				songs.push_back(SelectCachedSong{
+				entries.push_back(SelectCachedSongEntry{
+					.song = SelectCachedSong{
+						.songDirectoryPath = row.songDirectoryPath,
+						.sectionDirectoryPath = row.sectionDirectoryPath,
+						.sectionDisplayName = row.sectionDisplayName,
+						.skipSectionHeading = row.skipSectionHeading,
+						.visibleInDirectoryNameSort = row.visibleInDirectoryNameSort,
+						.visibleInAllNameSort = row.visibleInAllNameSort,
+						.sectionDirectoryIndex = row.sectionDirectoryIndex,
+						.songDirectoryIndex = row.songDirectoryIndex,
+						.songSortKey = row.songSortKey,
+					},
+				});
+			}
+
+			auto& song = entries[it->second].song;
+			const int32 d = row.difficultyIdx;
+			if (0 <= d && d < kNumDifficulties && song.chartInfos[d] == nullptr)
+			{
+				song.chartInfos[d] = row.chartInfo;
+			}
+			else if (0 <= d && d < kNumDifficulties)
+			{
+				SelectCachedSong duplicateSong{
 					.songDirectoryPath = row.songDirectoryPath,
 					.sectionDirectoryPath = row.sectionDirectoryPath,
 					.sectionDisplayName = row.sectionDisplayName,
@@ -651,22 +674,16 @@ namespace
 					.sectionDirectoryIndex = row.sectionDirectoryIndex,
 					.songDirectoryIndex = row.songDirectoryIndex,
 					.songSortKey = row.songSortKey,
+				};
+				duplicateSong.chartInfos[d] = row.chartInfo;
+				entries.push_back(SelectCachedSongEntry{
+					.song = std::move(duplicateSong),
+					.isSingleChartItem = true,
 				});
-			}
-
-			auto& song = songs[it->second];
-			const int32 d = row.difficultyIdx;
-			if (0 <= d && d < kNumDifficulties && song.chartInfos[d] == nullptr)
-			{
-				song.chartInfos[d] = row.chartInfo;
-			}
-			else if (0 <= d && d < kNumDifficulties)
-			{
-				Logger << U"[ksm warning] SelectMenuCacheDb: Skip duplication (difficultyIdx:{}, chartFilePath:'{}')"_fmt(d, row.chartInfo->chartFilePath());
 			}
 		}
 
-		return songs;
+		return entries;
 	}
 
 	Array<SelectCachedChartEntry> RowsToChartEntries(const Array<ChartRowResult>& rows)
@@ -685,9 +702,9 @@ namespace
 	}
 }
 
-Array<SelectCachedSong> SelectMenuCacheDb::LoadDirectoryForNameSort(FilePathView directoryPath, bool forceRebuild)
+Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForNameSort(FilePathView directoryPath, bool forceRebuild)
 {
-	return GroupRowsAsSongs(LoadDirectoryRows(
+	return GroupRowsAsSongEntries(LoadDirectoryRows(
 		directoryPath,
 		forceRebuild,
 		U"WHERE visible_in_directory_name_sort != 0",
@@ -695,9 +712,9 @@ Array<SelectCachedSong> SelectMenuCacheDb::LoadDirectoryForNameSort(FilePathView
 		U"LoadDirectoryForNameSort"));
 }
 
-Array<SelectCachedSong> SelectMenuCacheDb::LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild)
+Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild)
 {
-	return GroupRowsAsSongs(LoadDirectoryRows(
+	return GroupRowsAsSongEntries(LoadDirectoryRows(
 		directoryPath,
 		forceRebuild,
 		U"WHERE visible_in_all_name_sort != 0",

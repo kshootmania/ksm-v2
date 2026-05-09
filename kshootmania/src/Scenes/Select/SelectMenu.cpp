@@ -373,9 +373,12 @@ namespace
 		LinkLevelSortSiblings(levelItems);
 	}
 
-	bool PushCachedSongItem(ArrayWithLinearMenu<std::unique_ptr<ISelectMenuItem>>* pMenu, const SelectCachedSong& song)
+	bool PushCachedSongEntry(ArrayWithLinearMenu<std::unique_ptr<ISelectMenuItem>>* pMenu, const SelectCachedSongEntry& entry)
 	{
-		auto item = std::make_unique<SelectMenuSongItem>(song.songDirectoryPath, song.chartInfos, IsSingleChartItemYN::No);
+		auto item = std::make_unique<SelectMenuSongItem>(
+			entry.song.songDirectoryPath,
+			entry.song.chartInfos,
+			entry.isSingleChartItem ? IsSingleChartItemYN::Yes : IsSingleChartItemYN::No);
 		if (!item->chartExists())
 		{
 			return false;
@@ -461,10 +464,11 @@ bool SelectMenu::openDirectoryWithNameSort(FilePathView directoryPath)
 			}
 		}
 
-		const Array<SelectCachedSong> cachedSongs = SelectMenuCacheDb::LoadDirectoryForNameSort(directoryPath, false);
+		const Array<SelectCachedSongEntry> cachedSongEntries = SelectMenuCacheDb::LoadDirectoryForNameSort(directoryPath, false);
 		FilePath currentSectionPath;
-		for (const auto& song : cachedSongs)
+		for (const auto& entry : cachedSongEntries)
 		{
+			const auto& song = entry.song;
 			if (!song.visibleInDirectoryNameSort)
 			{
 				continue;
@@ -479,7 +483,7 @@ bool SelectMenu::openDirectoryWithNameSort(FilePathView directoryPath)
 				currentSectionPath.clear();
 			}
 
-			PushCachedSongItem(&m_menu, song);
+			PushCachedSongEntry(&m_menu, entry);
 		}
 
 		m_folderState.folderType = SelectFolderState::kDirectory;
@@ -1489,26 +1493,27 @@ bool SelectMenu::openAllFolderWithNameSort()
 		allFolderDirectories.append(GetSubDirectories(path).map([](FilePathView p) { return FileSystem::FullPath(p); }));
 	}
 
-	Array<SelectCachedSong> allSongs;
+	Array<SelectCachedSongEntry> allSongEntries;
 
 	for (const auto& folderDirectory : allFolderDirectories)
 	{
-		allSongs.append(SelectMenuCacheDb::LoadDirectoryForAllNameSort(folderDirectory, false));
+		allSongEntries.append(SelectMenuCacheDb::LoadDirectoryForAllNameSort(folderDirectory, false));
 	}
 
-	allSongs.sort_by([](const SelectCachedSong& a, const SelectCachedSong& b)
+	allSongEntries.sort_by([](const SelectCachedSongEntry& a, const SelectCachedSongEntry& b)
 	{
-		return a.songSortKey < b.songSortKey;
+		return a.song.songSortKey < b.song.songSortKey;
 	});
 
 	// 曲の項目を追加
-	for (const auto& song : allSongs)
+	for (const auto& entry : allSongEntries)
 	{
+		const auto& song = entry.song;
 		if (!song.visibleInAllNameSort)
 		{
 			continue;
 		}
-		PushCachedSongItem(&m_menu, song);
+		PushCachedSongEntry(&m_menu, entry);
 	}
 
 	m_folderState.folderType = SelectFolderState::kAll;

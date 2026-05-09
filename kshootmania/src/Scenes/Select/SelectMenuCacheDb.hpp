@@ -15,6 +15,12 @@ struct SelectCachedSong
 	std::array<std::shared_ptr<const SelectChartInfo>, kNumDifficulties> chartInfos = {};
 };
 
+struct SelectCachedSongEntry
+{
+	SelectCachedSong song;
+	bool isSingleChartItem = false;
+};
+
 /// @brief レベルソート用の譜面1件分のキャッシュエントリ
 struct SelectCachedChartEntry
 {
@@ -27,10 +33,10 @@ class SelectMenuCacheDb
 {
 public:
 	[[nodiscard]]
-	static Array<SelectCachedSong> LoadDirectoryForNameSort(FilePathView directoryPath, bool forceRebuild);
+	static Array<SelectCachedSongEntry> LoadDirectoryForNameSort(FilePathView directoryPath, bool forceRebuild);
 
 	[[nodiscard]]
-	static Array<SelectCachedSong> LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild);
+	static Array<SelectCachedSongEntry> LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild);
 
 	[[nodiscard]]
 	static Array<SelectCachedChartEntry> LoadDirectoryForLevelSort(FilePathView directoryPath, bool forceRebuild);
