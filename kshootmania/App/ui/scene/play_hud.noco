@@ -1630,7 +1630,8 @@
                 225.0,
                 0.0
               ],
-              "type": "Tween"
+              "type": "Tween",
+              "manualTime_paramRef": "positionMarkerProgress"
             }
           ],
           "decelerationRate": 0.2,
