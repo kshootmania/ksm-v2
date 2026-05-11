@@ -26,6 +26,20 @@ namespace MusicGame
 			}
 		}
 
+		template <typename T>
+		void ApplyFXLaneTurnToDict(kson::Dict<kson::FXLane<T>>& dict, bool invert)
+		{
+			if (!invert)
+			{
+				return;
+			}
+
+			for (auto& [name, fxLanes] : dict)
+			{
+				std::swap(fxLanes[0], fxLanes[1]);
+			}
+		}
+
 		// LASERレーンを入れ替え
 		void ApplyLaserLaneTurn(kson::LaserLane<kson::LaserSection>& laserLanes, bool invert)
 		{
@@ -102,6 +116,8 @@ namespace MusicGame
 
 		// FXレーン入れ替え
 		ApplyFXLaneTurn(chartData.note.fx, turnTable.invertFXLane);
+		ApplyFXLaneTurnToDict(chartData.audio.audioEffect.fx.longEvent, turnTable.invertFXLane);
+		ApplyFXLaneTurnToDict(chartData.audio.keySound.fx.chipEvent, turnTable.invertFXLane);
 
 		// LASERレーン入れ替え
 		ApplyLaserLaneTurn(chartData.note.laser, turnTable.invertLaserLane);
