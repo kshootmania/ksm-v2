@@ -28,8 +28,6 @@ namespace MusicGame::Judgment
 
 	namespace
 	{
-		constexpr kson::RelPulse kLaserLineJudgmentEraseAroundSlamDistance = kson::kResolution4 / 16;
-
 		kson::ByPulse<int32> CreateLaserLineDirectionMap(const kson::ByPulse<kson::LaserSection>& lane)
 		{
 			kson::ByPulse<int32> directionMap;
@@ -146,8 +144,6 @@ namespace MusicGame::Judgment
 				return {};
 			}
 
-			// まずはbutton_lane_judgment.cppのCreateLongNoteJudgmentArray関数と同じやり方で生成
-
 			kson::ByPulse<LineJudgment> judgmentArray;
 
 			for (const auto& [y, section] : lane)
@@ -156,59 +152,54 @@ namespace MusicGame::Judgment
 				{
 					continue;
 				}
-				
-				const kson::RelPulse sectionLength = section.v.rbegin()->first;
-				if (sectionLength > 0)
+
+				// LASERセクション内のセグメントごとにライン判定を生成
+				auto itr = section.v.cbegin();
+				while (itr != section.v.cend())
 				{
-					// BPMをもとにLASERノーツのコンボ数を半減させるかを決める
-					// (セクション途中でのBPM変更は特に加味しない)
-					const bool halvesCombo = kson::TempoAt(y, beatInfo) >= kHalveComboBPMThreshold;
-					const kson::RelPulse minPulseInterval = halvesCombo ? (kson::kResolution4 * 3 / 8) : (kson::kResolution4 * 3 / 16);
-					const kson::RelPulse pulseInterval = halvesCombo ? (kson::kResolution4 / 8) : (kson::kResolution4 / 16);
-
-					if (sectionLength < pulseInterval * 2)
+					const auto& [ry, point] = *itr;
+					auto nextItr = std::next(itr);
+					if (nextItr == section.v.cend())
 					{
-						judgmentArray.emplace(y, LineJudgment{ .length = sectionLength });
+						break;
 					}
-					else if (sectionLength <= minPulseInterval)
-					{
-						judgmentArray.emplace(y + pulseInterval, LineJudgment{ .length = pulseInterval });
-					}
-					else
-					{
-						const kson::Pulse start = ((y + pulseInterval - 1) / pulseInterval + 1) * pulseInterval;
-						const kson::Pulse end = y + sectionLength - pulseInterval;
+					const auto& [nextRy, nextPoint] = *nextItr;
 
-						for (kson::Pulse pulse = start; pulse < end; pulse += pulseInterval)
-						{
-							const kson::RelPulse length = (pulse <= end - pulseInterval) ? pulseInterval : (pulseInterval * 2); // 末尾の判定のみ2倍の長さ
-							judgmentArray.emplace(pulse, LineJudgment{ .length = length });
-						}
-					}
-				}
-			}
+					kson::Pulse segStartAbs = y + ry;
+					const kson::Pulse segEndAbs = y + nextRy;
 
-			// 生成された判定のうち、直角LASER付近(距離が一定未満)の判定を削除
-			for (const auto& [y, section] : lane)
-			{
-				for (const auto& [ry, point] : section.v)
-				{
 					const bool isSlam = !kson::AlmostEquals(point.v.v, point.v.vf);
 					if (isSlam)
 					{
-						const kson::Pulse slamPulse = y + ry;
-
-						// 削除対象の区間を決める
-						// (区間にminPulseとmaxPulseは含まれない)
-						const kson::Pulse minPulse = slamPulse - kLaserLineJudgmentEraseAroundSlamDistance;
-						const kson::Pulse maxPulse = slamPulse + kLaserLineJudgmentEraseAroundSlamDistance;
-
-						auto it = judgmentArray.upper_bound(minPulse); // minPulseより大きい最初の要素
-						while (it != judgmentArray.end() && it->first < maxPulse)
+						// 直角LASERから次の点までが32分以内ならライン判定なし
+						const bool nextIsSlamDst = kson::AlmostEquals(nextPoint.v.v, point.v.vf) &&
+							nextRy - ry <= kson::kResolution4 / 32;
+						if (nextIsSlamDst)
 						{
-							it = judgmentArray.erase(it); // eraseからは次のイテレータが返される
+							++itr;
+							continue;
+						}
+
+						// 直角LASERから32分の範囲はライン判定から除外
+						segStartAbs += kson::kResolution4 / 32;
+						if (segStartAbs >= segEndAbs)
+						{
+							++itr;
+							continue;
 						}
 					}
+
+					// BPMをもとにLASERノーツのコンボ数を半減させるかを決める
+					// (セグメントの途中でのBPM変更は特に加味しない)
+					const bool halvesCombo = kson::TempoAt(segStartAbs, beatInfo) >= kHalveComboBPMThreshold;
+					const kson::RelPulse pulseInterval = halvesCombo ? kson::kResolution4 / 8 : kson::kResolution4 / 16;
+					const kson::Pulse start = (segStartAbs + pulseInterval - 1) / pulseInterval * pulseInterval;
+					for (kson::Pulse pulse = start; pulse < segEndAbs; pulse += pulseInterval)
+					{
+						judgmentArray.emplace(pulse, LineJudgment{ .length = pulseInterval });
+					}
+
+					++itr;
 				}
 			}
 
