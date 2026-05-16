@@ -89,6 +89,13 @@ namespace MusicGame
 				value.v.vf = -value.v.vf;
 			}
 
+			// rotation_deg左右反転
+			for (auto& [pulse, value] : camera.cam.body.rotationDeg)
+			{
+				value.v.v = -value.v.v;
+				value.v.vf = -value.v.vf;
+			}
+
 			// 回転エフェクト左右反転
 			for (auto& [pulse, spin] : camera.cam.pattern.laser.slamEvent.spin)
 			{
