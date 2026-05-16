@@ -67,7 +67,7 @@ namespace
 				.laserInputDelayMs = ConfigIni::GetInt(ConfigIni::Key::kLaserInputDelay),
 				.audioProcDelayMs = ConfigIni::GetInt(ConfigIni::Key::kAudioProcDelay),
 				.visualOffsetMs = ConfigIni::GetInt(ConfigIni::Key::kVisualOffset),
-				.isAutoPlaySE = ConfigIni::GetBool(ConfigIni::Key::kAutoPlaySE),
+				.isAutoPlaySE = isAutoPlay || ConfigIni::GetBool(ConfigIni::Key::kAutoPlaySE),
 				.noteSkin = [&]()
 				{
 					const StringView noteSkinStr = ConfigIni::GetString(ConfigIni::Key::kNoteSkin, U"default");
