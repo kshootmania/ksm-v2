@@ -1,4 +1,8 @@
 {
+	"General": {
+		"ErrorBassInitFailed": "BASS音频库初始化失败。\n音响设备可能没有正常接入。\n(BASS错误代码: {0})",
+		"WarningWasapiFallback": "DirectSound音频后端初始化失败，因此已回退到WASAPI音频后端。\n音频时序可能会出现偏差。"
+	},
 	"Select": {
 		"Judgment": "判定/显示 设定",
 		"JudgmentBT": "BT 音符     : ",

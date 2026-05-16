@@ -1,4 +1,8 @@
 {
+	"General": {
+		"ErrorBassInitFailed": "BASS音声ライブラリの初期化に失敗しました。\nスピーカーが接続されていないか、無効になっている可能性があります。\n(BASSエラーコード: {0})",
+		"WarningWasapiFallback": "DirectSound音声バックエンドの初期化に失敗したため、WASAPI音声バックエンドにフォールバックしました。\n音声タイミングにずれが生じる可能性があります。"
+	},
 	"Select": {
 		"Judgment": "判定/表示の設定",
 		"JudgmentBT": "BT Notes     : ",

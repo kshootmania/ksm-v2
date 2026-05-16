@@ -330,13 +330,6 @@ void KSMMain()
 	Graphics3D::SetGlobalAmbientColor(Palette::White);
 	Graphics3D::SetSunColor(Palette::Black);
 
-	// 音声処理のバックエンドを初期化
-#ifdef _WIN32
-	ksmaudio::Init(s3d::Platform::Windows::Window::GetHWND());
-#else
-	ksmaudio::Init(nullptr);
-#endif
-
 	// アプリケーションデータディレクトリを作成(macOSのみ)
 	CreateAppDataDirectory();
 
@@ -349,15 +342,31 @@ void KSMMain()
 	// ランタイム設定を初期化
 	RuntimeConfig::RestoreJudgmentModesFromConfigIni();
 
+	// 言語ファイルを読み込み
+	// (BASS初期化失敗時ダイアログの文言に必要なのでBASS初期化前に行う)
+	I18n::LoadLanguage(ConfigIni::GetString(ConfigIni::Key::kLanguage));
+
+	// 音声処理のバックエンドを初期化
+#ifdef _WIN32
+	const bool audioInitialized = ksmaudio::Init(s3d::Platform::Windows::Window::GetHWND());
+#else
+	const bool audioInitialized = ksmaudio::Init(nullptr);
+#endif
+	if (!audioInitialized)
+	{
+		throw Error{ I18n::Get(I18n::General::ErrorBassInitFailed, ksmaudio::GetLastErrorCode()) };
+	}
+	if (ksmaudio::IsWasapiFallbackUsed())
+	{
+		MessageBoxUtils::ShowOK(I18n::Get(I18n::General::WarningWasapiFallback), MessageBoxStyle::Warning);
+	}
+
 	// マスターボリュームを適用
 	{
 		constexpr int32 kMasterVolumeDefault = 100;
 		const int32 masterVolume = ConfigIni::GetInt(ConfigIni::Key::kMasterVolume, kMasterVolumeDefault);
 		ksmaudio::SetMasterVolume(masterVolume / 100.0);
 	}
-
-	// 言語ファイルを読み込み
-	I18n::LoadLanguage(ConfigIni::GetString(ConfigIni::Key::kLanguage));
 
 	// ハイスコアのバックアップを作成
 	CreateHighScoreBackup();

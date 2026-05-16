@@ -1,4 +1,8 @@
 {
+	"General": {
+		"ErrorBassInitFailed": "BASS 오디오 라이브러리 초기화에 실패했습니다.\n스피커가 연결되어 있지 않거나, '사용 안 함'으로 설정되어 있을 가능성이 있습니다.\n(BASS 오류 코드: {0})",
+		"WarningWasapiFallback": "DirectSound 오디오 백엔드 초기화에 실패하여 WASAPI 오디오 백엔드로 폴백했습니다.\n오디오 타이밍에 어긋남이 발생할 수 있습니다."
+	},
 	"Select": {
 		"Judgment": "판정/표시 설정",
 		"JudgmentBT": "BT Notes    　: ",

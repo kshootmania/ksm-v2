@@ -1,4 +1,8 @@
 {
+	"General": {
+		"ErrorBassInitFailed": "Failed to initialize BASS audio library.\nSpeakers might be disconnected or disabled.\n(BASS error code: {0})",
+		"WarningWasapiFallback": "Failed to initialize the DirectSound audio backend, so the application has fallen back to the WASAPI audio backend.\nAudio timing may be out of sync."
+	},
 	"Select": {
 		"Judgment": "Judgment/Display Settings",
 		"JudgmentBT": "BT Notes     : ",
