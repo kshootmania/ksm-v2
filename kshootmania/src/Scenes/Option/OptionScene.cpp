@@ -121,6 +121,12 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 					const int32 volume = ConfigIni::GetInt(ConfigIni::Key::kMasterVolume, kMasterVolumeDefault);
 					ksmaudio::SetMasterVolume(volume / 100.0);
 				}),
+#ifdef _WIN32
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAudioBackend), ConfigIni::Key::kAudioBackend, Array<StrPair>{
+				StrPair{ String{ ConfigIni::Value::AudioBackend::kDefault }, I18n::Get(I18n::Option::AudioBackendDefault) },
+				StrPair{ String{ ConfigIni::Value::AudioBackend::kDirectSound }, I18n::Get(I18n::Option::AudioBackendDirectSound) },
+			}),
+#endif
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemVsync), ConfigIni::Key::kVsync, Array<StrPair>{
 				StrPair{ U"0;120", I18n::Get(I18n::Option::VsyncOffWithFps, 120) },
 				StrPair{ U"0;144", I18n::Get(I18n::Option::VsyncOffWithFps, 144) },

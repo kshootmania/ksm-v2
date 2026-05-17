@@ -1,7 +1,6 @@
 {
 	"General": {
-		"ErrorBassInitFailed": "BASS 오디오 라이브러리 초기화에 실패했습니다.\n스피커가 연결되어 있지 않거나, '사용 안 함'으로 설정되어 있을 가능성이 있습니다.\n(BASS 오류 코드: {0})",
-		"WarningWasapiFallback": "DirectSound 오디오 백엔드 초기화에 실패하여 WASAPI 오디오 백엔드로 폴백했습니다.\n오디오 타이밍에 어긋남이 발생할 수 있습니다."
+		"ErrorBassInitFailed": "BASS 오디오 라이브러리 초기화에 실패했습니다.\n스피커가 연결되어 있지 않거나, '사용 안 함'으로 설정되어 있을 가능성이 있습니다.\n(BASS 오류 코드: {0})"
 	},
 	"Select": {
 		"Judgment": "판정/표시 설정",
@@ -69,6 +68,8 @@
 		"BGDisplayModeShowNoLayer": "표시 (애니메이션 없음)",
 		"BGDisplayModeShowLayer": "표시 (애니메이션 있음)",
 		"MasterVolumePercent": "%",
+		"AudioBackendDefault": "기본값 (WASAPI 우선)",
+		"AudioBackendDirectSound": "DirectSound",
 		"VsyncOffWithFps": "OFF ({0}fps)",
 		"VsyncOn": "ON",
 		"JudgmentOn": "ON (표시/판정)",
@@ -127,6 +128,7 @@
 		"ItemAlwaysShowOtherFolders": "다른 폴더 항상 표시",
 		"ItemHideAllFolder": "\"All\" 폴더 숨기기",
 		"ItemMasterVolume": "마스터 볼륨",
+		"ItemAudioBackend": "오디오 출력 방식 (앱 재시작 후 적용)",
 		"ItemVsync": "수직동기화",
 		"ItemDefaultBTJudgmentMode": "BT 노트 기본 판정 모드",
 		"ItemDefaultFXJudgmentMode": "FX 노트 기본 판정 모드",

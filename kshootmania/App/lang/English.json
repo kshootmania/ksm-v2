@@ -1,7 +1,6 @@
 {
 	"General": {
-		"ErrorBassInitFailed": "Failed to initialize BASS audio library.\nSpeakers might be disconnected or disabled.\n(BASS error code: {0})",
-		"WarningWasapiFallback": "Failed to initialize the DirectSound audio backend, so the application has fallen back to the WASAPI audio backend.\nAudio timing may be out of sync."
+		"ErrorBassInitFailed": "Failed to initialize BASS audio library.\nSpeakers might be disconnected or disabled.\n(BASS error code: {0})"
 	},
 	"Select": {
 		"Judgment": "Judgment/Display Settings",
@@ -69,6 +68,8 @@
 		"BGDisplayModeShowNoLayer": "Show (Animation off)",
 		"BGDisplayModeShowLayer": "Show (Animation on)",
 		"MasterVolumePercent": "%",
+		"AudioBackendDefault": "Default (WASAPI preferred)",
+		"AudioBackendDirectSound": "DirectSound",
 		"VsyncOffWithFps": "Off ({0}fps)",
 		"VsyncOn": "On",
 		"JudgmentOn": "Judgement On",
@@ -127,6 +128,7 @@
 		"ItemAlwaysShowOtherFolders": "Always Show Other Folders",
 		"ItemHideAllFolder": "Hide \"All\" Folder",
 		"ItemMasterVolume": "Master Volume",
+		"ItemAudioBackend": "Audio Output Method (Applied after app restart)",
 		"ItemVsync": "VSync",
 		"ItemDefaultBTJudgmentMode": "BT Notes Default Judgment Mode",
 		"ItemDefaultFXJudgmentMode": "FX Notes Default Judgment Mode",

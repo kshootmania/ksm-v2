@@ -1,7 +1,6 @@
 {
 	"General": {
-		"ErrorBassInitFailed": "BASS音频库初始化失败。\n音响设备可能没有正常接入。\n(BASS错误代码: {0})",
-		"WarningWasapiFallback": "DirectSound音频后端初始化失败，因此已回退到WASAPI音频后端。\n音频时序可能会出现偏差。"
+		"ErrorBassInitFailed": "BASS音频库初始化失败。\n音响设备可能没有正常接入。\n(BASS错误代码: {0})"
 	},
 	"Select": {
 		"Judgment": "判定/显示 设定",
@@ -69,6 +68,8 @@
 		"BGDisplayModeShowNoLayer": "显示 (关闭特效)",
 		"BGDisplayModeShowLayer": "显示 (打开特效)",
 		"MasterVolumePercent": "%",
+		"AudioBackendDefault": "默认 (WASAPI 优先)",
+		"AudioBackendDirectSound": "DirectSound",
 		"VsyncOffWithFps": "关 ({0}fps)",
 		"VsyncOn": "开",
 		"JudgmentOn": "判定开",
@@ -127,6 +128,7 @@
 		"ItemAlwaysShowOtherFolders": "始终显示其他文件夹",
 		"ItemHideAllFolder": "隐藏\"All\"文件夹",
 		"ItemMasterVolume": "主音量",
+		"ItemAudioBackend": "音频输出方式 (重启后生效)",
 		"ItemVsync": "垂直同步",
 		"ItemDefaultBTJudgmentMode": "BT 音符默认判定模式",
 		"ItemDefaultFXJudgmentMode": "FX 音符默认判定模式",

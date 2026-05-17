@@ -306,6 +306,14 @@ void OutputLicenseTxt()
 	}
 }
 
+#ifdef _WIN32
+ksmaudio::AudioBackend GetAudioBackendFromConfig()
+{
+	const StringView value = ConfigIni::GetString(ConfigIni::Key::kAudioBackend, ConfigIni::Value::AudioBackend::kDefault);
+	return value == ConfigIni::Value::AudioBackend::kDirectSound ? ksmaudio::AudioBackend::DirectSound : ksmaudio::AudioBackend::Default;
+}
+#endif
+
 void KSMMain()
 {
 #if defined(__linux__)
@@ -346,19 +354,15 @@ void KSMMain()
 	// (BASS初期化失敗時ダイアログの文言に必要なのでBASS初期化前に行う)
 	I18n::LoadLanguage(ConfigIni::GetString(ConfigIni::Key::kLanguage));
 
-	// 音声処理のバックエンドを初期化
+	// 音声処理を初期化
 #ifdef _WIN32
-	const bool audioInitialized = ksmaudio::Init(s3d::Platform::Windows::Window::GetHWND());
+	const bool audioInitialized = ksmaudio::Init(s3d::Platform::Windows::Window::GetHWND(), GetAudioBackendFromConfig());
 #else
 	const bool audioInitialized = ksmaudio::Init(nullptr);
 #endif
 	if (!audioInitialized)
 	{
 		throw Error{ I18n::Get(I18n::General::ErrorBassInitFailed, ksmaudio::GetLastErrorCode()) };
-	}
-	if (ksmaudio::IsWasapiFallbackUsed())
-	{
-		MessageBoxUtils::ShowOK(I18n::Get(I18n::General::WarningWasapiFallback), MessageBoxStyle::Warning);
 	}
 
 	// マスターボリュームを適用

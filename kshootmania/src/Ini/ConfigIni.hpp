@@ -19,6 +19,7 @@ namespace ConfigIni
 		constexpr StringView kAlwaysShowOtherFolders = U"showalldir";
 		constexpr StringView kHideAllFolder = U"hide_itemall";
 		constexpr StringView kMasterVolume = U"mastervol";
+		constexpr StringView kAudioBackend = U"audio_backend";
 		constexpr StringView kVsync = U"vsync";
 
 		// Option > Input / Judgment Settings
@@ -90,6 +91,12 @@ namespace ConfigIni
 	namespace Value
 	{
 		// Note: "enum class" is not used here to use implicit cast to int32
+
+		namespace AudioBackend
+		{
+			constexpr StringView kDefault = U"default";
+			constexpr StringView kDirectSound = U"direct_sound";
+		}
 
 		namespace TextureSize
 		{

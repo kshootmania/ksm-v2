@@ -49,7 +49,6 @@ namespace I18n
 	enum class General
 	{
 		ErrorBassInitFailed,
-		WarningWasapiFallback,
 	};
 
 	/// @brief 選曲画面テキストのキー名
@@ -156,6 +155,8 @@ namespace I18n
 		BGDisplayModeShowNoLayer,
 		BGDisplayModeShowLayer,
 		MasterVolumePercent,
+		AudioBackendDefault,
+		AudioBackendDirectSound,
 		VsyncOffWithFps,
 		VsyncOn,
 		JudgmentOn,
@@ -214,6 +215,7 @@ namespace I18n
 		ItemAlwaysShowOtherFolders,
 		ItemHideAllFolder,
 		ItemMasterVolume,
+		ItemAudioBackend,
 		ItemVsync,
 		ItemDefaultBTJudgmentMode,
 		ItemDefaultFXJudgmentMode,
