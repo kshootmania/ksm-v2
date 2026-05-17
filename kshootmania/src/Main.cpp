@@ -538,4 +538,14 @@ void Main()
 		MessageBoxUtils::ShowOK(e.what(), MessageBoxStyle::Error);
 		throw;
 	}
+	catch (const std::exception& e)
+	{
+		MessageBoxUtils::ShowOK(Unicode::FromUTF8(e.what()), MessageBoxStyle::Error);
+		throw;
+	}
+	catch (...)
+	{
+		MessageBoxUtils::ShowOK(U"Unknown exception", MessageBoxStyle::Error);
+		throw;
+	}
 }
