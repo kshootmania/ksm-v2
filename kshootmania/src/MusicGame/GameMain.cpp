@@ -320,7 +320,8 @@ namespace MusicGame
 		// 効果音の更新
 		// TODO: SecondsFに統一
 		const double currentTimeSec = m_bgm.posSec().count();
-		m_assistTick.update(m_chartData, m_timingCache, currentTimeSec);
+		const double currentTimeSecForAssistTick = currentTimeSec - m_playOption.visualOffsetMs / 1000.0;
+		m_assistTick.update(m_chartData, m_timingCache, currentTimeSecForAssistTick);
 		m_laserSlamSE.update(m_chartData, m_gameStatus);
 		m_fxChipSE.update(m_chartData, m_gameStatus);
 
