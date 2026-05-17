@@ -2,14 +2,13 @@
    K-Shoot MANIA @@VERSION@@
 =================================
 
-インストールするには、kshootmania.appを「アプリケーション」フォルダに入れてください。
+インストールするには、「K-Shoot MANIA.app」を「アプリケーション」フォルダに入れてください。
 
-初回起動時、「“kshootmania.app”は、開発元を検証できないため開けません。」と表示される場合は、
+初回起動時、「“K-Shoot MANIA.app”は、開発元を検証できないため開けません。」と表示される場合は、
 一度「キャンセル」を押して閉じた後、OSの「システム設定」から「プライバシーとセキュリティ」を開き、
-「"kshootmania.app"は開発元を確認できないため、使用がブロックされました。」の「このまま開く」→「開く」を押してください。
+「"K-Shoot MANIA.app"は開発元を確認できないため、使用がブロックされました。」の「このまま開く」→「開く」を押してください。
 
-楽曲・ハイスコアは~/Library/Application Support/kshootmaniaへ配置されます。
-初回実行すると、~/Library/Application Support/kshootmaniaへデフォルト曲が入ったsongsフォルダが作成されます。
+楽曲・ハイスコアは「~/Library/Application Support/kshootmania」へ配置されます。
+初回実行すると、「~/Library/Application Support/kshootmania」へデフォルト曲が入ったsongsフォルダが作成されます。
 
-※試験版のため、使用できない機能があります。
-　v1とは別のフォルダに解凍し、songsフォルダ・scoreフォルダのみをv1からコピーして使用することを推奨します。
+※v1とは別のフォルダに解凍し、songsフォルダ・scoreフォルダのみをv1からコピーして使用することを推奨します。
