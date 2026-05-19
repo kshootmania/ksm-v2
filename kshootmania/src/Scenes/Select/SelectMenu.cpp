@@ -2154,6 +2154,25 @@ void SelectMenu::setCursorByChartFilePath(FilePathView chartFilePath)
 	}
 }
 
+Optional<FilePath> SelectMenu::currentChartFilePath() const
+{
+	if (m_menu.empty() || m_menu.cursorValue() == nullptr)
+	{
+		return none;
+	}
+
+	const int32 difficultyCursor = m_difficultyMenu.cursor();
+	const int32 difficultyIdx = difficultyCursor >= 0 ? difficultyCursor : m_difficultyMenu.rawCursor();
+
+	const SelectChartInfo* pChartInfo = m_menu.cursorValue()->chartInfoPtr(difficultyIdx);
+	if (pChartInfo == nullptr)
+	{
+		return none;
+	}
+
+	return FilePath{ pChartInfo->chartFilePath() };
+}
+
 void SelectMenu::applySearchModeFilter()
 {
 	// 検索クエリ未入力時はフィルタ適用しない

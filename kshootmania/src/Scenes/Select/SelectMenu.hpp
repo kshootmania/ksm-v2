@@ -168,6 +168,9 @@ public:
 
 	void setCursorByChartFilePath(FilePathView chartFilePath);
 
+	[[nodiscard]]
+	Optional<FilePath> currentChartFilePath() const;
+
 	void moveToNextSubDirSection();
 
 	void moveToPrevSubDirSection();

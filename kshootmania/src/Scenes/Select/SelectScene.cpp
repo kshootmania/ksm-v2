@@ -138,14 +138,7 @@ void SelectScene::moveToPlayScene(FilePathView chartFilePath, MusicGame::IsAutoP
 		SelectSceneSearchParams params;
 		params.phase = m_searchPhase;
 		params.query = m_searchResultQuery;
-		if (!m_menu.empty())
-		{
-			const auto* pChartInfo = m_menu.cursorMenuItem().chartInfoPtr(0, FallbackForSingleChartYN::Yes);
-			if (pChartInfo != nullptr)
-			{
-				params.cursorChartPath = FilePath{ pChartInfo->chartFilePath() };
-			}
-		}
+		params.cursorChartPath = FilePath{ chartFilePath };
 		searchParams = std::move(params);
 	}
 
@@ -269,15 +262,7 @@ void SelectScene::enterSearchInputPhase()
 	m_btOptionPanel.hide();
 	m_playStatsPanel.hide();
 
-	Optional<FilePath> preservedChartPath;
-	if (!m_menu.empty())
-	{
-		const auto* pChartInfo = m_menu.cursorMenuItem().chartInfoPtr(0, FallbackForSingleChartYN::Yes);
-		if (pChartInfo != nullptr)
-		{
-			preservedChartPath = pChartInfo->chartFilePath();
-		}
-	}
+	const Optional<FilePath> preservedChartPath = m_menu.currentChartFilePath();
 
 	if (wasNone)
 	{
