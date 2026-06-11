@@ -171,8 +171,17 @@ namespace MusicGame::Judgment
 		viewStatusRef.score = m_scoringStatus.score();
 		viewStatusRef.gaugePercentage = m_scoringStatus.gaugePercentage(m_playOption.gaugeType);
 		viewStatusRef.gaugePercentageInt = m_scoringStatus.gaugePercentageInt(m_playOption.gaugeType);
-		viewStatusRef.displayCombo = m_scoringStatus.displayCombo();
+		const int32 displayCombo = m_scoringStatus.displayCombo();
+		viewStatusRef.displayCombo = displayCombo;
 		viewStatusRef.displayIsNoError = m_scoringStatus.displayIsNoError();
+
+		// 100コンボ毎にアニメーションの開始時刻を記録する
+		if (displayCombo > m_prevDisplayCombo && displayCombo / 100 > m_prevDisplayCombo / 100)
+		{
+			m_comboMilestoneEffectStartTimeSec = currentTimeSec;
+		}
+		m_prevDisplayCombo = displayCombo;
+		viewStatusRef.comboMilestoneEffectStartTimeSec = m_comboMilestoneEffectStartTimeSec;
 
 		// 直角LASERの振動をViewStatusに反映
 		m_laserSlamShakeStatus.applyToCamStatus(viewStatusRef.camStatus, currentTimeSec);

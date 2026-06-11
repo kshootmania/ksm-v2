@@ -405,7 +405,7 @@ namespace MusicGame::Graphics
 
 		m_hudCanvas->draw();
 		m_gaugePanel.draw(viewStatus.gaugePercentage, gameStatus.currentPulse);
-		m_comboOverlay.draw();
+		m_comboOverlay.draw(gameStatus.currentTimeSec);
 		m_achievementPanel.draw(gameStatus);
 		m_laserApproachIndicator.draw(gameStatus.currentTimeSec);
 		m_moviePanel.draw();

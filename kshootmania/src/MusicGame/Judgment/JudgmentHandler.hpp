@@ -28,6 +28,12 @@ namespace MusicGame::Judgment
 		// タイミング調整オフセット(秒)
 		double m_timingAdjustOffsetSec = 0.0;
 
+		// 前回ViewStatus反映時のコンボ数(100コンボ毎のアニメーションの検知に使用)
+		int32 m_prevDisplayCombo = 0;
+
+		// 100コンボ毎のアニメーションの開始時刻(秒)
+		double m_comboMilestoneEffectStartTimeSec = ViewStatus::kPastDisplayTimeSec;
+
 	public:
 		/// @brief コンストラクタ
 		/// @param chartData 譜面データ

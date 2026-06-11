@@ -14,6 +14,9 @@ namespace MusicGame::Graphics
 		const TextureRegion m_comboTextureRegion;
 		const TextureRegion m_comboTextureRegionNoError;
 
+		// 100コンボ毎のアニメーションのテクスチャ
+		const TiledTexture m_milestoneTexture;
+
 		// TODO: Graphics内部でステートを持たないようにする(エディタでプレビューできなくなるので)
 
 		// 直近更新時のコンボ数
@@ -29,11 +32,14 @@ namespace MusicGame::Graphics
 		// 表示中かどうかのタイマー
 		Timer m_visibleTimer;
 
+		// 100コンボ毎のアニメーションの開始時刻(秒)
+		double m_milestoneEffectStartTimeSec = ViewStatus::kPastDisplayTimeSec;
+
 	public:
 		ComboOverlay();
 
 		void update(const ViewStatus& viewStatus);
 
-		void draw() const;
+		void draw(double currentTimeSec) const;
 	};
 }
