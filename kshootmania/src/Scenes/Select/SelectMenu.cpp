@@ -23,6 +23,13 @@
 
 namespace
 {
+	bool IsAnyTranslitDisplayEnabled()
+	{
+		return ConfigIni::GetBool(ConfigIni::Key::kShowTranslitKana, false)
+			|| ConfigIni::GetBool(ConfigIni::Key::kShowTranslitHangul, false)
+			|| ConfigIni::GetBool(ConfigIni::Key::kShowTranslitKanji, false);
+	}
+
 	KscKey CreateKscKeyFromConfig()
 	{
 		return KscKey
@@ -427,6 +434,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath, PlaySeYN playSe, Refr
 		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, 0);
 	}
 
+	resetSongInfoTextDisplayTimer();
 	refreshContentCanvasParams();
 
 	if (refreshSongPreview)
@@ -510,7 +518,12 @@ bool SelectMenu::openDirectoryWithNameSort(FilePathView directoryPath)
 
 void SelectMenu::setCursorAndSave(int32 cursor)
 {
+	const int32 prevCursor = m_menu.cursor();
 	m_menu.setCursor(cursor);
+	if (m_menu.cursor() != prevCursor)
+	{
+		resetSongInfoTextDisplayTimer();
+	}
 	ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, cursor);
 }
 
@@ -525,6 +538,11 @@ void SelectMenu::setCursorToItemByFullPath(FilePathView fullPath)
 			break;
 		}
 	}
+}
+
+void SelectMenu::resetSongInfoTextDisplayTimer()
+{
+	ISelectMenuItem::ResetSongInfoTextDisplayTimer();
 }
 
 void SelectMenu::refreshContentCanvasParams()
@@ -632,14 +650,24 @@ SelectMenu::SelectMenu(
 			.fnMoveToPrevSubDirSection = [this]() { moveToPrevSubDirSection(); },
 			.fnChangeDifficulty = [this](int32 newDifficultyIdx)
 			{
+				const int32 prevDifficultyIdx = m_difficultyMenu.cursor();
 				m_difficultyMenu.setCursor(newDifficultyIdx);
+				if (m_difficultyMenu.cursor() != prevDifficultyIdx)
+				{
+					resetSongInfoTextDisplayTimer();
+				}
 				ConfigIni::SetInt(ConfigIni::Key::kSelectDifficulty, newDifficultyIdx);
 			},
 			.fnJumpToItemWithDifficulty = [this](int32 jumpMenuIndex, int32 newDifficultyIdx)
 			{
 				const int32 prevIndex = m_menu.cursor();
+				const int32 prevDifficultyIdx = m_difficultyMenu.cursor();
 				m_menu.setCursor(jumpMenuIndex);
 				m_difficultyMenu.setCursor(newDifficultyIdx);
+				if (m_menu.cursor() != prevIndex || m_difficultyMenu.cursor() != prevDifficultyIdx)
+				{
+					resetSongInfoTextDisplayTimer();
+				}
 				ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, jumpMenuIndex);
 				ConfigIni::SetInt(ConfigIni::Key::kSelectDifficulty, newDifficultyIdx);
 				if (jumpMenuIndex > prevIndex)
@@ -744,6 +772,7 @@ SelectMenu::SelectMenu(
 		openDirectory(U"", PlaySeYN::No);
 	}
 
+	resetSongInfoTextDisplayTimer();
 	refreshContentCanvasParams();
 	refreshSongPreview();
 }
@@ -756,12 +785,17 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 	{
 		// 楽曲プレビューのみ更新
 		m_songPreview.update();
+		if (IsAnyTranslitDisplayEnabled())
+		{
+			refreshContentCanvasParams();
+		}
 		return;
 	}
 
 	m_menu.update();
 	if (const int32 deltaCursor = m_menu.deltaCursor(); deltaCursor != 0)
 	{
+		resetSongInfoTextDisplayTimer();
 		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, m_menu.cursor());
 		m_songSelectSe.play();
 		if (deltaCursor > 0)
@@ -812,6 +846,7 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 
 			if (changed)
 			{
+				resetSongInfoTextDisplayTimer();
 				m_difficultySelectSe.play();
 				refreshContentCanvasParams();
 				refreshSongPreview();
@@ -832,6 +867,10 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 	}
 
 	m_songPreview.update();
+	if (IsAnyTranslitDisplayEnabled())
+	{
+		refreshContentCanvasParams();
+	}
 }
 
 void SelectMenu::decide()
@@ -982,6 +1021,8 @@ void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview,
 
 	// 譜面ファイルパスから項目を探してフォーカスを復元
 	bool found = false;
+	const int32 prevCursorIndex = m_menu.cursor();
+	const int32 prevDifficultyIdx = m_difficultyMenu.cursor();
 	if (!currentChartFilePath.isEmpty())
 	{
 		for (std::size_t i = 0U; i < m_menu.size(); ++i)
@@ -1025,6 +1066,11 @@ void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview,
 		{
 			m_menu.setCursor(currentCursorIndex);
 		}
+	}
+
+	if (m_menu.cursor() != prevCursorIndex || m_difficultyMenu.cursor() != prevDifficultyIdx)
+	{
+		resetSongInfoTextDisplayTimer();
 	}
 
 	refreshContentCanvasParams();
@@ -1459,6 +1505,7 @@ bool SelectMenu::openAllFolder(PlaySeYN playSe, RefreshSongPreviewYN refreshSong
 		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, 0);
 	}
 
+	resetSongInfoTextDisplayTimer();
 	refreshContentCanvasParams();
 
 	if (refreshSongPreview)
@@ -1628,6 +1675,7 @@ bool SelectMenu::openFavoriteFolder(FilePathView specialPath, PlaySeYN playSe, R
 		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, 0);
 	}
 
+	resetSongInfoTextDisplayTimer();
 	refreshContentCanvasParams();
 
 	if (refreshSongPreview)
@@ -1819,6 +1867,7 @@ bool SelectMenu::openCoursesFolder(PlaySeYN playSe, RefreshSongPreviewYN refresh
 		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, 0);
 	}
 
+	resetSongInfoTextDisplayTimer();
 	refreshContentCanvasParams();
 
 	if (refreshSongPreview)
@@ -2144,8 +2193,14 @@ void SelectMenu::setCursorByChartFilePath(FilePathView chartFilePath)
 			const auto pChartInfo = pItem->chartInfoPtr(difficultyIdx);
 			if (pChartInfo != nullptr && pChartInfo->chartFilePath() == chartFilePath)
 			{
+				const int32 prevCursorIndex = m_menu.cursor();
+				const int32 prevDifficultyIdx = m_difficultyMenu.cursor();
 				m_menu.setCursor(static_cast<int32>(i));
 				m_difficultyMenu.setCursor(difficultyIdx);
+				if (m_menu.cursor() != prevCursorIndex || m_difficultyMenu.cursor() != prevDifficultyIdx)
+				{
+					resetSongInfoTextDisplayTimer();
+				}
 				refreshContentCanvasParams();
 				refreshSongPreview();
 				return;

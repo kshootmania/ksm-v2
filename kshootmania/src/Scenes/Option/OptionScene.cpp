@@ -234,6 +234,18 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOnKeyboard),
 				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOnController),
 			}),
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemShowTranslitKana), ConfigIni::Key::kShowTranslitKana, Array<StringView>{
+				I18n::Get(I18n::Option::Off),
+				I18n::Get(I18n::Option::On),
+			}),
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemShowTranslitHangul), ConfigIni::Key::kShowTranslitHangul, Array<StringView>{
+				I18n::Get(I18n::Option::Off),
+				I18n::Get(I18n::Option::On),
+			}),
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemShowTranslitKanji), ConfigIni::Key::kShowTranslitKanji, Array<StringView>{
+				I18n::Get(I18n::Option::Off),
+				I18n::Get(I18n::Option::On),
+			}),
 		}),
 		OptionMenu({}),
 	});

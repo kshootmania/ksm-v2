@@ -150,7 +150,10 @@
 		"ItemHispeedTypeOMod": "하이스피드 25 - 2000",
 		"ItemHispeedTypeCMod": "하이스피드 C 25 - 2000",
 		"ItemHideMouseCursor": "마우스 커서 숨기기",
-		"ItemUseNumpadAsArrowKeys": "숫자패드를 방향키로 사용 (숫자패드가 있는 컨트롤러용)"
+		"ItemUseNumpadAsArrowKeys": "숫자패드를 방향키로 사용 (숫자패드가 있는 컨트롤러용)",
+		"ItemShowTranslitKana": "가나가 포함된 곡명・아티스트명을 영문 표기로 표시",
+		"ItemShowTranslitHangul": "한글이 포함된 곡명・아티스트명을 영문 표기로 표시",
+		"ItemShowTranslitKanji": "한자가 포함된 곡명・아티스트명을 영문 표기로 표시"
 	},
 	"InputGate": {
 		"BulkDownloadConfirm": "입력 가능한 채보가 {0}개 있습니다.\n일괄 다운로드하시겠습니까?"

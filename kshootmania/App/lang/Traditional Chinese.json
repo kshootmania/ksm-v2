@@ -150,7 +150,10 @@
 		"ItemHispeedTypeOMod": "Hi-Speed 25 - 2000",
 		"ItemHispeedTypeCMod": "Hi-Speed C 25 - 2000",
 		"ItemHideMouseCursor": "隱藏滑鼠游標",
-		"ItemUseNumpadAsArrowKeys": "使用數字鍵盤作為方向鍵 (用於帶數字鍵盤的控制器)"
+		"ItemUseNumpadAsArrowKeys": "使用數字鍵盤作為方向鍵 (用於帶數字鍵盤的控制器)",
+		"ItemShowTranslitKana": "含假名的曲名・演出者名顯示英字表記",
+		"ItemShowTranslitHangul": "含諺文的曲名・演出者名顯示英字表記",
+		"ItemShowTranslitKanji": "含漢字的曲名・演出者名顯示英字表記"
 	},
 	"InputGate": {
 		"BulkDownloadConfirm": "有{0}個可輸入的譜面。\n是否一次性全部下載？"

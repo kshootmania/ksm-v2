@@ -45,6 +45,9 @@ namespace ConfigIni
 		constexpr StringView kHispeedShowCMod = U"hispeedtype_c";
 		constexpr StringView kHideMouseCursor = U"hidemousecursor";
 		constexpr StringView kUseNumpadAsArrowKeys = U"usenumpad";
+		constexpr StringView kShowTranslitKana = U"show_translit_kana";
+		constexpr StringView kShowTranslitHangul = U"show_translit_hangul";
+		constexpr StringView kShowTranslitKanji = U"show_translit_kanji";
 
 		// Option > Key Config
 		constexpr StringView kKeyConfigKeyboard1 = U"key";

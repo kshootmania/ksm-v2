@@ -150,7 +150,10 @@
 		"ItemHispeedTypeOMod": "Hi-Speed 25 - 2000",
 		"ItemHispeedTypeCMod": "Hi-Speed C 25 - 2000",
 		"ItemHideMouseCursor": "隐藏鼠标光标",
-		"ItemUseNumpadAsArrowKeys": "使用数字键盘作为方向键 (用于带数字键盘的控制器)"
+		"ItemUseNumpadAsArrowKeys": "使用数字键盘作为方向键 (用于带数字键盘的控制器)",
+		"ItemShowTranslitKana": "含假名的曲名・艺术家名显示英字表记",
+		"ItemShowTranslitHangul": "含谚文的曲名・艺术家名显示英字表记",
+		"ItemShowTranslitKanji": "含汉字的曲名・艺术家名显示英字表记"
 	},
 	"InputGate": {
 		"BulkDownloadConfirm": "有{0}个可输入的谱面。\n是否一次性全部下载？"

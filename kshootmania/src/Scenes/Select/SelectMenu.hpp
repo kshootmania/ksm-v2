@@ -109,6 +109,8 @@ private:
 
 	void setCursorToItemByFullPath(FilePathView fullPath);
 
+	void resetSongInfoTextDisplayTimer();
+
 	void refreshContentCanvasParams();
 
 	void refreshSongPreview();

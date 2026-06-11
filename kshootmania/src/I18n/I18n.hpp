@@ -238,6 +238,9 @@ namespace I18n
 		ItemHispeedTypeCMod,
 		ItemHideMouseCursor,
 		ItemUseNumpadAsArrowKeys,
+		ItemShowTranslitKana,
+		ItemShowTranslitHangul,
+		ItemShowTranslitKanji,
 	};
 
 	/// @brief カテゴリ名とキー名からテキストを直接取得

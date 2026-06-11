@@ -150,7 +150,10 @@
 		"ItemHispeedTypeOMod": "ハイスピード 25 - 2000",
 		"ItemHispeedTypeCMod": "ハイスピード C 25 - 2000",
 		"ItemHideMouseCursor": "マウスカーソルを非表示化",
-		"ItemUseNumpadAsArrowKeys": "テンキーを方向キーとして使用(テンキー付き専用コントローラー向け)"
+		"ItemUseNumpadAsArrowKeys": "テンキーを方向キーとして使用(テンキー付き専用コントローラー向け)",
+		"ItemShowTranslitKana": "かなを含む曲名・アーティスト名は英字表記を表示",
+		"ItemShowTranslitHangul": "ハングルを含む曲名・アーティスト名は英字表記を表示",
+		"ItemShowTranslitKanji": "漢字を含む曲名・アーティスト名は英字表記を表示"
 	},
 	"InputGate": {
 		"BulkDownloadConfirm": "インプット可能な譜面が{0}件あります。\n一括でダウンロードしますか？"

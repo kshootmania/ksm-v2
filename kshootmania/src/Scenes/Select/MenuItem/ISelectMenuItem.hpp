@@ -11,6 +11,19 @@ using FallbackForSingleChartYN = YesNo<struct FallbackForSingleChartYN_tag>;
 class ISelectMenuItem
 {
 protected:
+	struct SongInfoTextDisplayParams
+	{
+		String text;
+		String translitText;
+		double translitFadeRate = 0.0;
+	};
+
+	static double& SongInfoTextDisplayStartTime()
+	{
+		static double startTime = Scene::Time();
+		return startTime;
+	}
+
 	static String FolderDisplayNameCenter(StringView folderName, IsCurrentFolderYN isCurrentFolder)
 	{
 		if (isCurrentFolder)
@@ -35,10 +48,94 @@ protected:
 		}
 	}
 
+	static SongInfoTextDisplayParams MakeSongInfoTextDisplayParams(String text, String translitText)
+	{
+		const auto containsCharIf = [](StringView s, auto pred)
+		{
+			for (const char32 ch : s)
+			{
+				if (pred(ch))
+				{
+					return true;
+				}
+			}
+			return false;
+		};
+		const auto containsKana = [&containsCharIf](StringView s)
+		{
+			return containsCharIf(s, [](char32 ch) { return (0x3040 <= ch && ch <= 0x30FF) || (0x31F0 <= ch && ch <= 0x31FF); });
+		};
+		const auto containsKanji = [&containsCharIf](StringView s)
+		{
+			return containsCharIf(s, [](char32 ch) { return 0x4E00 <= ch && ch <= 0x9FFF; });
+		};
+		const auto containsHangul = [&containsCharIf](StringView s)
+		{
+			return containsCharIf(s, [](char32 ch) { return (0xAC00 <= ch && ch <= 0xD7AF) || (0x1100 <= ch && ch <= 0x11FF) || (0x3130 <= ch && ch <= 0x318F); });
+		};
+		const auto containsTranslitExcludedChar = [&](StringView s)
+		{
+			return containsKana(s) || containsHangul(s) || containsKanji(s);
+		};
+
+		if (translitText.isEmpty() || text == translitText || containsTranslitExcludedChar(translitText))
+		{
+			return SongInfoTextDisplayParams{ .text = std::move(text) };
+		}
+		if (text.isEmpty())
+		{
+			return SongInfoTextDisplayParams{ .text = std::move(translitText) };
+		}
+
+		const bool shouldShowTranslit =
+			(containsKana(text) && ConfigIni::GetBool(ConfigIni::Key::kShowTranslitKana, false)) ||
+			(containsHangul(text) && ConfigIni::GetBool(ConfigIni::Key::kShowTranslitHangul, false)) ||
+			(containsKanji(text) && ConfigIni::GetBool(ConfigIni::Key::kShowTranslitKanji, false));
+		if (!shouldShowTranslit)
+		{
+			return SongInfoTextDisplayParams{ .text = std::move(text) };
+		}
+
+		constexpr double kOriginalDisplaySec = 2.0;
+		constexpr double kFadeSec = 1.0;
+		constexpr double kPeriodSec = (kOriginalDisplaySec + kFadeSec) * 2.0;
+
+		const double elapsed = Max(0.0, Scene::Time() - SongInfoTextDisplayStartTime());
+		const double t = std::fmod(elapsed, kPeriodSec);
+		double translitAlpha = 0.0;
+		if (t < kOriginalDisplaySec)
+		{
+			translitAlpha = 0.0;
+		}
+		else if (t < kOriginalDisplaySec + kFadeSec)
+		{
+			translitAlpha = (t - kOriginalDisplaySec) / kFadeSec;
+		}
+		else if (t < kOriginalDisplaySec * 2.0 + kFadeSec)
+		{
+			translitAlpha = 1.0;
+		}
+		else
+		{
+			translitAlpha = 1.0 - ((t - (kOriginalDisplaySec * 2.0 + kFadeSec)) / kFadeSec);
+		}
+
+		return SongInfoTextDisplayParams{
+			.text = std::move(text),
+			.translitText = std::move(translitText),
+			.translitFadeRate = translitAlpha,
+		};
+	}
+
 public:
 	ISelectMenuItem() = default;
 
 	virtual ~ISelectMenuItem() = default;
+
+	static void ResetSongInfoTextDisplayTimer()
+	{
+		SongInfoTextDisplayStartTime() = Scene::Time();
+	}
 
 	virtual void decide(const SelectMenuEventContext& context, int32 difficultyIdx) = 0;
 

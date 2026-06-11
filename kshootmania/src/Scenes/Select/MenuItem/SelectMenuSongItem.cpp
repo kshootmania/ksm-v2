@@ -196,11 +196,21 @@ void SelectMenuSongItem::setCanvasParamsCenter(const SelectMenuEventContext& con
 		const bool hasTitleImg = !titleImgPath.isEmpty() && FileSystem::IsFile(titleImgPath);
 		const FilePath artistImgPath = pChartInfo->artistImgFilePath();
 		const bool hasArtistImg = !artistImgPath.isEmpty() && FileSystem::IsFile(artistImgPath);
+		const SongInfoTextDisplayParams titleParams = hasTitleImg
+			? SongInfoTextDisplayParams{}
+			: MakeSongInfoTextDisplayParams(pChartInfo->title(), pChartInfo->titleTranslit());
+		const SongInfoTextDisplayParams artistParams = hasArtistImg
+			? SongInfoTextDisplayParams{}
+			: MakeSongInfoTextDisplayParams(pChartInfo->artist(), pChartInfo->artistTranslit());
 
 		canvas.setSubCanvasParamValuesByTag(U"center", {
-			{ U"title", hasTitleImg ? U"" : pChartInfo->title() },
+			{ U"title", titleParams.text },
+			{ U"titleTranslit", titleParams.translitText },
+			{ U"titleTranslitFadeRate", titleParams.translitFadeRate },
 			{ U"titleImgFilePath", titleImgPath },
-			{ U"artist", hasArtistImg ? U"" : pChartInfo->artist() },
+			{ U"artist", artistParams.text },
+			{ U"artistTranslit", artistParams.translitText },
+			{ U"artistTranslitFadeRate", artistParams.translitFadeRate },
 			{ U"artistImgFilePath", artistImgPath },
 			{ U"bpm", pChartInfo->dispBPM() },
 			{ U"jacketAuthor", pChartInfo->jacketAuthor() },
@@ -266,15 +276,25 @@ void SelectMenuSongItem::setCanvasParamsTopBottom(const SelectMenuEventContext& 
 	const bool hasTitleImg = !titleImgPath.isEmpty() && FileSystem::IsFile(titleImgPath);
 	const FilePath artistImgPath = pAltChartInfo->artistImgFilePath();
 	const bool hasArtistImg = !artistImgPath.isEmpty() && FileSystem::IsFile(artistImgPath);
+	const SongInfoTextDisplayParams titleParams = hasTitleImg
+		? SongInfoTextDisplayParams{}
+		: MakeSongInfoTextDisplayParams(pAltChartInfo->title(), pAltChartInfo->titleTranslit());
+	const SongInfoTextDisplayParams artistParams = hasArtistImg
+		? SongInfoTextDisplayParams{}
+		: MakeSongInfoTextDisplayParams(pAltChartInfo->artist(), pAltChartInfo->artistTranslit());
 
 	canvas.setSubCanvasParamValuesByTag(tag, {
 		{ U"isSong", true },
 		{ U"isDirectory", false },
 		{ U"isSubDirectory", false },
 		{ U"isCourse", false },
-		{ U"title", hasTitleImg ? U"" : pAltChartInfo->title() },
+		{ U"title", titleParams.text },
+		{ U"titleTranslit", titleParams.translitText },
+		{ U"titleTranslitFadeRate", titleParams.translitFadeRate },
 		{ U"titleImgFilePath", titleImgPath },
-		{ U"artist", hasArtistImg ? U"" : pAltChartInfo->artist() },
+		{ U"artist", artistParams.text },
+		{ U"artistTranslit", artistParams.translitText },
+		{ U"artistTranslitFadeRate", artistParams.translitFadeRate },
 		{ U"artistImgFilePath", artistImgPath },
 		{ U"levelIndex", levelIndex },
 		{ U"medalIndex", medalIndex },

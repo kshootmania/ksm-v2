@@ -150,7 +150,10 @@
 		"ItemHispeedTypeOMod": "Hi-Speed Type 25 - 2000",
 		"ItemHispeedTypeCMod": "Hi-Speed Type C 25 - 2000",
 		"ItemHideMouseCursor": "Hide Mouse Cursor",
-		"ItemUseNumpadAsArrowKeys": "Use Numpad as Arrow Keys (for Controllers with Numpad)"
+		"ItemUseNumpadAsArrowKeys": "Use Numpad as Arrow Keys (for Controllers with Numpad)",
+		"ItemShowTranslitKana": "Show romanized song titles and artists containing kana",
+		"ItemShowTranslitHangul": "Show romanized song titles and artists containing hangul",
+		"ItemShowTranslitKanji": "Show romanized song titles and artists containing kanji"
 	},
 	"InputGate": {
 		"BulkDownloadConfirm": "There are {0} charts available for input.\nWould you like to download them all at once?"

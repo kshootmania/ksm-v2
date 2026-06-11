@@ -191,10 +191,16 @@ void SelectMenuLevelSongItem::setCanvasParamsCenter(const SelectMenuEventContext
 
 	const FilePath jacketPath = m_chartInfo->jacketFilePath();
 	const FilePath iconPath = m_chartInfo->iconFilePath();
+	const SongInfoTextDisplayParams titleParams = MakeSongInfoTextDisplayParams(m_chartInfo->title(), m_chartInfo->titleTranslit());
+	const SongInfoTextDisplayParams artistParams = MakeSongInfoTextDisplayParams(m_chartInfo->artist(), m_chartInfo->artistTranslit());
 
 	canvas.setSubCanvasParamValuesByTag(U"center", {
-		{ U"title", m_chartInfo->title() },
-		{ U"artist", m_chartInfo->artist() },
+		{ U"title", titleParams.text },
+		{ U"titleTranslit", titleParams.translitText },
+		{ U"titleTranslitFadeRate", titleParams.translitFadeRate },
+		{ U"artist", artistParams.text },
+		{ U"artistTranslit", artistParams.translitText },
+		{ U"artistTranslitFadeRate", artistParams.translitFadeRate },
 		{ U"bpm", m_chartInfo->dispBPM() },
 		{ U"jacketAuthor", m_chartInfo->jacketAuthor() },
 		{ U"information", m_chartInfo->information() },
@@ -225,14 +231,20 @@ void SelectMenuLevelSongItem::setCanvasParamsTopBottom(const SelectMenuEventCont
 
 	const FilePath jacketPath = m_chartInfo->jacketFilePath();
 	const FilePath iconPath = m_chartInfo->iconFilePath();
+	const SongInfoTextDisplayParams titleParams = MakeSongInfoTextDisplayParams(m_chartInfo->title(), m_chartInfo->titleTranslit());
+	const SongInfoTextDisplayParams artistParams = MakeSongInfoTextDisplayParams(m_chartInfo->artist(), m_chartInfo->artistTranslit());
 
 	canvas.setSubCanvasParamValuesByTag(tag, {
 		{ U"isSong", true },
 		{ U"isDirectory", false },
 		{ U"isSubDirectory", false },
 		{ U"isCourse", false },
-		{ U"title", m_chartInfo->title() },
-		{ U"artist", m_chartInfo->artist() },
+		{ U"title", titleParams.text },
+		{ U"titleTranslit", titleParams.translitText },
+		{ U"titleTranslitFadeRate", titleParams.translitFadeRate },
+		{ U"artist", artistParams.text },
+		{ U"artistTranslit", artistParams.translitText },
+		{ U"artistTranslitFadeRate", artistParams.translitFadeRate },
 		{ U"levelIndex", m_chartInfo->level() - 1 },
 		{ U"medalIndex", static_cast<int32>(highScore.medal()) },
 		{ U"highScoreGradeIndex", static_cast<int32>(highScore.grade(gaugeType)) },
