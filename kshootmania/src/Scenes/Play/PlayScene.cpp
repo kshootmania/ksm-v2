@@ -208,10 +208,22 @@ void PlayScene::processBackButtonInput()
 	// 次のシーンで多重に反応しないよう、Backボタンの入力をクリア
 	KeyConfig::ClearInput(kButtonBack);
 
-	if (m_testPlayOption.has_value())
+	if (m_testPlayOption.has_value() && (m_testPlayOption->hasStartMeasure() || m_isAutoPlay))
 	{
-		// テストプレイの場合はアプリケーション終了
+		// テストプレイ(-from指定ありまたはオートプレイ)の場合はアプリケーション終了
 		requestSceneFinish();
+	}
+	else if (m_testPlayOption.has_value())
+	{
+		// テストプレイ(-fromなし、手動)の場合はリザルト画面へ
+		const ResultSceneArgs args =
+		{
+			.chartFilePath = FilePath(m_gameMain.chartFilePath()),
+			.chartData = m_gameMain.chartData(),
+			.playResult = m_gameMain.playResult(),
+			.selectSearchParams = m_selectSearchParams,
+		};
+		requestNextScene<ResultScene>(args);
 	}
 	else if (m_isAutoPlay)
 	{
