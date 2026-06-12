@@ -404,7 +404,8 @@ namespace MusicGame
 		// 早送り(Ctrl+Right)
 		if (!m_isPaused && isCtrlPressed && !isAltPressed && KeyRight.pressed())
 		{
-			if (m_fastForwardStopwatch.ms() >= 60)
+			// 押した瞬間は即時シーク、長押し中は一定間隔でシーク
+			if (KeyRight.down() || m_fastForwardStopwatch.ms() >= 60)
 			{
 				const auto currentPos = m_bgm.posSec();
 				const auto newPos = currentPos + SecondsF{ 1.0 };
