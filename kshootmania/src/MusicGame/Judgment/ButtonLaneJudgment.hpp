@@ -45,7 +45,7 @@ namespace MusicGame::Judgment
 	public:
 		ButtonLaneJudgment(JudgmentPlayMode judgmentPlayMode, GaugeType gaugeType, FastSlowMode fastSlowMode, Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache);
 
-		void update(const kson::ChartData& chartData, const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, double currentTimeSecForDraw, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef);
+		void update(const kson::ChartData& chartData, const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, kson::Pulse currentPulseForDraw, double currentTimeSec, double currentTimeSecForDraw, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef);
 
 		std::size_t chipJudgmentCount() const;
 

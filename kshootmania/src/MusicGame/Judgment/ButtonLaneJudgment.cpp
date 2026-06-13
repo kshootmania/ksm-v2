@@ -192,7 +192,7 @@ namespace MusicGame::Judgment
 				if ((!found || Abs(diffSec) < minDistance) && diffSec <= LongNote::kWindowSecPreHold && (y + note.length > currentPulse))
 				{
 					laneStatusRef.currentLongNotePulse = y;
-					laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
+					laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSecForDraw;
 					return;
 				}
 				else if (found && diffSec > LongNote::kWindowSecPreHold && y > currentPulse)
@@ -277,7 +277,7 @@ namespace MusicGame::Judgment
 			if (chipAnimType.has_value())
 			{
 				laneStatusRef.chipAnim.push({
-					.startTimeSec = currentTimeSec,
+					.startTimeSec = currentTimeSecForDraw,
 					.type = *chipAnimType,
 				});
 
@@ -348,7 +348,7 @@ namespace MusicGame::Judgment
 					// 見逃し判定はERRORかオートプレイのCRITICALのみ
 					const ChipAnimType animType = result == JudgmentResult::kCritical ? ChipAnimType::kCritical : ChipAnimType::kError;
 					laneStatusRef.chipAnim.push({
-						.startTimeSec = currentTimeSec,
+						.startTimeSec = currentTimeSecForDraw,
 						.type = animType,
 					});
 
@@ -398,7 +398,7 @@ namespace MusicGame::Judgment
 	{
 	}
 
-	void ButtonLaneJudgment::update(const kson::ChartData& chartData, const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, double currentTimeSecForDraw, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
+	void ButtonLaneJudgment::update(const kson::ChartData& chartData, const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, kson::Pulse currentPulseForDraw, double currentTimeSec, double currentTimeSecForDraw, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
 	{
 		if (m_judgmentPlayMode == JudgmentPlayMode::kOn)
 		{
@@ -419,7 +419,7 @@ namespace MusicGame::Judgment
 				(KeyConfig::Up(m_keyConfigButton) || (*laneStatusRef.currentLongNotePulse + lane.at(*laneStatusRef.currentLongNotePulse).length < currentPulse)))
 			{
 				laneStatusRef.currentLongNotePulse = none;
-				laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
+				laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSecForDraw;
 			}
 
 			// 通り過ぎたノーツをERROR判定にする
@@ -440,7 +440,7 @@ namespace MusicGame::Judgment
 			processPassedNoteJudgment(lane, currentPulse, currentTimeSec, currentTimeSecForDraw, laneStatusRef, judgmentHandlerRef, IsAutoPlayYN::Yes);
 
 			kson::Pulse currentLongNoteY;
-			if (IsDuringLongNote(lane, currentPulse, &currentLongNoteY))
+			if (IsDuringLongNote(lane, currentPulseForDraw, &currentLongNoteY))
 			{
 				// ロングノーツ中の場合は押下中にする
 				laneStatusRef.longNotePressed = true;
@@ -453,7 +453,7 @@ namespace MusicGame::Judgment
 				if (laneStatusRef.currentLongNotePulse.has_value())
 				{
 					// 前フレームでロングノーツが存在し、現在フレームで存在しない場合は離した扱いにする(アニメーション用)
-					laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
+					laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSecForDraw;
 				}
 				laneStatusRef.longNotePressed = none;
 				laneStatusRef.currentLongNotePulse = none;
@@ -463,7 +463,7 @@ namespace MusicGame::Judgment
 		{
 			// Offモード時もボタン入力を受け付けてアニメーションを表示
 			kson::Pulse currentLongNoteY;
-			if (IsDuringLongNote(lane, currentPulse, &currentLongNoteY) && KeyConfig::Pressed(m_keyConfigButton))
+			if (IsDuringLongNote(lane, currentPulseForDraw, &currentLongNoteY) && KeyConfig::Pressed(m_keyConfigButton))
 			{
 				// ロングノーツ中でボタンを押している場合
 				laneStatusRef.currentLongNotePulse = currentLongNoteY;
@@ -476,7 +476,7 @@ namespace MusicGame::Judgment
 				{
 					// 前フレームでロングノーツが存在し、現在フレームで存在しない場合は離した扱いにする(アニメーション用)
 					laneStatusRef.currentLongNotePulse = none;
-					laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSec;
+					laneStatusRef.currentLongNoteAnimOffsetTimeSec = currentTimeSecForDraw;
 				}
 			}
 		}
