@@ -440,12 +440,13 @@ namespace MusicGame::Graphics
 				const int32 minY = Min(sectionStartPositionY, Min(sectionEndPositionY, Min(startTextureMinY, tailMinY)));
 				const int32 maxY = Max(sectionStartPositionY, Max(sectionEndPositionY, Max(startTextureMaxY, tailMaxY)));
 
-				// LASERセクション全体が描画範囲外の場合はスキップ
-				if (maxY < 0 || minY >= kHighwayTextureSize.y)
+				// scroll_speedが負の場合はセクション内でYが非単調になり始点終点による範囲内チェックでは
+				// 判定できないため、セクション単位のカリングは行わない(セグメント単位で判定)
+				if (!hasNegativeScrollSpeed && (maxY < 0 || minY >= kHighwayTextureSize.y))
 				{
-					if (!hasNegativeScrollSpeed && maxY < 0)
+					if (maxY < 0)
 					{
-						// scroll_speedに負の値がなく、セクション全体が上にある場合はループを抜ける
+						// セクション全体が上にある場合はこれ以降も範囲外
 						break;
 					}
 					continue;
