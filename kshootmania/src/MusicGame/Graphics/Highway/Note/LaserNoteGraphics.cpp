@@ -336,15 +336,11 @@ namespace MusicGame::Graphics
 					const bool isSlam = point.v.v != point.v.vf;
 					const int32 slamHeight = isSlam ? CalcLaserSlamHeight(y + ry, highwayScrollContext) : 0;
 
-					// scroll_speedが負の場合、始点と終点が逆転する可能性があるため両方チェック
-					const int32 minY = Min(positionY, nextPositionY);
-					const int32 maxY = Max(positionY, nextPositionY);
-
-					// 線の両端点が完全に描画範囲外の場合はスキップ
-					if (maxY < 0 || minY >= kHighwayTextureSize.y)
+					// 線全体が描画範囲外の場合はスキップ
+					if (!highwayScrollContext.isPulseRangeInDrawRange(y + ry, y + nextRy, kLaserShiftY))
 					{
 						// scroll_speedに負の値がなく、線全体が上にある場合は以降も描画対象外
-						if (!hasNegativeScrollSpeed && maxY < 0)
+						if (!hasNegativeScrollSpeed && Max(positionY, nextPositionY) < 0)
 						{
 							return;
 						}
@@ -436,17 +432,17 @@ namespace MusicGame::Graphics
 					tailMaxY = Max(sectionEndPositionY - slamHeight - tailHeight, sectionEndPositionY - slamHeight);
 				}
 
-				// セクション全体の描画範囲を計算
-				const int32 minY = Min(sectionStartPositionY, Min(sectionEndPositionY, Min(startTextureMinY, tailMinY)));
-				const int32 maxY = Max(sectionStartPositionY, Max(sectionEndPositionY, Max(startTextureMaxY, tailMaxY)));
-
-				// scroll_speedが負の場合はセクション内でYが非単調になり始点終点による範囲内チェックでは
-				// 判定できないため、セクション単位のカリングは行わない(セグメント単位で判定)
-				if (!hasNegativeScrollSpeed && (maxY < 0 || minY >= kHighwayTextureSize.y))
+				// セクション全体が描画範囲外の場合はスキップ
+				// レーザー線はscroll_speedが負だとセクション内でYが非単調になるためサンプリングで判定し、
+				// 端点基準の固定オフセットである開始テクスチャ・終端tailは別途範囲を加味する
+				const bool pathInRange = highwayScrollContext.isPulseRangeInDrawRange(y, y + lengthRy, kLaserShiftY);
+				const bool startTextureInRange = startTextureMaxY >= 0 && startTextureMinY < kHighwayTextureSize.y;
+				const bool tailInRange = tailMaxY >= 0 && tailMinY < kHighwayTextureSize.y;
+				if (!pathInRange && !startTextureInRange && !tailInRange)
 				{
-					if (maxY < 0)
+					// scroll_speedに負の値がなく、セクション全体が上にある場合はこれ以降も範囲外
+					if (!hasNegativeScrollSpeed && Max(sectionStartPositionY, Max(sectionEndPositionY, Max(startTextureMaxY, tailMaxY))) < 0)
 					{
-						// セクション全体が上にある場合はこれ以降も範囲外
 						break;
 					}
 					continue;

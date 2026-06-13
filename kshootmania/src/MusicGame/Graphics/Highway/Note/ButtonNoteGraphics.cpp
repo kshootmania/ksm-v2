@@ -136,14 +136,10 @@ namespace MusicGame::Graphics
 
 				const int32 positionEndY = note.length == 0 ? positionStartY : highwayScrollContext.getPositionY(y + note.length);
 
-				// scroll_speedが負の場合、始点と終点が逆転する可能性があるため両方チェック
-				const int32 minY = Min(positionStartY, positionEndY);
-				const int32 maxY = Max(positionStartY, positionEndY);
-
 				// ノーツ全体が描画範囲外の場合はスキップ
-				if (maxY < 0 || minY >= kHighwayTextureSize.y)
+				if (!highwayScrollContext.isPulseRangeInDrawRange(y, y + note.length))
 				{
-					if (!hasNegativeScrollSpeed && maxY < 0)
+					if (!hasNegativeScrollSpeed && Max(positionStartY, positionEndY) < 0)
 					{
 						// scroll_speedに負の値がなく、ノーツ全体が上にある場合はループを抜ける
 						break;

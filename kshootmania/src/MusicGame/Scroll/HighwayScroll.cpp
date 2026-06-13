@@ -1,6 +1,7 @@
 ﻿#include "HighwayScroll.hpp"
 
 #include <cmath>
+#include <utility>
 
 namespace MusicGame::Scroll
 {
@@ -12,6 +13,7 @@ namespace MusicGame::Scroll
 		//     https://github.com/kshootmania/ksm-v1/blob/d2811a09e2d75dad5cc152d7c4073897061addb7/src/scene/play/play_draw_frame.hsp#L96
 		// 上記の「108/2」と「10」を乗算した値にあたる
 		constexpr double kBasePixels = 540.0;
+		constexpr kson::RelPulse kDrawRangeSampleInterval = kson::kResolution4 / 16;
 
 		/// @brief scrollSpeedに負の値が含まれているかを判定
 		/// @param beatInfo kson.beat
@@ -136,6 +138,36 @@ namespace MusicGame::Scroll
 		return m_pHighwayScroll->getPositionY(pulse, *m_pBeatInfo, *m_pTimingCache, *m_pGameStatus);
 	}
 
+	bool HighwayScrollContext::isPulseRangeInDrawRange(kson::Pulse startPulse, kson::Pulse endPulse, int32 positionYOffset) const
+	{
+		if (endPulse < startPulse)
+		{
+			std::swap(startPulse, endPulse);
+		}
+
+		int32 minY = getPositionY(startPulse) + positionYOffset;
+		int32 maxY = minY;
+
+		const auto addPositionY = [&](kson::Pulse pulse)
+		{
+			const int32 positionY = getPositionY(pulse) + positionYOffset;
+			minY = Min(minY, positionY);
+			maxY = Max(maxY, positionY);
+		};
+
+		if (m_hasNegativeScrollSpeed)
+		{
+			for (kson::Pulse pulse = startPulse + kDrawRangeSampleInterval; pulse < endPulse; pulse += kDrawRangeSampleInterval)
+			{
+				addPositionY(pulse);
+			}
+		}
+
+		addPositionY(endPulse);
+
+		return maxY >= 0 && minY < Graphics::kHighwayTextureSize.y;
+	}
+
 	int32 HighwayScrollContext::relPulseToPixelHeight(kson::Pulse basePulse, kson::RelPulse relPulse) const
 	{
 		return m_pHighwayScroll->relPulseToPixelHeight(basePulse, relPulse, *m_pBeatInfo);
@@ -244,7 +276,7 @@ namespace MusicGame::Scroll
 
 	int32 HighwayScroll::getPositionY(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache, const GameStatus& gameStatus) const
 	{
-		assert(m_hispeedFactor != 0.0 && "HighwayScroll::update() must be called at least once V HighwayScroll::getPositionY()");
+		assert(m_hispeedFactor != 0.0 && "HighwayScroll::update() must be called at least once before HighwayScroll::getPositionY()");
 
 		const double relPulseEquivalent = getRelPulseEquvalent(pulse, beatInfo, timingCache, gameStatus);
 		return static_cast<int32>(Graphics::kHighwayTextureSize.y - Graphics::kJdglineYFromBottom) - static_cast<int32>(relPulseEquivalent * kBasePixels * m_hispeedFactor / kson::kResolution4);
@@ -252,7 +284,7 @@ namespace MusicGame::Scroll
 
 	int32 HighwayScroll::relPulseToPixelHeight(kson::Pulse basePulse, kson::RelPulse relPulse, const kson::BeatInfo& beatInfo) const
 	{
-		assert(m_hispeedFactor != 0.0 && "HighwayScroll::update() must be called at least once V HighwayScroll::relPulseToPixelHeight()");
+		assert(m_hispeedFactor != 0.0 && "HighwayScroll::update() must be called at least once before HighwayScroll::relPulseToPixelHeight()");
 
 		const double relPulseEquivalent = CalcScrollSpeedAdjustedRelPulse(basePulse + relPulse, static_cast<double>(basePulse), beatInfo.scrollSpeed);
 		return static_cast<int32>(relPulseEquivalent * kBasePixels * m_hispeedFactor / kson::kResolution4);
