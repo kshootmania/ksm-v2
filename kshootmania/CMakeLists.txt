@@ -77,15 +77,22 @@ if(APPLE)
     endif()
 
     # imgs, se, ui, shaders, langフォルダをコピー
+    # (POST_BUILDではソース変更がないビルドでコピーされないため、毎回実行されるターゲットとして登録)
+    set(RESOURCE_COPY_COMMANDS)
     foreach(RESOURCE_FOLDER imgs se ui shaders lang)
         if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/App/${RESOURCE_FOLDER}")
-            add_custom_command(TARGET kshootmania POST_BUILD
+            list(APPEND RESOURCE_COPY_COMMANDS
                 COMMAND ${CMAKE_COMMAND} -E copy_directory
                 ${CMAKE_CURRENT_SOURCE_DIR}/App/${RESOURCE_FOLDER}
                 ${APP_BUNDLE_PATH}/Contents/Resources/${RESOURCE_FOLDER}
             )
         endif()
     endforeach()
+    add_custom_target(kshootmania_copy_resources ALL
+        ${RESOURCE_COPY_COMMANDS}
+        COMMENT "Copying resource folders to app bundle"
+    )
+    add_dependencies(kshootmania_copy_resources kshootmania)
 
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/App/icon.icns)
         set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/App/icon.icns PROPERTIES
