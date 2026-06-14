@@ -37,10 +37,8 @@ namespace KeyConfig
 
 	void SaveToConfigIni();
 
-#ifdef __APPLE__
-	// macOSプラットフォーム特有のキーボード状態を更新(毎フレーム呼び出す)
-	void UpdatePlatformKeyboard();
-#endif
+	// KeyConfigの入力状態を更新(毎フレーム呼び出す)
+	void Update();
 
 	bool Pressed(Button button);
 

@@ -21,6 +21,10 @@ namespace
 	bool s_prevEditingTextExists = false;
 	int32 s_lastEditingTextUpdateFrame = -1;
 
+	// BT3+StartをBack扱いにした後、Startを離すまではStart入力として扱わない
+	bool s_suppressStartUntilRelease = false;
+	bool s_suppressStartThisFrame = false;
+
 	[[nodiscard]]
 	bool ShouldIgnoreKeyboardInput()
 	{
@@ -212,6 +216,64 @@ namespace
 	{
 		return configSet[SwapLaserButtonIfNeeded(button)];
 	}
+
+	bool IsBT3PlusStartPressed();
+
+	bool RawConfiguredButtonPressed(Button button, bool ignoreKeyboard)
+	{
+		for (const auto& configSet : s_configSetArray)
+		{
+			const auto& input = GetConfigSetInputApplyingSwap(configSet, button);
+			if (input.deviceType() == InputDeviceType::Keyboard)
+			{
+				if (ignoreKeyboard)
+				{
+					continue;
+				}
+#ifdef __APPLE__
+				bool isPlatformKey = false;
+				for (size_t i = 0; i < kPlatformKeys.size(); ++i)
+				{
+					if (input.code() == (kPlatformKeys[i].code - kPlatformKeyCodeOffset))
+					{
+						if (s_platformKeyStates[i].pressed())
+						{
+							return true;
+						}
+						isPlatformKey = true;
+						break;
+					}
+				}
+				if (!isPlatformKey && input.pressed())
+				{
+					return true;
+				}
+#else
+				if (input.pressed())
+				{
+					return true;
+				}
+#endif
+			}
+			else if (input.pressed())
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+#ifdef __APPLE__
+	void UpdatePlatformKeyboard()
+	{
+		for (size_t i = 0; i < kPlatformKeys.size(); ++i)
+		{
+			const bool pressed = KSMPlatformMacOS_IsKeyPressed(kPlatformKeys[i].nativeCode);
+			s_platformKeyStates[i].update(pressed);
+		}
+	}
+#endif
 
 	void RevertUnconfigurableKeyConfigs()
 	{
@@ -445,16 +507,27 @@ const Input& KeyConfig::GetConfigValue(ConfigSet targetConfigSet, ConfigurableBu
 	return s_configSetArray[targetConfigSet][button];
 }
 
-#ifdef __APPLE__
-void KeyConfig::UpdatePlatformKeyboard()
+void KeyConfig::Update()
 {
-	for (size_t i = 0; i < kPlatformKeys.size(); ++i)
+#ifdef __APPLE__
+	// macOSプラットフォーム特有のキーボード状態を更新
+	UpdatePlatformKeyboard();
+#endif
+
+	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
+
+	if (IsBT3PlusStartPressed())
 	{
-		const bool pressed = KSMPlatformMacOS_IsKeyPressed(kPlatformKeys[i].nativeCode);
-		s_platformKeyStates[i].update(pressed);
+		s_suppressStartUntilRelease = true;
+	}
+
+	s_suppressStartThisFrame = s_suppressStartUntilRelease;
+
+	if (s_suppressStartUntilRelease && !RawConfiguredButtonPressed(kButtonStart, ignoreKeyboard))
+	{
+		s_suppressStartUntilRelease = false;
 	}
 }
-#endif
 
 void KeyConfig::SaveToConfigIni()
 {
@@ -493,45 +566,14 @@ bool KeyConfig::Pressed(Button button)
 	}
 
 	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
-
-	for (const auto& configSet : s_configSetArray)
+	if (button == kButtonStart && s_suppressStartThisFrame)
 	{
-		const auto& input = GetConfigSetInputApplyingSwap(configSet, button);
-		if (input.deviceType() == InputDeviceType::Keyboard)
-		{
-			if (ignoreKeyboard)
-			{
-				continue;
-			}
-#ifdef __APPLE__
-			bool isPlatformKey = false;
-			for (size_t i = 0; i < kPlatformKeys.size(); ++i)
-			{
-				if (input.code() == (kPlatformKeys[i].code - kPlatformKeyCodeOffset))
-				{
-					if (s_platformKeyStates[i].pressed())
-					{
-						return true;
-					}
-					isPlatformKey = true;
-					break;
-				}
-			}
-			if (!isPlatformKey && input.pressed())
-			{
-				return true;
-			}
-#else
-			if (input.pressed())
-			{
-				return true;
-			}
-#endif
-		}
-		else if (input.pressed())
-		{
-			return true;
-		}
+		return false;
+	}
+
+	if (RawConfiguredButtonPressed(button, ignoreKeyboard))
+	{
+		return true;
 	}
 
 	// FXの場合はLR両押しキーの状態も反映
@@ -605,6 +647,10 @@ bool KeyConfig::Down(Button button)
 	}
 
 	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
+	if (button == kButtonStart && s_suppressStartThisFrame)
+	{
+		return false;
+	}
 
 	for (const auto& configSet : s_configSetArray)
 	{
@@ -727,6 +773,10 @@ bool KeyConfig::Up(Button button)
 	}
 
 	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
+	if (button == kButtonStart && s_suppressStartThisFrame)
+	{
+		return false;
+	}
 
 	for (const auto& configSet : s_configSetArray)
 	{
