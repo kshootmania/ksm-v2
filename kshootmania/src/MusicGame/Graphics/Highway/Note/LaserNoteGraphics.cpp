@@ -82,6 +82,18 @@ namespace MusicGame::Graphics
 			return sign * Min(kLaserTailHeightMax, Abs(tailHeightFromPulse));
 		}
 
+		// 曲線直角レーザーの上端が始点側を越えないように傾きを制限
+		double ClampSlamTopShift(double startX, double endX, double topShiftX)
+		{
+			const double slamWidth = Abs(endX - startX);
+			const double innerWidth = Max(slamWidth - kLaserLineWidth, 0.0);
+			if (endX >= startX)
+			{
+				return Max(topShiftX, -innerWidth);
+			}
+			return Min(topShiftX, innerWidth);
+		}
+
 		Quad LaserSlamLineQuad(const Vec2& positionStart, const Vec2& positionEnd, int32 slamHeight, double topShiftX)
 		{
 			if (Abs(positionEnd.x - positionStart.x) <= kLaserLineWidth)
@@ -141,6 +153,19 @@ namespace MusicGame::Graphics
 			{
 				// scroll_speedが負の場合、手前方向(下)に太さを持つ(上下反転)
 				laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y * laserNoteTextureRow, kLaserTextureSize).mirrored(isLeftToRight).flipped().scaled(1.0, yScale).drawAt(positionStart + Vec2{ 0, yOffset });
+			}
+
+			const double slamWidth = Abs(positionEnd.x - positionStart.x);
+			const double innerWidth = Max(slamWidth - kLaserLineWidth, 0.0);
+			if (topShiftX * (positionEnd.x - positionStart.x) > 0.0 && Abs(topShiftX) > innerWidth)
+			{
+				const double innerX = positionEnd.x + (isLeftToRight ? -kLaserLineWidth / 2 : kLaserLineWidth / 2);
+				const Vec2 innerTop{ innerX, positionY - slamHeight };
+				const Vec2 shiftedInnerTop{ innerX + topShiftX, positionY - slamHeight };
+				const Vec2 innerBottom{ innerX, positionY };
+
+				// 終点側(vf)の角テクスチャの頂点移動で隙間が空かないよう内側の三角形を埋める
+				Quad{ innerTop, shiftedInnerTop, innerBottom, innerBottom }(laserNoteTexture(kLaserTextureSize.x * laneIdx + kOnePixelTextureSourceOffset, kLaserTextureSize.y * laserNoteTextureRow, kOnePixelTextureSourceSize, kLaserTextureSize.y)).draw();
 			}
 
 			// 終点側(vf)の角テクスチャ(直角レーザーの曲線描画時の変形のためにQuadで描画)
@@ -270,9 +295,12 @@ namespace MusicGame::Graphics
 								continue;
 							}
 
+							// 曲線の位置から上端の横方向の移動量を計算
 							const double endPointX = LaserPointX(point.v.vf, xScale);
 							const double refPointX = LaserPointX(refPoint.v.v, xScale);
 							topShiftX = (refPointX - endPointX) * static_cast<double>(slamHeight) / (positionY - refPositionY);
+							const double startPointX = LaserPointX(point.v.v, xScale);
+							topShiftX = ClampSlamTopShift(startPointX, endPointX, topShiftX);
 							break;
 						}
 					}
