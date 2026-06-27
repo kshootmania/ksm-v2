@@ -11,6 +11,10 @@ import zipfile
 from pathlib import Path
 
 
+FULL_ONLY_DEST_FILES = {"config.ini"}
+FULL_ONLY_DEST_DIRS = {"cache", "data", "score", "songs"}
+
+
 def get_project_root():
 	"""プロジェクトルートディレクトリを取得"""
 	script_dir = Path(__file__).resolve().parent
@@ -56,6 +60,21 @@ def load_file_mappings(tsv_path):
 				mappings.append((source, dest))
 
 	return mappings
+
+
+def is_full_only_mapping(dest_rel):
+	"""上書き版から除外するファイルを判定"""
+	parts = [part for part in dest_rel.replace("\\", "/").split("/") if part]
+	return dest_rel in FULL_ONLY_DEST_FILES or any(part in FULL_ONLY_DEST_DIRS for part in parts)
+
+
+def filter_mappings_for_package(file_mappings, package_type):
+	"""パッケージ種別に応じてファイルマッピングを絞り込む"""
+	if package_type == "full":
+		return file_mappings
+	if package_type == "updater":
+		return [(source, dest) for source, dest in file_mappings if not is_full_only_mapping(dest)]
+	raise ValueError(f"未知のパッケージ種別です: {package_type}")
 
 
 def copy_files(file_mappings, output_dir, version):
@@ -152,16 +171,19 @@ def main():
 
 	script_dir = Path(__file__).resolve().parent
 	tsv_path = script_dir / "files_win.tsv"
-	output_dir = script_dir / "kshootmania_v2"
-	zip_path = script_dir / "kshootmania_v2_win.zip"
+	packages = [
+		("full", "フル版", script_dir / "kshootmania_v2", script_dir / "kshootmania_v2_win.zip"),
+		("updater", "上書きアップデート用", script_dir / "kshootmania_v2_updater", script_dir / "kshootmania_v2_win_updater.zip"),
+	]
 
 	try:
 		version = get_version_from_cmake()
 		print(f"バージョン: {version}")
 
 		print(f"TSVファイル: {tsv_path}")
-		print(f"出力ディレクトリ: {output_dir}")
-		print(f"zip出力先: {zip_path}")
+		for _, label, output_dir, zip_path in packages:
+			print(f"{label} 出力ディレクトリ: {output_dir}")
+			print(f"{label} zip出力先: {zip_path}")
 
 		if not tsv_path.exists():
 			print(f"\nエラー: {tsv_path} が見つかりません")
@@ -171,26 +193,35 @@ def main():
 		file_mappings = load_file_mappings(tsv_path)
 		print(f"  {len(file_mappings)} ファイルを読み込み")
 
-		copied_count = copy_files(file_mappings, output_dir, version)
-		create_zip(output_dir, zip_path)
-		show_zip_contents(zip_path)
+		created_zips = []
+		for package_type, label, output_dir, zip_path in packages:
+			package_mappings = filter_mappings_for_package(file_mappings, package_type)
+			excluded_count = len(file_mappings) - len(package_mappings)
+			print(f"\n--- {label}を作成中 ({len(package_mappings)} ファイル, 除外 {excluded_count} ファイル) ---")
+			copy_files(package_mappings, output_dir, version)
+			create_zip(output_dir, zip_path)
+			show_zip_contents(zip_path)
+			created_zips.append(zip_path)
 
 		print("\n=== 完了 ===")
-		print(f"出力先: {zip_path}")
+		for zip_path in created_zips:
+			print(f"出力先: {zip_path}")
 		return 0
 
 	except FileNotFoundError as e:
 		print(f"\nエラー: {e}")
 		print("\n処理を中断しました。")
-		if output_dir.exists():
-			print(f"出力ディレクトリを削除中: {output_dir}")
-			shutil.rmtree(output_dir)
+		for _, _, output_dir, _ in packages:
+			if output_dir.exists():
+				print(f"出力ディレクトリを削除中: {output_dir}")
+				shutil.rmtree(output_dir)
 		return 1
 	except Exception as e:
 		print(f"\n予期しないエラーが発生しました: {e}")
-		if output_dir.exists():
-			print(f"出力ディレクトリを削除中: {output_dir}")
-			shutil.rmtree(output_dir)
+		for _, _, output_dir, _ in packages:
+			if output_dir.exists():
+				print(f"出力ディレクトリを削除中: {output_dir}")
+				shutil.rmtree(output_dir)
 		return 1
 
 
