@@ -1,6 +1,7 @@
 # source	dest
 # コピー元 (プロジェクトルートからの相対パス)	コピー先 (zip内kshootmania_v2/からの相対パス)
 dist_scripts/assets_macos/readme.txt	readme.txt
+dist_scripts/assets_macos/readme_en.txt	readme_en.txt
 dist_scripts/assets_macos/license.txt	license.txt
 kshootmania/App/K-Shoot MANIA.app/Contents/Frameworks/libbass.dylib	K-Shoot MANIA.app/Contents/Frameworks/libbass.dylib
 kshootmania/App/K-Shoot MANIA.app/Contents/Frameworks/libbass_fx.dylib	K-Shoot MANIA.app/Contents/Frameworks/libbass_fx.dylib

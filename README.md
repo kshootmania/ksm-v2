@@ -1,21 +1,5 @@
-K-Shoot MANIA v2 (v1 Remastered)
+K-Shoot MANIA v2
 ========================
-
-## 開発状況
-
-https://github.com/kshootmania/ksm-v2/wiki#%E9%96%8B%E7%99%BA%E7%8A%B6%E6%B3%81
-
-## 開発のコンセプト
-
-- KSM v1(HSP版)をC++で完全再現することを目標
-    - 次期バージョンへの足がかりとなるコードベース作成
-- 組み直しによる各種改善
-    - パフォーマンス改善
-    - LASER判定の改善
-    - 譜面データのハッシュ値をキーとしたスコア管理・コース作成による利便性向上
-- kson形式の実験的導入
-    - kson形式を実行中の内部データの構造として使用する実験
-    - 追加機能の部分的サポート
 
 ## ビルドに必要な環境 / Build Requirements
 
@@ -28,10 +12,7 @@ https://github.com/kshootmania/ksm-v2/wiki#%E9%96%8B%E7%99%BA%E7%8A%B6%E6%B3%81
 
 ## Contributionについて
 
-本プロジェクトは実装途中の段階であり、満たす必要がある要件(互換性に関する必須事項など)が十分にドキュメント化されていないため、機能実装についてのContributionは当面の間受け付けておりません。
+本プロジェクトは個人プロジェクトであり、オープンソース主導の開発プロジェクトではありません。  
+そのため、機能実装についてのPull Requestは基本的にマージできない場合が多いです。機能追加のご提案はIssueまたはK-Shoot MANIA掲示板( https://bbs.kshootmania.com )よりお願いいたします。
 
-既存処理の不具合修正に関するContributionについてはPull Requestにて歓迎いたします。
-
-## Contributors
-
-@m4saka, @ario1281, @mikomikotaishi
+既存処理の不具合修正に関するContributionについては、Pull Requestにて歓迎いたします。

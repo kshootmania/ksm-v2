@@ -1,6 +1,7 @@
 # source	dest
 # コピー元 (プロジェクトルートからの相対パス)	コピー先 (zip内kshootmania_v2/からの相対パス)
 dist_scripts/assets_win/readme.txt	readme.txt
+dist_scripts/assets_win/readme_en.txt	readme_en.txt
 dist_scripts/assets_win/license.txt	license.txt
 dist_scripts/assets_win/config.ini	config.ini
 kshootmania/App/assets/font/KSM-JA-Medium.ttf	assets/font/KSM-JA-Medium.ttf

@@ -85,13 +85,13 @@ def copy_files(file_mappings, output_dir, version):
 
 		dest_path.parent.mkdir(parents=True, exist_ok=True)
 
-		if dest_rel == "readme.txt":
+		if dest_rel in {"readme.txt", "readme_en.txt"}:
 			with open(source_path, "r", encoding="utf-8") as f:
 				content = f.read()
 			content = content.replace("@@VERSION@@", version)
 			with open(dest_path, "w", encoding="utf-8") as f:
 				f.write(content)
-			print(f"  readme.txt: @@VERSION@@ を {version} に置換")
+			print(f"  {dest_rel}: @@VERSION@@ を {version} に置換")
 		else:
 			shutil.copy2(source_path, dest_path)
 
