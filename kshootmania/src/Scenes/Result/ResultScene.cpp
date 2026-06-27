@@ -63,6 +63,93 @@ namespace
 		U"LT", U"CH", U"EX", U"IN",
 	};
 
+	String SignString(int32 value)
+	{
+		return value > 0 ? U"+" : U"";
+	}
+
+	String BuildBottomLeftText(const MusicGame::PlayResult& playResult, const kson::ChartData& chartData, bool fxLPressed, bool fxRPressed)
+	{
+		if (!fxLPressed && !fxRPressed)
+		{
+			return U"";
+		}
+
+		String text;
+
+		if (fxLPressed)
+		{
+			const auto& shortStats = playResult.chipOrLaserSlamStats;
+			const auto& longStats = playResult.longOrLaserLineStats;
+			text += I18n::Get(
+				I18n::Result::BottomLeftShortStats,
+				shortStats.critical,
+				shortStats.totalNear(),
+				shortStats.error);
+			text += I18n::Get(
+				I18n::Result::BottomLeftLongStats,
+				longStats.critical,
+				longStats.error);
+			text += I18n::Get(
+				I18n::Result::BottomLeftFastSlow,
+				playResult.comboStats.nearFast,
+				playResult.comboStats.nearSlow);
+
+			if (playResult.timingAverageMs.has_value())
+			{
+				text += I18n::Get(
+					I18n::Result::BottomLeftTimingAverage,
+					SignString(*playResult.timingAverageMs),
+					*playResult.timingAverageMs);
+			}
+		}
+
+		if (fxRPressed)
+		{
+			if (!text.empty())
+			{
+				text += U"\n";
+			}
+			if (chartData.gauge.total >= 100)
+			{
+				text += I18n::Get(I18n::Result::BottomLeftTotal, chartData.gauge.total);
+			}
+			text += I18n::Get(I18n::Result::BottomLeftGain, static_cast<int32>(playResult.uncappedGaugePercentage));
+		}
+
+		const int32 globalOffsetMs = playResult.playOption.globalOffsetMs;
+		if (globalOffsetMs != 0)
+		{
+			if (!text.empty() && text.back() != U'\n')
+			{
+				text += U"\n";
+			}
+			text += I18n::Get(
+				I18n::Result::BottomLeftGlobalOffset,
+				SignString(globalOffsetMs),
+				globalOffsetMs);
+		}
+
+		const int32 visualOffsetMs = playResult.playOption.visualOffsetMs;
+		if (visualOffsetMs != 0)
+		{
+			if (!text.empty() && text.back() != U'\n')
+			{
+				text += U"\n";
+			}
+			text += I18n::Get(
+				I18n::Result::BottomLeftVisualOffset,
+				SignString(visualOffsetMs),
+				visualOffsetMs);
+		}
+
+		while (!text.empty() && text.back() == U'\n')
+		{
+			text.pop_back();
+		}
+		return text;
+	}
+
 	constexpr StringView ClearStatusText(Achievement achievement, GaugeType gaugeType, bool isAssist)
 	{
 		switch (achievement)
@@ -567,6 +654,9 @@ Co::Task<bool> ResultScene::waitForNewRecordPanelClose()
 
 void ResultScene::update()
 {
+	const bool fxLPressed = KeyConfig::Pressed(kButtonFX_L);
+	const bool fxRPressed = KeyConfig::Pressed(kButtonFX_R);
+	m_canvas->setParamValue(U"bottomLeftText", BuildBottomLeftText(m_playResult, m_chartData, fxLPressed, fxRPressed));
 	m_canvas->update();
 	m_snsShare.update(m_canvas.get());
 }

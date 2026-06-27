@@ -16,9 +16,14 @@ namespace MusicGame::Judgment
 
 		int32 m_scoreValue = 0;
 		int32 m_gaugeValue;
+		int32 m_uncappedGaugeValue;
 		int32 m_gaugeValueNormal = 0; // NORMAL基準ゲージ値(HARDのGrade計算用)
 
 		ComboStatus m_comboStatus;
+
+		ComboStats m_chipOrLaserSlamStats;
+
+		ComboStats m_longOrLaserLineStats;
 
 		void addGaugeValue(int32 add);
 
@@ -53,11 +58,19 @@ namespace MusicGame::Judgment
 		/// @return 内部ゲージ値
 		int32 gaugeValue() const;
 
+		double uncappedGaugePercentage() const;
+
+		int32 uncappedGaugeValue() const;
+
 		int32 combo() const;
 
 		int32 maxCombo() const;
 
 		const ComboStats& comboStats() const;
+
+		const ComboStats& chipOrLaserSlamStats() const;
+
+		const ComboStats& longOrLaserLineStats() const;
 
 		bool isNoError() const;
 

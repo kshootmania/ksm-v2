@@ -52,7 +52,15 @@
 	},
 	"Result": {
 		"ScreenshotCopied": "截圖已複製到剪貼簿。\n在發佈頁面按 Ctrl+V 即可附加圖片。",
-		"ScreenshotCopied@macOS": "截圖已複製到剪貼簿。\n在發佈頁面按 Cmd+V 即可附加圖片。"
+		"ScreenshotCopied@macOS": "截圖已複製到剪貼簿。\n在發佈頁面按 Cmd+V 即可附加圖片。",
+		"BottomLeftShortStats": "[Short]\nC/N/E: {0}/{1}/{2}\n",
+		"BottomLeftLongStats": "[Long]\nC/E: {0}/{1}\n",
+		"BottomLeftFastSlow": "\nFast: {0} / Slow: {1}\n",
+		"BottomLeftTimingAverage": "(Average: {0}{1}ms)\n",
+		"BottomLeftTotal": "Total: {0}\n",
+		"BottomLeftGain": "Gain: {0}\n",
+		"BottomLeftGlobalOffset": "Global Offset: {0}{1}ms",
+		"BottomLeftVisualOffset": "Visual Offset: {0}{1}ms"
 	},
 	"Option": {
 		"FullscreenOff": "視窗模式",

@@ -109,6 +109,14 @@ namespace I18n
 	enum class Result
 	{
 		ScreenshotCopied,
+		BottomLeftShortStats,
+		BottomLeftLongStats,
+		BottomLeftFastSlow,
+		BottomLeftTimingAverage,
+		BottomLeftTotal,
+		BottomLeftGain,
+		BottomLeftGlobalOffset,
+		BottomLeftVisualOffset,
 	};
 
 	/// @brief IR関連テキストのキー名

@@ -17,13 +17,23 @@ namespace MusicGame
 
 		Judgment::ComboStats comboStats;
 
+		Judgment::ComboStats chipOrLaserSlamStats;
+
+		Judgment::ComboStats longOrLaserLineStats;
+
 		PlayOption playOption;
+
+		Optional<int32> timingAverageMs;
 
 		double gaugePercentage = 0.0;
 
 		double gaugePercentageForGrade = 0.0;
 
 		int32 gaugeValue = 0; // 内部ゲージ値(コースモード時の引き継ぎ用)
+
+		int32 uncappedGaugeValue = 0;
+
+		double uncappedGaugePercentage = 0.0;
 
 		double chartTimeProgress = 0.0; // 譜面進行率(0.0〜1.0、コースモードでの途中落ち時のAchievementRate計算用)
 

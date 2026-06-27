@@ -2857,6 +2857,161 @@
             0.0
           ],
           "color": [
+            128,
+            192,
+            96,
+            255
+          ],
+          "fontAssetName": "",
+          "fontSize": 12.0,
+          "gradationColor1": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gradationColor2": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "gradationType": "None",
+          "horizontalAlign": "Left",
+          "horizontalOverflow": "Wrap",
+          "minFontSize": 1.0,
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineFactorInner": 0.0,
+          "outlineFactorOuter": 0.0,
+          "padding": [
+            8.0,
+            6.0,
+            2.0,
+            4.0
+          ],
+          "shadowColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "shadowOffset": [
+            1.0,
+            1.0
+          ],
+          "sizingMode": "AutoResize",
+          "text": "",
+          "text_paramRef": "bottomLeftText",
+          "type": "Label",
+          "underlineColor": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "underlineStyle": "None",
+          "underlineThickness": 1.0,
+          "verticalAlign": "Middle",
+          "verticalOverflow": "Overflow"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": true,
+      "name": "BottomLeftText",
+      "region": {
+        "anchorMax": [
+          0.0,
+          1.0
+        ],
+        "anchorMin": [
+          0.0,
+          1.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          103.0,
+          24.0
+        ],
+        "sizeDeltaPivot": [
+          0.0,
+          1.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    },
+    {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "characterSpacing": [
+            0.0,
+            0.0
+          ],
+          "color": [
             255,
             255,
             255,
@@ -3585,6 +3740,10 @@
     "artistNameImgFilePath": {
       "type": "String",
       "value": ""
+    },
+    "bottomLeftText": {
+      "type": "String",
+      "value": "bottomLeftText"
     },
     "bottomRightText": {
       "type": "String",

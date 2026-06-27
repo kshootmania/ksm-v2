@@ -108,13 +108,19 @@ namespace MusicGame::Judgment
 	{
 	}
 
-	void JudgmentHandler::onChipJudged(JudgmentResult result)
+	void JudgmentHandler::onChipJudged(JudgmentResult result, Optional<double> timingDiffMs)
 	{
 		assert(result == JudgmentResult::kCritical || result == JudgmentResult::kNearFast || result == JudgmentResult::kNearSlow || result == JudgmentResult::kError);
 
 		if (m_isLockedForExit)
 		{
 			return;
+		}
+
+		if (timingDiffMs.has_value() && result != JudgmentResult::kError)
+		{
+			m_timingDiffSumMs += *timingDiffMs;
+			++m_timingDiffCount;
 		}
 
 		m_scoringStatus.onChipOrLaserSlamJudgment(result);
@@ -222,6 +228,9 @@ namespace MusicGame::Judgment
 	PlayResult JudgmentHandler::playResult(double currentTimeSec, double chartEndTimeSec, IsHardFailedYN isHardFailed, bool isAborted) const
 	{
 		const double chartTimeProgress = chartEndTimeSec > 0.0 ? Clamp(currentTimeSec / chartEndTimeSec, 0.0, 1.0) : 1.0;
+		const Optional<int32> timingAverageMs = m_timingDiffCount > 0
+			? Optional<int32>{ static_cast<int32>(Round(m_timingDiffSumMs / m_timingDiffCount)) }
+			: none;
 
 		return PlayResult
 		{
@@ -230,10 +239,15 @@ namespace MusicGame::Judgment
 			.finalCourseCombo = m_scoringStatus.courseCombo(),
 			.totalCombo = m_totalCombo,
 			.comboStats = m_scoringStatus.comboStats(),
+			.chipOrLaserSlamStats = m_scoringStatus.chipOrLaserSlamStats(),
+			.longOrLaserLineStats = m_scoringStatus.longOrLaserLineStats(),
 			.playOption = m_playOption,
+			.timingAverageMs = timingAverageMs,
 			.gaugePercentage = m_scoringStatus.gaugePercentage(m_playOption.gaugeType),
 			.gaugePercentageForGrade = m_scoringStatus.gaugePercentageForGrade(),
 			.gaugeValue = m_scoringStatus.gaugeValue(),
+			.uncappedGaugeValue = m_scoringStatus.uncappedGaugeValue(),
+			.uncappedGaugePercentage = m_scoringStatus.uncappedGaugePercentage(),
 			.chartTimeProgress = chartTimeProgress,
 			.isHardFailed = isHardFailed,
 			.isAborted = isAborted,

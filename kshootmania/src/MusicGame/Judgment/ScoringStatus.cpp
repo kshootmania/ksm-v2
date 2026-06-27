@@ -2,6 +2,30 @@
 
 namespace MusicGame::Judgment
 {
+	namespace
+	{
+		void AddToComboStats(ComboStats& stats, JudgmentResult result)
+		{
+			switch (result)
+			{
+			case JudgmentResult::kCritical:
+				++stats.critical;
+				break;
+			case JudgmentResult::kNearFast:
+				++stats.nearFast;
+				break;
+			case JudgmentResult::kNearSlow:
+				++stats.nearSlow;
+				break;
+			case JudgmentResult::kError:
+				++stats.error;
+				break;
+			default:
+				assert(false && "Invalid JudgmentResult in AddToComboStats");
+				break;
+			}
+		}
+	}
 
 	void ScoringStatus::addGaugeValue(int32 add)
 	{
@@ -39,6 +63,8 @@ namespace MusicGame::Judgment
 			m_gaugeValue = Min(m_gaugeValue + adjustedAdd, kGaugeValueMaxHard);
 			break;
 		}
+
+		m_uncappedGaugeValue += adjustedAdd;
 
 		// Grade計算用にNORMAL基準のゲージ値も更新
 		addGaugeValueNormal(add);
@@ -95,6 +121,7 @@ namespace MusicGame::Judgment
 		}
 
 		m_gaugeValue = Max(m_gaugeValue - adjustedSub, 0);
+		m_uncappedGaugeValue -= adjustedSub;
 
 		// Grade計算用にNORMAL基準のゲージ値も更新
 		const int32 normalSub = static_cast<int32>(sub * kGaugeDecreaseRateNormal);
@@ -108,6 +135,7 @@ namespace MusicGame::Judgment
 		, m_gameMode(gameMode)
 		, m_gaugeCalcType(ToGaugeCalcType(gaugeType, gameMode))
 		, m_gaugeValue(courseContinuation.has_value() ? courseContinuation->gaugeValue : ((gaugeType == GaugeType::kHardGauge || gameMode == GameMode::kCourseMode) ? kGaugeValueMaxHard : 0))
+		, m_uncappedGaugeValue(m_gaugeValue)
 		, m_comboStatus(courseContinuation)
 	{
 	}
@@ -115,6 +143,7 @@ namespace MusicGame::Judgment
 	void ScoringStatus::onChipOrLaserSlamJudgment(Judgment::JudgmentResult result)
 	{
 		m_comboStatus.processJudgmentResult(result);
+		AddToComboStats(m_chipOrLaserSlamStats, result);
 
 		switch (result)
 		{
@@ -167,6 +196,7 @@ namespace MusicGame::Judgment
 	void ScoringStatus::onLongOrLaserLineJudgment(Judgment::JudgmentResult result)
 	{
 		m_comboStatus.processJudgmentResult(result);
+		AddToComboStats(m_longOrLaserLineStats, result);
 
 		switch (result)
 		{
@@ -260,6 +290,16 @@ namespace MusicGame::Judgment
 		return m_gaugeValue;
 	}
 
+	double ScoringStatus::uncappedGaugePercentage() const
+	{
+		return calcGaugePercentageFromValue(m_uncappedGaugeValue, m_gaugeType);
+	}
+
+	int32 ScoringStatus::uncappedGaugeValue() const
+	{
+		return m_uncappedGaugeValue;
+	}
+
 	int32 ScoringStatus::combo() const
 	{
 		return m_comboStatus.combo();
@@ -273,6 +313,16 @@ namespace MusicGame::Judgment
 	const ComboStats& ScoringStatus::comboStats() const
 	{
 		return m_comboStatus.stats();
+	}
+
+	const ComboStats& ScoringStatus::chipOrLaserSlamStats() const
+	{
+		return m_chipOrLaserSlamStats;
+	}
+
+	const ComboStats& ScoringStatus::longOrLaserLineStats() const
+	{
+		return m_longOrLaserLineStats;
 	}
 
 	bool ScoringStatus::isNoError() const

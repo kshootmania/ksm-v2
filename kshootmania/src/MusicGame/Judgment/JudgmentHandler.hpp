@@ -28,6 +28,10 @@ namespace MusicGame::Judgment
 		// タイミング調整オフセット(秒)
 		double m_timingAdjustOffsetSec = 0.0;
 
+		double m_timingDiffSumMs = 0.0;
+
+		int32 m_timingDiffCount = 0;
+
 		// 前回ViewStatus反映時のコンボ数(100コンボ毎のアニメーションの検知に使用)
 		int32 m_prevDisplayCombo = 0;
 
@@ -47,7 +51,7 @@ namespace MusicGame::Judgment
 
 		/// @brief チップノーツ判定時に呼び出される
 		/// @param result 判定結果
-		void onChipJudged(JudgmentResult result);
+		void onChipJudged(JudgmentResult result, Optional<double> timingDiffMs = none);
 
 		/// @brief ロングノーツ判定時に呼び出される
 		/// @param result 判定結果
