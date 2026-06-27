@@ -61,7 +61,8 @@
 		"BottomLeftGain": "Gain: {0}\n",
 		"BottomLeftPlaybackSpeed": "Song Speed: {0}",
 		"BottomLeftGlobalOffset": "Global Offset: {0}{1}ms",
-		"BottomLeftVisualOffset": "Visual Offset: {0}{1}ms"
+		"BottomLeftVisualOffset": "Visual Offset: {0}{1}ms",
+		"UnlockConditionCompleted": "達成了解鎖條件!"
 	},
 	"Option": {
 		"FullscreenOff": "視窗模式",

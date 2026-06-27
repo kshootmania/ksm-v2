@@ -118,6 +118,7 @@ namespace I18n
 		BottomLeftPlaybackSpeed,
 		BottomLeftGlobalOffset,
 		BottomLeftVisualOffset,
+		UnlockConditionCompleted,
 	};
 
 	/// @brief IR関連テキストのキー名
