@@ -68,16 +68,46 @@ namespace
 		return value > 0 ? U"+" : U"";
 	}
 
+	String PlaybackSpeedDisplayString(double playbackSpeed)
+	{
+		return U"x{:.2f}"_fmt(playbackSpeed);
+	}
+
+	void AppendTextLine(String* pText, StringView line)
+	{
+		assert(pText != nullptr);
+		if (!pText->empty() && pText->back() != U'\n')
+		{
+			*pText += U"\n";
+		}
+		*pText += line;
+	}
+
+	void AppendTextEmptyLine(String* pText)
+	{
+		assert(pText != nullptr);
+		while (!pText->empty() && pText->back() == U'\n')
+		{
+			pText->pop_back();
+		}
+		if (!pText->empty())
+		{
+			*pText += U"\n\n";
+		}
+	}
+
+	void AppendTextSectionLine(String* pText, StringView line)
+	{
+		assert(pText != nullptr);
+		AppendTextEmptyLine(pText);
+		*pText += line;
+	}
+
 	String BuildBottomLeftText(const MusicGame::PlayResult& playResult, const kson::ChartData& chartData, bool fxLPressed, bool fxRPressed)
 	{
-		if (!fxLPressed && !fxRPressed)
-		{
-			return U"";
-		}
-
 		String text;
 
-		if (fxLPressed)
+		if (fxRPressed)
 		{
 			const auto& shortStats = playResult.chipOrLaserSlamStats;
 			const auto& longStats = playResult.longOrLaserLineStats;
@@ -90,6 +120,20 @@ namespace
 				I18n::Result::BottomLeftLongStats,
 				longStats.critical,
 				longStats.error);
+			AppendTextEmptyLine(&text);
+			if (chartData.gauge.total >= 100)
+			{
+				text += I18n::Get(I18n::Result::BottomLeftTotal, chartData.gauge.total);
+			}
+			text += I18n::Get(I18n::Result::BottomLeftGain, static_cast<int32>(playResult.uncappedGaugePercentage));
+		}
+
+		if (fxLPressed)
+		{
+			if (!text.empty())
+			{
+				AppendTextEmptyLine(&text);
+			}
 			text += I18n::Get(
 				I18n::Result::BottomLeftFastSlow,
 				playResult.comboStats.nearFast,
@@ -102,45 +146,38 @@ namespace
 					SignString(*playResult.timingAverageMs),
 					*playResult.timingAverageMs);
 			}
+
+			const int32 globalOffsetMs = playResult.playOption.globalOffsetMs;
+			if (globalOffsetMs != 0)
+			{
+				AppendTextLine(
+					&text,
+					I18n::Get(
+						I18n::Result::BottomLeftGlobalOffset,
+						SignString(globalOffsetMs),
+						globalOffsetMs));
+			}
+
+			const int32 visualOffsetMs = playResult.playOption.visualOffsetMs;
+			if (visualOffsetMs != 0)
+			{
+				AppendTextLine(
+					&text,
+					I18n::Get(
+						I18n::Result::BottomLeftVisualOffset,
+						SignString(visualOffsetMs),
+						visualOffsetMs));
+			}
 		}
 
-		if (fxRPressed)
+		const double playbackSpeed = playResult.playOption.playbackSpeed;
+		if (playbackSpeed != 1.0)
 		{
-			if (!text.empty())
-			{
-				text += U"\n";
-			}
-			if (chartData.gauge.total >= 100)
-			{
-				text += I18n::Get(I18n::Result::BottomLeftTotal, chartData.gauge.total);
-			}
-			text += I18n::Get(I18n::Result::BottomLeftGain, static_cast<int32>(playResult.uncappedGaugePercentage));
-		}
-
-		const int32 globalOffsetMs = playResult.playOption.globalOffsetMs;
-		if (globalOffsetMs != 0)
-		{
-			if (!text.empty() && text.back() != U'\n')
-			{
-				text += U"\n";
-			}
-			text += I18n::Get(
-				I18n::Result::BottomLeftGlobalOffset,
-				SignString(globalOffsetMs),
-				globalOffsetMs);
-		}
-
-		const int32 visualOffsetMs = playResult.playOption.visualOffsetMs;
-		if (visualOffsetMs != 0)
-		{
-			if (!text.empty() && text.back() != U'\n')
-			{
-				text += U"\n";
-			}
-			text += I18n::Get(
-				I18n::Result::BottomLeftVisualOffset,
-				SignString(visualOffsetMs),
-				visualOffsetMs);
+			AppendTextSectionLine(
+				&text,
+				I18n::Get(
+					I18n::Result::BottomLeftPlaybackSpeed,
+					PlaybackSpeedDisplayString(playbackSpeed)));
 		}
 
 		while (!text.empty() && text.back() == U'\n')

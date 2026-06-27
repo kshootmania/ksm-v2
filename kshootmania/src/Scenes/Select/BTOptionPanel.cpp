@@ -186,7 +186,7 @@ namespace
 	// 再生速度のカーソル値をもとに表示文字列を取得
 	String PlaybackSpeedToString(int32 cursor)
 	{
-		return U" {}% "_fmt(cursor);
+		return U" x{:.2f} "_fmt(cursor / 100.0);
 	}
 
 	String FormatMenuLine(StringView label, StringView value, bool isSelected, int32 currentCursor, int32 minCursor, int32 maxCursor)

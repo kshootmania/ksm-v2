@@ -115,6 +115,7 @@ namespace I18n
 		BottomLeftTimingAverage,
 		BottomLeftTotal,
 		BottomLeftGain,
+		BottomLeftPlaybackSpeed,
 		BottomLeftGlobalOffset,
 		BottomLeftVisualOffset,
 	};
