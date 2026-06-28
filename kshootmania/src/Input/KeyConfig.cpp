@@ -566,7 +566,7 @@ bool KeyConfig::Pressed(Button button)
 	}
 
 	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
-	if (button == kButtonStart && s_suppressStartThisFrame)
+	if (button == kButtonStart && (IsBT3PlusStartPressed() || s_suppressStartThisFrame))
 	{
 		return false;
 	}
@@ -647,7 +647,7 @@ bool KeyConfig::Down(Button button)
 	}
 
 	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
-	if (button == kButtonStart && s_suppressStartThisFrame)
+	if (button == kButtonStart && (IsBT3PlusStartPressed() || s_suppressStartThisFrame))
 	{
 		return false;
 	}
@@ -773,7 +773,7 @@ bool KeyConfig::Up(Button button)
 	}
 
 	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
-	if (button == kButtonStart && s_suppressStartThisFrame)
+	if (button == kButtonStart && (IsBT3PlusStartPressed() || s_suppressStartThisFrame))
 	{
 		return false;
 	}
