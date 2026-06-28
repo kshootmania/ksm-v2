@@ -95,7 +95,12 @@ namespace MusicGame::Graphics
 			return;
 		}
 
-		const auto applyFpsScale = [this](const FilePath& loadedPath)
+		const auto applyFpsScale =
+#ifdef _WIN32
+			[this](const FilePath& loadedPath)
+#else
+			[](const FilePath& loadedPath)
+#endif
 		{
 #ifdef _WIN32
 			const String ext = FileSystem::Extension(loadedPath);
@@ -182,7 +187,8 @@ namespace MusicGame::Graphics
 
 		if (m_started && !isPaused)
 		{
-			const double targetMoviePosSec = (currentTimeSec - m_startTimeSec) * m_fpsScale;
+			const double playbackSpeed = m_playbackSpeed != 0.0 ? m_playbackSpeed : 1.0;
+			const double targetMoviePosSec = (currentTimeSec - m_startTimeSec) * playbackSpeed * m_fpsScale;
 			const double currentMoviePosSec = m_movie.posSec();
 			const double deltaSec = Max(targetMoviePosSec - currentMoviePosSec, 0.0);
 			m_movie.advance(deltaSec);
@@ -254,7 +260,8 @@ namespace MusicGame::Graphics
 			return;
 		}
 
-		const double moviePosSec = (posSec.count() - m_startTimeSec) * m_fpsScale;
+		const double playbackSpeed = m_playbackSpeed != 0.0 ? m_playbackSpeed : 1.0;
+		const double moviePosSec = (posSec.count() - m_startTimeSec) * playbackSpeed * m_fpsScale;
 		if (moviePosSec >= 0.0)
 		{
 			m_movie.setPosSec(moviePosSec);
