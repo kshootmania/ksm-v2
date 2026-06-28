@@ -182,7 +182,11 @@ namespace MusicGame::Judgment
 		viewStatusRef.displayIsNoError = m_scoringStatus.displayIsNoError();
 
 		// 100コンボ毎にアニメーションの開始時刻を記録する
-		if (displayCombo > m_prevDisplayCombo && displayCombo / 100 > m_prevDisplayCombo / 100)
+		if (displayCombo == 0)
+		{
+			m_comboMilestoneEffectStartTimeSec = ViewStatus::kPastDisplayTimeSec;
+		}
+		else if (displayCombo > m_prevDisplayCombo && displayCombo / 100 > m_prevDisplayCombo / 100)
 		{
 			m_comboMilestoneEffectStartTimeSec = currentTimeSec;
 		}

@@ -349,7 +349,7 @@ namespace MusicGame::Graphics
 
 	void GraphicsMain::update(const GameStatus& gameStatus, const ViewStatus& viewStatus, const kson::TimingCache& timingCache)
 	{
-		m_comboOverlay.update(viewStatus);
+		m_comboOverlay.update(viewStatus, gameStatus.currentTimeSec);
 		m_scoreAnimator.update(viewStatus.score);
 		m_highway3DGraphics.update(viewStatus);
 		m_laserApproachIndicator.update(gameStatus, timingCache);

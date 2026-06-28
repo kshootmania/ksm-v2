@@ -29,8 +29,8 @@ namespace MusicGame::Graphics
 		// 初回更新かどうか
 		bool m_isFirstUpdate = true;
 
-		// 表示中かどうかのタイマー
-		Timer m_visibleTimer;
+		// コンボ表示の開始時刻(秒)
+		double m_visibleStartTimeSec = ViewStatus::kPastDisplayTimeSec;
 
 		// 100コンボ毎のアニメーションの開始時刻(秒)
 		double m_milestoneEffectStartTimeSec = ViewStatus::kPastDisplayTimeSec;
@@ -38,7 +38,7 @@ namespace MusicGame::Graphics
 	public:
 		ComboOverlay();
 
-		void update(const ViewStatus& viewStatus);
+		void update(const ViewStatus& viewStatus, double currentTimeSec);
 
 		void draw(double currentTimeSec) const;
 	};

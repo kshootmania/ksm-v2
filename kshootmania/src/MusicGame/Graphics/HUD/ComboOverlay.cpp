@@ -39,31 +39,35 @@ namespace MusicGame::Graphics
 				.sourceOffset = kMilestoneTextureSourceOffset,
 				.sourceSize = kMilestoneTextureSourceSize,
 			})
-		, m_visibleTimer(kVisibleDuration)
 	{
 	}
 
-	void ComboOverlay::update(const ViewStatus& viewStatus)
+	void ComboOverlay::update(const ViewStatus& viewStatus, double currentTimeSec)
 	{
-		// TODO: 楽曲時間を使うべき？
 		if (viewStatus.displayCombo == 0)
 		{
-			m_visibleTimer.reset(); // コンボが切れた時は非表示にする
+			m_visibleStartTimeSec = ViewStatus::kPastDisplayTimeSec; // コンボが切れた時は非表示にする
+			m_milestoneEffectStartTimeSec = ViewStatus::kPastDisplayTimeSec;
 		}
 		else if (m_combo != viewStatus.displayCombo && !m_isFirstUpdate)
 		{
-			m_visibleTimer.restart(); // コンボ数増加から一定時間表示
+			m_visibleStartTimeSec = currentTimeSec; // コンボ数増加から一定時間表示
+			m_milestoneEffectStartTimeSec = viewStatus.comboMilestoneEffectStartTimeSec;
+		}
+		else
+		{
+			m_milestoneEffectStartTimeSec = viewStatus.comboMilestoneEffectStartTimeSec;
 		}
 
 		m_combo = viewStatus.displayCombo;
 		m_isNoError = viewStatus.displayIsNoError;
-		m_milestoneEffectStartTimeSec = viewStatus.comboMilestoneEffectStartTimeSec;
 		m_isFirstUpdate = false;
 	}
 
 	void ComboOverlay::draw(double currentTimeSec) const
 	{
-		const bool isVisible = m_visibleTimer.isRunning() && !m_visibleTimer.reachedZero();
+		const double visibleElapsedSec = currentTimeSec - m_visibleStartTimeSec;
+		const bool isVisible = 0.0 <= visibleElapsedSec && visibleElapsedSec < kVisibleDuration.count();
 		const double milestoneElapsedSec = currentTimeSec - m_milestoneEffectStartTimeSec;
 		const bool isMilestoneVisible = 0.0 <= milestoneElapsedSec && milestoneElapsedSec < kMilestoneDurationSec;
 		if (!isVisible && !isMilestoneVisible)
@@ -76,7 +80,7 @@ namespace MusicGame::Graphics
 
 		if (isVisible)
 		{
-			const double shakeX = Scaled(1.0) * (Periodic::Square0_1(0.05s) - 0.5); // TODO: 楽曲時間を使うべき？
+			const double shakeX = Scaled(1.0) * (MathUtils::WrappedFmod(currentTimeSec, 0.05) < 0.025 ? 0.5 : -0.5);
 
 			const TextureRegion& comboTextureRegion = m_isNoError ? m_comboTextureRegionNoError : m_comboTextureRegion;
 			comboTextureRegion.drawAt(Scene::Width() / 2 + shakeX, Scaled(300));
