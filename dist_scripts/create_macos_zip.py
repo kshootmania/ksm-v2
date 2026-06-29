@@ -41,6 +41,11 @@ def get_version_from_cmake():
 	return "unknown"
 
 
+def get_zip_version(version):
+	"""zipファイル名用のバージョン文字列を取得"""
+	return version.replace("-", "_")
+
+
 def load_file_mappings(tsv_path):
 	"""TSVファイルからファイルマッピングを読み込む"""
 	mappings = []
@@ -153,10 +158,12 @@ def main():
 	script_dir = Path(__file__).resolve().parent
 	tsv_path = script_dir / "files_macos.tsv"
 	output_dir = script_dir / "kshootmania_v2"
-	zip_path = script_dir / "kshootmania_v2_macos.zip"
+	zip_path = None
 
 	try:
 		version = get_version_from_cmake()
+		zip_version = get_zip_version(version)
+		zip_path = script_dir / f"kshootmania_v{zip_version}_macos.zip"
 		print(f"バージョン: {version}")
 
 		print(f"TSVファイル: {tsv_path}")
