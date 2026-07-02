@@ -27,7 +27,11 @@ void ScreenUtils::ApplyScreenSizeConfig()
 		Scene::Resize(800, 600);
 		Window::Resize(800, 600);
 	}
+#ifdef __EMSCRIPTEN__
+	// Web版ではフルスクリーン切り替えにユーザー操作が必要なため起動時には行わない
+#else
 	Window::SetFullscreen(isFullScreen);
+#endif
 
 #ifdef _WIN32
 	// 他のウィンドウに切り替えられるようTOPMOSTを解除

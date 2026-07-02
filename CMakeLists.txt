@@ -30,6 +30,16 @@ if(NOT DEFINED Siv3D_ROOT)
     set(Siv3D_ROOT "$ENV{HOME}/Library/Siv3D" CACHE PATH "Path to Siv3D installation")
 endif()
 
+# Web(Emscripten)ビルドではツール・テストの実行ファイルは生成しない
+if(EMSCRIPTEN)
+    set(KSON_BUILD_TOOL_KSH2KSON OFF CACHE BOOL "" FORCE)
+    set(KSON_BUILD_TOOL_KSON2KSH OFF CACHE BOOL "" FORCE)
+    set(KSON_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+
+    # wasmではスタック保護(__stack_chk_guard)が使用できない
+    set(SQLITECPP_USE_STACK_PROTECTION OFF CACHE BOOL "" FORCE)
+endif()
+
 add_subdirectory(kson)
 add_subdirectory(ksmaudio)
 set(KSMAXIS_BUILD_EXAMPLE OFF CACHE BOOL "" FORCE)
@@ -45,7 +55,10 @@ if(APPLE)
 endif()
 
 add_subdirectory(kshootmania)
-add_subdirectory(tests)
+
+if(NOT EMSCRIPTEN)
+    add_subdirectory(tests)
+endif()
 
 if(WIN32)
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT kshootmania)

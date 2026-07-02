@@ -109,7 +109,8 @@ void OutputLicenseTxt()
 	// ライセンス情報を取得
 	Array<LicenseInfo> licenses = LicenseManager::EnumLicenses();
 
-	// BASS Audio Libraryのライセンス情報を追加
+	// BASS Audio LibraryとBASS_FXのライセンス情報を追加(Web版はBASS未使用のため除外)
+#ifndef __EMSCRIPTEN__
 	LicenseInfo bassLicense;
 	bassLicense.title = U"BASS Audio Library";
 	bassLicense.copyright = U"Copyright (c) 1999-2024 Un4seen Developments Ltd.\nhttps://www.un4seen.com/";
@@ -130,6 +131,49 @@ void OutputLicenseTxt()
 		U"* Freeverb - Copyright (c) 2000 Jezar at Dreampoint (Public domain)\n"
 		U"* Pitch shifting using FFT [smbPitchShift v1.2] - Copyright (c) 1999-2009 Stephan M. Bernsee";
 	licenses.push_back(bassFxLicense);
+#else
+	// Web版のオーディオバックエンドで使用しているライブラリのライセンス情報を追加
+	LicenseInfo miniaudioLicense;
+	miniaudioLicense.title = U"miniaudio";
+	miniaudioLicense.copyright = U"Copyright (c) 2025 David Reid\nhttps://miniaud.io/";
+	miniaudioLicense.text = U"This software is available as a choice of the following licenses (MIT No Attribution / Public Domain).\n"
+		U"\n"
+		U"Permission is hereby granted, free of charge, to any person obtaining a copy of\n"
+		U"this software and associated documentation files (the \"Software\"), to deal in\n"
+		U"the Software without restriction, including without limitation the rights to\n"
+		U"use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies\n"
+		U"of the Software, and to permit persons to whom the Software is furnished to do so.\n"
+		U"\n"
+		U"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
+		U"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
+		U"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n"
+		U"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
+		U"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
+		U"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
+	licenses.push_back(miniaudioLicense);
+
+	LicenseInfo stbVorbisLicense;
+	stbVorbisLicense.title = U"stb_vorbis";
+	stbVorbisLicense.copyright = U"Copyright (c) 2017 Sean Barrett\nhttps://github.com/nothings/stb";
+	stbVorbisLicense.text = U"This software is available as a choice of the following licenses (MIT License / Public Domain).\n"
+		U"\n"
+		U"Permission is hereby granted, free of charge, to any person obtaining a copy of\n"
+		U"this software and associated documentation files (the \"Software\"), to deal in\n"
+		U"the Software without restriction, including without limitation the rights to\n"
+		U"use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies\n"
+		U"of the Software, and to permit persons to whom the Software is furnished to do\n"
+		U"so, subject to the following conditions:\n"
+		U"The above copyright notice and this permission notice shall be included in all\n"
+		U"copies or substantial portions of the Software.\n"
+		U"\n"
+		U"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
+		U"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
+		U"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n"
+		U"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
+		U"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
+		U"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
+	licenses.push_back(stbVorbisLicense);
+#endif
 
 	// libksonのライセンス情報を追加
 	LicenseInfo ksonLicense;
@@ -389,7 +433,13 @@ void KSMMain()
 
 	// フレームレート制限(Vsync有効時は無効化)
 	const int32 fpsLimitValue = vsyncParts.size() >= 2 ? ParseOr<int32>(vsyncParts[1], 300) : 300;
+#ifdef __EMSCRIPTEN__
+	// Web版ではブラウザ側で描画タイミングが制御されるためフレームレート制限は使用しない
+	(void)fpsLimitValue;
+	const Optional<int32> frameRateLimit = none;
+#else
 	const Optional<int32> frameRateLimit = vsyncEnabled ? none : Optional<int32>(fpsLimitValue);
+#endif
 	Addon::Register(FrameRateLimit::kAddonName, std::make_unique<FrameRateLimit>(frameRateLimit), -100);
 
 	Addon::Register(AutoMuteAddon::kAddonName, std::make_unique<AutoMuteAddon>(), 1);

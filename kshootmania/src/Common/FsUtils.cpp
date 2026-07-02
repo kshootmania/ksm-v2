@@ -29,6 +29,9 @@ namespace FsUtils
 		return FileSystem::PathAppend(appSupport, U"kshootmania");
 #elif defined(__linux__)
 		return FileSystem::ParentPath(g_moduleAbsolutePath);
+#elif defined(__EMSCRIPTEN__)
+		// Web版では仮想ファイルシステムのルートを使用
+		return U"/";
 #else
 		return FileSystem::ParentPath(FileSystem::ModulePath());
 #endif

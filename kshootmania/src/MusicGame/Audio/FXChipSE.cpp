@@ -19,7 +19,7 @@ namespace MusicGame::Audio
 			if (IsBuiltInSoundName(filename))
 			{
 				// ビルトインの効果音
-				return U"se/Note/{}.wav"_fmt(Unicode::FromUTF8(filename));
+				return U"se/note/{}.wav"_fmt(Unicode::FromUTF8(filename));
 			}
 			else
 			{

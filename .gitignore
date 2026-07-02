@@ -413,10 +413,17 @@ kshootmania/App/kshootmania
 kshootmania/App/kshooteditor
 kshootmania/App/resources/
 
+# Web
+kshootmania/AppWeb/*
+!kshootmania/AppWeb/songs_default/
+kshootmania/AppWeb/songs_default/*
+!kshootmania/AppWeb/songs_default/.gitkeep
+
 **/App/songs/*
 !**/App/songs/K-Shoot MANIA/
 **/App/songs/K-Shoot MANIA/*
 !**/App/songs/K-Shoot MANIA/.gitkeep
+
 **/App/config.ini
 **/App/cache/
 **/App/score/

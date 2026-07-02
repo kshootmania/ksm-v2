@@ -1,7 +1,7 @@
 ﻿#include "MessageBoxUtils.hpp"
-#ifdef _WIN32
+#if defined(_WIN32)
 #include <Windows.h>
-#else
+#elif defined(__APPLE__)
 #include <ksmplatform_macos/input_method.h>
 #endif
 
@@ -38,7 +38,9 @@ MessageBoxResult MessageBoxUtils::ShowOK(const StringView text, const MessageBox
 	return MessageBoxResult::OK;
 #else
 	const auto result = System::MessageBoxOK(text, style);
+#ifdef __APPLE__
 	KSMPlatformMacOS_ActivateWindow();
+#endif
 	return result;
 #endif
 }
@@ -52,7 +54,9 @@ MessageBoxResult MessageBoxUtils::ShowYesNo(const StringView text, const Message
 	return result == IDYES ? MessageBoxResult::OK : MessageBoxResult::Cancel;
 #else
 	const auto result = System::MessageBoxOKCancel(text, style);
+#ifdef __APPLE__
 	KSMPlatformMacOS_ActivateWindow();
+#endif
 	return result;
 #endif
 }

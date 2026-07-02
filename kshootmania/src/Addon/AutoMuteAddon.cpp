@@ -1,15 +1,30 @@
 ﻿#include "AutoMuteAddon.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
+namespace
+{
+	/// @brief ミュートすべきかどうかを返す(Web版ではフォーカス取得不可のため常にfalse)
+	bool IsMuteRequired(bool isEnabled)
+	{
+#ifdef __EMSCRIPTEN__
+		// emscriptenのGLFW実装はGLFW_FOCUSEDが常にfalseを返すため自動ミュートしない
+		(void)isEnabled;
+		return false;
+#else
+		return isEnabled && !Window::GetState().focused;
+#endif
+	}
+}
+
 AutoMuteAddon::AutoMuteAddon()
-	: m_isMute(m_isEnabled && !Window::GetState().focused)
+	: m_isMute(IsMuteRequired(m_isEnabled))
 {
 	ksmaudio::SetMute(m_isMute);
 }
 
 bool AutoMuteAddon::update()
 {
-	bool isMute = m_isEnabled && !Window::GetState().focused;
+	bool isMute = IsMuteRequired(m_isEnabled);
 	if (m_isMute != isMute)
 	{
 		m_isMute = isMute;

@@ -51,8 +51,14 @@ namespace
 	constexpr int32 kHispeedOCModStep = 25; // o/c-modの刻み幅
 
 	// 再生速度の範囲
+#ifdef __EMSCRIPTEN__
+	// Web版は再生速度変更未対応のため100%固定
+	constexpr int32 kPlaybackSpeedMin = 100;
+	constexpr int32 kPlaybackSpeedMax = 100;
+#else
 	constexpr int32 kPlaybackSpeedMin = 10; // 10%
 	constexpr int32 kPlaybackSpeedMax = 300; // 300%
+#endif
 	constexpr int32 kPlaybackSpeedStep = 5; // 5%刻み
 
 	int32 CursorMin(HispeedType hispeedType)

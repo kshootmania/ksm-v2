@@ -164,6 +164,93 @@ if(APPLE)
     target_compile_definitions(kshootmania PRIVATE
         SIV3D_PLATFORM_MACOS
     )
+elseif(EMSCRIPTEN)
+    # Siv3DのWeb版はプリコンパイル済みヘッダ非対応のため通常のヘッダとしてインクルード
+    target_compile_options(kshootmania PRIVATE
+        -Wall
+        -Wextra
+        -Wno-unknown-pragmas
+        -include ${CMAKE_CURRENT_SOURCE_DIR}/src/stdafx.h
+    )
+
+    # 出力はHTML形式(kshootmania.html, .js, .wasm, .data)
+    set_target_properties(kshootmania PROPERTIES
+        SUFFIX ".html"
+        RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/AppWeb
+    )
+
+    set(KSM_WEB_SIV3D_RESOURCES "" CACHE PATH "Path to Siv3D Web app resources directory")
+    if(NOT KSM_WEB_SIV3D_RESOURCES)
+        message(FATAL_ERROR "KSM_WEB_SIV3D_RESOURCES must be set to the Siv3D Web App resources directory")
+    endif()
+    if(NOT EXISTS "${KSM_WEB_SIV3D_RESOURCES}/engine")
+        message(FATAL_ERROR "KSM_WEB_SIV3D_RESOURCES must contain an engine directory: ${KSM_WEB_SIV3D_RESOURCES}")
+    endif()
+
+    target_link_options(kshootmania PRIVATE
+        -fexceptions
+        -sASYNCIFY=1
+        -sTOTAL_STACK=32MB
+        -sINITIAL_MEMORY=256MB
+        -sFORCE_FILESYSTEM=1
+        --preload-file=${KSM_WEB_SIV3D_RESOURCES}/engine@/resources/engine
+        --preload-file=${CMAKE_CURRENT_SOURCE_DIR}/App/assets@/resources/assets
+        --preload-file=${CMAKE_CURRENT_SOURCE_DIR}/App/imgs@/imgs
+        --preload-file=${CMAKE_CURRENT_SOURCE_DIR}/App/se@/se
+        --preload-file=${CMAKE_CURRENT_SOURCE_DIR}/App/ui@/ui
+        --preload-file=${CMAKE_CURRENT_SOURCE_DIR}/App/shaders@/shaders
+        --preload-file=${CMAKE_CURRENT_SOURCE_DIR}/App/lang@/lang
+        --exclude-file=*/.DS_Store
+    )
+
+    # Asyncify対象の関数リスト(OpenSiv3D/Web/App/CMakeLists.txtの設定に準拠)
+    set(KSM_ASYNCIFY_ADD
+        main
+        "Main()"
+        dynCall_v
+        dynCall_vi
+        "s3d::TryMain()"
+        "s3d::CSystem::init()"
+        "s3d::System::Update()"
+        "s3d::AACDecoder::decode(*) const"
+        "s3d::MP3Decoder::decode(*) const"
+        "s3d::CAudioDecoder::decode(*)"
+        "s3d::AudioDecoder::Decode(*)"
+        "s3d::Wave::Wave(*)"
+        "s3d::Audio::Audio(*)"
+        "s3d::GenericDecoder::decode(*) const"
+        "s3d::CImageDecoder::decode(*)"
+        "s3d::Image::Image(*)"
+        "s3d::Texture::Texture(*)"
+        "s3d::ImageDecoder::Decode(*)"
+        "s3d::ImageDecoder::GetImageInfo(*)"
+        "s3d::Model::Model(*)"
+        "s3d::CModel::create(*)"
+        "s3d::CRenderer2D_GLES3::init()"
+        "s3d::Clipboard::GetText(*)"
+        "s3d::CClipboard::getText(*)"
+        "s3d::SimpleHTTP::Save(*)"
+        "s3d::SimpleHTTP::Load(*)"
+        "s3d::SimpleHTTP::Get(*)"
+        "s3d::SimpleHTTP::Post(*)"
+        "s3d::VideoReader::VideoReader(*)"
+        "s3d::VideoReader::open(*)"
+        "s3d::Platform::Web::FetchFile(*)"
+    )
+    set(KSM_ASYNCIFY_IMPORTS
+        siv3dRequestAnimationFrame
+        siv3dGetClipboardText
+        siv3dDecodeImageFromFile
+        siv3dSleepUntilWaked
+        invoke_v
+        invoke_vi
+    )
+    list(TRANSFORM KSM_ASYNCIFY_ADD REPLACE ".+" "'\\0'")
+    string(REPLACE ";" "," KSM_ASYNCIFY_ADD "${KSM_ASYNCIFY_ADD}")
+    target_link_options(kshootmania PRIVATE "SHELL:-sASYNCIFY_ADD=[${KSM_ASYNCIFY_ADD}]")
+    list(TRANSFORM KSM_ASYNCIFY_IMPORTS REPLACE ".+" "'\\0'")
+    string(REPLACE ";" "," KSM_ASYNCIFY_IMPORTS "${KSM_ASYNCIFY_IMPORTS}")
+    target_link_options(kshootmania PRIVATE "SHELL:-sASYNCIFY_IMPORTS=[${KSM_ASYNCIFY_IMPORTS}]")
 elseif(UNIX)
     # Siv3DのmacOS/Linux版はプリコンパイル済みヘッダ非対応のため通常のヘッダとしてインクルード
     target_compile_options(kshootmania PRIVATE

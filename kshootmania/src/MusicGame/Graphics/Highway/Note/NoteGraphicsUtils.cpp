@@ -5,10 +5,14 @@ namespace MusicGame::Graphics::NoteGraphicsUtils
 {
 	TiledTexture ApplyAlphaToNoteTexture(const Texture& texture, const TiledTextureSizeInfo& sizeInfo)
 	{
+#ifdef __EMSCRIPTEN__
+		const PixelShader ps = ESSL{ U"shaders/multi_texture_mask.essl.frag",{ { U"PSConstants2D", 0 } } };
+#else
 		const PixelShader ps = HLSL{ U"shaders/multi_texture_mask.hlsl", U"PS" } | GLSL{ U"shaders/multi_texture_mask.frag",{ { U"PSConstants2D", 0 } } };
+#endif
 		if (!ps)
 		{
-			throw Error(U"Failed to load shader file 'shaders/multi_texture_mask.hlsl' or 'shaders/multi_texture_mask.frag'");
+			throw Error(U"Failed to load multi_texture_mask shader");
 		}
 
 		const Size textureSize = { sizeInfo.sourceSize.x * sizeInfo.column / 2, sizeInfo.sourceSize.y * sizeInfo.row };
