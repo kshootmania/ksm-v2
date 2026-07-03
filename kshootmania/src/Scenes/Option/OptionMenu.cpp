@@ -15,7 +15,7 @@ OptionMenu::OptionMenu(const Array<OptionMenuField::CreateInfo>& fieldCreateInfo
 		LinearMenu::CreateInfoWithEnumCount{
 			.cursorInputCreateInfo = {
 				.type = CursorInput::Type::Vertical,
-				.buttonFlags = CursorButtonFlags::kArrowOrLaser,
+				.buttonFlags = CursorButtonFlags::kArrowOrLaser | CursorButtonFlags::kMouseWheel,
 				.buttonIntervalSec = 0.1,
 				.buttonIntervalSecFirst = 0.5,
 			},
@@ -28,9 +28,22 @@ OptionMenu::OptionMenu(const Array<OptionMenuField::CreateInfo>& fieldCreateInfo
 
 bool OptionMenu::update()
 {
+	return update(MouseInput{});
+}
+
+bool OptionMenu::update(const MouseInput& mouseInput)
+{
 	m_menu.update();
 
-	const bool cursorChanged = m_menu.deltaCursor() != 0;
+	bool cursorChanged = m_menu.deltaCursor() != 0;
+
+	// クリックされた項目へカーソルを移動
+	if (mouseInput.clickedItemIdx.has_value() && *mouseInput.clickedItemIdx != m_menu.cursor())
+	{
+		m_menu.setCursor(*mouseInput.clickedItemIdx);
+		cursorChanged = true;
+	}
+
 	bool valueChanged = false;
 
 	if (!m_fields.empty())
@@ -42,7 +55,7 @@ bool OptionMenu::update()
 			Logger << U"[ksm warning] OptionMenu::update(): Menu cursor is out of range! (func=OptionMenu::update(), cursor={}, min=0, max={})"_fmt(cursorIdx, enumCount - 1);
 			return false;
 		}
-		valueChanged = m_fields[cursorIdx].update();
+		valueChanged = m_fields[cursorIdx].update(mouseInput.valueDelta);
 	}
 
 	return cursorChanged || valueChanged;

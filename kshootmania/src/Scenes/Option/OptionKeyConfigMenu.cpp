@@ -975,6 +975,35 @@ namespace
 		return input.deviceType() == InputDeviceType::Undefined;
 	}
 
+	// クリックイベントのタグとカーソル位置の対応関係
+	const Array<std::pair<String, OptionKeyConfigCursor>> kClickTagToCursorPairs = {
+		{ U"onClickKeyConfigStart", OptionKeyConfigCursor::Start },
+		{ U"onClickKeyConfigBack", OptionKeyConfigCursor::Back },
+		{ U"onClickKeyConfigBTA", OptionKeyConfigCursor::BT_A },
+		{ U"onClickKeyConfigBTB", OptionKeyConfigCursor::BT_B },
+		{ U"onClickKeyConfigBTC", OptionKeyConfigCursor::BT_C },
+		{ U"onClickKeyConfigBTD", OptionKeyConfigCursor::BT_D },
+		{ U"onClickKeyConfigFXL", OptionKeyConfigCursor::FX_L },
+		{ U"onClickKeyConfigFXR", OptionKeyConfigCursor::FX_R },
+		{ U"onClickKeyConfigLaserL", OptionKeyConfigCursor::Laser_L },
+		{ U"onClickKeyConfigLaserR", OptionKeyConfigCursor::Laser_R },
+		{ U"onClickKeyConfigBothFX", OptionKeyConfigCursor::FX_LR },
+		{ U"onClickKeyConfigConfigSet", OptionKeyConfigCursor::ConfigSet },
+	};
+
+	/// @brief Clickイベントが発火した項目のカーソル位置を返す(発火していない場合はnone)
+	Optional<OptionKeyConfigCursor> FiredClickCursor(const noco::Canvas& canvas)
+	{
+		for (const auto& [tag, cursor] : kClickTagToCursorPairs)
+		{
+			if (canvas.isEventFiredWithTag(tag))
+			{
+				return cursor;
+			}
+		}
+		return none;
+	}
+
 	// 重複時の赤色の文字色
 	constexpr ColorF kDuplicatedColor{ 1.0, 0.0, 0.0, 1.0 };
 	// 未アサイン時のグレー文字色
@@ -1025,7 +1054,7 @@ KeyConfig::ConfigSet OptionKeyConfigMenu::targetConfigSet() const
 	return m_configSetMenu.cursorAs<KeyConfig::ConfigSet>();
 }
 
-void OptionKeyConfigMenu::updateNoneState()
+void OptionKeyConfigMenu::updateNoneState(noco::Canvas* pCanvas)
 {
 	m_horizontalCursorInput.update();
 	m_verticalCursorInput.update();
@@ -1053,6 +1082,21 @@ void OptionKeyConfigMenu::updateNoneState()
 		m_cursor = NextCursor(m_cursor, direction.value());
 	}
 
+	// クリックされた項目がカーソル位置と同じ場合は編集開始、異なる場合はカーソル移動
+	const Optional<OptionKeyConfigCursor> clickedCursor = FiredClickCursor(*pCanvas);
+	bool clickDecided = false;
+	if (clickedCursor.has_value())
+	{
+		if (*clickedCursor == m_cursor)
+		{
+			clickDecided = true;
+		}
+		else
+		{
+			m_cursor = *clickedCursor;
+		}
+	}
+
 	// 設定解除
 	if ((KeyConfig::Pressed(kButtonFX_L) && KeyConfig::Down(kButtonFX_R)) || (KeyConfig::Down(kButtonFX_L) && KeyConfig::Pressed(kButtonFX_R)) || KeyConfig::Down(kButtonFX_LR) || KeySpace.down())
 	{
@@ -1070,15 +1114,32 @@ void OptionKeyConfigMenu::updateNoneState()
 	}
 
 	// 選択
-	if (KeyConfig::Down(kButtonStart) && CursorToButton1(m_cursor).has_value())
+	if ((KeyConfig::Down(kButtonStart) || clickDecided) && CursorToButton1(m_cursor).has_value())
 	{
 		m_state = OptionKeyConfigMenuState::SettingButton1;
+	}
+
+	// ConfigSetの左右矢印クリックによる切り替え量
+	int32 configSetClickDelta = 0;
+	if (pCanvas->isEventFiredWithTag(U"onClickKeyConfigConfigSetPrev"))
+	{
+		configSetClickDelta = -1;
+	}
+	else if (pCanvas->isEventFiredWithTag(U"onClickKeyConfigConfigSetNext"))
+	{
+		configSetClickDelta = 1;
+	}
+
+	// 矢印クリック時はカーソルもConfigSetへ移動
+	if (configSetClickDelta != 0)
+	{
+		m_cursor = OptionKeyConfigCursor::ConfigSet;
 	}
 
 	// ConfigSet切り替え
 	if (m_cursor == OptionKeyConfigCursor::ConfigSet)
 	{
-		m_configSetMenu.update();
+		m_configSetMenu.updateWithExternalDelta(configSetClickDelta);
 	}
 }
 
@@ -1224,12 +1285,31 @@ OptionKeyConfigMenu::OptionKeyConfigMenu()
 {
 }
 
-void OptionKeyConfigMenu::update()
+void OptionKeyConfigMenu::update(noco::Canvas* pCanvas)
 {
+	// ボタン編集中にクリックされた場合は編集を中止してカーソル選択状態に戻す
+	if (isButtonEditingState())
+	{
+		const Optional<OptionKeyConfigCursor> clickedCursor = FiredClickCursor(*pCanvas);
+		const bool configSetArrowClicked =
+			pCanvas->isEventFiredWithTag(U"onClickKeyConfigConfigSetPrev") ||
+			pCanvas->isEventFiredWithTag(U"onClickKeyConfigConfigSetNext");
+		if (clickedCursor.has_value() || configSetArrowClicked)
+		{
+			m_state = OptionKeyConfigMenuState::None;
+			if (clickedCursor.has_value() && *clickedCursor != m_cursor)
+			{
+				// 別の項目をクリックした場合はその項目へカーソルを移動
+				m_cursor = *clickedCursor;
+			}
+			return;
+		}
+	}
+
 	switch (m_state)
 	{
 	case OptionKeyConfigMenuState::None:
-		updateNoneState();
+		updateNoneState(pCanvas);
 		break;
 
 	case OptionKeyConfigMenuState::SettingButton1:
@@ -1290,17 +1370,15 @@ void OptionKeyConfigMenu::updateUI(noco::Canvas* pCanvas) const
 		return defaultColor;
 	};
 
-	// ConfigSetのテキスト
-	const StringView leftArrow = m_configSetMenu.isCursorMin() ? U" " : U"<";
-	const StringView rightArrow = m_configSetMenu.isCursorMax() ? U" " : U">";
+	// ConfigSetのテキスト(左右の矢印は個別ノードのため含めない)
 	String configSetText;
 	if (configSet == KeyConfig::ConfigSet::kKeyboard1 || configSet == KeyConfig::ConfigSet::kKeyboard2)
 	{
-		configSetText = leftArrow + I18n::Get(I18n::Option::KeyConfigCategoryKeyboard, static_cast<int32>(configSet) - KeyConfig::ConfigSet::kKeyboard1 + 1) + rightArrow;
+		configSetText = I18n::Get(I18n::Option::KeyConfigCategoryKeyboard, static_cast<int32>(configSet) - KeyConfig::ConfigSet::kKeyboard1 + 1);
 	}
 	else
 	{
-		configSetText = leftArrow + I18n::Get(I18n::Option::KeyConfigCategoryGamepad, static_cast<int32>(configSet) - KeyConfig::ConfigSet::kGamepad1 + 1) + rightArrow;
+		configSetText = I18n::Get(I18n::Option::KeyConfigCategoryGamepad, static_cast<int32>(configSet) - KeyConfig::ConfigSet::kGamepad1 + 1);
 	}
 
 	// Start/Backのテキスト
@@ -1365,5 +1443,7 @@ void OptionKeyConfigMenu::updateUI(noco::Canvas* pCanvas) const
 		{ U"bothFXColor", getColor(kButtonFX_LR, kDefaultColor) },
 		{ U"configSetState", getStyleState(OptionKeyConfigCursor::ConfigSet) },
 		{ U"configSetText", configSetText },
+		{ U"configSetPrevArrowVisible", !m_configSetMenu.isCursorMin() },
+		{ U"configSetNextArrowVisible", !m_configSetMenu.isCursorMax() },
 	});
 }

@@ -597,7 +597,7 @@ Co::Task<void> ResultScene::start()
 			{
 				break;
 			}
-			if (KeyConfig::Down(kButtonStart) && !KeyShift.pressed())
+			if ((KeyConfig::Down(kButtonStart) && !KeyShift.pressed()) || isClickDecideDown())
 			{
 				break;
 			}
@@ -658,10 +658,11 @@ Co::Task<bool> ResultScene::waitForNewRecordPanelClose()
 		}
 		fxLRPressedPrev = fxLRPressed;
 
-		// 3秒経過またはSTART/Backで終了(Shift+STARTはツイート機能用なので除外)
+		// 3秒経過またはSTART/Back/クリックで終了(Shift+STARTはツイート機能用なので除外)
 		if (displayStopwatch.sF() >= 3.0 ||
 			(KeyConfig::Down(kButtonStart) && !KeyShift.pressed()) ||
-			KeyConfig::Down(kButtonBack))
+			KeyConfig::Down(kButtonBack) ||
+			isClickDecideDown())
 		{
 			break;
 		}
@@ -682,15 +683,37 @@ Co::Task<bool> ResultScene::waitForNewRecordPanelClose()
 		}
 		fxLRPressedPrev = fxLRPressed;
 
-		if ((KeyConfig::Down(kButtonStart) && !KeyShift.pressed()) || KeyConfig::Down(kButtonBack))
+		if ((KeyConfig::Down(kButtonStart) && !KeyShift.pressed()) || KeyConfig::Down(kButtonBack) || isClickDecideDown())
 		{
 			co_return true;
 		}
 	}
 }
 
+bool ResultScene::isClickDecideDown() const
+{
+	if (!MouseL.down())
+	{
+		return false;
+	}
+
+	// SNSボタンのクリックをシーン送りとして扱わないよう除外
+	if (const auto snsButton = m_canvas->findByName(U"SNSButton"))
+	{
+		if (snsButton->isHovered())
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void ResultScene::update()
 {
+	// 画面全体がクリック可能なのでカーソルを人差し指に変更
+	Cursor::RequestStyle(CursorStyle::Hand);
+
 	const bool fxLPressed = KeyConfig::Pressed(kButtonFX_L);
 	const bool fxRPressed = KeyConfig::Pressed(kButtonFX_R);
 	m_canvas->setParamValue(U"bottomLeftText", BuildBottomLeftText(m_playResult, m_chartData, fxLPressed, fxRPressed));

@@ -24,12 +24,22 @@ Co::Task<void> SimpleDialog::start()
 	m_canvas->setParamValue(U"bodyText", m_bodyText);
 	m_canvas->setParamValue(U"hasTitle", !m_titleText.isEmpty());
 
-	// StartまたはBackで閉じる
+	// ヒットテスト座標を描画と一致させるため中央寄せとスケーリングをCanvas側に設定
+	m_canvas->setAutoFitMode(noco::AutoFitMode::None);
+
+	// Start・Back・クリックのいずれかで閉じる
 	while (true)
 	{
-		m_canvas->update(m_canvas->referenceSize());
+		const double scale = ScreenUtils::Scaled(1.0);
+		const Vec2 position = (Scene::Size() - m_canvas->referenceSize() * scale) / 2.0;
+		m_canvas->setPositionScale(position, Vec2{ scale, scale });
 
-		if (KeyConfig::Down(kButtonStart) || KeyConfig::Down(kButtonBack))
+		// 画面全体がクリック可能なのでカーソルを人差し指に変更
+		Cursor::RequestStyle(CursorStyle::Hand);
+
+		m_canvas->update();
+
+		if (KeyConfig::Down(kButtonStart) || KeyConfig::Down(kButtonBack) || MouseL.down())
 		{
 			break;
 		}
@@ -49,10 +59,5 @@ void SimpleDialog::draw() const
 	// 半透明オーバーレイ
 	Scene::Rect().draw(ColorF{ 0.0, 0.0, 0.0, 0.5 });
 
-	// ダイアログを画面中央にスケーリング描画
-	const double scale = ScreenUtils::Scaled(1.0);
-	const Vec2 dialogSize = m_canvas->referenceSize() * scale;
-	const Vec2 pos = (Scene::Size() - dialogSize) / 2.0;
-	const Transformer2D dialogTransform{ Mat3x2::Scale(scale).translated(pos) };
 	m_canvas->draw();
 }

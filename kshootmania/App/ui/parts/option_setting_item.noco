@@ -441,6 +441,206 @@
           "verticalScrollable": false,
           "wheelScrollEnabled": true,
           "zOrderInSiblings": 0
+        },
+        {
+          "name": "ValueLeftClick",
+          "activeSelf": true,
+          "interactable": true,
+          "isHitTarget": true,
+          "region": {
+            "type": "AnchorRegion",
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              30.0,
+              0.0
+            ],
+            "sizeDelta": [
+              60.0,
+              24.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ]
+          },
+          "transform": {
+            "translate": [
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true
+          },
+          "childrenLayout": {
+            "type": "FlowLayout",
+            "horizontalAlign": "Left",
+            "verticalAlign": "Top",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ]
+          },
+          "components": [
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressStartValueLeft",
+              "triggerType": "PressStart"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressEndValueLeft",
+              "triggerType": "PressEnd"
+            }
+          ],
+          "children": [],
+          "clippingEnabled": false,
+          "horizontalScrollable": false,
+          "verticalScrollable": false,
+          "dragScrollEnabled": true,
+          "wheelScrollEnabled": true,
+          "rubberBandScrollEnabled": true,
+          "decelerationRate": 0.2,
+          "scrollBarType": "Overlay",
+          "zOrderInSiblings": 0,
+          "styleState": "",
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false
+        },
+        {
+          "name": "ValueRightClick",
+          "activeSelf": true,
+          "interactable": true,
+          "isHitTarget": true,
+          "region": {
+            "type": "AnchorRegion",
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              275.0,
+              0.0
+            ],
+            "sizeDelta": [
+              50.0,
+              24.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ]
+          },
+          "transform": {
+            "translate": [
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true
+          },
+          "childrenLayout": {
+            "type": "FlowLayout",
+            "horizontalAlign": "Left",
+            "verticalAlign": "Top",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0,
+              0
+            ]
+          },
+          "components": [
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressStartValueRight",
+              "triggerType": "PressStart"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressEndValueRight",
+              "triggerType": "PressEnd"
+            }
+          ],
+          "children": [],
+          "clippingEnabled": false,
+          "horizontalScrollable": false,
+          "verticalScrollable": false,
+          "dragScrollEnabled": true,
+          "wheelScrollEnabled": true,
+          "rubberBandScrollEnabled": true,
+          "decelerationRate": 0.2,
+          "scrollBarType": "Overlay",
+          "zOrderInSiblings": 0,
+          "styleState": "",
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false
         }
       ],
       "childrenLayout": {
@@ -456,14 +656,24 @@
         "verticalAlign": "Middle"
       },
       "clippingEnabled": false,
-      "components": [],
+      "components": [
+        {
+          "type": "CursorChanger",
+          "recursive": true
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickSettingItem",
+          "recursive": true
+        }
+      ],
       "decelerationRate": 0.2,
       "dragScrollEnabled": true,
       "hitPadding": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        0,
+        0,
+        0,
+        0
       ],
       "horizontalScrollable": false,
       "inheritChildrenHover": false,
@@ -481,12 +691,12 @@
           0.5
         ],
         "posDelta": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "sizeDelta": [
-          600.0,
-          24.0
+          600,
+          24
         ],
         "sizeDeltaPivot": [
           0.5,
@@ -509,14 +719,14 @@
           0.5,
           0.5
         ],
-        "rotation": 0.0,
+        "rotation": 0,
         "scale": [
-          1.0,
-          1.0
+          1,
+          1
         ],
         "translate": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       },
       "verticalScrollable": false,
@@ -530,10 +740,10 @@
       "childrenLayout": {
         "horizontalAlign": "Left",
         "padding": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
+          0,
+          0,
+          0,
+          0
         ],
         "spacing": 0.0,
         "type": "HorizontalLayout",
@@ -662,16 +872,16 @@
       "decelerationRate": 0.2,
       "dragScrollEnabled": true,
       "hitPadding": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        0,
+        0,
+        0,
+        0
       ],
       "horizontalScrollable": false,
       "inheritChildrenHover": false,
       "inheritChildrenPress": false,
       "interactable": true,
-      "isHitTarget": true,
+      "isHitTarget": false,
       "name": "Cursor",
       "region": {
         "anchorMax": [
@@ -683,12 +893,12 @@
           0.5
         ],
         "posDelta": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "sizeDelta": [
-          600.0,
-          24.0
+          600,
+          24
         ],
         "sizeDeltaPivot": [
           0.5,
@@ -711,14 +921,14 @@
           0.5,
           0.5
         ],
-        "rotation": 0.0,
+        "rotation": 0,
         "scale": [
-          1.0,
-          1.0
+          1,
+          1
         ],
         "translate": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       },
       "verticalScrollable": false,
@@ -729,14 +939,14 @@
   "childrenLayout": {
     "horizontalAlign": "Left",
     "padding": [
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0
     ],
     "spacing": [
-      0.0,
-      0.0
+      0,
+      0
     ],
     "type": "FlowLayout",
     "verticalAlign": "Top"

@@ -1,9 +1,18 @@
 ﻿#include "TitleMenu.hpp"
+#include "UI/MouseMenuUtils.hpp"
 
 namespace
 {
 	// STARTボタンを無視する時間の長さ
 	constexpr Duration kStartIgnoreDuration = 0.1s;
+
+	// クリックイベントのタグとメニュー項目の対応関係
+	const Array<std::pair<String, int32>> kClickTagToMenuItemPairs = {
+		{ U"onClickStart", TitleMenuItem::kStart },
+		{ U"onClickOption", TitleMenuItem::kOption },
+		{ U"onClickInputGate", TitleMenuItem::kInputGate },
+		{ U"onClickExit", TitleMenuItem::kExit },
+	};
 }
 
 void TitleMenu::refreshCanvasMenuCursor()
@@ -17,7 +26,7 @@ TitleMenu::TitleMenu(TitleMenuItem defaultMenuitem, const std::shared_ptr<noco::
 		{
 			.cursorInputCreateInfo = {
 				.type = CursorInput::Type::Vertical,
-				.buttonFlags = CursorButtonFlags::kArrowOrBTAllOrLaserAll,
+				.buttonFlags = CursorButtonFlags::kArrowOrBTAllOrLaserAll | CursorButtonFlags::kMouseWheel,
 			},
 			.enumCount = TitleMenuItem::kItemEnumCount,
 			.cyclic = IsCyclicMenuYN::No,
@@ -39,7 +48,15 @@ void TitleMenu::update()
 	{
 		m_menu.update();
 
-		if (m_stopwatch.elapsed() >= kStartIgnoreDuration && KeyConfig::Down(kButtonStart))
+		// クリックされた項目がカーソル位置と同じ場合は決定、異なる場合はカーソル移動
+		const Optional<int32> clickedItem = MouseMenuUtils::FiredClickIndex(*m_titleSceneCanvas, kClickTagToMenuItemPairs);
+		const bool clickDecided = clickedItem.has_value() && *clickedItem == m_menu.cursor();
+		if (clickedItem.has_value() && !clickDecided)
+		{
+			m_menu.setCursor(*clickedItem);
+		}
+
+		if (m_stopwatch.elapsed() >= kStartIgnoreDuration && (KeyConfig::Down(kButtonStart) || clickDecided))
 		{
 			const auto selectedItem = m_menu.cursorAs<TitleMenuItem>();
 			m_selectedMenuItemSource.requestFinish(selectedItem);

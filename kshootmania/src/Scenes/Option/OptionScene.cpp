@@ -266,11 +266,11 @@ void OptionScene::update()
 	{
 		if (m_currentOptionMenuIdx == OptionMenuType::kKeyConfig)
 		{
-			m_keyConfigMenu.update();
+			m_keyConfigMenu.update(m_canvas.get());
 		}
 		else
 		{
-			if ((*m_optionMenus)[*m_currentOptionMenuIdx].update())
+			if ((*m_optionMenus)[*m_currentOptionMenuIdx].update(settingMenuMouseInput()))
 			{
 				refreshSettingItemParams();
 			}
@@ -291,9 +291,9 @@ void OptionScene::update()
 	}
 	else
 	{
-		m_topMenu.update();
+		m_topMenu.update(m_canvas.get());
 
-		if (KeyConfig::Down(kButtonStart))
+		if (KeyConfig::Down(kButtonStart) || m_topMenu.clickDecided())
 		{
 			m_currentOptionMenuIdx = m_topMenu.cursorAs<OptionMenuType>();
 
@@ -430,6 +430,68 @@ void OptionScene::createSettingItemNodes()
 				{ U"valueArrowIndex", params.valueArrowIndex },
 			});
 	}
+}
+
+OptionMenu::MouseInput OptionScene::settingMenuMouseInput()
+{
+	OptionMenu::MouseInput mouseInput;
+
+	// 各設定項目のSubCanvasで発火したイベントを購読
+	const auto containerNode = m_canvas->findByName(U"SettingMenu");
+	if (containerNode)
+	{
+		const auto& children = containerNode->children();
+		for (int32 i = 0; i < static_cast<int32>(children.size()); ++i)
+		{
+			const auto subCanvas = children[i]->getComponent<noco::SubCanvas>();
+			if (!subCanvas)
+			{
+				continue;
+			}
+
+			const auto canvas = subCanvas->canvas();
+			if (!canvas)
+			{
+				continue;
+			}
+
+			if (canvas->isEventFiredWithTag(U"onClickSettingItem"))
+			{
+				mouseInput.clickedItemIdx = i;
+			}
+
+			// 左右端が押下された行へカーソルを移動した上で値を変更
+			if (canvas->isEventFiredWithTag(U"onPressStartValueLeft"))
+			{
+				mouseInput.clickedItemIdx = i;
+				m_valueLeftPressed = true;
+			}
+			if (canvas->isEventFiredWithTag(U"onPressEndValueLeft"))
+			{
+				m_valueLeftPressed = false;
+			}
+			if (canvas->isEventFiredWithTag(U"onPressStartValueRight"))
+			{
+				mouseInput.clickedItemIdx = i;
+				m_valueRightPressed = true;
+			}
+			if (canvas->isEventFiredWithTag(U"onPressEndValueRight"))
+			{
+				m_valueRightPressed = false;
+			}
+		}
+	}
+
+	// 領域外でマウスボタンを離した場合にも押下状態を解除
+	if (!MouseL.pressed())
+	{
+		m_valueLeftPressed = false;
+		m_valueRightPressed = false;
+	}
+
+	mouseInput.valueDelta = m_valueRightRepeat.update(m_valueRightPressed) - m_valueLeftRepeat.update(m_valueLeftPressed);
+
+	return mouseInput;
 }
 
 void OptionScene::refreshSettingItemParams()

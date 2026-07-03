@@ -2,6 +2,7 @@
 #include <memory>
 #include "ButtonCursorInputDevice.hpp"
 #include "LaserCursorInputDevice.hpp"
+#include "MouseWheelCursorInputDevice.hpp"
 
 using FlipArrowKeyDirectionYN = YesNo<struct FlipArrowKeyDirectionYN_tag>;
 
@@ -17,6 +18,7 @@ namespace CursorButtonFlags
 		kFXOpposite = 1 << 4,
 		kLaser = 1 << 5,
 		kLaserOpposite = 1 << 6,
+		kMouseWheel = 1 << 7,
 
 		kArrowOrBT = kArrow | kBT,
 		kArrowOrBTAll = kArrow | kBT | kBTOpposite,
@@ -35,6 +37,7 @@ private:
 	ButtonCursorInputDevice m_buttonDevice;
 	Optional<LaserCursorInputDevice> m_laserDevice;
 	Optional<LaserCursorInputDevice> m_laserDeviceOpposite;
+	Optional<MouseWheelCursorInputDevice> m_mouseWheelDevice;
 	NeedStartButtonHoldForNonArrowKeyYN m_needStartButtonHoldForNonArrowKey;
 
 public:

@@ -28,6 +28,10 @@ private:
 
 	void update();
 
+	/// @brief クリックによるシーン送り操作がされたかどうかを返す(SNSボタン上のクリックは除外)
+	[[nodiscard]]
+	bool isClickDecideDown() const;
+
 	Co::Task<bool> waitForNewRecordPanelClose();
 
 public:

@@ -70,6 +70,11 @@ public:
 	/// @return 値が変更された場合true
 	bool update();
 
+	/// @brief 外部からの値変更量を加えた更新処理(クリック操作による値変更用)
+	/// @param externalValueDelta 外部からの値変更量
+	/// @return 値が変更された場合true
+	bool update(int32 externalValueDelta);
+
 	// 注意: これらの列挙子の値はNocoUI側のvalueArrowIndexにも使用されるので順番を入れ替えないこと
 	enum ArrowType
 	{

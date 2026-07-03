@@ -390,7 +390,13 @@
     <ClCompile Include="src\Ini\KSMIniData.cpp">
       <Filter>Source Files\Ini</Filter>
     </ClCompile>
+    <ClCompile Include="src\UI\ClickHoldRepeat.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
     <ClCompile Include="src\UI\LinearMenu.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\MouseMenuUtils.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="src\UI\SimpleDialog.cpp">
@@ -541,6 +547,9 @@
       <Filter>Source Files\Input\Cursor</Filter>
     </ClCompile>
     <ClCompile Include="src\Input\Cursor\LaserCursorInputDevice.cpp">
+      <Filter>Source Files\Input\Cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\Cursor\MouseWheelCursorInputDevice.cpp">
       <Filter>Source Files\Input\Cursor</Filter>
     </ClCompile>
     <ClCompile Include="src\MusicGame\HispeedUtils.cpp">
@@ -1039,6 +1048,12 @@
     <ClInclude Include="src\Scenes\Option\OptionScene.hpp">
       <Filter>Header Files\Scenes\Option</Filter>
     </ClInclude>
+    <ClInclude Include="src\UI\ClickHoldRepeat.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\MouseMenuUtils.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
     <ClInclude Include="src\UI\DialogBase.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
@@ -1283,6 +1298,9 @@
       <Filter>Header Files\Input\Cursor</Filter>
     </ClInclude>
     <ClInclude Include="src\Input\Cursor\CursorInput.hpp">
+      <Filter>Header Files\Input\Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\Cursor\MouseWheelCursorInputDevice.hpp">
       <Filter>Header Files\Input\Cursor</Filter>
     </ClInclude>
     <ClInclude Include="src\Input\Cursor\LaserCursorInputDevice.hpp">

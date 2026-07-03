@@ -725,7 +725,15 @@
             "verticalAlign": "Top"
           },
           "clippingEnabled": false,
-          "components": [],
+          "components": [
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickStart"
+            }
+          ],
           "decelerationRate": 0.2,
           "dragScrollEnabled": true,
           "hitPadding": [
@@ -1123,7 +1131,15 @@
             "verticalAlign": "Top"
           },
           "clippingEnabled": false,
-          "components": [],
+          "components": [
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickOption"
+            }
+          ],
           "decelerationRate": 0.2,
           "dragScrollEnabled": true,
           "hitPadding": [
@@ -1521,7 +1537,15 @@
             "verticalAlign": "Top"
           },
           "clippingEnabled": false,
-          "components": [],
+          "components": [
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickInputGate"
+            }
+          ],
           "decelerationRate": 0.2,
           "dragScrollEnabled": true,
           "hitPadding": [
@@ -1919,7 +1943,15 @@
             "verticalAlign": "Top"
           },
           "clippingEnabled": false,
-          "components": [],
+          "components": [
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickExit"
+            }
+          ],
           "decelerationRate": 0.2,
           "dragScrollEnabled": true,
           "hitPadding": [

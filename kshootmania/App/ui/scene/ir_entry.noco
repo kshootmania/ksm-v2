@@ -518,19 +518,207 @@
       "verticalScrollable": false,
       "wheelScrollEnabled": true,
       "zOrderInSiblings": 0
+    },
+    {
+      "name": "SignInClick",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": true,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          5,
+          66
+        ],
+        "sizeDelta": [
+          380,
+          40
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ]
+      },
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickSignIn"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
+    },
+    {
+      "name": "DontUseClick",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": true,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          -45,
+          110
+        ],
+        "sizeDelta": [
+          240,
+          32
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ]
+      },
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickDontUse"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
     }
   ],
   "childrenLayout": {
     "horizontalAlign": "Left",
     "padding": [
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0
     ],
     "spacing": [
-      0.0,
-      0.0
+      0,
+      0
     ],
     "type": "FlowLayout",
     "verticalAlign": "Top"

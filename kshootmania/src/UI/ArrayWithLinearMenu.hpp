@@ -37,6 +37,10 @@ public:
 
 	void update();
 
+	/// @brief 外部からのカーソル移動量を加えて更新(クリック操作によるカーソル移動用)
+	/// @param externalDelta 外部からのカーソル移動量
+	void updateWithExternalDelta(int32 externalDelta);
+
 	[[nodiscard]]
 	bool isCursorMin() const;
 
@@ -208,6 +212,12 @@ template <typename T>
 void ArrayWithLinearMenu<T>::update()
 {
 	m_linearMenu.update();
+}
+
+template <typename T>
+void ArrayWithLinearMenu<T>::updateWithExternalDelta(int32 externalDelta)
+{
+	m_linearMenu.updateWithExternalDelta(externalDelta);
 }
 
 template <typename T>

@@ -780,6 +780,13 @@
                     0.0
                   ],
                   "type": "Tween"
+                },
+                {
+                  "type": "CursorChanger"
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickDisplaySoundSettings"
                 }
               ],
               "decelerationRate": 0.2,
@@ -1304,6 +1311,13 @@
                     0.0
                   ],
                   "type": "Tween"
+                },
+                {
+                  "type": "CursorChanger"
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickInputJudgmentSettings"
                 }
               ],
               "decelerationRate": 0.2,
@@ -1828,6 +1842,13 @@
                     0.0
                   ],
                   "type": "Tween"
+                },
+                {
+                  "type": "CursorChanger"
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickOtherSettings"
                 }
               ],
               "decelerationRate": 0.2,
@@ -2352,6 +2373,13 @@
                     0.0
                   ],
                   "type": "Tween"
+                },
+                {
+                  "type": "CursorChanger"
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickKeyConfiguration"
                 }
               ],
               "decelerationRate": 0.2,

@@ -204,9 +204,14 @@ OptionMenuField::OptionMenuField(const CreateInfo& createInfo)
 
 bool OptionMenuField::update()
 {
+	return update(0);
+}
+
+bool OptionMenuField::update(int32 externalValueDelta)
+{
 	const int32 cursorPrev = m_menu.cursor();
 
-	m_menu.update();
+	m_menu.updateWithExternalDelta(externalValueDelta);
 
 	// Update config.ini value if cursor is changed
 	const int32 cursor = m_menu.cursor();

@@ -151,6 +151,13 @@
               "underlineThickness": 1.0,
               "verticalAlign": "Middle",
               "verticalOverflow": "Overflow"
+            },
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickKeyConfigStart"
             }
           ],
           "decelerationRate": 0.2,
@@ -368,6 +375,13 @@
               "underlineThickness": 1.0,
               "verticalAlign": "Middle",
               "verticalOverflow": "Overflow"
+            },
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickKeyConfigBack"
             }
           ],
           "decelerationRate": 0.2,
@@ -588,6 +602,13 @@
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
                   "verticalOverflow": "Overflow"
+                },
+                {
+                  "type": "CursorChanger"
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickKeyConfigBTA"
                 }
               ],
               "decelerationRate": 0.2,
@@ -800,6 +821,13 @@
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
                   "verticalOverflow": "Overflow"
+                },
+                {
+                  "type": "CursorChanger"
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickKeyConfigBTB"
                 }
               ],
               "decelerationRate": 0.2,
@@ -1012,6 +1040,13 @@
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
                   "verticalOverflow": "Overflow"
+                },
+                {
+                  "type": "CursorChanger"
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickKeyConfigBTC"
                 }
               ],
               "decelerationRate": 0.2,
@@ -1224,6 +1259,13 @@
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
                   "verticalOverflow": "Overflow"
+                },
+                {
+                  "type": "CursorChanger"
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickKeyConfigBTD"
                 }
               ],
               "decelerationRate": 0.2,
@@ -1520,6 +1562,13 @@
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
                   "verticalOverflow": "Overflow"
+                },
+                {
+                  "type": "CursorChanger"
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickKeyConfigFXL"
                 }
               ],
               "decelerationRate": 0.2,
@@ -1732,6 +1781,13 @@
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
                   "verticalOverflow": "Overflow"
+                },
+                {
+                  "type": "CursorChanger"
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickKeyConfigFXR"
                 }
               ],
               "decelerationRate": 0.2,
@@ -2511,6 +2567,15 @@
                   ],
                   "shadowSpread": 0.0,
                   "type": "RectRenderer"
+                },
+                {
+                  "type": "CursorChanger",
+                  "recursive": true
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickKeyConfigLaserL",
+                  "recursive": true
                 }
               ],
               "decelerationRate": 0.2,
@@ -3206,6 +3271,15 @@
                   ],
                   "shadowSpread": 0.0,
                   "type": "RectRenderer"
+                },
+                {
+                  "type": "CursorChanger",
+                  "recursive": true
+                },
+                {
+                  "type": "EventTrigger",
+                  "tag": "onClickKeyConfigLaserR",
+                  "recursive": true
                 }
               ],
               "decelerationRate": 0.2,
@@ -3607,6 +3681,15 @@
                 100.0
               ],
               "type": "Sprite"
+            },
+            {
+              "type": "CursorChanger",
+              "recursive": true
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickKeyConfigBothFX",
+              "recursive": true
             }
           ],
           "decelerationRate": 0.2,
@@ -3773,6 +3856,13 @@
               "underlineThickness": 1.0,
               "verticalAlign": "Middle",
               "verticalOverflow": "Overflow"
+            },
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickKeyConfigConfigSet"
             }
           ],
           "decelerationRate": 0.2,
@@ -3841,19 +3931,365 @@
           "verticalScrollable": false,
           "wheelScrollEnabled": true,
           "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "characterSpacing": [
+                0,
+                0
+              ],
+              "color": {
+                "default": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
+                "styleStates": {
+                  "selected": [
+                    255,
+                    255,
+                    0,
+                    255
+                  ]
+                }
+              },
+              "fontAssetName": "",
+              "fontSize": 16,
+              "gradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationType": "None",
+              "horizontalAlign": "Center",
+              "horizontalOverflow": "Overflow",
+              "minFontSize": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineFactorInner": 0,
+              "outlineFactorOuter": 0,
+              "padding": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                1,
+                1
+              ],
+              "sizingMode": "Fixed",
+              "text": "<",
+              "type": "Label",
+              "underlineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "underlineStyle": "None",
+              "underlineThickness": 1,
+              "verticalAlign": "Middle",
+              "verticalOverflow": "Overflow"
+            },
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickKeyConfigConfigSetPrev"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": true,
+          "name": "ConfigSetPrev",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              -80.0,
+              180.0
+            ],
+            "sizeDelta": [
+              40.0,
+              28.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "styleState_paramRef": "configSetState",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0,
+          "activeSelf_paramRef": "configSetPrevArrowVisible"
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "characterSpacing": [
+                0,
+                0
+              ],
+              "color": {
+                "default": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
+                "styleStates": {
+                  "selected": [
+                    255,
+                    255,
+                    0,
+                    255
+                  ]
+                }
+              },
+              "fontAssetName": "",
+              "fontSize": 16,
+              "gradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationType": "None",
+              "horizontalAlign": "Center",
+              "horizontalOverflow": "Overflow",
+              "minFontSize": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineFactorInner": 0,
+              "outlineFactorOuter": 0,
+              "padding": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                1,
+                1
+              ],
+              "sizingMode": "Fixed",
+              "text": ">",
+              "type": "Label",
+              "underlineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "underlineStyle": "None",
+              "underlineThickness": 1,
+              "verticalAlign": "Middle",
+              "verticalOverflow": "Overflow"
+            },
+            {
+              "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickKeyConfigConfigSetNext"
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": true,
+          "name": "ConfigSetNext",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              80,
+              180
+            ],
+            "sizeDelta": [
+              40,
+              28
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "styleState_paramRef": "configSetState",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ],
+            "translate": [
+              0,
+              0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0,
+          "activeSelf_paramRef": "configSetNextArrowVisible"
         }
       ],
       "childrenLayout": {
         "horizontalAlign": "Left",
         "padding": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
+          0,
+          0,
+          0,
+          0
         ],
         "spacing": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "type": "FlowLayout",
         "verticalAlign": "Top"
@@ -3863,10 +4299,10 @@
       "decelerationRate": 0.2,
       "dragScrollEnabled": true,
       "hitPadding": [
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        0,
+        0,
+        0,
+        0
       ],
       "horizontalScrollable": false,
       "inheritChildrenHover": false,
@@ -3884,12 +4320,12 @@
           0.5
         ],
         "posDelta": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "sizeDelta": [
-          640.0,
-          480.0
+          640,
+          480
         ],
         "sizeDeltaPivot": [
           0.5,
@@ -3912,14 +4348,14 @@
           0.5,
           0.5
         ],
-        "rotation": 0.0,
+        "rotation": 0,
         "scale": [
-          1.0,
-          1.0
+          1,
+          1
         ],
         "translate": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       },
       "verticalScrollable": false,
@@ -3930,14 +4366,14 @@
   "childrenLayout": {
     "horizontalAlign": "Left",
     "padding": [
-      0.0,
-      0.0,
-      0.0,
-      0.0
+      0,
+      0,
+      0,
+      0
     ],
     "spacing": [
-      0.0,
-      0.0
+      0,
+      0
     ],
     "type": "FlowLayout",
     "verticalAlign": "Top"
@@ -4164,6 +4600,14 @@
     "startText": {
       "type": "String",
       "value": "*START:Enter"
+    },
+    "configSetPrevArrowVisible": {
+      "type": "Bool",
+      "value": true
+    },
+    "configSetNextArrowVisible": {
+      "type": "Bool",
+      "value": true
     }
   },
   "referenceSize": [

@@ -219,6 +219,11 @@ CursorInput::CursorInput(const CreateInfo& createInfo)
 		const int32 laneIdx = createInfo.type == Type::Horizontal ? 1 : 0;
 		m_laserDeviceOpposite = MakeOptional<LaserCursorInputDevice>(laneIdx);
 	}
+
+	if (HasFlag(createInfo.buttonFlags, CursorButtonFlags::kMouseWheel))
+	{
+		m_mouseWheelDevice = MakeOptional<MouseWheelCursorInputDevice>();
+	}
 }
 
 void CursorInput::update()
@@ -236,6 +241,11 @@ void CursorInput::update()
 		{
 			m_laserDeviceOpposite->update();
 		}
+	}
+
+	if (m_mouseWheelDevice.has_value())
+	{
+		m_mouseWheelDevice->update();
 	}
 }
 
@@ -257,6 +267,11 @@ int32 CursorInput::deltaCursor() const
 				deltaCursorSum += m_laserDeviceOpposite->deltaCursor();
 			}
 		}
+	}
+
+	if (m_mouseWheelDevice.has_value())
+	{
+		deltaCursorSum += m_mouseWheelDevice->deltaCursor();
 	}
 
 	return deltaCursorSum;

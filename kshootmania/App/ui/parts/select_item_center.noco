@@ -1401,6 +1401,13 @@
                         100.0
                       ],
                       "type": "Sprite"
+                    },
+                    {
+                      "type": "CursorChanger"
+                    },
+                    {
+                      "type": "EventTrigger",
+                      "tag": "onClickDifficultyLight"
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -1730,6 +1737,13 @@
                         100.0
                       ],
                       "type": "Sprite"
+                    },
+                    {
+                      "type": "CursorChanger"
+                    },
+                    {
+                      "type": "EventTrigger",
+                      "tag": "onClickDifficultyChallenge"
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -2059,6 +2073,13 @@
                         100.0
                       ],
                       "type": "Sprite"
+                    },
+                    {
+                      "type": "CursorChanger"
+                    },
+                    {
+                      "type": "EventTrigger",
+                      "tag": "onClickDifficultyExtended"
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -2388,6 +2409,13 @@
                         100.0
                       ],
                       "type": "Sprite"
+                    },
+                    {
+                      "type": "CursorChanger"
+                    },
+                    {
+                      "type": "EventTrigger",
+                      "tag": "onClickDifficultyInfinite"
                     }
                   ],
                   "decelerationRate": 0.2,

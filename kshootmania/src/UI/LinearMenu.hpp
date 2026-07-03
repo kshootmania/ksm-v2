@@ -68,6 +68,10 @@ public:
 	/// @brief 更新(毎フレーム呼ぶ。入力を反映したくないときは呼ばないようにすればOK)
 	void update();
 
+	/// @brief 外部からのカーソル移動量を加えて更新(クリック操作によるカーソル移動用)
+	/// @param externalDelta 外部からのカーソル移動量
+	void updateWithExternalDelta(int32 externalDelta);
+
 	/// @brief カーソルの最小値を設定
 	/// @tparam T enumをキャストなしで指定するためのテンプレートパラメータ(指定不要)
 	/// @param value カーソルの最小値

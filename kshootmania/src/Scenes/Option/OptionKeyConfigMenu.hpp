@@ -46,14 +46,14 @@ private:
 
 	void setInput(const Input& input);
 
-	void updateNoneState();
+	void updateNoneState(noco::Canvas* pCanvas);
 
 	void updateSettingButtonState();
 
 public:
 	OptionKeyConfigMenu();
 
-	void update();
+	void update(noco::Canvas* pCanvas);
 
 	void updateUI(noco::Canvas* pCanvas) const;
 

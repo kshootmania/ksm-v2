@@ -78,8 +78,13 @@ int32 LinearMenu::cursor() const
 
 void LinearMenu::update()
 {
+	updateWithExternalDelta(0);
+}
+
+void LinearMenu::updateWithExternalDelta(int32 externalDelta)
+{
 	m_cursorInput.update();
-	m_deltaCursor = m_cursorInput.deltaCursor();
+	m_deltaCursor = m_cursorInput.deltaCursor() + externalDelta;
 
 	const int32 absDeltaCursor = Abs(m_deltaCursor) * m_cursorStep;
 	if (m_deltaCursor > 0)

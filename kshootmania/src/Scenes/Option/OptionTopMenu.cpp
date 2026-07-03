@@ -1,11 +1,23 @@
 ﻿#include "OptionTopMenu.hpp"
+#include "UI/MouseMenuUtils.hpp"
+
+namespace
+{
+	// クリックイベントのタグとメニュー項目の対応関係
+	const Array<std::pair<String, int32>> kClickTagToItemPairs = {
+		{ U"onClickDisplaySoundSettings", OptionTopMenu::kDisplaySound },
+		{ U"onClickInputJudgmentSettings", OptionTopMenu::kInputJudgment },
+		{ U"onClickOtherSettings", OptionTopMenu::kOther },
+		{ U"onClickKeyConfiguration", OptionTopMenu::kKeyConfig },
+	};
+}
 
 OptionTopMenu::OptionTopMenu()
 	: m_menu(
 		LinearMenu::CreateInfoWithEnumCount{
 			.cursorInputCreateInfo = {
 				.type = CursorInput::Type::Vertical,
-				.buttonFlags = CursorButtonFlags::kArrowOrLaser,
+				.buttonFlags = CursorButtonFlags::kArrowOrLaser | CursorButtonFlags::kMouseWheel,
 				.buttonIntervalSec = 0.1,
 				.buttonIntervalSecFirst = 0.5,
 			},
@@ -14,9 +26,29 @@ OptionTopMenu::OptionTopMenu()
 {
 }
 
-void OptionTopMenu::update()
+void OptionTopMenu::update(noco::Canvas* pCanvas)
 {
 	m_menu.update();
+
+	// クリックされた項目がカーソル位置と同じ場合は決定、異なる場合はカーソル移動
+	m_clickDecided = false;
+	const Optional<int32> clickedItem = MouseMenuUtils::FiredClickIndex(*pCanvas, kClickTagToItemPairs);
+	if (clickedItem.has_value())
+	{
+		if (*clickedItem == m_menu.cursor())
+		{
+			m_clickDecided = true;
+		}
+		else
+		{
+			m_menu.setCursor(*clickedItem);
+		}
+	}
+}
+
+bool OptionTopMenu::clickDecided() const
+{
+	return m_clickDecided;
 }
 
 void OptionTopMenu::updateUI(noco::Canvas* pCanvas) const

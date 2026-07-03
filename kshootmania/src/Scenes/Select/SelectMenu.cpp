@@ -20,9 +20,29 @@
 #include "NocoExtensions/NocoUtils.hpp"
 #include "RuntimeConfig.hpp"
 #include "SelectMenuCacheDb.hpp"
+#include "UI/MouseMenuUtils.hpp"
 
 namespace
 {
+	// クリックイベントのタグと項目の相対位置の対応関係
+	const Array<std::pair<String, int32>> kClickTagToItemDeltaPairs = {
+		{ U"onClickItemUp4", -4 },
+		{ U"onClickItemUp3", -3 },
+		{ U"onClickItemUp2", -2 },
+		{ U"onClickItemUp1", -1 },
+		{ U"onClickItemDown1", 1 },
+		{ U"onClickItemDown2", 2 },
+		{ U"onClickItemDown3", 3 },
+	};
+
+	// クリックイベントのタグと難易度インデックスの対応関係
+	const Array<std::pair<String, int32>> kClickTagToDifficultyIdxPairs = {
+		{ U"onClickDifficultyLight", 0 },
+		{ U"onClickDifficultyChallenge", 1 },
+		{ U"onClickDifficultyExtended", 2 },
+		{ U"onClickDifficultyInfinite", 3 },
+	};
+
 	bool IsAnyTranslitDisplayEnabled()
 	{
 		return ConfigIni::GetBool(ConfigIni::Key::kShowTranslitKana, false)
@@ -549,6 +569,7 @@ void SelectMenu::refreshContentCanvasParams()
 {
 	if (m_menu.empty())
 	{
+		m_selectSceneCanvas->setParamValue(U"centerItemClickable", false);
 		return;
 	}
 
@@ -563,9 +584,11 @@ void SelectMenu::refreshContentCanvasParams()
 
 	const int32 difficultyCursor = m_difficultyMenu.cursor(); // この値は-1にもなり得る
 	const int32 difficultyIdx = difficultyCursor >= 0 ? difficultyCursor : m_difficultyMenu.rawCursor();
+	const bool centerItemClickable = m_menu.cursorValue() != nullptr && (m_menu.cursorValue()->isFolder() || m_menu.cursorValue()->isSubFolderHeading());
 	m_selectSceneCanvas->setParamValues({
 		{ U"difficultyIndex", difficultyIdx },
 		{ U"scrollBarCursorRate", m_menu.cursorRate() },
+		{ U"centerItemClickable", centerItemClickable },
 	});
 
 	// 中央の項目のパラメータを反映
@@ -694,7 +717,7 @@ SelectMenu::SelectMenu(
 		LinearMenu::CreateInfoWithCursorMinMax{
 			.cursorInputCreateInfo = {
 				.type = CursorInput::Type::Vertical,
-				.buttonFlags = CursorButtonFlags::kArrowOrLaser,
+				.buttonFlags = CursorButtonFlags::kArrowOrLaser | CursorButtonFlags::kMouseWheel,
 				.buttonIntervalSec = 0.05,
 				.buttonIntervalSecFirst = 0.3,
 			},
@@ -792,7 +815,17 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 		return;
 	}
 
-	m_menu.update();
+	// クリックされたリスト項目による相対移動量
+	int32 clickItemDelta = 0;
+	if (!m_menu.empty())
+	{
+		if (const Optional<int32> clickedDelta = MouseMenuUtils::FiredClickIndex(*m_selectSceneCanvas, kClickTagToItemDeltaPairs))
+		{
+			clickItemDelta = *clickedDelta;
+		}
+	}
+
+	m_menu.updateWithExternalDelta(clickItemDelta);
 	if (const int32 deltaCursor = m_menu.deltaCursor(); deltaCursor != 0)
 	{
 		resetSongInfoTextDisplayTimer();
@@ -851,6 +884,35 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 				refreshContentCanvasParams();
 				refreshSongPreview();
 			}
+		}
+	}
+
+	// 難易度パネルのクリック処理
+	if (!m_menu.empty() && m_menu.cursorValue() != nullptr)
+	{
+		const Optional<int32> clickedDifficultyIdx = MouseMenuUtils::FiredClickIndex(*m_selectSceneCanvas, kClickTagToDifficultyIdxPairs);
+		if (clickedDifficultyIdx.has_value() && m_menu.cursorValue()->difficultyMenuExists())
+		{
+			if (*clickedDifficultyIdx == m_difficultyMenu.cursor())
+			{
+				// 現在の難易度を再クリックした場合は決定
+				decide();
+			}
+			else if (m_menu.cursorValue()->chartInfoPtr(*clickedDifficultyIdx, FallbackForSingleChartYN::No) != nullptr)
+			{
+				// 存在する別の難易度をクリックした場合は難易度変更
+				m_eventContext.fnChangeDifficulty(*clickedDifficultyIdx);
+				m_difficultySelectSe.play();
+				refreshContentCanvasParams();
+				refreshSongPreview();
+			}
+		}
+
+		// フォルダ項目とサブフォルダ見出しは中央クリックで決定
+		if (m_selectSceneCanvas->isEventFiredWithTag(U"onClickCenterItem") &&
+			(m_menu.cursorValue()->isFolder() || m_menu.cursorValue()->isSubFolderHeading()))
+		{
+			decide();
 		}
 	}
 

@@ -13,6 +13,16 @@ public:
 		int32 valueArrowIndex;
 	};
 
+	/// @brief マウス操作の入力内容
+	struct MouseInput
+	{
+		/// @brief クリックされた項目のインデックス(クリックされていない場合はnone)
+		Optional<int32> clickedItemIdx;
+
+		/// @brief 左右端のクリックまたは長押しによる値変更量
+		int32 valueDelta = 0;
+	};
+
 private:
 	LinearMenu m_menu;
 
@@ -25,6 +35,12 @@ public:
 	/// @return カーソルまたは値に変更があった場合true
 	[[nodiscard]]
 	bool update();
+
+	/// @brief マウス操作の入力内容を加えてメニューを更新する
+	/// @param mouseInput マウス操作の入力内容
+	/// @return カーソルまたは値に変更があった場合true
+	[[nodiscard]]
+	bool update(const MouseInput& mouseInput);
 
 	/// @brief 設定項目のパラメータ一覧を取得する
 	[[nodiscard]]

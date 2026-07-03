@@ -131,7 +131,7 @@ Co::Task<void> CourseResultScene::start()
 			{
 				break;
 			}
-			if (KeyConfig::Down(kButtonStart) && !KeyShift.pressed())
+			if ((KeyConfig::Down(kButtonStart) && !KeyShift.pressed()) || isClickDecideDown())
 			{
 				break;
 			}
@@ -158,10 +158,11 @@ Co::Task<bool> CourseResultScene::waitForNewRecordPanelClose()
 		}
 		fxLRPressedPrev = fxLRPressed;
 
-		// 3秒経過またはSTART/Backで終了(Shift+STARTはツイート機能用なので除外)
+		// 3秒経過またはSTART/Back/クリックで終了(Shift+STARTはツイート機能用なので除外)
 		if (displayStopwatch.sF() >= 3.0 ||
 			(KeyConfig::Down(kButtonStart) && !KeyShift.pressed()) ||
-			KeyConfig::Down(kButtonBack))
+			KeyConfig::Down(kButtonBack) ||
+			isClickDecideDown())
 		{
 			break;
 		}
@@ -182,15 +183,37 @@ Co::Task<bool> CourseResultScene::waitForNewRecordPanelClose()
 		}
 		fxLRPressedPrev = fxLRPressed;
 
-		if ((KeyConfig::Down(kButtonStart) && !KeyShift.pressed()) || KeyConfig::Down(kButtonBack))
+		if ((KeyConfig::Down(kButtonStart) && !KeyShift.pressed()) || KeyConfig::Down(kButtonBack) || isClickDecideDown())
 		{
 			co_return true;
 		}
 	}
 }
 
+bool CourseResultScene::isClickDecideDown() const
+{
+	if (!MouseL.down())
+	{
+		return false;
+	}
+
+	// SNSボタンのクリックをシーン送りとして扱わないよう除外
+	if (const auto snsButton = m_canvas->findByName(U"SNSButton"))
+	{
+		if (snsButton->isHovered())
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void CourseResultScene::update()
 {
+	// 画面全体がクリック可能なのでカーソルを人差し指に変更
+	Cursor::RequestStyle(CursorStyle::Hand);
+
 	m_canvas->update();
 	m_chartList.update(m_courseState);
 	m_snsShare.update(m_canvas.get());

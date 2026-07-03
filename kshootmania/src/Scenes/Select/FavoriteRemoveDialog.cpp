@@ -31,17 +31,47 @@ Co::Task<Optional<FavoriteRemoveChoice>> FavoriteRemoveDialog::start()
 	// デフォルトはNoを選択
 	m_menu.setCursor(static_cast<int32>(FavoriteRemoveChoice::No));
 
+	// ヒットテスト座標を描画と一致させるため中央寄せとスケーリングをCanvas側に設定
+	m_canvas->setAutoFitMode(noco::AutoFitMode::None);
+
 	// 選択確定までループ
 	while (true)
 	{
 		m_menu.update();
 
+		// クリックされた選択肢がカーソル位置と同じ場合は決定、異なる場合はカーソル移動
+		Optional<int32> clickedChoice;
+		if (m_canvas->isEventFiredWithTag(U"onClickYes"))
+		{
+			clickedChoice = static_cast<int32>(FavoriteRemoveChoice::Yes);
+		}
+		else if (m_canvas->isEventFiredWithTag(U"onClickNo"))
+		{
+			clickedChoice = static_cast<int32>(FavoriteRemoveChoice::No);
+		}
+		bool clickDecided = false;
+		if (clickedChoice.has_value())
+		{
+			if (*clickedChoice == m_menu.cursor())
+			{
+				clickDecided = true;
+			}
+			else
+			{
+				m_menu.setCursor(*clickedChoice);
+			}
+		}
+
 		// Canvasパラメータに反映
 		m_canvas->setParamValue(U"cursorIndex", m_menu.cursor());
 
-		m_canvas->update(m_canvas->referenceSize());
+		const double scale = ScreenUtils::Scaled(1.0);
+		const Vec2 position = (Scene::Size() - m_canvas->referenceSize() * scale) / 2.0;
+		m_canvas->setPositionScale(position, Vec2{ scale, scale });
 
-		if (KeyConfig::Down(kButtonStart))
+		m_canvas->update();
+
+		if (KeyConfig::Down(kButtonStart) || clickDecided)
 		{
 			co_return static_cast<FavoriteRemoveChoice>(m_menu.cursor());
 		}
@@ -67,10 +97,5 @@ void FavoriteRemoveDialog::draw() const
 	// 半透明オーバーレイ
 	Scene::Rect().draw(ColorF{ 0.0, 0.0, 0.0, 0.5 });
 
-	// ダイアログを画面中央にスケーリング描画
-	const double scale = ScreenUtils::Scaled(1.0);
-	const Vec2 dialogSize = m_canvas->referenceSize() * scale;
-	const Vec2 pos = (Scene::Size() - dialogSize) / 2.0;
-	const Transformer2D dialogTransform{ Mat3x2::Scale(scale).translated(pos) };
 	m_canvas->draw();
 }

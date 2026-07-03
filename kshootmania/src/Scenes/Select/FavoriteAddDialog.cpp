@@ -28,7 +28,7 @@ FavoriteAddDialog::FavoriteAddDialog()
 	: m_menu(LinearMenu::CreateInfoWithCursorMinMax{
 		.cursorInputCreateInfo = {
 			.type = CursorInput::Type::Vertical,
-			.buttonFlags = CursorButtonFlags::kArrowOrBT,
+			.buttonFlags = CursorButtonFlags::kArrowOrBT | CursorButtonFlags::kMouseWheel,
 		},
 		.cursorMin = 1,
 		.cursorMax = 1,
@@ -53,6 +53,9 @@ Co::Task<Optional<int32>> FavoriteAddDialog::start()
 	m_menu.setCursorMax(maxNumber);
 	m_menu.setCursor(1);
 
+	// ヒットテスト座標を描画と一致させるため中央寄せとスケーリングをCanvas側に設定
+	m_canvas->setAutoFitMode(noco::AutoFitMode::None);
+
 	// 選択確定までループ
 	while (true)
 	{
@@ -61,9 +64,13 @@ Co::Task<Optional<int32>> FavoriteAddDialog::start()
 		// Canvasパラメータに反映(UIは0始まりなので-1)
 		m_canvas->setParamValue(U"numberIndex", m_menu.cursor() - 1);
 
-		m_canvas->update(m_canvas->referenceSize());
+		const double scale = ScreenUtils::Scaled(1.0);
+		const Vec2 position = (Scene::Size() - m_canvas->referenceSize() * scale) / 2.0;
+		m_canvas->setPositionScale(position, Vec2{ scale, scale });
 
-		if (KeyConfig::Down(kButtonStart))
+		m_canvas->update();
+
+		if (KeyConfig::Down(kButtonStart) || m_canvas->isEventFiredWithTag(U"onClickBody"))
 		{
 			co_return m_menu.cursor();
 		}
@@ -89,11 +96,6 @@ void FavoriteAddDialog::draw() const
 	// 半透明オーバーレイ
 	Scene::Rect().draw(ColorF{ 0.0, 0.0, 0.0, 0.5 });
 
-	// ダイアログを画面中央にスケーリング描画
-	const double scale = ScreenUtils::Scaled(1.0);
-	const Vec2 dialogSize = m_canvas->referenceSize() * scale;
-	const Vec2 pos = (Scene::Size() - dialogSize) / 2.0;
-	const Transformer2D dialogTransform{ Mat3x2::Scale(scale).translated(pos) };
 	m_canvas->draw();
 }
 

@@ -5120,6 +5120,759 @@
       ],
       "inheritChildrenHover": false,
       "inheritChildrenPress": false
+    },
+    {
+      "name": "ItemClickUp4",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": true,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          66,
+          -225
+        ],
+        "sizeDelta": [
+          300,
+          28
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ]
+      },
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickItemUp4"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
+    },
+    {
+      "name": "ItemClickUp3",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": true,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          48,
+          -194
+        ],
+        "sizeDelta": [
+          320,
+          29
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ]
+      },
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickItemUp3"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
+    },
+    {
+      "name": "ItemClickUp2",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": true,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          30,
+          -163
+        ],
+        "sizeDelta": [
+          340,
+          30
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ]
+      },
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickItemUp2"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
+    },
+    {
+      "name": "ItemClickUp1",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": true,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          13,
+          -129
+        ],
+        "sizeDelta": [
+          360,
+          33
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ]
+      },
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickItemUp1"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
+    },
+    {
+      "name": "ItemClickDown1",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": true,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          13,
+          126
+        ],
+        "sizeDelta": [
+          360,
+          30
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ]
+      },
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickItemDown1"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
+    },
+    {
+      "name": "ItemClickDown2",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": true,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          30,
+          159
+        ],
+        "sizeDelta": [
+          340,
+          32
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ]
+      },
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickItemDown2"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
+    },
+    {
+      "name": "ItemClickDown3",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": true,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          48,
+          194
+        ],
+        "sizeDelta": [
+          320,
+          34
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ]
+      },
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickItemDown3"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false
+    },
+    {
+      "name": "CenterItemClick",
+      "activeSelf": true,
+      "interactable": true,
+      "isHitTarget": true,
+      "region": {
+        "type": "AnchorRegion",
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          0,
+          0
+        ],
+        "sizeDelta": [
+          440,
+          218
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ]
+      },
+      "transform": {
+        "translate": [
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0,
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true
+      },
+      "childrenLayout": {
+        "type": "FlowLayout",
+        "horizontalAlign": "Left",
+        "verticalAlign": "Top",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "spacing": [
+          0,
+          0
+        ]
+      },
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickCenterItem"
+        }
+      ],
+      "children": [],
+      "clippingEnabled": false,
+      "horizontalScrollable": false,
+      "verticalScrollable": false,
+      "dragScrollEnabled": true,
+      "wheelScrollEnabled": true,
+      "rubberBandScrollEnabled": true,
+      "decelerationRate": 0.2,
+      "scrollBarType": "Overlay",
+      "zOrderInSiblings": 0,
+      "styleState": "",
+      "hitPadding": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "activeSelf_paramRef": "centerItemClickable"
     }
   ],
   "childrenLayout": {
@@ -5190,6 +5943,10 @@
     "searchQueryText": {
       "type": "String",
       "value": ""
+    },
+    "centerItemClickable": {
+      "type": "Bool",
+      "value": false
     }
   },
   "referenceSize": [

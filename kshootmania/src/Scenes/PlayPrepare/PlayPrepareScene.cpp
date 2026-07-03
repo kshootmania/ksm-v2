@@ -155,9 +155,9 @@ Co::Task<void> PlayPrepareScene::start()
 			break;
 		}
 
-		if (elapsed >= kMinDisplayTime && KeyConfig::Down(kButtonStart))
+		if (elapsed >= kMinDisplayTime && (KeyConfig::Down(kButtonStart) || MouseL.down()))
 		{
-			// 一定時間経過後はStartボタンでスキップ可能
+			// 一定時間経過後はStartボタンまたはクリックでスキップ可能
 			SaveHispeedSettingToConfigIni(m_hispeedMenu.hispeedSetting());
 			requestNextScene<PlayScene>(m_chartFilePath, m_isAutoPlay, m_courseState, m_testPlayOption, m_selectSearchParams);
 			break;
@@ -169,6 +169,9 @@ Co::Task<void> PlayPrepareScene::start()
 
 void PlayPrepareScene::update()
 {
+	// 画面全体がクリック可能なのでカーソルを人差し指に変更
+	Cursor::RequestStyle(CursorStyle::Hand);
+
 	m_canvas->update();
 
 	const double startBPM = m_chartData.beat.bpm.contains(0) ? m_chartData.beat.bpm.at(0) : kDefaultBPM;
