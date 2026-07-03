@@ -390,9 +390,6 @@
     <ClCompile Include="src\Ini\KSMIniData.cpp">
       <Filter>Source Files\Ini</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\ClickHoldRepeat.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
     <ClCompile Include="src\UI\LinearMenu.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
@@ -1047,9 +1044,6 @@
     </ClInclude>
     <ClInclude Include="src\Scenes\Option\OptionScene.hpp">
       <Filter>Header Files\Scenes\Option</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\ClickHoldRepeat.hpp">
-      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\UI\MouseMenuUtils.hpp">
       <Filter>Header Files\UI</Filter>

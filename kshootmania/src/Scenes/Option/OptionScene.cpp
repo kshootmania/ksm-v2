@@ -436,60 +436,56 @@ OptionMenu::MouseInput OptionScene::settingMenuMouseInput()
 {
 	OptionMenu::MouseInput mouseInput;
 
-	// 各設定項目のSubCanvasで発火したイベントを購読
 	const auto containerNode = m_canvas->findByName(U"SettingMenu");
-	if (containerNode)
+	if (!containerNode)
 	{
-		const auto& children = containerNode->children();
+		return mouseInput;
+	}
+
+	// イベント発火元のSubCanvasを持つノードから設定項目のインデックスを取得
+	const auto& children = containerNode->children();
+	const auto itemIdxOfEvent = [&children](const noco::Event& event) -> Optional<int32>
+	{
+		const auto ownerNode = event.containedSubCanvasOwner.lock();
+		if (!ownerNode)
+		{
+			return none;
+		}
 		for (int32 i = 0; i < static_cast<int32>(children.size()); ++i)
 		{
-			const auto subCanvas = children[i]->getComponent<noco::SubCanvas>();
-			if (!subCanvas)
+			if (children[i] == ownerNode)
 			{
-				continue;
+				return i;
 			}
+		}
+		return none;
+	};
 
-			const auto canvas = subCanvas->canvas();
-			if (!canvas)
-			{
-				continue;
-			}
-
-			if (canvas->isEventFiredWithTag(U"onClickSettingItem"))
-			{
-				mouseInput.clickedItemIdx = i;
-			}
-
-			// 左右端が押下された行へカーソルを移動した上で値を変更
-			if (canvas->isEventFiredWithTag(U"onPressStartValueLeft"))
-			{
-				mouseInput.clickedItemIdx = i;
-				m_valueLeftPressed = true;
-			}
-			if (canvas->isEventFiredWithTag(U"onPressEndValueLeft"))
-			{
-				m_valueLeftPressed = false;
-			}
-			if (canvas->isEventFiredWithTag(U"onPressStartValueRight"))
-			{
-				mouseInput.clickedItemIdx = i;
-				m_valueRightPressed = true;
-			}
-			if (canvas->isEventFiredWithTag(U"onPressEndValueRight"))
-			{
-				m_valueRightPressed = false;
-			}
+	for (const auto& event : m_canvas->getFiredEventsWithTag(U"onClickSettingItem"))
+	{
+		if (const auto itemIdx = itemIdxOfEvent(event))
+		{
+			mouseInput.clickedItemIdx = *itemIdx;
 		}
 	}
 
-	// 領域外でマウスボタンを離した場合にも押下状態を解除
-	if (!MouseL.pressed())
+	// 左右端が押下された行へカーソルを移動した上で値を変更
+	for (const auto& event : m_canvas->getFiredEventsWithTag(U"onPressRepeatValueLeft"))
 	{
-		m_valueLeftPressed = false;
-		m_valueRightPressed = false;
+		if (const auto itemIdx = itemIdxOfEvent(event))
+		{
+			mouseInput.clickedItemIdx = *itemIdx;
+			--mouseInput.valueDelta;
+		}
 	}
-
-	mouseInput.valueDelta = m_valueRightRepeat.update(m_valueRightPressed) - m_valueLeftRepeat.update(m_valueLeftPressed);
+	for (const auto& event : m_canvas->getFiredEventsWithTag(U"onPressRepeatValueRight"))
+	{
+		if (const auto itemIdx = itemIdxOfEvent(event))
+		{
+			mouseInput.clickedItemIdx = *itemIdx;
+			++mouseInput.valueDelta;
+		}
+	}
 
 	return mouseInput;
 }

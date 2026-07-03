@@ -3,7 +3,6 @@
 #include "OptionTopMenu.hpp"
 #include "OptionMenu.hpp"
 #include "OptionKeyConfigMenu.hpp"
-#include "UI/ClickHoldRepeat.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
 class OptionScene : public Co::UpdaterSceneBase
@@ -32,12 +31,6 @@ private:
 	Optional<OptionMenuType> m_currentOptionMenuIdx = none;
 
 	ksmaudio::Stream m_bgmStream{ "se/option_bgm.ogg", 1.0, false, false, true };
-
-	// 設定項目の左右端の押下状態(クリックまたは長押しでの値変更用)
-	bool m_valueLeftPressed = false;
-	bool m_valueRightPressed = false;
-	ClickHoldRepeat m_valueLeftRepeat{ 0.1, 0.5 };
-	ClickHoldRepeat m_valueRightRepeat{ 0.1, 0.5 };
 
 	std::unique_ptr<std::array<OptionMenu, kOptionMenuTypeEnumCount>> makeOptionMenus();
 

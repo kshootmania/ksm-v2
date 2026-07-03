@@ -513,13 +513,8 @@
             },
             {
               "type": "EventTrigger",
-              "tag": "onPressStartValueLeft",
-              "triggerType": "PressStart"
-            },
-            {
-              "type": "EventTrigger",
-              "tag": "onPressEndValueLeft",
-              "triggerType": "PressEnd"
+              "tag": "onPressRepeatValueLeft",
+              "triggerType": "PressRepeat"
             }
           ],
           "children": [],
@@ -613,13 +608,8 @@
             },
             {
               "type": "EventTrigger",
-              "tag": "onPressStartValueRight",
-              "triggerType": "PressStart"
-            },
-            {
-              "type": "EventTrigger",
-              "tag": "onPressEndValueRight",
-              "triggerType": "PressEnd"
+              "tag": "onPressRepeatValueRight",
+              "triggerType": "PressRepeat"
             }
           ],
           "children": [],
@@ -974,6 +964,6 @@
     600.0,
     24.0
   ],
-  "serializedVersion": 8,
-  "version": "0.4.0"
+  "serializedVersion": 11,
+  "version": "0.5.0-beta1"
 }

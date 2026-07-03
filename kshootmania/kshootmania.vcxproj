@@ -303,7 +303,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\UI\ClickHoldRepeat.cpp" />
     <ClCompile Include="src\UI\LinearMenu.cpp" />
     <ClCompile Include="src\UI\MouseMenuUtils.cpp" />
     <ClCompile Include="src\UI\SimpleDialog.cpp" />
@@ -558,7 +557,6 @@
     <ClInclude Include="src\Scenes\Title\TitleScene.hpp" />
     <ClInclude Include="src\stdafx.h" />
     <ClInclude Include="src\UI\ArrayWithLinearMenu.hpp" />
-    <ClInclude Include="src\UI\ClickHoldRepeat.hpp" />
     <ClInclude Include="src\UI\DialogBase.hpp" />
     <ClInclude Include="src\UI\LinearMenu.hpp" />
     <ClInclude Include="src\UI\MouseMenuUtils.hpp" />
