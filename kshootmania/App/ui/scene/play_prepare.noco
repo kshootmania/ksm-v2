@@ -249,7 +249,9 @@
             100.0,
             100.0
           ],
-          "type": "Sprite"
+          "type": "Sprite",
+          "mipmapEnabled": true,
+          "mipmapLodBias": -1
         },
         {
           "active": true,

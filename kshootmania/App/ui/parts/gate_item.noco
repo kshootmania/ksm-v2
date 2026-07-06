@@ -1694,7 +1694,9 @@
             100.0,
             100.0
           ],
-          "type": "Sprite"
+          "type": "Sprite",
+          "mipmapEnabled": true,
+          "mipmapLodBias": -1
         }
       ],
       "decelerationRate": 0.2,
