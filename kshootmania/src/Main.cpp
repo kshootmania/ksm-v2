@@ -550,6 +550,9 @@ void KSMMain()
 		// KeyConfigの入力状態を更新
 		KeyConfig::Update();
 
+		// ウィンドウのフォーカス状態を更新
+		InputUtils::UpdateWindowFocusState();
+
 #ifdef __APPLE__
 		// テキスト編集中かどうかを設定(テキスト編集中はIMEキーをブロックしない)
 		KSMPlatformMacOS_SetIsEditingText(noco::IsEditingTextBox());

@@ -4,6 +4,7 @@
 #include "Scenes/Common/ShowLoadingOneFrame.hpp"
 #include "Addon/AutoMuteAddon.hpp"
 #include "Common/FsUtils.hpp"
+#include "Input/InputUtils.hpp"
 #include "Input/KeyConfig.hpp"
 #include "HighScore/KscIO.hpp"
 
@@ -193,6 +194,12 @@ Co::Task<bool> CourseResultScene::waitForNewRecordPanelClose()
 bool CourseResultScene::isClickDecideDown() const
 {
 	if (!MouseL.down())
+	{
+		return false;
+	}
+
+	// ウィンドウがアクティブ化されたフレームのクリックは入力として扱わない
+	if (InputUtils::WindowFocusedThisFrame())
 	{
 		return false;
 	}

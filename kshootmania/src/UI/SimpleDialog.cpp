@@ -1,5 +1,6 @@
 ﻿#include "SimpleDialog.hpp"
 #include "Input/KeyConfig.hpp"
+#include "Input/InputUtils.hpp"
 #include "Common/FsUtils.hpp"
 #include "Graphics/ScreenUtils.hpp"
 
@@ -39,7 +40,8 @@ Co::Task<void> SimpleDialog::start()
 
 		m_canvas->update();
 
-		if (KeyConfig::Down(kButtonStart) || KeyConfig::Down(kButtonBack) || MouseL.down())
+		// ウィンドウがアクティブ化されたフレームのクリックは入力として扱わない
+		if (KeyConfig::Down(kButtonStart) || KeyConfig::Down(kButtonBack) || (MouseL.down() && !InputUtils::WindowFocusedThisFrame()))
 		{
 			break;
 		}

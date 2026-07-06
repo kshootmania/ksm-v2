@@ -1,5 +1,12 @@
 ﻿#include "InputUtils.hpp"
 
+namespace
+{
+	int32 s_lastUpdatedWindowFocusFrameCount = -1;
+	bool s_prevWindowFocused = true;
+	bool s_windowFocusedThisFrame = false;
+}
+
 namespace InputUtils
 {
 	ksmaxis::DeviceFlags GetLaserInputDeviceFlags()
@@ -39,5 +46,26 @@ namespace InputUtils
 				Logger << U"[ksm warning] ksmaxis: " << Unicode::FromUTF8(warning);
 			}
 		}
+	}
+
+	void UpdateWindowFocusState()
+	{
+		const int32 currentFrameCount = Scene::FrameCount();
+		if (s_lastUpdatedWindowFocusFrameCount == currentFrameCount)
+		{
+			return;
+		}
+		s_lastUpdatedWindowFocusFrameCount = currentFrameCount;
+
+		const bool windowFocused = Window::GetState().focused;
+		s_windowFocusedThisFrame = windowFocused && !s_prevWindowFocused;
+		s_prevWindowFocused = windowFocused;
+	}
+
+	bool WindowFocusedThisFrame()
+	{
+		// メインループより先にコルーチン側から参照された場合もあるため、参照時点でも更新する
+		UpdateWindowFocusState();
+		return s_windowFocusedThisFrame;
 	}
 }

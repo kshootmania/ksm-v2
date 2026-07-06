@@ -4,6 +4,7 @@
 #include "Scenes/CourseResult/CourseResultScene.hpp"
 #include "Scenes/Common/ShowLoadingOneFrame.hpp"
 #include "MusicGame/HispeedUtils.hpp"
+#include "Input/InputUtils.hpp"
 
 namespace
 {
@@ -155,7 +156,8 @@ Co::Task<void> PlayPrepareScene::start()
 			break;
 		}
 
-		if (elapsed >= kMinDisplayTime && (KeyConfig::Down(kButtonStart) || MouseL.down()))
+		// ウィンドウがアクティブ化されたフレームのクリックは入力として扱わない
+		if (elapsed >= kMinDisplayTime && (KeyConfig::Down(kButtonStart) || (MouseL.down() && !InputUtils::WindowFocusedThisFrame())))
 		{
 			// 一定時間経過後はStartボタンまたはクリックでスキップ可能
 			SaveHispeedSettingToConfigIni(m_hispeedMenu.hispeedSetting());

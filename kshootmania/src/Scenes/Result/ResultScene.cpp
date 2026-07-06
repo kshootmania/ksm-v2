@@ -5,6 +5,7 @@
 #include "Scenes/Common/ShowLoadingOneFrame.hpp"
 #include "HighScore/KscIO.hpp"
 #include "Common/CommonDefines.hpp"
+#include "Input/InputUtils.hpp"
 #include "Ini/FolderConfIni.hpp"
 
 namespace
@@ -693,6 +694,12 @@ Co::Task<bool> ResultScene::waitForNewRecordPanelClose()
 bool ResultScene::isClickDecideDown() const
 {
 	if (!MouseL.down())
+	{
+		return false;
+	}
+
+	// ウィンドウがアクティブ化されたフレームのクリックは入力として扱わない
+	if (InputUtils::WindowFocusedThisFrame())
 	{
 		return false;
 	}
