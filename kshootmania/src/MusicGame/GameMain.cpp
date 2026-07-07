@@ -41,15 +41,15 @@ namespace MusicGame
 		}
 
 		// 譜面データを読み込み、Turn変換とPlayModeフィルタを適用
-		kson::ChartData LoadChartDataWithTurn(const GameCreateInfo& createInfo, std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ>* pLaserCurvedPulses)
+		kson::ChartData LoadChartDataWithTurn(const GameCreateInfo& createInfo, NoteArrangement* pNoteArrangementOut, Optional<SRandomFXAudioMapping>* pSRandomFXAudioMappingOut, std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ>* pLaserCurvedPulses)
 		{
 			auto chartData = FsUtils::HasKsonExtension(createInfo.chartFilePath)
 				? kson::LoadKsonChartData(createInfo.chartFilePath.toUTF8())
 				: kson::LoadKshChartData(createInfo.chartFilePath.toUTF8());
 
 			// Turn変換を適用
-			const TurnTable turnTable = MakeTurnTable(createInfo.playOption.turnMode);
-			ApplyTurnTable(chartData, turnTable);
+			pNoteArrangementOut->turnTable = MakeTurnTable(createInfo.playOption.turnMode);
+			ApplyTurnTable(chartData, pNoteArrangementOut->turnTable);
 
 			// Off/Hideモードフィルタを適用
 			ApplyPlayModeFilter(chartData, createInfo.playOption);
@@ -103,6 +103,20 @@ namespace MusicGame
 						it = lane.upper_bound(startPulse);
 					}
 				}
+			}
+
+			// S-RANDOMの配置を生成して適用
+			// (音声エフェクト・キー音は元FXレーン基準のまま扱うため、turn適用前のFXノーツと配置先の対応関係を保持)
+			if (createInfo.playOption.turnMode == TurnMode::kSRandom)
+			{
+				const Array<std::size_t> sRandomNoteLanes = MakeSRandomNoteLanes(chartData, createInfo.playOption.nonZeroPlaybackSpeed());
+				*pSRandomFXAudioMappingOut = SRandomFXAudioMapping
+				{
+					.fxLanesForAudio = chartData.note.fx,
+					.fxNoteDestinations = MakeFXNoteDestinations(chartData, sRandomNoteLanes),
+				};
+				ApplySRandomNoteLanes(&chartData, sRandomNoteLanes);
+				pNoteArrangementOut->sRandomNoteLanes = sRandomNoteLanes;
 			}
 
 			// 曲線を持つレーザー点のPulseを列挙
@@ -241,7 +255,7 @@ namespace MusicGame
 	GameMain::GameMain(const GameCreateInfo& createInfo)
 		: m_chartFilePath(createInfo.chartFilePath)
 		, m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
-		, m_chartData(LoadChartDataWithTurn(createInfo, &m_laserCurvedPulses))
+		, m_chartData(LoadChartDataWithTurn(createInfo, &m_noteArrangement, &m_sRandomFXAudioMapping, &m_laserCurvedPulses))
 		, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
 		, m_playOption(createInfo.playOption)
 		, m_judgmentMain(
@@ -301,10 +315,13 @@ namespace MusicGame
 		updateHighwayScroll();
 
 		// 音声エフェクトの更新
+		// (S-RANDOM時は元FXレーン基準に変換した押下状態を渡す)
 		std::array<Optional<bool>, kson::kNumFXLanesSZ> longFXPressed;
 		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 		{
-			longFXPressed[i] = m_gameStatus.fxLaneStatus[i].longNotePressed;
+			longFXPressed[i] = m_sRandomFXAudioMapping.has_value()
+				? sRandomLongFXPressed(i)
+				: m_gameStatus.fxLaneStatus[i].longNotePressed;
 		}
 		std::array<bool, kson::kNumLaserLanesSZ> laserIsOnOrNone;
 		for (std::size_t i = 0U; i < kson::kNumLaserLanesSZ; ++i)
@@ -312,7 +329,10 @@ namespace MusicGame
 			const auto& laneStatus = m_gameStatus.laserLaneStatus[i];
 			laserIsOnOrNone[i] = !laneStatus.noteCursorX.has_value() || laneStatus.isCursorInCriticalJudgmentRange();
 		}
-		m_audioEffectMain.update(m_bgm, m_chartData, m_timingCache, {
+		const kson::FXLane<kson::Interval>& fxNoteLanesForAudio = m_sRandomFXAudioMapping.has_value()
+			? m_sRandomFXAudioMapping->fxLanesForAudio
+			: m_chartData.note.fx;
+		m_audioEffectMain.update(m_bgm, m_chartData, fxNoteLanesForAudio, m_timingCache, {
 			.longFXPressed = longFXPressed,
 			.laserIsOnOrNone = laserIsOnOrNone,
 		}, m_gameStatus.currentPulse);
@@ -323,7 +343,26 @@ namespace MusicGame
 		const double currentTimeSecForAssistTick = currentTimeSec - m_playOption.visualOffsetMs / 1000.0;
 		m_assistTick.update(m_chartData, m_timingCache, currentTimeSecForAssistTick);
 		m_laserSlamSE.update(m_chartData, m_gameStatus);
-		m_fxChipSE.update(m_chartData, m_gameStatus);
+
+		// FXチップ効果音の更新
+		std::array<Audio::FXChipJudgedStatus, kson::kNumFXLanesSZ> fxChipJudgedStatuses;
+		if (m_sRandomFXAudioMapping.has_value())
+		{
+			// S-RANDOMは元のレーンで再生するため別途処理
+			fxChipJudgedStatuses = sRandomFXChipJudgedStatuses();
+		}
+		else
+		{
+			for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
+			{
+				fxChipJudgedStatuses[i] = Audio::FXChipJudgedStatus
+				{
+					.lastJudgedChipPulse = m_gameStatus.fxLaneStatus[i].lastJudgedChipPulse,
+					.lastChipJudgedTimeSec = m_gameStatus.fxLaneStatus[i].lastChipJudgedTimeSec,
+				};
+			}
+		}
+		m_fxChipSE.update(m_chartData, m_gameStatus, fxChipJudgedStatuses);
 
 		// グラフィックの更新
 		m_graphicsMain.update(m_gameStatus, m_viewStatus, m_timingCache);
@@ -368,6 +407,69 @@ namespace MusicGame
 	{
 		const IsHardFailedYN isHardFailed{ m_gameStatus.playFinishStatus.has_value() && m_gameStatus.playFinishStatus->isHardFailed };
 		return m_judgmentMain.playResult(m_chartData, m_timingCache, m_gameStatus.currentTimeSec, isHardFailed, m_isAborted);
+	}
+
+	Optional<bool> GameMain::sRandomLongFXPressed(std::size_t fxLaneIdx) const
+	{
+		const SRandomFXAudioMapping& mapping = *m_sRandomFXAudioMapping;
+		const kson::Pulse currentPulse = m_gameStatus.currentPulseForButtonJudgment;
+
+		// 元のFXレーンで現在通過中のロングノーツを取得
+		const auto& lane = mapping.fxLanesForAudio[fxLaneIdx];
+		const auto itr = kson::ValueItrAt(lane, currentPulse);
+		if (itr == lane.end())
+		{
+			return none;
+		}
+		const auto& [y, note] = *itr;
+		if (currentPulse < y || y + note.length <= currentPulse)
+		{
+			return none;
+		}
+
+		// S-RANDOM適用後の配置先レーンでそのノーツを押下中かどうかを調べる
+		const auto destItr = mapping.fxNoteDestinations[fxLaneIdx].find(y);
+		if (destItr == mapping.fxNoteDestinations[fxLaneIdx].end())
+		{
+			return none;
+		}
+		const std::size_t destLaneIdx = destItr->second;
+		const ButtonLaneStatus& laneStatus = destLaneIdx < kson::kNumBTLanesSZ
+			? m_gameStatus.btLaneStatus[destLaneIdx]
+			: m_gameStatus.fxLaneStatus[destLaneIdx - kson::kNumBTLanesSZ];
+		return laneStatus.currentLongNotePulse == y;
+	}
+
+	std::array<Audio::FXChipJudgedStatus, kson::kNumFXLanesSZ> GameMain::sRandomFXChipJudgedStatuses() const
+	{
+		const SRandomFXAudioMapping& mapping = *m_sRandomFXAudioMapping;
+
+		std::array<Audio::FXChipJudgedStatus, kson::kNumFXLanesSZ> judgedStatuses;
+		for (std::size_t fxLaneIdx = 0U; fxLaneIdx < kson::kNumFXLanesSZ; ++fxLaneIdx)
+		{
+			// 全レーンの最後に判定されたチップのうち、元のFXレーン由来のもので最も新しいものを採用
+			for (std::size_t destLaneIdx = 0U; destLaneIdx < kNumSRandomLanesSZ; ++destLaneIdx)
+			{
+				const ButtonLaneStatus& laneStatus = destLaneIdx < kson::kNumBTLanesSZ
+					? m_gameStatus.btLaneStatus[destLaneIdx]
+					: m_gameStatus.fxLaneStatus[destLaneIdx - kson::kNumBTLanesSZ];
+				if (laneStatus.lastChipJudgedTimeSec <= judgedStatuses[fxLaneIdx].lastChipJudgedTimeSec)
+				{
+					continue;
+				}
+				const auto destItr = mapping.fxNoteDestinations[fxLaneIdx].find(laneStatus.lastJudgedChipPulse);
+				if (destItr == mapping.fxNoteDestinations[fxLaneIdx].end() || destItr->second != destLaneIdx)
+				{
+					continue;
+				}
+				judgedStatuses[fxLaneIdx] = Audio::FXChipJudgedStatus
+				{
+					.lastJudgedChipPulse = laneStatus.lastJudgedChipPulse,
+					.lastChipJudgedTimeSec = laneStatus.lastChipJudgedTimeSec,
+				};
+			}
+		}
+		return judgedStatuses;
 	}
 
 	int32 GameMain::timingAdjustOffsetMs() const

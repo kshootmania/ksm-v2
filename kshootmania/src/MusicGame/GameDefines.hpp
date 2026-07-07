@@ -178,11 +178,15 @@ namespace MusicGame
 				.invertLaserValue = true, // 1.0 - 値
 			};
 		}
-		else // TurnMode::kRandom
+		else // TurnMode::kRandom または TurnMode::kSRandom
 		{
 			// BTレーンのランダムテーブル生成
+			// (S-RANDOMのBT配置はノーツ単位で別途決定するため、ここでは恒等のまま)
 			std::array<std::size_t, kson::kNumBTLanesSZ> btLaneTable = { 0, 1, 2, 3 };
-			std::shuffle(btLaneTable.begin(), btLaneTable.end(), GetDefaultRNG());
+			if (turnMode == TurnMode::kRandom)
+			{
+				std::shuffle(btLaneTable.begin(), btLaneTable.end(), GetDefaultRNG());
+			}
 
 			// FX/LASERレーンのランダム左右反転
 			const bool invertFXLane = Random(0, 1) == 1;
@@ -196,4 +200,27 @@ namespace MusicGame
 			};
 		}
 	}
+
+	// S-RANDOMのシャッフル対象レーン数
+	constexpr std::size_t kNumSRandomLanesSZ = kson::kNumBTLanesSZ + kson::kNumFXLanesSZ;
+
+	// S-RANDOMで縦連を避ける間隔のしきい値(秒)
+	constexpr double kSRandomJackAvoidanceIntervalSec = 0.075;
+
+	// 譜面への配置変換の結果
+	struct NoteArrangement
+	{
+		// レーン単位の変換
+		TurnTable turnTable = TurnTable
+		{
+			.btLaneTable = { 0, 1, 2, 3 }, // S-RANDOMは別途適用されるため0,1,2,3のまま
+			.invertFXLane = false, // S-RANDOMは別途適用されるためfalseのまま
+			.invertLaserLane = false,
+			.invertLaserValue = false,
+		};
+
+		// S-RANDOM時のノーツ単位の配置先レーン(0〜5)
+		// (配列の要素順は、正規譜面のBT・FXノーツのpulseとレーン番号をもとに昇順ソートしたものに対応)
+		Optional<Array<std::size_t>> sRandomNoteLanes = none;
+	};
 }

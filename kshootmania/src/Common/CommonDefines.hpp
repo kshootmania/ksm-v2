@@ -73,6 +73,7 @@ enum class TurnMode : int32
 	kNormal = 0,
 	kMirror,
 	kRandom,
+	kSRandom,
 
 	kCount,
 };

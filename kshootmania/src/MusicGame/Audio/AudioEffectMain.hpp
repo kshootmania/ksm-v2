@@ -57,6 +57,7 @@ namespace MusicGame::Audio
 	public:
 		AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const FilePath& parentPath, double audioProcDelaySec, double bgmVolume);
 
-		void update(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus, kson::Pulse currentPulseForSwitchAudio);
+		/// @param fxNoteLanesForAudio 音声エフェクト用のFXノーツ(S-RANDOM時は配置適用前のFXノーツを渡す)
+		void update(BGM& bgm, const kson::ChartData& chartData, const kson::FXLane<kson::Interval>& fxNoteLanesForAudio, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus, kson::Pulse currentPulseForSwitchAudio);
 	};
 }

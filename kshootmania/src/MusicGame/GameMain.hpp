@@ -19,6 +19,16 @@
 
 namespace MusicGame
 {
+	// S-RANDOMで元のFXレーン基準でエフェクト・効果音を鳴らすために使用するノーツ毎の対応関係
+	struct SRandomFXAudioMapping
+	{
+		// turn適用前のFXノーツ(音声エフェクト用の押下中ロングノーツ特定用)
+		kson::FXLane<kson::Interval> fxLanesForAudio;
+
+		// 元のFXレーンにおける各ノーツの配置先レーン番号(0〜5)
+		std::array<kson::ByPulse<std::size_t>, kson::kNumFXLanesSZ> fxNoteDestinations;
+	};
+
 	struct GameCreateInfo
 	{
 		FilePath chartFilePath;
@@ -48,6 +58,13 @@ namespace MusicGame
 
 		// 譜面情報
 		std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ> m_laserCurvedPulses;
+
+		// turnオプション適用による配置結果
+		NoteArrangement m_noteArrangement;
+
+		// S-RANDOM時に音声を元のレーンで処理するための対応関係データ
+		Optional<SRandomFXAudioMapping> m_sRandomFXAudioMapping;
+
 		const kson::ChartData m_chartData;
 		const kson::TimingCache m_timingCache;
 
@@ -98,6 +115,14 @@ namespace MusicGame
 		void updateHighwayScroll();
 
 		void processPlaybackControl();
+
+		/// @brief S-RANDOM時に元のFXレーン基準でロングFXノーツの押下状態を取得
+		[[nodiscard]]
+		Optional<bool> sRandomLongFXPressed(std::size_t fxLaneIdx) const;
+
+		/// @brief S-RANDOM時に元のFXレーン基準でチップノーツの判定情報を取得
+		[[nodiscard]]
+		std::array<Audio::FXChipJudgedStatus, kson::kNumFXLanesSZ> sRandomFXChipJudgedStatuses() const;
 
 	public:
 		explicit GameMain(const GameCreateInfo& createInfo);

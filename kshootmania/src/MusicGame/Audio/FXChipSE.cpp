@@ -79,7 +79,7 @@ namespace MusicGame::Audio
 		}
 	}
 
-	void FXChipSE::update(const kson::ChartData& chartData, const GameStatus& gameStatus)
+	void FXChipSE::update(const kson::ChartData& chartData, const GameStatus& gameStatus, const std::array<FXChipJudgedStatus, kson::kNumFXLanesSZ>& judgedStatuses)
 	{
 		if (m_isAutoPlaySE)
 		{
@@ -89,7 +89,7 @@ namespace MusicGame::Audio
 		else
 		{
 			// 判定したタイミングで効果音を再生
-			updateByJudgment(chartData, gameStatus);
+			updateByJudgment(chartData, gameStatus, judgedStatuses);
 		}
 	}
 
@@ -140,15 +140,14 @@ namespace MusicGame::Audio
 		}
 	}
 
-	void FXChipSE::updateByJudgment(const kson::ChartData& chartData, const GameStatus& gameStatus)
+	void FXChipSE::updateByJudgment(const kson::ChartData& chartData, const GameStatus& gameStatus, const std::array<FXChipJudgedStatus, kson::kNumFXLanesSZ>& judgedStatuses)
 	{
 		const auto& chipEvent = chartData.audio.keySound.fx.chipEvent;
 
 		for (std::size_t laneIdx = 0U; laneIdx < kson::kNumFXLanesSZ; ++laneIdx)
 		{
-			const auto& laneStatus = gameStatus.fxLaneStatus[laneIdx];
-			const kson::Pulse chipPulse = laneStatus.lastJudgedChipPulse;
-			const double judgmentTimeSec = laneStatus.lastChipJudgedTimeSec;
+			const kson::Pulse chipPulse = judgedStatuses[laneIdx].lastJudgedChipPulse;
+			const double judgmentTimeSec = judgedStatuses[laneIdx].lastChipJudgedTimeSec;
 
 			if (m_lastPlayedTimeSecs[laneIdx] >= judgmentTimeSec)
 			{

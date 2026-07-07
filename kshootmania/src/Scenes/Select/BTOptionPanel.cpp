@@ -133,6 +133,7 @@ namespace
 		case TurnMode::kNormal: return I18n::Get(I18n::Select::TurnNormal);
 		case TurnMode::kMirror: return I18n::Get(I18n::Select::TurnMirror);
 		case TurnMode::kRandom: return I18n::Get(I18n::Select::TurnRandom);
+		case TurnMode::kSRandom: return I18n::Get(I18n::Select::TurnSRandom);
 		default: return U"";
 		}
 	}
@@ -282,7 +283,7 @@ BTOptionPanel::BTOptionPanel(std::shared_ptr<noco::Canvas> canvas)
 			.type = CursorInput::Type::Horizontal,
 			.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 		},
-		.enumCount = static_cast<int32>(3),
+		.enumCount = static_cast<int32>(TurnMode::kCount),
 		.cyclic = IsCyclicMenuYN::No,
 	})
 	, m_playbackSpeed(LinearMenu::CreateInfoWithCursorMinMax{
@@ -434,7 +435,7 @@ String BTOptionPanel::generateBTBMenuText() const
 	String text = U"";
 	text += FormatMenuLine(I18n::Get(I18n::Select::EffRate), GaugeTypeToI18nKey(gaugeType), currentItem == BTBMenuItem::kEffRate, m_gaugeType.cursor(), static_cast<int32>(GaugeType::kEasyGauge), static_cast<int32>(GaugeType::kHardGauge));
 	text += U"\n";
-	text += FormatMenuLine(I18n::Get(I18n::Select::Turn), TurnModeToI18nKey(turnMode), currentItem == BTBMenuItem::kTurn, m_turnMode.cursor(), 0, 2);
+	text += FormatMenuLine(I18n::Get(I18n::Select::Turn), TurnModeToI18nKey(turnMode), currentItem == BTBMenuItem::kTurn, m_turnMode.cursor(), 0, static_cast<int32>(TurnMode::kCount) - 1);
 	text += U"\n";
 	text += FormatMenuLine(I18n::Get(I18n::Select::PlaybackSpeed), PlaybackSpeedToString(playbackSpeedCursor), currentItem == BTBMenuItem::kPlaybackSpeed, playbackSpeedCursor, kPlaybackSpeedMin, kPlaybackSpeedMax);
 

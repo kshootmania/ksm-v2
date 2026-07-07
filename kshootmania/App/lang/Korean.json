@@ -19,6 +19,7 @@
 		"TurnNormal": "  NORMAL　",
 		"TurnMirror": "  MIRROR　 ",
 		"TurnRandom": "  RANDOM  ",
+		"TurnSRandom": " S-RANDOM ",
 		"PlaybackSpeed": "SONG SPEED: ",
 		"AssistTick": "ASSIST TICK:　",
 		"AssistTickOff": "  OFF     ",

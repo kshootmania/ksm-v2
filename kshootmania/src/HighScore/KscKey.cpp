@@ -28,6 +28,8 @@ namespace
 			return U"mirror";
 		case TurnMode::kRandom:
 			return U"random";
+		case TurnMode::kSRandom:
+			return U"s-random";
 		default:
 			assert(false && "Unknown turn mode");
 			return U"?";

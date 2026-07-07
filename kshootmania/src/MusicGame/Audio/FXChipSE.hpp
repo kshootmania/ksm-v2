@@ -7,6 +7,14 @@
 
 namespace MusicGame::Audio
 {
+	/// @brief チップFXノーツの判定情報
+	struct FXChipJudgedStatus
+	{
+		kson::Pulse lastJudgedChipPulse = kPastPulse;
+
+		double lastChipJudgedTimeSec = kPastTimeSec;
+	};
+
 	class FXChipSE
 	{
 	private:
@@ -24,11 +32,11 @@ namespace MusicGame::Audio
 
 		void updateByNoteTime(const kson::ChartData& chartData, const GameStatus& gameStatus);
 
-		void updateByJudgment(const kson::ChartData& chartData, const GameStatus& gameStatus);
+		void updateByJudgment(const kson::ChartData& chartData, const GameStatus& gameStatus, const std::array<FXChipJudgedStatus, kson::kNumFXLanesSZ>& judgedStatuses);
 
 	public:
 		explicit FXChipSE(const kson::ChartData& chartData, const kson::TimingCache& timingCache, FilePathView parentPath, bool isAutoPlaySE, double folderVolumeScale);
 
-		void update(const kson::ChartData& chartData, const GameStatus& gameStatus);
+		void update(const kson::ChartData& chartData, const GameStatus& gameStatus, const std::array<FXChipJudgedStatus, kson::kNumFXLanesSZ>& judgedStatuses);
 	};
 }

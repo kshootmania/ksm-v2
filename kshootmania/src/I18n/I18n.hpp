@@ -70,6 +70,7 @@ namespace I18n
 		TurnNormal,
 		TurnMirror,
 		TurnRandom,
+		TurnSRandom,
 		PlaybackSpeed,
 		AssistTick,
 		AssistTickOff,

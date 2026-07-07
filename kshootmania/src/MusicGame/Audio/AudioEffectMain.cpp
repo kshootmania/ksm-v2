@@ -461,7 +461,7 @@ namespace MusicGame::Audio
 	{
 	}
 
-	void AudioEffectMain::update(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus, kson::Pulse currentPulseForSwitchAudio)
+	void AudioEffectMain::update(BGM& bgm, const kson::ChartData& chartData, const kson::FXLane<kson::Interval>& fxNoteLanesForAudio, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus, kson::Pulse currentPulseForSwitchAudio)
 	{
 		// TODO: SecondsFに統一
 		const double currentTimeSec = bgm.posSec().count();
@@ -476,7 +476,7 @@ namespace MusicGame::Audio
 		{
 			for (std::size_t i = 0; i < kson::kNumFXLanesSZ; ++i)
 			{
-				const auto currentLongNoteByTime = CurrentLongNoteByTime(chartData.note.fx[i], currentPulseForAudio);
+				const auto currentLongNoteByTime = CurrentLongNoteByTime(fxNoteLanesForAudio[i], currentPulseForAudio);
 
 				// 音声エフェクトはバッファサイズによる遅延を回避するため、バッファサイズ分だけ早めに適用し始める必要がある。
 				// これはプレイヤーのキー入力に関係なく実施する必要があるため、下記の「～.value_or(true)」で、longFXPressed[i]がnoneである(つまり判定中のロングFXノーツがまだ存在しない)場合でも、
