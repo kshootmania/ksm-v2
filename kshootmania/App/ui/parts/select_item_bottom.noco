@@ -3947,7 +3947,20 @@
         "verticalAlign": "Top"
       },
       "clippingEnabled": false,
-      "components": [],
+      "components": [
+        {
+          "type": "CursorChanger"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickItem"
+        },
+        {
+          "type": "UISound",
+          "audioFilePath": "se/hover.wav",
+          "triggerType": "HoverStart"
+        }
+      ],
       "decelerationRate": 0.2,
       "dragScrollEnabled": true,
       "hitPadding": [
@@ -4001,10 +4014,17 @@
           0.5
         ],
         "rotation": 0.0,
-        "scale": [
-          1.0,
-          1.0
-        ],
+        "scale": {
+          "default": [
+            1,
+            1
+          ],
+          "hovered": [
+            1.005,
+            1.005
+          ],
+          "smoothTime": 0.025
+        },
         "translate": [
           0.0,
           0.0

@@ -1,4 +1,4 @@
-#include "CommonSEAddon.hpp"
+﻿#include "CommonSEAddon.hpp"
 
 CommonSEAddon::CommonSEAddon()
 {
@@ -14,5 +14,18 @@ void CommonSEAddon::Play(CommonSEType type)
 		{
 			it->second->play();
 		}
+	}
+}
+
+void CommonSEAddon::PlayFilePath(const String& filePath, double volume)
+{
+	if (const auto pAddon = Addon::GetAddon<CommonSEAddon>(kAddonName))
+	{
+		auto it = pAddon->m_fileSamples.find(filePath);
+		if (it == pAddon->m_fileSamples.end())
+		{
+			it = pAddon->m_fileSamples.emplace(filePath, std::make_unique<ksmaudio::Sample>(filePath.toUTF8())).first;
+		}
+		it->second->play(volume);
 	}
 }

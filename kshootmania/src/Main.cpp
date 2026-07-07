@@ -480,6 +480,17 @@ void KSMMain()
 	// NocoUIのグローバルデフォルトフォントを設定
 	noco::SetGlobalDefaultFont(AssetManagement::SystemFont());
 
+	// NocoUIの音声再生をゲーム本体と同じ音声バックエンド(BASS)で行う
+	noco::UISound::SetPlayAudioCallback(
+		[](const String& audioFilePath, [[maybe_unused]] const String& audioAssetName, double volume)
+		{
+			if (audioFilePath.isEmpty())
+			{
+				return;
+			}
+			CommonSEAddon::PlayFilePath(audioFilePath, volume);
+		});
+
 #ifdef OUTPUT_LICENSE_TXT
 	OutputLicenseTxt();
 #endif

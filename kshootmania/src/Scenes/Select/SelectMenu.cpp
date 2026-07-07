@@ -24,16 +24,39 @@
 
 namespace
 {
-	// クリックイベントのタグと項目の相対位置の対応関係
-	const Array<std::pair<String, int32>> kClickTagToItemDeltaPairs = {
-		{ U"onClickItemUp4", -4 },
-		{ U"onClickItemUp3", -3 },
-		{ U"onClickItemUp2", -2 },
-		{ U"onClickItemUp1", -1 },
-		{ U"onClickItemDown1", 1 },
-		{ U"onClickItemDown2", 2 },
-		{ U"onClickItemDown3", 3 },
+	// クリックされた項目のSubCanvasタグと項目の相対位置の対応関係
+	const HashTable<String, int32> kSubCanvasTagToItemDelta = {
+		{ U"top4", -4 },
+		{ U"top3", -3 },
+		{ U"top2", -2 },
+		{ U"top1", -1 },
+		{ U"bottom1", 1 },
+		{ U"bottom2", 2 },
+		{ U"bottom3", 3 },
 	};
+
+	/// @brief 上下の項目のクリックによる相対移動量を取得(クリックされていない場合は0)
+	int32 ClickItemDelta(const noco::Canvas& canvas)
+	{
+		for (const auto& event : canvas.getFiredEventsWithTag(U"onClickItem"))
+		{
+			const auto pOwnerNode = event.containedSubCanvasOwner.lock();
+			if (pOwnerNode == nullptr)
+			{
+				continue;
+			}
+			const auto pSubCanvas = pOwnerNode->getComponent<noco::SubCanvas>();
+			if (pSubCanvas == nullptr)
+			{
+				continue;
+			}
+			if (const auto it = kSubCanvasTagToItemDelta.find(pSubCanvas->tag()); it != kSubCanvasTagToItemDelta.end())
+			{
+				return it->second;
+			}
+		}
+		return 0;
+	}
 
 	// クリックイベントのタグと難易度インデックスの対応関係
 	const Array<std::pair<String, int32>> kClickTagToDifficultyIdxPairs = {
@@ -819,10 +842,7 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 	int32 clickItemDelta = 0;
 	if (!m_menu.empty())
 	{
-		if (const Optional<int32> clickedDelta = MouseMenuUtils::FiredClickIndex(*m_selectSceneCanvas, kClickTagToItemDeltaPairs))
-		{
-			clickItemDelta = *clickedDelta;
-		}
+		clickItemDelta = ClickItemDelta(*m_selectSceneCanvas);
 	}
 
 	m_menu.updateWithExternalDelta(clickItemDelta);

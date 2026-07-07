@@ -1410,6 +1410,11 @@
                     {
                       "type": "EventTrigger",
                       "tag": "onClickDifficultyLight"
+                    },
+                    {
+                      "type": "UISound",
+                      "audioFilePath": "se/hover.wav",
+                      "triggerType": "HoverStart"
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -1472,10 +1477,17 @@
                       0.5
                     ],
                     "rotation": 0.0,
-                    "scale": [
-                      1.0,
-                      1.0
-                    ],
+                    "scale": {
+                      "default": [
+                        1,
+                        1
+                      ],
+                      "hovered": [
+                        1.03,
+                        1.03
+                      ],
+                      "smoothTime": 0.025
+                    },
                     "translate": [
                       0.0,
                       0.0
@@ -1746,6 +1758,11 @@
                     {
                       "type": "EventTrigger",
                       "tag": "onClickDifficultyChallenge"
+                    },
+                    {
+                      "type": "UISound",
+                      "audioFilePath": "se/hover.wav",
+                      "triggerType": "HoverStart"
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -1808,10 +1825,17 @@
                       0.5
                     ],
                     "rotation": 0.0,
-                    "scale": [
-                      1.0,
-                      1.0
-                    ],
+                    "scale": {
+                      "default": [
+                        1,
+                        1
+                      ],
+                      "hovered": [
+                        1.03,
+                        1.03
+                      ],
+                      "smoothTime": 0.025
+                    },
                     "translate": [
                       0.0,
                       0.0
@@ -2082,6 +2106,11 @@
                     {
                       "type": "EventTrigger",
                       "tag": "onClickDifficultyExtended"
+                    },
+                    {
+                      "type": "UISound",
+                      "audioFilePath": "se/hover.wav",
+                      "triggerType": "HoverStart"
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -2124,10 +2153,10 @@
                   "transform": {
                     "color": {
                       "default": [
-                        255,
-                        255,
-                        255,
-                        255
+                        255.0,
+                        255.0,
+                        255.0,
+                        255.0
                       ],
                       "styleStates": {
                         "levelSortOther": [
@@ -2144,10 +2173,17 @@
                       0.5
                     ],
                     "rotation": 0.0,
-                    "scale": [
-                      1.0,
-                      1.0
-                    ],
+                    "scale": {
+                      "default": [
+                        1,
+                        1
+                      ],
+                      "hovered": [
+                        1.03,
+                        1.03
+                      ],
+                      "smoothTime": 0.025
+                    },
                     "translate": [
                       0.0,
                       0.0
@@ -2418,6 +2454,11 @@
                     {
                       "type": "EventTrigger",
                       "tag": "onClickDifficultyInfinite"
+                    },
+                    {
+                      "type": "UISound",
+                      "audioFilePath": "se/hover.wav",
+                      "triggerType": "HoverStart"
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -2480,10 +2521,17 @@
                       0.5
                     ],
                     "rotation": 0.0,
-                    "scale": [
-                      1.0,
-                      1.0
-                    ],
+                    "scale": {
+                      "default": [
+                        1,
+                        1
+                      ],
+                      "hovered": [
+                        1.03,
+                        1.03
+                      ],
+                      "smoothTime": 0.025
+                    },
                     "translate": [
                       0.0,
                       0.0
@@ -2730,8 +2778,8 @@
                 ],
                 "translate": {
                   "default": [
-                    350.0,
-                    0.0
+                    350,
+                    0
                   ],
                   "styleStates": {
                     "difficulty0": [

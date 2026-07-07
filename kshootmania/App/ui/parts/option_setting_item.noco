@@ -458,11 +458,11 @@
               0.5
             ],
             "posDelta": [
-              30.0,
+              22.5,
               0.0
             ],
             "sizeDelta": [
-              60.0,
+              45.0,
               24.0
             ],
             "sizeDeltaPivot": [
@@ -515,6 +515,30 @@
               "type": "EventTrigger",
               "tag": "onPressRepeatValueLeft",
               "triggerType": "PressRepeat"
+            },
+            {
+              "type": "RectRenderer",
+              "fillColor": {
+                "default": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "hovered": [
+                  0,
+                  48,
+                  24,
+                  255
+                ],
+                "smoothTime": 0.025
+              },
+              "blendMode": "Additive"
+            },
+            {
+              "type": "UISound",
+              "audioFilePath": "se/hover.wav",
+              "triggerType": "HoverStart"
             }
           ],
           "children": [],
@@ -553,11 +577,11 @@
               0.5
             ],
             "posDelta": [
-              275.0,
+              281.25,
               0.0
             ],
             "sizeDelta": [
-              50.0,
+              37.5,
               24.0
             ],
             "sizeDeltaPivot": [
@@ -610,6 +634,30 @@
               "type": "EventTrigger",
               "tag": "onPressRepeatValueRight",
               "triggerType": "PressRepeat"
+            },
+            {
+              "type": "RectRenderer",
+              "fillColor": {
+                "default": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "hovered": [
+                  0,
+                  48,
+                  24,
+                  255
+                ],
+                "smoothTime": 0.025
+              },
+              "blendMode": "Additive"
+            },
+            {
+              "type": "UISound",
+              "audioFilePath": "se/hover.wav",
+              "triggerType": "HoverStart"
             }
           ],
           "children": [],
@@ -631,15 +679,121 @@
           ],
           "inheritChildrenHover": false,
           "inheritChildrenPress": false
+        },
+        {
+          "name": "HoverOverlay",
+          "activeSelf": true,
+          "interactable": true,
+          "isHitTarget": false,
+          "region": {
+            "type": "AnchorRegion",
+            "anchorMin": [
+              0.0,
+              0.0
+            ],
+            "anchorMax": [
+              1.0,
+              1.0
+            ],
+            "posDelta": [
+              0,
+              0
+            ],
+            "sizeDelta": [
+              0,
+              0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ]
+          },
+          "transform": {
+            "translate": [
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1
+            ],
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0,
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true
+          },
+          "childrenLayout": {
+            "type": "FlowLayout",
+            "horizontalAlign": "Left",
+            "verticalAlign": "Top",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0,
+              0
+            ]
+          },
+          "components": [
+            {
+              "type": "RectRenderer",
+              "fillColor": {
+                "default": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "hovered": [
+                  0,
+                  48,
+                  24,
+                  255
+                ],
+                "smoothTime": 0.025
+              },
+              "blendMode": "Additive"
+            }
+          ],
+          "children": [],
+          "clippingEnabled": false,
+          "horizontalScrollable": false,
+          "verticalScrollable": false,
+          "dragScrollEnabled": true,
+          "wheelScrollEnabled": true,
+          "rubberBandScrollEnabled": true,
+          "decelerationRate": 0.2,
+          "scrollBarType": "Overlay",
+          "zOrderInSiblings": 0,
+          "styleState": "",
+          "hitPadding": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false
         }
       ],
       "childrenLayout": {
         "horizontalAlign": "Left",
         "padding": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
+          0,
+          0,
+          0,
+          0
         ],
         "spacing": 0.0,
         "type": "HorizontalLayout",
@@ -655,6 +809,11 @@
           "type": "EventTrigger",
           "tag": "onClickSettingItem",
           "recursive": true
+        },
+        {
+          "type": "UISound",
+          "audioFilePath": "se/hover.wav",
+          "triggerType": "HoverStart"
         }
       ],
       "decelerationRate": 0.2,

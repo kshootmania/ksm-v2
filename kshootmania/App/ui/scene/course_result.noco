@@ -276,6 +276,11 @@
           "tag": "onClickSNSButton",
           "triggerType": "Click",
           "type": "EventTrigger"
+        },
+        {
+          "type": "UISound",
+          "audioFilePath": "se/hover.wav",
+          "triggerType": "HoverStart"
         }
       ],
       "decelerationRate": 0.2,

@@ -787,6 +787,11 @@
                 {
                   "type": "EventTrigger",
                   "tag": "onClickDisplaySoundSettings"
+                },
+                {
+                  "type": "UISound",
+                  "audioFilePath": "se/hover.wav",
+                  "triggerType": "HoverStart"
                 }
               ],
               "decelerationRate": 0.2,
@@ -837,10 +842,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1,
+                    1
+                  ],
+                  "hovered": [
+                    1.015,
+                    1.015
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -1318,6 +1330,11 @@
                 {
                   "type": "EventTrigger",
                   "tag": "onClickInputJudgmentSettings"
+                },
+                {
+                  "type": "UISound",
+                  "audioFilePath": "se/hover.wav",
+                  "triggerType": "HoverStart"
                 }
               ],
               "decelerationRate": 0.2,
@@ -1368,10 +1385,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1,
+                    1
+                  ],
+                  "hovered": [
+                    1.015,
+                    1.015
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -1849,6 +1873,11 @@
                 {
                   "type": "EventTrigger",
                   "tag": "onClickOtherSettings"
+                },
+                {
+                  "type": "UISound",
+                  "audioFilePath": "se/hover.wav",
+                  "triggerType": "HoverStart"
                 }
               ],
               "decelerationRate": 0.2,
@@ -1899,10 +1928,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1,
+                    1
+                  ],
+                  "hovered": [
+                    1.015,
+                    1.015
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -2380,6 +2416,11 @@
                 {
                   "type": "EventTrigger",
                   "tag": "onClickKeyConfiguration"
+                },
+                {
+                  "type": "UISound",
+                  "audioFilePath": "se/hover.wav",
+                  "triggerType": "HoverStart"
                 }
               ],
               "decelerationRate": 0.2,
@@ -2430,10 +2471,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1,
+                    1
+                  ],
+                  "hovered": [
+                    1.015,
+                    1.015
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0

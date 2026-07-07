@@ -153,11 +153,27 @@
               "verticalOverflow": "Overflow"
             },
             {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
               "type": "CursorChanger"
             },
             {
-              "type": "EventTrigger",
-              "tag": "onClickKeyConfigStart"
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickKeyConfigStart",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "audioAssetName": "",
+              "audioFilePath": "se/hover.wav",
+              "includingDisabled": false,
+              "recursive": false,
+              "triggerType": "HoverStart",
+              "type": "UISound",
+              "volume": 1.0
             }
           ],
           "decelerationRate": 0.2,
@@ -198,6 +214,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "styleState_paramRef": "startState",
@@ -214,10 +243,17 @@
               0.5
             ],
             "rotation": 0.0,
-            "scale": [
-              1.0,
-              1.0
-            ],
+            "scale": {
+              "default": [
+                1.0,
+                1.0
+              ],
+              "hovered": [
+                1.03,
+                1.03
+              ],
+              "smoothTime": 0.025
+            },
             "translate": [
               0.0,
               0.0
@@ -377,11 +413,27 @@
               "verticalOverflow": "Overflow"
             },
             {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
               "type": "CursorChanger"
             },
             {
-              "type": "EventTrigger",
-              "tag": "onClickKeyConfigBack"
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickKeyConfigBack",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "audioAssetName": "",
+              "audioFilePath": "se/hover.wav",
+              "includingDisabled": false,
+              "recursive": false,
+              "triggerType": "HoverStart",
+              "type": "UISound",
+              "volume": 1.0
             }
           ],
           "decelerationRate": 0.2,
@@ -422,6 +474,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "styleState_paramRef": "backState",
@@ -438,10 +503,17 @@
               0.5
             ],
             "rotation": 0.0,
-            "scale": [
-              1.0,
-              1.0
-            ],
+            "scale": {
+              "default": [
+                1.0,
+                1.0
+              ],
+              "hovered": [
+                1.03,
+                1.03
+              ],
+              "smoothTime": 0.025
+            },
             "translate": [
               0.0,
               0.0
@@ -604,11 +676,27 @@
                   "verticalOverflow": "Overflow"
                 },
                 {
+                  "cursorStyle": "Hand",
+                  "includingDisabled": false,
+                  "recursive": false,
                   "type": "CursorChanger"
                 },
                 {
-                  "type": "EventTrigger",
-                  "tag": "onClickKeyConfigBTA"
+                  "recursive": false,
+                  "repeatIntervalSec": 0.1,
+                  "repeatIntervalSecFirst": 0.5,
+                  "tag": "onClickKeyConfigBTA",
+                  "triggerType": "Click",
+                  "type": "EventTrigger"
+                },
+                {
+                  "audioAssetName": "",
+                  "audioFilePath": "se/hover.wav",
+                  "includingDisabled": false,
+                  "recursive": false,
+                  "triggerType": "HoverStart",
+                  "type": "UISound",
+                  "volume": 1.0
                 }
               ],
               "decelerationRate": 0.2,
@@ -644,6 +732,19 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "styleState_paramRef": "btAState",
@@ -660,10 +761,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1.0,
+                    1.0
+                  ],
+                  "hovered": [
+                    1.03,
+                    1.03
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -823,11 +931,27 @@
                   "verticalOverflow": "Overflow"
                 },
                 {
+                  "cursorStyle": "Hand",
+                  "includingDisabled": false,
+                  "recursive": false,
                   "type": "CursorChanger"
                 },
                 {
-                  "type": "EventTrigger",
-                  "tag": "onClickKeyConfigBTB"
+                  "recursive": false,
+                  "repeatIntervalSec": 0.1,
+                  "repeatIntervalSecFirst": 0.5,
+                  "tag": "onClickKeyConfigBTB",
+                  "triggerType": "Click",
+                  "type": "EventTrigger"
+                },
+                {
+                  "audioAssetName": "",
+                  "audioFilePath": "se/hover.wav",
+                  "includingDisabled": false,
+                  "recursive": false,
+                  "triggerType": "HoverStart",
+                  "type": "UISound",
+                  "volume": 1.0
                 }
               ],
               "decelerationRate": 0.2,
@@ -863,6 +987,19 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "styleState_paramRef": "btBState",
@@ -879,10 +1016,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1.0,
+                    1.0
+                  ],
+                  "hovered": [
+                    1.03,
+                    1.03
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -1042,11 +1186,27 @@
                   "verticalOverflow": "Overflow"
                 },
                 {
+                  "cursorStyle": "Hand",
+                  "includingDisabled": false,
+                  "recursive": false,
                   "type": "CursorChanger"
                 },
                 {
-                  "type": "EventTrigger",
-                  "tag": "onClickKeyConfigBTC"
+                  "recursive": false,
+                  "repeatIntervalSec": 0.1,
+                  "repeatIntervalSecFirst": 0.5,
+                  "tag": "onClickKeyConfigBTC",
+                  "triggerType": "Click",
+                  "type": "EventTrigger"
+                },
+                {
+                  "audioAssetName": "",
+                  "audioFilePath": "se/hover.wav",
+                  "includingDisabled": false,
+                  "recursive": false,
+                  "triggerType": "HoverStart",
+                  "type": "UISound",
+                  "volume": 1.0
                 }
               ],
               "decelerationRate": 0.2,
@@ -1082,6 +1242,19 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "styleState_paramRef": "btCState",
@@ -1098,10 +1271,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1.0,
+                    1.0
+                  ],
+                  "hovered": [
+                    1.03,
+                    1.03
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -1261,11 +1441,27 @@
                   "verticalOverflow": "Overflow"
                 },
                 {
+                  "cursorStyle": "Hand",
+                  "includingDisabled": false,
+                  "recursive": false,
                   "type": "CursorChanger"
                 },
                 {
-                  "type": "EventTrigger",
-                  "tag": "onClickKeyConfigBTD"
+                  "recursive": false,
+                  "repeatIntervalSec": 0.1,
+                  "repeatIntervalSecFirst": 0.5,
+                  "tag": "onClickKeyConfigBTD",
+                  "triggerType": "Click",
+                  "type": "EventTrigger"
+                },
+                {
+                  "audioAssetName": "",
+                  "audioFilePath": "se/hover.wav",
+                  "includingDisabled": false,
+                  "recursive": false,
+                  "triggerType": "HoverStart",
+                  "type": "UISound",
+                  "volume": 1.0
                 }
               ],
               "decelerationRate": 0.2,
@@ -1301,6 +1497,19 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "styleState_paramRef": "btDState",
@@ -1317,10 +1526,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1.0,
+                    1.0
+                  ],
+                  "hovered": [
+                    1.03,
+                    1.03
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -1383,6 +1599,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -1564,11 +1793,27 @@
                   "verticalOverflow": "Overflow"
                 },
                 {
+                  "cursorStyle": "Hand",
+                  "includingDisabled": false,
+                  "recursive": false,
                   "type": "CursorChanger"
                 },
                 {
-                  "type": "EventTrigger",
-                  "tag": "onClickKeyConfigFXL"
+                  "recursive": false,
+                  "repeatIntervalSec": 0.1,
+                  "repeatIntervalSecFirst": 0.5,
+                  "tag": "onClickKeyConfigFXL",
+                  "triggerType": "Click",
+                  "type": "EventTrigger"
+                },
+                {
+                  "audioAssetName": "",
+                  "audioFilePath": "se/hover.wav",
+                  "includingDisabled": false,
+                  "recursive": false,
+                  "triggerType": "HoverStart",
+                  "type": "UISound",
+                  "volume": 1.0
                 }
               ],
               "decelerationRate": 0.2,
@@ -1604,6 +1849,19 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "styleState_paramRef": "fxLState",
@@ -1620,10 +1878,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1.0,
+                    1.0
+                  ],
+                  "hovered": [
+                    1.03,
+                    1.03
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -1783,11 +2048,27 @@
                   "verticalOverflow": "Overflow"
                 },
                 {
+                  "cursorStyle": "Hand",
+                  "includingDisabled": false,
+                  "recursive": false,
                   "type": "CursorChanger"
                 },
                 {
-                  "type": "EventTrigger",
-                  "tag": "onClickKeyConfigFXR"
+                  "recursive": false,
+                  "repeatIntervalSec": 0.1,
+                  "repeatIntervalSecFirst": 0.5,
+                  "tag": "onClickKeyConfigFXR",
+                  "triggerType": "Click",
+                  "type": "EventTrigger"
+                },
+                {
+                  "audioAssetName": "",
+                  "audioFilePath": "se/hover.wav",
+                  "includingDisabled": false,
+                  "recursive": false,
+                  "triggerType": "HoverStart",
+                  "type": "UISound",
+                  "volume": 1.0
                 }
               ],
               "decelerationRate": 0.2,
@@ -1823,6 +2104,19 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "styleState_paramRef": "fxRState",
@@ -1839,10 +2133,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1.0,
+                    1.0
+                  ],
+                  "hovered": [
+                    1.03,
+                    1.03
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -1905,6 +2206,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -2065,6 +2379,19 @@
                         "type": "InlineRegion"
                       },
                       "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
                       "scrollBarType": "Overlay",
                       "styleState": "",
                       "transform": {
@@ -2214,6 +2541,19 @@
                         "type": "InlineRegion"
                       },
                       "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
                       "scrollBarType": "Overlay",
                       "styleState": "",
                       "transform": {
@@ -2365,6 +2705,19 @@
                         "type": "InlineRegion"
                       },
                       "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
                       "scrollBarType": "Overlay",
                       "styleState": "",
                       "transform": {
@@ -2449,6 +2802,19 @@
                     "type": "AnchorRegion"
                   },
                   "rubberBandScrollEnabled": true,
+                  "scrollBarHandleColor": [
+                    255,
+                    255,
+                    255,
+                    160
+                  ],
+                  "scrollBarMargin": [
+                    2.0,
+                    2.0,
+                    2.0,
+                    2.0
+                  ],
+                  "scrollBarThickness": 8.0,
                   "scrollBarType": "Overlay",
                   "styleState": "",
                   "styleState_paramRef": "laserLState",
@@ -2569,13 +2935,27 @@
                   "type": "RectRenderer"
                 },
                 {
-                  "type": "CursorChanger",
-                  "recursive": true
+                  "cursorStyle": "Hand",
+                  "includingDisabled": false,
+                  "recursive": true,
+                  "type": "CursorChanger"
                 },
                 {
-                  "type": "EventTrigger",
+                  "recursive": true,
+                  "repeatIntervalSec": 0.1,
+                  "repeatIntervalSecFirst": 0.5,
                   "tag": "onClickKeyConfigLaserL",
-                  "recursive": true
+                  "triggerType": "Click",
+                  "type": "EventTrigger"
+                },
+                {
+                  "audioAssetName": "",
+                  "audioFilePath": "se/hover.wav",
+                  "includingDisabled": false,
+                  "recursive": false,
+                  "triggerType": "HoverStart",
+                  "type": "UISound",
+                  "volume": 1.0
                 }
               ],
               "decelerationRate": 0.2,
@@ -2611,6 +2991,19 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "styleState_paramRef": "laserLState",
@@ -2627,10 +3020,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1.0,
+                    1.0
+                  ],
+                  "hovered": [
+                    1.03,
+                    1.03
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -2769,6 +3169,19 @@
                         "type": "InlineRegion"
                       },
                       "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
                       "scrollBarType": "Overlay",
                       "styleState": "",
                       "transform": {
@@ -2918,6 +3331,19 @@
                         "type": "InlineRegion"
                       },
                       "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
                       "scrollBarType": "Overlay",
                       "styleState": "",
                       "transform": {
@@ -3069,6 +3495,19 @@
                         "type": "InlineRegion"
                       },
                       "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
                       "scrollBarType": "Overlay",
                       "styleState": "",
                       "transform": {
@@ -3153,6 +3592,19 @@
                     "type": "AnchorRegion"
                   },
                   "rubberBandScrollEnabled": true,
+                  "scrollBarHandleColor": [
+                    255,
+                    255,
+                    255,
+                    160
+                  ],
+                  "scrollBarMargin": [
+                    2.0,
+                    2.0,
+                    2.0,
+                    2.0
+                  ],
+                  "scrollBarThickness": 8.0,
                   "scrollBarType": "Overlay",
                   "styleState": "",
                   "styleState_paramRef": "laserRState",
@@ -3273,13 +3725,27 @@
                   "type": "RectRenderer"
                 },
                 {
-                  "type": "CursorChanger",
-                  "recursive": true
+                  "cursorStyle": "Hand",
+                  "includingDisabled": false,
+                  "recursive": true,
+                  "type": "CursorChanger"
                 },
                 {
-                  "type": "EventTrigger",
+                  "recursive": true,
+                  "repeatIntervalSec": 0.1,
+                  "repeatIntervalSecFirst": 0.5,
                   "tag": "onClickKeyConfigLaserR",
-                  "recursive": true
+                  "triggerType": "Click",
+                  "type": "EventTrigger"
+                },
+                {
+                  "audioAssetName": "",
+                  "audioFilePath": "se/hover.wav",
+                  "includingDisabled": false,
+                  "recursive": false,
+                  "triggerType": "HoverStart",
+                  "type": "UISound",
+                  "volume": 1.0
                 }
               ],
               "decelerationRate": 0.2,
@@ -3315,6 +3781,19 @@
                 "type": "InlineRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "styleState_paramRef": "laserRState",
@@ -3331,10 +3810,17 @@
                   0.5
                 ],
                 "rotation": 0.0,
-                "scale": [
-                  1.0,
-                  1.0
-                ],
+                "scale": {
+                  "default": [
+                    1.0,
+                    1.0
+                  ],
+                  "hovered": [
+                    1.03,
+                    1.03
+                  ],
+                  "smoothTime": 0.025
+                },
                 "translate": [
                   0.0,
                   0.0
@@ -3397,6 +3883,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -3556,6 +4055,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -3620,6 +4132,9 @@
               "gridAnimationFPS": 10.0,
               "gridAnimationStartIndex": 0,
               "gridAnimationType": "None",
+              "hideIfTextureEmpty": false,
+              "mipmapEnabled": false,
+              "mipmapLodBias": 0.0,
               "nineSliceBottomTiled": false,
               "nineSliceCenterTiled": false,
               "nineSliceEnabled": false,
@@ -3642,6 +4157,7 @@
                 0.0
               ],
               "offsetAnimationType": "None",
+              "pixelShaderAssetName": "",
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
@@ -3683,13 +4199,27 @@
               "type": "Sprite"
             },
             {
-              "type": "CursorChanger",
-              "recursive": true
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": true,
+              "type": "CursorChanger"
             },
             {
-              "type": "EventTrigger",
+              "recursive": true,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
               "tag": "onClickKeyConfigBothFX",
-              "recursive": true
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "audioAssetName": "",
+              "audioFilePath": "se/hover.wav",
+              "includingDisabled": false,
+              "recursive": false,
+              "triggerType": "HoverStart",
+              "type": "UISound",
+              "volume": 1.0
             }
           ],
           "decelerationRate": 0.2,
@@ -3730,9 +4260,284 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "styleState_paramRef": "bothFXState",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": {
+              "default": [
+                1.0,
+                1.0
+              ],
+              "hovered": [
+                1.03,
+                1.03
+              ],
+              "smoothTime": 0.025
+            },
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "blendMode": "Additive",
+              "cornerRadius": 0.0,
+              "fillColor": {
+                "default": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "hovered": [
+                  0,
+                  48,
+                  24,
+                  255
+                ],
+                "smoothTime": 0.025
+              },
+              "fillGradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fillGradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fillGradationType": "None",
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineThicknessInner": 0.0,
+              "outlineThicknessOuter": 0.0,
+              "shadowBlur": 0.0,
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                2.0,
+                2.0
+              ],
+              "shadowSpread": 0.0,
+              "type": "RectRenderer"
+            },
+            {
+              "characterSpacing": [
+                0.0,
+                0.0
+              ],
+              "color": {
+                "default": [
+                  255,
+                  255,
+                  255,
+                  255
+                ],
+                "styleStates": {
+                  "selected": [
+                    255,
+                    255,
+                    0,
+                    255
+                  ]
+                }
+              },
+              "fontAssetName": "",
+              "fontSize": 16.0,
+              "gradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "gradationType": "None",
+              "horizontalAlign": "Center",
+              "horizontalOverflow": "Overflow",
+              "minFontSize": 1.0,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineFactorInner": 0.0,
+              "outlineFactorOuter": 0.0,
+              "padding": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                1.0,
+                1.0
+              ],
+              "sizingMode": "AutoShrinkWidth",
+              "text": "GAMEPAD 1",
+              "text_paramRef": "configSetText",
+              "type": "Label",
+              "underlineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "underlineStyle": "None",
+              "underlineThickness": 1.0,
+              "verticalAlign": "Middle",
+              "verticalOverflow": "Overflow"
+            },
+            {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
+              "type": "CursorChanger"
+            },
+            {
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickKeyConfigConfigSet",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "audioAssetName": "",
+              "audioFilePath": "se/hover.wav",
+              "includingDisabled": false,
+              "recursive": false,
+              "triggerType": "HoverStart",
+              "type": "UISound",
+              "volume": 1.0
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": true,
+          "name": "ConfigSet",
+          "region": {
+            "anchorMax": [
+              0.5,
+              0.5
+            ],
+            "anchorMin": [
+              0.5,
+              0.5
+            ],
+            "posDelta": [
+              0.0,
+              180.0
+            ],
+            "sizeDelta": [
+              120.0,
+              28.0
+            ],
+            "sizeDeltaPivot": [
+              0.5,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "styleState_paramRef": "configSetState",
           "transform": {
             "color": [
               255,
@@ -3761,6 +4566,7 @@
         },
         {
           "activeSelf": true,
+          "activeSelf_paramRef": "configSetPrevArrowVisible",
           "children": [],
           "childrenLayout": {
             "horizontalAlign": "Left",
@@ -3843,8 +4649,7 @@
                 1.0
               ],
               "sizingMode": "Fixed",
-              "text": "<      GAMEPAD 1      >",
-              "text_paramRef": "configSetText",
+              "text": "<",
               "type": "Label",
               "underlineColor": [
                 255,
@@ -3858,183 +4663,78 @@
               "verticalOverflow": "Overflow"
             },
             {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
               "type": "CursorChanger"
             },
             {
-              "type": "EventTrigger",
-              "tag": "onClickKeyConfigConfigSet"
-            }
-          ],
-          "decelerationRate": 0.2,
-          "dragScrollEnabled": true,
-          "hitPadding": [
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "horizontalScrollable": false,
-          "inheritChildrenHover": false,
-          "inheritChildrenPress": false,
-          "interactable": true,
-          "isHitTarget": true,
-          "name": "ConfigSet",
-          "region": {
-            "anchorMax": [
-              0.5,
-              0.5
-            ],
-            "anchorMin": [
-              0.5,
-              0.5
-            ],
-            "posDelta": [
-              0.0,
-              180.0
-            ],
-            "sizeDelta": [
-              390.0,
-              28.0
-            ],
-            "sizeDeltaPivot": [
-              0.5,
-              0.5
-            ],
-            "type": "AnchorRegion"
-          },
-          "rubberBandScrollEnabled": true,
-          "scrollBarType": "Overlay",
-          "styleState": "",
-          "styleState_paramRef": "configSetState",
-          "transform": {
-            "color": [
-              255,
-              255,
-              255,
-              255
-            ],
-            "hitTestAffected": true,
-            "pivot": [
-              0.5,
-              0.5
-            ],
-            "rotation": 0.0,
-            "scale": [
-              1.0,
-              1.0
-            ],
-            "translate": [
-              0.0,
-              0.0
-            ]
-          },
-          "verticalScrollable": false,
-          "wheelScrollEnabled": true,
-          "zOrderInSiblings": 0
-        },
-        {
-          "activeSelf": true,
-          "children": [],
-          "childrenLayout": {
-            "horizontalAlign": "Left",
-            "padding": [
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
-            "spacing": [
-              0.0,
-              0.0
-            ],
-            "type": "FlowLayout",
-            "verticalAlign": "Top"
-          },
-          "clippingEnabled": false,
-          "components": [
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickKeyConfigConfigSetPrev",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
             {
-              "characterSpacing": [
-                0,
-                0
-              ],
-              "color": {
-                "default": [
-                  255,
-                  255,
-                  255,
-                  255
-                ],
-                "styleStates": {
-                  "selected": [
-                    255,
-                    255,
-                    0,
-                    255
-                  ]
-                }
+              "audioAssetName": "",
+              "audioFilePath": "se/hover.wav",
+              "includingDisabled": false,
+              "recursive": false,
+              "triggerType": "HoverStart",
+              "type": "UISound",
+              "volume": 1.0
+            },
+            {
+              "active": {
+                "default": false,
+                "hovered": true
               },
-              "fontAssetName": "",
-              "fontSize": 16,
-              "gradationColor1": [
+              "applyDuringDelay": false,
+              "colorEnabled": false,
+              "colorFrom": [
                 255,
                 255,
                 255,
                 255
               ],
-              "gradationColor2": [
+              "colorTo": [
                 255,
                 255,
                 255,
                 255
               ],
-              "gradationType": "None",
-              "horizontalAlign": "Center",
-              "horizontalOverflow": "Overflow",
-              "minFontSize": 1,
-              "outlineColor": [
-                0,
-                0,
-                0,
-                255
+              "delay": 0.0,
+              "duration": 0.3,
+              "easing": "EaseInOutSine",
+              "loopDuration": 0.0,
+              "loopType": "PingPong",
+              "manualMode": false,
+              "manualTime": 0.0,
+              "restartOnActive": true,
+              "rotationEnabled": false,
+              "rotationFrom": 0.0,
+              "rotationTo": 0.0,
+              "scaleEnabled": false,
+              "scaleFrom": [
+                1.0,
+                1.0
               ],
-              "outlineFactorInner": 0,
-              "outlineFactorOuter": 0,
-              "padding": [
-                0.0,
-                0.0,
-                0.0,
+              "scaleTo": [
+                1.0,
+                1.0
+              ],
+              "tag": "",
+              "translateEnabled": true,
+              "translateFrom": [
+                -2.0,
                 0.0
               ],
-              "shadowColor": [
-                0,
-                0,
-                0,
-                0
+              "translateTo": [
+                2.0,
+                0.0
               ],
-              "shadowOffset": [
-                1,
-                1
-              ],
-              "sizingMode": "Fixed",
-              "text": "<",
-              "type": "Label",
-              "underlineColor": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "underlineStyle": "None",
-              "underlineThickness": 1,
-              "verticalAlign": "Middle",
-              "verticalOverflow": "Overflow"
-            },
-            {
-              "type": "CursorChanger"
-            },
-            {
-              "type": "EventTrigger",
-              "tag": "onClickKeyConfigConfigSetPrev"
+              "type": "Tween"
             }
           ],
           "decelerationRate": 0.2,
@@ -4075,6 +4775,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "styleState_paramRef": "configSetState",
@@ -4085,7 +4798,7 @@
               255,
               255
             ],
-            "hitTestAffected": true,
+            "hitTestAffected": false,
             "pivot": [
               0.5,
               0.5
@@ -4102,19 +4815,19 @@
           },
           "verticalScrollable": false,
           "wheelScrollEnabled": true,
-          "zOrderInSiblings": 0,
-          "activeSelf_paramRef": "configSetPrevArrowVisible"
+          "zOrderInSiblings": 0
         },
         {
           "activeSelf": true,
+          "activeSelf_paramRef": "configSetNextArrowVisible",
           "children": [],
           "childrenLayout": {
             "horizontalAlign": "Left",
             "padding": [
-              0,
-              0,
-              0,
-              0
+              0.0,
+              0.0,
+              0.0,
+              0.0
             ],
             "spacing": [
               0.0,
@@ -4127,8 +4840,8 @@
           "components": [
             {
               "characterSpacing": [
-                0,
-                0
+                0.0,
+                0.0
               ],
               "color": {
                 "default": [
@@ -4147,7 +4860,7 @@
                 }
               },
               "fontAssetName": "",
-              "fontSize": 16,
+              "fontSize": 16.0,
               "gradationColor1": [
                 255,
                 255,
@@ -4163,20 +4876,20 @@
               "gradationType": "None",
               "horizontalAlign": "Center",
               "horizontalOverflow": "Overflow",
-              "minFontSize": 1,
+              "minFontSize": 1.0,
               "outlineColor": [
                 0,
                 0,
                 0,
                 255
               ],
-              "outlineFactorInner": 0,
-              "outlineFactorOuter": 0,
+              "outlineFactorInner": 0.0,
+              "outlineFactorOuter": 0.0,
               "padding": [
-                0,
-                0,
-                0,
-                0
+                0.0,
+                0.0,
+                0.0,
+                0.0
               ],
               "shadowColor": [
                 0,
@@ -4185,8 +4898,8 @@
                 0
               ],
               "shadowOffset": [
-                1,
-                1
+                1.0,
+                1.0
               ],
               "sizingMode": "Fixed",
               "text": ">",
@@ -4198,25 +4911,92 @@
                 255
               ],
               "underlineStyle": "None",
-              "underlineThickness": 1,
+              "underlineThickness": 1.0,
               "verticalAlign": "Middle",
               "verticalOverflow": "Overflow"
             },
             {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
               "type": "CursorChanger"
             },
             {
-              "type": "EventTrigger",
-              "tag": "onClickKeyConfigConfigSetNext"
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickKeyConfigConfigSetNext",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "audioAssetName": "",
+              "audioFilePath": "se/hover.wav",
+              "includingDisabled": false,
+              "recursive": false,
+              "triggerType": "HoverStart",
+              "type": "UISound",
+              "volume": 1.0
+            },
+            {
+              "active": {
+                "default": false,
+                "hovered": true
+              },
+              "applyDuringDelay": false,
+              "colorEnabled": false,
+              "colorFrom": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "colorTo": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "delay": 0.0,
+              "duration": 0.3,
+              "easing": "EaseInOutSine",
+              "loopDuration": 0.0,
+              "loopType": "PingPong",
+              "manualMode": false,
+              "manualTime": 0.0,
+              "restartOnActive": true,
+              "rotationEnabled": false,
+              "rotationFrom": 0.0,
+              "rotationTo": 0.0,
+              "scaleEnabled": false,
+              "scaleFrom": [
+                1.0,
+                1.0
+              ],
+              "scaleTo": [
+                1.0,
+                1.0
+              ],
+              "tag": "",
+              "translateEnabled": true,
+              "translateFrom": [
+                -2.0,
+                0.0
+              ],
+              "translateTo": [
+                2.0,
+                0.0
+              ],
+              "type": "Tween"
             }
           ],
           "decelerationRate": 0.2,
           "dragScrollEnabled": true,
           "hitPadding": [
-            0,
-            0,
-            0,
-            0
+            0.0,
+            0.0,
+            0.0,
+            0.0
           ],
           "horizontalScrollable": false,
           "inheritChildrenHover": false,
@@ -4234,12 +5014,12 @@
               0.5
             ],
             "posDelta": [
-              80,
-              180
+              80.0,
+              180.0
             ],
             "sizeDelta": [
-              40,
-              28
+              40.0,
+              28.0
             ],
             "sizeDeltaPivot": [
               0.5,
@@ -4248,6 +5028,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "styleState_paramRef": "configSetState",
@@ -4258,38 +5051,37 @@
               255,
               255
             ],
-            "hitTestAffected": true,
+            "hitTestAffected": false,
             "pivot": [
               0.5,
               0.5
             ],
-            "rotation": 0,
+            "rotation": 0.0,
             "scale": [
-              1,
-              1
+              1.0,
+              1.0
             ],
             "translate": [
-              0,
-              0
+              0.0,
+              0.0
             ]
           },
           "verticalScrollable": false,
           "wheelScrollEnabled": true,
-          "zOrderInSiblings": 0,
-          "activeSelf_paramRef": "configSetNextArrowVisible"
+          "zOrderInSiblings": 0
         }
       ],
       "childrenLayout": {
         "horizontalAlign": "Left",
         "padding": [
-          0,
-          0,
-          0,
-          0
+          0.0,
+          0.0,
+          0.0,
+          0.0
         ],
         "spacing": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "type": "FlowLayout",
         "verticalAlign": "Top"
@@ -4299,10 +5091,10 @@
       "decelerationRate": 0.2,
       "dragScrollEnabled": true,
       "hitPadding": [
-        0,
-        0,
-        0,
-        0
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ],
       "horizontalScrollable": false,
       "inheritChildrenHover": false,
@@ -4320,12 +5112,12 @@
           0.5
         ],
         "posDelta": [
-          0,
-          0
+          0.0,
+          0.0
         ],
         "sizeDelta": [
-          640,
-          480
+          640.0,
+          480.0
         ],
         "sizeDeltaPivot": [
           0.5,
@@ -4334,6 +5126,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -4348,14 +5153,14 @@
           0.5,
           0.5
         ],
-        "rotation": 0,
+        "rotation": 0.0,
         "scale": [
-          1,
-          1
+          1.0,
+          1.0
         ],
         "translate": [
-          0,
-          0
+          0.0,
+          0.0
         ]
       },
       "verticalScrollable": false,
@@ -4366,14 +5171,14 @@
   "childrenLayout": {
     "horizontalAlign": "Left",
     "padding": [
-      0,
-      0,
-      0,
-      0
+      0.0,
+      0.0,
+      0.0,
+      0.0
     ],
     "spacing": [
-      0,
-      0
+      0.0,
+      0.0
     ],
     "type": "FlowLayout",
     "verticalAlign": "Top"
@@ -4396,6 +5201,15 @@
     "backText": {
       "type": "String",
       "value": "*BACK :Esc"
+    },
+    "bothFXColor": {
+      "type": "Color",
+      "value": [
+        255,
+        255,
+        255,
+        255
+      ]
     },
     "bothFXState": {
       "type": "String",
@@ -4473,24 +5287,23 @@
       "type": "String",
       "value": "D"
     },
+    "configSetNextArrowVisible": {
+      "type": "Bool",
+      "value": true
+    },
+    "configSetPrevArrowVisible": {
+      "type": "Bool",
+      "value": true
+    },
     "configSetState": {
       "type": "String",
       "value": ""
     },
     "configSetText": {
       "type": "String",
-      "value": "<      GAMEPAD 1      >"
+      "value": "GAMEPAD 1"
     },
     "fxLColor": {
-      "type": "Color",
-      "value": [
-        255,
-        255,
-        255,
-        255
-      ]
-    },
-    "bothFXColor": {
       "type": "Color",
       "value": [
         255,
@@ -4600,20 +5413,12 @@
     "startText": {
       "type": "String",
       "value": "*START:Enter"
-    },
-    "configSetPrevArrowVisible": {
-      "type": "Bool",
-      "value": true
-    },
-    "configSetNextArrowVisible": {
-      "type": "Bool",
-      "value": true
     }
   },
   "referenceSize": [
     640.0,
     480.0
   ],
-  "serializedVersion": 5,
-  "version": "0.3.1"
+  "serializedVersion": 11,
+  "version": "0.5.0-beta1"
 }

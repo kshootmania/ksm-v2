@@ -177,6 +177,30 @@
         {
           "type": "EventTrigger",
           "tag": "onClickYes"
+        },
+        {
+          "type": "RectRenderer",
+          "fillColor": {
+            "default": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "hovered": [
+              0,
+              48,
+              24,
+              255
+            ],
+            "smoothTime": 0.025
+          },
+          "blendMode": "Additive"
+        },
+        {
+          "type": "UISound",
+          "audioFilePath": "se/hover.wav",
+          "triggerType": "HoverStart"
         }
       ],
       "children": [],
@@ -271,6 +295,30 @@
         {
           "type": "EventTrigger",
           "tag": "onClickNo"
+        },
+        {
+          "type": "RectRenderer",
+          "fillColor": {
+            "default": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "hovered": [
+              0,
+              48,
+              24,
+              255
+            ],
+            "smoothTime": 0.025
+          },
+          "blendMode": "Additive"
+        },
+        {
+          "type": "UISound",
+          "audioFilePath": "se/hover.wav",
+          "triggerType": "HoverStart"
         }
       ],
       "children": [],
