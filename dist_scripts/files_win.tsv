@@ -120,6 +120,7 @@ kshootmania/App/imgs/bg3.jpg	imgs/bg3.jpg
 kshootmania/App/imgs/bline.gif	imgs/bline.gif
 kshootmania/App/imgs/bt_chip.gif	imgs/bt_chip.gif
 kshootmania/App/imgs/bt_long.gif	imgs/bt_long.gif
+kshootmania/App/imgs/btn_back.png	imgs/btn_back.png
 kshootmania/App/imgs/cg.gif	imgs/cg.gif
 kshootmania/App/imgs/cg_header.png	imgs/cg_header.png
 kshootmania/App/imgs/checkbox.png	imgs/checkbox.png
@@ -286,6 +287,7 @@ kshootmania/App/se/courseresult_bgm.ogg	se/courseresult_bgm.ogg
 kshootmania/App/se/gate_bgm.ogg	se/gate_bgm.ogg
 kshootmania/App/se/gate_check.wav	se/gate_check.wav
 kshootmania/App/se/gate_sel.wav	se/gate_sel.wav
+kshootmania/App/se/hover.wav	se/hover.wav
 kshootmania/App/se/note/clap.wav	se/note/clap.wav
 kshootmania/App/se/note/clap_impact.wav	se/note/clap_impact.wav
 kshootmania/App/se/note/clap_punchy.wav	se/note/clap_punchy.wav
@@ -400,6 +402,7 @@ kshootmania/App/ui/parts/select_course_chart_item.noco	ui/parts/select_course_ch
 kshootmania/App/ui/parts/select_item_bottom.noco	ui/parts/select_item_bottom.noco
 kshootmania/App/ui/parts/select_item_center.noco	ui/parts/select_item_center.noco
 kshootmania/App/ui/parts/select_item_top.noco	ui/parts/select_item_top.noco
+kshootmania/App/ui/scene/common_overlay.noco	ui/scene/common_overlay.noco
 kshootmania/App/ui/scene/course_result.noco	ui/scene/course_result.noco
 kshootmania/App/ui/scene/gate.noco	ui/scene/gate.noco
 kshootmania/App/ui/scene/ir_entry.noco	ui/scene/ir_entry.noco

@@ -120,6 +120,7 @@ kshootmania/App/imgs/bg3.jpg	K-Shoot MANIA.app/Contents/Resources/imgs/bg3.jpg
 kshootmania/App/imgs/bline.gif	K-Shoot MANIA.app/Contents/Resources/imgs/bline.gif
 kshootmania/App/imgs/bt_chip.gif	K-Shoot MANIA.app/Contents/Resources/imgs/bt_chip.gif
 kshootmania/App/imgs/bt_long.gif	K-Shoot MANIA.app/Contents/Resources/imgs/bt_long.gif
+kshootmania/App/imgs/btn_back.png	K-Shoot MANIA.app/Contents/Resources/imgs/btn_back.png
 kshootmania/App/imgs/cg.gif	K-Shoot MANIA.app/Contents/Resources/imgs/cg.gif
 kshootmania/App/imgs/cg_header.png	K-Shoot MANIA.app/Contents/Resources/imgs/cg_header.png
 kshootmania/App/imgs/checkbox.png	K-Shoot MANIA.app/Contents/Resources/imgs/checkbox.png
@@ -285,6 +286,7 @@ kshootmania/App/se/courseresult_bgm.ogg	K-Shoot MANIA.app/Contents/Resources/se/
 kshootmania/App/se/gate_bgm.ogg	K-Shoot MANIA.app/Contents/Resources/se/gate_bgm.ogg
 kshootmania/App/se/gate_check.wav	K-Shoot MANIA.app/Contents/Resources/se/gate_check.wav
 kshootmania/App/se/gate_sel.wav	K-Shoot MANIA.app/Contents/Resources/se/gate_sel.wav
+kshootmania/App/se/hover.wav	K-Shoot MANIA.app/Contents/Resources/se/hover.wav
 kshootmania/App/se/note/clap.wav	K-Shoot MANIA.app/Contents/Resources/se/note/clap.wav
 kshootmania/App/se/note/clap_impact.wav	K-Shoot MANIA.app/Contents/Resources/se/note/clap_impact.wav
 kshootmania/App/se/note/clap_punchy.wav	K-Shoot MANIA.app/Contents/Resources/se/note/clap_punchy.wav
@@ -399,6 +401,7 @@ kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/select_course_char
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_bottom.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_bottom.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_center.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_center.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_top.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_top.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/common_overlay.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/common_overlay.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/course_result.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/course_result.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/gate.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/gate.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/scene/ir_entry.noco	K-Shoot MANIA.app/Contents/Resources/ui/scene/ir_entry.noco
