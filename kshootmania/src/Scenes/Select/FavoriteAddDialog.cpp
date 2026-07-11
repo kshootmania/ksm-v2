@@ -59,7 +59,17 @@ Co::Task<Optional<int32>> FavoriteAddDialog::start()
 	// 選択確定までループ
 	while (true)
 	{
-		m_menu.update();
+		// 上下ボタンのクリックによる移動量
+		int32 clickDelta = 0;
+		if (m_canvas->isEventFiredWithTag(U"onClickUp"))
+		{
+			--clickDelta;
+		}
+		if (m_canvas->isEventFiredWithTag(U"onClickDown"))
+		{
+			++clickDelta;
+		}
+		m_menu.updateWithExternalDelta(clickDelta);
 
 		// Canvasパラメータに反映(UIは0始まりなので-1)
 		m_canvas->setParamValue(U"numberIndex", m_menu.cursor() - 1);
@@ -70,7 +80,7 @@ Co::Task<Optional<int32>> FavoriteAddDialog::start()
 
 		m_canvas->update();
 
-		if (KeyConfig::Down(kButtonStart) || m_canvas->isEventFiredWithTag(U"onClickBody"))
+		if (KeyConfig::Down(kButtonStart))
 		{
 			co_return m_menu.cursor();
 		}
