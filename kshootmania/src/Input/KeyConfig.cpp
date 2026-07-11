@@ -467,7 +467,15 @@ void KeyConfig::SetConfigValueByCommaSeparated(ConfigSet targetConfigSet, String
 		const int32 code = intValues[i];
 		if (code >= 0)
 		{
-			s_configSetArray[targetConfigSet][i] = Input(kConfigSetDeviceTypes[targetConfigSet], static_cast<uint8>(code));
+			if (kConfigSetDeviceTypes[targetConfigSet] == InputDeviceType::Gamepad)
+			{
+				// ゲームパッドは「デバイス番号*32+ボタン番号」形式で保存されている
+				s_configSetArray[targetConfigSet][i] = Input(InputDeviceType::Gamepad, static_cast<uint8>(code % 32), static_cast<uint8>(code / 32));
+			}
+			else
+			{
+				s_configSetArray[targetConfigSet][i] = Input(kConfigSetDeviceTypes[targetConfigSet], static_cast<uint8>(code));
+			}
 		}
 		else
 		{
@@ -545,13 +553,19 @@ void KeyConfig::SaveToConfigIni()
 		for (int32 i = 0; i < kConfigurableButtonEnumCount; ++i)
 		{
 			int32 code;
-			if (s_configSetArray[configSetIdx][i].deviceType() == InputDeviceType::Undefined)
+			const Input& input = s_configSetArray[configSetIdx][i];
+			if (input.deviceType() == InputDeviceType::Undefined)
 			{
 				code = -1;
 			}
+			else if (input.deviceType() == InputDeviceType::Gamepad)
+			{
+				// ゲームパッドはデバイス番号を保持するため「デバイス番号*32+ボタン番号」で保存
+				code = static_cast<int32>(input.playerIndex()) * 32 + static_cast<int32>(input.code());
+			}
 			else
 			{
-				code = static_cast<int32>(s_configSetArray[configSetIdx][i].code());
+				code = static_cast<int32>(input.code());
 			}
 			configValue += Format(code);
 			configValue += U",";

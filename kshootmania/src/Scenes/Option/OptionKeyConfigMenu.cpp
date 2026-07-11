@@ -1038,7 +1038,7 @@ namespace
 				}
 
 				const Input& otherInput = KeyConfig::GetConfigValue(configSet, static_cast<ConfigurableButton>(i));
-				if (otherInput.deviceType() == targetInput.deviceType() && otherInput.code() == targetInput.code())
+				if (otherInput.deviceType() == targetInput.deviceType() && otherInput.code() == targetInput.code() && otherInput.playerIndex() == targetInput.playerIndex())
 				{
 					return true;
 				}
