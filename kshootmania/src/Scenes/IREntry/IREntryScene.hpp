@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <CoTaskLib.hpp>
 #include "IREntryMenu.hpp"
+#include "Scenes/Common/CommonOverlay.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
 class IREntryScene : public Co::SceneBase
@@ -9,6 +10,8 @@ private:
 	std::shared_ptr<ksmaudio::Stream> m_bgmStream;
 
 	std::shared_ptr<noco::Canvas> m_canvas;
+
+	CommonOverlay m_commonOverlay;
 
 	IREntryMenu m_menu;
 

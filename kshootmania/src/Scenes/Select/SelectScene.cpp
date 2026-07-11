@@ -432,13 +432,19 @@ SelectScene::SelectScene(const Optional<SelectSceneSearchParams>& initialSearchP
 
 void SelectScene::update()
 {
+	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() };
+
 	// ダイアログ表示中は必要な更新のみ実行
 	if (Co::HasActiveModal())
 	{
 		m_menu.update(SongPreviewOnlyYN::Yes);
 		m_canvas->update(noco::HitTestEnabledYN::No);
+		m_commonOverlay.update(noco::HitTestEnabledYN::No);
 		return;
 	}
+
+	// 共通オーバーレイを更新(Backボタンのクリックを同一フレーム内のBack判定に反映するため先に更新)
+	m_commonOverlay.update(hitTestEnabled);
 
 	// BTオプションパネル更新
 	const bool needsDisplayRefresh = m_btOptionPanel.update(m_menu.getCurrentChartStdBPM());
@@ -458,7 +464,7 @@ void SelectScene::update()
 	if (m_searchPhase == SelectSceneSearchPhase::kResult && (KeyConfig::Down(kButtonBack) || KeyConfig::Down(kButtonBackspace)))
 	{
 		exitSearchMode();
-		m_canvas->update();
+		m_canvas->update(hitTestEnabled);
 		return;
 	}
 
@@ -474,7 +480,7 @@ void SelectScene::update()
 	if (!inSearchMode && KeyF5.down())
 	{
 		m_menu.forceReloadCurrentDirectory();
-		m_canvas->update();
+		m_canvas->update(hitTestEnabled);
 		return;
 	}
 
@@ -526,7 +532,7 @@ void SelectScene::update()
 		// 楽曲プレビューの更新は実行
 		m_menu.update(SongPreviewOnlyYN::Yes);
 
-		m_canvas->update();
+		m_canvas->update(hitTestEnabled);
 		return;
 	}
 
@@ -602,7 +608,7 @@ void SelectScene::update()
 
 	updateAlphabetJump();
 
-	m_canvas->update();
+	m_canvas->update(hitTestEnabled);
 }
 
 void SelectScene::updateStartKeyLongPress()
@@ -713,11 +719,16 @@ void SelectScene::updateStartKeyLongPress()
 void SelectScene::draw() const
 {
 	m_canvas->draw();
+	m_commonOverlay.draw();
 }
 
 Co::Task<void> SelectScene::fadeIn()
 {
-	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(); }).runScoped();
+	const auto canvasUpdateRunner = Co::UpdaterTask([this]
+		{
+			m_canvas->update(noco::HitTestEnabledYN::No);
+			m_commonOverlay.update(noco::HitTestEnabledYN::No);
+		}).runScoped();
 
 	co_await Co::ScreenFadeIn(kFadeInDuration);
 }
@@ -729,7 +740,11 @@ Co::Task<void> SelectScene::fadeOut()
 		co_return;
 	}
 
-	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(); }).runScoped();
+	const auto canvasUpdateRunner = Co::UpdaterTask([this]
+		{
+			m_canvas->update(noco::HitTestEnabledYN::No);
+			m_commonOverlay.update(noco::HitTestEnabledYN::No);
+		}).runScoped();
 
 	co_await Co::ScreenFadeOut(kFadeOutDuration, m_fadeOutColor);
 }

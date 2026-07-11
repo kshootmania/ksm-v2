@@ -261,6 +261,12 @@ OptionScene::OptionScene()
 
 void OptionScene::update()
 {
+	// フェード中はクリックやホバーが効かないようヒットテスト無効
+	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() };
+
+	// 共通オーバーレイを更新(Backボタンのクリックを同一フレーム内のBack判定に反映するため最初に更新)
+	m_commonOverlay.update(hitTestEnabled);
+
 	// メニュー更新
 	if (m_currentOptionMenuIdx.has_value())
 	{
@@ -341,15 +347,19 @@ void OptionScene::update()
 		{ U"isJapanese", I18n::CurrentLanguage() == I18n::StandardLanguage::Japanese },
 	});
 
+	// Backボタンはキーコンフィグのボタン編集中は非表示
+	m_commonOverlay.setBackButtonVisible(!(isKeyConfig && m_keyConfigMenu.isButtonEditingState()));
+
 	// UI更新
 	m_topMenu.updateUI(m_canvas.get());
 	m_keyConfigMenu.updateUI(m_canvas.get());
-	m_canvas->update();
+	m_canvas->update(hitTestEnabled);
 }
 
 void OptionScene::draw() const
 {
 	m_canvas->draw();
+	m_commonOverlay.draw();
 }
 
 Co::Task<void> OptionScene::fadeIn()

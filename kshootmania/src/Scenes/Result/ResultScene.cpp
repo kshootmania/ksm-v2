@@ -724,7 +724,8 @@ void ResultScene::update()
 	const bool fxLPressed = KeyConfig::Pressed(kButtonFX_L);
 	const bool fxRPressed = KeyConfig::Pressed(kButtonFX_R);
 	m_canvas->setParamValue(U"bottomLeftText", BuildBottomLeftText(m_playResult, m_chartData, fxLPressed, fxRPressed));
-	m_canvas->update();
+
+	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() });
 	m_snsShare.update(m_canvas.get());
 }
 
@@ -735,7 +736,7 @@ void ResultScene::draw() const
 
 Co::Task<void> ResultScene::fadeIn()
 {
-	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(); }).runScoped();
+	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(noco::HitTestEnabledYN::No); }).runScoped();
 
 	co_await Co::ScreenFadeIn(kFadeDuration, Palette::White);
 }

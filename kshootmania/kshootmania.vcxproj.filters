@@ -699,6 +699,9 @@
     <ClCompile Include="src\Scenes\PlayPrepare\PlayPrepareScene.cpp">
       <Filter>Source Files\Scenes\PlayPrepare</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\Common\CommonOverlay.cpp">
+      <Filter>Source Files\Scenes\Common</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scenes\Common\ShowLoadingOneFrame.cpp">
       <Filter>Source Files\Scenes\Common</Filter>
     </ClCompile>
@@ -1496,6 +1499,9 @@
       <Filter>Header Files\Scenes\Common</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\Common\CommonAssets.hpp">
+      <Filter>Header Files\Scenes\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\Common\CommonOverlay.hpp">
       <Filter>Header Files\Scenes\Common</Filter>
     </ClInclude>
     <ClInclude Include="ThirdParty\CoTaskLib\include\CoTaskLib\Sequence.hpp">

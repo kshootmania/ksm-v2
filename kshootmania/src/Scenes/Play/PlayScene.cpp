@@ -12,6 +12,9 @@ namespace
 
 	constexpr Duration kPlayFinishFadeOutDuration = 2.4s;
 
+	// プレイ中の誤操作防止のため、Backボタンは長押しで反応させる
+	constexpr Duration kBackButtonHoldDuration = 1.0s;
+
 	Array<MusicGame::HispeedType> LoadAvailableHispeedTypesFromConfigIni()
 	{
 		Array<MusicGame::HispeedType> availableTypes;
@@ -115,6 +118,7 @@ PlayScene::PlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoP
 	, m_fadeOutDuration(kFadeDuration)
 	, m_testPlayOption(testPlayOption)
 	, m_selectSearchParams(selectSearchParams)
+	, m_commonOverlay(kBackButtonHoldDuration)
 {
 	m_gameMain.start();
 
@@ -129,6 +133,8 @@ PlayScene::~PlayScene()
 
 void PlayScene::update()
 {
+	m_commonOverlay.update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() });
+
 	const auto startFadeOut = m_gameMain.update();
 
 	// Backボタンでリザルト画面に遷移(lockForExit中でも有効)
@@ -245,6 +251,8 @@ void PlayScene::processBackButtonInput()
 
 void PlayScene::updateFadeOut()
 {
+	m_commonOverlay.update(noco::HitTestEnabledYN::No);
+
 	// フェードアウト中もゲームの更新は継続
 	m_gameMain.update();
 
@@ -255,6 +263,7 @@ void PlayScene::updateFadeOut()
 void PlayScene::draw() const
 {
 	m_gameMain.draw();
+	m_commonOverlay.draw();
 }
 
 inline Co::Task<void> PlayScene::fadeIn()

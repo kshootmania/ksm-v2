@@ -256,6 +256,7 @@
     <ClCompile Include="src\MusicGame\UI\HispeedSettingMenu.cpp" />
     <ClCompile Include="src\NocoExtensions\NocoUtils.cpp" />
     <ClCompile Include="src\NocoExtensions\VerticalMarquee.cpp" />
+    <ClCompile Include="src\Scenes\Common\CommonOverlay.cpp" />
     <ClCompile Include="src\Scenes\Common\ShowLoadingOneFrame.cpp" />
     <ClCompile Include="src\Scenes\Option\OptionKeyConfigMenu.cpp" />
     <ClCompile Include="src\Scenes\Option\OptionMenu.cpp" />
@@ -504,6 +505,7 @@
     <ClInclude Include="src\RuntimeConfig.hpp" />
     <ClInclude Include="src\TestPlayArgs.hpp" />
     <ClInclude Include="src\Scenes\Common\CommonAssets.hpp" />
+    <ClInclude Include="src\Scenes\Common\CommonOverlay.hpp" />
     <ClInclude Include="src\Scenes\Common\ShowLoadingOneFrame.hpp" />
     <ClInclude Include="src\Scenes\Option\OptionKeyConfigMenu.hpp" />
     <ClInclude Include="src\Scenes\Option\OptionMenu.hpp" />

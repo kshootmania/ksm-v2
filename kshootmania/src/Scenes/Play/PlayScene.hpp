@@ -2,6 +2,7 @@
 #include <CoTaskLib.hpp>
 #include "MusicGame/GameMain.hpp"
 #include "Course/CoursePlayState.hpp"
+#include "Scenes/Common/CommonOverlay.hpp"
 #include "Scenes/Select/SelectSceneSearchParams.hpp"
 
 class PlayScene : public Co::UpdaterSceneBase
@@ -23,6 +24,8 @@ private:
 
 	/// @brief プレイ後にSelectSceneへ復元する検索状態
 	Optional<SelectSceneSearchParams> m_selectSearchParams;
+
+	CommonOverlay m_commonOverlay;
 
 	bool m_backButtonPressedDuringFadeOut = false;
 

@@ -8,6 +8,7 @@
 #include "PlayStatsPanel.hpp"
 #include "FavoriteAddDialog.hpp"
 #include "FavoriteRemoveDialog.hpp"
+#include "Scenes/Common/CommonOverlay.hpp"
 
 class SelectScene : public Co::UpdaterSceneBase
 {
@@ -19,6 +20,8 @@ private:
 	bool m_skipFadeout = false;
 
 	std::shared_ptr<noco::Canvas> m_canvas;
+
+	CommonOverlay m_commonOverlay;
 
 	std::shared_ptr<noco::Node> m_searchResultNode;
 

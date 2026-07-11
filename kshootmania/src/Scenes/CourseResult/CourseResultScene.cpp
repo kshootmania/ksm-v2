@@ -221,7 +221,8 @@ void CourseResultScene::update()
 	// 画面全体がクリック可能なのでカーソルを人差し指に変更
 	Cursor::RequestStyle(CursorStyle::Hand);
 
-	m_canvas->update();
+	// フェード中はクリックやホバーが効かないようヒットテスト無効
+	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() });
 	m_chartList.update(m_courseState);
 	m_snsShare.update(m_canvas.get());
 }
@@ -233,7 +234,7 @@ void CourseResultScene::draw() const
 
 Co::Task<void> CourseResultScene::fadeIn()
 {
-	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(); }).runScoped();
+	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(noco::HitTestEnabledYN::No); }).runScoped();
 
 	co_await Co::ScreenFadeIn(kFadeDuration, Palette::White);
 }

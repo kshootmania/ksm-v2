@@ -1,0 +1,347 @@
+﻿{
+  "autoFitMode": "FitHeightMatchWidth",
+  "children": [
+    {
+      "activeSelf": true,
+      "activeSelf_paramRef": "backButtonVisible",
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "fillAmount": 1.0,
+          "fillAmount_paramRef": "backButtonProgress",
+          "fillAmount_paramRefMode": "Subtract",
+          "fillDirection": "TopToBottom",
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/btn_back.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            96.0,
+            96.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridRows": 2,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Grid",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        },
+        {
+          "cursorStyle": "Hand",
+          "includingDisabled": false,
+          "recursive": false,
+          "type": "CursorChanger"
+        },
+        {
+          "recursive": false,
+          "repeatIntervalSec": 0.1,
+          "repeatIntervalSecFirst": 0.5,
+          "tag": "onClickBackButton",
+          "triggerType": "Click",
+          "type": "EventTrigger"
+        },
+        {
+          "audioAssetName": "",
+          "audioFilePath": "se/hover.wav",
+          "includingDisabled": false,
+          "recursive": false,
+          "triggerType": "HoverStart",
+          "type": "UISound",
+          "volume": 1.0
+        },
+        {
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "fillAmount": 0.0,
+          "fillAmount_paramRef": "backButtonProgress",
+          "fillAmount_paramRefMode": "Add",
+          "fillDirection": "BottomToTop",
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
+          "textureFilePath": "imgs/btn_back.png",
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            96.0,
+            96.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 1,
+          "textureGridRows": 2,
+          "textureOffset": [
+            0.0,
+            0.0
+          ],
+          "textureRegionMode": "Grid",
+          "textureSize": [
+            100.0,
+            100.0
+          ],
+          "type": "Sprite"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onPressStartBackButton",
+          "triggerType": "PressStart"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onPressEndBackButton",
+          "triggerType": "PressEnd"
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": true,
+      "name": "BackButton",
+      "region": {
+        "anchorMax": [
+          0.0,
+          0.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          48.0,
+          48.0
+        ],
+        "sizeDeltaPivot": [
+          0.0,
+          0.0
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
+      "scrollBarType": "Interactive",
+      "styleState": "",
+      "transform": {
+        "color": {
+          "default": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "hovered": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "smoothTime": 0.05
+        },
+        "hitTestAffected": false,
+        "pivot": [
+          0.0,
+          0.0
+        ],
+        "rotation": 0.0,
+        "scale": {
+          "default": [
+            1.0,
+            1.0
+          ],
+          "pressed": [
+            0.97,
+            0.97
+          ]
+        },
+        "translate": {
+          "default": [
+            -5.0,
+            0.0
+          ],
+          "hovered": [
+            0.0,
+            0.0
+          ],
+          "smoothTime": 0.05
+        }
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
+    }
+  ],
+  "childrenLayout": {
+    "horizontalAlign": "Left",
+    "padding": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "spacing": [
+      0.0,
+      0.0
+    ],
+    "type": "FlowLayout",
+    "verticalAlign": "Top"
+  },
+  "defaultFontAssetName": "System",
+  "params": {
+    "backButtonProgress": {
+      "type": "Double",
+      "value": 0.0
+    },
+    "backButtonVisible": {
+      "type": "Bool",
+      "value": true
+    }
+  },
+  "referenceSize": [
+    640.0,
+    480.0
+  ],
+  "serializedVersion": 11,
+  "version": "0.5.0-beta1"
+}

@@ -3,6 +3,7 @@
 #include "OptionTopMenu.hpp"
 #include "OptionMenu.hpp"
 #include "OptionKeyConfigMenu.hpp"
+#include "Scenes/Common/CommonOverlay.hpp"
 #include "ksmaudio/ksmaudio.hpp"
 
 class OptionScene : public Co::UpdaterSceneBase
@@ -27,6 +28,8 @@ private:
 	std::unique_ptr<std::array<OptionMenu, kOptionMenuTypeEnumCount>> m_optionMenus;
 
 	OptionKeyConfigMenu m_keyConfigMenu;
+
+	CommonOverlay m_commonOverlay;
 
 	Optional<OptionMenuType> m_currentOptionMenuIdx = none;
 

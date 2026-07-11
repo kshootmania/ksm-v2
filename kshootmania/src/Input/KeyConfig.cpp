@@ -25,6 +25,9 @@ namespace
 	bool s_suppressStartUntilRelease = false;
 	bool s_suppressStartThisFrame = false;
 
+	// RequestVirtualDownで仮想的にDown扱いとするボタン(次のUpdateでクリアされる)
+	std::array<bool, kButtonEnumCount> s_virtualDownButtons{};
+
 	[[nodiscard]]
 	bool ShouldIgnoreKeyboardInput()
 	{
@@ -509,6 +512,9 @@ const Input& KeyConfig::GetConfigValue(ConfigSet targetConfigSet, ConfigurableBu
 
 void KeyConfig::Update()
 {
+	// 前フレームの仮想Down状態をクリア
+	s_virtualDownButtons.fill(false);
+
 #ifdef __APPLE__
 	// macOSプラットフォーム特有のキーボード状態を更新
 	UpdatePlatformKeyboard();
@@ -646,6 +652,11 @@ bool KeyConfig::Down(Button button)
 		return false;
 	}
 
+	if (s_virtualDownButtons[button])
+	{
+		return true;
+	}
+
 	const bool ignoreKeyboard = ShouldIgnoreKeyboardInput();
 	if (button == kButtonStart && (IsBT3PlusStartPressed() || s_suppressStartThisFrame))
 	{
@@ -729,12 +740,25 @@ bool KeyConfig::Down(Button button)
 	return false;
 }
 
+void KeyConfig::RequestVirtualDown(Button button)
+{
+	if (button == kUnspecifiedButton)
+	{
+		return;
+	}
+
+	s_virtualDownButtons[button] = true;
+}
+
 void KeyConfig::ClearInput(Button button)
 {
 	if (button == kUnspecifiedButton)
 	{
 		return;
 	}
+
+	// 仮想Down状態もクリア
+	s_virtualDownButtons[button] = false;
 
 	for (auto& configSet : s_configSetArray)
 	{

@@ -73,7 +73,8 @@ Co::Task<void> TitleScene::start()
 void TitleScene::update()
 {
 	m_menu.update();
-	m_canvas->update();
+
+	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() });
 }
 
 void TitleScene::draw() const
@@ -83,14 +84,14 @@ void TitleScene::draw() const
 
 Co::Task<void> TitleScene::fadeIn()
 {
-	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(); }).runScoped();
+	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(noco::HitTestEnabledYN::No); }).runScoped();
 
 	co_await Co::ScreenFadeIn(kFadeDuration);
 }
 
 Co::Task<void> TitleScene::fadeOut()
 {
-	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(); }).runScoped();
+	const auto canvasUpdateRunner = Co::UpdaterTask([this] { m_canvas->update(noco::HitTestEnabledYN::No); }).runScoped();
 
 	// 次のシーンへ遷移
 	switch (m_selectedMenuItem)
