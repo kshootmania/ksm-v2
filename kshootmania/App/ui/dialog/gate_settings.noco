@@ -186,6 +186,14 @@
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickGateSettingDifficulty0",
+              "triggerType": "Click"
+            },
+            {
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -200,7 +208,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "Difficulty0Checkbox",
           "region": {
             "anchorMax": [
@@ -281,6 +289,14 @@
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickGateSettingDifficulty1",
+              "triggerType": "Click"
+            },
+            {
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -295,7 +311,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "Difficulty1Checkbox",
           "region": {
             "anchorMax": [
@@ -376,6 +392,14 @@
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickGateSettingDifficulty2",
+              "triggerType": "Click"
+            },
+            {
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -390,7 +414,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "Difficulty2Checkbox",
           "region": {
             "anchorMax": [
@@ -471,6 +495,14 @@
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickGateSettingDifficulty3",
+              "triggerType": "Click"
+            },
+            {
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -485,7 +517,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "Difficulty3Checkbox",
           "region": {
             "anchorMax": [
@@ -653,6 +685,14 @@
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickGateSettingHideDownloaded",
+              "triggerType": "Click"
+            },
+            {
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -667,7 +707,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "HideDownloadedCheckbox",
           "region": {
             "anchorMax": [
@@ -748,6 +788,14 @@
               "serializedParamsJSON": "{}",
               "tag": "",
               "type": "SubCanvas"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onClickGateSettingAllowRedownload",
+              "triggerType": "Click"
+            },
+            {
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -762,7 +810,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "AllowRedownloadCheckbox",
           "region": {
             "anchorMax": [

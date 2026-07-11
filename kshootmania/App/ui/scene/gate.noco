@@ -35,10 +35,15 @@
             255,
             255
           ],
+          "fillAmount": 1.0,
+          "fillDirection": "BottomToTop",
           "gridAnimationEndIndex": 0,
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -61,6 +66,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -129,6 +135,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -182,11 +201,28 @@
           "clippingEnabled": false,
           "components": [
             {
+              "autoFitModeOverride": "NoOverride",
               "canvasPath": "ui/parts/gate_item.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{}",
+              "serializedParamBindingsJSON": "{}",
               "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
               "tag": "chartItem0",
               "type": "SubCanvas"
+            },
+            {
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickGateItem0",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -201,7 +237,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "ChartItem0",
           "region": {
             "anchorMax": [
@@ -227,6 +263,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -276,11 +325,28 @@
           "clippingEnabled": false,
           "components": [
             {
+              "autoFitModeOverride": "NoOverride",
               "canvasPath": "ui/parts/gate_item.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{}",
+              "serializedParamBindingsJSON": "{}",
               "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
               "tag": "chartItem1",
               "type": "SubCanvas"
+            },
+            {
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickGateItem1",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -295,7 +361,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "ChartItem1",
           "region": {
             "anchorMax": [
@@ -321,6 +387,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -370,11 +449,28 @@
           "clippingEnabled": false,
           "components": [
             {
+              "autoFitModeOverride": "NoOverride",
               "canvasPath": "ui/parts/gate_item.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{}",
+              "serializedParamBindingsJSON": "{}",
               "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
               "tag": "chartItem2",
               "type": "SubCanvas"
+            },
+            {
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickGateItem2",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -389,7 +485,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "ChartItem2",
           "region": {
             "anchorMax": [
@@ -415,6 +511,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -464,11 +573,28 @@
           "clippingEnabled": false,
           "components": [
             {
+              "autoFitModeOverride": "NoOverride",
               "canvasPath": "ui/parts/gate_item.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{}",
+              "serializedParamBindingsJSON": "{}",
               "serializedParamsJSON": "{}",
               "tag": "chartItem3",
               "type": "SubCanvas"
+            },
+            {
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickGateItem3",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -483,7 +609,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "ChartItem3",
           "region": {
             "anchorMax": [
@@ -509,6 +635,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -558,11 +697,28 @@
           "clippingEnabled": false,
           "components": [
             {
+              "autoFitModeOverride": "NoOverride",
               "canvasPath": "ui/parts/gate_item.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{}",
+              "serializedParamBindingsJSON": "{}",
               "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
               "tag": "chartItem4",
               "type": "SubCanvas"
+            },
+            {
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickGateItem4",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -577,7 +733,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "ChartItem4",
           "region": {
             "anchorMax": [
@@ -603,6 +759,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -652,11 +821,28 @@
           "clippingEnabled": false,
           "components": [
             {
+              "autoFitModeOverride": "NoOverride",
               "canvasPath": "ui/parts/gate_item.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{}",
+              "serializedParamBindingsJSON": "{}",
               "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
               "tag": "chartItem5",
               "type": "SubCanvas"
+            },
+            {
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickGateItem5",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -671,7 +857,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "ChartItem5",
           "region": {
             "anchorMax": [
@@ -697,6 +883,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -746,11 +945,28 @@
           "clippingEnabled": false,
           "components": [
             {
+              "autoFitModeOverride": "NoOverride",
               "canvasPath": "ui/parts/gate_item.noco",
               "propagateEvents": true,
+              "serializedParamBindingModesJSON": "{}",
+              "serializedParamBindingsJSON": "{}",
               "serializedParamsJSON": "{\"nonCenterDimmerVisible\": true}",
               "tag": "chartItem6",
               "type": "SubCanvas"
+            },
+            {
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickGateItem6",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
+              "type": "CursorChanger"
             }
           ],
           "decelerationRate": 0.2,
@@ -765,7 +981,7 @@
           "inheritChildrenHover": false,
           "inheritChildrenPress": false,
           "interactable": true,
-          "isHitTarget": false,
+          "isHitTarget": true,
           "name": "ChartItem6",
           "region": {
             "anchorMax": [
@@ -791,6 +1007,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -875,6 +1104,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -938,10 +1180,15 @@
             255,
             255
           ],
+          "fillAmount": 1.0,
+          "fillDirection": "BottomToTop",
           "gridAnimationEndIndex": 0,
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -964,6 +1211,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -1032,6 +1280,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -1097,10 +1358,15 @@
                 255,
                 255
               ],
+              "fillAmount": 1.0,
+              "fillDirection": "BottomToTop",
               "gridAnimationEndIndex": 0,
               "gridAnimationFPS": 10.0,
               "gridAnimationStartIndex": 0,
               "gridAnimationType": "None",
+              "hideIfTextureEmpty": false,
+              "mipmapEnabled": false,
+              "mipmapLodBias": 0.0,
               "nineSliceBottomTiled": false,
               "nineSliceCenterTiled": false,
               "nineSliceEnabled": false,
@@ -1123,6 +1389,7 @@
                 0.0
               ],
               "offsetAnimationType": "None",
+              "pixelShaderAssetName": "",
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
@@ -1239,6 +1506,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -1299,10 +1579,15 @@
             255,
             255
           ],
+          "fillAmount": 1.0,
+          "fillDirection": "BottomToTop",
           "gridAnimationEndIndex": 0,
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -1325,6 +1610,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -1393,6 +1679,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -1455,10 +1754,15 @@
             255,
             255
           ],
+          "fillAmount": 1.0,
+          "fillDirection": "BottomToTop",
           "gridAnimationEndIndex": 0,
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -1481,6 +1785,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -1549,6 +1854,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -1611,10 +1929,15 @@
             255,
             255
           ],
+          "fillAmount": 1.0,
+          "fillDirection": "BottomToTop",
           "gridAnimationEndIndex": 0,
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -1637,6 +1960,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -1705,6 +2029,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -1863,6 +2200,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -1923,10 +2273,15 @@
             255,
             255
           ],
+          "fillAmount": 1.0,
+          "fillDirection": "BottomToTop",
           "gridAnimationEndIndex": 0,
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -1949,6 +2304,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -2017,6 +2373,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -2079,10 +2448,15 @@
             255,
             255
           ],
+          "fillAmount": 1.0,
+          "fillDirection": "BottomToTop",
           "gridAnimationEndIndex": 0,
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -2105,6 +2479,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -2173,6 +2548,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -2203,7 +2591,360 @@
     },
     {
       "activeSelf": true,
-      "children": [],
+      "children": [
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
+              "type": "CursorChanger"
+            },
+            {
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickSortTypeLeft",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "blendMode": "Additive",
+              "cornerRadius": 0.0,
+              "fillColor": {
+                "default": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "hovered": [
+                  0,
+                  48,
+                  24,
+                  255
+                ],
+                "smoothTime": 0.025
+              },
+              "fillGradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fillGradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fillGradationType": "None",
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineThicknessInner": 0.0,
+              "outlineThicknessOuter": 0.0,
+              "shadowBlur": 0.0,
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                2.0,
+                2.0
+              ],
+              "shadowSpread": 0.0,
+              "type": "RectRenderer"
+            },
+            {
+              "audioAssetName": "",
+              "audioFilePath": "se/hover.wav",
+              "includingDisabled": false,
+              "recursive": false,
+              "triggerType": "HoverStart",
+              "type": "UISound",
+              "volume": 1.0
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            5.0,
+            5.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": true,
+          "name": "SortTypeLeftClick",
+          "region": {
+            "anchorMax": [
+              0.0,
+              0.5
+            ],
+            "anchorMin": [
+              0.0,
+              0.5
+            ],
+            "posDelta": [
+              0.0,
+              0.0
+            ],
+            "sizeDelta": [
+              20.0,
+              40.0
+            ],
+            "sizeDeltaPivot": [
+              0.0,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        },
+        {
+          "activeSelf": true,
+          "children": [],
+          "childrenLayout": {
+            "horizontalAlign": "Left",
+            "padding": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "spacing": [
+              0.0,
+              0.0
+            ],
+            "type": "FlowLayout",
+            "verticalAlign": "Top"
+          },
+          "clippingEnabled": false,
+          "components": [
+            {
+              "cursorStyle": "Hand",
+              "includingDisabled": false,
+              "recursive": false,
+              "type": "CursorChanger"
+            },
+            {
+              "recursive": false,
+              "repeatIntervalSec": 0.1,
+              "repeatIntervalSecFirst": 0.5,
+              "tag": "onClickSortTypeRight",
+              "triggerType": "Click",
+              "type": "EventTrigger"
+            },
+            {
+              "blendMode": "Additive",
+              "cornerRadius": 0.0,
+              "fillColor": {
+                "default": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "hovered": [
+                  0,
+                  48,
+                  24,
+                  255
+                ],
+                "smoothTime": 0.025
+              },
+              "fillGradationColor1": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fillGradationColor2": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fillGradationType": "None",
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineThicknessInner": 0.0,
+              "outlineThicknessOuter": 0.0,
+              "shadowBlur": 0.0,
+              "shadowColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "shadowOffset": [
+                2.0,
+                2.0
+              ],
+              "shadowSpread": 0.0,
+              "type": "RectRenderer"
+            },
+            {
+              "audioAssetName": "",
+              "audioFilePath": "se/hover.wav",
+              "includingDisabled": false,
+              "recursive": false,
+              "triggerType": "HoverStart",
+              "type": "UISound",
+              "volume": 1.0
+            }
+          ],
+          "decelerationRate": 0.2,
+          "dragScrollEnabled": true,
+          "hitPadding": [
+            5.0,
+            5.0,
+            0.0,
+            0.0
+          ],
+          "horizontalScrollable": false,
+          "inheritChildrenHover": false,
+          "inheritChildrenPress": false,
+          "interactable": true,
+          "isHitTarget": true,
+          "name": "SortTypeRightClick",
+          "region": {
+            "anchorMax": [
+              1.0,
+              0.5
+            ],
+            "anchorMin": [
+              1.0,
+              0.5
+            ],
+            "posDelta": [
+              0.0,
+              0.0
+            ],
+            "sizeDelta": [
+              20.0,
+              40.0
+            ],
+            "sizeDeltaPivot": [
+              1.0,
+              0.5
+            ],
+            "type": "AnchorRegion"
+          },
+          "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
+          "scrollBarType": "Overlay",
+          "styleState": "",
+          "transform": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "hitTestAffected": true,
+            "pivot": [
+              0.5,
+              0.5
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              0.0
+            ]
+          },
+          "verticalScrollable": false,
+          "wheelScrollEnabled": true,
+          "zOrderInSiblings": 0
+        }
+      ],
       "childrenLayout": {
         "horizontalAlign": "Left",
         "padding": [
@@ -2235,10 +2976,15 @@
             255,
             255
           ],
+          "fillAmount": 1.0,
+          "fillDirection": "BottomToTop",
           "gridAnimationEndIndex": 0,
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -2261,6 +3007,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -2330,6 +3077,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -2395,10 +3155,15 @@
                 255,
                 255
               ],
+              "fillAmount": 1.0,
+              "fillDirection": "BottomToTop",
               "gridAnimationEndIndex": 0,
               "gridAnimationFPS": 10.0,
               "gridAnimationStartIndex": 0,
               "gridAnimationType": "None",
+              "hideIfTextureEmpty": false,
+              "mipmapEnabled": false,
+              "mipmapLodBias": 0.0,
               "nineSliceBottomTiled": false,
               "nineSliceCenterTiled": false,
               "nineSliceEnabled": false,
@@ -2421,6 +3186,7 @@
                 0.0
               ],
               "offsetAnimationType": "None",
+              "pixelShaderAssetName": "",
               "preserveAspect": false,
               "textureAddressMode": "Default",
               "textureAssetName": "",
@@ -2538,6 +3304,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -2598,10 +3377,15 @@
             255,
             255
           ],
+          "fillAmount": 1.0,
+          "fillDirection": "BottomToTop",
           "gridAnimationEndIndex": 0,
           "gridAnimationFPS": 10.0,
           "gridAnimationStartIndex": 0,
           "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
           "nineSliceBottomTiled": false,
           "nineSliceCenterTiled": false,
           "nineSliceEnabled": false,
@@ -2624,6 +3408,7 @@
             0.0
           ],
           "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
           "preserveAspect": false,
           "textureAddressMode": "Default",
           "textureAssetName": "",
@@ -2692,6 +3477,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -2778,6 +3576,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -2849,6 +3660,6 @@
     640.0,
     480.0
   ],
-  "serializedVersion": 8,
-  "version": "0.4.0"
+  "serializedVersion": 11,
+  "version": "0.5.0-beta1"
 }

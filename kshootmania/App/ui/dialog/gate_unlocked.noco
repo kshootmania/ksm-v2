@@ -496,6 +496,14 @@
             0.0
           ],
           "type": "Tween"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onClickGateUnlockedClose",
+          "triggerType": "Click"
+        },
+        {
+          "type": "CursorChanger"
         }
       ],
       "decelerationRate": 0.2,
@@ -510,7 +518,7 @@
       "inheritChildrenHover": false,
       "inheritChildrenPress": false,
       "interactable": true,
-      "isHitTarget": false,
+      "isHitTarget": true,
       "name": "DialogBase",
       "region": {
         "anchorMax": [
