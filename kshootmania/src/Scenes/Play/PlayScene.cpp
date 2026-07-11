@@ -12,8 +12,8 @@ namespace
 
 	constexpr Duration kPlayFinishFadeOutDuration = 2.4s;
 
-	// プレイ中の誤操作防止のため、Backボタンは長押しで反応させる
-	constexpr Duration kBackButtonHoldDuration = 1.0s;
+	// プレイ中の誤操作防止のため、Backボタンクリックは長押しで反応させる
+	constexpr Duration kBackButtonClickHoldDuration = 1.0s;
 
 	Array<MusicGame::HispeedType> LoadAvailableHispeedTypesFromConfigIni()
 	{
@@ -118,7 +118,7 @@ PlayScene::PlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoP
 	, m_fadeOutDuration(kFadeDuration)
 	, m_testPlayOption(testPlayOption)
 	, m_selectSearchParams(selectSearchParams)
-	, m_commonOverlay(kBackButtonHoldDuration)
+	, m_commonOverlay(kBackButtonClickHoldDuration)
 {
 	m_gameMain.start();
 

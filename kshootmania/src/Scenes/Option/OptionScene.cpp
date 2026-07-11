@@ -369,6 +369,12 @@ Co::Task<void> OptionScene::fadeIn()
 
 Co::Task<void> OptionScene::fadeOut()
 {
+	const auto canvasUpdateRunner = Co::UpdaterTask([this]
+	{
+		m_canvas->update(noco::HitTestEnabledYN::No);
+		m_commonOverlay.update(noco::HitTestEnabledYN::No);
+	}).runScoped();
+
 	m_bgmStream.setFadeOut(kFadeDuration);
 	co_await Co::ScreenFadeOut(kFadeDuration);
 }

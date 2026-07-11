@@ -20,9 +20,9 @@ CommonOverlay::CommonOverlay()
 {
 }
 
-CommonOverlay::CommonOverlay(const Duration& backButtonHoldDuration)
+CommonOverlay::CommonOverlay(const Duration& backButtonClickHoldDuration)
 	: m_canvas(LoadCommonOverlayCanvas())
-	, m_backButtonHoldDuration(backButtonHoldDuration)
+	, m_backButtonClickHoldDuration(backButtonClickHoldDuration)
 {
 }
 
@@ -32,30 +32,30 @@ void CommonOverlay::update(noco::HitTestEnabledYN hitTestEnabled)
 
 	if (m_canvas->isEventFiredWithTag(U"onPressStartBackButton"))
 	{
-		m_backButtonPressed = true;
+		m_backButtonClickPressed = true;
 	}
 	if (m_canvas->isEventFiredWithTag(U"onPressEndBackButton"))
 	{
-		m_backButtonPressed = false;
+		m_backButtonClickPressed = false;
 	}
 
-	if (m_backButtonHoldDuration.has_value())
+	if (m_backButtonClickHoldDuration.has_value())
 	{
 		// 長押しモードでは押下中にゲージが進行し、完了した場合のみBack扱いにする
-		if (m_backButtonPressed && m_backButtonProgress < 1.0)
+		if (m_backButtonClickPressed && m_backButtonProgress < 1.0)
 		{
-			const double holdDurationSec = m_backButtonHoldDuration->count();
-			m_backButtonHoldSec += Scene::DeltaTime();
-			m_backButtonProgress = holdDurationSec <= 0.0 ? 1.0 : Min(m_backButtonHoldSec / holdDurationSec, 1.0);
+			const double holdDurationSec = m_backButtonClickHoldDuration->count();
+			m_backButtonClickHoldSec += Scene::DeltaTime();
+			m_backButtonProgress = holdDurationSec <= 0.0 ? 1.0 : Min(m_backButtonClickHoldSec / holdDurationSec, 1.0);
 			if (m_backButtonProgress >= 1.0)
 			{
 				KeyConfig::RequestVirtualDown(kButtonBack);
 			}
 		}
-		else if (!m_backButtonPressed)
+		else if (!m_backButtonClickPressed)
 		{
 			// 途中で離した場合はゲージを戻す
-			m_backButtonHoldSec = 0.0;
+			m_backButtonClickHoldSec = 0.0;
 			m_backButtonProgress = 0.0;
 		}
 	}
@@ -84,11 +84,11 @@ void CommonOverlay::setBackButtonVisible(bool visible)
 	m_canvas->setParamValue(U"backButtonVisible", visible);
 }
 
-void CommonOverlay::setBackButtonHoldDuration(const Optional<Duration>& holdDuration)
+void CommonOverlay::setBackButtonClickHoldDuration(const Optional<Duration>& holdDuration)
 {
-	m_backButtonHoldDuration = holdDuration;
+	m_backButtonClickHoldDuration = holdDuration;
 
 	// ゲージ状態をリセット
-	m_backButtonHoldSec = 0.0;
+	m_backButtonClickHoldSec = 0.0;
 	m_backButtonProgress = 0.0;
 }
