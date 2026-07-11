@@ -57,7 +57,7 @@ namespace KeyConfig
 
 	bool Down(Button button);
 
-	/// @brief 仮想的にボタンを1フレームだけDown扱いにする
+	/// @brief 仮想的にボタンを次のフレームで1フレームだけDown扱いにする
 	void RequestVirtualDown(Button button);
 
 	void ClearInput(Button button);

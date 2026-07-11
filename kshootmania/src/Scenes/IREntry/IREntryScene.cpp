@@ -55,7 +55,7 @@ void IREntryScene::update()
 	// フェード中はクリックやホバーが効かないようヒットテスト無効
 	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() };
 
-	// 共通オーバーレイを更新(Backボタンのクリックを同一フレーム内のBack判定に反映するため先に更新)
+	// 共通オーバーレイを更新
 	m_commonOverlay.update(hitTestEnabled);
 
 	m_menu.update();

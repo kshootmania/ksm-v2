@@ -443,7 +443,7 @@ void SelectScene::update()
 		return;
 	}
 
-	// 共通オーバーレイを更新(Backボタンのクリックを同一フレーム内のBack判定に反映するため先に更新)
+	// 共通オーバーレイを更新
 	m_commonOverlay.update(hitTestEnabled);
 
 	// BTオプションパネル更新
