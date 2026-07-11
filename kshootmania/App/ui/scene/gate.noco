@@ -211,18 +211,22 @@
               "type": "SubCanvas"
             },
             {
-              "recursive": false,
-              "repeatIntervalSec": 0.1,
-              "repeatIntervalSecFirst": 0.5,
-              "tag": "onClickGateItem0",
-              "triggerType": "Click",
-              "type": "EventTrigger"
-            },
-            {
               "cursorStyle": "Hand",
               "includingDisabled": false,
               "recursive": false,
               "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressRepeatGateItem0",
+              "triggerType": "PressRepeat",
+              "repeatIntervalSec": 0.05,
+              "repeatIntervalSecFirst": 0.3
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressEndGateItem",
+              "triggerType": "PressEnd"
             }
           ],
           "decelerationRate": 0.2,
@@ -335,18 +339,22 @@
               "type": "SubCanvas"
             },
             {
-              "recursive": false,
-              "repeatIntervalSec": 0.1,
-              "repeatIntervalSecFirst": 0.5,
-              "tag": "onClickGateItem1",
-              "triggerType": "Click",
-              "type": "EventTrigger"
-            },
-            {
               "cursorStyle": "Hand",
               "includingDisabled": false,
               "recursive": false,
               "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressRepeatGateItem1",
+              "triggerType": "PressRepeat",
+              "repeatIntervalSec": 0.05,
+              "repeatIntervalSecFirst": 0.3
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressEndGateItem",
+              "triggerType": "PressEnd"
             }
           ],
           "decelerationRate": 0.2,
@@ -459,18 +467,22 @@
               "type": "SubCanvas"
             },
             {
-              "recursive": false,
-              "repeatIntervalSec": 0.1,
-              "repeatIntervalSecFirst": 0.5,
-              "tag": "onClickGateItem2",
-              "triggerType": "Click",
-              "type": "EventTrigger"
-            },
-            {
               "cursorStyle": "Hand",
               "includingDisabled": false,
               "recursive": false,
               "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressRepeatGateItem2",
+              "triggerType": "PressRepeat",
+              "repeatIntervalSec": 0.05,
+              "repeatIntervalSecFirst": 0.3
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressEndGateItem",
+              "triggerType": "PressEnd"
             }
           ],
           "decelerationRate": 0.2,
@@ -583,18 +595,22 @@
               "type": "SubCanvas"
             },
             {
-              "recursive": false,
-              "repeatIntervalSec": 0.1,
-              "repeatIntervalSecFirst": 0.5,
-              "tag": "onClickGateItem3",
-              "triggerType": "Click",
-              "type": "EventTrigger"
-            },
-            {
               "cursorStyle": "Hand",
               "includingDisabled": false,
               "recursive": false,
               "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressRepeatGateItem3",
+              "triggerType": "PressRepeat",
+              "repeatIntervalSec": 0.05,
+              "repeatIntervalSecFirst": 0.3
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressEndGateItem",
+              "triggerType": "PressEnd"
             }
           ],
           "decelerationRate": 0.2,
@@ -707,18 +723,22 @@
               "type": "SubCanvas"
             },
             {
-              "recursive": false,
-              "repeatIntervalSec": 0.1,
-              "repeatIntervalSecFirst": 0.5,
-              "tag": "onClickGateItem4",
-              "triggerType": "Click",
-              "type": "EventTrigger"
-            },
-            {
               "cursorStyle": "Hand",
               "includingDisabled": false,
               "recursive": false,
               "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressRepeatGateItem4",
+              "triggerType": "PressRepeat",
+              "repeatIntervalSec": 0.05,
+              "repeatIntervalSecFirst": 0.3
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressEndGateItem",
+              "triggerType": "PressEnd"
             }
           ],
           "decelerationRate": 0.2,
@@ -831,18 +851,22 @@
               "type": "SubCanvas"
             },
             {
-              "recursive": false,
-              "repeatIntervalSec": 0.1,
-              "repeatIntervalSecFirst": 0.5,
-              "tag": "onClickGateItem5",
-              "triggerType": "Click",
-              "type": "EventTrigger"
-            },
-            {
               "cursorStyle": "Hand",
               "includingDisabled": false,
               "recursive": false,
               "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressRepeatGateItem5",
+              "triggerType": "PressRepeat",
+              "repeatIntervalSec": 0.05,
+              "repeatIntervalSecFirst": 0.3
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressEndGateItem",
+              "triggerType": "PressEnd"
             }
           ],
           "decelerationRate": 0.2,
@@ -955,18 +979,22 @@
               "type": "SubCanvas"
             },
             {
-              "recursive": false,
-              "repeatIntervalSec": 0.1,
-              "repeatIntervalSecFirst": 0.5,
-              "tag": "onClickGateItem6",
-              "triggerType": "Click",
-              "type": "EventTrigger"
-            },
-            {
               "cursorStyle": "Hand",
               "includingDisabled": false,
               "recursive": false,
               "type": "CursorChanger"
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressRepeatGateItem6",
+              "triggerType": "PressRepeat",
+              "repeatIntervalSec": 0.05,
+              "repeatIntervalSecFirst": 0.3
+            },
+            {
+              "type": "EventTrigger",
+              "tag": "onPressEndGateItem",
+              "triggerType": "PressEnd"
             }
           ],
           "decelerationRate": 0.2,
