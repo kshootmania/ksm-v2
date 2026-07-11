@@ -24,7 +24,7 @@
 
 namespace
 {
-	// クリックされた項目のSubCanvasタグと項目の相対位置の対応関係
+	// 押下された項目のSubCanvasタグと項目の相対位置の対応関係
 	const HashTable<String, int32> kSubCanvasTagToItemDelta = {
 		{ U"top4", -4 },
 		{ U"top3", -3 },
@@ -35,10 +35,10 @@ namespace
 		{ U"bottom3", 3 },
 	};
 
-	/// @brief 上下の項目のクリックによる相対移動量を取得(クリックされていない場合は0)
-	int32 ClickItemDelta(const noco::Canvas& canvas)
+	/// @brief 上下の項目の押下イベントから相対移動量を取得(発火していない場合は0)
+	int32 PressedItemDelta(const noco::Canvas& canvas, StringView tag)
 	{
-		for (const auto& event : canvas.getFiredEventsWithTag(U"onClickItem"))
+		for (const auto& event : canvas.getFiredEventsWithTag(tag))
 		{
 			const auto pOwnerNode = event.containedSubCanvasOwner.lock();
 			if (pOwnerNode == nullptr)
@@ -838,14 +838,35 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 		return;
 	}
 
-	// クリックされたリスト項目による相対移動量
-	int32 clickItemDelta = 0;
+	// マウス操作によるリスト項目の相対移動量
+	int32 externalDelta = 0;
 	if (!m_menu.empty())
 	{
-		clickItemDelta = ClickItemDelta(*m_selectSceneCanvas);
+		const bool pressRepeatUpFired = m_selectSceneCanvas->isEventFiredWithTag(U"onPressRepeatItemUp");
+		const bool pressRepeatDownFired = m_selectSceneCanvas->isEventFiredWithTag(U"onPressRepeatItemDown");
+		if (pressRepeatUpFired || pressRepeatDownFired)
+		{
+			++m_itemPressRepeatCount;
+			if (m_itemPressRepeatCount == 1)
+			{
+				// 押下開始時は押下した項目の位置まで移動
+				externalDelta += PressedItemDelta(*m_selectSceneCanvas, pressRepeatUpFired ? U"onPressRepeatItemUp" : U"onPressRepeatItemDown");
+			}
+			else
+			{
+				// 長押し中はキー長押しと同様に1ずつスクロール
+				externalDelta += pressRepeatUpFired ? -1 : 1;
+			}
+		}
+
+		// 押下終了で長押し状態をリセット
+		if (m_selectSceneCanvas->isEventFiredWithTag(U"onPressEndItem"))
+		{
+			m_itemPressRepeatCount = 0;
+		}
 	}
 
-	m_menu.updateWithExternalDelta(clickItemDelta);
+	m_menu.updateWithExternalDelta(externalDelta);
 	if (const int32 deltaCursor = m_menu.deltaCursor(); deltaCursor != 0)
 	{
 		resetSongInfoTextDisplayTimer();

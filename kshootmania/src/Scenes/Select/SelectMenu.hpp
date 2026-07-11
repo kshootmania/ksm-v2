@@ -68,6 +68,9 @@ private:
 
 	ArrayWithLinearMenu<std::unique_ptr<ISelectMenuItem>> m_menu;
 
+	// 上下項目の押下中に発火したPressRepeatイベントの回数
+	int32 m_itemPressRepeatCount = 0;
+
 	SelectDifficultyMenu m_difficultyMenu;
 
 	SelectSongPreview m_songPreview;

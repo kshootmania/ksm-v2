@@ -3949,13 +3949,21 @@
           "type": "CursorChanger"
         },
         {
-          "type": "EventTrigger",
-          "tag": "onClickItem"
-        },
-        {
           "type": "UISound",
           "audioFilePath": "se/hover.wav",
           "triggerType": "HoverStart"
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onPressRepeatItemUp",
+          "triggerType": "PressRepeat",
+          "repeatIntervalSec": 0.05,
+          "repeatIntervalSecFirst": 0.3
+        },
+        {
+          "type": "EventTrigger",
+          "tag": "onPressEndItem",
+          "triggerType": "PressEnd"
         }
       ],
       "decelerationRate": 0.2,
