@@ -83,3 +83,12 @@ void CommonOverlay::setBackButtonVisible(bool visible)
 {
 	m_canvas->setParamValue(U"backButtonVisible", visible);
 }
+
+void CommonOverlay::setBackButtonHoldDuration(const Optional<Duration>& holdDuration)
+{
+	m_backButtonHoldDuration = holdDuration;
+
+	// ゲージ状態をリセット
+	m_backButtonHoldSec = 0.0;
+	m_backButtonProgress = 0.0;
+}

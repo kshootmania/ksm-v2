@@ -27,4 +27,7 @@ public:
 	void draw() const;
 
 	void setBackButtonVisible(bool visible);
+
+	/// @brief Backボタンの長押し必要時間を切り替える(noneの場合は長押しなし)
+	void setBackButtonHoldDuration(const Optional<Duration>& holdDuration);
 };
