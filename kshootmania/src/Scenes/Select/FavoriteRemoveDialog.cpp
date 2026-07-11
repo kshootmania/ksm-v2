@@ -69,7 +69,7 @@ Co::Task<Optional<FavoriteRemoveChoice>> FavoriteRemoveDialog::start()
 		const Vec2 position = (Scene::Size() - m_canvas->referenceSize() * scale) / 2.0;
 		m_canvas->setPositionScale(position, Vec2{ scale, scale });
 
-		m_canvas->update();
+		m_canvas->update(noco::HitTestEnabledYN{ !KeyConfig::IsLaserInputMouse() });
 
 		if (KeyConfig::Down(kButtonStart) || clickDecided)
 		{

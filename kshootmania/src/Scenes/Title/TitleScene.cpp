@@ -74,7 +74,7 @@ void TitleScene::update()
 {
 	m_menu.update();
 
-	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() });
+	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() });
 }
 
 void TitleScene::draw() const

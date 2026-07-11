@@ -432,7 +432,7 @@ SelectScene::SelectScene(const Optional<SelectSceneSearchParams>& initialSearchP
 
 void SelectScene::update()
 {
-	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() };
+	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() };
 
 	// ダイアログ表示中は必要な更新のみ実行
 	if (Co::HasActiveModal())

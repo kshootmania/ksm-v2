@@ -133,7 +133,7 @@ PlayScene::~PlayScene()
 
 void PlayScene::update()
 {
-	m_commonOverlay.update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() });
+	m_commonOverlay.update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() });
 
 	const auto startFadeOut = m_gameMain.update();
 

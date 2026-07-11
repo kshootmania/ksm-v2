@@ -55,6 +55,10 @@ namespace KeyConfig
 	[[nodiscard]]
 	bool IsLaserInputDigital();
 
+	/// @brief レーザー入力方式がマウスかどうかを判定
+	[[nodiscard]]
+	bool IsLaserInputMouse();
+
 	bool Down(Button button);
 
 	/// @brief 仮想的にボタンを次のフレームで1フレームだけDown扱いにする

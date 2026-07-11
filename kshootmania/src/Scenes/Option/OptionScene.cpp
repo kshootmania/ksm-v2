@@ -262,7 +262,7 @@ OptionScene::OptionScene()
 void OptionScene::update()
 {
 	// フェード中はクリックやホバーが効かないようヒットテスト無効
-	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() };
+	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() };
 
 	// 共通オーバーレイを更新
 	m_commonOverlay.update(hitTestEnabled);

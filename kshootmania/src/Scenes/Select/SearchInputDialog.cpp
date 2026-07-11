@@ -60,7 +60,7 @@ Co::Task<Optional<String>> SearchInputDialog::start()
 
 	while (true)
 	{
-		m_canvas->update();
+		m_canvas->update(noco::HitTestEnabledYN{ !KeyConfig::IsLaserInputMouse() });
 
 		const String currentText = m_canvas->getTextValueByTag(U"searchQueryText");
 
