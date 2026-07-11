@@ -928,34 +928,8 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 		}
 	}
 
-	// 難易度パネルのクリック処理
-	if (!m_menu.empty() && m_menu.cursorValue() != nullptr)
-	{
-		const Optional<int32> clickedDifficultyIdx = MouseMenuUtils::FiredClickIndex(*m_selectSceneCanvas, kClickTagToDifficultyIdxPairs);
-		if (clickedDifficultyIdx.has_value() && m_menu.cursorValue()->difficultyMenuExists())
-		{
-			if (*clickedDifficultyIdx == m_difficultyMenu.cursor())
-			{
-				// 現在の難易度を再クリックした場合は決定
-				decide();
-			}
-			else if (m_menu.cursorValue()->chartInfoPtr(*clickedDifficultyIdx, FallbackForSingleChartYN::No) != nullptr)
-			{
-				// 存在する別の難易度をクリックした場合は難易度変更
-				m_eventContext.fnChangeDifficulty(*clickedDifficultyIdx);
-				m_difficultySelectSe.play();
-				refreshContentCanvasParams();
-				refreshSongPreview();
-			}
-		}
-
-		// フォルダ項目とサブフォルダ見出しは中央クリックで決定
-		if (m_selectSceneCanvas->isEventFiredWithTag(U"onClickCenterItem") &&
-			(m_menu.cursorValue()->isFolder() || m_menu.cursorValue()->isSubFolderHeading()))
-		{
-			decide();
-		}
-	}
+	// クリックによる決定・難易度変更
+	updateClickDecide();
 
 	// Homeキーで先頭に移動
 	if (KeyHome.down() && !m_menu.empty())
@@ -973,6 +947,47 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 	if (IsAnyTranslitDisplayEnabled())
 	{
 		refreshContentCanvasParams();
+	}
+}
+
+void SelectMenu::updateClickDecide()
+{
+	if (m_menu.empty() || m_menu.cursorValue() == nullptr)
+	{
+		return;
+	}
+
+	// 難易度パネルのクリック処理
+	const Optional<int32> clickedDifficultyIdx = MouseMenuUtils::FiredClickIndex(*m_selectSceneCanvas, kClickTagToDifficultyIdxPairs);
+	if (clickedDifficultyIdx.has_value() && m_menu.cursorValue()->difficultyMenuExists())
+	{
+		if (*clickedDifficultyIdx == m_difficultyMenu.cursor())
+		{
+			// 現在の難易度を再クリックした場合は決定
+			if (KeyShift.pressed())
+			{
+				decideAutoPlay();
+			}
+			else
+			{
+				decide();
+			}
+		}
+		else if (m_menu.cursorValue()->chartInfoPtr(*clickedDifficultyIdx, FallbackForSingleChartYN::No) != nullptr)
+		{
+			// 存在する別の難易度をクリックした場合は難易度変更
+			m_eventContext.fnChangeDifficulty(*clickedDifficultyIdx);
+			m_difficultySelectSe.play();
+			refreshContentCanvasParams();
+			refreshSongPreview();
+		}
+	}
+
+	// フォルダ項目とサブフォルダ見出しは中央クリックで決定
+	if (m_selectSceneCanvas->isEventFiredWithTag(U"onClickCenterItem") &&
+		(m_menu.cursorValue()->isFolder() || m_menu.cursorValue()->isSubFolderHeading()))
+	{
+		decide();
 	}
 }
 

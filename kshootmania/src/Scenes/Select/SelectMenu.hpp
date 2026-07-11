@@ -143,6 +143,9 @@ public:
 
 	void update(SongPreviewOnlyYN songPreviewOnly = SongPreviewOnlyYN::No);
 
+	/// @brief クリックによる決定・難易度変更を処理(Shift押下中はオートプレイとして決定)
+	void updateClickDecide();
+
 	void decide();
 
 	void decideAutoPlay();

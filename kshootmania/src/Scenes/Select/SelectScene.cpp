@@ -546,6 +546,11 @@ void SelectScene::update()
 	{
 		m_menu.update();
 	}
+	else if (KeyShift.pressed())
+	{
+		// Shift押下中もクリックによる決定は受け付ける
+		m_menu.updateClickDecide();
+	}
 
 	// スタートボタンを離した場合、フォルダを開く または プレイ開始
 	// Shift+スタートボタンの場合はオートプレイ開始
