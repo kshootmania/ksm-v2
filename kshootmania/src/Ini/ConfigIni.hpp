@@ -132,6 +132,16 @@ namespace ConfigIni
 			};
 		}
 
+		namespace HideMouseCursor
+		{
+			enum HideMouseCursor : int32
+			{
+				kOff = 0,
+				kPlayOnly,
+				kAll,
+			};
+		}
+
 		namespace LaserInputType
 		{
 			enum LaserInputType : int32

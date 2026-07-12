@@ -133,6 +133,12 @@ PlayScene::~PlayScene()
 
 void PlayScene::update()
 {
+	// マウスカーソル非表示設定
+	if (ConfigIni::GetInt(ConfigIni::Key::kHideMouseCursor) != ConfigIni::Value::HideMouseCursor::kOff)
+	{
+		Cursor::RequestStyle(CursorStyle::Hidden);
+	}
+
 	m_commonOverlay.update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() });
 
 	const auto startFadeOut = m_gameMain.update();

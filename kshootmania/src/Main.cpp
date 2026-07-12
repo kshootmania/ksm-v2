@@ -547,8 +547,9 @@ void KSMMain()
 	
 	while (System::Update())
 	{
-		// マウスカーソル非表示設定
-		if (ConfigIni::GetBool(ConfigIni::Key::kHideMouseCursor))
+		// マウスカーソル非表示設定(全画面での非表示)
+		// プレイ中のみの非表示はPlaySceneで処理する
+		if (ConfigIni::GetInt(ConfigIni::Key::kHideMouseCursor) == ConfigIni::Value::HideMouseCursor::kAll)
 		{
 			Cursor::RequestStyle(CursorStyle::Hidden);
 		}
