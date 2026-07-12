@@ -1412,6 +1412,12 @@
                       "tag": "onClickDifficultyLight"
                     },
                     {
+                      "type": "EventTrigger",
+                      "tag": "onPressHoldDifficultyLight",
+                      "triggerType": "PressHold",
+                      "holdDurationSec": 0.75
+                    },
+                    {
                       "type": "UISound",
                       "audioFilePath": "se/hover.wav",
                       "triggerType": "HoverStart"
@@ -1758,6 +1764,12 @@
                     {
                       "type": "EventTrigger",
                       "tag": "onClickDifficultyChallenge"
+                    },
+                    {
+                      "type": "EventTrigger",
+                      "tag": "onPressHoldDifficultyChallenge",
+                      "triggerType": "PressHold",
+                      "holdDurationSec": 0.75
                     },
                     {
                       "type": "UISound",
@@ -2108,6 +2120,12 @@
                       "tag": "onClickDifficultyExtended"
                     },
                     {
+                      "type": "EventTrigger",
+                      "tag": "onPressHoldDifficultyExtended",
+                      "triggerType": "PressHold",
+                      "holdDurationSec": 0.75
+                    },
+                    {
                       "type": "UISound",
                       "audioFilePath": "se/hover.wav",
                       "triggerType": "HoverStart"
@@ -2454,6 +2472,12 @@
                     {
                       "type": "EventTrigger",
                       "tag": "onClickDifficultyInfinite"
+                    },
+                    {
+                      "type": "EventTrigger",
+                      "tag": "onPressHoldDifficultyInfinite",
+                      "triggerType": "PressHold",
+                      "holdDurationSec": 0.75
                     },
                     {
                       "type": "UISound",

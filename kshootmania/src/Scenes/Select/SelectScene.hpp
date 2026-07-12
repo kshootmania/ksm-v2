@@ -59,6 +59,8 @@ private:
 
 	void updateStartKeyLongPress();
 
+	void openFavoriteDialogForCursor();
+
 	void enterSearchInputPhase();
 
 	void exitSearchMode();

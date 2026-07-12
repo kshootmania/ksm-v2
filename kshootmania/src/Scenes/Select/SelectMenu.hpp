@@ -39,6 +39,9 @@ struct SelectMenuEventContext
 	std::function<void(int32, int32)> fnJumpToItemWithDifficulty;
 	std::function<void(StringView)> fnShowErrorDialog;
 
+	// 選択中の項目に対してお気に入り登録/削除ダイアログを開く
+	std::function<void()> fnOpenFavoriteDialog;
+
 	// 譜面のハイスコア情報を取得
 	std::function<HighScoreInfo(FilePathView)> fnGetHighScore;
 
@@ -118,6 +121,9 @@ private:
 
 	void refreshSongPreview();
 
+	/// @brief 選択中の難易度のクリック長押しを検出し、完了時にお気に入りダイアログを開く(発火した場合true)
+	bool updateDifficultyClickLongPress();
+
 	void playShakeUpTween();
 
 	void playShakeDownTween();
@@ -137,7 +143,8 @@ public:
 		const std::shared_ptr<noco::Canvas>& selectSceneCanvas,
 		std::function<void(FilePathView, MusicGame::IsAutoPlayYN, const Optional<CoursePlayState>&)> fnMoveToPlayScene,
 		std::function<void(StringView)> fnShowErrorDialog,
-		std::function<void()> fnExitSearchMode);
+		std::function<void()> fnExitSearchMode,
+		std::function<void()> fnOpenFavoriteDialog);
 
 	~SelectMenu(); // ヘッダではISelectMenuItemが不完全型なのでソースファイル側で定義
 

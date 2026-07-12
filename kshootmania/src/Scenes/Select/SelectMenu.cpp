@@ -66,6 +66,14 @@ namespace
 		{ U"onClickDifficultyInfinite", 3 },
 	};
 
+	// 難易度パネルの長押しイベントのタグと難易度インデックスの対応関係
+	const Array<std::pair<String, int32>> kPressHoldTagToDifficultyIdxPairs = {
+		{ U"onPressHoldDifficultyLight", 0 },
+		{ U"onPressHoldDifficultyChallenge", 1 },
+		{ U"onPressHoldDifficultyExtended", 2 },
+		{ U"onPressHoldDifficultyInfinite", 3 },
+	};
+
 	bool IsAnyTranslitDisplayEnabled()
 	{
 		return ConfigIni::GetBool(ConfigIni::Key::kShowTranslitKana, false)
@@ -682,7 +690,8 @@ SelectMenu::SelectMenu(
 	const std::shared_ptr<noco::Canvas>& selectSceneCanvas,
 	std::function<void(FilePathView, MusicGame::IsAutoPlayYN, const Optional<CoursePlayState>&)> fnMoveToPlayScene,
 	std::function<void(StringView)> fnShowErrorDialog,
-	std::function<void()> fnExitSearchMode)
+	std::function<void()> fnExitSearchMode,
+	std::function<void()> fnOpenFavoriteDialog)
 	: m_eventContext
 		{
 			.fnMoveToPlayScene = [fnMoveToPlayScene](FilePath path, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState) { fnMoveToPlayScene(path, isAutoPlay, courseState); },
@@ -726,6 +735,7 @@ SelectMenu::SelectMenu(
 				}
 			},
 			.fnShowErrorDialog = std::move(fnShowErrorDialog),
+			.fnOpenFavoriteDialog = std::move(fnOpenFavoriteDialog),
 			.fnGetHighScore = [this](FilePathView chartFilePath) -> HighScoreInfo
 			{
 				return m_highScoreCache.getChartHighScore(chartFilePath, CreateKscKeyFromConfig());
@@ -950,9 +960,33 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 	}
 }
 
+bool SelectMenu::updateDifficultyClickLongPress()
+{
+	if (m_menu.cursorValue() == nullptr || !m_menu.cursorValue()->difficultyMenuExists())
+	{
+		return false;
+	}
+
+	// 選択中の難易度パネルを長押しした場合のみお気に入りダイアログを開く
+	const Optional<int32> pressHoldDifficultyIdx = MouseMenuUtils::FiredClickIndex(*m_selectSceneCanvas, kPressHoldTagToDifficultyIdxPairs);
+	if (pressHoldDifficultyIdx.has_value() && *pressHoldDifficultyIdx == m_difficultyMenu.cursor())
+	{
+		m_eventContext.fnOpenFavoriteDialog();
+		return true;
+	}
+
+	return false;
+}
+
 void SelectMenu::updateClickDecide()
 {
 	if (m_menu.empty() || m_menu.cursorValue() == nullptr)
+	{
+		return;
+	}
+
+	// 選択中の難易度をクリック長押しした場合はお気に入りダイアログを開く
+	if (updateDifficultyClickLongPress())
 	{
 		return;
 	}
