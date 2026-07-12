@@ -162,7 +162,7 @@
 		"ItemHispeedTypeOMod": "Hi-Speed 25 - 2000",
 		"ItemHispeedTypeCMod": "Hi-Speed C 25 - 2000",
 		"ItemHideMouseCursor": "隐藏鼠标光标",
-		"ItemEnableMouseUIInput": "允许用鼠标操作游戏",
+		"ItemEnableMouseUIInput": "允许用鼠标操作游戏画面",
 		"ItemAssignRightClickToBack": "将右键分配给Back按钮",
 		"ItemUseNumpadAsArrowKeys": "使用数字键盘作为方向键 (用于带数字键盘的控制器)",
 		"ItemShowTranslitKana": "将含假名的曲名・艺术家名以拉丁字母显示",
