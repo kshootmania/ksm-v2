@@ -725,7 +725,7 @@ void ResultScene::update()
 	const bool fxRPressed = KeyConfig::Pressed(kButtonFX_R);
 	m_canvas->setParamValue(U"bottomLeftText", BuildBottomLeftText(m_playResult, m_chartData, fxLPressed, fxRPressed));
 
-	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() });
+	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && InputUtils::IsUIMouseInputEnabled() });
 	m_snsShare.update(m_canvas.get());
 }
 

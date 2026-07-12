@@ -13,4 +13,8 @@ namespace InputUtils
 	/// @brief ウィンドウがアクティブ化されたフレームかどうかを取得(ウィンドウをアクティブ化するためのクリックを入力として扱わないための判定に使用)
 	[[nodiscard]]
 	bool WindowFocusedThisFrame();
+
+	/// @brief UIをマウスで操作可能かどうかを判定(マウス操作オプションが有効かつレーザー入力方式がマウスでない場合にtrue)
+	[[nodiscard]]
+	bool IsUIMouseInputEnabled();
 }

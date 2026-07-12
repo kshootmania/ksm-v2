@@ -1,6 +1,7 @@
 ﻿#include "SearchInputDialog.hpp"
 #include "Common/FsUtils.hpp"
 #include "Input/KeyConfig.hpp"
+#include "Input/InputUtils.hpp"
 #include "NocoExtensions/NocoUtils.hpp"
 #include "Scenes/Common/ShowLoadingOneFrame.hpp"
 
@@ -60,7 +61,7 @@ Co::Task<Optional<String>> SearchInputDialog::start()
 
 	while (true)
 	{
-		m_canvas->update(noco::HitTestEnabledYN{ !KeyConfig::IsLaserInputMouse() });
+		m_canvas->update(noco::HitTestEnabledYN{ InputUtils::IsUIMouseInputEnabled() });
 
 		const String currentText = m_canvas->getTextValueByTag(U"searchQueryText");
 

@@ -3,6 +3,7 @@
 #include "Common/Encoding.hpp"
 #include "Input/Cursor/CursorInput.hpp"
 #include "Input/KeyConfig.hpp"
+#include "Input/InputUtils.hpp"
 #include "Graphics/ScreenUtils.hpp"
 
 namespace
@@ -78,7 +79,7 @@ Co::Task<Optional<int32>> FavoriteAddDialog::start()
 		const Vec2 position = (Scene::Size() - m_canvas->referenceSize() * scale) / 2.0;
 		m_canvas->setPositionScale(position, Vec2{ scale, scale });
 
-		m_canvas->update(noco::HitTestEnabledYN{ !KeyConfig::IsLaserInputMouse() });
+		m_canvas->update(noco::HitTestEnabledYN{ InputUtils::IsUIMouseInputEnabled() });
 
 		if (KeyConfig::Down(kButtonStart))
 		{

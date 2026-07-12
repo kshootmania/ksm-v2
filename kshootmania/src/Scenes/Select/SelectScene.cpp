@@ -10,6 +10,7 @@
 #include "SelectChartInfo.hpp"
 #include "UI/SimpleDialog.hpp"
 #include "Input/KeyConfig.hpp"
+#include "Input/InputUtils.hpp"
 #include "NocoExtensions/NocoUtils.hpp"
 #include "SearchInputDialog.hpp"
 
@@ -432,7 +433,7 @@ SelectScene::SelectScene(const Optional<SelectSceneSearchParams>& initialSearchP
 
 void SelectScene::update()
 {
-	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() };
+	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() && InputUtils::IsUIMouseInputEnabled() };
 
 	// ダイアログ表示中は必要な更新のみ実行
 	if (Co::HasActiveModal())

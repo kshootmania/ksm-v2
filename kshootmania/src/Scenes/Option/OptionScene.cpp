@@ -230,6 +230,10 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 				I18n::Get(I18n::Option::HideMouseCursorOnPlayOnly),
 				I18n::Get(I18n::Option::HideMouseCursorOnAll),
 			}),
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemEnableMouseUIInput), ConfigIni::Key::kEnableMouseUIInput, Array<StringView>{
+				I18n::Get(I18n::Option::Off),
+				I18n::Get(I18n::Option::On),
+			}),
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemUseNumpadAsArrowKeys), ConfigIni::Key::kUseNumpadAsArrowKeys, Array<StringView>{
 				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOff),
 				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOnKeyboard),
@@ -263,7 +267,7 @@ OptionScene::OptionScene()
 void OptionScene::update()
 {
 	// フェード中はクリックやホバーが効かないようヒットテスト無効
-	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() };
+	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() && InputUtils::IsUIMouseInputEnabled() };
 
 	// 共通オーバーレイを更新
 	m_commonOverlay.update(hitTestEnabled);

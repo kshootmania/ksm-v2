@@ -1,4 +1,5 @@
 ﻿#include "IREntryScene.hpp"
+#include "Input/InputUtils.hpp"
 #include "Scenes/Title/TitleScene.hpp"
 #include "Scenes/Select/SelectScene.hpp"
 #include "Scenes/Common/ShowLoadingOneFrame.hpp"
@@ -53,7 +54,7 @@ Co::Task<void> IREntryScene::start()
 void IREntryScene::update()
 {
 	// フェード中はクリックやホバーが効かないようヒットテスト無効
-	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() };
+	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() && InputUtils::IsUIMouseInputEnabled() };
 
 	// 共通オーバーレイを更新
 	m_commonOverlay.update(hitTestEnabled);

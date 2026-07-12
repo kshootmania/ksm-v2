@@ -174,7 +174,7 @@ void PlayPrepareScene::update()
 	// 画面全体がクリック可能なのでカーソルを人差し指に変更
 	Cursor::RequestStyle(CursorStyle::Hand);
 
-	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() });
+	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && InputUtils::IsUIMouseInputEnabled() });
 
 	const double startBPM = m_chartData.beat.bpm.contains(0) ? m_chartData.beat.bpm.at(0) : kDefaultBPM;
 

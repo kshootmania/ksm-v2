@@ -5,6 +5,7 @@
 #ifndef NO_IR_ENTRY_SCENE
 #include "Scenes/IREntry/IREntryScene.hpp"
 #endif
+#include "Input/InputUtils.hpp"
 #include "Scenes/Select/SelectScene.hpp"
 #include "Scenes/Option/OptionScene.hpp"
 #include "Scenes/Common/ShowLoadingOneFrame.hpp"
@@ -74,7 +75,7 @@ void TitleScene::update()
 {
 	m_menu.update();
 
-	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() });
+	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && InputUtils::IsUIMouseInputEnabled() });
 }
 
 void TitleScene::draw() const

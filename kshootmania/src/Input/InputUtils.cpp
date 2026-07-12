@@ -1,4 +1,5 @@
 ﻿#include "InputUtils.hpp"
+#include "KeyConfig.hpp"
 
 namespace
 {
@@ -67,5 +68,11 @@ namespace InputUtils
 		// メインループより先にコルーチン側から参照された場合もあるため、参照時点でも更新する
 		UpdateWindowFocusState();
 		return s_windowFocusedThisFrame;
+	}
+
+	bool IsUIMouseInputEnabled()
+	{
+		// マウス操作オプションが無効、またはレーザー入力方式がマウスの場合はUIのマウス操作を無効化する
+		return ConfigIni::GetBool(ConfigIni::Key::kEnableMouseUIInput, true) && !KeyConfig::IsLaserInputMouse();
 	}
 }

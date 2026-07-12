@@ -44,6 +44,7 @@ namespace ConfigIni
 		constexpr StringView kHispeedShowXMod = U"hispeedtype_x";
 		constexpr StringView kHispeedShowCMod = U"hispeedtype_c";
 		constexpr StringView kHideMouseCursor = U"hidemousecursor";
+		constexpr StringView kEnableMouseUIInput = U"enable_mouse_ui";
 		constexpr StringView kUseNumpadAsArrowKeys = U"usenumpad";
 		constexpr StringView kShowTranslitKana = U"show_translit_kana";
 		constexpr StringView kShowTranslitHangul = U"show_translit_hangul";

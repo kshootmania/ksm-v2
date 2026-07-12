@@ -1,6 +1,7 @@
 ﻿#include "FavoriteRemoveDialog.hpp"
 #include "Input/Cursor/CursorInput.hpp"
 #include "Input/KeyConfig.hpp"
+#include "Input/InputUtils.hpp"
 #include "Common/FsUtils.hpp"
 #include "Graphics/ScreenUtils.hpp"
 
@@ -69,7 +70,7 @@ Co::Task<Optional<FavoriteRemoveChoice>> FavoriteRemoveDialog::start()
 		const Vec2 position = (Scene::Size() - m_canvas->referenceSize() * scale) / 2.0;
 		m_canvas->setPositionScale(position, Vec2{ scale, scale });
 
-		m_canvas->update(noco::HitTestEnabledYN{ !KeyConfig::IsLaserInputMouse() });
+		m_canvas->update(noco::HitTestEnabledYN{ InputUtils::IsUIMouseInputEnabled() });
 
 		if (KeyConfig::Down(kButtonStart) || clickDecided)
 		{

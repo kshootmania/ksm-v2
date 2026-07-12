@@ -222,7 +222,7 @@ void CourseResultScene::update()
 	Cursor::RequestStyle(CursorStyle::Hand);
 
 	// フェード中はクリックやホバーが効かないようヒットテスト無効
-	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() });
+	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && InputUtils::IsUIMouseInputEnabled() });
 	m_chartList.update(m_courseState);
 	m_snsShare.update(m_canvas.get());
 }

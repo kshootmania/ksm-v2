@@ -1,4 +1,5 @@
 ﻿#include "PlayScene.hpp"
+#include "Input/InputUtils.hpp"
 #include "Scenes/Select/SelectScene.hpp"
 #include "Scenes/PlayPrepare/PlayPrepareScene.hpp"
 #include "Scenes/Result/ResultScene.hpp"
@@ -139,7 +140,7 @@ void PlayScene::update()
 		Cursor::RequestStyle(CursorStyle::Hidden);
 	}
 
-	m_commonOverlay.update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && !KeyConfig::IsLaserInputMouse() });
+	m_commonOverlay.update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && InputUtils::IsUIMouseInputEnabled() });
 
 	const auto startFadeOut = m_gameMain.update();
 
