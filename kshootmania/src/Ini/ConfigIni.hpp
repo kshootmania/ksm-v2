@@ -144,6 +144,16 @@ namespace ConfigIni
 			};
 		}
 
+		namespace RightClickToBack
+		{
+			enum RightClickToBack : int32
+			{
+				kOff = 0,
+				kExceptPlay,
+				kAll,
+			};
+		}
+
 		namespace LaserInputType
 		{
 			enum LaserInputType : int32

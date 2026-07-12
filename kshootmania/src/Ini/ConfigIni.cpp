@@ -63,7 +63,7 @@ output_downscale=1
 disableime=3
 hidemousecursor=0
 enable_mouse_ui=1
-rightclick_back=0
+rightclick_back=1
 
 mastervol=100
 
@@ -169,7 +169,7 @@ output_downscale=1
 disableime=3
 hidemousecursor=0
 enable_mouse_ui=1
-rightclick_back=0
+rightclick_back=1
 
 mastervol=100
 

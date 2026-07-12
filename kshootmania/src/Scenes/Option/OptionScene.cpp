@@ -235,9 +235,10 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 				I18n::Get(I18n::Option::On),
 			}).setDefaultValue(1),
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAssignRightClickToBack), ConfigIni::Key::kAssignRightClickToBack, Array<StringView>{
-				I18n::Get(I18n::Option::Off),
-				I18n::Get(I18n::Option::On),
-			}),
+				I18n::Get(I18n::Option::RightClickToBackOff),
+				I18n::Get(I18n::Option::RightClickToBackExceptPlay),
+				I18n::Get(I18n::Option::RightClickToBackAll),
+			}).setDefaultValue(ConfigIni::Value::RightClickToBack::kExceptPlay),
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemUseNumpadAsArrowKeys), ConfigIni::Key::kUseNumpadAsArrowKeys, Array<StringView>{
 				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOff),
 				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOnKeyboard),

@@ -418,10 +418,20 @@ namespace
 		return false;
 	}
 
-	/// @brief 右クリックをBackボタンとして扱うオプションが有効かどうか(プレイ中は抑制する)
+	/// @brief 右クリックをBackボタンとして扱うオプションが現在有効かどうか
 	bool IsRightClickAsBackEnabled()
 	{
-		return !s_rightClickAsBackSuppressed && ConfigIni::GetBool(ConfigIni::Key::kAssignRightClickToBack, false);
+		const int32 mode = ConfigIni::GetInt(ConfigIni::Key::kAssignRightClickToBack, ConfigIni::Value::RightClickToBack::kExceptPlay);
+		if (mode == ConfigIni::Value::RightClickToBack::kOff)
+		{
+			return false;
+		}
+		// プレイ画面以外のみ有効の場合、プレイ中は無効化する
+		if (mode == ConfigIni::Value::RightClickToBack::kExceptPlay && s_rightClickAsBackSuppressed)
+		{
+			return false;
+		}
+		return true;
 	}
 
 	std::pair<Button, Button> GetLaserButtons(int32 laneIdx)
