@@ -140,7 +140,7 @@ PlayScene::~PlayScene()
 void PlayScene::update()
 {
 	// マウスカーソル非表示設定
-	if (ConfigIni::GetInt(ConfigIni::Key::kHideMouseCursor) != ConfigIni::Value::HideMouseCursor::kOff)
+	if (ConfigIni::GetInt(ConfigIni::Key::kHideMouseCursor, ConfigIni::Value::HideMouseCursor::kPlayOnly) != ConfigIni::Value::HideMouseCursor::kOff)
 	{
 		Cursor::RequestStyle(CursorStyle::Hidden);
 	}

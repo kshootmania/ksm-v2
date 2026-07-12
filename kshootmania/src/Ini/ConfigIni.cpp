@@ -61,7 +61,7 @@ output_path=c:\output\
 output_downscale=1
 
 disableime=3
-hidemousecursor=0
+hidemousecursor=1
 enable_mouse_ui=1
 rightclick_back=1
 
@@ -167,7 +167,7 @@ output_path=c:\output\
 output_downscale=1
 
 disableime=3
-hidemousecursor=0
+hidemousecursor=1
 enable_mouse_ui=1
 rightclick_back=1
 

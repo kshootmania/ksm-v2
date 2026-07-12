@@ -229,7 +229,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 				I18n::Get(I18n::Option::HideMouseCursorOff),
 				I18n::Get(I18n::Option::HideMouseCursorOnPlayOnly),
 				I18n::Get(I18n::Option::HideMouseCursorOnAll),
-			}),
+			}).setDefaultValue(ConfigIni::Value::HideMouseCursor::kPlayOnly),
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemEnableMouseUIInput), ConfigIni::Key::kEnableMouseUIInput, Array<StringView>{
 				I18n::Get(I18n::Option::Off),
 				I18n::Get(I18n::Option::On),
