@@ -69,11 +69,14 @@ Array<OptionMenu::SettingItemParams> OptionMenu::getSettingItemParamsList() cons
 	const int32 cursorIdx = m_menu.cursor();
 	for (int32 i = 0; i < static_cast<int32>(m_fields.size()); ++i)
 	{
+		const OptionMenuField::ArrowType arrowType = m_fields[i].arrowType();
 		result.push_back({
 			.name = m_fields[i].name(),
 			.value = m_fields[i].valueDisplayString(),
 			.selected = (i == cursorIdx),
-			.valueArrowIndex = static_cast<int32>(m_fields[i].arrowType()),
+			.valueArrowIndex = static_cast<int32>(arrowType),
+			.valueLeftArrowVisible = arrowType == OptionMenuField::kArrowTypeLeft || arrowType == OptionMenuField::kArrowTypeLeftRight,
+			.valueRightArrowVisible = arrowType == OptionMenuField::kArrowTypeRight || arrowType == OptionMenuField::kArrowTypeLeftRight,
 		});
 	}
 

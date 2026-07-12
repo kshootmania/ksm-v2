@@ -11,6 +11,8 @@ public:
 		String value;
 		bool selected;
 		int32 valueArrowIndex;
+		bool valueLeftArrowVisible;
+		bool valueRightArrowVisible;
 	};
 
 	/// @brief マウス操作の入力内容

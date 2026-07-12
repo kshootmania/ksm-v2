@@ -559,7 +559,8 @@
             0.0
           ],
           "inheritChildrenHover": false,
-          "inheritChildrenPress": false
+          "inheritChildrenPress": false,
+          "activeSelf_paramRef": "valueLeftArrowVisible"
         },
         {
           "name": "ValueRightClick",
@@ -678,7 +679,8 @@
             0.0
           ],
           "inheritChildrenHover": false,
-          "inheritChildrenPress": false
+          "inheritChildrenPress": false,
+          "activeSelf_paramRef": "valueRightArrowVisible"
         },
         {
           "name": "HoverOverlay",
@@ -1117,6 +1119,14 @@
     "valueArrowIndex": {
       "type": "Int",
       "value": 2
+    },
+    "valueLeftArrowVisible": {
+      "type": "Bool",
+      "value": true
+    },
+    "valueRightArrowVisible": {
+      "type": "Bool",
+      "value": true
     }
   },
   "referenceSize": [

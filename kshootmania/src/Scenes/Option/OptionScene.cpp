@@ -454,6 +454,8 @@ void OptionScene::createSettingItemNodes()
 				{ U"value", params.value },
 				{ U"selected", params.selected },
 				{ U"valueArrowIndex", params.valueArrowIndex },
+				{ U"valueLeftArrowVisible", params.valueLeftArrowVisible },
+				{ U"valueRightArrowVisible", params.valueRightArrowVisible },
 			});
 	}
 }
@@ -556,6 +558,8 @@ void OptionScene::refreshSettingItemParams()
 			{ U"value", params.value },
 			{ U"selected", params.selected },
 			{ U"valueArrowIndex", params.valueArrowIndex },
+			{ U"valueLeftArrowVisible", params.valueLeftArrowVisible },
+			{ U"valueRightArrowVisible", params.valueRightArrowVisible },
 		});
 	}
 }
