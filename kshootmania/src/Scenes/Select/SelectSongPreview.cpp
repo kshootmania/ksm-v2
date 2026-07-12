@@ -19,6 +19,12 @@ SelectSongPreview::SelectSongPreview()
 
 void SelectSongPreview::update()
 {
+	// 画面を抜ける時のフェードアウト中は音量操作でフェードを打ち消さないよう何もしない
+	if (m_isFadingOutForExit)
+	{
+		return;
+	}
+
 	if (!m_songPreviewFilename.empty() && (m_songPreviewStartTimer.reachedZero() || m_isFirst))
 	{
 		// フェードインして再生開始
@@ -115,6 +121,8 @@ void SelectSongPreview::requestDefaultBgm()
 
 void SelectSongPreview::fadeOutForExit(Duration duration)
 {
+	m_isFadingOutForExit = true;
+
 	if (m_songPreviewStream)
 	{
 		m_songPreviewStream->setFadeOut(duration);

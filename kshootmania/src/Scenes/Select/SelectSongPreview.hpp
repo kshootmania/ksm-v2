@@ -29,6 +29,9 @@ private:
 
 	bool m_isFirst = true;
 
+	/// @brief 画面を抜ける時のフェードアウトを開始済みかどうか
+	bool m_isFadingOutForExit = false;
+
 public:
 	SelectSongPreview();
 
