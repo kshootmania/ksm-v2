@@ -25,6 +25,9 @@ namespace
 	bool s_suppressStartUntilRelease = false;
 	bool s_suppressStartThisFrame = false;
 
+	// プレイ中は右クリックをBackボタンとして扱わない
+	bool s_rightClickAsBackSuppressed = false;
+
 	std::array<bool, kButtonEnumCount> s_virtualDownButtonsPending{};
 	std::array<bool, kButtonEnumCount> s_virtualDownButtonsThisFrame{};
 
@@ -415,6 +418,12 @@ namespace
 		return false;
 	}
 
+	/// @brief 右クリックをBackボタンとして扱うオプションが有効かどうか(プレイ中は抑制する)
+	bool IsRightClickAsBackEnabled()
+	{
+		return !s_rightClickAsBackSuppressed && ConfigIni::GetBool(ConfigIni::Key::kAssignRightClickToBack, false);
+	}
+
 	std::pair<Button, Button> GetLaserButtons(int32 laneIdx)
 	{
 		if (laneIdx == 0)
@@ -620,6 +629,10 @@ bool KeyConfig::Pressed(Button button)
 		{
 			return true;
 		}
+		if (IsRightClickAsBackEnabled() && MouseR.pressed())
+		{
+			return true;
+		}
 	}
 
 	// 矢印キーの場合、Numpadキーの状態も確認
@@ -741,6 +754,10 @@ bool KeyConfig::Down(Button button)
 		{
 			return true;
 		}
+		if (IsRightClickAsBackEnabled() && MouseR.down())
+		{
+			return true;
+		}
 	}
 
 	// 矢印キーの場合、Numpadキーの状態も確認
@@ -753,6 +770,11 @@ bool KeyConfig::Down(Button button)
 	}
 
 	return false;
+}
+
+void KeyConfig::SetRightClickAsBackSuppressed(bool suppressed)
+{
+	s_rightClickAsBackSuppressed = suppressed;
 }
 
 void KeyConfig::RequestVirtualDown(Button button)
@@ -861,6 +883,10 @@ bool KeyConfig::Up(Button button)
 	if (button == kButtonBack)
 	{
 		if (IsBT3PlusStartUp())
+		{
+			return true;
+		}
+		if (IsRightClickAsBackEnabled() && MouseR.up())
 		{
 			return true;
 		}

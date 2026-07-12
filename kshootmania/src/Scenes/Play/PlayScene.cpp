@@ -125,11 +125,16 @@ PlayScene::PlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoP
 
 	// Playシーンではウィンドウのフォーカスが外れていてもミュートしない
 	AutoMuteAddon::SetEnabled(false);
+
+	// プレイ中は右クリックをBackボタンとして扱わない
+	KeyConfig::SetRightClickAsBackSuppressed(true);
 }
 
 PlayScene::~PlayScene()
 {
 	m_gameMain.terminate();
+
+	KeyConfig::SetRightClickAsBackSuppressed(false);
 }
 
 void PlayScene::update()

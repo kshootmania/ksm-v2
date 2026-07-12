@@ -163,6 +163,7 @@
 		"ItemHispeedTypeCMod": "Hi-Speed C 25 - 2000",
 		"ItemHideMouseCursor": "隱藏滑鼠游標",
 		"ItemEnableMouseUIInput": "允許用滑鼠操作遊戲",
+		"ItemAssignRightClickToBack": "將右鍵分配給Back按鈕",
 		"ItemUseNumpadAsArrowKeys": "使用數字鍵盤作為方向鍵 (用於帶數字鍵盤的控制器)",
 		"ItemShowTranslitKana": "將含假名的曲名・演出者名以拉丁字母顯示",
 		"ItemShowTranslitHangul": "將含諺文的曲名・演出者名以拉丁字母顯示",

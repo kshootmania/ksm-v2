@@ -64,6 +64,9 @@ namespace KeyConfig
 	/// @brief 仮想的にボタンを次のフレームで1フレームだけDown扱いにする
 	void RequestVirtualDown(Button button);
 
+	/// @brief 右クリックをBackボタンとして扱う機能を抑制するか設定(プレイ中は抑制する)
+	void SetRightClickAsBackSuppressed(bool suppressed);
+
 	void ClearInput(Button button);
 
 	Co::Task<void> WaitUntilDown(Button button);

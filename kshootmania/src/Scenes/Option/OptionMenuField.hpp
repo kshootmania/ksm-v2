@@ -59,6 +59,11 @@ public:
 
 		CreateInfo&& setAdditionalSuffixes(StringView zero, StringView positive, StringView negative)&&;
 
+		/// @brief config.iniに値が無い場合のデフォルト値を設定(Enumの場合は選択肢のインデックス)
+		CreateInfo& setDefaultValue(int32 value)&;
+
+		CreateInfo&& setDefaultValue(int32 value)&&;
+
 		CreateInfo& setOnChangeCallback(std::function<void()> callback)&;
 
 		CreateInfo&& setOnChangeCallback(std::function<void()> callback)&&;

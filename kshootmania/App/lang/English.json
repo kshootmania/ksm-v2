@@ -163,6 +163,7 @@
 		"ItemHispeedTypeCMod": "Hi-Speed Type C 25 - 2000",
 		"ItemHideMouseCursor": "Hide Mouse Cursor",
 		"ItemEnableMouseUIInput": "Enable Mouse Control",
+		"ItemAssignRightClickToBack": "Assign Right-Click to Back Button",
 		"ItemUseNumpadAsArrowKeys": "Use Numpad as Arrow Keys (for Controllers with Numpad)",
 		"ItemShowTranslitKana": "Show romanized song titles and artists containing kana",
 		"ItemShowTranslitHangul": "Show romanized song titles and artists containing hangul",

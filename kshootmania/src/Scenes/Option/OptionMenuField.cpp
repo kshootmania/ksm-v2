@@ -174,6 +174,18 @@ OptionMenuField::CreateInfo&& OptionMenuField::CreateInfo::setAdditionalSuffixes
 	return std::move(*this);
 }
 
+OptionMenuField::CreateInfo& OptionMenuField::CreateInfo::setDefaultValue(int32 value)&
+{
+	this->valueDefault = value;
+	return *this;
+}
+
+OptionMenuField::CreateInfo&& OptionMenuField::CreateInfo::setDefaultValue(int32 value)&&
+{
+	this->valueDefault = value;
+	return std::move(*this);
+}
+
 OptionMenuField::CreateInfo& OptionMenuField::CreateInfo::setOnChangeCallback(std::function<void()> callback)&
 {
 	onChangeCallback = std::move(callback);
@@ -197,7 +209,7 @@ OptionMenuField::OptionMenuField(const CreateInfo& createInfo)
 	, m_valueDisplayNamePairs(createInfo.valueDisplayNamePairs)
 	, m_onChangeCallback(createInfo.onChangeCallback)
 	, m_menu(createInfo.valueStep == 0
-		? MakeMenuEnum(static_cast<int32>(createInfo.valueDisplayNamePairs.size()), FindDefaultCursor(m_configIniKey, m_isEnum, m_valueDisplayNamePairs, 0))
+		? MakeMenuEnum(static_cast<int32>(createInfo.valueDisplayNamePairs.size()), FindDefaultCursor(m_configIniKey, m_isEnum, m_valueDisplayNamePairs, createInfo.valueDefault))
 		: MakeMenuInt(createInfo.valueMin, createInfo.valueMax, FindDefaultCursor(m_configIniKey, m_isEnum, m_valueDisplayNamePairs, createInfo.valueDefault), createInfo.valueStep))
 {
 }

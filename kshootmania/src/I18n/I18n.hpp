@@ -250,6 +250,7 @@ namespace I18n
 		ItemHispeedTypeCMod,
 		ItemHideMouseCursor,
 		ItemEnableMouseUIInput,
+		ItemAssignRightClickToBack,
 		ItemUseNumpadAsArrowKeys,
 		ItemShowTranslitKana,
 		ItemShowTranslitHangul,

@@ -233,6 +233,10 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemEnableMouseUIInput), ConfigIni::Key::kEnableMouseUIInput, Array<StringView>{
 				I18n::Get(I18n::Option::Off),
 				I18n::Get(I18n::Option::On),
+			}).setDefaultValue(1),
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAssignRightClickToBack), ConfigIni::Key::kAssignRightClickToBack, Array<StringView>{
+				I18n::Get(I18n::Option::Off),
+				I18n::Get(I18n::Option::On),
 			}),
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemUseNumpadAsArrowKeys), ConfigIni::Key::kUseNumpadAsArrowKeys, Array<StringView>{
 				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOff),
