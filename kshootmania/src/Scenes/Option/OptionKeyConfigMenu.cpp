@@ -1082,19 +1082,13 @@ void OptionKeyConfigMenu::updateNoneState(noco::Canvas* pCanvas)
 		m_cursor = NextCursor(m_cursor, direction.value());
 	}
 
-	// クリックされた項目がカーソル位置と同じ場合は編集開始、異なる場合はカーソル移動
+	// クリックされた項目へカーソルを移動して編集開始
 	const Optional<OptionKeyConfigCursor> clickedCursor = FiredClickCursor(*pCanvas);
 	bool clickDecided = false;
 	if (clickedCursor.has_value())
 	{
-		if (*clickedCursor == m_cursor)
-		{
-			clickDecided = true;
-		}
-		else
-		{
-			m_cursor = *clickedCursor;
-		}
+		m_cursor = *clickedCursor;
+		clickDecided = true;
 	}
 
 	// 設定解除
@@ -1287,7 +1281,7 @@ OptionKeyConfigMenu::OptionKeyConfigMenu()
 
 void OptionKeyConfigMenu::update(noco::Canvas* pCanvas)
 {
-	// ボタン編集中にクリックされた場合は編集を中止してカーソル選択状態に戻す
+	// ボタン編集中に同じ項目がクリックされた場合は編集を中止してカーソル選択状態に戻す
 	if (isButtonEditingState())
 	{
 		const Optional<OptionKeyConfigCursor> clickedCursor = FiredClickCursor(*pCanvas);
@@ -1296,11 +1290,19 @@ void OptionKeyConfigMenu::update(noco::Canvas* pCanvas)
 			pCanvas->isEventFiredWithTag(U"onClickKeyConfigConfigSetNext");
 		if (clickedCursor.has_value() || configSetArrowClicked)
 		{
-			m_state = OptionKeyConfigMenuState::None;
-			if (clickedCursor.has_value() && *clickedCursor != m_cursor)
+			if (clickedCursor.has_value() && *clickedCursor != m_cursor && CursorToButton1(*clickedCursor).has_value())
 			{
-				// 別の項目をクリックした場合はその項目へカーソルを移動
+				// 別の項目をクリックした場合はその項目の編集を開始
 				m_cursor = *clickedCursor;
+				m_state = OptionKeyConfigMenuState::SettingButton1;
+			}
+			else
+			{
+				m_state = OptionKeyConfigMenuState::None;
+				if (clickedCursor.has_value())
+				{
+					m_cursor = *clickedCursor;
+				}
 			}
 			return;
 		}

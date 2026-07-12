@@ -2,59 +2,10 @@
   "autoFitMode": "MatchSize",
   "children": [
     {
-      "name": "Body",
       "activeSelf": true,
-      "interactable": true,
-      "isHitTarget": false,
-      "region": {
-        "type": "AnchorRegion",
-        "anchorMin": [
-          0.5,
-          0.5
-        ],
-        "anchorMax": [
-          0.5,
-          0.5
-        ],
-        "posDelta": [
-          0,
-          0
-        ],
-        "sizeDelta": [
-          288,
-          96
-        ],
-        "sizeDeltaPivot": [
-          0.5,
-          0.5
-        ]
-      },
-      "transform": {
-        "translate": [
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1
-        ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "rotation": 0,
-        "color": [
-          255,
-          255,
-          255,
-          255
-        ],
-        "hitTestAffected": true
-      },
+      "children": [],
       "childrenLayout": {
-        "type": "FlowLayout",
         "horizontalAlign": "Left",
-        "verticalAlign": "Top",
         "padding": [
           0.0,
           0.0,
@@ -64,240 +15,383 @@
         "spacing": [
           0.0,
           0.0
-        ]
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
       },
+      "clippingEnabled": false,
       "components": [
         {
-          "type": "Sprite",
+          "addColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "blendMode": "Normal",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "fillAmount": 1.0,
+          "fillDirection": "BottomToTop",
+          "gridAnimationEndIndex": 0,
+          "gridAnimationFPS": 10.0,
+          "gridAnimationStartIndex": 0,
+          "gridAnimationType": "None",
+          "hideIfTextureEmpty": false,
+          "mipmapEnabled": false,
+          "mipmapLodBias": 0.0,
+          "nineSliceBottomTiled": false,
+          "nineSliceCenterTiled": false,
+          "nineSliceEnabled": false,
+          "nineSliceFallback": true,
+          "nineSliceLeftTiled": false,
+          "nineSliceMargin": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "nineSliceRightTiled": false,
+          "nineSliceScale": [
+            1.0,
+            1.0
+          ],
+          "nineSliceTopTiled": false,
+          "offsetAnimationSpeed": [
+            0.0,
+            0.0
+          ],
+          "offsetAnimationType": "None",
+          "pixelShaderAssetName": "",
+          "preserveAspect": false,
+          "textureAddressMode": "Default",
+          "textureAssetName": "",
           "textureFilePath": "imgs/msel_fav_del.png",
-          "textureSize": [
-            100,
-            100
+          "textureFilter": "Default",
+          "textureGridCellSize": [
+            576.0,
+            192.0
+          ],
+          "textureGridCellTrim": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "textureGridColumns": 1,
+          "textureGridIndex": 0,
+          "textureGridIndex_paramRef": "cursorIndex",
+          "textureGridRows": 2,
+          "textureOffset": [
+            0.0,
+            0.0
           ],
           "textureRegionMode": "Grid",
-          "textureGridColumns": 1,
-          "textureGridRows": 2,
-          "textureGridCellSize": [
-            576,
-            192
+          "textureSize": [
+            100.0,
+            100.0
           ],
-          "textureGridIndex": 0,
-          "textureGridIndex_paramRef": "cursorIndex"
+          "type": "Sprite"
         }
       ],
-      "children": [],
-      "clippingEnabled": false,
-      "horizontalScrollable": false,
-      "verticalScrollable": false,
-      "dragScrollEnabled": true,
-      "wheelScrollEnabled": true,
-      "rubberBandScrollEnabled": true,
       "decelerationRate": 0.2,
-      "scrollBarType": "Overlay",
-      "zOrderInSiblings": 0,
-      "styleState": "",
+      "dragScrollEnabled": true,
       "hitPadding": [
-        0,
-        0,
-        0,
-        0
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ],
+      "horizontalScrollable": false,
       "inheritChildrenHover": false,
-      "inheritChildrenPress": false
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": false,
+      "name": "Body",
+      "region": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          0.0,
+          0.0
+        ],
+        "sizeDelta": [
+          288.0,
+          96.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
     },
     {
+      "activeSelf": true,
+      "children": [],
+      "childrenLayout": {
+        "horizontalAlign": "Left",
+        "padding": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "spacing": [
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
+      },
+      "clippingEnabled": false,
+      "components": [
+        {
+          "cursorStyle": "Hand",
+          "includingDisabled": false,
+          "recursive": false,
+          "type": "CursorChanger"
+        },
+        {
+          "holdDurationSec": 0.5,
+          "recursive": false,
+          "repeatIntervalSec": 0.1,
+          "repeatIntervalSecFirst": 0.5,
+          "tag": "onClickYes",
+          "triggerType": "Click",
+          "type": "EventTrigger"
+        },
+        {
+          "blendMode": "Additive",
+          "cornerRadius": 0.0,
+          "fillColor": {
+            "default": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "hovered": [
+              0,
+              48,
+              24,
+              255
+            ],
+            "smoothTime": 0.025
+          },
+          "fillGradationColor1": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "fillGradationColor2": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "fillGradationType": "None",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThicknessInner": 0.0,
+          "outlineThicknessOuter": 0.0,
+          "shadowBlur": 0.0,
+          "shadowColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "shadowOffset": [
+            2.0,
+            2.0
+          ],
+          "shadowSpread": 0.0,
+          "type": "RectRenderer"
+        },
+        {
+          "audioAssetName": "",
+          "audioFilePath": "se/hover.wav",
+          "includingDisabled": false,
+          "recursive": false,
+          "triggerType": "HoverStart",
+          "type": "UISound",
+          "volume": 1.0
+        }
+      ],
+      "decelerationRate": 0.2,
+      "dragScrollEnabled": true,
+      "hitPadding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "horizontalScrollable": false,
+      "inheritChildrenHover": false,
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": true,
       "name": "YesClick",
-      "activeSelf": true,
-      "interactable": true,
-      "isHitTarget": true,
       "region": {
-        "type": "AnchorRegion",
-        "anchorMin": [
-          0.5,
-          0.5
-        ],
         "anchorMax": [
           0.5,
           0.5
         ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
         "posDelta": [
-          -21,
-          11
+          -37.0,
+          21.0
         ],
         "sizeDelta": [
-          40,
-          18
+          78.0,
+          22.0
         ],
         "sizeDeltaPivot": [
           0.5,
           0.5
-        ]
+        ],
+        "type": "AnchorRegion"
       },
+      "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
+      "scrollBarType": "Overlay",
+      "styleState": "",
       "transform": {
-        "translate": [
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1
-        ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "rotation": 0,
         "color": [
           255,
           255,
           255,
           255
         ],
-        "hitTestAffected": true
-      },
-      "childrenLayout": {
-        "type": "FlowLayout",
-        "horizontalAlign": "Left",
-        "verticalAlign": "Top",
-        "padding": [
-          0,
-          0,
-          0,
-          0
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "spacing": [
-          0,
-          0
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
         ]
       },
-      "components": [
-        {
-          "type": "CursorChanger"
-        },
-        {
-          "type": "EventTrigger",
-          "tag": "onClickYes"
-        },
-        {
-          "type": "RectRenderer",
-          "fillColor": {
-            "default": [
-              0,
-              0,
-              0,
-              255
-            ],
-            "hovered": [
-              0,
-              48,
-              24,
-              255
-            ],
-            "smoothTime": 0.025
-          },
-          "blendMode": "Additive"
-        },
-        {
-          "type": "UISound",
-          "audioFilePath": "se/hover.wav",
-          "triggerType": "HoverStart"
-        }
-      ],
-      "children": [],
-      "clippingEnabled": false,
-      "horizontalScrollable": false,
       "verticalScrollable": false,
-      "dragScrollEnabled": true,
       "wheelScrollEnabled": true,
-      "rubberBandScrollEnabled": true,
-      "decelerationRate": 0.2,
-      "scrollBarType": "Overlay",
-      "zOrderInSiblings": 0,
-      "styleState": "",
-      "hitPadding": [
-        0,
-        0,
-        0,
-        0
-      ],
-      "inheritChildrenHover": false,
-      "inheritChildrenPress": false
+      "zOrderInSiblings": 0
     },
     {
-      "name": "NoClick",
       "activeSelf": true,
-      "interactable": true,
-      "isHitTarget": true,
-      "region": {
-        "type": "AnchorRegion",
-        "anchorMin": [
-          0.5,
-          0.5
-        ],
-        "anchorMax": [
-          0.5,
-          0.5
-        ],
-        "posDelta": [
-          20,
-          11
-        ],
-        "sizeDelta": [
-          44,
-          18
-        ],
-        "sizeDeltaPivot": [
-          0.5,
-          0.5
-        ]
-      },
-      "transform": {
-        "translate": [
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1
-        ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "rotation": 0,
-        "color": [
-          255,
-          255,
-          255,
-          255
-        ],
-        "hitTestAffected": true
-      },
+      "children": [],
       "childrenLayout": {
-        "type": "FlowLayout",
         "horizontalAlign": "Left",
-        "verticalAlign": "Top",
         "padding": [
-          0,
-          0,
-          0,
-          0
+          0.0,
+          0.0,
+          0.0,
+          0.0
         ],
         "spacing": [
-          0,
-          0
-        ]
+          0.0,
+          0.0
+        ],
+        "type": "FlowLayout",
+        "verticalAlign": "Top"
       },
+      "clippingEnabled": false,
       "components": [
         {
+          "cursorStyle": "Hand",
+          "includingDisabled": false,
+          "recursive": false,
           "type": "CursorChanger"
         },
         {
-          "type": "EventTrigger",
-          "tag": "onClickNo"
+          "holdDurationSec": 0.5,
+          "recursive": false,
+          "repeatIntervalSec": 0.1,
+          "repeatIntervalSecFirst": 0.5,
+          "tag": "onClickNo",
+          "triggerType": "Click",
+          "type": "EventTrigger"
         },
         {
-          "type": "RectRenderer",
+          "blendMode": "Additive",
+          "cornerRadius": 0.0,
           "fillColor": {
             "default": [
               0,
@@ -313,46 +407,142 @@
             ],
             "smoothTime": 0.025
           },
-          "blendMode": "Additive"
+          "fillGradationColor1": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "fillGradationColor2": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "fillGradationType": "None",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThicknessInner": 0.0,
+          "outlineThicknessOuter": 0.0,
+          "shadowBlur": 0.0,
+          "shadowColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "shadowOffset": [
+            2.0,
+            2.0
+          ],
+          "shadowSpread": 0.0,
+          "type": "RectRenderer"
         },
         {
-          "type": "UISound",
+          "audioAssetName": "",
           "audioFilePath": "se/hover.wav",
-          "triggerType": "HoverStart"
+          "includingDisabled": false,
+          "recursive": false,
+          "triggerType": "HoverStart",
+          "type": "UISound",
+          "volume": 1.0
         }
       ],
-      "children": [],
-      "clippingEnabled": false,
-      "horizontalScrollable": false,
-      "verticalScrollable": false,
-      "dragScrollEnabled": true,
-      "wheelScrollEnabled": true,
-      "rubberBandScrollEnabled": true,
       "decelerationRate": 0.2,
-      "scrollBarType": "Overlay",
-      "zOrderInSiblings": 0,
-      "styleState": "",
+      "dragScrollEnabled": true,
       "hitPadding": [
-        0,
-        0,
-        0,
-        0
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ],
+      "horizontalScrollable": false,
       "inheritChildrenHover": false,
-      "inheritChildrenPress": false
+      "inheritChildrenPress": false,
+      "interactable": true,
+      "isHitTarget": true,
+      "name": "NoClick",
+      "region": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "posDelta": [
+          40.0,
+          21.0
+        ],
+        "sizeDelta": [
+          78.0,
+          22.0
+        ],
+        "sizeDeltaPivot": [
+          0.5,
+          0.5
+        ],
+        "type": "AnchorRegion"
+      },
+      "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
+      "scrollBarType": "Overlay",
+      "styleState": "",
+      "transform": {
+        "color": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "hitTestAffected": true,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "translate": [
+          0.0,
+          0.0
+        ]
+      },
+      "verticalScrollable": false,
+      "wheelScrollEnabled": true,
+      "zOrderInSiblings": 0
     }
   ],
   "childrenLayout": {
     "horizontalAlign": "Left",
     "padding": [
-      0,
-      0,
-      0,
-      0
+      0.0,
+      0.0,
+      0.0,
+      0.0
     ],
     "spacing": [
-      0,
-      0
+      0.0,
+      0.0
     ],
     "type": "FlowLayout",
     "verticalAlign": "Top"
@@ -368,6 +558,6 @@
     288.0,
     96.0
   ],
-  "serializedVersion": 8,
-  "version": "0.4.0"
+  "serializedVersion": 11,
+  "version": "0.5.0"
 }

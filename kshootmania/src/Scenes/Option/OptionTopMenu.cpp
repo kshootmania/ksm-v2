@@ -30,19 +30,13 @@ void OptionTopMenu::update(noco::Canvas* pCanvas)
 {
 	m_menu.update();
 
-	// クリックされた項目がカーソル位置と同じ場合は決定、異なる場合はカーソル移動
+	// クリックされた項目へカーソルを移動して決定
 	m_clickDecided = false;
 	const Optional<int32> clickedItem = MouseMenuUtils::FiredClickIndex(*pCanvas, kClickTagToItemPairs);
 	if (clickedItem.has_value())
 	{
-		if (*clickedItem == m_menu.cursor())
-		{
-			m_clickDecided = true;
-		}
-		else
-		{
-			m_menu.setCursor(*clickedItem);
-		}
+		m_menu.setCursor(*clickedItem);
+		m_clickDecided = true;
 	}
 }
 

@@ -44,14 +44,15 @@ void TitleMenu::update()
 	const auto beforeCursor = m_menu.cursor();
 
 	const bool backPressed = !m_isAlreadySelected && KeyConfig::Down(kButtonBack);
+	bool clickDecided = false;
 	if (!m_isAlreadySelected && !backPressed)
 	{
 		m_menu.update();
 
-		// クリックされた項目がカーソル位置と同じ場合は決定、異なる場合はカーソル移動
+		// クリックされた項目へカーソルを移動して決定
 		const Optional<int32> clickedItem = MouseMenuUtils::FiredClickIndex(*m_titleSceneCanvas, kClickTagToMenuItemPairs);
-		const bool clickDecided = clickedItem.has_value() && *clickedItem == m_menu.cursor();
-		if (clickedItem.has_value() && !clickDecided)
+		clickDecided = clickedItem.has_value();
+		if (clickedItem.has_value())
 		{
 			m_menu.setCursor(*clickedItem);
 		}
@@ -72,8 +73,11 @@ void TitleMenu::update()
 
 	if (m_menu.cursor() != beforeCursor)
 	{
-		// カーソル位置が変化した場合は効果音を鳴らしてCanvasへ反映
-		m_selectSe.play();
+		// カーソル位置が変化した場合はCanvasへ反映し、クリック決定時以外は効果音を鳴らす
+		if (!clickDecided)
+		{
+			m_selectSe.play();
+		}
 		refreshCanvasMenuCursor();
 	}
 }

@@ -462,6 +462,12 @@
                         255,
                         100
                       ],
+                      "hovered": [
+                        255.0,
+                        255.0,
+                        255.0,
+                        140.0
+                      ],
                       "styleStates": {
                         "selected": [
                           255,
@@ -469,7 +475,8 @@
                           255,
                           255
                         ]
-                      }
+                      },
+                      "smoothTime": 0.025
                     },
                     "hitTestAffected": true,
                     "pivot": [
@@ -629,6 +636,12 @@
                         255,
                         100
                       ],
+                      "hovered": [
+                        255.0,
+                        255.0,
+                        255.0,
+                        140.0
+                      ],
                       "styleStates": {
                         "selected": [
                           255,
@@ -636,7 +649,8 @@
                           255,
                           255
                         ]
-                      }
+                      },
+                      "smoothTime": 0.025
                     },
                     "hitTestAffected": true,
                     "pivot": [
@@ -1005,6 +1019,12 @@
                         255,
                         100
                       ],
+                      "hovered": [
+                        255.0,
+                        255.0,
+                        255.0,
+                        140.0
+                      ],
                       "styleStates": {
                         "selected": [
                           255,
@@ -1012,7 +1032,8 @@
                           255,
                           255
                         ]
-                      }
+                      },
+                      "smoothTime": 0.025
                     },
                     "hitTestAffected": true,
                     "pivot": [
@@ -1172,6 +1193,12 @@
                         255,
                         100
                       ],
+                      "hovered": [
+                        255,
+                        255,
+                        255,
+                        140
+                      ],
                       "styleStates": {
                         "selected": [
                           255,
@@ -1179,7 +1206,8 @@
                           255,
                           255
                         ]
-                      }
+                      },
+                      "smoothTime": 0.025
                     },
                     "hitTestAffected": true,
                     "pivot": [
@@ -1548,6 +1576,12 @@
                         255,
                         100
                       ],
+                      "hovered": [
+                        255,
+                        255,
+                        255,
+                        140
+                      ],
                       "styleStates": {
                         "selected": [
                           255,
@@ -1555,7 +1589,8 @@
                           255,
                           255
                         ]
-                      }
+                      },
+                      "smoothTime": 0.025
                     },
                     "hitTestAffected": true,
                     "pivot": [
@@ -1715,6 +1750,12 @@
                         255,
                         100
                       ],
+                      "hovered": [
+                        255,
+                        255,
+                        255,
+                        140
+                      ],
                       "styleStates": {
                         "selected": [
                           255,
@@ -1722,7 +1763,8 @@
                           255,
                           255
                         ]
-                      }
+                      },
+                      "smoothTime": 0.025
                     },
                     "hitTestAffected": true,
                     "pivot": [
@@ -2091,6 +2133,12 @@
                         255,
                         100
                       ],
+                      "hovered": [
+                        255,
+                        255,
+                        255,
+                        140
+                      ],
                       "styleStates": {
                         "selected": [
                           255,
@@ -2098,7 +2146,8 @@
                           255,
                           255
                         ]
-                      }
+                      },
+                      "smoothTime": 0.025
                     },
                     "hitTestAffected": true,
                     "pivot": [
@@ -2258,6 +2307,12 @@
                         255,
                         100
                       ],
+                      "hovered": [
+                        255,
+                        255,
+                        255,
+                        140
+                      ],
                       "styleStates": {
                         "selected": [
                           255,
@@ -2265,7 +2320,8 @@
                           255,
                           255
                         ]
-                      }
+                      },
+                      "smoothTime": 0.025
                     },
                     "hitTestAffected": true,
                     "pivot": [
