@@ -629,10 +629,6 @@ bool KeyConfig::Pressed(Button button)
 		{
 			return true;
 		}
-		if (IsRightClickAsBackEnabled() && MouseR.pressed())
-		{
-			return true;
-		}
 	}
 
 	// 矢印キーの場合、Numpadキーの状態も確認
@@ -754,7 +750,7 @@ bool KeyConfig::Down(Button button)
 		{
 			return true;
 		}
-		if (IsRightClickAsBackEnabled() && MouseR.down())
+		if (IsRightClickAsBackEnabled() && MouseR.up())
 		{
 			return true;
 		}
@@ -883,10 +879,6 @@ bool KeyConfig::Up(Button button)
 	if (button == kButtonBack)
 	{
 		if (IsBT3PlusStartUp())
-		{
-			return true;
-		}
-		if (IsRightClickAsBackEnabled() && MouseR.up())
 		{
 			return true;
 		}
