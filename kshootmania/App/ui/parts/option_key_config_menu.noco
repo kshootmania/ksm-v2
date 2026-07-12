@@ -4586,6 +4586,25 @@
           "clippingEnabled": false,
           "components": [
             {
+              "blendMode": "Additive",
+              "fillColor": {
+                "default": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "hovered": [
+                  0,
+                  48,
+                  24,
+                  255
+                ],
+                "smoothTime": 0.025
+              },
+              "type": "RectRenderer"
+            },
+            {
               "characterSpacing": [
                 0.0,
                 0.0
@@ -4684,57 +4703,6 @@
               "triggerType": "HoverStart",
               "type": "UISound",
               "volume": 1.0
-            },
-            {
-              "active": {
-                "default": false,
-                "hovered": true
-              },
-              "applyDuringDelay": false,
-              "colorEnabled": false,
-              "colorFrom": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "colorTo": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "delay": 0.0,
-              "duration": 0.3,
-              "easing": "EaseInOutSine",
-              "loopDuration": 0.0,
-              "loopType": "PingPong",
-              "manualMode": false,
-              "manualTime": 0.0,
-              "restartOnActive": true,
-              "rotationEnabled": false,
-              "rotationFrom": 0.0,
-              "rotationTo": 0.0,
-              "scaleEnabled": false,
-              "scaleFrom": [
-                1.0,
-                1.0
-              ],
-              "scaleTo": [
-                1.0,
-                1.0
-              ],
-              "tag": "",
-              "translateEnabled": true,
-              "translateFrom": [
-                -2.0,
-                0.0
-              ],
-              "translateTo": [
-                2.0,
-                0.0
-              ],
-              "type": "Tween"
             }
           ],
           "decelerationRate": 0.2,
@@ -4839,6 +4807,25 @@
           "clippingEnabled": false,
           "components": [
             {
+              "blendMode": "Additive",
+              "fillColor": {
+                "default": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "hovered": [
+                  0,
+                  48,
+                  24,
+                  255
+                ],
+                "smoothTime": 0.025
+              },
+              "type": "RectRenderer"
+            },
+            {
               "characterSpacing": [
                 0.0,
                 0.0
@@ -4937,57 +4924,6 @@
               "triggerType": "HoverStart",
               "type": "UISound",
               "volume": 1.0
-            },
-            {
-              "active": {
-                "default": false,
-                "hovered": true
-              },
-              "applyDuringDelay": false,
-              "colorEnabled": false,
-              "colorFrom": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "colorTo": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "delay": 0.0,
-              "duration": 0.3,
-              "easing": "EaseInOutSine",
-              "loopDuration": 0.0,
-              "loopType": "PingPong",
-              "manualMode": false,
-              "manualTime": 0.0,
-              "restartOnActive": true,
-              "rotationEnabled": false,
-              "rotationFrom": 0.0,
-              "rotationTo": 0.0,
-              "scaleEnabled": false,
-              "scaleFrom": [
-                1.0,
-                1.0
-              ],
-              "scaleTo": [
-                1.0,
-                1.0
-              ],
-              "tag": "",
-              "translateEnabled": true,
-              "translateFrom": [
-                -2.0,
-                0.0
-              ],
-              "translateTo": [
-                2.0,
-                0.0
-              ],
-              "type": "Tween"
             }
           ],
           "decelerationRate": 0.2,
