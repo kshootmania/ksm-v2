@@ -142,6 +142,11 @@
                     0.0,
                     0.0
                   ],
+                  "triggerHoldDurationSec": 0.5,
+                  "triggerRecursive": false,
+                  "triggerRepeatIntervalSec": 0.1,
+                  "triggerRepeatIntervalSecFirst": 0.5,
+                  "triggerType": "None",
                   "type": "Tween"
                 }
               ],
@@ -183,6 +188,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -245,11 +263,15 @@
                     255,
                     255
                   ],
+                  "fillAmount": 1.0,
+                  "fillDirection": "BottomToTop",
                   "gridAnimationEndIndex": 0,
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
                   "hideIfTextureEmpty": true,
+                  "mipmapEnabled": false,
+                  "mipmapLodBias": 0.0,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -342,6 +364,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -505,6 +540,11 @@
                     0.0,
                     0.0
                   ],
+                  "triggerHoldDurationSec": 0.5,
+                  "triggerRecursive": false,
+                  "triggerRepeatIntervalSec": 0.1,
+                  "triggerRepeatIntervalSecFirst": 0.5,
+                  "triggerType": "None",
                   "type": "Tween"
                 }
               ],
@@ -546,6 +586,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -608,11 +661,15 @@
                     255,
                     255
                   ],
+                  "fillAmount": 1.0,
+                  "fillDirection": "BottomToTop",
                   "gridAnimationEndIndex": 0,
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
                   "hideIfTextureEmpty": true,
+                  "mipmapEnabled": false,
+                  "mipmapLodBias": 0.0,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -705,6 +762,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -754,6 +824,7 @@
               "clippingEnabled": false,
               "components": [
                 {
+                  "autoFitModeOverride": "NoOverride",
                   "canvasPath": "ui/font/msel_0_bpmnum.noco",
                   "propagateEvents": true,
                   "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
@@ -801,6 +872,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -864,11 +948,15 @@
                     255,
                     255
                   ],
+                  "fillAmount": 1.0,
+                  "fillDirection": "BottomToTop",
                   "gridAnimationEndIndex": 0,
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
                   "hideIfTextureEmpty": false,
+                  "mipmapEnabled": true,
+                  "mipmapLodBias": -1.0,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -920,9 +1008,7 @@
                     100.0,
                     100.0
                   ],
-                  "type": "Sprite",
-                  "mipmapEnabled": true,
-                  "mipmapLodBias": -1
+                  "type": "Sprite"
                 }
               ],
               "decelerationRate": 0.2,
@@ -963,6 +1049,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -1118,6 +1217,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -1187,11 +1299,15 @@
                             255,
                             255
                           ],
+                          "fillAmount": 1.0,
+                          "fillDirection": "BottomToTop",
                           "gridAnimationEndIndex": 0,
                           "gridAnimationFPS": 10.0,
                           "gridAnimationStartIndex": 0,
                           "gridAnimationType": "None",
                           "hideIfTextureEmpty": false,
+                          "mipmapEnabled": false,
+                          "mipmapLodBias": 0.0,
                           "nineSliceBottomTiled": false,
                           "nineSliceCenterTiled": false,
                           "nineSliceEnabled": false,
@@ -1284,6 +1400,19 @@
                         "type": "AnchorRegion"
                       },
                       "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
                       "scrollBarType": "Overlay",
                       "styleState": "",
                       "transform": {
@@ -1303,6 +1432,423 @@
                           1.0,
                           1.0
                         ],
+                        "translate": [
+                          0.0,
+                          0.0
+                        ]
+                      },
+                      "verticalScrollable": false,
+                      "wheelScrollEnabled": true,
+                      "zOrderInSiblings": 0
+                    },
+                    {
+                      "activeSelf": true,
+                      "children": [
+                        {
+                          "activeSelf": true,
+                          "activeSelf_paramRef": "difficulty0Enabled",
+                          "children": [],
+                          "childrenLayout": {
+                            "horizontalAlign": "Left",
+                            "padding": [
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ],
+                            "spacing": [
+                              0.0,
+                              0.0
+                            ],
+                            "type": "FlowLayout",
+                            "verticalAlign": "Top"
+                          },
+                          "clippingEnabled": false,
+                          "components": [
+                            {
+                              "addColor": [
+                                0,
+                                0,
+                                0,
+                                0
+                              ],
+                              "blendMode": "Additive",
+                              "color": [
+                                255,
+                                255,
+                                255,
+                                255
+                              ],
+                              "fillAmount": 1.0,
+                              "fillDirection": "BottomToTop",
+                              "gridAnimationEndIndex": 0,
+                              "gridAnimationFPS": 10.0,
+                              "gridAnimationStartIndex": 0,
+                              "gridAnimationType": "None",
+                              "hideIfTextureEmpty": false,
+                              "mipmapEnabled": false,
+                              "mipmapLodBias": 0.0,
+                              "nineSliceBottomTiled": false,
+                              "nineSliceCenterTiled": false,
+                              "nineSliceEnabled": false,
+                              "nineSliceFallback": true,
+                              "nineSliceLeftTiled": false,
+                              "nineSliceMargin": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                              ],
+                              "nineSliceRightTiled": false,
+                              "nineSliceScale": [
+                                1.0,
+                                1.0
+                              ],
+                              "nineSliceTopTiled": false,
+                              "offsetAnimationSpeed": [
+                                0.0,
+                                0.0
+                              ],
+                              "offsetAnimationType": "None",
+                              "pixelShaderAssetName": "",
+                              "preserveAspect": true,
+                              "textureAddressMode": "Default",
+                              "textureAssetName": "",
+                              "textureFilePath": "imgs/msel_level.png",
+                              "textureFilter": "Default",
+                              "textureGridCellSize": [
+                                150.0,
+                                120.0
+                              ],
+                              "textureGridCellTrim": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                              ],
+                              "textureGridColumns": 1,
+                              "textureGridIndex": 0,
+                              "textureGridIndex_paramRef": "difficulty0LevelIndex",
+                              "textureGridRows": 20,
+                              "textureOffset": [
+                                0.0,
+                                0.0
+                              ],
+                              "textureRegionMode": "Grid",
+                              "textureSize": [
+                                100.0,
+                                100.0
+                              ],
+                              "type": "Sprite"
+                            }
+                          ],
+                          "decelerationRate": 0.2,
+                          "dragScrollEnabled": true,
+                          "hitPadding": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "horizontalScrollable": false,
+                          "inheritChildrenHover": false,
+                          "inheritChildrenPress": false,
+                          "interactable": true,
+                          "isHitTarget": false,
+                          "name": "Level",
+                          "region": {
+                            "anchorMax": [
+                              0.5,
+                              0.5
+                            ],
+                            "anchorMin": [
+                              0.5,
+                              0.5
+                            ],
+                            "posDelta": [
+                              0.0,
+                              -7.0
+                            ],
+                            "sizeDelta": [
+                              70.0,
+                              70.0
+                            ],
+                            "sizeDeltaPivot": [
+                              0.5,
+                              0.5
+                            ],
+                            "type": "AnchorRegion"
+                          },
+                          "rubberBandScrollEnabled": true,
+                          "scrollBarHandleColor": [
+                            255,
+                            255,
+                            255,
+                            160
+                          ],
+                          "scrollBarMargin": [
+                            2.0,
+                            2.0,
+                            2.0,
+                            2.0
+                          ],
+                          "scrollBarThickness": 8.0,
+                          "scrollBarType": "Overlay",
+                          "styleState": "",
+                          "transform": {
+                            "color": [
+                              255,
+                              255,
+                              255,
+                              255
+                            ],
+                            "hitTestAffected": true,
+                            "pivot": [
+                              0.5,
+                              0.5
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                              1.0,
+                              1.0
+                            ],
+                            "translate": [
+                              0.0,
+                              0.0
+                            ]
+                          },
+                          "verticalScrollable": false,
+                          "wheelScrollEnabled": true,
+                          "zOrderInSiblings": 0
+                        }
+                      ],
+                      "childrenLayout": {
+                        "horizontalAlign": "Left",
+                        "padding": [
+                          0.0,
+                          0.0,
+                          0.0,
+                          0.0
+                        ],
+                        "spacing": [
+                          0.0,
+                          0.0
+                        ],
+                        "type": "FlowLayout",
+                        "verticalAlign": "Top"
+                      },
+                      "clippingEnabled": false,
+                      "components": [
+                        {
+                          "addColor": [
+                            0,
+                            0,
+                            0,
+                            0
+                          ],
+                          "blendMode": "Additive",
+                          "color": [
+                            255,
+                            255,
+                            255,
+                            255
+                          ],
+                          "fillAmount": 1.0,
+                          "fillDirection": "BottomToTop",
+                          "gridAnimationEndIndex": 0,
+                          "gridAnimationFPS": 10.0,
+                          "gridAnimationStartIndex": 0,
+                          "gridAnimationType": "None",
+                          "hideIfTextureEmpty": false,
+                          "mipmapEnabled": false,
+                          "mipmapLodBias": 0.0,
+                          "nineSliceBottomTiled": false,
+                          "nineSliceCenterTiled": false,
+                          "nineSliceEnabled": false,
+                          "nineSliceFallback": true,
+                          "nineSliceLeftTiled": false,
+                          "nineSliceMargin": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "nineSliceRightTiled": false,
+                          "nineSliceScale": [
+                            1.0,
+                            1.0
+                          ],
+                          "nineSliceTopTiled": false,
+                          "offsetAnimationSpeed": [
+                            0.0,
+                            0.0
+                          ],
+                          "offsetAnimationType": "None",
+                          "pixelShaderAssetName": "",
+                          "preserveAspect": true,
+                          "textureAddressMode": "Default",
+                          "textureAssetName": "",
+                          "textureFilePath": "imgs/msel_0_difficulty.png",
+                          "textureFilter": "Default",
+                          "textureGridCellSize": [
+                            115.0,
+                            110.0
+                          ],
+                          "textureGridCellTrim": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "textureGridColumns": 4,
+                          "textureGridIndex": {
+                            "default": 4,
+                            "disabled": 0
+                          },
+                          "textureGridRows": 2,
+                          "textureOffset": [
+                            0.0,
+                            0.0
+                          ],
+                          "textureRegionMode": "Grid",
+                          "textureSize": [
+                            100.0,
+                            100.0
+                          ],
+                          "type": "Sprite"
+                        },
+                        {
+                          "active": true,
+                          "applyDuringDelay": false,
+                          "colorEnabled": true,
+                          "colorFrom": [
+                            255,
+                            255,
+                            255,
+                            140
+                          ],
+                          "colorTo": [
+                            255,
+                            255,
+                            255,
+                            0
+                          ],
+                          "delay": 0.0,
+                          "duration": 0.4,
+                          "easing": "EaseOutQuad",
+                          "loopDuration": 0.0,
+                          "loopType": "None",
+                          "manualMode": false,
+                          "manualTime": 0.0,
+                          "restartOnActive": true,
+                          "rotationEnabled": false,
+                          "rotationFrom": 0.0,
+                          "rotationTo": 0.0,
+                          "scaleEnabled": true,
+                          "scaleFrom": [
+                            1.0,
+                            1.0
+                          ],
+                          "scaleTo": [
+                            1.25,
+                            1.25
+                          ],
+                          "tag": "",
+                          "translateEnabled": false,
+                          "translateFrom": [
+                            0.0,
+                            0.0
+                          ],
+                          "translateTo": [
+                            0.0,
+                            0.0
+                          ],
+                          "triggerHoldDurationSec": 0.5,
+                          "triggerRecursive": false,
+                          "triggerRepeatIntervalSec": 0.1,
+                          "triggerRepeatIntervalSecFirst": 0.5,
+                          "triggerType": "Click",
+                          "type": "Tween"
+                        }
+                      ],
+                      "decelerationRate": 0.2,
+                      "dragScrollEnabled": true,
+                      "hitPadding": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "horizontalScrollable": false,
+                      "inheritChildrenHover": false,
+                      "inheritChildrenPress": false,
+                      "interactable": true,
+                      "isHitTarget": false,
+                      "name": "TapEffect",
+                      "region": {
+                        "anchorMax": [
+                          1.0,
+                          1.0
+                        ],
+                        "anchorMin": [
+                          0.0,
+                          0.0
+                        ],
+                        "posDelta": [
+                          0.0,
+                          0.0
+                        ],
+                        "sizeDelta": [
+                          0.0,
+                          0.0
+                        ],
+                        "sizeDeltaPivot": [
+                          0.5,
+                          0.5
+                        ],
+                        "type": "AnchorRegion"
+                      },
+                      "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
+                      "scrollBarType": "Overlay",
+                      "styleState": "",
+                      "styleState_paramRef": "difficulty0StyleState",
+                      "transform": {
+                        "color": [
+                          255,
+                          255,
+                          255,
+                          0
+                        ],
+                        "hitTestAffected": true,
+                        "pivot": [
+                          0.5,
+                          0.5
+                        ],
+                        "rotation": 0.0,
+                        "scale": {
+                          "default": [
+                            1.0,
+                            1.0
+                          ],
+                          "hovered": [
+                            1.03,
+                            1.03
+                          ],
+                          "smoothTime": 0.025
+                        },
                         "translate": [
                           0.0,
                           0.0
@@ -1344,11 +1890,15 @@
                         255,
                         255
                       ],
+                      "fillAmount": 1.0,
+                      "fillDirection": "BottomToTop",
                       "gridAnimationEndIndex": 0,
                       "gridAnimationFPS": 10.0,
                       "gridAnimationStartIndex": 0,
                       "gridAnimationType": "None",
                       "hideIfTextureEmpty": false,
+                      "mipmapEnabled": false,
+                      "mipmapLodBias": 0.0,
                       "nineSliceBottomTiled": false,
                       "nineSliceCenterTiled": false,
                       "nineSliceEnabled": false,
@@ -1405,22 +1955,37 @@
                       "type": "Sprite"
                     },
                     {
+                      "cursorStyle": "Hand",
+                      "includingDisabled": false,
+                      "recursive": false,
                       "type": "CursorChanger"
                     },
                     {
-                      "type": "EventTrigger",
-                      "tag": "onClickDifficultyLight"
+                      "holdDurationSec": 0.5,
+                      "recursive": false,
+                      "repeatIntervalSec": 0.1,
+                      "repeatIntervalSecFirst": 0.5,
+                      "tag": "onClickDifficultyLight",
+                      "triggerType": "Click",
+                      "type": "EventTrigger"
                     },
                     {
-                      "type": "EventTrigger",
+                      "holdDurationSec": 0.75,
+                      "recursive": false,
+                      "repeatIntervalSec": 0.1,
+                      "repeatIntervalSecFirst": 0.5,
                       "tag": "onPressHoldDifficultyLight",
                       "triggerType": "PressHold",
-                      "holdDurationSec": 0.75
+                      "type": "EventTrigger"
                     },
                     {
-                      "type": "UISound",
+                      "audioAssetName": "",
                       "audioFilePath": "se/hover.wav",
-                      "triggerType": "HoverStart"
+                      "includingDisabled": false,
+                      "recursive": false,
+                      "triggerType": "HoverStart",
+                      "type": "UISound",
+                      "volume": 1.0
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -1457,6 +2022,19 @@
                     "type": "InlineRegion"
                   },
                   "rubberBandScrollEnabled": true,
+                  "scrollBarHandleColor": [
+                    255,
+                    255,
+                    255,
+                    160
+                  ],
+                  "scrollBarMargin": [
+                    2.0,
+                    2.0,
+                    2.0,
+                    2.0
+                  ],
+                  "scrollBarThickness": 8.0,
                   "scrollBarType": "Overlay",
                   "styleState": "",
                   "styleState_paramRef": "difficulty0StyleState",
@@ -1485,8 +2063,8 @@
                     "rotation": 0.0,
                     "scale": {
                       "default": [
-                        1,
-                        1
+                        1.0,
+                        1.0
                       ],
                       "hovered": [
                         1.03,
@@ -1541,11 +2119,15 @@
                             255,
                             255
                           ],
+                          "fillAmount": 1.0,
+                          "fillDirection": "BottomToTop",
                           "gridAnimationEndIndex": 0,
                           "gridAnimationFPS": 10.0,
                           "gridAnimationStartIndex": 0,
                           "gridAnimationType": "None",
                           "hideIfTextureEmpty": false,
+                          "mipmapEnabled": false,
+                          "mipmapLodBias": 0.0,
                           "nineSliceBottomTiled": false,
                           "nineSliceCenterTiled": false,
                           "nineSliceEnabled": false,
@@ -1638,6 +2220,19 @@
                         "type": "AnchorRegion"
                       },
                       "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
                       "scrollBarType": "Overlay",
                       "styleState": "",
                       "transform": {
@@ -1657,6 +2252,423 @@
                           1.0,
                           1.0
                         ],
+                        "translate": [
+                          0.0,
+                          0.0
+                        ]
+                      },
+                      "verticalScrollable": false,
+                      "wheelScrollEnabled": true,
+                      "zOrderInSiblings": 0
+                    },
+                    {
+                      "activeSelf": true,
+                      "children": [
+                        {
+                          "activeSelf": true,
+                          "activeSelf_paramRef": "difficulty1Enabled",
+                          "children": [],
+                          "childrenLayout": {
+                            "horizontalAlign": "Left",
+                            "padding": [
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ],
+                            "spacing": [
+                              0.0,
+                              0.0
+                            ],
+                            "type": "FlowLayout",
+                            "verticalAlign": "Top"
+                          },
+                          "clippingEnabled": false,
+                          "components": [
+                            {
+                              "addColor": [
+                                0,
+                                0,
+                                0,
+                                0
+                              ],
+                              "blendMode": "Additive",
+                              "color": [
+                                255,
+                                255,
+                                255,
+                                255
+                              ],
+                              "fillAmount": 1.0,
+                              "fillDirection": "BottomToTop",
+                              "gridAnimationEndIndex": 0,
+                              "gridAnimationFPS": 10.0,
+                              "gridAnimationStartIndex": 0,
+                              "gridAnimationType": "None",
+                              "hideIfTextureEmpty": false,
+                              "mipmapEnabled": false,
+                              "mipmapLodBias": 0.0,
+                              "nineSliceBottomTiled": false,
+                              "nineSliceCenterTiled": false,
+                              "nineSliceEnabled": false,
+                              "nineSliceFallback": true,
+                              "nineSliceLeftTiled": false,
+                              "nineSliceMargin": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                              ],
+                              "nineSliceRightTiled": false,
+                              "nineSliceScale": [
+                                1.0,
+                                1.0
+                              ],
+                              "nineSliceTopTiled": false,
+                              "offsetAnimationSpeed": [
+                                0.0,
+                                0.0
+                              ],
+                              "offsetAnimationType": "None",
+                              "pixelShaderAssetName": "",
+                              "preserveAspect": true,
+                              "textureAddressMode": "Default",
+                              "textureAssetName": "",
+                              "textureFilePath": "imgs/msel_level.png",
+                              "textureFilter": "Default",
+                              "textureGridCellSize": [
+                                150.0,
+                                120.0
+                              ],
+                              "textureGridCellTrim": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                              ],
+                              "textureGridColumns": 1,
+                              "textureGridIndex": 0,
+                              "textureGridIndex_paramRef": "difficulty1LevelIndex",
+                              "textureGridRows": 20,
+                              "textureOffset": [
+                                0.0,
+                                0.0
+                              ],
+                              "textureRegionMode": "Grid",
+                              "textureSize": [
+                                100.0,
+                                100.0
+                              ],
+                              "type": "Sprite"
+                            }
+                          ],
+                          "decelerationRate": 0.2,
+                          "dragScrollEnabled": true,
+                          "hitPadding": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "horizontalScrollable": false,
+                          "inheritChildrenHover": false,
+                          "inheritChildrenPress": false,
+                          "interactable": true,
+                          "isHitTarget": false,
+                          "name": "Level",
+                          "region": {
+                            "anchorMax": [
+                              0.5,
+                              0.5
+                            ],
+                            "anchorMin": [
+                              0.5,
+                              0.5
+                            ],
+                            "posDelta": [
+                              0.0,
+                              -7.0
+                            ],
+                            "sizeDelta": [
+                              70.0,
+                              70.0
+                            ],
+                            "sizeDeltaPivot": [
+                              0.5,
+                              0.5
+                            ],
+                            "type": "AnchorRegion"
+                          },
+                          "rubberBandScrollEnabled": true,
+                          "scrollBarHandleColor": [
+                            255,
+                            255,
+                            255,
+                            160
+                          ],
+                          "scrollBarMargin": [
+                            2.0,
+                            2.0,
+                            2.0,
+                            2.0
+                          ],
+                          "scrollBarThickness": 8.0,
+                          "scrollBarType": "Overlay",
+                          "styleState": "",
+                          "transform": {
+                            "color": [
+                              255,
+                              255,
+                              255,
+                              255
+                            ],
+                            "hitTestAffected": true,
+                            "pivot": [
+                              0.5,
+                              0.5
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                              1.0,
+                              1.0
+                            ],
+                            "translate": [
+                              0.0,
+                              0.0
+                            ]
+                          },
+                          "verticalScrollable": false,
+                          "wheelScrollEnabled": true,
+                          "zOrderInSiblings": 0
+                        }
+                      ],
+                      "childrenLayout": {
+                        "horizontalAlign": "Left",
+                        "padding": [
+                          0.0,
+                          0.0,
+                          0.0,
+                          0.0
+                        ],
+                        "spacing": [
+                          0.0,
+                          0.0
+                        ],
+                        "type": "FlowLayout",
+                        "verticalAlign": "Top"
+                      },
+                      "clippingEnabled": false,
+                      "components": [
+                        {
+                          "addColor": [
+                            0,
+                            0,
+                            0,
+                            0
+                          ],
+                          "blendMode": "Additive",
+                          "color": [
+                            255,
+                            255,
+                            255,
+                            255
+                          ],
+                          "fillAmount": 1.0,
+                          "fillDirection": "BottomToTop",
+                          "gridAnimationEndIndex": 0,
+                          "gridAnimationFPS": 10.0,
+                          "gridAnimationStartIndex": 0,
+                          "gridAnimationType": "None",
+                          "hideIfTextureEmpty": false,
+                          "mipmapEnabled": false,
+                          "mipmapLodBias": 0.0,
+                          "nineSliceBottomTiled": false,
+                          "nineSliceCenterTiled": false,
+                          "nineSliceEnabled": false,
+                          "nineSliceFallback": true,
+                          "nineSliceLeftTiled": false,
+                          "nineSliceMargin": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "nineSliceRightTiled": false,
+                          "nineSliceScale": [
+                            1.0,
+                            1.0
+                          ],
+                          "nineSliceTopTiled": false,
+                          "offsetAnimationSpeed": [
+                            0.0,
+                            0.0
+                          ],
+                          "offsetAnimationType": "None",
+                          "pixelShaderAssetName": "",
+                          "preserveAspect": true,
+                          "textureAddressMode": "Default",
+                          "textureAssetName": "",
+                          "textureFilePath": "imgs/msel_0_difficulty.png",
+                          "textureFilter": "Default",
+                          "textureGridCellSize": [
+                            115.0,
+                            110.0
+                          ],
+                          "textureGridCellTrim": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "textureGridColumns": 4,
+                          "textureGridIndex": {
+                            "default": 5,
+                            "disabled": 1
+                          },
+                          "textureGridRows": 2,
+                          "textureOffset": [
+                            0.0,
+                            0.0
+                          ],
+                          "textureRegionMode": "Grid",
+                          "textureSize": [
+                            100.0,
+                            100.0
+                          ],
+                          "type": "Sprite"
+                        },
+                        {
+                          "active": true,
+                          "applyDuringDelay": false,
+                          "colorEnabled": true,
+                          "colorFrom": [
+                            255,
+                            255,
+                            255,
+                            140
+                          ],
+                          "colorTo": [
+                            255,
+                            255,
+                            255,
+                            0
+                          ],
+                          "delay": 0.0,
+                          "duration": 0.4,
+                          "easing": "EaseOutQuad",
+                          "loopDuration": 0.0,
+                          "loopType": "None",
+                          "manualMode": false,
+                          "manualTime": 0.0,
+                          "restartOnActive": true,
+                          "rotationEnabled": false,
+                          "rotationFrom": 0.0,
+                          "rotationTo": 0.0,
+                          "scaleEnabled": true,
+                          "scaleFrom": [
+                            1.0,
+                            1.0
+                          ],
+                          "scaleTo": [
+                            1.25,
+                            1.25
+                          ],
+                          "tag": "",
+                          "translateEnabled": false,
+                          "translateFrom": [
+                            0.0,
+                            0.0
+                          ],
+                          "translateTo": [
+                            0.0,
+                            0.0
+                          ],
+                          "triggerHoldDurationSec": 0.5,
+                          "triggerRecursive": false,
+                          "triggerRepeatIntervalSec": 0.1,
+                          "triggerRepeatIntervalSecFirst": 0.5,
+                          "triggerType": "Click",
+                          "type": "Tween"
+                        }
+                      ],
+                      "decelerationRate": 0.2,
+                      "dragScrollEnabled": true,
+                      "hitPadding": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "horizontalScrollable": false,
+                      "inheritChildrenHover": false,
+                      "inheritChildrenPress": false,
+                      "interactable": true,
+                      "isHitTarget": false,
+                      "name": "TapEffect",
+                      "region": {
+                        "anchorMax": [
+                          1.0,
+                          1.0
+                        ],
+                        "anchorMin": [
+                          0.0,
+                          0.0
+                        ],
+                        "posDelta": [
+                          0.0,
+                          0.0
+                        ],
+                        "sizeDelta": [
+                          0.0,
+                          0.0
+                        ],
+                        "sizeDeltaPivot": [
+                          0.5,
+                          0.5
+                        ],
+                        "type": "AnchorRegion"
+                      },
+                      "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
+                      "scrollBarType": "Overlay",
+                      "styleState": "",
+                      "styleState_paramRef": "difficulty1StyleState",
+                      "transform": {
+                        "color": [
+                          255,
+                          255,
+                          255,
+                          0
+                        ],
+                        "hitTestAffected": true,
+                        "pivot": [
+                          0.5,
+                          0.5
+                        ],
+                        "rotation": 0.0,
+                        "scale": {
+                          "default": [
+                            1.0,
+                            1.0
+                          ],
+                          "hovered": [
+                            1.03,
+                            1.03
+                          ],
+                          "smoothTime": 0.025
+                        },
                         "translate": [
                           0.0,
                           0.0
@@ -1698,11 +2710,15 @@
                         255,
                         255
                       ],
+                      "fillAmount": 1.0,
+                      "fillDirection": "BottomToTop",
                       "gridAnimationEndIndex": 0,
                       "gridAnimationFPS": 10.0,
                       "gridAnimationStartIndex": 0,
                       "gridAnimationType": "None",
                       "hideIfTextureEmpty": false,
+                      "mipmapEnabled": false,
+                      "mipmapLodBias": 0.0,
                       "nineSliceBottomTiled": false,
                       "nineSliceCenterTiled": false,
                       "nineSliceEnabled": false,
@@ -1759,22 +2775,37 @@
                       "type": "Sprite"
                     },
                     {
+                      "cursorStyle": "Hand",
+                      "includingDisabled": false,
+                      "recursive": false,
                       "type": "CursorChanger"
                     },
                     {
-                      "type": "EventTrigger",
-                      "tag": "onClickDifficultyChallenge"
+                      "holdDurationSec": 0.5,
+                      "recursive": false,
+                      "repeatIntervalSec": 0.1,
+                      "repeatIntervalSecFirst": 0.5,
+                      "tag": "onClickDifficultyChallenge",
+                      "triggerType": "Click",
+                      "type": "EventTrigger"
                     },
                     {
-                      "type": "EventTrigger",
+                      "holdDurationSec": 0.75,
+                      "recursive": false,
+                      "repeatIntervalSec": 0.1,
+                      "repeatIntervalSecFirst": 0.5,
                       "tag": "onPressHoldDifficultyChallenge",
                       "triggerType": "PressHold",
-                      "holdDurationSec": 0.75
+                      "type": "EventTrigger"
                     },
                     {
-                      "type": "UISound",
+                      "audioAssetName": "",
                       "audioFilePath": "se/hover.wav",
-                      "triggerType": "HoverStart"
+                      "includingDisabled": false,
+                      "recursive": false,
+                      "triggerType": "HoverStart",
+                      "type": "UISound",
+                      "volume": 1.0
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -1811,6 +2842,19 @@
                     "type": "InlineRegion"
                   },
                   "rubberBandScrollEnabled": true,
+                  "scrollBarHandleColor": [
+                    255,
+                    255,
+                    255,
+                    160
+                  ],
+                  "scrollBarMargin": [
+                    2.0,
+                    2.0,
+                    2.0,
+                    2.0
+                  ],
+                  "scrollBarThickness": 8.0,
                   "scrollBarType": "Overlay",
                   "styleState": "",
                   "styleState_paramRef": "difficulty1StyleState",
@@ -1839,8 +2883,8 @@
                     "rotation": 0.0,
                     "scale": {
                       "default": [
-                        1,
-                        1
+                        1.0,
+                        1.0
                       ],
                       "hovered": [
                         1.03,
@@ -1895,11 +2939,15 @@
                             255,
                             255
                           ],
+                          "fillAmount": 1.0,
+                          "fillDirection": "BottomToTop",
                           "gridAnimationEndIndex": 0,
                           "gridAnimationFPS": 10.0,
                           "gridAnimationStartIndex": 0,
                           "gridAnimationType": "None",
                           "hideIfTextureEmpty": false,
+                          "mipmapEnabled": false,
+                          "mipmapLodBias": 0.0,
                           "nineSliceBottomTiled": false,
                           "nineSliceCenterTiled": false,
                           "nineSliceEnabled": false,
@@ -1992,6 +3040,19 @@
                         "type": "AnchorRegion"
                       },
                       "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
                       "scrollBarType": "Overlay",
                       "styleState": "",
                       "transform": {
@@ -2011,6 +3072,423 @@
                           1.0,
                           1.0
                         ],
+                        "translate": [
+                          0.0,
+                          0.0
+                        ]
+                      },
+                      "verticalScrollable": false,
+                      "wheelScrollEnabled": true,
+                      "zOrderInSiblings": 0
+                    },
+                    {
+                      "activeSelf": true,
+                      "children": [
+                        {
+                          "activeSelf": true,
+                          "activeSelf_paramRef": "difficulty2Enabled",
+                          "children": [],
+                          "childrenLayout": {
+                            "horizontalAlign": "Left",
+                            "padding": [
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ],
+                            "spacing": [
+                              0.0,
+                              0.0
+                            ],
+                            "type": "FlowLayout",
+                            "verticalAlign": "Top"
+                          },
+                          "clippingEnabled": false,
+                          "components": [
+                            {
+                              "addColor": [
+                                0,
+                                0,
+                                0,
+                                0
+                              ],
+                              "blendMode": "Additive",
+                              "color": [
+                                255,
+                                255,
+                                255,
+                                255
+                              ],
+                              "fillAmount": 1.0,
+                              "fillDirection": "BottomToTop",
+                              "gridAnimationEndIndex": 0,
+                              "gridAnimationFPS": 10.0,
+                              "gridAnimationStartIndex": 0,
+                              "gridAnimationType": "None",
+                              "hideIfTextureEmpty": false,
+                              "mipmapEnabled": false,
+                              "mipmapLodBias": 0.0,
+                              "nineSliceBottomTiled": false,
+                              "nineSliceCenterTiled": false,
+                              "nineSliceEnabled": false,
+                              "nineSliceFallback": true,
+                              "nineSliceLeftTiled": false,
+                              "nineSliceMargin": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                              ],
+                              "nineSliceRightTiled": false,
+                              "nineSliceScale": [
+                                1.0,
+                                1.0
+                              ],
+                              "nineSliceTopTiled": false,
+                              "offsetAnimationSpeed": [
+                                0.0,
+                                0.0
+                              ],
+                              "offsetAnimationType": "None",
+                              "pixelShaderAssetName": "",
+                              "preserveAspect": true,
+                              "textureAddressMode": "Default",
+                              "textureAssetName": "",
+                              "textureFilePath": "imgs/msel_level.png",
+                              "textureFilter": "Default",
+                              "textureGridCellSize": [
+                                150.0,
+                                120.0
+                              ],
+                              "textureGridCellTrim": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                              ],
+                              "textureGridColumns": 1,
+                              "textureGridIndex": 0,
+                              "textureGridIndex_paramRef": "difficulty2LevelIndex",
+                              "textureGridRows": 20,
+                              "textureOffset": [
+                                0.0,
+                                0.0
+                              ],
+                              "textureRegionMode": "Grid",
+                              "textureSize": [
+                                100.0,
+                                100.0
+                              ],
+                              "type": "Sprite"
+                            }
+                          ],
+                          "decelerationRate": 0.2,
+                          "dragScrollEnabled": true,
+                          "hitPadding": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "horizontalScrollable": false,
+                          "inheritChildrenHover": false,
+                          "inheritChildrenPress": false,
+                          "interactable": true,
+                          "isHitTarget": false,
+                          "name": "Level",
+                          "region": {
+                            "anchorMax": [
+                              0.5,
+                              0.5
+                            ],
+                            "anchorMin": [
+                              0.5,
+                              0.5
+                            ],
+                            "posDelta": [
+                              0.0,
+                              -7.0
+                            ],
+                            "sizeDelta": [
+                              70.0,
+                              70.0
+                            ],
+                            "sizeDeltaPivot": [
+                              0.5,
+                              0.5
+                            ],
+                            "type": "AnchorRegion"
+                          },
+                          "rubberBandScrollEnabled": true,
+                          "scrollBarHandleColor": [
+                            255,
+                            255,
+                            255,
+                            160
+                          ],
+                          "scrollBarMargin": [
+                            2.0,
+                            2.0,
+                            2.0,
+                            2.0
+                          ],
+                          "scrollBarThickness": 8.0,
+                          "scrollBarType": "Overlay",
+                          "styleState": "",
+                          "transform": {
+                            "color": [
+                              255,
+                              255,
+                              255,
+                              255
+                            ],
+                            "hitTestAffected": true,
+                            "pivot": [
+                              0.5,
+                              0.5
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                              1.0,
+                              1.0
+                            ],
+                            "translate": [
+                              0.0,
+                              0.0
+                            ]
+                          },
+                          "verticalScrollable": false,
+                          "wheelScrollEnabled": true,
+                          "zOrderInSiblings": 0
+                        }
+                      ],
+                      "childrenLayout": {
+                        "horizontalAlign": "Left",
+                        "padding": [
+                          0.0,
+                          0.0,
+                          0.0,
+                          0.0
+                        ],
+                        "spacing": [
+                          0.0,
+                          0.0
+                        ],
+                        "type": "FlowLayout",
+                        "verticalAlign": "Top"
+                      },
+                      "clippingEnabled": false,
+                      "components": [
+                        {
+                          "addColor": [
+                            0,
+                            0,
+                            0,
+                            0
+                          ],
+                          "blendMode": "Additive",
+                          "color": [
+                            255,
+                            255,
+                            255,
+                            255
+                          ],
+                          "fillAmount": 1.0,
+                          "fillDirection": "BottomToTop",
+                          "gridAnimationEndIndex": 0,
+                          "gridAnimationFPS": 10.0,
+                          "gridAnimationStartIndex": 0,
+                          "gridAnimationType": "None",
+                          "hideIfTextureEmpty": false,
+                          "mipmapEnabled": false,
+                          "mipmapLodBias": 0.0,
+                          "nineSliceBottomTiled": false,
+                          "nineSliceCenterTiled": false,
+                          "nineSliceEnabled": false,
+                          "nineSliceFallback": true,
+                          "nineSliceLeftTiled": false,
+                          "nineSliceMargin": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "nineSliceRightTiled": false,
+                          "nineSliceScale": [
+                            1.0,
+                            1.0
+                          ],
+                          "nineSliceTopTiled": false,
+                          "offsetAnimationSpeed": [
+                            0.0,
+                            0.0
+                          ],
+                          "offsetAnimationType": "None",
+                          "pixelShaderAssetName": "",
+                          "preserveAspect": true,
+                          "textureAddressMode": "Default",
+                          "textureAssetName": "",
+                          "textureFilePath": "imgs/msel_0_difficulty.png",
+                          "textureFilter": "Default",
+                          "textureGridCellSize": [
+                            115.0,
+                            110.0
+                          ],
+                          "textureGridCellTrim": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "textureGridColumns": 4,
+                          "textureGridIndex": {
+                            "default": 6,
+                            "disabled": 2
+                          },
+                          "textureGridRows": 2,
+                          "textureOffset": [
+                            0.0,
+                            0.0
+                          ],
+                          "textureRegionMode": "Grid",
+                          "textureSize": [
+                            100.0,
+                            100.0
+                          ],
+                          "type": "Sprite"
+                        },
+                        {
+                          "active": true,
+                          "applyDuringDelay": false,
+                          "colorEnabled": true,
+                          "colorFrom": [
+                            255,
+                            255,
+                            255,
+                            140
+                          ],
+                          "colorTo": [
+                            255,
+                            255,
+                            255,
+                            0
+                          ],
+                          "delay": 0.0,
+                          "duration": 0.4,
+                          "easing": "EaseOutQuad",
+                          "loopDuration": 0.0,
+                          "loopType": "None",
+                          "manualMode": false,
+                          "manualTime": 0.0,
+                          "restartOnActive": true,
+                          "rotationEnabled": false,
+                          "rotationFrom": 0.0,
+                          "rotationTo": 0.0,
+                          "scaleEnabled": true,
+                          "scaleFrom": [
+                            1.0,
+                            1.0
+                          ],
+                          "scaleTo": [
+                            1.25,
+                            1.25
+                          ],
+                          "tag": "",
+                          "translateEnabled": false,
+                          "translateFrom": [
+                            0.0,
+                            0.0
+                          ],
+                          "translateTo": [
+                            0.0,
+                            0.0
+                          ],
+                          "triggerHoldDurationSec": 0.5,
+                          "triggerRecursive": false,
+                          "triggerRepeatIntervalSec": 0.1,
+                          "triggerRepeatIntervalSecFirst": 0.5,
+                          "triggerType": "Click",
+                          "type": "Tween"
+                        }
+                      ],
+                      "decelerationRate": 0.2,
+                      "dragScrollEnabled": true,
+                      "hitPadding": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "horizontalScrollable": false,
+                      "inheritChildrenHover": false,
+                      "inheritChildrenPress": false,
+                      "interactable": true,
+                      "isHitTarget": false,
+                      "name": "TapEffect",
+                      "region": {
+                        "anchorMax": [
+                          1.0,
+                          1.0
+                        ],
+                        "anchorMin": [
+                          0.0,
+                          0.0
+                        ],
+                        "posDelta": [
+                          0.0,
+                          0.0
+                        ],
+                        "sizeDelta": [
+                          0.0,
+                          0.0
+                        ],
+                        "sizeDeltaPivot": [
+                          0.5,
+                          0.5
+                        ],
+                        "type": "AnchorRegion"
+                      },
+                      "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
+                      "scrollBarType": "Overlay",
+                      "styleState": "",
+                      "styleState_paramRef": "difficulty2StyleState",
+                      "transform": {
+                        "color": [
+                          255,
+                          255,
+                          255,
+                          0
+                        ],
+                        "hitTestAffected": true,
+                        "pivot": [
+                          0.5,
+                          0.5
+                        ],
+                        "rotation": 0.0,
+                        "scale": {
+                          "default": [
+                            1.0,
+                            1.0
+                          ],
+                          "hovered": [
+                            1.03,
+                            1.03
+                          ],
+                          "smoothTime": 0.025
+                        },
                         "translate": [
                           0.0,
                           0.0
@@ -2052,11 +3530,15 @@
                         255,
                         255
                       ],
+                      "fillAmount": 1.0,
+                      "fillDirection": "BottomToTop",
                       "gridAnimationEndIndex": 0,
                       "gridAnimationFPS": 10.0,
                       "gridAnimationStartIndex": 0,
                       "gridAnimationType": "None",
                       "hideIfTextureEmpty": false,
+                      "mipmapEnabled": false,
+                      "mipmapLodBias": 0.0,
                       "nineSliceBottomTiled": false,
                       "nineSliceCenterTiled": false,
                       "nineSliceEnabled": false,
@@ -2113,22 +3595,37 @@
                       "type": "Sprite"
                     },
                     {
+                      "cursorStyle": "Hand",
+                      "includingDisabled": false,
+                      "recursive": false,
                       "type": "CursorChanger"
                     },
                     {
-                      "type": "EventTrigger",
-                      "tag": "onClickDifficultyExtended"
+                      "holdDurationSec": 0.5,
+                      "recursive": false,
+                      "repeatIntervalSec": 0.1,
+                      "repeatIntervalSecFirst": 0.5,
+                      "tag": "onClickDifficultyExtended",
+                      "triggerType": "Click",
+                      "type": "EventTrigger"
                     },
                     {
-                      "type": "EventTrigger",
+                      "holdDurationSec": 0.75,
+                      "recursive": false,
+                      "repeatIntervalSec": 0.1,
+                      "repeatIntervalSecFirst": 0.5,
                       "tag": "onPressHoldDifficultyExtended",
                       "triggerType": "PressHold",
-                      "holdDurationSec": 0.75
+                      "type": "EventTrigger"
                     },
                     {
-                      "type": "UISound",
+                      "audioAssetName": "",
                       "audioFilePath": "se/hover.wav",
-                      "triggerType": "HoverStart"
+                      "includingDisabled": false,
+                      "recursive": false,
+                      "triggerType": "HoverStart",
+                      "type": "UISound",
+                      "volume": 1.0
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -2165,16 +3662,29 @@
                     "type": "InlineRegion"
                   },
                   "rubberBandScrollEnabled": true,
+                  "scrollBarHandleColor": [
+                    255,
+                    255,
+                    255,
+                    160
+                  ],
+                  "scrollBarMargin": [
+                    2.0,
+                    2.0,
+                    2.0,
+                    2.0
+                  ],
+                  "scrollBarThickness": 8.0,
                   "scrollBarType": "Overlay",
                   "styleState": "",
                   "styleState_paramRef": "difficulty2StyleState",
                   "transform": {
                     "color": {
                       "default": [
-                        255.0,
-                        255.0,
-                        255.0,
-                        255.0
+                        255,
+                        255,
+                        255,
+                        255
                       ],
                       "styleStates": {
                         "levelSortOther": [
@@ -2193,8 +3703,8 @@
                     "rotation": 0.0,
                     "scale": {
                       "default": [
-                        1,
-                        1
+                        1.0,
+                        1.0
                       ],
                       "hovered": [
                         1.03,
@@ -2249,11 +3759,15 @@
                             255,
                             255
                           ],
+                          "fillAmount": 1.0,
+                          "fillDirection": "BottomToTop",
                           "gridAnimationEndIndex": 0,
                           "gridAnimationFPS": 10.0,
                           "gridAnimationStartIndex": 0,
                           "gridAnimationType": "None",
                           "hideIfTextureEmpty": false,
+                          "mipmapEnabled": false,
+                          "mipmapLodBias": 0.0,
                           "nineSliceBottomTiled": false,
                           "nineSliceCenterTiled": false,
                           "nineSliceEnabled": false,
@@ -2346,6 +3860,19 @@
                         "type": "AnchorRegion"
                       },
                       "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
                       "scrollBarType": "Overlay",
                       "styleState": "",
                       "transform": {
@@ -2365,6 +3892,423 @@
                           1.0,
                           1.0
                         ],
+                        "translate": [
+                          0.0,
+                          0.0
+                        ]
+                      },
+                      "verticalScrollable": false,
+                      "wheelScrollEnabled": true,
+                      "zOrderInSiblings": 0
+                    },
+                    {
+                      "activeSelf": true,
+                      "children": [
+                        {
+                          "activeSelf": true,
+                          "activeSelf_paramRef": "difficulty3Enabled",
+                          "children": [],
+                          "childrenLayout": {
+                            "horizontalAlign": "Left",
+                            "padding": [
+                              0.0,
+                              0.0,
+                              0.0,
+                              0.0
+                            ],
+                            "spacing": [
+                              0.0,
+                              0.0
+                            ],
+                            "type": "FlowLayout",
+                            "verticalAlign": "Top"
+                          },
+                          "clippingEnabled": false,
+                          "components": [
+                            {
+                              "addColor": [
+                                0,
+                                0,
+                                0,
+                                0
+                              ],
+                              "blendMode": "Additive",
+                              "color": [
+                                255,
+                                255,
+                                255,
+                                255
+                              ],
+                              "fillAmount": 1.0,
+                              "fillDirection": "BottomToTop",
+                              "gridAnimationEndIndex": 0,
+                              "gridAnimationFPS": 10.0,
+                              "gridAnimationStartIndex": 0,
+                              "gridAnimationType": "None",
+                              "hideIfTextureEmpty": false,
+                              "mipmapEnabled": false,
+                              "mipmapLodBias": 0.0,
+                              "nineSliceBottomTiled": false,
+                              "nineSliceCenterTiled": false,
+                              "nineSliceEnabled": false,
+                              "nineSliceFallback": true,
+                              "nineSliceLeftTiled": false,
+                              "nineSliceMargin": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                              ],
+                              "nineSliceRightTiled": false,
+                              "nineSliceScale": [
+                                1.0,
+                                1.0
+                              ],
+                              "nineSliceTopTiled": false,
+                              "offsetAnimationSpeed": [
+                                0.0,
+                                0.0
+                              ],
+                              "offsetAnimationType": "None",
+                              "pixelShaderAssetName": "",
+                              "preserveAspect": true,
+                              "textureAddressMode": "Default",
+                              "textureAssetName": "",
+                              "textureFilePath": "imgs/msel_level.png",
+                              "textureFilter": "Default",
+                              "textureGridCellSize": [
+                                150.0,
+                                120.0
+                              ],
+                              "textureGridCellTrim": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0
+                              ],
+                              "textureGridColumns": 1,
+                              "textureGridIndex": 0,
+                              "textureGridIndex_paramRef": "difficulty3LevelIndex",
+                              "textureGridRows": 20,
+                              "textureOffset": [
+                                0.0,
+                                0.0
+                              ],
+                              "textureRegionMode": "Grid",
+                              "textureSize": [
+                                100.0,
+                                100.0
+                              ],
+                              "type": "Sprite"
+                            }
+                          ],
+                          "decelerationRate": 0.2,
+                          "dragScrollEnabled": true,
+                          "hitPadding": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "horizontalScrollable": false,
+                          "inheritChildrenHover": false,
+                          "inheritChildrenPress": false,
+                          "interactable": true,
+                          "isHitTarget": false,
+                          "name": "Level",
+                          "region": {
+                            "anchorMax": [
+                              0.5,
+                              0.5
+                            ],
+                            "anchorMin": [
+                              0.5,
+                              0.5
+                            ],
+                            "posDelta": [
+                              0.0,
+                              -7.0
+                            ],
+                            "sizeDelta": [
+                              70.0,
+                              70.0
+                            ],
+                            "sizeDeltaPivot": [
+                              0.5,
+                              0.5
+                            ],
+                            "type": "AnchorRegion"
+                          },
+                          "rubberBandScrollEnabled": true,
+                          "scrollBarHandleColor": [
+                            255,
+                            255,
+                            255,
+                            160
+                          ],
+                          "scrollBarMargin": [
+                            2.0,
+                            2.0,
+                            2.0,
+                            2.0
+                          ],
+                          "scrollBarThickness": 8.0,
+                          "scrollBarType": "Overlay",
+                          "styleState": "",
+                          "transform": {
+                            "color": [
+                              255,
+                              255,
+                              255,
+                              255
+                            ],
+                            "hitTestAffected": true,
+                            "pivot": [
+                              0.5,
+                              0.5
+                            ],
+                            "rotation": 0.0,
+                            "scale": [
+                              1.0,
+                              1.0
+                            ],
+                            "translate": [
+                              0.0,
+                              0.0
+                            ]
+                          },
+                          "verticalScrollable": false,
+                          "wheelScrollEnabled": true,
+                          "zOrderInSiblings": 0
+                        }
+                      ],
+                      "childrenLayout": {
+                        "horizontalAlign": "Left",
+                        "padding": [
+                          0.0,
+                          0.0,
+                          0.0,
+                          0.0
+                        ],
+                        "spacing": [
+                          0.0,
+                          0.0
+                        ],
+                        "type": "FlowLayout",
+                        "verticalAlign": "Top"
+                      },
+                      "clippingEnabled": false,
+                      "components": [
+                        {
+                          "addColor": [
+                            0,
+                            0,
+                            0,
+                            0
+                          ],
+                          "blendMode": "Additive",
+                          "color": [
+                            255,
+                            255,
+                            255,
+                            255
+                          ],
+                          "fillAmount": 1.0,
+                          "fillDirection": "BottomToTop",
+                          "gridAnimationEndIndex": 0,
+                          "gridAnimationFPS": 10.0,
+                          "gridAnimationStartIndex": 0,
+                          "gridAnimationType": "None",
+                          "hideIfTextureEmpty": false,
+                          "mipmapEnabled": false,
+                          "mipmapLodBias": 0.0,
+                          "nineSliceBottomTiled": false,
+                          "nineSliceCenterTiled": false,
+                          "nineSliceEnabled": false,
+                          "nineSliceFallback": true,
+                          "nineSliceLeftTiled": false,
+                          "nineSliceMargin": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "nineSliceRightTiled": false,
+                          "nineSliceScale": [
+                            1.0,
+                            1.0
+                          ],
+                          "nineSliceTopTiled": false,
+                          "offsetAnimationSpeed": [
+                            0.0,
+                            0.0
+                          ],
+                          "offsetAnimationType": "None",
+                          "pixelShaderAssetName": "",
+                          "preserveAspect": true,
+                          "textureAddressMode": "Default",
+                          "textureAssetName": "",
+                          "textureFilePath": "imgs/msel_0_difficulty.png",
+                          "textureFilter": "Default",
+                          "textureGridCellSize": [
+                            115.0,
+                            110.0
+                          ],
+                          "textureGridCellTrim": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                          ],
+                          "textureGridColumns": 4,
+                          "textureGridIndex": {
+                            "default": 7,
+                            "disabled": 3
+                          },
+                          "textureGridRows": 2,
+                          "textureOffset": [
+                            0.0,
+                            0.0
+                          ],
+                          "textureRegionMode": "Grid",
+                          "textureSize": [
+                            100.0,
+                            100.0
+                          ],
+                          "type": "Sprite"
+                        },
+                        {
+                          "active": true,
+                          "applyDuringDelay": false,
+                          "colorEnabled": true,
+                          "colorFrom": [
+                            255,
+                            255,
+                            255,
+                            140
+                          ],
+                          "colorTo": [
+                            255,
+                            255,
+                            255,
+                            0
+                          ],
+                          "delay": 0.0,
+                          "duration": 0.4,
+                          "easing": "EaseOutQuad",
+                          "loopDuration": 0.0,
+                          "loopType": "None",
+                          "manualMode": false,
+                          "manualTime": 0.0,
+                          "restartOnActive": true,
+                          "rotationEnabled": false,
+                          "rotationFrom": 0.0,
+                          "rotationTo": 0.0,
+                          "scaleEnabled": true,
+                          "scaleFrom": [
+                            1.0,
+                            1.0
+                          ],
+                          "scaleTo": [
+                            1.25,
+                            1.25
+                          ],
+                          "tag": "",
+                          "translateEnabled": false,
+                          "translateFrom": [
+                            0.0,
+                            0.0
+                          ],
+                          "translateTo": [
+                            0.0,
+                            0.0
+                          ],
+                          "triggerHoldDurationSec": 0.5,
+                          "triggerRecursive": false,
+                          "triggerRepeatIntervalSec": 0.1,
+                          "triggerRepeatIntervalSecFirst": 0.5,
+                          "triggerType": "Click",
+                          "type": "Tween"
+                        }
+                      ],
+                      "decelerationRate": 0.2,
+                      "dragScrollEnabled": true,
+                      "hitPadding": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                      ],
+                      "horizontalScrollable": false,
+                      "inheritChildrenHover": false,
+                      "inheritChildrenPress": false,
+                      "interactable": true,
+                      "isHitTarget": false,
+                      "name": "TapEffect",
+                      "region": {
+                        "anchorMax": [
+                          1.0,
+                          1.0
+                        ],
+                        "anchorMin": [
+                          0.0,
+                          0.0
+                        ],
+                        "posDelta": [
+                          0.0,
+                          0.0
+                        ],
+                        "sizeDelta": [
+                          0.0,
+                          0.0
+                        ],
+                        "sizeDeltaPivot": [
+                          0.5,
+                          0.5
+                        ],
+                        "type": "AnchorRegion"
+                      },
+                      "rubberBandScrollEnabled": true,
+                      "scrollBarHandleColor": [
+                        255,
+                        255,
+                        255,
+                        160
+                      ],
+                      "scrollBarMargin": [
+                        2.0,
+                        2.0,
+                        2.0,
+                        2.0
+                      ],
+                      "scrollBarThickness": 8.0,
+                      "scrollBarType": "Overlay",
+                      "styleState": "",
+                      "styleState_paramRef": "difficulty3StyleState",
+                      "transform": {
+                        "color": [
+                          255,
+                          255,
+                          255,
+                          0
+                        ],
+                        "hitTestAffected": true,
+                        "pivot": [
+                          0.5,
+                          0.5
+                        ],
+                        "rotation": 0.0,
+                        "scale": {
+                          "default": [
+                            1.0,
+                            1.0
+                          ],
+                          "hovered": [
+                            1.03,
+                            1.03
+                          ],
+                          "smoothTime": 0.025
+                        },
                         "translate": [
                           0.0,
                           0.0
@@ -2406,11 +4350,15 @@
                         255,
                         255
                       ],
+                      "fillAmount": 1.0,
+                      "fillDirection": "BottomToTop",
                       "gridAnimationEndIndex": 0,
                       "gridAnimationFPS": 10.0,
                       "gridAnimationStartIndex": 0,
                       "gridAnimationType": "None",
                       "hideIfTextureEmpty": false,
+                      "mipmapEnabled": false,
+                      "mipmapLodBias": 0.0,
                       "nineSliceBottomTiled": false,
                       "nineSliceCenterTiled": false,
                       "nineSliceEnabled": false,
@@ -2467,22 +4415,37 @@
                       "type": "Sprite"
                     },
                     {
+                      "cursorStyle": "Hand",
+                      "includingDisabled": false,
+                      "recursive": false,
                       "type": "CursorChanger"
                     },
                     {
-                      "type": "EventTrigger",
-                      "tag": "onClickDifficultyInfinite"
+                      "holdDurationSec": 0.5,
+                      "recursive": false,
+                      "repeatIntervalSec": 0.1,
+                      "repeatIntervalSecFirst": 0.5,
+                      "tag": "onClickDifficultyInfinite",
+                      "triggerType": "Click",
+                      "type": "EventTrigger"
                     },
                     {
-                      "type": "EventTrigger",
+                      "holdDurationSec": 0.75,
+                      "recursive": false,
+                      "repeatIntervalSec": 0.1,
+                      "repeatIntervalSecFirst": 0.5,
                       "tag": "onPressHoldDifficultyInfinite",
                       "triggerType": "PressHold",
-                      "holdDurationSec": 0.75
+                      "type": "EventTrigger"
                     },
                     {
-                      "type": "UISound",
+                      "audioAssetName": "",
                       "audioFilePath": "se/hover.wav",
-                      "triggerType": "HoverStart"
+                      "includingDisabled": false,
+                      "recursive": false,
+                      "triggerType": "HoverStart",
+                      "type": "UISound",
+                      "volume": 1.0
                     }
                   ],
                   "decelerationRate": 0.2,
@@ -2519,6 +4482,19 @@
                     "type": "InlineRegion"
                   },
                   "rubberBandScrollEnabled": true,
+                  "scrollBarHandleColor": [
+                    255,
+                    255,
+                    255,
+                    160
+                  ],
+                  "scrollBarMargin": [
+                    2.0,
+                    2.0,
+                    2.0,
+                    2.0
+                  ],
+                  "scrollBarThickness": 8.0,
                   "scrollBarType": "Overlay",
                   "styleState": "",
                   "styleState_paramRef": "difficulty3StyleState",
@@ -2547,8 +4523,8 @@
                     "rotation": 0.0,
                     "scale": {
                       "default": [
-                        1,
-                        1
+                        1.0,
+                        1.0
                       ],
                       "hovered": [
                         1.03,
@@ -2621,6 +4597,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -2683,11 +4672,15 @@
                     255,
                     255
                   ],
+                  "fillAmount": 1.0,
+                  "fillDirection": "BottomToTop",
                   "gridAnimationEndIndex": 11,
                   "gridAnimationFPS": 13.5,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "Loop",
                   "hideIfTextureEmpty": false,
+                  "mipmapEnabled": false,
+                  "mipmapLodBias": 0.0,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -2779,6 +4772,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "difficulty{}",
               "styleState_paramRef": "difficultyIndex",
@@ -2802,8 +4808,8 @@
                 ],
                 "translate": {
                   "default": [
-                    350,
-                    0
+                    350.0,
+                    0.0
                   ],
                   "styleStates": {
                     "difficulty0": [
@@ -2956,6 +4962,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -3018,11 +5037,15 @@
                     255,
                     255
                   ],
+                  "fillAmount": 1.0,
+                  "fillDirection": "BottomToTop",
                   "gridAnimationEndIndex": 0,
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
                   "hideIfTextureEmpty": false,
+                  "mipmapEnabled": false,
+                  "mipmapLodBias": 0.0,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -3115,6 +5138,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -3177,11 +5213,15 @@
                     255,
                     255
                   ],
+                  "fillAmount": 1.0,
+                  "fillDirection": "BottomToTop",
                   "gridAnimationEndIndex": 0,
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
                   "hideIfTextureEmpty": false,
+                  "mipmapEnabled": false,
+                  "mipmapLodBias": 0.0,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -3274,6 +5314,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -3323,6 +5376,7 @@
               "clippingEnabled": false,
               "components": [
                 {
+                  "autoFitModeOverride": "NoOverride",
                   "canvasPath": "ui/font/num0.noco",
                   "propagateEvents": true,
                   "serializedParamBindingModesJSON": "{\"text\":\"Format\"}",
@@ -3370,6 +5424,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -3419,6 +5486,7 @@
               "clippingEnabled": false,
               "components": [
                 {
+                  "autoFitModeOverride": "NoOverride",
                   "canvasPath": "ui/font/num0.noco",
                   "propagateEvents": true,
                   "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
@@ -3466,6 +5534,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -3621,6 +5702,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -3684,11 +5778,15 @@
                     255,
                     255
                   ],
+                  "fillAmount": 1.0,
+                  "fillDirection": "BottomToTop",
                   "gridAnimationEndIndex": 0,
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
                   "hideIfTextureEmpty": false,
+                  "mipmapEnabled": false,
+                  "mipmapLodBias": 0.0,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -3781,6 +5879,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -3944,6 +6055,11 @@
                     0.0,
                     0.0
                   ],
+                  "triggerHoldDurationSec": 0.5,
+                  "triggerRecursive": false,
+                  "triggerRepeatIntervalSec": 0.1,
+                  "triggerRepeatIntervalSecFirst": 0.5,
+                  "triggerType": "None",
                   "type": "Tween"
                 }
               ],
@@ -3985,6 +6101,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -4148,6 +6277,11 @@
                     0.0,
                     0.0
                   ],
+                  "triggerHoldDurationSec": 0.5,
+                  "triggerRecursive": false,
+                  "triggerRepeatIntervalSec": 0.1,
+                  "triggerRepeatIntervalSecFirst": 0.5,
+                  "triggerType": "None",
                   "type": "Tween"
                 }
               ],
@@ -4189,6 +6323,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -4249,11 +6396,15 @@
                 255,
                 255
               ],
+              "fillAmount": 1.0,
+              "fillDirection": "BottomToTop",
               "gridAnimationEndIndex": 0,
               "gridAnimationFPS": 10.0,
               "gridAnimationStartIndex": 0,
               "gridAnimationType": "None",
               "hideIfTextureEmpty": false,
+              "mipmapEnabled": false,
+              "mipmapLodBias": 0.0,
               "nineSliceBottomTiled": false,
               "nineSliceCenterTiled": false,
               "nineSliceEnabled": false,
@@ -4345,6 +6496,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -4408,6 +6572,7 @@
                     255,
                     255
                   ],
+                  "color_paramRef": "titleColor",
                   "fontAssetName": "",
                   "fontSize": 40.0,
                   "gradationColor1": [
@@ -4463,8 +6628,7 @@
                   "underlineStyle": "None",
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
-                  "verticalOverflow": "Overflow",
-                  "color_paramRef": "titleColor"
+                  "verticalOverflow": "Overflow"
                 }
               ],
               "decelerationRate": 0.2,
@@ -4505,6 +6669,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -4564,6 +6741,7 @@
                     255,
                     0
                   ],
+                  "color_paramRef": "titleTranslitColor",
                   "fontAssetName": "",
                   "fontSize": 40.0,
                   "gradationColor1": [
@@ -4619,8 +6797,7 @@
                   "underlineStyle": "None",
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
-                  "verticalOverflow": "Overflow",
-                  "color_paramRef": "titleTranslitColor"
+                  "verticalOverflow": "Overflow"
                 }
               ],
               "decelerationRate": 0.2,
@@ -4661,6 +6838,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -4721,11 +6911,15 @@
                 255,
                 255
               ],
+              "fillAmount": 1.0,
+              "fillDirection": "BottomToTop",
               "gridAnimationEndIndex": 0,
               "gridAnimationFPS": 10.0,
               "gridAnimationStartIndex": 0,
               "gridAnimationType": "None",
               "hideIfTextureEmpty": false,
+              "mipmapEnabled": false,
+              "mipmapLodBias": 0.0,
               "nineSliceBottomTiled": false,
               "nineSliceCenterTiled": false,
               "nineSliceEnabled": false,
@@ -4817,6 +7011,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -4880,6 +7087,7 @@
                     255,
                     255
                   ],
+                  "color_paramRef": "titleColor",
                   "fontAssetName": "",
                   "fontSize": 40.0,
                   "gradationColor1": [
@@ -4935,8 +7143,7 @@
                   "underlineStyle": "None",
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
-                  "verticalOverflow": "Overflow",
-                  "color_paramRef": "titleColor"
+                  "verticalOverflow": "Overflow"
                 }
               ],
               "decelerationRate": 0.2,
@@ -4977,6 +7184,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -5036,6 +7256,7 @@
                     255,
                     0
                   ],
+                  "color_paramRef": "titleTranslitColor",
                   "fontAssetName": "",
                   "fontSize": 40.0,
                   "gradationColor1": [
@@ -5091,8 +7312,7 @@
                   "underlineStyle": "None",
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
-                  "verticalOverflow": "Overflow",
-                  "color_paramRef": "titleTranslitColor"
+                  "verticalOverflow": "Overflow"
                 }
               ],
               "decelerationRate": 0.2,
@@ -5133,6 +7353,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -5193,11 +7426,15 @@
                 255,
                 255
               ],
+              "fillAmount": 1.0,
+              "fillDirection": "BottomToTop",
               "gridAnimationEndIndex": 0,
               "gridAnimationFPS": 10.0,
               "gridAnimationStartIndex": 0,
               "gridAnimationType": "None",
               "hideIfTextureEmpty": false,
+              "mipmapEnabled": false,
+              "mipmapLodBias": 0.0,
               "nineSliceBottomTiled": false,
               "nineSliceCenterTiled": false,
               "nineSliceEnabled": false,
@@ -5289,6 +7526,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -5352,6 +7602,7 @@
                     255,
                     255
                   ],
+                  "color_paramRef": "titleColor",
                   "fontAssetName": "SystemBold",
                   "fontSize": 24.0,
                   "gradationColor1": [
@@ -5407,8 +7658,7 @@
                   "underlineStyle": "None",
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
-                  "verticalOverflow": "Overflow",
-                  "color_paramRef": "titleColor"
+                  "verticalOverflow": "Overflow"
                 }
               ],
               "decelerationRate": 0.2,
@@ -5449,6 +7699,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -5511,11 +7774,15 @@
                     255,
                     255
                   ],
+                  "fillAmount": 1.0,
+                  "fillDirection": "BottomToTop",
                   "gridAnimationEndIndex": 0,
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
                   "hideIfTextureEmpty": false,
+                  "mipmapEnabled": false,
+                  "mipmapLodBias": 0.0,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -5608,6 +7875,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -5657,6 +7937,7 @@
               "clippingEnabled": false,
               "components": [
                 {
+                  "autoFitModeOverride": "NoOverride",
                   "canvasPath": "ui/font/num0.noco",
                   "propagateEvents": true,
                   "serializedParamBindingModesJSON": "{\"text\":\"Normal\"}",
@@ -5704,6 +7985,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -5859,6 +8153,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -5922,11 +8229,15 @@
                     255,
                     255
                   ],
+                  "fillAmount": 1.0,
+                  "fillDirection": "BottomToTop",
                   "gridAnimationEndIndex": 0,
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
                   "hideIfTextureEmpty": false,
+                  "mipmapEnabled": false,
+                  "mipmapLodBias": 0.0,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
@@ -6019,6 +8330,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -6105,6 +8429,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -6164,6 +8501,7 @@
                     255,
                     0
                   ],
+                  "color_paramRef": "titleTranslitColor",
                   "fontAssetName": "SystemBold",
                   "fontSize": 24.0,
                   "gradationColor1": [
@@ -6219,8 +8557,7 @@
                   "underlineStyle": "None",
                   "underlineThickness": 1.0,
                   "verticalAlign": "Middle",
-                  "verticalOverflow": "Overflow",
-                  "color_paramRef": "titleTranslitColor"
+                  "verticalOverflow": "Overflow"
                 }
               ],
               "decelerationRate": 0.2,
@@ -6261,6 +8598,19 @@
                 "type": "AnchorRegion"
               },
               "rubberBandScrollEnabled": true,
+              "scrollBarHandleColor": [
+                255,
+                255,
+                255,
+                160
+              ],
+              "scrollBarMargin": [
+                2.0,
+                2.0,
+                2.0,
+                2.0
+              ],
+              "scrollBarThickness": 8.0,
               "scrollBarType": "Overlay",
               "styleState": "",
               "transform": {
@@ -6321,11 +8671,15 @@
                 255,
                 255
               ],
+              "fillAmount": 1.0,
+              "fillDirection": "BottomToTop",
               "gridAnimationEndIndex": 0,
               "gridAnimationFPS": 10.0,
               "gridAnimationStartIndex": 0,
               "gridAnimationType": "None",
               "hideIfTextureEmpty": false,
+              "mipmapEnabled": false,
+              "mipmapLodBias": 0.0,
               "nineSliceBottomTiled": false,
               "nineSliceCenterTiled": false,
               "nineSliceEnabled": false,
@@ -6417,6 +8771,19 @@
             "type": "AnchorRegion"
           },
           "rubberBandScrollEnabled": true,
+          "scrollBarHandleColor": [
+            255,
+            255,
+            255,
+            160
+          ],
+          "scrollBarMargin": [
+            2.0,
+            2.0,
+            2.0,
+            2.0
+          ],
+          "scrollBarThickness": 8.0,
           "scrollBarType": "Overlay",
           "styleState": "",
           "transform": {
@@ -6509,6 +8876,11 @@
             0.0,
             -2.0
           ],
+          "triggerHoldDurationSec": 0.5,
+          "triggerRecursive": false,
+          "triggerRepeatIntervalSec": 0.1,
+          "triggerRepeatIntervalSecFirst": 0.5,
+          "triggerType": "None",
           "type": "Tween"
         },
         {
@@ -6557,6 +8929,11 @@
             0.0,
             0.0
           ],
+          "triggerHoldDurationSec": 0.5,
+          "triggerRecursive": false,
+          "triggerRepeatIntervalSec": 0.1,
+          "triggerRepeatIntervalSecFirst": 0.5,
+          "triggerType": "None",
           "type": "Tween"
         },
         {
@@ -6605,6 +8982,11 @@
             0.0,
             2.0
           ],
+          "triggerHoldDurationSec": 0.5,
+          "triggerRecursive": false,
+          "triggerRepeatIntervalSec": 0.1,
+          "triggerRepeatIntervalSecFirst": 0.5,
+          "triggerType": "None",
           "type": "Tween"
         },
         {
@@ -6653,6 +9035,11 @@
             0.0,
             0.0
           ],
+          "triggerHoldDurationSec": 0.5,
+          "triggerRecursive": false,
+          "triggerRepeatIntervalSec": 0.1,
+          "triggerRepeatIntervalSecFirst": 0.5,
+          "triggerType": "None",
           "type": "Tween"
         }
       ],
@@ -6694,6 +9081,19 @@
         "type": "AnchorRegion"
       },
       "rubberBandScrollEnabled": true,
+      "scrollBarHandleColor": [
+        255,
+        255,
+        255,
+        160
+      ],
+      "scrollBarMargin": [
+        2.0,
+        2.0,
+        2.0,
+        2.0
+      ],
+      "scrollBarThickness": 8.0,
       "scrollBarType": "Overlay",
       "styleState": "",
       "transform": {
@@ -6744,9 +9144,35 @@
       "type": "String",
       "value": "artist"
     },
+    "artistColor": {
+      "type": "Color",
+      "value": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
     "artistImgFilePath": {
       "type": "String",
       "value": ""
+    },
+    "artistTranslit": {
+      "type": "String",
+      "value": ""
+    },
+    "artistTranslitColor": {
+      "type": "Color",
+      "value": [
+        255,
+        255,
+        255,
+        0
+      ]
+    },
+    "artistTranslitFadeRate": {
+      "type": "Double",
+      "value": 0.0
     },
     "bpm": {
       "type": "String",
@@ -6868,14 +9294,6 @@
       "type": "String",
       "value": "title"
     },
-    "titleImgFilePath": {
-      "type": "String",
-      "value": ""
-    },
-    "titleTranslit": {
-      "type": "String",
-      "value": ""
-    },
     "titleColor": {
       "type": "Color",
       "value": [
@@ -6885,29 +9303,15 @@
         255
       ]
     },
-    "titleTranslitColor": {
-      "type": "Color",
-      "value": [
-        255,
-        255,
-        255,
-        0
-      ]
-    },
-    "artistTranslit": {
+    "titleImgFilePath": {
       "type": "String",
       "value": ""
     },
-    "artistColor": {
-      "type": "Color",
-      "value": [
-        255,
-        255,
-        255,
-        255
-      ]
+    "titleTranslit": {
+      "type": "String",
+      "value": ""
     },
-    "artistTranslitColor": {
+    "titleTranslitColor": {
       "type": "Color",
       "value": [
         255,
@@ -6919,16 +9323,12 @@
     "titleTranslitFadeRate": {
       "type": "Double",
       "value": 0.0
-    },
-    "artistTranslitFadeRate": {
-      "type": "Double",
-      "value": 0.0
     }
   },
   "referenceSize": [
     766.0,
     378.0
   ],
-  "serializedVersion": 9,
-  "version": "0.4.1"
+  "serializedVersion": 12,
+  "version": "0.5.1-beta1"
 }
