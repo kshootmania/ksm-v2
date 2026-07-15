@@ -13,9 +13,9 @@ namespace MusicGame::Audio::AudioEffectUtils
 
 		const std::string kUpdateTriggerKey = "update_trigger";
 
-		kson::RelPulse UpdatePeriodDy(const std::string& str)
+		double UpdatePeriodMeasures(const std::string& str)
 		{
-			return static_cast<kson::RelPulse>(kson::kResolution4 * ksmaudio::AudioEffect::StrToValueSet(ksmaudio::AudioEffect::Type::kLength, str).onMin);
+			return static_cast<double>(ksmaudio::AudioEffect::StrToValueSet(ksmaudio::AudioEffect::Type::kLength, str).onMin);
 		}
 
 		const std::string& UpdatePeriodDefaultForAudioEffect(kson::AudioEffectType audioEffectType)
@@ -30,16 +30,6 @@ namespace MusicGame::Audio::AudioEffectUtils
 			}
 		}
 
-		kson::RelPulse ParamChangeUpdatePeriodDyAt(const kson::ByPulse<std::string>& updatePeriodChanges, kson::Pulse y, kson::RelPulse defDy)
-		{
-			const auto itr = kson::ValueItrAt(updatePeriodChanges, y);
-			if (itr == updatePeriodChanges.end() || itr->first > y)
-			{
-				return defDy;
-			}
-			return UpdatePeriodDy(itr->second);
-		}
-
 		std::pair<kson::Pulse, kson::Pulse> MeasurePulsePair(std::int64_t measureIdx, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 		{
 			const kson::Pulse startY = kson::MeasureIdxToPulse(measureIdx, beatInfo, timingCache);
@@ -50,6 +40,32 @@ namespace MusicGame::Audio::AudioEffectUtils
 				return { startY, startY };
 			}
 			return { startY, endY };
+		}
+
+		// トリガ更新判定用のカウントを計算(このカウントが変化するタイミングでトリガ更新される)
+		std::int64_t UpdateTriggerCountAt(kson::Pulse y, double updatePeriodMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
+		{
+			const std::int64_t measureIdx = kson::PulseToMeasureIdx(y, chartData.beat, timingCache);
+			const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
+			if (updatePeriodMeasures >= 1.0)
+			{
+				// 1小節以上の場合、曲の先頭から数えた通しの小節位置をもとにカウント
+				if (endY <= startY)
+				{
+					return 0;
+				}
+				const double measureValue = static_cast<double>(measureIdx) + static_cast<double>(y - startY) / static_cast<double>(endY - startY);
+				return static_cast<std::int64_t>(measureValue / updatePeriodMeasures);
+			}
+
+			const auto dy = static_cast<kson::RelPulse>(kson::kResolution4 * updatePeriodMeasures);
+			if (dy <= 0)
+			{
+				return 0;
+			}
+
+			// 1小節未満の場合、小節頭からの経過Pulse数をもとにカウント
+			return (y - startY) / dy;
 		}
 
 		std::set<float> PrecalculateUpdateTriggerTimingBarLineOnly(std::int64_t totalMeasures, const kson::ChartData& chartData, const kson::TimingCache& timingCache)
@@ -63,7 +79,8 @@ namespace MusicGame::Audio::AudioEffectUtils
 			return timingSet;
 		}
 
-		// updatePeriod系パラメータ(update_period, period)の値を小節単位でリセットしつつトリガタイミングを生成
+		// updatePeriod系パラメータ(update_period, period)のトリガタイミングを生成
+		// (1小節未満の値は小節頭を基準として、1小節以上の値は曲の先頭から数えた通しの小節位置を基準として等間隔にトリガ更新させる)
 		std::set<float> PrecalculateUpdateTriggerTimingByUpdatePeriodKey(
 			const kson::AudioEffectDef& def,
 			const kson::Dict<kson::ByPulse<std::string>>& paramChange,
@@ -82,55 +99,85 @@ namespace MusicGame::Audio::AudioEffectUtils
 				timingSet.insert(sec);
 			};
 
-			// updatePeriod系パラメータのトリガタイミングをあらかじめ計算して記録
+			// 値の途中変更を加味した区間一覧を作成(キーは区間の開始Pulse、値はupdatePeriodの小節数)
 			// (ksonの仕様上、updatePeriod系については"Off>OnMin-OnMax"のうちOffとOnMaxの値を無視してOnMinの値のみを使用することが許容されているので、ここではOnMinの値のみを使用する)
-			if (paramChange.contains(updatePeriodKey) && !paramChange.at(updatePeriodKey).empty())
+			kson::ByPulse<double> updatePeriods;
+			updatePeriods.emplace(kson::Pulse{ 0 }, UpdatePeriodMeasures(def.v.contains(updatePeriodKey) ? def.v.at(updatePeriodKey) : updatePeriodDefault));
+			if (paramChange.contains(updatePeriodKey))
 			{
-				// 値に途中変更がある場合、それを加味して計算
-				const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(updatePeriodKey) ? def.v.at(updatePeriodKey) : updatePeriodDefault);
-				const auto& updatePeriodChanges = paramChange.at(updatePeriodKey);
-				for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
+				for (const auto& [y, vStr] : paramChange.at(updatePeriodKey))
 				{
-					const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
-					const std::size_t count = kson::CountInRange(updatePeriodChanges, startY, endY);
-					if (count == 0U) [[likely]]
+					updatePeriods.insert_or_assign(y, UpdatePeriodMeasures(vStr));
+				}
+			}
+
+			// トリガタイミングを事前計算
+			const kson::Pulse totalEndY = kson::MeasureIdxToPulse(totalMeasures, chartData.beat, timingCache);
+			for (auto itr = updatePeriods.begin(); itr != updatePeriods.end(); ++itr)
+			{
+				const kson::Pulse regionStartY = itr->first;
+				const auto nextItr = std::next(itr);
+				const kson::Pulse regionEndY = nextItr == updatePeriods.end() ? totalEndY : std::min(nextItr->first, totalEndY);
+				if (regionStartY >= regionEndY)
+				{
+					continue;
+				}
+
+				const double updatePeriodMeasures = itr->second;
+				const auto dy = static_cast<kson::RelPulse>(kson::kResolution4 * updatePeriodMeasures);
+				if (updatePeriodMeasures < 1.0 && dy <= 0) // 値が0の場合はトリガ更新しない
+				{
+					continue;
+				}
+
+				// 値の変更点でトリガ更新のカウントが変化する場合、変更点でもトリガ更新される
+				if (itr != updatePeriods.begin() &&
+					UpdateTriggerCountAt(regionStartY - 1, std::prev(itr)->second, chartData, timingCache) != UpdateTriggerCountAt(regionStartY, updatePeriodMeasures, chartData, timingCache))
+				{
+					fnInsertTiming(regionStartY);
+				}
+
+				if (updatePeriodMeasures >= 1.0)
+				{
+					// 1小節以上の場合、小節ごとのリセットはせず、曲の先頭から数えた通しの小節位置を基準にトリガ更新
+					for (std::int64_t i = 0; ; ++i)
 					{
-						const kson::RelPulse dy = ParamChangeUpdatePeriodDyAt(updatePeriodChanges, startY, defDy);
-						if (dy > 0) // 値が0の場合はトリガ更新しない
+						const double measureValue = updatePeriodMeasures * i;
+						if (measureValue >= static_cast<double>(totalMeasures))
 						{
-							for (kson::Pulse y = startY; y < endY; y += dy)
-							{
-								fnInsertTiming(y);
-							}
+							break;
 						}
-					}
-					else
-					{
-						// Pulse値を1ずつ巡回していてやや非効率だが、この処理が実行されるのは値の途中変更を含む小節のみなので大した問題ではない
-						for (kson::Pulse ry = 0; ry < endY - startY; ++ry)
+						const kson::Pulse y = kson::MeasureValueToPulse(measureValue, chartData.beat, timingCache);
+						if (y >= regionEndY)
 						{
-							const kson::Pulse y = startY + ry;
-							const kson::RelPulse dy = ParamChangeUpdatePeriodDyAt(updatePeriodChanges, y, defDy);
-							if (dy > 0 && ry % dy == 0)
-							{
-								fnInsertTiming(y);
-							}
+							break;
+						}
+						if (y >= regionStartY)
+						{
+							fnInsertTiming(y);
 						}
 					}
 				}
-			}
-			else
-			{
-				// 値に途中変更がない場合、簡易的な計算のみでOKになる
-				const kson::RelPulse defDy = UpdatePeriodDy(def.v.contains(updatePeriodKey) ? def.v.at(updatePeriodKey) : updatePeriodDefault);
-				if (defDy > 0) // 値が0の場合はトリガ更新しない
+				else
 				{
-					for (std::int64_t measureIdx = 0; measureIdx < totalMeasures; ++measureIdx)
+					// 1小節未満の場合、小節頭を基準にdy間隔でトリガ更新(小節ごとにリセット)
+					for (std::int64_t measureIdx = kson::PulseToMeasureIdx(regionStartY, chartData.beat, timingCache); measureIdx < totalMeasures; ++measureIdx)
 					{
 						const auto [startY, endY] = MeasurePulsePair(measureIdx, chartData.beat, timingCache);
-						for (kson::Pulse y = startY; y < endY; y += defDy)
+						if (startY >= regionEndY)
 						{
-							fnInsertTiming(y);
+							break;
+						}
+						for (kson::Pulse y = startY; y < endY; y += dy)
+						{
+							if (y >= regionEndY)
+							{
+								break;
+							}
+							if (y >= regionStartY)
+							{
+								fnInsertTiming(y);
+							}
 						}
 					}
 				}
