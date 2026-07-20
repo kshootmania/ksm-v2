@@ -1258,9 +1258,6 @@
     <ClInclude Include="src\MusicGame\Audio\AudioEffectUtils.hpp">
       <Filter>Header Files\MusicGame\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="src\MusicGame\Timeline.hpp">
-      <Filter>Header Files\MusicGame</Filter>
-    </ClInclude>
     <ClInclude Include="src\MusicGame\Audio\AudioEffectMain.hpp">
       <Filter>Header Files\MusicGame\Audio</Filter>
     </ClInclude>

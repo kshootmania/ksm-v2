@@ -497,7 +497,6 @@
     <ClInclude Include="src\MusicGame\PlayResult.hpp" />
     <ClInclude Include="src\MusicGame\Scroll\HighwayScroll.hpp" />
     <ClInclude Include="src\MusicGame\Scroll\HispeedSetting.hpp" />
-    <ClInclude Include="src\MusicGame\Timeline.hpp" />
     <ClInclude Include="src\MusicGame\UI\HispeedSettingMenu.hpp" />
     <ClInclude Include="src\MusicGame\ViewStatus.hpp" />
     <ClInclude Include="src\NocoExtensions\NocoUtils.hpp" />
