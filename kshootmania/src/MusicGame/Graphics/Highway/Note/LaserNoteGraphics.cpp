@@ -17,6 +17,7 @@ namespace MusicGame::Graphics
 		constexpr kson::RelPulse kLaserSlamHeightPulse = kson::kResolution4 / 32; // 32分長
 		constexpr int32 kLaserTailHeightMax = 80;
 		constexpr kson::RelPulse kLaserTailHeightPulse = kson::kResolution4 / 16; // 16分長
+		constexpr int32 kLaserSlamFullHeightHispeed = 750;
 		constexpr Size kLaserStartTextureSize = { 44, 200 };
 		constexpr int32 kLaserShiftY = -6;
 
@@ -64,22 +65,33 @@ namespace MusicGame::Graphics
 			quad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y * laserNoteTextureRow + kLaserTextureSize.y - 1 + kOnePixelTextureSourceOffset, kLaserTextureSize.x, kOnePixelTextureSourceSize)).draw();
 		}
 
-		/// @brief 直角レーザーの横線の高さを計算(48pxと32分長の高さの小さい方)
+		/// @brief ハイスピードに応じた高さ(直角の分厚さ)の最小値を計算
+		int32 CalcLaserSlamHeightMin(kson::Pulse pulse, const Scroll::HighwayScrollContext& highwayScrollContext, int32 heightMax)
+		{
+			const int32 hispeed = highwayScrollContext.hispeedWithScrollSpeedAt(pulse);
+			return heightMax * Min(hispeed, kLaserSlamFullHeightHispeed) / kLaserSlamFullHeightHispeed;
+		}
+
+		/// @brief 直角レーザーの横線の高さを計算
 		/// @remark scroll_speedが負の場合は負の値を返す
 		int32 CalcLaserSlamHeight(kson::Pulse pulse, const Scroll::HighwayScrollContext& highwayScrollContext)
 		{
+			// 高BPMの場合に細くなりすぎないよう最小値を設ける
 			const int32 slamHeightFromPulse = highwayScrollContext.relPulseToPixelHeight(pulse, kLaserSlamHeightPulse);
 			const int32 sign = Sign(slamHeightFromPulse);
-			return sign * Min(kLaserSlamHeightMax, Abs(slamHeightFromPulse));
+			const int32 slamHeightMin = CalcLaserSlamHeightMin(pulse, highwayScrollContext, kLaserSlamHeightMax);
+			return sign * Clamp(Abs(slamHeightFromPulse), slamHeightMin, kLaserSlamHeightMax);
 		}
 
-		/// @brief 直角レーザーのtailの高さを計算(80pxと16分長の高さの小さい方)
+		/// @brief 直角レーザーのtailの高さを計算
 		/// @remark scroll_speedが負の場合は負の値を返す
 		int32 CalcLaserTailHeight(kson::Pulse pulse, const Scroll::HighwayScrollContext& highwayScrollContext)
 		{
+			// 高BPMの場合に短くなりすぎないよう最小値を設ける
 			const int32 tailHeightFromPulse = highwayScrollContext.relPulseToPixelHeight(pulse, kLaserTailHeightPulse);
 			const int32 sign = Sign(tailHeightFromPulse);
-			return sign * Min(kLaserTailHeightMax, Abs(tailHeightFromPulse));
+			const int32 tailHeightMin = CalcLaserSlamHeightMin(pulse, highwayScrollContext, kLaserTailHeightMax);
+			return sign * Clamp(Abs(tailHeightFromPulse), tailHeightMin, kLaserTailHeightMax);
 		}
 
 		// 曲線直角レーザーの上端が始点側を越えないように傾きを制限

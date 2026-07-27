@@ -65,6 +65,11 @@ namespace MusicGame::Scroll
 		/// @brief scroll_speedを考慮した現在のハイスピード値を返す
 		/// @return scroll_speed適用済みのハイスピード値(負のscroll_speedは絶対値で計算)
 		int32 currentHispeedWithScrollSpeed() const;
+
+		/// @brief scroll_speedを考慮した指定Pulse位置でのハイスピード値を返す
+		/// @param pulse Pulse位置
+		/// @return scroll_speed適用済みのハイスピード値(負のscroll_speedは絶対値で計算)
+		int32 hispeedWithScrollSpeedAt(kson::Pulse pulse) const;
 	};
 
 	/// @brief Highway上のスクロール計算(ハイスピードおよびscroll_speedの計算)
@@ -141,5 +146,11 @@ namespace MusicGame::Scroll
 		/// @brief 現在のハイスピード値を返す
 		/// @return ハイスピード値
 		int32 currentHispeed() const;
+
+		/// @brief 指定したPulse位置でのハイスピード値を返す
+		/// @param pulse Pulse値
+		/// @param beatInfo kson.beat
+		/// @return ハイスピード値
+		int32 hispeedAt(kson::Pulse pulse, const kson::BeatInfo& beatInfo) const;
 	};
 }
