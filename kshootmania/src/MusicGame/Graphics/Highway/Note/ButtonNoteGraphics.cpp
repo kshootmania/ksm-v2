@@ -116,62 +116,66 @@ namespace MusicGame::Graphics
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
 
 		const std::size_t numLanes = isBT ? kson::kNumBTLanesSZ : kson::kNumFXLanesSZ;
-		for (std::size_t laneIdx = 0; laneIdx < numLanes; ++laneIdx)
+
+		// scroll_speedに負の値が含まれている場合は描画範囲外の判定を変更
+		const bool hasNegativeScrollSpeed = highwayScrollContext.hasNegativeScrollSpeed();
+
+		const int32 numColumns = isBT ? kNumTextureColumnsMainSub : 1; // ロングBTノーツの場合はinvMultiply用のテクスチャ列が追加で存在する
+
+		// レンダーターゲットとブレンドステートの切り替えはノーツ単位で行うと描画バッチが分断されるため、テクスチャ列単位でまとめる
+		for (int32 i = 0; i < numColumns; ++i)
 		{
-			const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
-			const double centerSplitShiftX = Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit) * ((laneIdx >= numLanes / 2) ? 1 : -1);
-			const Vec2 offsetPosition = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * laneIdx;
+			const ScopedRenderTarget2D renderTarget((i == 0) ? target.additiveTexture() : target.invMultiplyTexture());
+			const ScopedRenderStates2D blendState((i == 0) ? (isBT ? BlendState::Additive : BlendState::Default2D) : BlendState::Subtractive);
 
-			// scroll_speedに負の値が含まれている場合は描画範囲外の判定を変更
-			const bool hasNegativeScrollSpeed = highwayScrollContext.hasNegativeScrollSpeed();
-
-			for (const auto& [y, note] : lane)
+			for (std::size_t laneIdx = 0; laneIdx < numLanes; ++laneIdx)
 			{
-				const int32 positionStartY = highwayScrollContext.getPositionY(y);
-				if (!hasNegativeScrollSpeed && positionStartY < 0)
-				{
-					// scroll_speedに負の値がない場合は、positionStartY < 0でループを抜ける
-					break;
-				}
+				const auto& lane = isBT ? chartData.note.bt[laneIdx] : chartData.note.fx[laneIdx];
+				const double centerSplitShiftX = Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit) * ((laneIdx >= numLanes / 2) ? 1 : -1);
+				const Vec2 offsetPosition = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * laneIdx;
 
-				const int32 positionEndY = note.length == 0 ? positionStartY : highwayScrollContext.getPositionY(y + note.length);
-
-				// ノーツ全体が描画範囲外の場合はスキップ
-				if (!highwayScrollContext.isPulseRangeInDrawRange(y, y + note.length))
+				for (const auto& [y, note] : lane)
 				{
-					if (!hasNegativeScrollSpeed && Max(positionStartY, positionEndY) < 0)
+					const int32 positionStartY = highwayScrollContext.getPositionY(y);
+					if (!hasNegativeScrollSpeed && positionStartY < 0)
 					{
-						// scroll_speedに負の値がなく、ノーツ全体が上にある場合はループを抜ける
+						// scroll_speedに負の値がない場合は、positionStartY < 0でループを抜ける
 						break;
 					}
-					continue;
-				}
 
-				if (note.length <= 0)
-				{
-					// ここではロングノーツ以外は描画しない
-					continue;
-				}
+					const int32 positionEndY = note.length == 0 ? positionStartY : highwayScrollContext.getPositionY(y + note.length);
 
-				const int32 height = positionStartY - positionEndY;
-				if (height == 0)
-				{
-					// 高さが0の場合は描画しない
-					continue;
-				}
+					// ノーツ全体が描画範囲外の場合はスキップ
+					if (!highwayScrollContext.isPulseRangeInDrawRange(y, y + note.length))
+					{
+						if (!hasNegativeScrollSpeed && Max(positionStartY, positionEndY) < 0)
+						{
+							// scroll_speedに負の値がなく、ノーツ全体が上にある場合はループを抜ける
+							break;
+						}
+						continue;
+					}
 
-				// scroll_speedが負の場合、heightが負になる可能性がある
-				const int32 absHeight = Abs(height);
-				if (absHeight <= 0)
-				{
-					continue;
-				}
+					if (note.length <= 0)
+					{
+						// ここではロングノーツ以外は描画しない
+						continue;
+					}
 
-				const int32 numColumns = isBT ? kNumTextureColumnsMainSub : 1; // ロングBTノーツの場合はinvMultiply用のテクスチャ列が追加で存在する
-				for (int32 i = 0; i < numColumns; ++i)
-				{
-					const ScopedRenderTarget2D renderTarget((i == 0) ? target.additiveTexture() : target.invMultiplyTexture());
-					const ScopedRenderStates2D blendState((i == 0) ? (isBT ? BlendState::Additive : BlendState::Default2D) : BlendState::Subtractive);
+					const int32 height = positionStartY - positionEndY;
+					if (height == 0)
+					{
+						// 高さが0の場合は描画しない
+						continue;
+					}
+
+					// scroll_speedが負の場合、heightが負になる可能性がある
+					const int32 absHeight = Abs(height);
+					if (absHeight <= 0)
+					{
+						continue;
+					}
+
 					const ButtonLaneStatus& laneStatus = isBT ? gameStatus.btLaneStatus[laneIdx] : gameStatus.fxLaneStatus[laneIdx];
 					double sourceY;
 					if (laneStatus.currentLongNotePulse == y)

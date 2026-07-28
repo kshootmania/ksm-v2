@@ -18,7 +18,7 @@ namespace MusicGame::Scroll
 		const kson::TimingCache* const m_pTimingCache;
 		const GameStatus* const m_pGameStatus;
 
-		/// @brief scrollSpeedに負の値が含まれているか(コンストラクタで事前計算)
+		/// @brief scrollSpeedに負の値が含まれているか
 		const bool m_hasNegativeScrollSpeed;
 
 	public:
@@ -79,6 +79,15 @@ namespace MusicGame::Scroll
 		/// @brief o-mod用の基準BPM
 		const double m_stdBPM;
 
+		/// @brief scrollSpeedに負の値が含まれているか(コンストラクタで事前計算)
+		const bool m_hasNegativeScrollSpeed;
+
+		/// @brief scrollSpeedのグラフ点のPulse位置(m_scrollSpeedIntegralPrefixSumsと同じ添字で対応)
+		Array<kson::Pulse> m_scrollSpeedPulses;
+
+		/// @brief scrollSpeedのグラフ点間の積分値をグラフ先頭から累積した値
+		Array<double> m_scrollSpeedIntegralPrefixSums;
+
 		/// @brief ハイスピード設定
 		HispeedSetting m_hispeedSetting;
 
@@ -104,6 +113,14 @@ namespace MusicGame::Scroll
 		/// @return 秒数
 		/// @note ハイスピードの種類のうちC-modでのみ使用される
 		double pulseToSec(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache) const;
+
+		/// @brief scrollSpeedをstartPulseからendPulseまで積分(台形則、始点After/終点Beforeで即時変更に対応)
+		/// @param scrollSpeed kson.beat.scroll_speed
+		/// @param startPulse 開始Pulse値
+		/// @param endPulse 終了Pulse値
+		/// @return 積分値(endPulseがstartPulseより手前の場合は負の値)
+		/// @note グラフ点をまたぐ区間は事前計算した累積値を使うため、区間内のグラフ点数によらず一定時間で求まる
+		double scrollSpeedIntegral(const kson::Graph& scrollSpeed, double startPulse, double endPulse) const;
 
 		/// @brief 現在時間からの相対Pulse数を求める(C-modの場合は秒数をもとに計算した換算値を返す)
 		/// @param pulse Pulse値
@@ -138,6 +155,10 @@ namespace MusicGame::Scroll
 		/// @param beatInfo kson.beat
 		/// @return ピクセル高さ
 		int32 relPulseToPixelHeight(kson::Pulse basePulse, kson::RelPulse relPulse, const kson::BeatInfo& beatInfo) const;
+
+		/// @brief scrollSpeedに負の値が含まれているかを返す
+		/// @return 負の値が含まれていればtrue
+		bool hasNegativeScrollSpeed() const;
 
 		/// @brief ハイスピード設定を返す
 		/// @return ハイスピード設定

@@ -1,5 +1,6 @@
 ﻿#include "HighwayScroll.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <utility>
 
@@ -79,46 +80,12 @@ namespace MusicGame::Scroll
 			}
 		}
 
-		/// @brief scrollSpeedをstartPulseからendPulseまで積分(台形則、始点After/終点Beforeで即時変更に対応)
-		double CalcScrollSpeedIntegral(const kson::Graph& scrollSpeed, double startPulse, double endPulse)
+		/// @brief scrollSpeedの1区間を台形則で積分(始点After/終点Beforeで即時変更に対応)
+		double CalcScrollSpeedSegmentIntegral(const kson::Graph& scrollSpeed, double startPulse, double endPulse)
 		{
-			if (scrollSpeed.empty())
-			{
-				return endPulse - startPulse;
-			}
-
-			if (endPulse < startPulse)
-			{
-				return -CalcScrollSpeedIntegral(scrollSpeed, endPulse, startPulse);
-			}
-
-			double totalRelPulse = 0.0;
-			for (double segmentStartPulse = startPulse; segmentStartPulse < endPulse; )
-			{
-				const auto nextItr = scrollSpeed.upper_bound(static_cast<kson::Pulse>(std::floor(segmentStartPulse)));
-				const double segmentEndPulse = (nextItr != scrollSpeed.end() && static_cast<double>(nextItr->first) < endPulse)
-					? static_cast<double>(nextItr->first)
-					: endPulse;
-
-				// 始点はAfter、終点はBeforeで即時変更に対応
-				const double startSpeed = kson::GraphValueAtDouble(scrollSpeed, segmentStartPulse, kson::GraphSide::After);
-				const double endSpeed = kson::GraphValueAtDouble(scrollSpeed, segmentEndPulse, kson::GraphSide::Before);
-				totalRelPulse += (segmentEndPulse - segmentStartPulse) * (startSpeed + endSpeed) / 2.0;
-
-				segmentStartPulse = segmentEndPulse;
-			}
-
-			return totalRelPulse;
-		}
-
-		/// @brief scrollSpeedを考慮したノーツの相対Pulse値を計算
-		/// @param notePulse ノーツのPulse位置
-		/// @param currentPulseDouble 現在のPulse位置
-		/// @param scrollSpeed scrollSpeedグラフ
-		/// @return scrollSpeedを考慮した相対Pulse値
-		double CalcScrollSpeedAdjustedRelPulse(kson::Pulse notePulse, double currentPulseDouble, const kson::Graph& scrollSpeed)
-		{
-			return CalcScrollSpeedIntegral(scrollSpeed, currentPulseDouble, static_cast<double>(notePulse));
+			const double startSpeed = kson::GraphValueAtDouble(scrollSpeed, startPulse, kson::GraphSide::After);
+			const double endSpeed = kson::GraphValueAtDouble(scrollSpeed, endPulse, kson::GraphSide::Before);
+			return (endPulse - startPulse) * (startSpeed + endSpeed) / 2.0;
 		}
 	}
 
@@ -127,7 +94,7 @@ namespace MusicGame::Scroll
 		, m_pBeatInfo(pBeatInfo)
 		, m_pTimingCache(pTimingCache)
 		, m_pGameStatus(pGameStatus)
-		, m_hasNegativeScrollSpeed(HasNegativeScrollSpeed(*pBeatInfo))
+		, m_hasNegativeScrollSpeed(pHighwayScroll->hasNegativeScrollSpeed())
 	{
 	}
 
@@ -277,13 +244,61 @@ namespace MusicGame::Scroll
 		else
 		{
 			// 現在地点からノーツ地点までの区間を積分計算(scrollSpeedが空なら単純な差分になる)
-			return CalcScrollSpeedAdjustedRelPulse(pulse, gameStatus.currentPulseDouble, beatInfo.scrollSpeed);
+			return scrollSpeedIntegral(beatInfo.scrollSpeed, gameStatus.currentPulseDouble, static_cast<double>(pulse));
 		}
+	}
+
+	double HighwayScroll::scrollSpeedIntegral(const kson::Graph& scrollSpeed, double startPulse, double endPulse) const
+	{
+		if (scrollSpeed.empty())
+		{
+			return endPulse - startPulse;
+		}
+
+		if (endPulse < startPulse)
+		{
+			return -scrollSpeedIntegral(scrollSpeed, endPulse, startPulse);
+		}
+
+		// 区間の分割位置となるグラフ点の範囲を求める
+		const auto beginItr = std::upper_bound(m_scrollSpeedPulses.begin(), m_scrollSpeedPulses.end(), static_cast<kson::Pulse>(std::floor(startPulse)));
+		const auto endItr = std::lower_bound(m_scrollSpeedPulses.begin(), m_scrollSpeedPulses.end(), endPulse);
+
+		if (beginItr >= endItr)
+		{
+			// 間にグラフ点がない場合は1区間として計算
+			return CalcScrollSpeedSegmentIntegral(scrollSpeed, startPulse, endPulse);
+		}
+
+		const size_t beginIdx = static_cast<size_t>(beginItr - m_scrollSpeedPulses.begin());
+		const size_t lastIdx = static_cast<size_t>(endItr - m_scrollSpeedPulses.begin()) - 1;
+
+		// 端数の2区間のみ台形則で計算し、グラフ点間は事前計算した累積値の差分で求める
+		const double headIntegral = CalcScrollSpeedSegmentIntegral(scrollSpeed, startPulse, static_cast<double>(m_scrollSpeedPulses[beginIdx]));
+		const double bodyIntegral = m_scrollSpeedIntegralPrefixSums[lastIdx] - m_scrollSpeedIntegralPrefixSums[beginIdx];
+		const double tailIntegral = CalcScrollSpeedSegmentIntegral(scrollSpeed, static_cast<double>(m_scrollSpeedPulses[lastIdx]), endPulse);
+
+		return headIntegral + bodyIntegral + tailIntegral;
 	}
 
 	HighwayScroll::HighwayScroll(const kson::ChartData& chartData)
 		: m_stdBPM(kson::GetEffectiveStdBPM(chartData))
+		, m_hasNegativeScrollSpeed(HasNegativeScrollSpeed(chartData.beat))
 	{
+		// scrollSpeedのグラフ点間の積分値を累積したテーブルを作成
+		const kson::Graph& scrollSpeed = chartData.beat.scrollSpeed;
+		m_scrollSpeedPulses.reserve(scrollSpeed.size());
+		m_scrollSpeedIntegralPrefixSums.reserve(scrollSpeed.size());
+		double prefixSum = 0.0;
+		for (const auto& [pulse, graphValue] : scrollSpeed)
+		{
+			if (!m_scrollSpeedPulses.isEmpty())
+			{
+				prefixSum += CalcScrollSpeedSegmentIntegral(scrollSpeed, static_cast<double>(m_scrollSpeedPulses.back()), static_cast<double>(pulse));
+			}
+			m_scrollSpeedPulses.push_back(pulse);
+			m_scrollSpeedIntegralPrefixSums.push_back(prefixSum);
+		}
 	}
 
 	void HighwayScroll::update(const HispeedSetting& hispeedSetting, double currentBPM)
@@ -306,8 +321,13 @@ namespace MusicGame::Scroll
 	{
 		assert(m_hispeedFactor != 0.0 && "HighwayScroll::update() must be called at least once before HighwayScroll::relPulseToPixelHeight()");
 
-		const double relPulseEquivalent = CalcScrollSpeedAdjustedRelPulse(basePulse + relPulse, static_cast<double>(basePulse), beatInfo.scrollSpeed);
+		const double relPulseEquivalent = scrollSpeedIntegral(beatInfo.scrollSpeed, static_cast<double>(basePulse), static_cast<double>(basePulse + relPulse));
 		return static_cast<int32>(relPulseEquivalent * kBasePixels * m_hispeedFactor / kson::kResolution4);
+	}
+
+	bool HighwayScroll::hasNegativeScrollSpeed() const
+	{
+		return m_hasNegativeScrollSpeed;
 	}
 
 	const HispeedSetting& HighwayScroll::hispeedSetting() const

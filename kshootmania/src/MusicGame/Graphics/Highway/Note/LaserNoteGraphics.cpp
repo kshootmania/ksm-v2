@@ -235,10 +235,9 @@ namespace MusicGame::Graphics
 			return JudgmentStatus::kError;
 		}
 
-		void DrawLaserSection(int32 laneIdx, kson::Pulse y, const kson::LaserSection& laserSection, const HashSet<kson::Pulse>& curvedPulses, const Scroll::HighwayScrollContext& highwayScrollContext, const RenderTexture& target, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const TextureRegion& laserStartTexture)
+		/// @remark レンダーターゲットは呼び出し側で設定しておくこと
+		void DrawLaserSection(int32 laneIdx, kson::Pulse y, const kson::LaserSection& laserSection, const HashSet<kson::Pulse>& curvedPulses, const Scroll::HighwayScrollContext& highwayScrollContext, const Texture& laserNoteTexture, int32 laserNoteTextureRow, const TextureRegion& laserStartTexture)
 		{
-			const ScopedRenderTarget2D renderTarget(target);
-
 			// はみ出しLASERの場合は描画領域を横幅2倍として扱う
 			const bool wide = laserSection.wide();
 			const int32 xScale = wide ? kLaserXScaleWide : kLaserXScaleNormal;
@@ -444,6 +443,8 @@ namespace MusicGame::Graphics
 			const bool hasNegativeScrollSpeed = highwayScrollContext.hasNegativeScrollSpeed();
 			auto itr = hasNegativeScrollSpeed ? lane.begin() : kson::ValueItrAt(lane, gameStatus.currentPulse);
 
+			m_visibleLaserSections.clear();
+
 			for (; itr != lane.end(); ++itr)
 			{
 				const auto& [y, laserSection] = *itr;
@@ -493,9 +494,21 @@ namespace MusicGame::Graphics
 				const JudgmentStatus judgmentStatus = (playOption.laserJudgmentPlayMode == JudgmentPlayMode::kOff) ? JudgmentStatus::kNormal : GetLaserSectionJudgmentStatus(laneStatus, y);
 				const int32 textureRow = LaserTextureRow(judgmentStatus, gameStatus.currentTimeSec);
 
-				// LASERセクションを描画
-				DrawLaserSection(laneIdx, y, laserSection, curvedPulses, highwayScrollContext, target.additiveTexture(), m_laserNoteTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kTextureColumnMain));
-				DrawLaserSection(laneIdx, y, laserSection, curvedPulses, highwayScrollContext, target.invMultiplyTexture(), m_laserNoteMaskTexture, textureRow, m_laserNoteStartTextures[laneIdx](0, kTextureColumnSub));
+				m_visibleLaserSections.push_back({ .y = y, .pLaserSection = &laserSection, .textureRow = textureRow });
+			}
+
+			// レンダーターゲットの切り替えはセクション単位で行うと描画バッチが分断されるため、テクスチャの種類単位でまとめる
+			for (int32 textureColumn = 0; textureColumn < kNumTextureColumnsMainSub; ++textureColumn)
+			{
+				const bool isMain = textureColumn == kTextureColumnMain;
+				const ScopedRenderTarget2D renderTarget(isMain ? target.additiveTexture() : target.invMultiplyTexture());
+				const Texture& laserNoteTexture = isMain ? m_laserNoteTexture : m_laserNoteMaskTexture;
+				const TextureRegion laserStartTexture = m_laserNoteStartTextures[laneIdx](0, textureColumn);
+
+				for (const auto& [y, pLaserSection, textureRow] : m_visibleLaserSections)
+				{
+					DrawLaserSection(laneIdx, y, *pLaserSection, curvedPulses, highwayScrollContext, laserNoteTexture, textureRow, laserStartTexture);
+				}
 			}
 		}
 	}
