@@ -150,10 +150,14 @@ namespace MusicGame::Audio
 			// ユーザー定義エフェクトを追加
 			for (const auto& kvp : chartData.audio.audioEffect.fx.def)
 			{
+				// ver=200未満の譜面はrelease_timeのデフォルト値が変更前のものになるようにする
+				kson::AudioEffectDef def = kvp.v;
+				kson::ApplyLegacySidechainReleaseTime(&def, chartData.compat);
+
 				defFX.push_back(
 					AudioEffectDefWithBuiltinFlag{
 						.name = kvp.name,
-						.def = kvp.v,
+						.def = std::move(def),
 						.isBuiltin = false,
 					});
 			}
@@ -200,10 +204,14 @@ namespace MusicGame::Audio
 			// ユーザー定義エフェクトを追加
 			for (const auto& kvp : chartData.audio.audioEffect.laser.def)
 			{
+				// ver=200未満の譜面はrelease_timeのデフォルト値が変更前のものになるようにする
+				kson::AudioEffectDef def = kvp.v;
+				kson::ApplyLegacySidechainReleaseTime(&def, chartData.compat);
+
 				defLaser.push_back(
 					AudioEffectDefWithBuiltinFlag{
 						.name = kvp.name,
-						.def = kvp.v,
+						.def = std::move(def),
 						.isBuiltin = false,
 					});
 			}
