@@ -160,6 +160,12 @@ namespace MusicGame
 				{
 					bpm *= playbackSpeed;
 				}
+
+				// 基準BPMが設定されている場合はスケーリング
+				if (chartData.meta.stdBPM > 0.0)
+				{
+					chartData.meta.stdBPM *= playbackSpeed;
+				}
 			}
 
 			return chartData;
