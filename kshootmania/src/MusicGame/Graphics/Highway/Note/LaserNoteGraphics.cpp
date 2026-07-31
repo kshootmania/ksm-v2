@@ -18,6 +18,10 @@ namespace MusicGame::Graphics
 		constexpr int32 kLaserTailHeightMax = 80;
 		constexpr kson::RelPulse kLaserTailHeightPulse = kson::kResolution4 / 16; // 16分長
 		constexpr int32 kLaserSlamFullHeightHispeed = 750;
+
+		// 直角同士が連続する場合の分厚さの上限の割合(中間のレーザーが消えないよう1未満にする)
+		constexpr int32 kLaserSlamHeightMaxToNextSlamNumerator = 4;
+		constexpr int32 kLaserSlamHeightMaxToNextSlamDenominator = 5;
 		constexpr Size kLaserStartTextureSize = { 44, 200 };
 		constexpr int32 kLaserShiftY = -6;
 
@@ -253,6 +257,30 @@ namespace MusicGame::Graphics
 
 				const int32 positionY = highwayScrollContext.getPositionY(y + ry) + kLaserShiftY;
 
+				const bool isSlam = point.v.v != point.v.vf;
+				int32 slamHeight = 0;
+				if (isSlam)
+				{
+					slamHeight = CalcLaserSlamHeight(y + ry, highwayScrollContext);
+
+					// 後続の直角が分厚さの内側に隠れて消えないよう、その直角までの画面距離の一定割合を分厚さの上限とする
+					for (auto capItr = std::next(itr); capItr != laserSection.v.end(); ++capItr)
+					{
+						const int32 capPositionY = highwayScrollContext.getPositionY(y + capItr->first) + kLaserShiftY;
+						const int32 distanceY = positionY - capPositionY;
+						if (Sign(distanceY) != Sign(slamHeight) || Abs(distanceY) >= Abs(slamHeight))
+						{
+							// 分厚さの外に出たら抜ける
+							break;
+						}
+						if (capItr->second.v.v != capItr->second.v.vf)
+						{
+							slamHeight = distanceY * kLaserSlamHeightMaxToNextSlamNumerator / kLaserSlamHeightMaxToNextSlamDenominator;
+							break;
+						}
+					}
+				}
+
 				// この点のPulse位置でのscroll_speedが正かを取得
 				const bool isScrollSpeedPositive = highwayScrollContext.isScrollSpeedPositiveAt(y + ry);
 
@@ -287,11 +315,9 @@ namespace MusicGame::Graphics
 				double topShiftX = 0.0;
 
 				// 直角レーザーを描画
-				if (point.v.v != point.v.vf)
+				if (isSlam)
 				{
-					const int32 slamHeight = CalcLaserSlamHeight(y + ry, highwayScrollContext);
-
-					// 展開前データに曲線がある場合、slam分厚さの外にある最初の点を参照してtopShiftXを計算
+					// 展開前データに曲線がある場合、直角の分厚さの外にある最初の点を参照してtopShiftXを計算
 					if (slamHeight != 0 && curvedPulses.contains(y + ry))
 					{
 						const int32 slamTopY = positionY - slamHeight;
@@ -300,8 +326,8 @@ namespace MusicGame::Graphics
 							const auto& [refRy, refPoint] = *refItr;
 							const int32 refPositionY = highwayScrollContext.getPositionY(y + refRy) + kLaserShiftY;
 
-							// slam分厚さ以内の点は飛ばす(境界上の点も含む)
-							if ((slamHeight > 0 && refPositionY >= slamTopY) || (slamHeight < 0 && refPositionY <= slamTopY))
+							// 直角の分厚さの内側にある点は飛ばす
+							if ((slamHeight > 0 && refPositionY > slamTopY) || (slamHeight < 0 && refPositionY < slamTopY))
 							{
 								continue;
 							}
@@ -326,12 +352,12 @@ namespace MusicGame::Graphics
 						DrawLaserSlam(laneIdx, positionY, point, slamHeight, laserNoteTexture, laserNoteTextureRow, xScale, topShiftX);
 					}
 
-					// slam分厚さ以内の次の点を飛ばす
+					// 直角の分厚さの内側にある次の点を飛ばす
 					const int32 slamTopY = positionY - slamHeight;
 					while (std::next(itr) != laserSection.v.end())
 					{
 						const int32 peekPositionY = highwayScrollContext.getPositionY(y + std::next(itr)->first) + kLaserShiftY;
-						if ((slamHeight > 0 && peekPositionY >= slamTopY) || (slamHeight < 0 && peekPositionY <= slamTopY))
+						if ((slamHeight > 0 && peekPositionY > slamTopY) || (slamHeight < 0 && peekPositionY < slamTopY))
 						{
 							++itr;
 						}
@@ -347,9 +373,8 @@ namespace MusicGame::Graphics
 				if (nextItr == laserSection.v.end())
 				{
 					// 終端が直角の場合は終端を伸ばす
-					if (point.v.v != point.v.vf)
+					if (isSlam)
 					{
-						const int32 slamHeight = CalcLaserSlamHeight(y + ry, highwayScrollContext);
 						const int32 tailHeight = CalcLaserTailHeight(y + ry, highwayScrollContext);
 
 						// tailの描画範囲を計算
@@ -370,10 +395,6 @@ namespace MusicGame::Graphics
 				{
 					const auto& [nextRy, nextPoint] = *nextItr;
 					const int32 nextPositionY = highwayScrollContext.getPositionY(y + nextRy) + kLaserShiftY;
-
-					// 現在の点が直角の場合は後続のLASERを高さ分後ろにずらす
-					const bool isSlam = point.v.v != point.v.vf;
-					const int32 slamHeight = isSlam ? CalcLaserSlamHeight(y + ry, highwayScrollContext) : 0;
 
 					// 線全体が描画範囲外の場合はスキップ
 					if (!highwayScrollContext.isPulseRangeInDrawRange(y + ry, y + nextRy, kLaserShiftY))
