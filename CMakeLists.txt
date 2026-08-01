@@ -6,7 +6,7 @@ if(APPLE)
     set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 endif()
 
-project(kshootmania VERSION 2.0.1)
+project(kshootmania VERSION 2.1.0)
 set(PROJECT_VERSION_SUFFIX "")
 
 set(CMAKE_CXX_STANDARD 20)
