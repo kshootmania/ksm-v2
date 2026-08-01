@@ -117,7 +117,7 @@ namespace MusicGame::Audio::AudioEffectUtils
 			{
 				const kson::Pulse regionStartY = itr->first;
 				const auto nextItr = std::next(itr);
-				const kson::Pulse regionEndY = nextItr == updatePeriods.end() ? totalEndY : std::min(nextItr->first, totalEndY);
+				const kson::Pulse regionEndY = nextItr == updatePeriods.end() ? totalEndY : Min(nextItr->first, totalEndY);
 				if (regionStartY >= regionEndY)
 				{
 					continue;
