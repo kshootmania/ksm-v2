@@ -6,7 +6,7 @@
 
 namespace
 {
-	constexpr int32 kSchemaVersion = 1;
+	constexpr int32 kSchemaVersion = 2;
 	constexpr StringView kDbFileName = U"cache.sqlite3";
 
 	struct SourceFileInfo
@@ -242,9 +242,7 @@ namespace
 				continue;
 			}
 
-			kson::MetaChartData chartData = FsUtils::HasKsonExtension(chartFilePath)
-				? kson::LoadKsonMetaChartData(chartFilePath.toUTF8())
-				: kson::LoadKshMetaChartData(chartFilePath.toUTF8());
+			kson::MetaChartData chartData = SelectChartInfo::LoadMetaChartData(chartFilePath);
 
 			if (chartData.error != kson::ErrorType::None)
 			{

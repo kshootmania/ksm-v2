@@ -142,9 +142,7 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 
 				if (FileSystem::Exists(chart.absolutePath))
 				{
-					const kson::MetaChartData chartData = FsUtils::HasKsonExtension(chart.absolutePath)
-						? kson::LoadKsonMetaChartData(chart.absolutePath.toUTF8())
-						: kson::LoadKshMetaChartData(chart.absolutePath.toUTF8());
+					const kson::MetaChartData chartData = SelectChartInfo::LoadMetaChartData(chart.absolutePath);
 
 					if (chartData.error == kson::ErrorType::None)
 					{

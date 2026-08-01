@@ -17,6 +17,9 @@ private:
 	FilePath toFullPath(const std::string& u8Filename) const;
 
 public:
+	[[nodiscard]]
+	static kson::MetaChartData LoadMetaChartData(FilePathView chartFilePath);
+
 	explicit SelectChartInfo(FilePathView chartFilePath);
 
 	SelectChartInfo(FilePathView chartFilePath, const kson::MetaChartData& chartData, const FolderConfIni& folderConfIni);

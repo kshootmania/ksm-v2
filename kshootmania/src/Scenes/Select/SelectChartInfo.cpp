@@ -12,11 +12,24 @@ FilePath SelectChartInfo::toFullPath(const std::string& u8Filename) const
 	return FileSystem::PathAppend(FileSystem::ParentPath(m_chartFilePath), Unicode::FromUTF8(u8Filename));
 }
 
+kson::MetaChartData SelectChartInfo::LoadMetaChartData(FilePathView chartFilePath)
+{
+	kson::MetaChartData chartData = FsUtils::HasKsonExtension(chartFilePath)
+		? kson::LoadKsonMetaChartData(chartFilePath.toUTF8())
+		: kson::LoadKshMetaChartData(chartFilePath.toUTF8());
+
+	// disp_bpmが空の場合は最初のBPMを表示に使用
+	if (chartData.meta.dispBPM.empty())
+	{
+		chartData.meta.dispBPM = Unicode::ToUTF8(Format(chartData.firstBPM));
+	}
+
+	return chartData;
+}
+
 SelectChartInfo::SelectChartInfo(FilePathView chartFilePath)
 	: m_chartFilePath(chartFilePath)
-	, m_chartData(FsUtils::HasKsonExtension(chartFilePath)
-		? kson::LoadKsonMetaChartData(chartFilePath.toUTF8())
-		: kson::LoadKshMetaChartData(chartFilePath.toUTF8()))
+	, m_chartData(LoadMetaChartData(chartFilePath))
 	, m_folderConfIni(FolderConfIni::Load(chartFilePath))
 	{
 		// 検索用文字列をあらかじめ用意
