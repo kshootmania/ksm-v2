@@ -161,6 +161,12 @@ double SelectChartInfo::stdBPMForHispeedTypeChange() const
 
 FilePath SelectChartInfo::previewBGMFilePath() const
 {
+	// BGM未指定の場合は空のパスを返す(フォルダパスを返すとデフォルトBGMが再生されないため)
+	if (m_chartData.audio.bgm.filename.empty())
+	{
+		return FilePath{};
+	}
+
 	return toFullPath(m_chartData.audio.bgm.filename);
 }
 
