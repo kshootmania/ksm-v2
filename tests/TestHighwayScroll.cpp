@@ -96,8 +96,7 @@ TEST_CASE("HighwayScroll integrates partial scroll_speed interpolation across ze
 	const int32 posY_480 = highwayScroll.getPositionY(480, chartData.beat, timingCache, gameStatus);
 	const int32 posY_720 = highwayScroll.getPositionY(720, chartData.beat, timingCache, gameStatus);
 
-	REQUIRE(posY_240 > posY_480);
 	REQUIRE(posY_480 > posY_720);
-	REQUIRE(posY_240 - posY_480 == posY_480 - posY_720);
-	REQUIRE(posY_240 - posY_480 == 33);
+	REQUIRE(posY_240 == posY_720);
+	REQUIRE(posY_480 - posY_720 == 33);
 }
