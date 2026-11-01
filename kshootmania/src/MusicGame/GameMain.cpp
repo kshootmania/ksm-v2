@@ -115,8 +115,16 @@ namespace MusicGame
 					.fxLanesForAudio = chartData.note.fx,
 					.fxNoteDestinations = MakeFXNoteDestinations(chartData, sRandomNoteLanes),
 				};
-				ApplySRandomNoteLanes(&chartData, sRandomNoteLanes);
-				pNoteArrangementOut->sRandomNoteLanes = sRandomNoteLanes;
+				if (ApplySRandomNoteLanes(&chartData, sRandomNoteLanes))
+				{
+					pNoteArrangementOut->sRandomNoteLanes = sRandomNoteLanes;
+				}
+				else
+				{
+					// 適用に失敗した場合(同一レーン内でノーツが重なる不正な譜面など)は元の配置のままとし、音声エフェクト・キー音の対応表も適用しない
+					Logger << U"[ksm warning] GameMain: Failed to apply S-RANDOM note lanes. The original note arrangement is used.";
+					pSRandomFXAudioMappingOut->reset();
+				}
 			}
 
 			// 曲線を持つレーザー点のPulseを列挙
