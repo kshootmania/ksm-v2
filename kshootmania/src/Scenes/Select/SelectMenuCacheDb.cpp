@@ -625,7 +625,15 @@ namespace
 		{
 			Logger << U"[ksm warning] SelectMenuCacheDb::{} failed. Fallback to rebuild. (path:'{}', error:'{}')"_fmt(fnName, directoryPath, Unicode::FromUTF8(e.what()));
 			FileSystem::Remove(dbPath);
-			return loadOnce(true);
+			try
+			{
+				return loadOnce(true);
+			}
+			catch (const std::exception& e2)
+			{
+				Logger << U"[ksm warning] SelectMenuCacheDb::{} rebuild failed. (path:'{}', error:'{}')"_fmt(fnName, directoryPath, Unicode::FromUTF8(e2.what()));
+				return {};
+			}
 		}
 	}
 
