@@ -1,6 +1,7 @@
 ﻿#include <catch2/catch.hpp>
 #include "ksmaudio/AudioEffect/AudioEffectParam.hpp"
 #include <cmath>
+#include <utility>
 
 using namespace ksmaudio::AudioEffect;
 
@@ -450,4 +451,45 @@ TEST_CASE("Parse parameter value sets (Off/OnMin/OnMax)", "[AudioEffect][Param][
 		REQUIRE(vs3.onMin == 0.25f);
 		REQUIRE(vs3.onMax == 0.5f);
 	}
+}
+
+TEST_CASE("Parse non-finite parameter values", "[AudioEffect][Param][NonFinite]")
+{
+	// nan/infはどの型でも無効な文字列として扱う
+	const std::pair<Type, const char*> cases[] = {
+		{ Type::kLength, "nan" },
+		{ Type::kLength, "inf" },
+		{ Type::kLength, "infms" },
+		{ Type::kWaveLength, "inf" },
+		{ Type::kSample, "infsamples" },
+		{ Type::kRate, "nan" },
+		{ Type::kRate, "inf" },
+		{ Type::kRate, "inf%" },
+		{ Type::kFreq, "nanHz" },
+		{ Type::kFreq, "infHz" },
+		{ Type::kFreq, "infkHz" },
+		{ Type::kPitch, "nan" },
+		{ Type::kPitch, "inf" },
+		{ Type::kFloat, "nan" },
+		{ Type::kFloat, "-inf" },
+		{ Type::kDB, "infdB" },
+	};
+	for (const auto& [type, str] : cases)
+	{
+		bool success = true;
+		const ValueSet vs = StrToValueSet(type, str, &success);
+		INFO(str);
+		REQUIRE(success == false);
+		REQUIRE(vs.off == 0.0f);
+		REQUIRE(vs.onMin == 0.0f);
+		REQUIRE(vs.onMax == 0.0f);
+	}
+
+	// Off>OnMin-OnMaxのいずれかがnan/infの場合も失敗
+	bool success = true;
+	const ValueSet vs = StrToValueSet(Type::kRate, "0%>inf", &success);
+	REQUIRE(success == false);
+	REQUIRE(vs.off == 0.0f);
+	REQUIRE(vs.onMin == 0.0f);
+	REQUIRE(vs.onMax == 0.0f);
 }
