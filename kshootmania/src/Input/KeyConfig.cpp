@@ -489,6 +489,13 @@ void KeyConfig::SetConfigValueByCommaSeparated(ConfigSet targetConfigSet, String
 			if (kConfigSetDeviceTypes[targetConfigSet] == InputDeviceType::Gamepad)
 			{
 				// ゲームパッドは「デバイス番号*32+ボタン番号」形式で保存されている
+				if (code / 32 >= static_cast<int32>(Gamepad.MaxPlayerCount))
+				{
+					// デバイス番号が範囲外の場合は無効化(範囲外参照を防ぐため)
+					Logger << U"[ksm warning] Key configuration ({}) has invalid gamepad index! (value:{})"_fmt(kConfigSetNames[targetConfigSet], code);
+					s_configSetArray[targetConfigSet][i] = Input();
+					continue;
+				}
 				s_configSetArray[targetConfigSet][i] = Input(InputDeviceType::Gamepad, static_cast<uint8>(code % 32), static_cast<uint8>(code / 32));
 			}
 			else
