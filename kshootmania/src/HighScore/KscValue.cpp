@@ -10,7 +10,7 @@ namespace
 			return defaultValue;
 		}
 
-		return static_cast<T>(Parse<int32>(values[index]));
+		return static_cast<T>(ParseOr<int32>(values[index], static_cast<int32>(defaultValue)));
 	}
 }
 
