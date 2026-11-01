@@ -2,7 +2,7 @@
 
 CoursePlayResult CoursePlayState::coursePlayResult() const
 {
-	const int32 avgScore = totalChartCount() > 0 ? m_totalScore / totalChartCount() : 0;
+	const int32 avgScore = totalChartCount() > 0 ? static_cast<int32>(m_totalScore / totalChartCount()) : 0;
 	const int32 rate = achievementRate();
 
 	return CoursePlayResult

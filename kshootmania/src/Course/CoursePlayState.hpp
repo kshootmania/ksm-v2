@@ -12,7 +12,7 @@ private:
 	size_t m_currentChartIdx = 0U;
 	Array<MusicGame::PlayResult> m_results;
 
-	int32 m_totalScore = 0;
+	int64 m_totalScore = 0; // 曲数が多い場合に備えてint64
 	int32 m_totalCritical = 0;
 	int32 m_totalNear = 0;
 	int32 m_totalError = 0;
@@ -109,7 +109,7 @@ public:
 	}
 
 	[[nodiscard]]
-	int32 totalScore() const
+	int64 totalScore() const
 	{
 		return m_totalScore;
 	}
@@ -123,7 +123,7 @@ public:
 		}
 
 		const int32 chartCount = static_cast<int32>(m_courseInfo.charts.size());
-		const int32 avgScore = chartCount > 0 ? m_totalScore / chartCount : 0;
+		const int32 avgScore = chartCount > 0 ? static_cast<int32>(m_totalScore / chartCount) : 0;
 
 		if (m_cleared)
 		{
