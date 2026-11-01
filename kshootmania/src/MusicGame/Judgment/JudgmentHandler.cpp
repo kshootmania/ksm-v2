@@ -84,7 +84,10 @@ namespace MusicGame::Judgment
 			int32 gaugeValueMax = TotalGaugeValue(btLaneJudgments, fxLaneJudgments, laserLaneJudgments, kGaugeValueMaxFactorChip, kGaugeValueMaxFactorLong);
 			if (gaugeValueMax < 125000)
 			{
-				gaugeValueMax = gaugeValueMax * gaugeValueMax / 125000 / 5 + gaugeValueMax * 4 / 5;
+				// HSP版(32bit int)と同じ値になるよう、uint32で乗算してからint32へ戻す
+				// (int32のまま乗算すると範囲を超えた場合に未定義動作となるため)
+				const int32 squared = static_cast<int32>(static_cast<uint32>(gaugeValueMax) * static_cast<uint32>(gaugeValueMax));
+				gaugeValueMax = squared / 125000 / 5 + gaugeValueMax * 4 / 5;
 			}
 			if (gaugeValueMax > 100000)
 			{
