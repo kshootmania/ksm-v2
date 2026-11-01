@@ -204,6 +204,13 @@ public:
 		return false;
 	}
 
+	/// @brief レベルソートの譜面項目(SelectMenuLevelSongItem)かどうか
+	/// @return レベルソートの譜面項目の場合はtrue
+	virtual bool isLevelSortSongItem() const
+	{
+		return false;
+	}
+
 	/// @brief Canvasのパラメータを設定(中央の項目)
 	/// @param context イベントコンテキスト
 	/// @param canvas 設定対象のCanvas

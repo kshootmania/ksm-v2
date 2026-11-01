@@ -69,6 +69,9 @@ public:
 	[[nodiscard]]
 	virtual bool isFavoriteRegisterableItemType() const override;
 
+	[[nodiscard]]
+	virtual bool isLevelSortSongItem() const override;
+
 	virtual void setCanvasParamsCenter(const SelectMenuEventContext& context, noco::Canvas& canvas, int32 difficultyIdx) const override;
 
 	virtual void setCanvasParamsTopBottom(const SelectMenuEventContext& context, noco::Canvas& canvas, int32 difficultyIdx, StringView tag) const override;

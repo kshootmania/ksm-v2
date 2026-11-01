@@ -2431,6 +2431,17 @@ void SelectMenu::applySearchModeFilter()
 	{
 		m_menu.push_back(std::move(pItem));
 	}
+
+	// フィルタ後のメニュー上の位置で兄弟難易度を対応付け直す(フィルタで除外された兄弟難易度は-1になる)
+	Array<std::pair<int32, SelectMenuLevelSongItem*>> levelItems;
+	for (std::size_t i = 0U; i < m_menu.size(); ++i)
+	{
+		if (m_menu[i] != nullptr && m_menu[i]->isLevelSortSongItem())
+		{
+			levelItems.push_back({ static_cast<int32>(i), static_cast<SelectMenuLevelSongItem*>(m_menu[i].get()) });
+		}
+	}
+	LinkLevelSortSiblings(levelItems);
 }
 
 void SelectMenu::enterSearchMode(const Optional<FilePath>& preservedChartPath)

@@ -160,6 +160,11 @@ bool SelectMenuLevelSongItem::isFavoriteRegisterableItemType() const
 	return true;
 }
 
+bool SelectMenuLevelSongItem::isLevelSortSongItem() const
+{
+	return true;
+}
+
 void SelectMenuLevelSongItem::setCanvasParamsCenter(const SelectMenuEventContext& context, noco::Canvas& canvas, [[maybe_unused]] int32 difficultyIdx) const
 {
 	canvas.setSubCanvasParamValuesByTag(U"center", {
