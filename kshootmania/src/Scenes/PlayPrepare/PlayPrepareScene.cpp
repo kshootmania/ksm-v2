@@ -118,6 +118,31 @@ PlayPrepareScene::PlayPrepareScene(FilePathView chartFilePath, MusicGame::IsAuto
 
 Co::Task<void> PlayPrepareScene::start()
 {
+	// 譜面本体の読み込みに失敗した場合はプレイせずに戻る
+	// (遷移先はBackボタン押下時と同じ)
+	if (m_chartData.error != kson::ErrorType::None)
+	{
+		Logger << U"[ksm warning] PlayPrepareScene: Chart loading failed (error:'{}', chartPath:'{}')"_fmt(
+			Unicode::FromUTF8(kson::GetErrorString(m_chartData.error)),
+			m_chartFilePath);
+		MessageBoxUtils::ShowOK(I18n::Get(I18n::Play::ErrorChartLoadFailed), MessageBoxStyle::Error);
+		if (m_testPlayOption.has_value())
+		{
+			// テストプレイの場合はアプリケーション終了
+			requestSceneFinish();
+		}
+		else if (m_courseState.has_value() && m_courseState->currentChartIdx() > 0 && !m_isAutoPlay)
+		{
+			// コースモードの2曲目以降の場合はコースリザルトへ
+			requestNextScene<CourseResultScene>(*m_courseState, m_selectSearchParams);
+		}
+		else
+		{
+			requestNextScene<SelectScene>(m_selectSearchParams);
+		}
+		co_return;
+	}
+
 	const auto updateRunner = Co::UpdaterTask([this] { update(); }).runScoped();
 
 	CommonSEAddon::Play(CommonSEType::kSelEnter);
@@ -143,14 +168,14 @@ Co::Task<void> PlayPrepareScene::start()
 				// テストプレイの場合はアプリケーション終了
 				requestSceneFinish();
 			}
-			else if (m_courseState.has_value() && m_courseState->currentChartIdx() > 0)
+			else if (m_courseState.has_value() && m_courseState->currentChartIdx() > 0 && !m_isAutoPlay)
 			{
 				// コースモードの2曲目以降の場合はコースリザルトへ
 				requestNextScene<CourseResultScene>(*m_courseState, m_selectSearchParams);
 			}
 			else
 			{
-				// 通常モードまたはコースの1曲目の場合は選曲画面へ
+				// 通常モード、コースの1曲目、またはコースのオートプレイの場合は選曲画面へ
 				requestNextScene<SelectScene>(m_selectSearchParams);
 			}
 			break;

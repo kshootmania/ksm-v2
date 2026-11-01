@@ -68,6 +68,9 @@ public:
 		if (hasNextChart())
 		{
 			++m_currentChartIdx;
+
+			// 次の曲のプレイ前にコースを抜けた場合に、前の曲の進行率が加算されないようにリセット
+			m_failedChartTimeProgress = 0.0;
 		}
 	}
 
