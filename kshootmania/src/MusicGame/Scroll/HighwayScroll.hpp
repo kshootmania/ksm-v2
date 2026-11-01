@@ -53,6 +53,10 @@ namespace MusicGame::Scroll
 		/// @return HighwayScrollへの参照
 		const HighwayScroll& highwayScroll() const;
 
+		/// @brief TimingCacheへの参照を返す
+		/// @return TimingCacheへの参照
+		const kson::TimingCache& timingCache() const;
+
 		/// @brief scrollSpeedに負の値が含まれているかを返す
 		/// @return 負の値が含まれていればtrue
 		bool hasNegativeScrollSpeed() const;

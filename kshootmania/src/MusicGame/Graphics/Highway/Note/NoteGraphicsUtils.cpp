@@ -75,34 +75,42 @@ namespace MusicGame::Graphics::NoteGraphicsUtils
 		return MathUtils::RoundToInt(std::lerp(kHeightTable[Clamp(idx, 0, kTableSize - 1)], kHeightTable[Clamp(idx + 1, 0, kTableSize - 1)], lerpRate));
 	}
 
-	int32 CalcChipNoteColorIndex(kson::Pulse y, const kson::BeatInfo& beatInfo, NoteSkinType noteSkin)
+	int32 CalcChipNoteColorIndex(kson::Pulse y, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache, NoteSkinType noteSkin)
 	{
 		if (noteSkin == NoteSkinType::kDefault)
 		{
 			return 0;
 		}
 
-		const std::int64_t measureIdx = y / kson::kResolution;
-
-		const auto& timeSigMap = beatInfo.timeSig;
-		auto it = timeSigMap.upper_bound(measureIdx);
-		if (it != timeSigMap.begin())
-		{
-			--it;
-		}
-
-		const kson::TimeSig& timeSig = it != timeSigMap.end() ? it->second : kson::TimeSig{ 4, 4 };
-		const kson::Pulse measureStartY = measureIdx * kson::kResolution;
-		const kson::Pulse positionInMeasure = y - measureStartY;
-		const int32 div = kson::kResolution * 4 * timeSig.n / timeSig.d;
-
-		if (div == 0)
+		if (timingCache.timeSigChangeMeasureIdx.empty())
 		{
 			return 0;
 		}
 
-		// 小節の分割数と色インデックス
-		constexpr std::array<std::pair<int32, int32>, 8> kNoteTypeColorMap = {{
+		// 現在位置の拍子を取得
+		// (拍子情報がない場合はCreateTimingCacheと同様に4/4とみなす)
+		const auto timeSigChangeItr = kson::ValueItrAt(timingCache.timeSigChangeMeasureIdx, y);
+		const auto timeSigItr = beatInfo.timeSig.find(timeSigChangeItr->second);
+		const kson::TimeSig timeSig = timeSigItr != beatInfo.timeSig.end() ? timeSigItr->second : kson::TimeSig{ 4, 4 };
+
+		// 拍子の分子・分母が不正な場合はゼロ除算を避けるため色分けしない
+		if (timeSig.n <= 0 || timeSig.d <= 0)
+		{
+			return 0;
+		}
+		const kson::Pulse oneMeasurePulse = kson::TimeSigOneMeasurePulse(timeSig);
+		if (oneMeasurePulse <= 0)
+		{
+			return 0;
+		}
+
+		// 小節頭からの位置を求める(直前の拍子変更位置を基準にする)
+		const kson::Pulse timeSigChangeY = timeSigChangeItr->first;
+		const kson::Pulse positionInMeasure = (y - timeSigChangeY) % oneMeasurePulse;
+
+		// 小節の分割数と色インデックス(v1と同様)
+		constexpr std::array<std::pair<int32, int32>, 9> kNoteTypeColorMap = {{
+			{2, 1},
 			{4, 1},
 			{8, 2},
 			{12, 3},
@@ -120,7 +128,7 @@ namespace MusicGame::Graphics::NoteGraphicsUtils
 
 		for (const auto& [noteType, colorIndex] : kNoteTypeColorMap)
 		{
-			if (div >= noteType && div % noteType == 0 && positionInMeasure % (div / noteType) == 0)
+			if (oneMeasurePulse >= noteType && oneMeasurePulse % noteType == 0 && positionInMeasure % (oneMeasurePulse / noteType) == 0)
 			{
 				return colorIndex;
 			}

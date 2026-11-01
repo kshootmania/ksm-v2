@@ -145,6 +145,11 @@ namespace MusicGame::Scroll
 		return *m_pHighwayScroll;
 	}
 
+	const kson::TimingCache& HighwayScrollContext::timingCache() const
+	{
+		return *m_pTimingCache;
+	}
+
 	bool HighwayScrollContext::hasNegativeScrollSpeed() const
 	{
 		return m_hasNegativeScrollSpeed;

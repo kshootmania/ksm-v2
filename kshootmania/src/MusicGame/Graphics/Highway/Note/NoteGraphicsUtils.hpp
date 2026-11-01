@@ -9,6 +9,6 @@ namespace MusicGame::Graphics
 
 		int32 ChipNoteHeight(double yRate);
 
-		int32 CalcChipNoteColorIndex(kson::Pulse y, const kson::BeatInfo& beatInfo, NoteSkinType noteSkin);
+		int32 CalcChipNoteColorIndex(kson::Pulse y, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache, NoteSkinType noteSkin);
 	}
 }

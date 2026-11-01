@@ -93,7 +93,7 @@ namespace MusicGame::Graphics
 				const int32 height = NoteGraphicsUtils::ChipNoteHeight(yRate);
 				const TiledTexture& sourceTexture = isBT ? m_chipBTNoteTexture : hasKeySound ? m_chipFXSENoteTexture : m_chipFXNoteTexture;
 				const Vec2 position = offsetPosition + Vec2::Right(centerSplitShiftX) + Vec2::Down(positionStartY - height / 2);
-				const int32 colorIndex = isBT ? NoteGraphicsUtils::CalcChipNoteColorIndex(y, chartData.beat, playOption.noteSkin) : 0;
+				const int32 colorIndex = isBT ? NoteGraphicsUtils::CalcChipNoteColorIndex(y, chartData.beat, highwayScrollContext.timingCache(), playOption.noteSkin) : 0;
 				sourceTexture(0, colorIndex)
 					.resized(isBT ? 40 : 82, height)
 					.draw(position);
