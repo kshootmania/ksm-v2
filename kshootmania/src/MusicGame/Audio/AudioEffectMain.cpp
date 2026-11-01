@@ -225,7 +225,8 @@ namespace MusicGame::Audio
 					if (def.type == kson::AudioEffectType::SwitchAudio)
 					{
 						// SwitchAudioの場合
-						if (def.v.contains("filename"))
+						// (v1と同様、f音源指定時はSwitchAudioを使用しない)
+						if (legacyMode == LegacyAudioFPMode::kNone && def.v.contains("filename"))
 						{
 							// ファイル名をもとに音声を追加ロード
 							const std::string& filename = def.v.at("filename");
