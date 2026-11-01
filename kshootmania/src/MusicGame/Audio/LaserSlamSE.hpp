@@ -20,7 +20,7 @@ namespace MusicGame::Audio
 
 		double m_folderVolumeScale;
 
-		std::array<kson::Pulse, kson::kNumLaserLanesSZ> m_autoPlaySELastPulses = { 0, 0 };
+		std::array<kson::Pulse, kson::kNumLaserLanesSZ> m_autoPlaySELastPulses = { kPastPulse, kPastPulse };
 
 		std::map<kson::Pulse, double> m_pulseToSec;
 
