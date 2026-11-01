@@ -15,7 +15,10 @@ namespace MusicGame::Audio::AudioEffectUtils
 
 		double UpdatePeriodMeasures(const std::string& str)
 		{
-			return static_cast<double>(ksmaudio::AudioEffect::StrToValueSet(ksmaudio::AudioEffect::Type::kLength, str).onMin);
+			const double value = static_cast<double>(ksmaudio::AudioEffect::StrToValueSet(ksmaudio::AudioEffect::Type::kLength, str).onMin);
+
+			// NaN・無限大の場合はトリガ更新なしとして扱う(NaNのままだと更新タイミングの列挙が終わらないため)
+			return std::isfinite(value) ? value : 0.0;
 		}
 
 		const std::string& UpdatePeriodDefaultForAudioEffect(kson::AudioEffectType audioEffectType)
