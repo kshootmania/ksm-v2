@@ -7,6 +7,23 @@ class SelectMenuCourseItem : public ISelectMenuItem
 private:
 	CourseInfo m_courseInfo;
 
+	/// @brief コースの譜面リスト(ChartItemRoot)を最後に構築した際の記録
+	struct ChartItemRootBuiltRecord
+	{
+		/// @brief 最後に構築したノード
+		std::weak_ptr<noco::Node> node;
+
+		/// @brief 最後に構築したコースのファイルパス
+		FilePath courseFilePath;
+	};
+
+	/// @brief ChartItemRootを最後に構築した際の記録(ChartItemRootは全コース項目で共通のノードのため、記録も全項目で共通)
+	/// @note 英字表記ONの場合は毎フレームsetCanvasParamsCenterが呼ばれるため、同じコースで連続して呼ばれた場合は再構築しない
+	static ChartItemRootBuiltRecord s_chartItemRootBuiltRecord;
+
+	/// @brief このコース項目のsetCanvasParamsCenterでChartItemRootを最後に処理したフレーム
+	mutable int32 m_chartItemRootLastCalledFrame = -1;
+
 public:
 	explicit SelectMenuCourseItem(const CourseInfo& courseInfo);
 

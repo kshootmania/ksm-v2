@@ -23,6 +23,8 @@ namespace
 	}
 }
 
+SelectMenuCourseItem::ChartItemRootBuiltRecord SelectMenuCourseItem::s_chartItemRootBuiltRecord;
+
 SelectMenuCourseItem::SelectMenuCourseItem(const CourseInfo& courseInfo)
 	: m_courseInfo(courseInfo)
 {
@@ -123,6 +125,21 @@ void SelectMenuCourseItem::setCanvasParamsCenter(const SelectMenuEventContext& c
 		// コースの各曲をSubCanvasノードとして追加
 		if (const auto chartItemRoot = courseNode->findByName(U"ChartItemRoot"))
 		{
+			// 前フレームから続けて呼ばれ、ChartItemRootが同じコースで構築済みの場合は再構築しない
+			const int32 currentFrame = Scene::FrameCount();
+			const bool alreadyBuilt =
+				s_chartItemRootBuiltRecord.node.lock() == chartItemRoot &&
+				s_chartItemRootBuiltRecord.courseFilePath == m_courseInfo.filePath &&
+				m_chartItemRootLastCalledFrame >= 0 &&
+				currentFrame - m_chartItemRootLastCalledFrame <= 1;
+			m_chartItemRootLastCalledFrame = currentFrame;
+			if (alreadyBuilt)
+			{
+				return;
+			}
+			s_chartItemRootBuiltRecord.node = chartItemRoot;
+			s_chartItemRootBuiltRecord.courseFilePath = m_courseInfo.filePath;
+
 			chartItemRoot->removeChildrenAll();
 			chartItemRoot->removeComponents<VerticalMarquee>(noco::RecursiveYN::No);
 
