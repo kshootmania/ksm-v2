@@ -475,15 +475,22 @@ namespace MusicGame::Judgment
 				laneStatusRef.lastJudgedLaserSlamPulse = laserSlamPulse;
 
 				// アニメーション
+				// (LASERセクションが重なっている場合は点が見つからないことがあるため、その場合は省略)
 				const auto sectionItr = kson::GraphSectionAt(lane, laserSlamPulse);
 				assert(sectionItr != lane.end() && "Cannot find laser section of slam note");
-				const auto& [y, section] = *sectionItr;
-				const auto& point = section.v.at(laserSlamPulse - y);
-				laneStatusRef.rippleAnim.push({
-					.startTimeSec = Max(laserSlamJudgmentRef.sec(), m_prevTimeSecForDraw),
-					.wide = section.wide(),
-					.x = point.v.vf,
-				});
+				if (sectionItr != lane.end())
+				{
+					const auto& [y, section] = *sectionItr;
+					if (const auto pointItr = section.v.find(laserSlamPulse - y); pointItr != section.v.end())
+					{
+						const auto& point = pointItr->second;
+						laneStatusRef.rippleAnim.push({
+							.startTimeSec = Max(laserSlamJudgmentRef.sec(), m_prevTimeSecForDraw),
+							.wide = section.wide(),
+							.x = point.v.vf,
+						});
+					}
+				}
 			}
 			else
 			{
@@ -774,16 +781,20 @@ namespace MusicGame::Judgment
 				laneStatusRef.lastJudgedLaserSlamPulse = laserSlamPulse;
 
 				// アニメーション
+				// (LASERセクションが重なっている場合は点が見つからないことがあるため、その場合は省略)
 				const auto sectionItr = kson::GraphSectionAt(lane, laserSlamPulse);
 				if (sectionItr != lane.end())
 				{
 					const auto& [y, section] = *sectionItr;
-					const auto& point = section.v.at(laserSlamPulse - y);
-					laneStatusRef.rippleAnim.push({
-						.startTimeSec = Max(laserSlamJudgmentRef.sec(), m_prevTimeSecForDraw),
-						.wide = section.wide(),
-						.x = point.v.vf,
-					});
+					if (const auto pointItr = section.v.find(laserSlamPulse - y); pointItr != section.v.end())
+					{
+						const auto& point = pointItr->second;
+						laneStatusRef.rippleAnim.push({
+							.startTimeSec = Max(laserSlamJudgmentRef.sec(), m_prevTimeSecForDraw),
+							.wide = section.wide(),
+							.x = point.v.vf,
+						});
+					}
 				}
 			}
 			else

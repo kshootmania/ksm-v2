@@ -126,7 +126,7 @@ namespace MusicGame::Audio
 			const kson::RelPulse slamRy = slamY - graphSectionY;
 			if (!graphSection.v.contains(slamRy))
 			{
-				assert(false && "graph value must exist here");
+				// LASERセクションが重なっている場合は点が見つからないことがある
 				return 1.0;
 			}
 			const auto& graphPoint = graphSection.v.at(slamRy);
@@ -268,7 +268,7 @@ namespace MusicGame::Audio
 				const kson::RelPulse slamRy = slamY - graphSectionY;
 				if (!graphSection.v.contains(slamRy))
 				{
-					assert(false && "graph value must exist here");
+					// LASERセクションが重なっている場合は点が見つからないことがある
 					return 1.0;
 				}
 				const auto& graphPoint = graphSection.v.at(slamRy);
