@@ -617,7 +617,7 @@ Co::Task<void> ResultScene::start()
 			{
 				m_courseState->setCleared(true);
 			}
-			requestNextScene<CourseResultScene>(*m_courseState);
+			requestNextScene<CourseResultScene>(*m_courseState, m_selectSearchParams);
 		}
 		else
 		{
