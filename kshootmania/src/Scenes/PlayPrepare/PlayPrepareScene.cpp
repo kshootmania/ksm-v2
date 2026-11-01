@@ -182,7 +182,7 @@ Co::Task<void> PlayPrepareScene::start()
 		}
 
 		// ウィンドウがアクティブ化されたフレームのクリックは入力として扱わない
-		if (elapsed >= kMinDisplayTime && (KeyConfig::Down(kButtonStart) || (MouseL.down() && !InputUtils::WindowFocusedThisFrame())))
+		if (elapsed >= kMinDisplayTime && (KeyConfig::Down(kButtonStart) || (InputUtils::IsUIMouseInputEnabled() && MouseL.down() && !InputUtils::WindowFocusedThisFrame())))
 		{
 			// 一定時間経過後はStartボタンまたはクリックでスキップ可能
 			SaveHispeedSettingToConfigIni(m_hispeedMenu.hispeedSetting());
@@ -197,7 +197,10 @@ Co::Task<void> PlayPrepareScene::start()
 void PlayPrepareScene::update()
 {
 	// 画面全体がクリック可能なのでカーソルを人差し指に変更
-	Cursor::RequestStyle(CursorStyle::Hand);
+	if (InputUtils::IsUIMouseInputEnabled())
+	{
+		Cursor::RequestStyle(CursorStyle::Hand);
+	}
 
 	m_canvas->update(noco::HitTestEnabledYN{ !isFadingIn() && !isFadingOut() && InputUtils::IsUIMouseInputEnabled() });
 

@@ -36,12 +36,15 @@ Co::Task<void> SimpleDialog::start()
 		m_canvas->setPositionScale(position, Vec2{ scale, scale });
 
 		// 画面全体がクリック可能なのでカーソルを人差し指に変更
-		Cursor::RequestStyle(CursorStyle::Hand);
+		if (InputUtils::IsUIMouseInputEnabled())
+		{
+			Cursor::RequestStyle(CursorStyle::Hand);
+		}
 
 		m_canvas->update(noco::HitTestEnabledYN{ InputUtils::IsUIMouseInputEnabled() });
 
 		// ウィンドウがアクティブ化されたフレームのクリックは入力として扱わない
-		if (KeyConfig::Down(kButtonStart) || KeyConfig::Down(kButtonBack) || (MouseL.down() && !InputUtils::WindowFocusedThisFrame()))
+		if (KeyConfig::Down(kButtonStart) || KeyConfig::Down(kButtonBack) || (InputUtils::IsUIMouseInputEnabled() && MouseL.down() && !InputUtils::WindowFocusedThisFrame()))
 		{
 			break;
 		}

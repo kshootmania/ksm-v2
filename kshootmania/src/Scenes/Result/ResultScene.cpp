@@ -693,7 +693,7 @@ Co::Task<bool> ResultScene::waitForNewRecordPanelClose()
 
 bool ResultScene::isClickDecideDown() const
 {
-	if (!MouseL.down())
+	if (!InputUtils::IsUIMouseInputEnabled() || !MouseL.down())
 	{
 		return false;
 	}
@@ -719,7 +719,10 @@ bool ResultScene::isClickDecideDown() const
 void ResultScene::update()
 {
 	// 画面全体がクリック可能なのでカーソルを人差し指に変更
-	Cursor::RequestStyle(CursorStyle::Hand);
+	if (InputUtils::IsUIMouseInputEnabled())
+	{
+		Cursor::RequestStyle(CursorStyle::Hand);
+	}
 
 	const bool fxLPressed = KeyConfig::Pressed(kButtonFX_L);
 	const bool fxRPressed = KeyConfig::Pressed(kButtonFX_R);
