@@ -693,7 +693,7 @@ Co::Task<bool> ResultScene::waitForNewRecordPanelClose()
 
 bool ResultScene::isClickDecideDown() const
 {
-	if (!InputUtils::IsUIMouseInputEnabled() || !MouseL.down())
+	if (!InputUtils::IsUIMouseInputEnabled() || isFadingIn() || !MouseL.down())
 	{
 		return false;
 	}

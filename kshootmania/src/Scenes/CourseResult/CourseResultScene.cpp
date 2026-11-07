@@ -193,7 +193,7 @@ Co::Task<bool> CourseResultScene::waitForNewRecordPanelClose()
 
 bool CourseResultScene::isClickDecideDown() const
 {
-	if (!InputUtils::IsUIMouseInputEnabled() || !MouseL.down())
+	if (!InputUtils::IsUIMouseInputEnabled() || isFadingIn() || !MouseL.down())
 	{
 		return false;
 	}
