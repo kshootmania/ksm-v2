@@ -298,6 +298,11 @@ namespace MusicGame::Audio
 								.overrideParams = ksmaudio::AudioEffect::StrDictToParamValueSetDict(dict),
 							});
 						}
+						else
+						{
+							// 存在しないエフェクトの場合はエフェクトなしにする
+							convertedLongEvent[i].insert_or_assign(y, none);
+						}
 					}
 				}
 			}
