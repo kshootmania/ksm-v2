@@ -191,7 +191,12 @@ void SelectMenuLevelSongItem::setCanvasParamsCenter(const SelectMenuEventContext
 	for (int32 i = 0; i < kNumDifficulties; ++i)
 	{
 		const bool exists = m_siblings[i].menuIndex >= 0;
-		const int32 levelIndex = exists ? m_siblings[i].level - 1 : -1;
+		int32 levelIndex = exists ? m_siblings[i].level - 1 : -1;
+		if (i == m_difficultyIdx && m_chartInfo != nullptr)
+		{
+			// 同一難易度の譜面が複数ある場合、兄弟難易度には先に追加された項目が入るため、自身の難易度は自身の譜面のレベルを表示
+			levelIndex = m_chartInfo->level() - 1;
+		}
 		canvas.setSubCanvasParamValuesByTag(U"center", {
 			{ U"difficulty{}Enabled"_fmt(i), exists },
 			{ U"difficulty{}LevelIndex"_fmt(i), levelIndex },
