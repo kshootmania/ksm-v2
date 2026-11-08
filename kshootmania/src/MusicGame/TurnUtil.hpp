@@ -9,9 +9,10 @@ namespace MusicGame
 
 	/// @brief S-RANDOM用にBT・FX全ノーツの配置先レーンを生成
 	/// @param playbackSpeed 再生速度(縦連回避を秒数ベースで行うために使用)
+	/// @param laneEnabled 配置の対象にするレーン(falseのレーンのノーツは元の位置のまま、配置先にも使わない)
 	/// @return 正規譜面の各ノーツ(pulse昇順、同pulse内はレーン昇順、レーンは0〜3がBT、4〜5がFX)に対応する配置先レーン(0〜5)
 	[[nodiscard]]
-	Array<std::size_t> MakeSRandomNoteLanes(const kson::ChartData& chartData, double playbackSpeed);
+	Array<std::size_t> MakeSRandomNoteLanes(const kson::ChartData& chartData, double playbackSpeed, const std::array<bool, kNumSRandomLanesSZ>& laneEnabled = { true, true, true, true, true, true });
 
 	/// @brief S-RANDOMによる配置変更をBT・FXノーツに適用
 	/// @return 配置結果に不整合がなければtrue

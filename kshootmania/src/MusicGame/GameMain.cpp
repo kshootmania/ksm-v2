@@ -109,7 +109,12 @@ namespace MusicGame
 			// (音声エフェクト・キー音は元FXレーン基準のまま扱うため、turn適用前のFXノーツと配置先の対応関係を保持)
 			if (createInfo.playOption.turnMode == TurnMode::kSRandom)
 			{
-				const Array<std::size_t> sRandomNoteLanes = MakeSRandomNoteLanes(chartData, createInfo.playOption.nonZeroPlaybackSpeed());
+				// Hide/Offのレーン種別は判定されないため配置の対象外にする
+				const auto isJudged = [](JudgmentPlayMode mode) { return mode == JudgmentPlayMode::kOn || mode == JudgmentPlayMode::kAuto; };
+				const bool btEnabled = isJudged(createInfo.playOption.effectiveBtJudgmentPlayMode());
+				const bool fxEnabled = isJudged(createInfo.playOption.effectiveFxJudgmentPlayMode());
+				const std::array<bool, kNumSRandomLanesSZ> laneEnabled = { btEnabled, btEnabled, btEnabled, btEnabled, fxEnabled, fxEnabled };
+				const Array<std::size_t> sRandomNoteLanes = MakeSRandomNoteLanes(chartData, createInfo.playOption.nonZeroPlaybackSpeed(), laneEnabled);
 				*pSRandomFXAudioMappingOut = SRandomFXAudioMapping
 				{
 					.fxLanesForAudio = chartData.note.fx,

@@ -186,6 +186,67 @@ TEST_CASE("MakeSRandomNoteLanes avoids fast jacks", "[TurnUtil]")
 	}
 }
 
+TEST_CASE("MakeSRandomNoteLanes keeps notes on disabled lanes in place", "[TurnUtil]")
+{
+	kson::ChartData chartData;
+	chartData.beat.bpm.emplace(0, 120.0);
+	chartData.note.bt[0].emplace(0, kson::Interval{ .length = 0 });
+	chartData.note.bt[3].emplace(0, kson::Interval{ .length = 240 });
+	chartData.note.fx[0].emplace(0, kson::Interval{ .length = 0 });
+	chartData.note.bt[1].emplace(240, kson::Interval{ .length = 0 });
+	chartData.note.fx[1].emplace(240, kson::Interval{ .length = 120 });
+	chartData.note.fx[0].emplace(480, kson::Interval{ .length = 0 });
+
+	// 列挙順(pulse昇順、同pulse内はレーン昇順): BT-A(0), BT-D(0), FX-L(0), BT-B(240), FX-R(240), FX-L(480)
+	const Array<std::size_t> originalLanes{ 0, 3, 4, 1, 5, 4 };
+
+	// BTが対象外の場合、BTノーツは元のレーンのままで、FXノーツはFXレーン内にのみ配置される
+	for (int32 i = 0; i < 100; ++i)
+	{
+		const Array<std::size_t> noteLanes = MusicGame::MakeSRandomNoteLanes(chartData, 1.0, { false, false, false, false, true, true });
+		REQUIRE(noteLanes.size() == originalLanes.size());
+		for (std::size_t j = 0U; j < noteLanes.size(); ++j)
+		{
+			if (originalLanes[j] < kson::kNumBTLanesSZ)
+			{
+				REQUIRE(noteLanes[j] == originalLanes[j]);
+			}
+			else
+			{
+				REQUIRE(noteLanes[j] >= kson::kNumBTLanesSZ);
+			}
+		}
+
+		kson::ChartData copied = chartData;
+		REQUIRE(MusicGame::ApplySRandomNoteLanes(&copied, noteLanes));
+		REQUIRE(AllNotes(copied) == AllNotes(chartData));
+		REQUIRE(HasNoOverlap(copied));
+	}
+
+	// FXが対象外の場合、FXノーツは元のレーンのままで、BTノーツはBTレーン内にのみ配置される
+	for (int32 i = 0; i < 100; ++i)
+	{
+		const Array<std::size_t> noteLanes = MusicGame::MakeSRandomNoteLanes(chartData, 1.0, { true, true, true, true, false, false });
+		REQUIRE(noteLanes.size() == originalLanes.size());
+		for (std::size_t j = 0U; j < noteLanes.size(); ++j)
+		{
+			if (originalLanes[j] >= kson::kNumBTLanesSZ)
+			{
+				REQUIRE(noteLanes[j] == originalLanes[j]);
+			}
+			else
+			{
+				REQUIRE(noteLanes[j] < kson::kNumBTLanesSZ);
+			}
+		}
+
+		kson::ChartData copied = chartData;
+		REQUIRE(MusicGame::ApplySRandomNoteLanes(&copied, noteLanes));
+		REQUIRE(AllNotes(copied) == AllNotes(chartData));
+		REQUIRE(HasNoOverlap(copied));
+	}
+}
+
 TEST_CASE("MakeFXNoteDestinations maps original FX notes to destination lanes", "[TurnUtil]")
 {
 	kson::ChartData chartData;

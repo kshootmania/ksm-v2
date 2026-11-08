@@ -191,7 +191,7 @@ namespace MusicGame
 		}
 	}
 
-	Array<std::size_t> MakeSRandomNoteLanes(const kson::ChartData& chartData, double playbackSpeed)
+	Array<std::size_t> MakeSRandomNoteLanes(const kson::ChartData& chartData, double playbackSpeed, const std::array<bool, kNumSRandomLanesSZ>& laneEnabled)
 	{
 		const Array<SRandomNoteRef> notes = EnumerateSRandomNotes(chartData);
 		const kson::TimingCache timingCache = kson::CreateTimingCache(chartData.beat);
@@ -224,7 +224,7 @@ namespace MusicGame
 			Array<std::size_t> freeLanes;
 			for (std::size_t laneIdx = 0U; laneIdx < kNumSRandomLanesSZ; ++laneIdx)
 			{
-				if (occupiedUntil[laneIdx] <= y)
+				if (laneEnabled[laneIdx] && occupiedUntil[laneIdx] <= y)
 				{
 					freeLanes.push_back(laneIdx);
 				}
@@ -233,6 +233,13 @@ namespace MusicGame
 
 			for (std::size_t i = groupBegin; i < groupEnd; ++i)
 			{
+				if (!laneEnabled[notes[i].laneIdx])
+				{
+					// 対象外のレーンのノーツは元の位置のまま
+					noteLanes.push_back(notes[i].laneIdx);
+					continue;
+				}
+
 				// 秒数しきい値で縦連を避ける
 				std::size_t chosenIdxInFreeLanes = freeLanes.size();
 				for (std::size_t j = 0U; j < freeLanes.size(); ++j)
