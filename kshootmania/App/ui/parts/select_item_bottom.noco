@@ -756,6 +756,15 @@
               "clippingEnabled": false,
               "components": [
                 {
+                  "type": "RectRenderer",
+                  "fillColor": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ]
+                },
+                {
                   "addColor": [
                     0,
                     0,
@@ -773,7 +782,7 @@
                   "gridAnimationFPS": 10.0,
                   "gridAnimationStartIndex": 0,
                   "gridAnimationType": "None",
-                  "hideIfTextureEmpty": false,
+                  "hideIfTextureEmpty": true,
                   "nineSliceBottomTiled": false,
                   "nineSliceCenterTiled": false,
                   "nineSliceEnabled": false,
