@@ -33,6 +33,9 @@ private:
 
 	Optional<OptionMenuType> m_currentOptionMenuIdx = none;
 
+	// 言語変更はメニューのコールバックから呼ばれるため、メニューの再生成はupdate内で行う
+	bool m_languageChangeRequested = false;
+
 	ksmaudio::Stream m_bgmStream{ "se/option_bgm.ogg", 1.0, false, false, true };
 
 	std::unique_ptr<std::array<OptionMenu, kOptionMenuTypeEnumCount>> makeOptionMenus();

@@ -87,7 +87,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 				.setOnChangeCallback([this]
 				{
 					I18n::LoadLanguage(ConfigIni::GetString(ConfigIni::Key::kLanguage));
-					refreshOptionMenusForLanguageChange();
+					m_languageChangeRequested = true;
 				}),
 			/*CreateInfo::Enum(ConfigIni::Key::kTextureSize, Array<IntStrPair>{
 				IntStrPair{ ConfigIni::Value::TextureSize::kSmall, I18n::Get(I18n::Option::TextureSizeSmall) },
@@ -288,6 +288,11 @@ void OptionScene::update()
 		{
 			if ((*m_optionMenus)[*m_currentOptionMenuIdx].update(settingMenuMouseInput()))
 			{
+				if (m_languageChangeRequested)
+				{
+					m_languageChangeRequested = false;
+					refreshOptionMenusForLanguageChange();
+				}
 				refreshSettingItemParams();
 			}
 		}
