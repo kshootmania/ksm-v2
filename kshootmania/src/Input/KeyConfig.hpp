@@ -23,7 +23,11 @@ namespace KeyConfig
 	};
 
 	constexpr std::array<StringView, kConfigSetEnumCount> kDefaultConfigValues = {
+#ifdef __APPLE__
+		U"83,68,75,76,102,104,81,87,79,80,32,13,27,122", // Keyboard 1
+#else
 		U"83,68,75,76,29,28,81,87,79,80,32,13,27,122", // Keyboard 1
+#endif
 		U"72,74,70,71,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",  // Keyboard 2
 		U"-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",  // Gamepad 1
 		U"-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1",  // Gamepad 2
