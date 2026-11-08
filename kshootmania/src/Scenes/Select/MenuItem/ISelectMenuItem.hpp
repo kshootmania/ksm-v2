@@ -187,6 +187,17 @@ public:
 		return false;
 	}
 
+	/// @brief この項目に譜面がない難易度をクリックした場合の処理
+	/// @param context イベントコンテキスト
+	/// @param clickedDifficultyIdx クリックされた難易度(0～3)
+	/// @return 難易度変更が行われた場合はtrue
+	virtual bool handleDifficultyClick(
+		[[maybe_unused]] const SelectMenuEventContext& context,
+		[[maybe_unused]] int32 clickedDifficultyIdx) const
+	{
+		return false;
+	}
+
 	virtual bool isSubFolderHeading() const
 	{
 		return false;

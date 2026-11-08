@@ -155,6 +155,19 @@ bool SelectMenuLevelSongItem::handleDifficultyChange(
 	return false;
 }
 
+bool SelectMenuLevelSongItem::handleDifficultyClick(
+	const SelectMenuEventContext& context,
+	int32 clickedDifficultyIdx) const
+{
+	if (clickedDifficultyIdx < 0 || kNumDifficulties <= clickedDifficultyIdx || m_siblings[clickedDifficultyIdx].menuIndex < 0)
+	{
+		return false;
+	}
+
+	context.fnJumpToItemWithDifficulty(m_siblings[clickedDifficultyIdx].menuIndex, clickedDifficultyIdx);
+	return true;
+}
+
 bool SelectMenuLevelSongItem::isFavoriteRegisterableItemType() const
 {
 	return true;

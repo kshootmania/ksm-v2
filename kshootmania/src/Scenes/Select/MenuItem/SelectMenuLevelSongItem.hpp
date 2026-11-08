@@ -66,6 +66,10 @@ public:
 		int32 currentDifficultyIdx,
 		int32 delta) const override;
 
+	virtual bool handleDifficultyClick(
+		const SelectMenuEventContext& context,
+		int32 clickedDifficultyIdx) const override;
+
 	[[nodiscard]]
 	virtual bool isFavoriteRegisterableItemType() const override;
 

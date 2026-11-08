@@ -1015,6 +1015,13 @@ void SelectMenu::updateClickDecide()
 			refreshContentCanvasParams();
 			refreshSongPreview();
 		}
+		else if (m_menu.cursorValue()->handleDifficultyClick(m_eventContext, *clickedDifficultyIdx))
+		{
+			// レベルソートでは別の難易度の項目へ移動
+			m_difficultySelectSe.play();
+			refreshContentCanvasParams();
+			refreshSongPreview();
+		}
 	}
 
 	// フォルダ項目とサブフォルダ見出しは中央クリックで決定
