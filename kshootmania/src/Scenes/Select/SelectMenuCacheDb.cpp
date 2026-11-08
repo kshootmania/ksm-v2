@@ -38,24 +38,6 @@ namespace
 		return std::filesystem::path{ String{ path }.toUTF32() };
 	}
 
-	int64 GetWriteTimeMs(FilePathView path)
-	{
-		std::error_code ec;
-		const auto writeTime = std::filesystem::last_write_time(ToStdPath(path), ec);
-		if (ec)
-		{
-			return 0;
-		}
-		return std::chrono::duration_cast<std::chrono::milliseconds>(writeTime.time_since_epoch()).count();
-	}
-
-	uint64 GetFileSize(FilePathView path)
-	{
-		std::error_code ec;
-		const auto size = std::filesystem::file_size(ToStdPath(path), ec);
-		return ec ? 0 : static_cast<uint64>(size);
-	}
-
 	uint64 StablePathHash(FilePathView path)
 	{
 		const std::string utf8Path = String{ path }.toUTF8();
@@ -105,41 +87,66 @@ namespace
 		return directories;
 	}
 
-	bool IsSourceFile(FilePathView path)
+	bool IsSourceFile(const String& filename)
 	{
-		if (!FileSystem::IsFile(path))
-		{
-			return false;
-		}
-
-		const String filename = FileSystem::FileName(path);
 		if (filename == kDbFileName)
 		{
 			return false;
 		}
 
-		const String extension = FileSystem::Extension(path).lowercased();
-		return extension == U"ksh"
-			|| extension == U"kson"
-			|| extension == U"kco"
-			|| filename.lowercased() == U"foldername.csv"
-			|| filename.lowercased() == U"conf.ini";
+		const String lowercased = filename.lowercased();
+		return lowercased.ends_with(U".ksh")
+			|| lowercased.ends_with(U".kson")
+			|| lowercased.ends_with(U".kco")
+			|| lowercased == U"foldername.csv"
+			|| lowercased == U"conf.ini";
 	}
 
 	Array<SourceFileInfo> CollectSourceFiles(FilePathView baseDirectoryPath)
 	{
 		Array<SourceFileInfo> files;
-		for (const auto& path : FileSystem::DirectoryContents(baseDirectoryPath, Recursive::Yes))
+
+		// ディレクトリ列挙で得た情報をそのまま使い、ファイル毎の情報取得の回数を減らす
+		const std::filesystem::path basePath = ToStdPath(FileSystem::FullPath(baseDirectoryPath));
+		const std::size_t basePathLength = basePath.u32string().size();
+		std::error_code ec;
+		for (std::filesystem::recursive_directory_iterator it(basePath, std::filesystem::directory_options::skip_permission_denied, ec), end; it != end; it.increment(ec))
 		{
-			if (!IsSourceFile(path))
+			if (ec)
+			{
+				break;
+			}
+
+			const std::filesystem::directory_entry& entry = *it;
+			if (!entry.is_regular_file(ec))
 			{
 				continue;
 			}
 
+			const std::filesystem::path& path = entry.path();
+			const String filename = String{ path.filename().u32string() };
+			if (!IsSourceFile(filename))
+			{
+				continue;
+			}
+
+			String relativePath{ path.u32string().substr(basePathLength) };
+			relativePath.replace(U'\\', U'/');
+			if (relativePath.starts_with(U'/'))
+			{
+				relativePath.erase(0, 1);
+			}
+
+			const auto writeTime = entry.last_write_time(ec);
+			const int64 mtime = ec ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(writeTime.time_since_epoch()).count();
+			ec.clear();
+			const auto size = entry.file_size(ec);
+			ec.clear();
+
 			files.push_back(SourceFileInfo{
-				.relativePath = FileSystem::RelativePath(path, baseDirectoryPath),
-				.mtime = GetWriteTimeMs(path),
-				.size = GetFileSize(path),
+				.relativePath = std::move(relativePath),
+				.mtime = mtime,
+				.size = static_cast<uint64>(size),
 			});
 		}
 
