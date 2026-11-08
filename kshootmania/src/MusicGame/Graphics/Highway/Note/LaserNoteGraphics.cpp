@@ -185,6 +185,7 @@ namespace MusicGame::Graphics
 			}
 
 			// 終点側(vf)の角テクスチャ(直角レーザーの曲線描画時の変形のためにQuadで描画)
+			const double clampedTopShiftX = ClampSlamTopShift(positionStart.x, positionEnd.x, topShiftX);
 			{
 				const double endX = positionEnd.x;
 				const Vec2 junctionLeft{ endX - kLaserLineWidth / 2 + topShiftX, positionY - slamHeight };
@@ -192,20 +193,36 @@ namespace MusicGame::Graphics
 				const Vec2 barLeft{ endX - kLaserLineWidth / 2, positionY };
 				const Vec2 barRight{ endX + kLaserLineWidth / 2, positionY };
 
-				const auto textureRegion = laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y * laserNoteTextureRow, kLaserTextureSize);
+				const Quad cornerQuad = isLeftToRight ? Quad{ barLeft, barRight, junctionRight, junctionLeft } : Quad{ barRight, barLeft, junctionLeft, junctionRight };
 
-				if (isLeftToRight)
+				if (clampedTopShiftX == topShiftX)
 				{
-					Quad{ barLeft, barRight, junctionRight, junctionLeft }(textureRegion).draw();
+					cornerQuad(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y * laserNoteTextureRow, kLaserTextureSize)).draw();
 				}
 				else
 				{
-					Quad{ barRight, barLeft, junctionLeft, junctionRight }(textureRegion).draw();
+					// 始点側(v)の角テクスチャと重ならないよう、傾きを制限した場合の内側の辺より内側は描画しない
+					// テクスチャ上の座標(u, v)では内側の辺は(0, 0)から(cutU, 1)を通る
+					const double cutU = Abs(topShiftX - clampedTopShiftX) / kLaserLineWidth;
+					const double cornerU = Min(cutU, 1.0);
+					const double cornerV = Min(1.0 / cutU, 1.0);
+					const auto pointAt = [&cornerQuad](double u, double v)
+					{
+						return cornerQuad.p0 + (cornerQuad.p1 - cornerQuad.p0) * u + (cornerQuad.p3 - cornerQuad.p0) * v;
+					};
+
+					if (cornerU < 1.0)
+					{
+						Quad{ pointAt(cornerU, 0.0), pointAt(1.0, 0.0), pointAt(1.0, 1.0), pointAt(cornerU, 1.0) }(laserNoteTexture(kLaserTextureSize.x * (laneIdx + cornerU), kLaserTextureSize.y * laserNoteTextureRow, kLaserTextureSize.x * (1.0 - cornerU), kLaserTextureSize.y)).draw();
+					}
+
+					// 内側の辺に沿った三角形は、直角の頂点が(cornerU, 0)になるよう左右反転した領域を使い、頂点が3つのQuadで描画
+					Quad{ pointAt(cornerU, 0.0), pointAt(0.0, 0.0), pointAt(cornerU, cornerV), pointAt(cornerU, cornerV) }(laserNoteTexture(kLaserTextureSize.x * laneIdx, kLaserTextureSize.y * laserNoteTextureRow, kLaserTextureSize.x * cornerU, kLaserTextureSize.y * cornerV).mirrored()).draw();
 				}
 			}
 
 			// 直角レーザーの横線を描画
-			const Quad quad = LaserSlamLineQuad(positionStart, positionEnd, slamHeight, topShiftX);
+			const Quad quad = LaserSlamLineQuad(positionStart, positionEnd, slamHeight, clampedTopShiftX);
 			quad(laserNoteTexture(kLaserTextureSize.x * laneIdx + kOnePixelTextureSourceOffset, kLaserTextureSize.y * laserNoteTextureRow, kOnePixelTextureSourceSize, kLaserTextureSize.y)).draw();
 		}
 
@@ -336,8 +353,6 @@ namespace MusicGame::Graphics
 							const double endPointX = LaserPointX(point.v.vf, xScale);
 							const double refPointX = LaserPointX(refPoint.v.v, xScale);
 							topShiftX = (refPointX - endPointX) * static_cast<double>(slamHeight) / (positionY - refPositionY);
-							const double startPointX = LaserPointX(point.v.v, xScale);
-							topShiftX = ClampSlamTopShift(startPointX, endPointX, topShiftX);
 							break;
 						}
 					}
