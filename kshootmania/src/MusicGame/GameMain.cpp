@@ -398,7 +398,9 @@ namespace MusicGame
 
 	void GameMain::lockForExit()
 	{
-		m_isAborted = !m_judgmentMain.isFinished();
+		// HARDゲージ/コースモードで途中落ちした場合はabortedではない
+		const bool isHardFailed = m_gameStatus.playFinishStatus.has_value() && m_gameStatus.playFinishStatus->isHardFailed;
+		m_isAborted = !isHardFailed && !m_judgmentMain.isFinished();
 		m_judgmentMain.lockForExit();
 	}
 

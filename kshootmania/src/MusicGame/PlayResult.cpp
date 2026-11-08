@@ -52,9 +52,9 @@ namespace MusicGame
 
 	Grade PlayResult::grade() const
 	{
-		if (isAborted)
+		if (isAborted || isHardFailed)
 		{
-			// 途中でプレイをやめた場合はDにする(未プレイと区別するためにNoGradeにはしない)
+			// 途中でプレイをやめた場合やHARD落ちした場合はDにする(未プレイと区別するためにNoGradeにはしない)
 			return Grade::kD;
 		}
 

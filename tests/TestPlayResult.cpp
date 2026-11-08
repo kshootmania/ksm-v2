@@ -81,6 +81,21 @@ TEST_CASE("Grade calculation with 0% gauge", "[PlayResult][Grade]")
 	REQUIRE(result.grade() == Grade::kD);
 }
 
+TEST_CASE("Grade when play is hard failed", "[PlayResult][Grade]")
+{
+	PlayResult result;
+	result.gaugePercentageForGrade = 100.0;
+	result.score = 10000000;
+
+	// HARD落ちした場合はスコアに関わらずD
+	result.isHardFailed = IsHardFailedYN::Yes;
+	REQUIRE(result.grade() == Grade::kD);
+
+	// HARD落ちでなければ通常のグレード計算
+	result.isHardFailed = IsHardFailedYN::No;
+	REQUIRE(result.grade() == Grade::kAAA);
+}
+
 TEST_CASE("Achievement from gauge and combo for EASY/NORMAL gauge", "[PlayResult][Achievement]")
 {
 	PlayResult result;
