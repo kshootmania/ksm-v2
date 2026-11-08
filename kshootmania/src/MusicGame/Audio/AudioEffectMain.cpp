@@ -385,6 +385,33 @@ namespace MusicGame::Audio
 			return none;
 		}
 
+		// 音声エフェクト用のLASERの値を取得(useLegacyTailValueがtrueの場合、v1と同様にLASERセクション末尾の1/32以下の区間は値なし)
+		std::optional<double> LaserValueForAudioEffectAt(const kson::ByPulse<kson::LaserSection>& lane, kson::Pulse pulse, bool useLegacyTailValue)
+		{
+			const std::optional<double> value = kson::GraphSectionValueAt(lane, pulse);
+			if (!value.has_value() || !useLegacyTailValue)
+			{
+				return value;
+			}
+
+			// v1ではLASERセクション末尾の1/32以下の区間に音声エフェクトをかけないため、その区間内では値なしとする
+			// 直角の点を端に持つ区間は、KSHでの末尾の区間と一致しないため対象外とする
+			//
+			// HSP版での対応箇所: https://github.com/kshootmania/ksm-v1/blob/ceb3992c8fac3b141031731926346d9d84138c37/src/scene/play/play_laser_note.hsp#L38-L40
+			const auto& [y, section] = *kson::GraphSectionAt(lane, pulse);
+			const auto lastPointItr = std::prev(section.v.end());
+			const auto lastSegmentStartItr = std::prev(lastPointItr);
+			const auto& [lastRy, lastPoint] = *lastPointItr;
+			const auto& [lastSegmentStartRy, lastSegmentStartPoint] = *lastSegmentStartItr;
+			const bool isSlamIncluded = !kson::AlmostEquals(lastPoint.v.v, lastPoint.v.vf) || !kson::AlmostEquals(lastSegmentStartPoint.v.v, lastSegmentStartPoint.v.vf);
+			if (!isSlamIncluded && pulse - y >= lastSegmentStartRy && lastRy - lastSegmentStartRy <= kson::kResolution4 / 32)
+			{
+				return std::nullopt;
+			}
+
+			return value;
+		}
+
 		kson::FXLane<Optional<AudioEffectInvocation>> RegisterAudioEffectsAndCreateLongFXNoteInvocations(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const FilePath& parentPath, double bgmVolume)
 		{
 			// エフェクト名のインデックス変換用にRegisterAudioEffectsを先に呼ぶ必要がある
@@ -526,6 +553,7 @@ namespace MusicGame::Audio
 		const Optional<AudioEffectInvocation>& activeLaserInvocation = getActiveLaserAudioEffectInvocation(currentPulseForAudio);
 		const Optional<AudioEffectInvocation>& activeLaserInvocationForSwitchAudio = getActiveLaserAudioEffectInvocation(currentPulseForSwitchAudio);
 		bool bypassLaser = true;
+		const bool useLegacyLaserTailValue = chartData.compat.isKshVersionOlderThan(kson::kKshVersionKsonBased);
 
 		// LASERノーツの音声エフェクト
 		{
@@ -554,7 +582,7 @@ namespace MusicGame::Audio
 					continue;
 				}
 
-				const auto& laneLaserValue = kson::GraphSectionValueAt(chartData.note.laser[i], currentPulseForLaserAudio);
+				const auto& laneLaserValue = LaserValueForAudioEffectAt(chartData.note.laser[i], currentPulseForLaserAudio, useLegacyLaserTailValue);
 				if (!laneLaserValue.has_value())
 				{
 					// 現在時間(currentPulseForLaserAudio)の時点にLASERノーツがない場合はエフェクトを適用しない
@@ -635,7 +663,7 @@ namespace MusicGame::Audio
 			{
 				if (inputStatus.laserIsOnOrNone[i])
 				{
-					const auto& laneLaserValue = kson::GraphSectionValueAt(chartData.note.laser[i], currentPulseForSwitchAudio);
+					const auto& laneLaserValue = LaserValueForAudioEffectAt(chartData.note.laser[i], currentPulseForSwitchAudio, useLegacyLaserTailValue);
 					if (laneLaserValue.has_value())
 					{
 						isAnyLaserOn = true;
@@ -686,7 +714,7 @@ namespace MusicGame::Audio
 				int totalLaserCount = 0;
 				for (std::size_t i = 0; i < kson::kNumLaserLanesSZ; ++i)
 				{
-					const auto& laneLaserValue = kson::GraphSectionValueAt(chartData.note.laser[i], currentPulseForSwitchAudio);
+					const auto& laneLaserValue = LaserValueForAudioEffectAt(chartData.note.laser[i], currentPulseForSwitchAudio, useLegacyLaserTailValue);
 					if (laneLaserValue.has_value())
 					{
 						totalLaserCount++;
