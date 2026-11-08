@@ -100,3 +100,51 @@ TEST_CASE("HighwayScroll integrates partial scroll_speed interpolation across ze
 	REQUIRE(posY_240 == posY_720);
 	REQUIRE(posY_480 - posY_720 == 33);
 }
+
+TEST_CASE("HighwayScroll currentHispeedWithScrollSpeed truncates only once", "[HighwayScroll]")
+{
+	kson::ChartData chartData;
+	chartData.beat.bpm[0] = 100.0;
+	chartData.beat.timeSig[0] = kson::TimeSig{ 4, 4 };
+	chartData.beat.scrollSpeed[0] = kson::GraphPoint{ 2.0 };
+
+	auto timingCache = kson::CreateTimingCache(chartData.beat);
+
+	HighwayScroll highwayScroll(chartData);
+
+	HispeedSetting hispeedSetting;
+	hispeedSetting.type = HispeedType::OMod;
+	hispeedSetting.value = 333;
+
+	// 150 * 333 / 100 = 499.5
+	highwayScroll.update(hispeedSetting, 150.0);
+	REQUIRE(highwayScroll.currentHispeed() == 499);
+
+	GameStatus gameStatus;
+	gameStatus.currentPulse = 0;
+	gameStatus.currentPulseDouble = 0.0;
+
+	const HighwayScrollContext highwayScrollContext(&highwayScroll, &chartData.beat, &timingCache, &gameStatus);
+	REQUIRE(highwayScrollContext.currentHispeedWithScrollSpeed() == 999);
+}
+
+TEST_CASE("HighwayScroll currentHispeed for x-mod and o-mod", "[HighwayScroll]")
+{
+	kson::ChartData chartData;
+	chartData.beat.bpm[0] = 180.0;
+	chartData.beat.timeSig[0] = kson::TimeSig{ 4, 4 };
+
+	HighwayScroll highwayScroll(chartData);
+
+	for (const double bpm : { 60.0, 99.9, 150.5, 180.0, 222.25, 999.99 })
+	{
+		for (const int32 value : { 1, 7, 25, 123, 500, 975 })
+		{
+			highwayScroll.update(HispeedSetting{ .type = HispeedType::XMod, .value = value }, bpm);
+			REQUIRE(highwayScroll.currentHispeed() == static_cast<int32>(bpm) * value / 10);
+
+			highwayScroll.update(HispeedSetting{ .type = HispeedType::OMod, .value = value }, bpm);
+			REQUIRE(highwayScroll.currentHispeed() == static_cast<int32>(bpm * value / 180.0));
+		}
+	}
+}

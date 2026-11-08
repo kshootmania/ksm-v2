@@ -172,6 +172,10 @@ namespace MusicGame::Scroll
 		/// @return ハイスピード値
 		int32 currentHispeed() const;
 
+		/// @brief 整数に切り捨てる前の現在のハイスピード値を返す
+		/// @return 切り捨て前のハイスピード値
+		double currentHispeedBeforeTruncation() const;
+
 		/// @brief 指定したPulse位置でのハイスピード値を返す
 		/// @param pulse Pulse値
 		/// @param beatInfo kson.beat
