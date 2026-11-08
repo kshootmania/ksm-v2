@@ -14,6 +14,8 @@ namespace
 		FilePath relativePath;
 		int64 mtime = 0;
 		uint64 size = 0;
+
+		bool operator==(const SourceFileInfo&) const = default;
 	};
 
 	struct ChartRow
@@ -542,24 +544,33 @@ namespace
 		bool visibleInAllNameSort = true;
 		int32 sectionDirectoryIndex = -1;
 		int32 songDirectoryIndex = -1;
+		int32 chartFileIndex = -1;
 	};
 
-	Array<ChartRowResult> ReadChartRows(SQLite::Database& db, FilePathView baseDirectoryPath, StringView whereClause, StringView orderByClause)
+	// 読み込み済みのディレクトリの内容
+	// (選曲画面に戻るたびにDBを読み直さないよう、キャッシュの元になるファイルの一覧が変わっていなければ再利用する)
+	struct MemoryCacheEntry
+	{
+		Array<SourceFileInfo> sourceFiles;
+		Array<ChartRowResult> rows;
+	};
+
+	HashTable<FilePath, MemoryCacheEntry> s_memoryCache;
+
+	// ディレクトリ内の全譜面の行を、セクション・楽曲フォルダ・譜面ファイルの順で取得
+	Array<ChartRowResult> ReadChartRows(SQLite::Database& db, FilePathView baseDirectoryPath)
 	{
 		Array<ChartRowResult> rows;
 
 		// 列名での検索を避けるため、列の順番を固定して取得する
 		const std::string sql = "SELECT "
 			"chart_path, song_dir, section_dir, section_display_name, skip_section_heading,"
-			"visible_in_directory_name_sort, visible_in_all_name_sort, section_directory_index, song_directory_index, song_sort_key,"
+			"visible_in_directory_name_sort, visible_in_all_name_sort, section_directory_index, song_directory_index, chart_file_index, song_sort_key,"
 			"difficulty_idx, level,"
 			"title, title_translit, title_img_filename, artist, artist_translit, artist_img_filename, chart_author,"
 			"disp_bpm, std_bpm, jacket_filename, jacket_author, icon_filename, information,"
 			"bgm_filename, bgm_vol, preview_offset, preview_duration, folder_volume_scale, folder_offset_ms, folder_tweet_option"
-			" FROM charts "
-			+ whereClause.toUTF8()
-			+ " ORDER BY "
-			+ orderByClause.toUTF8();
+			" FROM charts ORDER BY section_directory_index, song_directory_index, chart_file_index";
 		SQLite::Statement query(db, sql);
 		while (query.executeStep())
 		{
@@ -576,6 +587,7 @@ namespace
 			const bool visibleInAllNameSort = query.getColumn(col++).getInt() != 0;
 			const int32 sectionDirectoryIndex = query.getColumn(col++).getInt();
 			const int32 songDirectoryIndex = query.getColumn(col++).getInt();
+			const int32 chartFileIndex = query.getColumn(col++).getInt();
 			String songSortKey = Unicode::FromUTF8(query.getColumn(col++).getString());
 
 			kson::MetaChartData chartData;
@@ -618,20 +630,32 @@ namespace
 				.visibleInAllNameSort = visibleInAllNameSort,
 				.sectionDirectoryIndex = sectionDirectoryIndex,
 				.songDirectoryIndex = songDirectoryIndex,
+				.chartFileIndex = chartFileIndex,
 			});
 		}
 
 		return rows;
 	}
 
-	Array<ChartRowResult> LoadDirectoryRows(FilePathView directoryPath, bool forceRebuild, StringView whereClause, StringView orderByClause, StringView fnName)
+	Array<ChartRowResult> LoadDirectoryRows(FilePathView directoryPath, bool forceRebuild, StringView fnName)
 	{
 		const FilePath baseDirectoryPath = FileSystem::FullPath(directoryPath);
 		const FilePath dbPath = DbPath(baseDirectoryPath);
 
+		if (!forceRebuild)
+		{
+			if (const auto it = s_memoryCache.find(baseDirectoryPath); it != s_memoryCache.end())
+			{
+				if (CollectSourceFiles(baseDirectoryPath) == it->second.sourceFiles)
+				{
+					return it->second.rows;
+				}
+			}
+		}
+
 		const auto loadOnce = [&](bool rebuild) -> Array<ChartRowResult>
 		{
-			const Array<SourceFileInfo> sourceFiles = CollectSourceFiles(baseDirectoryPath);
+			Array<SourceFileInfo> sourceFiles = CollectSourceFiles(baseDirectoryPath);
 			FileSystem::CreateDirectories(FileSystem::ParentPath(dbPath));
 			SQLite::Database db(dbPath.toUTF8(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 			CreateSchema(db);
@@ -639,7 +663,9 @@ namespace
 			{
 				Rebuild(db, baseDirectoryPath, sourceFiles);
 			}
-			return ReadChartRows(db, baseDirectoryPath, whereClause, orderByClause);
+			Array<ChartRowResult> rows = ReadChartRows(db, baseDirectoryPath);
+			s_memoryCache[baseDirectoryPath] = MemoryCacheEntry{ .sourceFiles = std::move(sourceFiles), .rows = rows };
+			return rows;
 		};
 
 		try
@@ -735,39 +761,40 @@ namespace
 
 Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForNameSort(FilePathView directoryPath, bool forceRebuild)
 {
-	return GroupRowsAsSongEntries(LoadDirectoryRows(
-		directoryPath,
-		forceRebuild,
-		U"WHERE visible_in_directory_name_sort != 0",
-		U"CASE WHEN section_directory_index < 0 THEN 0 ELSE 1 END, section_directory_index, song_directory_index, chart_file_index",
-		U"LoadDirectoryForNameSort"));
+	Array<ChartRowResult> rows = LoadDirectoryRows(directoryPath, forceRebuild, U"LoadDirectoryForNameSort");
+	rows.remove_if([](const ChartRowResult& row) { return !row.visibleInDirectoryNameSort; });
+
+	// 楽曲フォルダ直下の譜面(セクションなし)を先頭に、以降はセクション・楽曲フォルダ・譜面ファイルの順
+	std::stable_sort(rows.begin(), rows.end(), [](const ChartRowResult& a, const ChartRowResult& b)
+	{
+		return (a.sectionDirectoryIndex < 0 ? 0 : 1) < (b.sectionDirectoryIndex < 0 ? 0 : 1);
+	});
+	return GroupRowsAsSongEntries(rows);
 }
 
 Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild)
 {
-	return GroupRowsAsSongEntries(LoadDirectoryRows(
-		directoryPath,
-		forceRebuild,
-		U"WHERE visible_in_all_name_sort != 0",
-		U"song_sort_key, section_directory_index, song_directory_index, chart_file_index",
-		U"LoadDirectoryForAllNameSort"));
+	Array<ChartRowResult> rows = LoadDirectoryRows(directoryPath, forceRebuild, U"LoadDirectoryForAllNameSort");
+	rows.remove_if([](const ChartRowResult& row) { return !row.visibleInAllNameSort; });
+	std::stable_sort(rows.begin(), rows.end(), [](const ChartRowResult& a, const ChartRowResult& b)
+	{
+		return a.songSortKey < b.songSortKey;
+	});
+	return GroupRowsAsSongEntries(rows);
 }
 
 Array<SelectCachedChartEntry> SelectMenuCacheDb::LoadDirectoryForLevelSort(FilePathView directoryPath, bool forceRebuild)
 {
-	return RowsToChartEntries(LoadDirectoryRows(
-		directoryPath,
-		forceRebuild,
-		U"",
-		U"section_directory_index, song_directory_index, chart_file_index",
-		U"LoadDirectoryForLevelSort"));
+	return RowsToChartEntries(LoadDirectoryRows(directoryPath, forceRebuild, U"LoadDirectoryForLevelSort"));
 }
 
 void SelectMenuCacheDb::Invalidate(FilePathView directoryPath)
 {
 	if (!directoryPath.empty() && FileSystem::IsDirectory(directoryPath))
 	{
-		FileSystem::Remove(DbPath(FileSystem::FullPath(directoryPath)));
+		const FilePath baseDirectoryPath = FileSystem::FullPath(directoryPath);
+		s_memoryCache.erase(baseDirectoryPath);
+		FileSystem::Remove(DbPath(baseDirectoryPath));
 	}
 }
 
