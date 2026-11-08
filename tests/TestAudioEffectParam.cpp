@@ -1,5 +1,20 @@
 ﻿#include <catch2/catch.hpp>
 #include "ksmaudio/AudioEffect/AudioEffectParam.hpp"
+#include "ksmaudio/AudioEffect/AudioEffectParamSpec.hpp"
+#include "ksmaudio/AudioEffect/ParamController.hpp"
+#include "ksmaudio/AudioEffect/Params/BitcrusherParams.hpp"
+#include "ksmaudio/AudioEffect/Params/FlangerParams.hpp"
+#include "ksmaudio/AudioEffect/Params/GateParams.hpp"
+#include "ksmaudio/AudioEffect/Params/HighPassFilterParams.hpp"
+#include "ksmaudio/AudioEffect/Params/LowPassFilterParams.hpp"
+#include "ksmaudio/AudioEffect/Params/PeakingFilterParams.hpp"
+#include "ksmaudio/AudioEffect/Params/PhaserParams.hpp"
+#include "ksmaudio/AudioEffect/Params/PitchShiftParams.hpp"
+#include "ksmaudio/AudioEffect/Params/RetriggerEchoParams.hpp"
+#include "ksmaudio/AudioEffect/Params/SidechainParams.hpp"
+#include "ksmaudio/AudioEffect/Params/TapestopParams.hpp"
+#include "ksmaudio/AudioEffect/Params/WobbleParams.hpp"
+#include "ksmaudio/AudioEffect/detail/BiquadFilter.hpp"
 #include <cmath>
 #include <utility>
 
@@ -243,12 +258,18 @@ TEST_CASE("Parse pitch type parameters", "[AudioEffect][Param][Pitch]")
 	REQUIRE(StrToValue(Type::kPitch, "-48.0", &success) == Approx(0.0f)); // -48.0 + 48.0
 	REQUIRE(success == true);
 
-	// 範囲外の値は0にする
+	// 範囲外の値は丸める
 	success = false;
-	REQUIRE(StrToValue(Type::kPitch, "50.0", &success) == 0.0f);
+	REQUIRE(StrToValue(Type::kPitch, "50.0", &success) == Approx(96.0f)); // 48.0 + 48.0
 	REQUIRE(success == true);
 	success = false;
-	REQUIRE(StrToValue(Type::kPitch, "-50.0", &success) == 0.0f);
+	REQUIRE(StrToValue(Type::kPitch, "-50.0", &success) == Approx(0.0f)); // -48.0 + 48.0
+	REQUIRE(success == true);
+	success = false;
+	REQUIRE(StrToValue(Type::kPitch, "50", &success) == Approx(-96.0f)); // -(48 + 48.0)
+	REQUIRE(success == true);
+	success = false;
+	REQUIRE(StrToValue(Type::kPitch, "-50", &success) == Approx(0.0f)); // -(-48 + 48.0)
 	REQUIRE(success == true);
 }
 
@@ -492,4 +513,86 @@ TEST_CASE("Parse non-finite parameter values", "[AudioEffect][Param][NonFinite]"
 	REQUIRE(vs.off == 0.0f);
 	REQUIRE(vs.onMin == 0.0f);
 	REQUIRE(vs.onMax == 0.0f);
+}
+
+TEST_CASE("Convert parameter string dictionary", "[AudioEffect][Param][Dict]")
+{
+	// ratioは小数を保持する
+	{
+		const ParamValueSetDict dict = StrDictToParamValueSetDict({ { "ratio", "2.5>7.5" } });
+		REQUIRE(dict.contains(ParamID::kRatio));
+		REQUIRE(dict.at(ParamID::kRatio).off == 2.5f);
+		REQUIRE(dict.at(ParamID::kRatio).onMin == 7.5f);
+		REQUIRE(dict.at(ParamID::kRatio).onMax == 7.5f);
+	}
+
+	// bandwidthも変換される
+	{
+		const ParamValueSetDict dict = StrDictToParamValueSetDict({ { "bandwidth", "1.414" } });
+		REQUIRE(dict.contains(ParamID::kBandwidth));
+		REQUIRE(dict.at(ParamID::kBandwidth).off == 1.414f);
+	}
+}
+
+TEST_CASE("ParamSpec default values match Params definitions", "[AudioEffect][Param][Spec]")
+{
+	const auto check = [](std::string_view effectType, const std::unordered_map<ParamID, Param*>& dict)
+	{
+		const auto* pSpecs = GetParamSpecs(effectType);
+		REQUIRE(pSpecs != nullptr);
+		REQUIRE(pSpecs->size() == dict.size());
+		for (const auto& spec : *pSpecs)
+		{
+			INFO(effectType << "." << spec.name);
+			REQUIRE(dict.contains(spec.id));
+			const Param& param = *dict.at(spec.id);
+			REQUIRE(param.type == spec.type);
+			const ValueSet expected = StrToValueSet(spec.type, std::string{ spec.defaultValue });
+			REQUIRE(param.valueSet.off == expected.off);
+			REQUIRE(param.valueSet.onMin == expected.onMin);
+			REQUIRE(param.valueSet.onMax == expected.onMax);
+		}
+	};
+
+	RetriggerParams retrigger;
+	check("retrigger", retrigger.dict);
+	GateParams gate;
+	check("gate", gate.dict);
+	FlangerParams flanger;
+	check("flanger", flanger.dict);
+	PitchShiftParams pitchShift;
+	check("pitch_shift", pitchShift.dict);
+	BitcrusherParams bitcrusher;
+	check("bitcrusher", bitcrusher.dict);
+	PhaserParams phaser;
+	check("phaser", phaser.dict);
+	WobbleParams wobble;
+	check("wobble", wobble.dict);
+	TapestopParams tapestop;
+	check("tapestop", tapestop.dict);
+	EchoParams echo;
+	check("echo", echo.dict);
+	SidechainParams sidechain;
+	check("sidechain", sidechain.dict);
+	PeakingFilterParams peakingFilter;
+	check("peaking_filter", peakingFilter.dict);
+	HighPassFilterParams highPassFilter;
+	check("high_pass_filter", highPassFilter.dict);
+	LowPassFilterParams lowPassFilter;
+	check("low_pass_filter", lowPassFilter.dict);
+}
+
+TEST_CASE("Peaking filter output is finite near Nyquist frequency", "[AudioEffect][BiquadFilter]")
+{
+	for (const float sampleRate : { 22050.0f, 32000.0f, 44100.0f, 48000.0f })
+	{
+		INFO(sampleRate);
+		ksmaudio::AudioEffect::detail::BiquadFilter<float> filter;
+		filter.setPeakingFilter(20000.0f, 10.0f, 17.0f, sampleRate);
+		for (int i = 0; i < 100; ++i)
+		{
+			const float output = filter.process(0.1f * std::sin(i * 0.3f));
+			REQUIRE(std::isfinite(output));
+		}
+	}
 }
