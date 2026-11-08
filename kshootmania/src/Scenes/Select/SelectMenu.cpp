@@ -692,6 +692,39 @@ void SelectMenu::refreshContentCanvasParams()
 	preloadJacketTextures(difficultyIdx);
 }
 
+void SelectMenu::refreshTranslitFadeRates()
+{
+	static const Array<String> kSubCanvasTags = { U"center", U"top1", U"top2", U"top3", U"top4", U"bottom1", U"bottom2", U"bottom3" };
+	static const Array<std::pair<String, String>> kTranslitParamPairs = {
+		{ U"titleTranslit", U"titleTranslitFadeRate" },
+		{ U"artistTranslit", U"artistTranslitFadeRate" },
+	};
+
+	const double fadeRate = ISelectMenuItem::TranslitFadeRateNow();
+	for (const auto& tag : kSubCanvasTags)
+	{
+		const auto pSubCanvas = m_selectSceneCanvas->getSubCanvasByTag(tag);
+		if (pSubCanvas == nullptr)
+		{
+			continue;
+		}
+		const auto pCanvas = pSubCanvas->canvas();
+		if (pCanvas == nullptr)
+		{
+			continue;
+		}
+		for (const auto& [textParamName, fadeRateParamName] : kTranslitParamPairs)
+		{
+			// 英字表記の文字列が設定されている項目のみフェードさせる(設定されていない項目は進行度0のまま)
+			const Optional<String> translitText = pCanvas->paramValueAsOpt<String>(textParamName);
+			if (translitText.has_value() && !translitText->isEmpty())
+			{
+				pCanvas->setParamValue(fadeRateParamName, fadeRate);
+			}
+		}
+	}
+}
+
 void SelectMenu::preloadJacketTextures(int32 difficultyIdx)
 {
 	// 表示されなくなった項目の読み込みが先に実行されないよう、未開始の読み込みは取り消してカーソルに近い順に要求し直す
@@ -936,7 +969,7 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 		m_songPreview.update();
 		if (IsAnyTranslitDisplayEnabled())
 		{
-			refreshContentCanvasParams();
+			refreshTranslitFadeRates();
 		}
 		return;
 	}
@@ -1049,7 +1082,7 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 	m_songPreview.update();
 	if (IsAnyTranslitDisplayEnabled())
 	{
-		refreshContentCanvasParams();
+		refreshTranslitFadeRates();
 	}
 }
 

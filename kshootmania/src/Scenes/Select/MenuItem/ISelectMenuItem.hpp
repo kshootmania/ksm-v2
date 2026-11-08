@@ -96,34 +96,10 @@ protected:
 			return SongInfoTextDisplayParams{ .text = std::move(text) };
 		}
 
-		constexpr double kOriginalDisplaySec = 2.0;
-		constexpr double kFadeSec = 1.0;
-		constexpr double kPeriodSec = (kOriginalDisplaySec + kFadeSec) * 2.0;
-
-		const double elapsed = Max(0.0, Scene::Time() - SongInfoTextDisplayStartTime());
-		const double t = std::fmod(elapsed, kPeriodSec);
-		double translitAlpha = 0.0;
-		if (t < kOriginalDisplaySec)
-		{
-			translitAlpha = 0.0;
-		}
-		else if (t < kOriginalDisplaySec + kFadeSec)
-		{
-			translitAlpha = (t - kOriginalDisplaySec) / kFadeSec;
-		}
-		else if (t < kOriginalDisplaySec * 2.0 + kFadeSec)
-		{
-			translitAlpha = 1.0;
-		}
-		else
-		{
-			translitAlpha = 1.0 - ((t - (kOriginalDisplaySec * 2.0 + kFadeSec)) / kFadeSec);
-		}
-
 		return SongInfoTextDisplayParams{
 			.text = std::move(text),
 			.translitText = std::move(translitText),
-			.translitFadeRate = translitAlpha,
+			.translitFadeRate = TranslitFadeRateNow(),
 		};
 	}
 
@@ -135,6 +111,33 @@ public:
 	static void ResetSongInfoTextDisplayTimer()
 	{
 		SongInfoTextDisplayStartTime() = Scene::Time();
+	}
+
+	/// @brief 英字表記と元の曲名・アーティスト名の表示を切り替えるフェードの進行度(0～1)
+	static double TranslitFadeRateNow()
+	{
+		constexpr double kOriginalDisplaySec = 2.0;
+		constexpr double kFadeSec = 1.0;
+		constexpr double kPeriodSec = (kOriginalDisplaySec + kFadeSec) * 2.0;
+
+		const double elapsed = Max(0.0, Scene::Time() - SongInfoTextDisplayStartTime());
+		const double t = std::fmod(elapsed, kPeriodSec);
+		if (t < kOriginalDisplaySec)
+		{
+			return 0.0;
+		}
+		else if (t < kOriginalDisplaySec + kFadeSec)
+		{
+			return (t - kOriginalDisplaySec) / kFadeSec;
+		}
+		else if (t < kOriginalDisplaySec * 2.0 + kFadeSec)
+		{
+			return 1.0;
+		}
+		else
+		{
+			return 1.0 - ((t - (kOriginalDisplaySec * 2.0 + kFadeSec)) / kFadeSec);
+		}
 	}
 
 	virtual void decide(const SelectMenuEventContext& context, int32 difficultyIdx) = 0;

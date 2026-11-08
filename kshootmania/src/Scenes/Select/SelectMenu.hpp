@@ -122,6 +122,9 @@ private:
 
 	void refreshContentCanvasParams();
 
+	/// @brief 表示中の項目の英字表記のフェードの進行度だけを更新する
+	void refreshTranslitFadeRates();
+
 	/// @brief 表示中の項目とその周辺の項目のジャケット画像を別スレッドで読み込む
 	/// @param difficultyIdx 現在選択中の難易度のインデックス(0～3)
 	void preloadJacketTextures(int32 difficultyIdx);
