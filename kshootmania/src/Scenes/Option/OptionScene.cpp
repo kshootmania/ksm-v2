@@ -395,7 +395,7 @@ void OptionScene::exitScene()
 
 	// Vsync設定を反映("0;120"または"1"の形式)
 	const Array<String> vsyncParts = String{ ConfigIni::GetString(ConfigIni::Key::kVsync, U"0;300") }.split(U';');
-	const bool vsyncEnabled = vsyncParts[0] == U"1";
+	const bool vsyncEnabled = !vsyncParts.isEmpty() && vsyncParts[0] == U"1";
 	Graphics::SetVSyncEnabled(vsyncEnabled);
 
 	// フレームレート制限(Vsync有効時は無効化)

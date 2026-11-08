@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <cassert>
+#include "Common/MathUtils.hpp"
 #include "Input/KeyConfig.hpp"
 #include "Input/Cursor/CursorInput.hpp"
 
@@ -131,21 +132,8 @@ void LinearMenu::setCursor(T value)
 	if (m_cyclic && m_cursorMin < m_cursorMax)
 	{
 		// カーソル循環が有効の場合に範囲外の値になった場合は循環計算する
-		const int32 range = m_cursorMax + 1 - m_cursorMin;
-		if (cursor < m_cursorMin)
-		{
-			while (cursor < m_cursorMin)
-			{
-				cursor += range;
-			}
-		}
-		else
-		{
-			while (cursor > m_cursorMax)
-			{
-				cursor -= range;
-			}
-		}
+		const int64 range = static_cast<int64>(m_cursorMax) + 1 - m_cursorMin;
+		cursor = static_cast<int32>(m_cursorMin + MathUtils::WrappedMod(static_cast<int64>(cursor) - m_cursorMin, range));
 	}
 	m_cursor = Clamp(cursor, m_cursorMin, m_cursorMax);
 

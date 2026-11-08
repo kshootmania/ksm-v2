@@ -13,7 +13,7 @@ FrameRateLimit::FrameRateLimit(const Optional<int32>& targetFPS)
 
 void FrameRateLimit::postPresent()
 {
-	if (!m_targetFPS.has_value())
+	if (!m_targetFPS.has_value() || *m_targetFPS <= 0)
 	{
 		return;
 	}

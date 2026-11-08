@@ -411,8 +411,10 @@ void KSMMain()
 
 	// マスターボリュームを適用
 	{
+		constexpr int32 kMasterVolumeMin = 0;
+		constexpr int32 kMasterVolumeMax = 100;
 		constexpr int32 kMasterVolumeDefault = 100;
-		const int32 masterVolume = ConfigIni::GetInt(ConfigIni::Key::kMasterVolume, kMasterVolumeDefault);
+		const int32 masterVolume = Clamp(ConfigIni::GetInt(ConfigIni::Key::kMasterVolume, kMasterVolumeDefault), kMasterVolumeMin, kMasterVolumeMax);
 		ksmaudio::SetMasterVolume(masterVolume / 100.0);
 	}
 
@@ -428,7 +430,7 @@ void KSMMain()
 
 	// Vsync設定を反映("0;120"または"1"の形式)
 	const Array<String> vsyncParts = String{ ConfigIni::GetString(ConfigIni::Key::kVsync, U"0;300") }.split(U';');
-	const bool vsyncEnabled = vsyncParts[0] == U"1";
+	const bool vsyncEnabled = !vsyncParts.isEmpty() && vsyncParts[0] == U"1";
 	Graphics::SetVSyncEnabled(vsyncEnabled);
 
 	// フレームレート制限(Vsync有効時は無効化)
