@@ -31,29 +31,14 @@ SelectChartInfo::SelectChartInfo(FilePathView chartFilePath)
 	: m_chartFilePath(chartFilePath)
 	, m_chartData(LoadMetaChartData(chartFilePath))
 	, m_folderConfIni(FolderConfIni::Load(chartFilePath))
-	{
-		// 検索用文字列をあらかじめ用意
-		const String songFolderName = FsUtils::DirectoryNameByDirectoryPath(FileSystem::ParentPath(chartFilePath));
-		m_joinedTextForSearch = (
-			Unicode::FromUTF8(m_chartData.meta.title) + kSearchTextSeparator +
-			Unicode::FromUTF8(m_chartData.meta.titleTranslit) + kSearchTextSeparator +
-			Unicode::FromUTF8(m_chartData.meta.artist) + kSearchTextSeparator +
-			Unicode::FromUTF8(m_chartData.meta.artistTranslit) + kSearchTextSeparator +
-			songFolderName).lowercased();
-	}
-
-SelectChartInfo::SelectChartInfo(FilePathView chartFilePath, const kson::MetaChartData& chartData, const FolderConfIni& folderConfIni)
-	: m_chartFilePath(chartFilePath)
-	, m_chartData(chartData)
-	, m_folderConfIni(folderConfIni)
 {
-	const String songFolderName = FsUtils::DirectoryNameByDirectoryPath(FileSystem::ParentPath(chartFilePath));
-	m_joinedTextForSearch = (
-		Unicode::FromUTF8(m_chartData.meta.title) + kSearchTextSeparator +
-		Unicode::FromUTF8(m_chartData.meta.titleTranslit) + kSearchTextSeparator +
-		Unicode::FromUTF8(m_chartData.meta.artist) + kSearchTextSeparator +
-		Unicode::FromUTF8(m_chartData.meta.artistTranslit) + kSearchTextSeparator +
-		songFolderName).lowercased();
+}
+
+SelectChartInfo::SelectChartInfo(FilePathView chartFilePath, kson::MetaChartData chartData, FolderConfIni folderConfIni)
+	: m_chartFilePath(chartFilePath)
+	, m_chartData(std::move(chartData))
+	, m_folderConfIni(std::move(folderConfIni))
+{
 }
 
 String SelectChartInfo::title() const
@@ -207,5 +192,15 @@ String SelectChartInfo::errorString() const
 
 StringView SelectChartInfo::joinedTextForSearch() const
 {
-	return m_joinedTextForSearch;
+	if (!m_joinedTextForSearch)
+	{
+		const String songFolderName = FsUtils::DirectoryNameByDirectoryPath(FileSystem::ParentPath(m_chartFilePath));
+		m_joinedTextForSearch = (
+			Unicode::FromUTF8(m_chartData.meta.title) + kSearchTextSeparator +
+			Unicode::FromUTF8(m_chartData.meta.titleTranslit) + kSearchTextSeparator +
+			Unicode::FromUTF8(m_chartData.meta.artist) + kSearchTextSeparator +
+			Unicode::FromUTF8(m_chartData.meta.artistTranslit) + kSearchTextSeparator +
+			songFolderName).lowercased();
+	}
+	return *m_joinedTextForSearch;
 }

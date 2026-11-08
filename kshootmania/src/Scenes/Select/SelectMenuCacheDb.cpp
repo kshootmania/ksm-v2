@@ -548,58 +548,76 @@ namespace
 	{
 		Array<ChartRowResult> rows;
 
-		const std::string sql = "SELECT * FROM charts "
+		// 列名での検索を避けるため、列の順番を固定して取得する
+		const std::string sql = "SELECT "
+			"chart_path, song_dir, section_dir, section_display_name, skip_section_heading,"
+			"visible_in_directory_name_sort, visible_in_all_name_sort, section_directory_index, song_directory_index, song_sort_key,"
+			"difficulty_idx, level,"
+			"title, title_translit, title_img_filename, artist, artist_translit, artist_img_filename, chart_author,"
+			"disp_bpm, std_bpm, jacket_filename, jacket_author, icon_filename, information,"
+			"bgm_filename, bgm_vol, preview_offset, preview_duration, folder_volume_scale, folder_offset_ms, folder_tweet_option"
+			" FROM charts "
 			+ whereClause.toUTF8()
 			+ " ORDER BY "
 			+ orderByClause.toUTF8();
 		SQLite::Statement query(db, sql);
 		while (query.executeStep())
 		{
+			int32 col = 0;
+			const FilePath chartPath = FileSystem::PathAppend(baseDirectoryPath, Unicode::FromUTF8(query.getColumn(col++).getString()));
+			const FilePath songDirRel = Unicode::FromUTF8(query.getColumn(col++).getString());
+			const FilePath sectionDirRel = Unicode::FromUTF8(query.getColumn(col++).getString());
+			const SQLite::Column sectionDisplayNameColumn = query.getColumn(col++);
+			Optional<String> sectionDisplayName = sectionDisplayNameColumn.isNull()
+				? Optional<String>{}
+				: Optional<String>{ Unicode::FromUTF8(sectionDisplayNameColumn.getString()) };
+			const bool skipSectionHeading = query.getColumn(col++).getInt() != 0;
+			const bool visibleInDirectoryNameSort = query.getColumn(col++).getInt() != 0;
+			const bool visibleInAllNameSort = query.getColumn(col++).getInt() != 0;
+			const int32 sectionDirectoryIndex = query.getColumn(col++).getInt();
+			const int32 songDirectoryIndex = query.getColumn(col++).getInt();
+			String songSortKey = Unicode::FromUTF8(query.getColumn(col++).getString());
+
 			kson::MetaChartData chartData;
 			auto& meta = chartData.meta;
-			meta.difficulty.idx = query.getColumn("difficulty_idx").getInt();
-			meta.level = query.getColumn("level").getInt();
-			meta.title = query.getColumn("title").getString();
-			meta.titleTranslit = query.getColumn("title_translit").getString();
-			meta.titleImgFilename = query.getColumn("title_img_filename").getString();
-			meta.artist = query.getColumn("artist").getString();
-			meta.artistTranslit = query.getColumn("artist_translit").getString();
-			meta.artistImgFilename = query.getColumn("artist_img_filename").getString();
-			meta.chartAuthor = query.getColumn("chart_author").getString();
-			meta.dispBPM = query.getColumn("disp_bpm").getString();
-			meta.stdBPM = query.getColumn("std_bpm").getDouble();
-			meta.jacketFilename = query.getColumn("jacket_filename").getString();
-			meta.jacketAuthor = query.getColumn("jacket_author").getString();
-			meta.iconFilename = query.getColumn("icon_filename").getString();
-			meta.information = query.getColumn("information").getString();
-			chartData.audio.bgm.filename = query.getColumn("bgm_filename").getString();
-			chartData.audio.bgm.vol = query.getColumn("bgm_vol").getDouble();
-			chartData.audio.bgm.preview.offset = query.getColumn("preview_offset").getInt();
-			chartData.audio.bgm.preview.duration = query.getColumn("preview_duration").getInt();
+			meta.difficulty.idx = query.getColumn(col++).getInt();
+			meta.level = query.getColumn(col++).getInt();
+			meta.title = query.getColumn(col++).getString();
+			meta.titleTranslit = query.getColumn(col++).getString();
+			meta.titleImgFilename = query.getColumn(col++).getString();
+			meta.artist = query.getColumn(col++).getString();
+			meta.artistTranslit = query.getColumn(col++).getString();
+			meta.artistImgFilename = query.getColumn(col++).getString();
+			meta.chartAuthor = query.getColumn(col++).getString();
+			meta.dispBPM = query.getColumn(col++).getString();
+			meta.stdBPM = query.getColumn(col++).getDouble();
+			meta.jacketFilename = query.getColumn(col++).getString();
+			meta.jacketAuthor = query.getColumn(col++).getString();
+			meta.iconFilename = query.getColumn(col++).getString();
+			meta.information = query.getColumn(col++).getString();
+			chartData.audio.bgm.filename = query.getColumn(col++).getString();
+			chartData.audio.bgm.vol = query.getColumn(col++).getDouble();
+			chartData.audio.bgm.preview.offset = query.getColumn(col++).getInt();
+			chartData.audio.bgm.preview.duration = query.getColumn(col++).getInt();
 
 			FolderConfIni folderConfIni;
-			folderConfIni.volumeScale = query.getColumn("folder_volume_scale").getDouble();
-			folderConfIni.offsetMs = query.getColumn("folder_offset_ms").getInt();
-			folderConfIni.tweetOption = Unicode::FromUTF8(query.getColumn("folder_tweet_option").getString());
+			folderConfIni.volumeScale = query.getColumn(col++).getDouble();
+			folderConfIni.offsetMs = query.getColumn(col++).getInt();
+			folderConfIni.tweetOption = Unicode::FromUTF8(query.getColumn(col++).getString());
 
-			const FilePath chartPath = FileSystem::PathAppend(baseDirectoryPath, Unicode::FromUTF8(query.getColumn("chart_path").getString()));
-			const FilePath songDirRel = Unicode::FromUTF8(query.getColumn("song_dir").getString());
-			const FilePath sectionDirRel = Unicode::FromUTF8(query.getColumn("section_dir").getString());
-
+			const int32 difficultyIdx = meta.difficulty.idx;
 			rows.push_back(ChartRowResult{
-				.chartInfo = std::make_shared<SelectChartInfo>(chartPath, chartData, folderConfIni),
-				.difficultyIdx = meta.difficulty.idx,
-				.songSortKey = Unicode::FromUTF8(query.getColumn("song_sort_key").getString()),
+				.chartInfo = std::make_shared<SelectChartInfo>(chartPath, std::move(chartData), std::move(folderConfIni)),
+				.difficultyIdx = difficultyIdx,
+				.songSortKey = std::move(songSortKey),
 				.songDirectoryPath = FileSystem::PathAppend(baseDirectoryPath, songDirRel),
 				.sectionDirectoryPath = sectionDirRel.isEmpty() ? FilePath{} : FileSystem::PathAppend(baseDirectoryPath, sectionDirRel),
-				.sectionDisplayName = query.getColumn("section_display_name").isNull()
-					? Optional<String>{}
-					: Optional<String>{ Unicode::FromUTF8(query.getColumn("section_display_name").getString()) },
-				.skipSectionHeading = query.getColumn("skip_section_heading").getInt() != 0,
-				.visibleInDirectoryNameSort = query.getColumn("visible_in_directory_name_sort").getInt() != 0,
-				.visibleInAllNameSort = query.getColumn("visible_in_all_name_sort").getInt() != 0,
-				.sectionDirectoryIndex = query.getColumn("section_directory_index").getInt(),
-				.songDirectoryIndex = query.getColumn("song_directory_index").getInt(),
+				.sectionDisplayName = std::move(sectionDisplayName),
+				.skipSectionHeading = skipSectionHeading,
+				.visibleInDirectoryNameSort = visibleInDirectoryNameSort,
+				.visibleInAllNameSort = visibleInAllNameSort,
+				.sectionDirectoryIndex = sectionDirectoryIndex,
+				.songDirectoryIndex = songDirectoryIndex,
 			});
 		}
 

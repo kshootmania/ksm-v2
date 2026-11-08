@@ -11,8 +11,8 @@ private:
 
 	FolderConfIni m_folderConfIni;
 
-	// 検索用文字列を連結したもの
-	String m_joinedTextForSearch;
+	// 検索用文字列を連結したもの(初回参照時に生成)
+	mutable Optional<String> m_joinedTextForSearch;
 
 	FilePath toFullPath(const std::string& u8Filename) const;
 
@@ -22,7 +22,7 @@ public:
 
 	explicit SelectChartInfo(FilePathView chartFilePath);
 
-	SelectChartInfo(FilePathView chartFilePath, const kson::MetaChartData& chartData, const FolderConfIni& folderConfIni);
+	SelectChartInfo(FilePathView chartFilePath, kson::MetaChartData chartData, FolderConfIni folderConfIni);
 
 	[[nodiscard]]
 	String title() const;
