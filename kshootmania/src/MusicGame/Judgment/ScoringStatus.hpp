@@ -29,7 +29,18 @@ namespace MusicGame::Judgment
 
 		void addGaugeValueNormal(int32 add);
 
+		/// @brief 実ゲージのみ減らす
+		/// @param sub 減少量(EASY/NORMALでは減少量そのもの、HARDでは固定値、コースでは基本値)
 		void subtractGaugeValue(int32 sub);
+
+		void subtractGaugeValueNormal(int32 sub);
+
+		/// @brief ERROR時のゲージ減少
+		/// @param normalPercent NORMALゲージでのゲージ最大値に対する減少割合(%)
+		/// @param hardSub HARDゲージでの固定減少値
+		/// @param courseBaseSub コースモードでの減少基本値
+		/// @remark Grade計算用のNORMAL基準ゲージはゲージ種類・モードによらずNORMALゲージと同じ量を減らす
+		void subtractGaugeValueOnError(double normalPercent, int32 hardSub, int32 courseBaseSub);
 
 		double calcGaugePercentageFromValue(int32 gaugeValue, GaugeType gaugeType) const;
 

@@ -112,6 +112,7 @@ namespace MusicGame
 	// コースモードのゲージ減少基本値
 	constexpr int32 kGaugeDecreaseBaseValueCourseChipError = 4; // チップ/直角LASERエラー時
 	constexpr int32 kGaugeDecreaseBaseValueCourseLongError = 1; // ロング/LASERエラー時
+	constexpr int32 kGaugeDecreaseBaseValueCourseHardNear = 1; // HARDゲージのNEAR時
 
 	// ゲージ種類別の上昇率倍率
 	constexpr double kGaugeIncreaseRateEasy = 1.10; // EASY
@@ -126,7 +127,7 @@ namespace MusicGame
 	constexpr double kGaugeDecreaseRateHardLow = 0.59; // 41%軽減
 
 	// コースモード用のゲージ増加率倍率
-	constexpr double kGaugeIncreaseRateCourseEasy = 1.10; // EASY
+	constexpr double kGaugeIncreaseRateCourseEasy = 0.55; // EASY
 	constexpr double kGaugeIncreaseRateCourseNormal = 0.5; // NORMAL
 	constexpr double kGaugeIncreaseRateCourseHard = 0.4; // HARD
 
