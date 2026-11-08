@@ -19,7 +19,8 @@ namespace MusicGame::Judgment
 		JudgmentHandler m_judgmentHandler;
 
 	public:
-		explicit JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode);
+		/// @param fxChipKeySoundPulses キー音付きFXチップノーツのpulse(配置後のレーン基準)
+		explicit JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode);
 
 		void update(const kson::ChartData& chartData, GameStatus& gameStatusRef, ViewStatus& viewStatusRef);
 

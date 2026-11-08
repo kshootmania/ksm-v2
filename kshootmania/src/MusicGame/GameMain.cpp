@@ -41,7 +41,7 @@ namespace MusicGame
 		}
 
 		// 譜面データを読み込み、Turn変換とPlayModeフィルタを適用
-		kson::ChartData LoadChartDataWithTurn(const GameCreateInfo& createInfo, NoteArrangement* pNoteArrangementOut, Optional<SRandomFXAudioMapping>* pSRandomFXAudioMappingOut, std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ>* pLaserCurvedPulses)
+		kson::ChartData LoadChartDataWithTurn(const GameCreateInfo& createInfo, NoteArrangement* pNoteArrangementOut, Optional<SRandomFXAudioMapping>* pSRandomFXAudioMappingOut, std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>* pFXChipKeySoundPulsesOut, std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ>* pLaserCurvedPulses)
 		{
 			auto chartData = FsUtils::HasKsonExtension(createInfo.chartFilePath)
 				? kson::LoadKsonChartData(createInfo.chartFilePath.toUTF8())
@@ -131,6 +131,9 @@ namespace MusicGame
 					pSRandomFXAudioMappingOut->reset();
 				}
 			}
+
+			// キー音付きFXチップノーツのpulseを配置後のレーン基準で列挙
+			*pFXChipKeySoundPulsesOut = MakeFXChipKeySoundPulses(chartData.audio.keySound.fx.chipEvent, pSRandomFXAudioMappingOut->has_value() ? &(*pSRandomFXAudioMappingOut)->fxNoteDestinations : nullptr);
 
 			// 曲線を持つレーザー点のPulseを列挙
 			if (pLaserCurvedPulses != nullptr)
@@ -274,12 +277,13 @@ namespace MusicGame
 	GameMain::GameMain(const GameCreateInfo& createInfo)
 		: m_chartFilePath(createInfo.chartFilePath)
 		, m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
-		, m_chartData(LoadChartDataWithTurn(createInfo, &m_noteArrangement, &m_sRandomFXAudioMapping, &m_laserCurvedPulses))
+		, m_chartData(LoadChartDataWithTurn(createInfo, &m_noteArrangement, &m_sRandomFXAudioMapping, &m_fxChipKeySoundPulses, &m_laserCurvedPulses))
 		, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
 		, m_playOption(createInfo.playOption)
 		, m_judgmentMain(
 			m_chartData,
 			m_timingCache,
+			m_fxChipKeySoundPulses,
 			createInfo.playOption,
 			createInfo.courseContinuation,
 			createInfo.playOption.gameMode)
@@ -292,7 +296,7 @@ namespace MusicGame
 		, m_hardFailedSound("se/play_hardfailed.wav")
 		, m_audioEffectMain(m_bgm, m_chartData, m_timingCache, m_parentPath, createInfo.playOption.effectiveAudioProcDelayMs() / 1000.0, m_chartData.audio.bgm.vol * createInfo.folderConfIni.volumeScale)
 		, m_hispeedSettingMenu(createInfo.playOption.availableHispeedTypes, createInfo.playOption.hispeedSetting, kson::GetEffectiveStdBPM(m_chartData), GetInitialBPM(m_chartData))
-		, m_graphicsMain(m_chartData, m_timingCache, m_parentPath, createInfo.playOption)
+		, m_graphicsMain(m_chartData, m_timingCache, m_fxChipKeySoundPulses, m_parentPath, createInfo.playOption)
 	{
 	}
 

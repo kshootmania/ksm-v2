@@ -72,7 +72,7 @@ namespace MusicGame::Graphics
 		void drawLayer(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus) const;
 
 	public:
-		explicit GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, FilePathView parentPath, const PlayOption& playOption);
+		explicit GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses, FilePathView parentPath, const PlayOption& playOption);
 
 		void prepareMovie(double globalOffsetSec);
 

@@ -65,6 +65,9 @@ namespace MusicGame
 		// S-RANDOM時に音声を元のレーンで処理するための対応関係データ
 		Optional<SRandomFXAudioMapping> m_sRandomFXAudioMapping;
 
+		// キー音付きFXチップノーツのpulse(配置後のレーン基準)
+		std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ> m_fxChipKeySoundPulses;
+
 		const kson::ChartData m_chartData;
 		const kson::TimingCache m_timingCache;
 

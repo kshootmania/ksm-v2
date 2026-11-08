@@ -278,13 +278,14 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	GraphicsMain::GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, FilePathView parentPath, const PlayOption& playOption)
+	GraphicsMain::GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses, FilePathView parentPath, const PlayOption& playOption)
 		: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 		, m_bgBillboardMesh(MeshData::Billboard())
 		, m_bgTextures(LoadBGTextures(chartData, parentPath))
 		, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
 		, m_layerFrameTextures(LoadLayerFrameTextures(LayerFilePath(chartData, parentPath)))
 		, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
+		, m_highway3DGraphics(fxChipKeySoundPulses)
 		, m_jdgoverlay3DGraphics(m_camera)
 		, m_hudCanvas(LoadHUDCanvas())
 		, m_gaugePanel(ToGaugeCalcType(playOption.gaugeType, playOption.gameMode))

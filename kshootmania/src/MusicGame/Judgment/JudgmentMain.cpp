@@ -4,16 +4,16 @@
 namespace MusicGame::Judgment
 {
 
-	JudgmentMain::JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode)
+	JudgmentMain::JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode)
 		: m_playOption(playOption)
 		, m_btLaneJudgments{
-			ButtonLaneJudgment(playOption.effectiveBtJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonBT_A, chartData.note.bt[0], chartData.beat, timingCache),
-			ButtonLaneJudgment(playOption.effectiveBtJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonBT_B, chartData.note.bt[1], chartData.beat, timingCache),
-			ButtonLaneJudgment(playOption.effectiveBtJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonBT_C, chartData.note.bt[2], chartData.beat, timingCache),
-			ButtonLaneJudgment(playOption.effectiveBtJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonBT_D, chartData.note.bt[3], chartData.beat, timingCache) }
+			ButtonLaneJudgment(playOption.effectiveBtJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonBT_A, chartData.note.bt[0], fxChipKeySoundPulses[0], chartData.beat, timingCache),
+			ButtonLaneJudgment(playOption.effectiveBtJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonBT_B, chartData.note.bt[1], fxChipKeySoundPulses[1], chartData.beat, timingCache),
+			ButtonLaneJudgment(playOption.effectiveBtJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonBT_C, chartData.note.bt[2], fxChipKeySoundPulses[2], chartData.beat, timingCache),
+			ButtonLaneJudgment(playOption.effectiveBtJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonBT_D, chartData.note.bt[3], fxChipKeySoundPulses[3], chartData.beat, timingCache) }
 		, m_fxLaneJudgments{
-			ButtonLaneJudgment(playOption.effectiveFxJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonFX_L, chartData.note.fx[0], chartData.beat, timingCache),
-			ButtonLaneJudgment(playOption.effectiveFxJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonFX_R, chartData.note.fx[1], chartData.beat, timingCache) }
+			ButtonLaneJudgment(playOption.effectiveFxJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonFX_L, chartData.note.fx[0], fxChipKeySoundPulses[kson::kNumBTLanesSZ + 0], chartData.beat, timingCache),
+			ButtonLaneJudgment(playOption.effectiveFxJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonFX_R, chartData.note.fx[1], fxChipKeySoundPulses[kson::kNumBTLanesSZ + 1], chartData.beat, timingCache) }
 		, m_laserLaneJudgments{
 			LaserLaneJudgment(playOption.effectiveLaserJudgmentPlayMode(), 0, chartData.note.laser[0], chartData.beat, timingCache),
 			LaserLaneJudgment(playOption.effectiveLaserJudgmentPlayMode(), 1, chartData.note.laser[1], chartData.beat, timingCache) }
@@ -26,13 +26,13 @@ namespace MusicGame::Judgment
 		// BTレーンの判定
 		for (std::size_t i = 0U; i < kson::kNumBTLanesSZ; ++i)
 		{
-			m_btLaneJudgments[i].update(chartData, chartData.note.bt[i], gameStatusRef.currentPulseForButtonJudgment, gameStatusRef.currentPulse, gameStatusRef.currentTimeSecForButtonJudgment, gameStatusRef.currentTimeSec, gameStatusRef.btLaneStatus[i], m_judgmentHandler);
+			m_btLaneJudgments[i].update(chartData.note.bt[i], gameStatusRef.currentPulseForButtonJudgment, gameStatusRef.currentPulse, gameStatusRef.currentTimeSecForButtonJudgment, gameStatusRef.currentTimeSec, gameStatusRef.btLaneStatus[i], m_judgmentHandler);
 		}
 
 		// FXレーンの判定
 		for (std::size_t i = 0U; i < kson::kNumFXLanesSZ; ++i)
 		{
-			m_fxLaneJudgments[i].update(chartData, chartData.note.fx[i], gameStatusRef.currentPulseForButtonJudgment, gameStatusRef.currentPulse, gameStatusRef.currentTimeSecForButtonJudgment, gameStatusRef.currentTimeSec, gameStatusRef.fxLaneStatus[i], m_judgmentHandler);
+			m_fxLaneJudgments[i].update(chartData.note.fx[i], gameStatusRef.currentPulseForButtonJudgment, gameStatusRef.currentPulse, gameStatusRef.currentTimeSecForButtonJudgment, gameStatusRef.currentTimeSec, gameStatusRef.fxLaneStatus[i], m_judgmentHandler);
 		}
 
 		// LASERレーンの判定

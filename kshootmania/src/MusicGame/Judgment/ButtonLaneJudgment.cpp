@@ -114,33 +114,6 @@ namespace MusicGame::Judgment
 			}
 			return false;
 		}
-
-		bool HasFXChipKeySound(const kson::ChartData& chartData, Button button, kson::Pulse pulse)
-		{
-			if (button != kButtonFX_L && button != kButtonFX_R)
-			{
-				// FXレーンでない場合は対象外
-				return false;
-			}
-
-			const std::size_t laneIdx = button - kButtonFX_L;
-			const auto& chipEvent = chartData.audio.keySound.fx.chipEvent;
-
-			for (const auto& [filename, lanes] : chipEvent)
-			{
-				if (laneIdx >= lanes.size())
-				{
-					continue;
-				}
-
-				if (lanes[laneIdx].contains(pulse))
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
 	}
 
 	double ButtonLaneJudgment::errorWindowSec() const
@@ -148,7 +121,7 @@ namespace MusicGame::Judgment
 		return m_gaugeType == GaugeType::kEasyGauge ? TimingWindow::ChipNote::kWindowSecErrorEasy : TimingWindow::ChipNote::kWindowSecError;
 	}
 
-	void ButtonLaneJudgment::processKeyDown(const kson::ChartData& chartData, const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, double currentTimeSecForDraw, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
+	void ButtonLaneJudgment::processKeyDown(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, double currentTimeSec, double currentTimeSecForDraw, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
 	{
 		using namespace TimingWindow;
 
@@ -220,7 +193,7 @@ namespace MusicGame::Judgment
 			else if (minDistance < ChipNote::kWindowSecNear)
 			{
 				// NEAR判定
-				if (isFast && HasFXChipKeySound(chartData, m_keyConfigButton, nearestNotePulse))
+				if (isFast && m_fxChipKeySoundPulses.contains(nearestNotePulse))
 				{
 					// 効果音付きチップFXノーツの場合、FAST NEARは出さずCRITICAL判定扱いとする
 					// (効果音の再生遅延を気にして早押しした場合にNEARにならないようにするための仕様)
@@ -385,11 +358,12 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	ButtonLaneJudgment::ButtonLaneJudgment(JudgmentPlayMode judgmentPlayMode, GaugeType gaugeType, FastSlowMode fastSlowMode, Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
+	ButtonLaneJudgment::ButtonLaneJudgment(JudgmentPlayMode judgmentPlayMode, GaugeType gaugeType, FastSlowMode fastSlowMode, Button keyConfigButton, const kson::ByPulse<kson::Interval>& lane, const HashSet<kson::Pulse>& fxChipKeySoundPulses, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache)
 		: m_judgmentPlayMode(judgmentPlayMode)
 		, m_gaugeType(gaugeType)
 		, m_fastSlowMode(fastSlowMode)
 		, m_keyConfigButton(keyConfigButton)
+		, m_fxChipKeySoundPulses(fxChipKeySoundPulses)
 		, m_pulseToSec(CreatePulseToSec(lane, beatInfo, timingCache))
 		, m_chipJudgmentArray(CreateChipNoteJudgmentArray(lane, judgmentPlayMode))
 		, m_longJudgmentArray(CreateLongNoteJudgmentArray(lane, beatInfo, judgmentPlayMode))
@@ -398,14 +372,14 @@ namespace MusicGame::Judgment
 	{
 	}
 
-	void ButtonLaneJudgment::update(const kson::ChartData& chartData, const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, kson::Pulse currentPulseForDraw, double currentTimeSec, double currentTimeSecForDraw, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
+	void ButtonLaneJudgment::update(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, kson::Pulse currentPulseForDraw, double currentTimeSec, double currentTimeSecForDraw, ButtonLaneStatus& laneStatusRef, JudgmentHandler& judgmentHandlerRef)
 	{
 		if (m_judgmentPlayMode == JudgmentPlayMode::kOn)
 		{
 			// チップノーツとロングノーツの始点の判定処理
 			if (!m_isLockedForExit && KeyConfig::Down(m_keyConfigButton))
 			{
-				processKeyDown(chartData, lane, currentPulse, currentTimeSec, currentTimeSecForDraw, laneStatusRef, judgmentHandlerRef);
+				processKeyDown(lane, currentPulse, currentTimeSec, currentTimeSecForDraw, laneStatusRef, judgmentHandlerRef);
 			}
 
 			// ロングノーツ押下中の判定処理

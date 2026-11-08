@@ -336,4 +336,31 @@ namespace MusicGame
 		}
 		return destinations;
 	}
+
+	std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ> MakeFXChipKeySoundPulses(const kson::KeySoundInvokeListFX& chipEvent, const std::array<kson::ByPulse<std::size_t>, kson::kNumFXLanesSZ>* pFXNoteDestinations)
+	{
+		std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ> pulses;
+		for (const auto& [filename, lanes] : chipEvent)
+		{
+			for (std::size_t fxLaneIdx = 0U; fxLaneIdx < kson::kNumFXLanesSZ; ++fxLaneIdx)
+			{
+				for (const auto& [y, keySound] : lanes[fxLaneIdx])
+				{
+					std::size_t laneIdx = kson::kNumBTLanesSZ + fxLaneIdx;
+					if (pFXNoteDestinations != nullptr)
+					{
+						const auto itr = (*pFXNoteDestinations)[fxLaneIdx].find(y);
+						if (itr == (*pFXNoteDestinations)[fxLaneIdx].end())
+						{
+							// 対応するノーツがないキー音は対象外
+							continue;
+						}
+						laneIdx = itr->second;
+					}
+					pulses[laneIdx].insert(y);
+				}
+			}
+		}
+		return pulses;
+	}
 }

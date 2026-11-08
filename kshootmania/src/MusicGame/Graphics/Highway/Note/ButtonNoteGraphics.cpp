@@ -72,22 +72,7 @@ namespace MusicGame::Graphics
 				}
 
 				// 音ありFX描画の可否
-				// TODO: キー音有無は譜面ロード時にノーツ毎に事前判定しておく
-				bool hasKeySound = false;
-				const auto& chipEvent = chartData.audio.keySound.fx.chipEvent;
-				for (const auto& [filename, lanes] : chipEvent)
-				{
-					if (laneIdx >= lanes.size())
-					{
-						continue;
-					}
-
-					if (lanes[laneIdx].contains(y))
-					{
-						hasKeySound = true;
-						break;
-					}
-				}
+				const bool hasKeySound = !isBT && m_fxChipKeySoundPulses[kson::kNumBTLanesSZ + laneIdx].contains(y);
 
 				const double yRate = static_cast<double>(kHighwayTextureSize.y - positionStartY) / kHighwayTextureSize.y;
 				const int32 height = NoteGraphicsUtils::ChipNoteHeight(yRate);
@@ -224,7 +209,7 @@ namespace MusicGame::Graphics
 		drawLongNotesCommon(chartData, gameStatus, viewStatus, highwayScrollContext, target, false);
 	}
 
-	ButtonNoteGraphics::ButtonNoteGraphics()
+	ButtonNoteGraphics::ButtonNoteGraphics(const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses)
 		: m_chipBTNoteTexture(NoteGraphicsUtils::ApplyAlphaToNoteTexture(TextureAsset(kChipBTNoteTextureFilename),
 			{
 				.column = 9 * kNumTextureColumnsMainSub,
@@ -244,6 +229,7 @@ namespace MusicGame::Graphics
 			}))
 		, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
 		, m_longFXNoteStartTexture(CreateLongNoteStartTexture(kLongFXNoteTextureFilename))
+		, m_fxChipKeySoundPulses(fxChipKeySoundPulses)
 	{
 	}
 

@@ -267,3 +267,37 @@ TEST_CASE("MakeFXNoteDestinations maps original FX notes to destination lanes", 
 	REQUIRE(destinations[1].size() == 1);
 	REQUIRE(destinations[1].at(200) == 0);
 }
+
+TEST_CASE("MakeFXChipKeySoundPulses maps key sound pulses to destination lanes", "[TurnUtil]")
+{
+	kson::KeySoundInvokeListFX chipEvent;
+	chipEvent["clap"][0].emplace(100, kson::KeySoundInvokeFX{});
+	chipEvent["clap"][1].emplace(200, kson::KeySoundInvokeFX{});
+	chipEvent["snare"][1].emplace(300, kson::KeySoundInvokeFX{});
+
+	// S-RANDOMでない場合は元のFXレーンのまま
+	{
+		const auto pulses = MusicGame::MakeFXChipKeySoundPulses(chipEvent, nullptr);
+		for (std::size_t laneIdx = 0U; laneIdx < kson::kNumBTLanesSZ; ++laneIdx)
+		{
+			REQUIRE(pulses[laneIdx].empty());
+		}
+		REQUIRE(pulses[4] == HashSet<kson::Pulse>{ 100 });
+		REQUIRE(pulses[5] == HashSet<kson::Pulse>{ 200, 300 });
+	}
+
+	// S-RANDOMの場合は配置先レーンへ移す(対応するノーツがないキー音は対象外)
+	{
+		std::array<kson::ByPulse<std::size_t>, kson::kNumFXLanesSZ> destinations;
+		destinations[0].emplace(100, 2); // FX-L(100)はBT-Cへ
+		destinations[1].emplace(200, 4); // FX-R(200)はFX-Lへ
+
+		const auto pulses = MusicGame::MakeFXChipKeySoundPulses(chipEvent, &destinations);
+		REQUIRE(pulses[0].empty());
+		REQUIRE(pulses[1].empty());
+		REQUIRE(pulses[2] == HashSet<kson::Pulse>{ 100 });
+		REQUIRE(pulses[3].empty());
+		REQUIRE(pulses[4] == HashSet<kson::Pulse>{ 200 });
+		REQUIRE(pulses[5].empty());
+	}
+}

@@ -28,7 +28,8 @@ namespace MusicGame::Graphics
 		bool m_trianglesFlipped = false;
 
 	public:
-		Highway3DGraphics();
+		/// @param fxChipKeySoundPulses キー音付きFXチップノーツのpulse(配置後のレーン基準)
+		explicit Highway3DGraphics(const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses);
 
 		void update(const ViewStatus& viewStatus);
 

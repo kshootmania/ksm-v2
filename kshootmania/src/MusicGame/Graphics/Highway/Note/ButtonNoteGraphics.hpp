@@ -19,6 +19,9 @@ namespace MusicGame::Graphics
 		const Texture m_longFXNoteTexture;
 		const Texture m_longFXNoteStartTexture;
 
+		// キー音付きFXチップノーツのpulse(配置後のレーン基準)
+		const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ> m_fxChipKeySoundPulses;
+
 		void drawChipNotesCommon(const kson::ChartData& chartData, const ViewStatus& viewStatus, const PlayOption& playOption, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const;
 
 		void drawChipBTNotes(const kson::ChartData& chartData, const ViewStatus& viewStatus, const PlayOption& playOption, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const;
@@ -32,7 +35,7 @@ namespace MusicGame::Graphics
 		void drawLongFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const;
 
 	public:
-		ButtonNoteGraphics();
+		explicit ButtonNoteGraphics(const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses);
 
 		void draw(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const PlayOption& playOption, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const;
 	};

@@ -24,4 +24,10 @@ namespace MusicGame
 	/// @param noteLanes 配置先レーン
 	[[nodiscard]]
 	std::array<kson::ByPulse<std::size_t>, kson::kNumFXLanesSZ> MakeFXNoteDestinations(const kson::ChartData& chartData, const Array<std::size_t>& noteLanes);
+
+	/// @brief キー音付きFXチップノーツのpulseを配置後のレーン(0〜3がBT、4〜5がFX)毎に取得
+	/// @param chipEvent 元のFXレーン基準のキー音イベント
+	/// @param pFXNoteDestinations S-RANDOM時の元のFXレーンにおける各ノーツの配置先レーン(S-RANDOMでない場合はnullptr)
+	[[nodiscard]]
+	std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ> MakeFXChipKeySoundPulses(const kson::KeySoundInvokeListFX& chipEvent, const std::array<kson::ByPulse<std::size_t>, kson::kNumFXLanesSZ>* pFXNoteDestinations);
 }
