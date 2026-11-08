@@ -244,6 +244,7 @@ namespace MusicGame::Judgment
 			.score = m_scoringStatus.score(),
 			.maxCombo = m_scoringStatus.maxCombo(),
 			.finalCourseCombo = m_scoringStatus.courseCombo(),
+			.courseMaxCombo = m_scoringStatus.courseMaxCombo(),
 			.totalCombo = m_totalCombo,
 			.comboStats = m_scoringStatus.comboStats(),
 			.chipOrLaserSlamStats = m_scoringStatus.chipOrLaserSlamStats(),

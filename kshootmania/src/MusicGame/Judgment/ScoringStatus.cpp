@@ -348,6 +348,11 @@ namespace MusicGame::Judgment
 		return m_comboStatus.courseCombo();
 	}
 
+	int32 ScoringStatus::courseMaxCombo() const
+	{
+		return m_comboStatus.courseMaxCombo();
+	}
+
 	bool ScoringStatus::courseIsNoError() const
 	{
 		return m_comboStatus.courseIsNoError();

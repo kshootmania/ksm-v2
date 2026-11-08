@@ -16,6 +16,7 @@ private:
 	int32 m_totalCritical = 0;
 	int32 m_totalNear = 0;
 	int32 m_totalError = 0;
+	int32 m_courseMaxCombo = 0;
 
 	CourseContinuation m_continuation; // 次の曲に引き継ぐ情報
 
@@ -48,6 +49,7 @@ public:
 		m_totalCritical += playResult.comboStats.critical;
 		m_totalNear += playResult.comboStats.totalNear();
 		m_totalError += playResult.comboStats.error;
+		m_courseMaxCombo = Max(m_courseMaxCombo, playResult.courseMaxCombo);
 
 		m_failedChartTimeProgress = playResult.chartTimeProgress;
 

@@ -38,6 +38,9 @@ namespace MusicGame::Judgment
 		/// @brief コース全体でのコンボ数(コースモード時のみ使用)
 		int32 m_courseCombo = 0;
 
+		/// @brief コース全体での最大コンボ数(コースモード時のみ使用)
+		int32 m_courseMaxCombo = 0;
+
 		/// @brief コース全体でのエラーなし状態(コースモード時のみ使用)
 		bool m_courseIsNoError = true;
 
@@ -47,6 +50,7 @@ namespace MusicGame::Judgment
 	public:
 		explicit ComboStatus(const Optional<CourseContinuation>& courseContinuation)
 			: m_courseCombo(courseContinuation.has_value() ? courseContinuation->combo : 0)
+			, m_courseMaxCombo(m_courseCombo)
 			, m_courseIsNoError(courseContinuation.has_value() ? courseContinuation->isNoError : true)
 		{
 		}
@@ -76,6 +80,10 @@ namespace MusicGame::Judgment
 		/// @brief コース全体でのコンボ数を取得(コースモード時のみ使用)
 		/// @return コンボ数
 		int32 courseCombo() const;
+
+		/// @brief コース全体での最大コンボ数を取得(コースモード時のみ使用)
+		/// @return 最大コンボ数
+		int32 courseMaxCombo() const;
 
 		/// @brief コース全体でのエラーなし状態を取得(コースモード時のみ使用)
 		/// @return エラーなし状態

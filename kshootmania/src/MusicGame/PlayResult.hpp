@@ -13,6 +13,8 @@ namespace MusicGame
 
 		int32 finalCourseCombo = 0; // コース内での各曲終了時点のコンボ数(コースモード時の表示・引き継ぎ用)
 
+		int32 courseMaxCombo = 0; // コース全体での最大コンボ数(コースモード時の記録用)
+
 		int32 totalCombo = 0;
 
 		Judgment::ComboStats comboStats;
