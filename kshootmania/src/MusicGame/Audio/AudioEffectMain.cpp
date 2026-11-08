@@ -598,7 +598,7 @@ namespace MusicGame::Audio
 				continue;
 			}
 
-			const auto currentLongNoteByTime = CurrentLongNoteByTime(chartData.note.fx[i], currentPulseForSwitchAudio);
+			const auto currentLongNoteByTime = CurrentLongNoteByTime(fxNoteLanesForAudio[i], currentPulseForSwitchAudio);
 			if (!currentLongNoteByTime.has_value())
 			{
 				continue;
@@ -664,7 +664,7 @@ namespace MusicGame::Audio
 				int totalFXCount = 0;
 				for (std::size_t i = 0; i < kson::kNumFXLanesSZ; ++i)
 				{
-					const auto currentLongNoteByTime = CurrentLongNoteByTime(chartData.note.fx[i], currentPulseForSwitchAudio);
+					const auto currentLongNoteByTime = CurrentLongNoteByTime(fxNoteLanesForAudio[i], currentPulseForSwitchAudio);
 					if (currentLongNoteByTime.has_value())
 					{
 						totalFXCount++;
