@@ -1695,8 +1695,7 @@
             100.0
           ],
           "type": "Sprite",
-          "mipmapEnabled": true,
-          "mipmapLodBias": -1
+          "textureDownscaleMode": "Resize"
         }
       ],
       "decelerationRate": 0.2,

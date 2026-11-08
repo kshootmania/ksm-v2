@@ -250,8 +250,7 @@
             100.0
           ],
           "type": "Sprite",
-          "mipmapEnabled": true,
-          "mipmapLodBias": -1
+          "textureDownscaleMode": "Resize"
         },
         {
           "active": true,
