@@ -70,11 +70,11 @@ namespace AssetManagement
 			}
 #ifdef __linux
 			constexpr StringView kResourceDir = U"resources/";
-			FontAsset::Register(kFontAssetSystem, FontMethod::MSDF, 44, kResourceDir + fontPath, FontStyle::Default);
-			FontAsset::Register(kFontAssetSystemBold, FontMethod::MSDF, 44, kResourceDir + fontPath, FontStyle::Bold);
+			FontAsset::Register(kFontAssetSystem, FontMethod::SDF, 44, kResourceDir + fontPath, FontStyle::Default);
+			FontAsset::Register(kFontAssetSystemBold, FontMethod::SDF, 44, kResourceDir + fontPath, FontStyle::Bold);
 #else
-			FontAsset::Register(kFontAssetSystem, FontMethod::MSDF, 44, Resource(fontPath), FontStyle::Default);
-			FontAsset::Register(kFontAssetSystemBold, FontMethod::MSDF, 44, Resource(fontPath), FontStyle::Bold);
+			FontAsset::Register(kFontAssetSystem, FontMethod::SDF, 44, Resource(fontPath), FontStyle::Default);
+			FontAsset::Register(kFontAssetSystemBold, FontMethod::SDF, 44, Resource(fontPath), FontStyle::Bold);
 #endif
 		}
 	}
