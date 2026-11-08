@@ -235,6 +235,22 @@ public:
 	/// @param tag SubCanvasのタグ(例:"top1", "bottom2")
 	virtual void setCanvasParamsTopBottom(const SelectMenuEventContext& context, noco::Canvas& canvas, int32 difficultyIdx, StringView tag) const = 0;
 
+	/// @brief 中央の項目に表示するジャケット画像のパスを取得
+	/// @param difficultyIdx 現在選択中の難易度のインデックス(0～3)
+	/// @return ジャケット画像のパス(表示しない場合は空)
+	virtual FilePath jacketFilePathCenter([[maybe_unused]] int32 difficultyIdx) const
+	{
+		return FilePath{};
+	}
+
+	/// @brief 上下の項目に表示するジャケット画像のパスを取得
+	/// @param difficultyIdx 現在選択中の難易度のインデックス(0～3)
+	/// @return ジャケット画像のパス(表示しない場合は空)
+	virtual FilePath jacketFilePathTopBottom([[maybe_unused]] int32 difficultyIdx) const
+	{
+		return FilePath{};
+	}
+
 	/// @brief この項目をエクスプローラで表示
 	/// @param difficultyIdx 現在選択中の難易度のインデックス(0～3)
 	virtual void showInFileManager([[maybe_unused]] int32 difficultyIdx) const

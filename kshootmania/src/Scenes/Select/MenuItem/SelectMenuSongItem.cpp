@@ -136,6 +136,30 @@ const SelectChartInfo* SelectMenuSongItem::chartInfoForSingleChartItem() const
 	return nullptr;
 }
 
+const SelectChartInfo* SelectMenuSongItem::chartInfoForCenter(int32 difficultyIdx) const
+{
+	if (m_isSingleChartItem)
+	{
+		return chartInfoForSingleChartItem();
+	}
+
+	if (0 <= difficultyIdx && difficultyIdx < kNumDifficulties)
+	{
+		return m_chartInfos[difficultyIdx].get();
+	}
+	return nullptr;
+}
+
+const SelectChartInfo* SelectMenuSongItem::chartInfoForTopBottom(int32 difficultyIdx) const
+{
+	const int32 altDifficultyIdx = SelectDifficultyMenu::GetAlternativeCursor(difficultyIdx,
+		[this](int32 idx)
+		{
+			return chartInfoPtr(idx) != nullptr;
+		});
+	return chartInfoPtr(altDifficultyIdx);
+}
+
 const SelectChartInfo* SelectMenuSongItem::chartInfoPtr(int difficultyIdx, FallbackForSingleChartYN fallbackForSingleChart) const
 {
 	// 単一譜面項目の場合は、fallbackForSingleChartがYesならdifficultyIdxに関係なく保持している譜面情報を返す
@@ -166,21 +190,10 @@ void SelectMenuSongItem::setCanvasParamsCenter(const SelectMenuEventContext& con
 	setDifficultyLevelDisplayParams(canvas);
 
 	// 選択中の難易度の情報を設定
-	const SelectChartInfo* pChartInfo = nullptr;
-	if (m_isSingleChartItem)
+	const SelectChartInfo* pChartInfo = chartInfoForCenter(difficultyIdx);
+	if (m_isSingleChartItem && pChartInfo != nullptr)
 	{
-		pChartInfo = chartInfoForSingleChartItem();
-		if (pChartInfo != nullptr)
-		{
-			difficultyIdx = pChartInfo->difficultyIdx();
-		}
-	}
-	else
-	{
-		if (0 <= difficultyIdx && difficultyIdx < kNumDifficulties)
-		{
-			pChartInfo = m_chartInfos[difficultyIdx].get();
-		}
+		difficultyIdx = pChartInfo->difficultyIdx();
 	}
 
 	if (pChartInfo != nullptr)
@@ -240,12 +253,7 @@ void SelectMenuSongItem::setCanvasParamsTopBottom(const SelectMenuEventContext& 
 	const SelectChartInfo* pChartInfo = chartInfoPtr(difficultyIdx);
 
 	// 曲名・アーティスト名・ジャケット画像は常に描画するため、代替カーソル値を使用して取得
-	const int32 altDifficultyIdx = SelectDifficultyMenu::GetAlternativeCursor(difficultyIdx,
-		[this](int32 idx)
-		{
-			return chartInfoPtr(idx) != nullptr;
-		});
-	const SelectChartInfo* pAltChartInfo = chartInfoPtr(altDifficultyIdx);
+	const SelectChartInfo* pAltChartInfo = chartInfoForTopBottom(difficultyIdx);
 	if (pAltChartInfo == nullptr)
 	{
 		assert(false && "SelectMenuSongItem::setCanvasParamsTopBottom: pAltChartInfo is null");
@@ -305,6 +313,18 @@ void SelectMenuSongItem::setCanvasParamsTopBottom(const SelectMenuEventContext& 
 		{ U"iconFilePath", iconPath },
 		{ U"iconActive", !iconPath.isEmpty() && FileSystem::IsFile(iconPath) },
 	});
+}
+
+FilePath SelectMenuSongItem::jacketFilePathCenter(int32 difficultyIdx) const
+{
+	const SelectChartInfo* pChartInfo = chartInfoForCenter(difficultyIdx);
+	return pChartInfo != nullptr ? pChartInfo->jacketFilePath() : FilePath{};
+}
+
+FilePath SelectMenuSongItem::jacketFilePathTopBottom(int32 difficultyIdx) const
+{
+	const SelectChartInfo* pChartInfo = chartInfoForTopBottom(difficultyIdx);
+	return pChartInfo != nullptr ? pChartInfo->jacketFilePath() : FilePath{};
 }
 
 void SelectMenuSongItem::showInFileManager(int32 difficultyIdx) const

@@ -17,6 +17,12 @@ private:
 	// 単一譜面項目の譜面情報を取得(存在しない場合はnullptrを返す)
 	const SelectChartInfo* chartInfoForSingleChartItem() const;
 
+	// 中央の項目に表示する譜面情報を取得(存在しない場合はnullptrを返す)
+	const SelectChartInfo* chartInfoForCenter(int32 difficultyIdx) const;
+
+	// 上下の項目に表示する譜面情報を取得(選択中の難易度がない場合は代替カーソル値の難易度のもの、譜面がない場合はnullptrを返す)
+	const SelectChartInfo* chartInfoForTopBottom(int32 difficultyIdx) const;
+
 	// 各難易度の存在有無とレベルの表示パラメータを設定
 	void setDifficultyLevelDisplayParams(noco::Canvas& canvas) const;
 
@@ -73,6 +79,10 @@ public:
 	/// @param difficultyIdx 現在選択中の難易度のインデックス(0～3)
 	/// @param tag SubCanvasのタグ(例:"top1", "bottom2")
 	virtual void setCanvasParamsTopBottom(const SelectMenuEventContext& context, noco::Canvas& canvas, int32 difficultyIdx, StringView tag) const override;
+
+	virtual FilePath jacketFilePathCenter(int32 difficultyIdx) const override;
+
+	virtual FilePath jacketFilePathTopBottom(int32 difficultyIdx) const override;
 
 	/// @brief この項目をエクスプローラで表示
 	/// @param difficultyIdx 現在選択中の難易度のインデックス(0～3)

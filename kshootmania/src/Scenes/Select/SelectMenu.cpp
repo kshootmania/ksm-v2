@@ -24,6 +24,47 @@
 
 namespace
 {
+	// ジャケット画像のSpriteが縮小したテクスチャの選択に使う描画時の情報
+	struct JacketDrawInfo
+	{
+		SizeF drawSize;
+		noco::PreserveAspectYN preserveAspect;
+	};
+
+	// 指定したタグのSubCanvas内のジャケット画像のSpriteから描画時の情報を取得(SubCanvasがまだ読み込まれていない場合はnone)
+	Optional<JacketDrawInfo> GetJacketDrawInfo(noco::Canvas& canvas, StringView subCanvasTag)
+	{
+		const auto pNode = NocoUtils::GetSubCanvasNodeByName(&canvas, subCanvasTag, U"JacketImage");
+		if (pNode == nullptr)
+		{
+			return none;
+		}
+		const auto pSprite = pNode->getComponent<noco::Sprite>();
+		if (pSprite == nullptr)
+		{
+			return none;
+		}
+
+		// 画面上の描画サイズ(拡大縮小などの変換を反映したもの)
+		const Quad& quad = pNode->transformedQuad();
+		const SizeF drawSize{ quad.p0.distanceFrom(quad.p1), quad.p0.distanceFrom(quad.p3) };
+		if (drawSize.x <= 0.0 || drawSize.y <= 0.0)
+		{
+			return none;
+		}
+
+		return JacketDrawInfo{ .drawSize = drawSize, .preserveAspect = noco::PreserveAspectYN{ pSprite->preserveAspect().defaultValue() } };
+	}
+
+	void PreloadJacketTexture(FilePathView jacketFilePath, const JacketDrawInfo& drawInfo)
+	{
+		if (jacketFilePath.isEmpty())
+		{
+			return;
+		}
+		noco::Asset::PrewarmDownscaledTextureAsync(jacketFilePath, drawInfo.drawSize, drawInfo.preserveAspect);
+	}
+
 	// 押下された項目のSubCanvasタグと項目の相対位置の対応関係
 	const HashTable<String, int32> kSubCanvasTagToItemDelta = {
 		{ U"top4", -4 },
@@ -646,6 +687,58 @@ void SelectMenu::refreshContentCanvasParams()
 			const int32 bottomIdx = i + 1;
 			pItem->setCanvasParamsTopBottom(m_eventContext, *m_selectSceneCanvas, difficultyIdx, U"bottom{}"_fmt(bottomIdx));
 		}
+	}
+
+	preloadJacketTextures(difficultyIdx);
+}
+
+void SelectMenu::preloadJacketTextures(int32 difficultyIdx)
+{
+	// 表示されなくなった項目の読み込みが先に実行されないよう、未開始の読み込みは取り消してカーソルに近い順に要求し直す
+	noco::Asset::CancelPendingAsyncTextureLoads();
+
+	const Optional<JacketDrawInfo> centerDrawInfo = GetJacketDrawInfo(*m_selectSceneCanvas, U"center");
+	const Optional<JacketDrawInfo> topBottomDrawInfo = GetJacketDrawInfo(*m_selectSceneCanvas, U"top1");
+
+	const auto preloadCenter = [&](int32 idx)
+	{
+		if (const auto pItem = m_menu.atCyclic(idx).get(); pItem != nullptr && centerDrawInfo.has_value())
+		{
+			PreloadJacketTexture(pItem->jacketFilePathCenter(difficultyIdx), *centerDrawInfo);
+		}
+	};
+	const auto preloadTopBottom = [&](int32 idx)
+	{
+		if (const auto pItem = m_menu.atCyclic(idx).get(); pItem != nullptr && topBottomDrawInfo.has_value())
+		{
+			PreloadJacketTexture(pItem->jacketFilePathTopBottom(difficultyIdx), *topBottomDrawInfo);
+		}
+	};
+
+	// 要求した順に読み込まれるため、表示中の項目から順に要求する
+	const int32 cursor = m_menu.cursor();
+	preloadCenter(cursor);
+	for (int32 i = 1; i <= Max(kNumTopItems, kNumBottomItems); ++i)
+	{
+		if (i <= kNumTopItems)
+		{
+			preloadTopBottom(cursor - i);
+		}
+		if (i <= kNumBottomItems)
+		{
+			preloadTopBottom(cursor + i);
+		}
+	}
+
+	// 次に中央へ来る項目は、中央の描画サイズでも読み込んでおく
+	preloadCenter(cursor - 1);
+	preloadCenter(cursor + 1);
+
+	// 表示範囲の外側の項目
+	for (int32 i = 1; i <= kNumJacketPreloadItems; ++i)
+	{
+		preloadTopBottom(cursor - kNumTopItems - i);
+		preloadTopBottom(cursor + kNumBottomItems + i);
 	}
 }
 

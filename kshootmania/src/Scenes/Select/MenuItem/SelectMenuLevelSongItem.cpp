@@ -279,6 +279,16 @@ void SelectMenuLevelSongItem::setCanvasParamsTopBottom(const SelectMenuEventCont
 	});
 }
 
+FilePath SelectMenuLevelSongItem::jacketFilePathCenter([[maybe_unused]] int32 difficultyIdx) const
+{
+	return m_chartInfo != nullptr ? m_chartInfo->jacketFilePath() : FilePath{};
+}
+
+FilePath SelectMenuLevelSongItem::jacketFilePathTopBottom([[maybe_unused]] int32 difficultyIdx) const
+{
+	return m_chartInfo != nullptr ? m_chartInfo->jacketFilePath() : FilePath{};
+}
+
 void SelectMenuLevelSongItem::showInFileManager([[maybe_unused]] int32 difficultyIdx) const
 {
 	if (m_chartInfo == nullptr)
