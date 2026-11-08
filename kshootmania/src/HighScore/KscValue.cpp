@@ -45,7 +45,7 @@ KscValue KscValue::applyPlayResultForCourse(const MusicGame::PlayResult& playRes
 		.percent = Max(percent, playResult.gaugePercentForHighScore()),
 		.maxCombo = Max(maxCombo, playResult.maxCombo),
 		.playCount = playCount + 1,
-		.clearCount = clearCount,
+		.clearCount = clearCount + (playResult.achievement() >= Achievement::kFullCombo ? 1 : 0),
 		.fullComboCount = fullComboCount + (playResult.achievement() >= Achievement::kFullCombo ? 1 : 0),
 		.perfectCount = perfectCount + (playResult.achievement() >= Achievement::kPerfect ? 1 : 0),
 	};
