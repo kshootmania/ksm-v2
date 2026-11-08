@@ -157,8 +157,9 @@ namespace MusicGame::Scroll
 		/// @param basePulse 基準となるPulse位置(scroll_speed計算に使用)
 		/// @param relPulse 相対Pulse値
 		/// @param beatInfo kson.beat
+		/// @param timingCache 事前計算したTimingCache
 		/// @return ピクセル高さ
-		int32 relPulseToPixelHeight(kson::Pulse basePulse, kson::RelPulse relPulse, const kson::BeatInfo& beatInfo) const;
+		int32 relPulseToPixelHeight(kson::Pulse basePulse, kson::RelPulse relPulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache) const;
 
 		/// @brief scrollSpeedに負の値が含まれているかを返す
 		/// @return 負の値が含まれていればtrue

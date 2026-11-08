@@ -175,3 +175,22 @@ TEST_CASE("HighwayScroll currentHispeed for x-mod and o-mod", "[HighwayScroll]")
 		}
 	}
 }
+
+TEST_CASE("HighwayScroll relPulseToPixelHeight for c-mod matches o-mod at the same BPM", "[HighwayScroll]")
+{
+	kson::ChartData chartData;
+	chartData.beat.bpm[0] = 150.0;
+	chartData.beat.timeSig[0] = kson::TimeSig{ 4, 4 };
+
+	auto timingCache = kson::CreateTimingCache(chartData.beat);
+
+	HighwayScroll highwayScroll(chartData);
+
+	// 1/32 = 30 Pulse = 0.05秒、0.05 / 60 * 240 * 540 * 400 / 960 = 45
+	highwayScroll.update(HispeedSetting{ .type = HispeedType::CMod, .value = 400 }, 150.0);
+	REQUIRE(highwayScroll.relPulseToPixelHeight(0, 30, chartData.beat, timingCache) == 45);
+
+	// 30 * 540 * (400 / 150) / 960 = 45
+	highwayScroll.update(HispeedSetting{ .type = HispeedType::OMod, .value = 400 }, 150.0);
+	REQUIRE(highwayScroll.relPulseToPixelHeight(0, 30, chartData.beat, timingCache) == 45);
+}

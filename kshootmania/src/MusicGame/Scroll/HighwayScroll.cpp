@@ -148,7 +148,7 @@ namespace MusicGame::Scroll
 
 	int32 HighwayScrollContext::relPulseToPixelHeight(kson::Pulse basePulse, kson::RelPulse relPulse) const
 	{
-		return m_pHighwayScroll->relPulseToPixelHeight(basePulse, relPulse, *m_pBeatInfo);
+		return m_pHighwayScroll->relPulseToPixelHeight(basePulse, relPulse, *m_pBeatInfo, *m_pTimingCache);
 	}
 
 	const HighwayScroll& HighwayScrollContext::highwayScroll() const
@@ -335,11 +335,21 @@ namespace MusicGame::Scroll
 		return static_cast<int32>(Graphics::kHighwayTextureSize.y - Graphics::kJdglineYFromBottom) - static_cast<int32>(relPulseEquivalent * kBasePixels * m_hispeedFactor / kson::kResolution4);
 	}
 
-	int32 HighwayScroll::relPulseToPixelHeight(kson::Pulse basePulse, kson::RelPulse relPulse, const kson::BeatInfo& beatInfo) const
+	int32 HighwayScroll::relPulseToPixelHeight(kson::Pulse basePulse, kson::RelPulse relPulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache) const
 	{
 		assert(m_hispeedFactor != 0.0 && "HighwayScroll::update() must be called at least once before HighwayScroll::relPulseToPixelHeight()");
 
-		const double relPulseEquivalent = scrollSpeedIntegral(beatInfo.scrollSpeed, static_cast<double>(basePulse), static_cast<double>(basePulse + relPulse));
+		double relPulseEquivalent;
+		if (m_hispeedSetting.type == HispeedType::CMod)
+		{
+			// C-modでは秒数をもとに計算した換算値を使う(getRelPulseEquvalentと同じ)
+			const double relTimeSec = pulseToSec(basePulse + relPulse, beatInfo, timingCache) - pulseToSec(basePulse, beatInfo, timingCache);
+			relPulseEquivalent = relTimeSec / 60 * kson::kResolution;
+		}
+		else
+		{
+			relPulseEquivalent = scrollSpeedIntegral(beatInfo.scrollSpeed, static_cast<double>(basePulse), static_cast<double>(basePulse + relPulse));
+		}
 		return static_cast<int32>(relPulseEquivalent * kBasePixels * m_hispeedFactor / kson::kResolution4);
 	}
 
