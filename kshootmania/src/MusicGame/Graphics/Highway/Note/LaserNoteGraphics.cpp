@@ -479,6 +479,18 @@ namespace MusicGame::Graphics
 			const bool hasNegativeScrollSpeed = highwayScrollContext.hasNegativeScrollSpeed();
 			auto itr = hasNegativeScrollSpeed ? lane.begin() : kson::ValueItrAt(lane, gameStatus.currentPulse);
 
+			// 直前のセクションの終端直角の横線・tailが判定ラインより下でまだ画面内に残っている場合があるため、その分だけ前のセクションから描画を開始
+			while (!hasNegativeScrollSpeed && itr != lane.begin())
+			{
+				const auto prevItr = std::prev(itr);
+				const kson::Pulse prevEndPulse = prevItr->first + prevItr->second.v.rbegin()->first;
+				if (highwayScrollContext.getPositionY(prevEndPulse) + kLaserShiftY - kLaserSlamHeightMax - kLaserTailHeightMax >= kHighwayTextureSize.y)
+				{
+					break;
+				}
+				itr = prevItr;
+			}
+
 			m_visibleLaserSections.clear();
 
 			for (; itr != lane.end(); ++itr)
