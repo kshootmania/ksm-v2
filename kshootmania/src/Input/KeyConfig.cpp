@@ -893,6 +893,23 @@ bool KeyConfig::Up(Button button)
 		}
 	}
 
+	// FXの場合はLR両押しキーの状態も反映
+	if (button == kButtonFX_L || button == kButtonFX_R)
+	{
+		for (const auto& configSet : s_configSetArray)
+		{
+			const auto& fxLRInput = configSet[kButtonFX_LR];
+			if (ignoreKeyboard && fxLRInput.deviceType() == InputDeviceType::Keyboard)
+			{
+				continue;
+			}
+			if (fxLRInput.up())
+			{
+				return true;
+			}
+		}
+	}
+
 	if (button == kButtonBack)
 	{
 		if (IsBT3PlusStartUp())
