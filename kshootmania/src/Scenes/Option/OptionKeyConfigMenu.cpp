@@ -1239,6 +1239,12 @@ void OptionKeyConfigMenu::updateSettingButtonState()
 				bool isAnyButtonDown = false;
 				for (const auto& input : gamepad.buttons)
 				{
+					// ボタン番号32以上は「デバイス番号*32+ボタン番号」形式で保存できないため割り当て不可
+					if (input.code() >= 32)
+					{
+						continue;
+					}
+
 					if (input.down())
 					{
 						setInput(input);
