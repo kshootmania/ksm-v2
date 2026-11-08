@@ -134,7 +134,6 @@ namespace MusicGame::Graphics
 				{
 					// ロングノーツ押下中のループアニメーション
 					frameIdx = kLongAnimLoopFrameOffset + static_cast<int32>(MathUtils::WrappedFmod(sec / kLongAnimLoopDurationSec, 1.0) * kLongAnimLoopFrames);
-					m_longAnimTexture(frameIdx).resized(size).draw(position);
 				}
 			}
 			else if (0.0 <= sec && sec < kChipAnimDurationSec)
