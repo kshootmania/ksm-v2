@@ -16,7 +16,10 @@ namespace
 	FilePath GetPackageFolderPath(FilePathView chartFilePath)
 	{
 		const String relativePath = FsUtils::RelativePathFromSongsDir(chartFilePath);
-		if (relativePath.empty())
+
+		// songsフォルダ外の譜面(エディタからのテストプレイなど)にはパッケージフォルダが無い
+		const bool isOutsideSongsDir = relativePath.starts_with(U"..") || relativePath.starts_with(U'/') || relativePath.starts_with(U'\\') || relativePath.includes(U':');
+		if (relativePath.empty() || isOutsideSongsDir)
 		{
 			return {};
 		}
