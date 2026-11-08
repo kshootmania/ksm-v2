@@ -229,8 +229,9 @@ namespace MusicGame::Scroll
 			return hispeed;
 		}
 
+		// 切り捨てによる誤差が重ならないよう、scroll_speedを掛けてから整数にする
 		const double scrollSpeed = kson::GraphValueAt(m_pBeatInfo->scrollSpeed, pulse);
-		return static_cast<int32>(hispeed * Abs(scrollSpeed));
+		return static_cast<int32>(m_pHighwayScroll->hispeedBeforeTruncationAt(pulse, *m_pBeatInfo) * Abs(scrollSpeed));
 	}
 
 	double HighwayScroll::pulseToSec(kson::Pulse pulse, const kson::BeatInfo& beatInfo, const kson::TimingCache& timingCache) const
@@ -365,5 +366,10 @@ namespace MusicGame::Scroll
 	int32 HighwayScroll::hispeedAt(kson::Pulse pulse, const kson::BeatInfo& beatInfo) const
 	{
 		return CurrentHispeed(m_hispeedSetting, kson::TempoAt(pulse, beatInfo), m_stdBPM);
+	}
+
+	double HighwayScroll::hispeedBeforeTruncationAt(kson::Pulse pulse, const kson::BeatInfo& beatInfo) const
+	{
+		return CurrentHispeedBeforeTruncation(m_hispeedSetting, kson::TempoAt(pulse, beatInfo), m_stdBPM);
 	}
 }

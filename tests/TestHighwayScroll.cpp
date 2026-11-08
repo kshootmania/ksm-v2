@@ -128,6 +128,33 @@ TEST_CASE("HighwayScroll currentHispeedWithScrollSpeed truncates only once", "[H
 	REQUIRE(highwayScrollContext.currentHispeedWithScrollSpeed() == 999);
 }
 
+TEST_CASE("HighwayScroll hispeedWithScrollSpeedAt truncates only once", "[HighwayScroll]")
+{
+	kson::ChartData chartData;
+	chartData.beat.bpm[0] = 100.0;
+	chartData.beat.bpm[kson::kResolution4 * 4] = 150.0;
+	chartData.beat.timeSig[0] = kson::TimeSig{ 4, 4 };
+	chartData.beat.scrollSpeed[0] = kson::GraphPoint{ 2.0 };
+
+	auto timingCache = kson::CreateTimingCache(chartData.beat);
+
+	HighwayScroll highwayScroll(chartData);
+
+	HispeedSetting hispeedSetting;
+	hispeedSetting.type = HispeedType::OMod;
+	hispeedSetting.value = 333;
+	highwayScroll.update(hispeedSetting, 100.0);
+
+	GameStatus gameStatus;
+	const HighwayScrollContext highwayScrollContext(&highwayScroll, &chartData.beat, &timingCache, &gameStatus);
+
+	// 100 * 333 / 100 * 2 = 666
+	REQUIRE(highwayScrollContext.hispeedWithScrollSpeedAt(0) == 666);
+
+	// 150 * 333 / 100 = 499.5、2倍で999
+	REQUIRE(highwayScrollContext.hispeedWithScrollSpeedAt(kson::kResolution4 * 4) == 999);
+}
+
 TEST_CASE("HighwayScroll currentHispeed for x-mod and o-mod", "[HighwayScroll]")
 {
 	kson::ChartData chartData;
