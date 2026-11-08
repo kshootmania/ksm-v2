@@ -395,7 +395,7 @@ namespace MusicGame::Graphics
 		{
 			const double preStartOffset = m_moviePanel.isEnabled() ? kPreStartOffsetWithMovieSec : kPreStartOffsetSec;
 			const double totalDurationSec = bgmDuration.count() + preStartOffset;
-			const double progress = Clamp(gameStatus.currentTimeSec / totalDurationSec, 0.0, 1.0);
+			const double progress = Clamp((gameStatus.currentTimeSec + preStartOffset) / totalDurationSec, 0.0, 1.0);
 
 			m_hudCanvas->setParamValues({
 				{ U"positionMarkerProgress", progress },
