@@ -22,6 +22,9 @@ namespace MusicGame::Audio
 
 		std::array<kson::Pulse, kson::kNumLaserLanesSZ> m_autoPlaySELastPulses = { kPastPulse, kPastPulse };
 
+		// SE自動再生モードで、次に直角音を再生するセクション
+		std::array<kson::ByPulse<kson::LaserSection>::const_iterator, kson::kNumLaserLanesSZ> m_autoPlaySESectionCursors;
+
 		std::map<kson::Pulse, double> m_pulseToSec;
 
 		void updateByNoteTime(const kson::ChartData& chartData, const GameStatus& gameStatus);
