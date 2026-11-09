@@ -731,6 +731,12 @@ namespace MusicGame::Judgment
 		for (auto itr = m_passedLineJudgmentCursor; itr != m_lineJudgmentArray.end(); ++itr)
 		{
 			auto& [y, judgment] = *itr;
+			if (y >= currentPulse)
+			{
+				// まだ始点を通過していない判定に到達したのでループを抜ける
+				break;
+			}
+
 			if (y + judgment.length < currentPulse)
 			{
 				// 通過済みの判定を処理

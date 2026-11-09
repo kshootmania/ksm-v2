@@ -309,7 +309,14 @@ namespace MusicGame::Judgment
 		for (auto itr = m_passedNoteCursor; itr != lane.end(); ++itr)
 		{
 			const auto& [y, note] = *itr;
-			const double passSec = ((note.length == 0) ? m_pulseToSec.at(y) : m_pulseToSec.at(y + note.length)) + thresholdSec;
+			const double startSec = m_pulseToSec.at(y);
+			if (currentTimeSec < startSec + thresholdSec)
+			{
+				// まだ始点を通過していないノーツに到達したのでループを抜ける
+				break;
+			}
+
+			const double passSec = ((note.length == 0) ? startSec : m_pulseToSec.at(y + note.length)) + thresholdSec;
 			if (currentTimeSec >= passSec)
 			{
 				// 通過済みチップノーツの判定
@@ -344,6 +351,12 @@ namespace MusicGame::Judgment
 		for (auto itr = m_passedLongJudgmentCursor; itr != m_longJudgmentArray.end(); ++itr)
 		{
 			auto& [y, judgment] = *itr;
+			if (y >= currentPulse)
+			{
+				// まだ始点を通過していない判定に到達したのでループを抜ける
+				break;
+			}
+
 			if (y + judgment.length < currentPulse)
 			{
 				// 通過済みロングノーツの判定
