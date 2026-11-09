@@ -1,6 +1,7 @@
 ﻿#include <catch2/catch.hpp>
 #include "ksmaudio/AudioEffect/AudioEffectParam.hpp"
 #include "ksmaudio/AudioEffect/AudioEffectParamSpec.hpp"
+#include "ksmaudio/AudioEffect/AudioEffectParamValidator.hpp"
 #include "ksmaudio/AudioEffect/ParamController.hpp"
 #include "ksmaudio/AudioEffect/Params/BitcrusherParams.hpp"
 #include "ksmaudio/AudioEffect/Params/FlangerParams.hpp"
@@ -595,4 +596,18 @@ TEST_CASE("Peaking filter output is finite near Nyquist frequency", "[AudioEffec
 			REQUIRE(std::isfinite(output));
 		}
 	}
+}
+
+TEST_CASE("Validate length type parameters with overflowing integers", "[AudioEffect][Param][Validator]")
+{
+	using ksmaudio::AudioEffect::Type;
+	using ksmaudio::AudioEffect::ValidateParamValue;
+
+	REQUIRE(ValidateParamValue(Type::kLength, "1/4").isValid);
+	REQUIRE(ValidateParamValue(Type::kLength, "1/2147483647").isValid);
+
+	// intの範囲を超える分母は、longがintより大きい環境でも無効
+	REQUIRE_FALSE(ValidateParamValue(Type::kLength, "1/2147483648").isValid);
+	REQUIRE_FALSE(ValidateParamValue(Type::kLength, "1/4294967297").isValid);
+	REQUIRE_FALSE(ValidateParamValue(Type::kLength, "1/99999999999999999999").isValid);
 }
