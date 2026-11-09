@@ -29,7 +29,7 @@ namespace MusicGame::Graphics
 
 	public:
 		/// @param fxChipKeySoundPulses キー音付きFXチップノーツのpulse(配置後のレーン基準)
-		explicit Highway3DGraphics(const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses);
+		explicit Highway3DGraphics(const kson::ChartData& chartData, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses);
 
 		void update(const ViewStatus& viewStatus);
 

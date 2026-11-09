@@ -285,7 +285,7 @@ namespace MusicGame::Graphics
 		, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
 		, m_layerFrameTextures(LoadLayerFrameTextures(LayerFilePath(chartData, parentPath)))
 		, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
-		, m_highway3DGraphics(fxChipKeySoundPulses)
+		, m_highway3DGraphics(chartData, fxChipKeySoundPulses)
 		, m_jdgoverlay3DGraphics(m_camera)
 		, m_hudCanvas(LoadHUDCanvas())
 		, m_gaugePanel(ToGaugeCalcType(playOption.gaugeType, playOption.gameMode))

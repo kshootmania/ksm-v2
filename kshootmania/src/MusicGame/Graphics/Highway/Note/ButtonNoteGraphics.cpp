@@ -33,9 +33,42 @@ namespace MusicGame::Graphics
 			const Image source{ FileSystem::PathAppend(FsUtils::GetResourcePath(U"imgs"), filename) };
 			return Texture{ ImageUtils::ReplaceBlackWithTransparent(source.clipped(0, static_cast<int32>(kLongNoteStartTextureY), source.width(), kLongNoteStartTextureHeight)) };
 		}
+
+		template <std::size_t N>
+		std::array<kson::RelPulse, N> MaxNoteLengths(const std::array<kson::ByPulse<kson::Interval>, N>& lanes)
+		{
+			std::array<kson::RelPulse, N> maxNoteLengths{};
+			for (std::size_t laneIdx = 0; laneIdx < N; ++laneIdx)
+			{
+				for (const auto& [y, note] : lanes[laneIdx])
+				{
+					maxNoteLengths[laneIdx] = Max(maxNoteLengths[laneIdx], note.length);
+				}
+			}
+			return maxNoteLengths;
+		}
+
+		/// @brief 描画を開始するノーツを取得(描画範囲より下にあるノーツはスキップ)
+		/// @param maxNoteLength レーン内の最大ノーツ長(チップノーツのみ描画する場合は0)
+		kson::ByPulse<kson::Interval>::const_iterator DrawBeginItr(const kson::ByPulse<kson::Interval>& lane, kson::Pulse currentPulse, kson::RelPulse maxNoteLength, const Scroll::HighwayScrollContext& highwayScrollContext)
+		{
+			if (highwayScrollContext.hasNegativeScrollSpeed())
+			{
+				// scroll_speedに負の値が含まれている場合は過去のノーツも描画範囲に入る可能性があるため、先頭から描画
+				return lane.begin();
+			}
+
+			// 終点が描画範囲より下にあるノーツまで戻る(ノーツが重なっていても漏れないよう、長さは最大値で判定)
+			auto itr = lane.upper_bound(currentPulse);
+			while (itr != lane.begin() && highwayScrollContext.getPositionY(std::prev(itr)->first + maxNoteLength) < kHighwayTextureSize.y)
+			{
+				--itr;
+			}
+			return itr;
+		}
 	}
 
-	void ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const ViewStatus& viewStatus, const PlayOption& playOption, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const
+	void ButtonNoteGraphics::drawChipNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const PlayOption& playOption, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const
 	{
 		const ScopedRenderTarget2D renderTarget(target.additiveTexture());
 		const ScopedRenderStates2D samplerState(SamplerState::ClampNearest);
@@ -50,8 +83,9 @@ namespace MusicGame::Graphics
 			// scroll_speedに負の値が含まれている場合は描画範囲外の判定を変更
 			const bool hasNegativeScrollSpeed = highwayScrollContext.hasNegativeScrollSpeed();
 
-			for (const auto& [y, note] : lane)
+			for (auto itr = DrawBeginItr(lane, gameStatus.currentPulse, 0, highwayScrollContext); itr != lane.end(); ++itr)
 			{
+				const auto& [y, note] = *itr;
 				const int32 positionStartY = highwayScrollContext.getPositionY(y);
 
 				// 描画範囲外チェック
@@ -86,14 +120,14 @@ namespace MusicGame::Graphics
 		}
 	}
 
-	void ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const ViewStatus& viewStatus, const PlayOption& playOption, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawChipBTNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const PlayOption& playOption, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
-		drawChipNotesCommon(chartData, viewStatus, playOption, highwayScrollContext, target, true);
+		drawChipNotesCommon(chartData, gameStatus, viewStatus, playOption, highwayScrollContext, target, true);
 	}
 
-	void ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const ViewStatus& viewStatus, const PlayOption& playOption, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
+	void ButtonNoteGraphics::drawChipFXNotes(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const PlayOption& playOption, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target) const
 	{
-		drawChipNotesCommon(chartData, viewStatus, playOption, highwayScrollContext, target, false);
+		drawChipNotesCommon(chartData, gameStatus, viewStatus, playOption, highwayScrollContext, target, false);
 	}
 
 	void ButtonNoteGraphics::drawLongNotesCommon(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext, const HighwayRenderTexture& target, bool isBT) const
@@ -119,8 +153,11 @@ namespace MusicGame::Graphics
 				const double centerSplitShiftX = Camera::CenterSplitShiftX(viewStatus.camStatus.centerSplit) * ((laneIdx >= numLanes / 2) ? 1 : -1);
 				const Vec2 offsetPosition = kLanePositionOffset + (isBT ? kBTLanePositionDiff : kFXLanePositionDiff) * laneIdx;
 
-				for (const auto& [y, note] : lane)
+				const kson::RelPulse maxNoteLength = isBT ? m_btMaxNoteLengths[laneIdx] : m_fxMaxNoteLengths[laneIdx];
+
+				for (auto itr = DrawBeginItr(lane, gameStatus.currentPulse, maxNoteLength, highwayScrollContext); itr != lane.end(); ++itr)
 				{
+					const auto& [y, note] = *itr;
 					const int32 positionStartY = highwayScrollContext.getPositionY(y);
 					if (!hasNegativeScrollSpeed && positionStartY < 0)
 					{
@@ -209,7 +246,7 @@ namespace MusicGame::Graphics
 		drawLongNotesCommon(chartData, gameStatus, viewStatus, highwayScrollContext, target, false);
 	}
 
-	ButtonNoteGraphics::ButtonNoteGraphics(const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses)
+	ButtonNoteGraphics::ButtonNoteGraphics(const kson::ChartData& chartData, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses)
 		: m_chipBTNoteTexture(NoteGraphicsUtils::ApplyAlphaToNoteTexture(TextureAsset(kChipBTNoteTextureFilename),
 			{
 				.column = 9 * kNumTextureColumnsMainSub,
@@ -230,6 +267,8 @@ namespace MusicGame::Graphics
 		, m_longFXNoteTexture(TextureAsset(kLongFXNoteTextureFilename))
 		, m_longFXNoteStartTexture(CreateLongNoteStartTexture(kLongFXNoteTextureFilename))
 		, m_fxChipKeySoundPulses(fxChipKeySoundPulses)
+		, m_btMaxNoteLengths(MaxNoteLengths(chartData.note.bt))
+		, m_fxMaxNoteLengths(MaxNoteLengths(chartData.note.fx))
 	{
 	}
 
@@ -237,7 +276,7 @@ namespace MusicGame::Graphics
 	{
 		drawLongFXNotes(chartData, gameStatus, viewStatus, highwayScrollContext, target);
 		drawLongBTNotes(chartData, gameStatus, viewStatus, highwayScrollContext, target);
-		drawChipFXNotes(chartData, viewStatus, playOption, highwayScrollContext, target);
-		drawChipBTNotes(chartData, viewStatus, playOption, highwayScrollContext, target);
+		drawChipFXNotes(chartData, gameStatus, viewStatus, playOption, highwayScrollContext, target);
+		drawChipBTNotes(chartData, gameStatus, viewStatus, playOption, highwayScrollContext, target);
 	}
 }
