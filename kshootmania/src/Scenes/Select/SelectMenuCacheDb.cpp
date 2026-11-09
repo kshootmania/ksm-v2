@@ -40,6 +40,17 @@ namespace
 		return std::filesystem::path{ String{ path }.toUTF32() };
 	}
 
+	// パスのnative()の文字列をStringに変換
+	// (不正なUTF-8を含むファイル名でもpath::u32string()のように例外にならないよう、FileSystem::DirectoryContentsと同じ変換を使う)
+	String FromNativePath(const std::filesystem::path::string_type& nativePath)
+	{
+#ifdef _WIN32
+		return Unicode::FromWstring(nativePath);
+#else
+		return Unicode::FromUTF8(nativePath);
+#endif
+	}
+
 	uint64 StablePathHash(FilePathView path)
 	{
 		const std::string utf8Path = String{ path }.toUTF8();
@@ -110,9 +121,15 @@ namespace
 
 		// ディレクトリ列挙で得た情報をそのまま使い、ファイル毎の情報取得の回数を減らす
 		const std::filesystem::path basePath = ToStdPath(FileSystem::FullPath(baseDirectoryPath));
-		const std::size_t basePathLength = basePath.u32string().size();
+		const std::size_t basePathLength = basePath.native().size();
+#ifdef _WIN32
+		// Windows版のFileSystem::DirectoryContentsと同様に、ジャンクション・シンボリックリンクのディレクトリの中のファイルも取得する
+		constexpr auto kDirectoryOptions = std::filesystem::directory_options::skip_permission_denied | std::filesystem::directory_options::follow_directory_symlink;
+#else
+		constexpr auto kDirectoryOptions = std::filesystem::directory_options::skip_permission_denied;
+#endif
 		std::error_code ec;
-		for (std::filesystem::recursive_directory_iterator it(basePath, std::filesystem::directory_options::skip_permission_denied, ec), end; it != end; it.increment(ec))
+		for (std::filesystem::recursive_directory_iterator it(basePath, kDirectoryOptions, ec), end; it != end; it.increment(ec))
 		{
 			if (ec)
 			{
@@ -126,13 +143,13 @@ namespace
 			}
 
 			const std::filesystem::path& path = entry.path();
-			const String filename = String{ path.filename().u32string() };
+			const String filename = FromNativePath(path.filename().native());
 			if (!IsSourceFile(filename))
 			{
 				continue;
 			}
 
-			String relativePath{ path.u32string().substr(basePathLength) };
+			String relativePath = FromNativePath(path.native().substr(basePathLength));
 			relativePath.replace(U'\\', U'/');
 			if (relativePath.starts_with(U'/'))
 			{
@@ -642,17 +659,6 @@ namespace
 		const FilePath baseDirectoryPath = FileSystem::FullPath(directoryPath);
 		const FilePath dbPath = DbPath(baseDirectoryPath);
 
-		if (!forceRebuild)
-		{
-			if (const auto it = s_memoryCache.find(baseDirectoryPath); it != s_memoryCache.end())
-			{
-				if (CollectSourceFiles(baseDirectoryPath) == it->second.sourceFiles)
-				{
-					return it->second.rows;
-				}
-			}
-		}
-
 		const auto loadOnce = [&](bool rebuild) -> Array<ChartRowResult>
 		{
 			Array<SourceFileInfo> sourceFiles = CollectSourceFiles(baseDirectoryPath);
@@ -670,6 +676,16 @@ namespace
 
 		try
 		{
+			if (!forceRebuild)
+			{
+				if (const auto it = s_memoryCache.find(baseDirectoryPath); it != s_memoryCache.end())
+				{
+					if (CollectSourceFiles(baseDirectoryPath) == it->second.sourceFiles)
+					{
+						return it->second.rows;
+					}
+				}
+			}
 			return loadOnce(forceRebuild);
 		}
 		catch (const std::exception& e)
