@@ -7,9 +7,18 @@ namespace
 	constexpr char32_t kSearchTextSeparator = U'\n';
 }
 
+const FilePath& SelectChartInfo::parentPath() const
+{
+	if (!m_parentPath)
+	{
+		m_parentPath = FileSystem::ParentPath(m_chartFilePath);
+	}
+	return *m_parentPath;
+}
+
 FilePath SelectChartInfo::toFullPath(const std::string& u8Filename) const
 {
-	return FileSystem::PathAppend(FileSystem::ParentPath(m_chartFilePath), Unicode::FromUTF8(u8Filename));
+	return FileSystem::PathAppend(parentPath(), Unicode::FromUTF8(u8Filename));
 }
 
 kson::MetaChartData SelectChartInfo::LoadMetaChartData(FilePathView chartFilePath)
@@ -81,7 +90,7 @@ FilePath SelectChartInfo::artistImgFilePath() const
 
 FilePath SelectChartInfo::jacketFilePath() const
 {
-	return FsUtils::ResolveJacketPath(FileSystem::ParentPath(m_chartFilePath), Unicode::FromUTF8(m_chartData.meta.jacketFilename));
+	return FsUtils::ResolveJacketPath(parentPath(), Unicode::FromUTF8(m_chartData.meta.jacketFilename));
 }
 
 String SelectChartInfo::jacketAuthor() const
@@ -172,7 +181,7 @@ double SelectChartInfo::previewBGMVolume() const
 
 FilePath SelectChartInfo::iconFilePath() const
 {
-	return FsUtils::ResolveIconPath(FileSystem::ParentPath(m_chartFilePath), Unicode::FromUTF8(m_chartData.meta.iconFilename));
+	return FsUtils::ResolveIconPath(parentPath(), Unicode::FromUTF8(m_chartData.meta.iconFilename));
 }
 
 String SelectChartInfo::information() const
@@ -194,7 +203,7 @@ StringView SelectChartInfo::joinedTextForSearch() const
 {
 	if (!m_joinedTextForSearch)
 	{
-		const String songFolderName = FsUtils::DirectoryNameByDirectoryPath(FileSystem::ParentPath(m_chartFilePath));
+		const String songFolderName = FsUtils::DirectoryNameByDirectoryPath(parentPath());
 		m_joinedTextForSearch = (
 			Unicode::FromUTF8(m_chartData.meta.title) + kSearchTextSeparator +
 			Unicode::FromUTF8(m_chartData.meta.titleTranslit) + kSearchTextSeparator +

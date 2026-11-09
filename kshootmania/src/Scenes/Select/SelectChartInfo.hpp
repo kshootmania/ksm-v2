@@ -14,6 +14,11 @@ private:
 	// 検索用文字列を連結したもの(初回参照時に生成)
 	mutable Optional<String> m_joinedTextForSearch;
 
+	// 譜面ファイルの親ディレクトリのパス(初回参照時に生成)
+	mutable Optional<FilePath> m_parentPath;
+
+	const FilePath& parentPath() const;
+
 	FilePath toFullPath(const std::string& u8Filename) const;
 
 public:
