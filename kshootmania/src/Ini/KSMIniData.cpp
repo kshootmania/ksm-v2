@@ -127,43 +127,46 @@ bool KSMIniData::getBool(StringView key, bool defaultValue) const
 
 int32 KSMIniData::getInt(StringView key, int32 defaultValue) const
 {
-	if (!m_hashTable.contains(key))
+	const auto itr = m_hashTable.find(key);
+	if (itr == m_hashTable.end())
 	{
 		return defaultValue;
 	}
 
 	try
 	{
-		return Parse<int32>(m_hashTable.at(key));
+		return Parse<int32>(itr->second);
 	}
 	catch (const ParseError&)
 	{
-		Logger << U"[ksm warning] The field '{}' in INI file is ignored! (The value '{}' is not an integer.)"_fmt(key, m_hashTable.at(key));
+		Logger << U"[ksm warning] The field '{}' in INI file is ignored! (The value '{}' is not an integer.)"_fmt(key, itr->second);
 		return defaultValue;
 	}
 }
 
 double KSMIniData::getDouble(StringView key, double defaultValue) const
 {
-	if (!m_hashTable.contains(key))
+	const auto itr = m_hashTable.find(key);
+	if (itr == m_hashTable.end())
 	{
 		return defaultValue;
 	}
 
 	try
 	{
-		return Parse<double>(m_hashTable.at(key));
+		return Parse<double>(itr->second);
 	}
 	catch (const ParseError&)
 	{
-		Logger << U"[ksm warning] The field '{}' in INI file is ignored! (The value '{}' is not a number.)"_fmt(key, m_hashTable.at(key));
+		Logger << U"[ksm warning] The field '{}' in INI file is ignored! (The value '{}' is not a number.)"_fmt(key, itr->second);
 		return defaultValue;
 	}
 }
 
 StringView KSMIniData::getString(StringView key, StringView defaultValue) const
 {
-	return m_hashTable.contains(key) ? m_hashTable.at(key) : defaultValue;
+	const auto itr = m_hashTable.find(key);
+	return itr != m_hashTable.end() ? StringView{ itr->second } : defaultValue;
 }
 
 void KSMIniData::setBool(StringView key, bool value)
