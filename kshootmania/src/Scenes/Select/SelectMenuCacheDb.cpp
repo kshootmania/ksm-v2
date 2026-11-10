@@ -654,7 +654,7 @@ namespace
 		return rows;
 	}
 
-	Array<ChartRowResult> LoadDirectoryRows(FilePathView directoryPath, bool forceRebuild, StringView fnName)
+	Array<ChartRowResult> LoadDirectoryRows(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges, StringView fnName)
 	{
 		const FilePath baseDirectoryPath = FileSystem::FullPath(directoryPath);
 		const FilePath dbPath = DbPath(baseDirectoryPath);
@@ -680,7 +680,8 @@ namespace
 			{
 				if (const auto it = s_memoryCache.find(baseDirectoryPath); it != s_memoryCache.end())
 				{
-					if (CollectSourceFiles(baseDirectoryPath) == it->second.sourceFiles)
+					// ファイルの変更を確認しない場合は、読み込み済みの内容をそのまま再利用する
+					if (!checkFileChanges || CollectSourceFiles(baseDirectoryPath) == it->second.sourceFiles)
 					{
 						return it->second.rows;
 					}
@@ -775,9 +776,9 @@ namespace
 	}
 }
 
-Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForNameSort(FilePathView directoryPath, bool forceRebuild)
+Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForNameSort(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges)
 {
-	Array<ChartRowResult> rows = LoadDirectoryRows(directoryPath, forceRebuild, U"LoadDirectoryForNameSort");
+	Array<ChartRowResult> rows = LoadDirectoryRows(directoryPath, forceRebuild, checkFileChanges, U"LoadDirectoryForNameSort");
 	rows.remove_if([](const ChartRowResult& row) { return !row.visibleInDirectoryNameSort; });
 
 	// 楽曲フォルダ直下の譜面(セクションなし)を先頭に、以降はセクション・楽曲フォルダ・譜面ファイルの順
@@ -788,9 +789,9 @@ Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForNameSort(FilePat
 	return GroupRowsAsSongEntries(rows);
 }
 
-Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild)
+Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges)
 {
-	Array<ChartRowResult> rows = LoadDirectoryRows(directoryPath, forceRebuild, U"LoadDirectoryForAllNameSort");
+	Array<ChartRowResult> rows = LoadDirectoryRows(directoryPath, forceRebuild, checkFileChanges, U"LoadDirectoryForAllNameSort");
 	rows.remove_if([](const ChartRowResult& row) { return !row.visibleInAllNameSort; });
 	std::stable_sort(rows.begin(), rows.end(), [](const ChartRowResult& a, const ChartRowResult& b)
 	{
@@ -799,9 +800,9 @@ Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForAllNameSort(File
 	return GroupRowsAsSongEntries(rows);
 }
 
-Array<SelectCachedChartEntry> SelectMenuCacheDb::LoadDirectoryForLevelSort(FilePathView directoryPath, bool forceRebuild)
+Array<SelectCachedChartEntry> SelectMenuCacheDb::LoadDirectoryForLevelSort(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges)
 {
-	return RowsToChartEntries(LoadDirectoryRows(directoryPath, forceRebuild, U"LoadDirectoryForLevelSort"));
+	return RowsToChartEntries(LoadDirectoryRows(directoryPath, forceRebuild, checkFileChanges, U"LoadDirectoryForLevelSort"));
 }
 
 void SelectMenuCacheDb::Invalidate(FilePathView directoryPath)

@@ -489,7 +489,7 @@ namespace
 	}
 }
 
-bool SelectMenu::openDirectory(FilePathView directoryPath, PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview, SaveToConfigIniYN saveToConfigIni)
+bool SelectMenu::openDirectory(FilePathView directoryPath, PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview, SaveToConfigIniYN saveToConfigIni, CheckFileChangesYN checkFileChanges)
 {
 	if (playSe)
 	{
@@ -500,11 +500,11 @@ bool SelectMenu::openDirectory(FilePathView directoryPath, PlaySeYN playSe, Refr
 	bool result = false;
 	if (m_folderState.sortMode == SelectFolderState::SortMode::kLevel)
 	{
-		result = openDirectoryWithLevelSort(directoryPath);
+		result = openDirectoryWithLevelSort(directoryPath, checkFileChanges);
 	}
 	else
 	{
-		result = openDirectoryWithNameSort(directoryPath);
+		result = openDirectoryWithNameSort(directoryPath, checkFileChanges);
 	}
 
 	if (!result)
@@ -539,7 +539,7 @@ bool SelectMenu::openDirectory(FilePathView directoryPath, PlaySeYN playSe, Refr
 	return true;
 }
 
-bool SelectMenu::openDirectoryWithNameSort(FilePathView directoryPath)
+bool SelectMenu::openDirectoryWithNameSort(FilePathView directoryPath, CheckFileChangesYN checkFileChanges)
 {
 	using Unicode::FromUTF8;
 
@@ -566,7 +566,7 @@ bool SelectMenu::openDirectoryWithNameSort(FilePathView directoryPath)
 			}
 		}
 
-		const Array<SelectCachedSongEntry> cachedSongEntries = SelectMenuCacheDb::LoadDirectoryForNameSort(directoryPath, false);
+		const Array<SelectCachedSongEntry> cachedSongEntries = SelectMenuCacheDb::LoadDirectoryForNameSort(directoryPath, false, checkFileChanges.getBool());
 		FilePath currentSectionPath;
 		for (const auto& entry : cachedSongEntries)
 		{
@@ -1223,7 +1223,7 @@ void SelectMenu::fadeOutSongPreviewForExit(Duration duration)
 	m_songPreview.fadeOutForExit(duration);
 }
 
-void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk)
+void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk, CheckFileChangesYN checkFileChanges)
 {
 	FilePath currentChartFilePath;
 	const int32 difficultyCursor = m_difficultyMenu.cursor();
@@ -1286,7 +1286,7 @@ void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview,
 
 		if (currentFolderType == SelectFolderState::kAll)
 		{
-			openAllFolder(PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
+			openAllFolder(PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No, checkFileChanges);
 		}
 		else if (currentFolderType == SelectFolderState::kFavorite)
 		{
@@ -1298,7 +1298,7 @@ void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview,
 		}
 		else
 		{
-			openDirectory(currentDirectory, PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
+			openDirectory(currentDirectory, PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No, checkFileChanges);
 		}
 	}
 	else
@@ -1684,7 +1684,7 @@ void SelectMenu::jumpToPrevAlphabet()
 	}
 }
 
-bool SelectMenu::openDirectoryWithLevelSort(FilePathView directoryPath)
+bool SelectMenu::openDirectoryWithLevelSort(FilePathView directoryPath, CheckFileChangesYN checkFileChanges)
 {
 	if (!directoryPath.empty())
 	{
@@ -1712,7 +1712,7 @@ bool SelectMenu::openDirectoryWithLevelSort(FilePathView directoryPath)
 		// レベルごとに譜面を分類
 		std::array<Array<LevelSortChartFileInfo>, kNumLevels> chartsByLevel;
 
-		const Array<SelectCachedChartEntry> cachedCharts = SelectMenuCacheDb::LoadDirectoryForLevelSort(directoryPath, false);
+		const Array<SelectCachedChartEntry> cachedCharts = SelectMenuCacheDb::LoadDirectoryForLevelSort(directoryPath, false, checkFileChanges.getBool());
 		for (const auto& entry : cachedCharts)
 		{
 			const auto& chartInfo = entry.chartInfo;
@@ -1761,7 +1761,7 @@ bool SelectMenu::openDirectoryWithLevelSort(FilePathView directoryPath)
 	return true;
 }
 
-bool SelectMenu::openAllFolder(PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview, SaveToConfigIniYN saveToConfigIni)
+bool SelectMenu::openAllFolder(PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview, SaveToConfigIniYN saveToConfigIni, CheckFileChangesYN checkFileChanges)
 {
 	if (playSe)
 	{
@@ -1772,11 +1772,11 @@ bool SelectMenu::openAllFolder(PlaySeYN playSe, RefreshSongPreviewYN refreshSong
 	bool result = false;
 	if (m_folderState.sortMode == SelectFolderState::SortMode::kLevel)
 	{
-		result = openAllFolderWithLevelSort();
+		result = openAllFolderWithLevelSort(checkFileChanges);
 	}
 	else
 	{
-		result = openAllFolderWithNameSort();
+		result = openAllFolderWithNameSort(checkFileChanges);
 	}
 
 	if (!result)
@@ -1803,7 +1803,7 @@ bool SelectMenu::openAllFolder(PlaySeYN playSe, RefreshSongPreviewYN refreshSong
 	return true;
 }
 
-bool SelectMenu::openAllFolderWithNameSort()
+bool SelectMenu::openAllFolderWithNameSort(CheckFileChangesYN checkFileChanges)
 {
 	using Unicode::FromUTF8;
 
@@ -1831,7 +1831,7 @@ bool SelectMenu::openAllFolderWithNameSort()
 
 	for (const auto& folderDirectory : allFolderDirectories)
 	{
-		allSongEntries.append(SelectMenuCacheDb::LoadDirectoryForAllNameSort(folderDirectory, false));
+		allSongEntries.append(SelectMenuCacheDb::LoadDirectoryForAllNameSort(folderDirectory, false, checkFileChanges.getBool()));
 	}
 
 	allSongEntries.sort_by([](const SelectCachedSongEntry& a, const SelectCachedSongEntry& b)
@@ -1863,7 +1863,7 @@ bool SelectMenu::openAllFolderWithNameSort()
 	return true;
 }
 
-bool SelectMenu::openAllFolderWithLevelSort()
+bool SelectMenu::openAllFolderWithLevelSort(CheckFileChangesYN checkFileChanges)
 {
 	m_menu.clear();
 	NocoUtils::UnloadExternalTextures();
@@ -1890,7 +1890,7 @@ bool SelectMenu::openAllFolderWithLevelSort()
 
 	for (const auto& folderDirectory : allFolderDirectories)
 	{
-		const Array<SelectCachedChartEntry> cachedCharts = SelectMenuCacheDb::LoadDirectoryForLevelSort(folderDirectory, false);
+		const Array<SelectCachedChartEntry> cachedCharts = SelectMenuCacheDb::LoadDirectoryForLevelSort(folderDirectory, false, checkFileChanges.getBool());
 		for (const auto& entry : cachedCharts)
 		{
 			const auto& chartInfo = entry.chartInfo;
@@ -2628,7 +2628,8 @@ void SelectMenu::setSearchQuery(StringView query)
 	m_searchQuery = newQuery;
 	reloadCurrentDirectory(
 		RefreshSongPreviewYN::Yes,
-		containsPrevQuery ? ReloadFromDiskYN::No : ReloadFromDiskYN::Yes);
+		containsPrevQuery ? ReloadFromDiskYN::No : ReloadFromDiskYN::Yes,
+		CheckFileChangesYN::No);
 }
 
 bool SelectMenu::isSearchActive() const

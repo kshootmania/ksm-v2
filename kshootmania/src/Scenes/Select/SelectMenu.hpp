@@ -12,6 +12,7 @@ using RefreshSongPreviewYN = YesNo<struct RefreshSongPreviewYN_tag>;
 using SaveToConfigIniYN = YesNo<struct SaveToConfigIniYN_tag>;
 using SongPreviewOnlyYN = YesNo<struct SongPreviewOnlyYN_tag>;
 using ReloadFromDiskYN = YesNo<struct ReloadFromDiskYN_tag>;
+using CheckFileChangesYN = YesNo<struct CheckFileChangesYN_tag>;
 
 enum class SelectMenuShakeDirection
 {
@@ -90,17 +91,17 @@ private:
 
 	const ksmaudio::Sample m_folderSelectSe{"se/sel_dir.wav"};
 
-	bool openDirectory(FilePathView directoryPath, PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::Yes, SaveToConfigIniYN saveToConfigIni = SaveToConfigIniYN::Yes);
+	bool openDirectory(FilePathView directoryPath, PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::Yes, SaveToConfigIniYN saveToConfigIni = SaveToConfigIniYN::Yes, CheckFileChangesYN checkFileChanges = CheckFileChangesYN::Yes);
 
-	bool openDirectoryWithNameSort(FilePathView directoryPath);
+	bool openDirectoryWithNameSort(FilePathView directoryPath, CheckFileChangesYN checkFileChanges);
 
-	bool openDirectoryWithLevelSort(FilePathView directoryPath);
+	bool openDirectoryWithLevelSort(FilePathView directoryPath, CheckFileChangesYN checkFileChanges);
 
-	bool openAllFolder(PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::Yes, SaveToConfigIniYN saveToConfigIni = SaveToConfigIniYN::Yes);
+	bool openAllFolder(PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::Yes, SaveToConfigIniYN saveToConfigIni = SaveToConfigIniYN::Yes, CheckFileChangesYN checkFileChanges = CheckFileChangesYN::Yes);
 
-	bool openAllFolderWithNameSort();
+	bool openAllFolderWithNameSort(CheckFileChangesYN checkFileChanges);
 
-	bool openAllFolderWithLevelSort();
+	bool openAllFolderWithLevelSort(CheckFileChangesYN checkFileChanges);
 
 	bool openFavoriteFolder(FilePathView specialPath, PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::Yes, SaveToConfigIniYN saveToConfigIni = SaveToConfigIniYN::Yes);
 
@@ -180,7 +181,7 @@ public:
 
 	void fadeOutSongPreviewForExit(Duration duration);
 
-	void reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk);
+	void reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk, CheckFileChangesYN checkFileChanges = CheckFileChangesYN::Yes);
 
 	void forceReloadCurrentDirectory();
 

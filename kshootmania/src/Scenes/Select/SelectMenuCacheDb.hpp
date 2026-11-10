@@ -33,13 +33,13 @@ class SelectMenuCacheDb
 {
 public:
 	[[nodiscard]]
-	static Array<SelectCachedSongEntry> LoadDirectoryForNameSort(FilePathView directoryPath, bool forceRebuild);
+	static Array<SelectCachedSongEntry> LoadDirectoryForNameSort(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges = true);
 
 	[[nodiscard]]
-	static Array<SelectCachedSongEntry> LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild);
+	static Array<SelectCachedSongEntry> LoadDirectoryForAllNameSort(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges = true);
 
 	[[nodiscard]]
-	static Array<SelectCachedChartEntry> LoadDirectoryForLevelSort(FilePathView directoryPath, bool forceRebuild);
+	static Array<SelectCachedChartEntry> LoadDirectoryForLevelSort(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges = true);
 
 	static void Invalidate(FilePathView directoryPath);
 
