@@ -17,8 +17,6 @@ private:
 	// 譜面ファイルの親ディレクトリのパス(初回参照時に生成)
 	mutable Optional<FilePath> m_parentPath;
 
-	const FilePath& parentPath() const;
-
 	FilePath toFullPath(const std::string& u8Filename) const;
 
 public:
@@ -28,6 +26,9 @@ public:
 	explicit SelectChartInfo(FilePathView chartFilePath);
 
 	SelectChartInfo(FilePathView chartFilePath, kson::MetaChartData chartData, FolderConfIni folderConfIni);
+
+	[[nodiscard]]
+	const FilePath& parentPath() const;
 
 	[[nodiscard]]
 	String title() const;

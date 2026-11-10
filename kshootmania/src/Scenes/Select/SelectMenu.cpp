@@ -457,7 +457,9 @@ namespace
 			// 譜面項目を追加
 			for (const auto& chartInfo : charts)
 			{
-				const FilePath chartDir = FileSystem::ParentPath(chartInfo.filePath);
+				const FilePath chartDir = chartInfo.chartInfo != nullptr
+					? chartInfo.chartInfo->parentPath()
+					: FileSystem::ParentPath(chartInfo.filePath);
 				auto item = chartInfo.chartInfo != nullptr
 					? std::make_unique<SelectMenuLevelSongItem>(chartInfo.chartInfo, chartDir, chartInfo.difficultyIdx)
 					: std::make_unique<SelectMenuLevelSongItem>(chartInfo.filePath, chartDir, chartInfo.difficultyIdx);
