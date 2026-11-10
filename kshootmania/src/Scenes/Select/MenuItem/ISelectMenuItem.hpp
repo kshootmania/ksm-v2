@@ -103,6 +103,24 @@ protected:
 		};
 	}
 
+	/// @brief 曲の項目の表示に使うグリフの事前生成を要求
+	static void RequestSongInfoGlyphPreload(const SelectChartInfo& chartInfo)
+	{
+		const SongInfoTextDisplayParams titleParams = MakeSongInfoTextDisplayParams(chartInfo.title(), chartInfo.titleTranslit());
+		const SongInfoTextDisplayParams artistParams = MakeSongInfoTextDisplayParams(chartInfo.artist(), chartInfo.artistTranslit());
+
+		const Font fontBold = AssetManagement::SystemFontBold();
+		GlyphPreloadAddon::Request(fontBold, titleParams.text);
+		GlyphPreloadAddon::Request(fontBold, titleParams.translitText);
+
+		const Font font = AssetManagement::SystemFont();
+		GlyphPreloadAddon::Request(font, artistParams.text);
+		GlyphPreloadAddon::Request(font, artistParams.translitText);
+		GlyphPreloadAddon::Request(font, chartInfo.jacketAuthor());
+		GlyphPreloadAddon::Request(font, chartInfo.chartAuthor());
+		GlyphPreloadAddon::Request(font, chartInfo.information());
+	}
+
 public:
 	ISelectMenuItem() = default;
 
@@ -252,6 +270,12 @@ public:
 	virtual FilePath jacketFilePathTopBottom([[maybe_unused]] int32 difficultyIdx) const
 	{
 		return FilePath{};
+	}
+
+	/// @brief この項目の表示に使うグリフの事前生成を要求
+	/// @param difficultyIdx 現在選択中の難易度のインデックス(0～3)
+	virtual void requestGlyphPreload([[maybe_unused]] int32 difficultyIdx) const
+	{
 	}
 
 	/// @brief この項目をエクスプローラで表示

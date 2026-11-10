@@ -269,3 +269,9 @@ Optional<HighScoreInfo> SelectMenuCourseItem::highScoreInfo(const SelectMenuEven
 {
 	return context.fnGetCourseHighScore(m_courseInfo.filePath);
 }
+
+void SelectMenuCourseItem::requestGlyphPreload([[maybe_unused]] int32 difficultyIdx) const
+{
+	GlyphPreloadAddon::Request(AssetManagement::SystemFontBold(), m_courseInfo.title);
+	GlyphPreloadAddon::Request(AssetManagement::SystemFont(), m_courseInfo.information);
+}

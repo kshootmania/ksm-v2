@@ -44,3 +44,8 @@ void SelectMenuSubDirSectionItem::showInFileManager([[maybe_unused]] int32 diffi
 	// サブフォルダをエクスプローラで開く
 	System::ShowInFileManager(m_fullPath);
 }
+
+void SelectMenuSubDirSectionItem::requestGlyphPreload([[maybe_unused]] int32 difficultyIdx) const
+{
+	GlyphPreloadAddon::Request(AssetManagement::SystemFont(), m_displayName);
+}

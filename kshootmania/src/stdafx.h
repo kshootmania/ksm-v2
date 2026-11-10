@@ -12,6 +12,7 @@
 #include "Common/MessageBoxUtils.hpp"
 #include "Addon/AutoMuteAddon.hpp"
 #include "Addon/CommonSEAddon.hpp"
+#include "Addon/GlyphPreloadAddon.hpp"
 #include "Graphics/ScreenUtils.hpp"
 #include "Graphics/TiledTexture.hpp"
 #include "I18n/I18n.hpp"

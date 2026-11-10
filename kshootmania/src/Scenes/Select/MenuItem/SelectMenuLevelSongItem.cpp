@@ -308,3 +308,11 @@ Optional<String> SelectMenuLevelSongItem::relativePathToCopy([[maybe_unused]] in
 	relativePath.replace(U'\\', U'/');
 	return relativePath;
 }
+
+void SelectMenuLevelSongItem::requestGlyphPreload([[maybe_unused]] int32 difficultyIdx) const
+{
+	if (m_chartInfo != nullptr)
+	{
+		RequestSongInfoGlyphPreload(*m_chartInfo);
+	}
+}

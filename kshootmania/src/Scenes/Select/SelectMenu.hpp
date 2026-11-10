@@ -60,6 +60,9 @@ private:
 	// 表示範囲の外側で、ジャケット画像を先に読み込んでおく項目数(上下それぞれ)
 	static constexpr int32 kNumJacketPreloadItems = 8;
 
+	// 表示範囲の外側で、グリフを事前生成しておく項目数(上下それぞれ)
+	static constexpr int32 kNumGlyphPreloadItems = 16;
+
 	const SelectMenuEventContext m_eventContext;
 
 	std::shared_ptr<noco::Canvas> m_selectSceneCanvas;
@@ -129,6 +132,10 @@ private:
 	/// @brief 表示中の項目とその周辺の項目のジャケット画像を別スレッドで読み込む
 	/// @param difficultyIdx 現在選択中の難易度のインデックス(0～3)
 	void preloadJacketTextures(int32 difficultyIdx);
+
+	/// @brief 表示範囲外の項目のグリフの事前生成を要求
+	/// @param difficultyIdx 現在選択中の難易度のインデックス(0～3)
+	void preloadGlyphs(int32 difficultyIdx);
 
 	void refreshSongPreview();
 

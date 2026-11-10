@@ -412,3 +412,19 @@ void SelectMenuSongItem::setDifficultyLevelDisplayParams(noco::Canvas& canvas) c
 		});
 	}
 }
+
+void SelectMenuSongItem::requestGlyphPreload(int32 difficultyIdx) const
+{
+	const SelectChartInfo* pChartInfoTopBottom = chartInfoForTopBottom(difficultyIdx);
+	if (pChartInfoTopBottom != nullptr)
+	{
+		RequestSongInfoGlyphPreload(*pChartInfoTopBottom);
+	}
+
+	// 中央に来たときに表示される譜面が異なる場合は、そちらも要求
+	const SelectChartInfo* pChartInfoCenter = chartInfoForCenter(difficultyIdx);
+	if (pChartInfoCenter != nullptr && pChartInfoCenter != pChartInfoTopBottom)
+	{
+		RequestSongInfoGlyphPreload(*pChartInfoCenter);
+	}
+}

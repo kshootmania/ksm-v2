@@ -687,6 +687,9 @@
     <ClCompile Include="src\Addon\DisableIMEAddon.cpp">
       <Filter>Source Files\Addon</Filter>
     </ClCompile>
+    <ClCompile Include="src\Addon\GlyphPreloadAddon.cpp">
+      <Filter>Source Files\Addon</Filter>
+    </ClCompile>
     <ClCompile Include="src\Common\FsUtils.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
@@ -1460,6 +1463,9 @@
       <Filter>Header Files\Addon</Filter>
     </ClInclude>
     <ClInclude Include="src\Addon\DisableIMEAddon.hpp">
+      <Filter>Header Files\Addon</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Addon\GlyphPreloadAddon.hpp">
       <Filter>Header Files\Addon</Filter>
     </ClInclude>
     <ClInclude Include="src\Common\FsUtils.hpp">

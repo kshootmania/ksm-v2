@@ -84,6 +84,8 @@ public:
 
 	virtual FilePath jacketFilePathTopBottom(int32 difficultyIdx) const override;
 
+	virtual void requestGlyphPreload(int32 difficultyIdx) const override;
+
 	/// @brief この項目をエクスプローラで表示
 	/// @param difficultyIdx 現在選択中の難易度のインデックス(0～3)
 	virtual void showInFileManager(int32 difficultyIdx) const override;

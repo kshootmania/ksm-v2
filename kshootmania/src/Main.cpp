@@ -5,6 +5,7 @@
 #include "Common/IMEUtils.hpp"
 #include "Common/AssetManagement.hpp"
 #include "Addon/AutoMuteAddon.hpp"
+#include "Addon/GlyphPreloadAddon.hpp"
 #include "Addon/CommonSEAddon.hpp"
 #include "Addon/DisableIMEAddon.hpp"
 #include "ksmaudio/ksmaudio.hpp"
@@ -451,6 +452,8 @@ void KSMMain()
 #if defined(_WIN32) || defined(__APPLE__)
 	Addon::Register(DisableIMEAddon::kAddonName, std::make_unique<DisableIMEAddon>(), 3);
 #endif
+
+	Addon::Register(GlyphPreloadAddon::kAddonName, std::make_unique<GlyphPreloadAddon>(), 4);
 
 	// 毎フレーム連続してアセット生成した時の警告を無効化
 	// (楽曲選択でのスクロールにおいては、正常系でもテクスチャ読み込みが毎フレーム発生するため)

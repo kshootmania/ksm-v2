@@ -86,6 +86,8 @@ public:
 	[[nodiscard]]
 	virtual FilePath jacketFilePathTopBottom(int32 difficultyIdx) const override;
 
+	virtual void requestGlyphPreload(int32 difficultyIdx) const override;
+
 	virtual void showInFileManager(int32 difficultyIdx) const override;
 
 	[[nodiscard]]

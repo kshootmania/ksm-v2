@@ -692,6 +692,7 @@ void SelectMenu::refreshContentCanvasParams()
 	}
 
 	preloadJacketTextures(difficultyIdx);
+	preloadGlyphs(difficultyIdx);
 }
 
 void SelectMenu::refreshTranslitFadeRates()
@@ -774,6 +775,27 @@ void SelectMenu::preloadJacketTextures(int32 difficultyIdx)
 	{
 		preloadTopBottom(cursor - kNumTopItems - i);
 		preloadTopBottom(cursor + kNumBottomItems + i);
+	}
+}
+
+void SelectMenu::preloadGlyphs(int32 difficultyIdx)
+{
+	// 表示されなくなった項目の文字が先に生成されないよう、未生成の要求は取り消してカーソルに近い順に要求し直す
+	GlyphPreloadAddon::CancelPendingRequests();
+
+	const auto request = [&](int32 idx)
+	{
+		if (const auto pItem = m_menu.atCyclic(idx).get())
+		{
+			pItem->requestGlyphPreload(difficultyIdx);
+		}
+	};
+
+	const int32 cursor = m_menu.cursor();
+	for (int32 i = 1; i <= kNumGlyphPreloadItems; ++i)
+	{
+		request(cursor - kNumTopItems - i);
+		request(cursor + kNumBottomItems + i);
 	}
 }
 
@@ -961,7 +983,11 @@ SelectMenu::SelectMenu(
 	refreshSongPreview();
 }
 
-SelectMenu::~SelectMenu() = default;
+SelectMenu::~SelectMenu()
+{
+	// 選曲画面の外でグリフの生成が続かないようにする
+	GlyphPreloadAddon::CancelPendingRequests();
+}
 
 void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 {

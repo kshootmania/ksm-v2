@@ -51,3 +51,8 @@ void SelectMenuFavFolderItem::showInFileManager([[maybe_unused]] int32 difficult
 		System::ShowInFileManager(favFilePath);
 	}
 }
+
+void SelectMenuFavFolderItem::requestGlyphPreload([[maybe_unused]] int32 difficultyIdx) const
+{
+	GlyphPreloadAddon::Request(AssetManagement::SystemFont(), m_displayName);
+}

@@ -47,6 +47,8 @@ public:
 
 	virtual void setCanvasParamsTopBottom(const SelectMenuEventContext& context, noco::Canvas& canvas, int32 difficultyIdx, StringView tag) const override;
 
+	virtual void requestGlyphPreload(int32 difficultyIdx) const override;
+
 	virtual void showInFileManager(int32 difficultyIdx) const override;
 
 	/// @brief ハイスコア情報を取得

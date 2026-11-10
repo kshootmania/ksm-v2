@@ -96,6 +96,9 @@ namespace AssetManagement
 			FontAsset::Unregister(kFontAssetSystemBold);
 		}
 		RegisterFontAssets();
+
+		// 登録し直すと生成済みのグリフは破棄されるため、事前生成の要求済みの文字もリセット
+		GlyphPreloadAddon::Reset();
 	}
 
 	Font SystemFont()

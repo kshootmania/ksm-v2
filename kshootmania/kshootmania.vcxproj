@@ -172,6 +172,7 @@
     <ClCompile Include="src\Addon\AutoMuteAddon.cpp" />
     <ClCompile Include="src\Addon\CommonSEAddon.cpp" />
     <ClCompile Include="src\Addon\DisableIMEAddon.cpp" />
+    <ClCompile Include="src\Addon\GlyphPreloadAddon.cpp" />
     <ClCompile Include="src\Common\AssetManagement.cpp" />
     <ClCompile Include="src\Common\Encoding.cpp" />
     <ClCompile Include="src\Common\FrameRateLimit.cpp" />
@@ -406,6 +407,7 @@
     <ClInclude Include="src\Addon\AutoMuteAddon.hpp" />
     <ClInclude Include="src\Addon\CommonSEAddon.hpp" />
     <ClInclude Include="src\Addon\DisableIMEAddon.hpp" />
+    <ClInclude Include="src\Addon\GlyphPreloadAddon.hpp" />
     <ClInclude Include="src\Common\AssetManagement.hpp" />
     <ClInclude Include="src\Common\CommonDefines.hpp" />
     <ClInclude Include="src\Common\Encoding.hpp" />

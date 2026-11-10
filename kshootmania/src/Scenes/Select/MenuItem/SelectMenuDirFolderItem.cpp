@@ -48,3 +48,8 @@ void SelectMenuDirFolderItem::showInFileManager([[maybe_unused]] int32 difficult
 	// フォルダをエクスプローラで開く
 	System::ShowInFileManager(m_fullPath);
 }
+
+void SelectMenuDirFolderItem::requestGlyphPreload([[maybe_unused]] int32 difficultyIdx) const
+{
+	GlyphPreloadAddon::Request(AssetManagement::SystemFont(), m_displayName);
+}
