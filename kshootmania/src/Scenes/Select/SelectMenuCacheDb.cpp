@@ -73,9 +73,16 @@ namespace
 		{
 			relativePath = U"_root";
 		}
-		else if (relativePath.starts_with(U'/') || relativePath.starts_with(U"../") || relativePath == U".." || relativePath.includes(U':'))
+		else
 		{
-			relativePath = FileSystem::PathAppend(U"_external", Format(StablePathHash(fullPath)));
+			bool isOutsideSongsDir = relativePath.starts_with(U'/') || relativePath.starts_with(U"../") || relativePath == U"..";
+#ifdef _WIN32
+			isOutsideSongsDir = isOutsideSongsDir || relativePath.includes(U':');
+#endif
+			if (isOutsideSongsDir)
+			{
+				relativePath = FileSystem::PathAppend(U"_external", Format(StablePathHash(fullPath)));
+			}
 		}
 
 		return FileSystem::PathAppend(CacheBasePath(), relativePath);
