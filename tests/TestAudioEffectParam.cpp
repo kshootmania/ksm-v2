@@ -611,3 +611,31 @@ TEST_CASE("Validate length type parameters with overflowing integers", "[AudioEf
 	REQUIRE_FALSE(ValidateParamValue(Type::kLength, "1/4294967297").isValid);
 	REQUIRE_FALSE(ValidateParamValue(Type::kLength, "1/99999999999999999999").isValid);
 }
+
+TEST_CASE("Validate sample/rate/freq/int type parameters with overflowing integers", "[AudioEffect][Param][Validator]")
+{
+	using ksmaudio::AudioEffect::Type;
+	using ksmaudio::AudioEffect::ValidateParamValue;
+
+	REQUIRE(ValidateParamValue(Type::kInt, "2147483647").isValid);
+
+	REQUIRE_FALSE(ValidateParamValue(Type::kSample, "2147483648samples").isValid);
+	REQUIRE_FALSE(ValidateParamValue(Type::kRate, "2147483648%").isValid);
+	REQUIRE_FALSE(ValidateParamValue(Type::kFreq, "2147483648Hz").isValid);
+	REQUIRE_FALSE(ValidateParamValue(Type::kInt, "2147483648").isValid);
+}
+
+TEST_CASE("Validate float values out of the float range", "[AudioEffect][Param][Validator]")
+{
+	using ksmaudio::AudioEffect::Type;
+	using ksmaudio::AudioEffect::ValidateParamValue;
+
+	const std::string big(50, '9');
+
+	REQUIRE(ValidateParamValue(Type::kFloat, "1.5").isValid);
+
+	REQUIRE_FALSE(ValidateParamValue(Type::kLength, big + "ms").isValid);
+	REQUIRE_FALSE(ValidateParamValue(Type::kLength, big).isValid);
+	REQUIRE_FALSE(ValidateParamValue(Type::kFloat, big).isValid);
+	REQUIRE_FALSE(ValidateParamValue(Type::kDB, big + "dB").isValid);
+}
