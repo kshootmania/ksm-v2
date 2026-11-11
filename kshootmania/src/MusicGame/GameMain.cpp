@@ -41,7 +41,7 @@ namespace MusicGame
 		}
 
 		// 譜面データを読み込み、Turn変換とPlayModeフィルタを適用
-		kson::ChartData LoadChartDataWithTurn(const GameCreateInfo& createInfo, NoteArrangement* pNoteArrangementOut, Optional<SRandomFXAudioMapping>* pSRandomFXAudioMappingOut, std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>* pFXChipKeySoundPulsesOut, std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ>* pLaserCurvedPulses)
+		kson::ChartData LoadChartDataWithTurn(const GameCreateInfo& createInfo, NoteArrangement* pNoteArrangementOut, Optional<SRandomFXAudioMapping>* pSRandomFXAudioMappingOut, std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>* pFXChipKeySoundPulsesOut, std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ>* pLaserCurvedPulses, Audio::LegacyLaserTailIntervals* pLegacyLaserTailIntervalsOut)
 		{
 			auto chartData = FsUtils::HasKsonExtension(createInfo.chartFilePath)
 				? kson::LoadKsonChartData(createInfo.chartFilePath.toUTF8())
@@ -53,6 +53,9 @@ namespace MusicGame
 
 			// Off/Hideモードフィルタを適用
 			ApplyPlayModeFilter(chartData, createInfo.playOption);
+
+			// 譜面上の区間の長さで判定するため、LASERセクションを変更する前に取得
+			*pLegacyLaserTailIntervalsOut = Audio::MakeLegacyLaserTailIntervals(chartData);
 
 			// テストプレイの場合、開始小節より手前のノーツを削除
 			if (createInfo.playOption.isTestPlayWithStartMeasure())
@@ -277,7 +280,7 @@ namespace MusicGame
 	GameMain::GameMain(const GameCreateInfo& createInfo)
 		: m_chartFilePath(createInfo.chartFilePath)
 		, m_parentPath(FileSystem::ParentPath(createInfo.chartFilePath))
-		, m_chartData(LoadChartDataWithTurn(createInfo, &m_noteArrangement, &m_sRandomFXAudioMapping, &m_fxChipKeySoundPulses, &m_laserCurvedPulses))
+		, m_chartData(LoadChartDataWithTurn(createInfo, &m_noteArrangement, &m_sRandomFXAudioMapping, &m_fxChipKeySoundPulses, &m_laserCurvedPulses, &m_legacyLaserTailIntervals))
 		, m_timingCache(kson::CreateTimingCache(m_chartData.beat))
 		, m_playOption(createInfo.playOption)
 		, m_judgmentMain(
@@ -355,7 +358,7 @@ namespace MusicGame
 		const kson::FXLane<kson::Interval>& fxNoteLanesForAudio = m_sRandomFXAudioMapping.has_value()
 			? m_sRandomFXAudioMapping->fxLanesForAudio
 			: m_chartData.note.fx;
-		m_audioEffectMain.update(m_bgm, m_chartData, fxNoteLanesForAudio, m_timingCache, {
+		m_audioEffectMain.update(m_bgm, m_chartData, fxNoteLanesForAudio, m_legacyLaserTailIntervals, m_timingCache, {
 			.longFXPressed = longFXPressed,
 			.laserIsOnOrNone = laserIsOnOrNone,
 		}, m_gameStatus.currentPulse);

@@ -35,6 +35,14 @@ namespace MusicGame::Audio
 
 	using AudioEffectInvocation = std::variant<DSPAudioEffectInvocation, SwitchAudioInvocation>;
 
+	// v1で音声エフェクトをかけないLASERセクション末尾の区間
+	using LegacyLaserTailIntervals = kson::LaserLane<kson::Interval>;
+
+	/// @brief v1で音声エフェクトをかけないLASERセクション末尾の区間を取得
+	/// @param chartData 譜面データ(LASERの曲線を展開する前のものを渡す)
+	/// @return 区間(ver=200以降の譜面の場合は空)
+	LegacyLaserTailIntervals MakeLegacyLaserTailIntervals(const kson::ChartData& chartData);
+
 	class AudioEffectMain
 	{
 	private:
@@ -58,6 +66,7 @@ namespace MusicGame::Audio
 		AudioEffectMain(BGM& bgm, const kson::ChartData& chartData, const kson::TimingCache& timingCache, const FilePath& parentPath, double audioProcDelaySec, double bgmVolume);
 
 		/// @param fxNoteLanesForAudio 音声エフェクト用のFXノーツ(S-RANDOM時は配置適用前のFXノーツを渡す)
-		void update(BGM& bgm, const kson::ChartData& chartData, const kson::FXLane<kson::Interval>& fxNoteLanesForAudio, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus, kson::Pulse currentPulseForSwitchAudio);
+		/// @param legacyLaserTailIntervals v1で音声エフェクトをかけないLASERセクション末尾の区間
+		void update(BGM& bgm, const kson::ChartData& chartData, const kson::FXLane<kson::Interval>& fxNoteLanesForAudio, const LegacyLaserTailIntervals& legacyLaserTailIntervals, const kson::TimingCache& timingCache, const AudioEffectInputStatus& inputStatus, kson::Pulse currentPulseForSwitchAudio);
 	};
 }

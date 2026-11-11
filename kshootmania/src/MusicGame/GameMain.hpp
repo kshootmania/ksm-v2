@@ -59,6 +59,9 @@ namespace MusicGame
 		// 譜面情報
 		std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ> m_laserCurvedPulses;
 
+		// v1で音声エフェクトをかけないLASERセクション末尾の区間
+		Audio::LegacyLaserTailIntervals m_legacyLaserTailIntervals;
+
 		// turnオプション適用による配置結果
 		NoteArrangement m_noteArrangement;
 
