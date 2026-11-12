@@ -253,6 +253,33 @@ namespace
 		return none;
 	}
 
+	// 譜面ファイルの相対パスを取得(FileSystem::RelativePath(chartFilePath, baseDirectoryPath)と同じ結果を返す)
+	FilePath ChartFileRelativePath(FilePathView chartFilePath, FilePathView songDirPath, FilePathView songDirectoryRelativePath, FilePathView baseDirectoryPath)
+	{
+		// 譜面ファイルのパスはリンク先のパスになっている場合があるため、楽曲フォルダ直下にあるかを確認
+		const bool endsWithSlash = songDirPath.ends_with(U'/');
+		const size_t filenamePos = songDirPath.size() + (endsWithSlash ? 0 : 1);
+		const bool isInSongDir = chartFilePath.size() > filenamePos && chartFilePath.starts_with(songDirPath) && (endsWithSlash || chartFilePath[songDirPath.size()] == U'/');
+		if (isInSongDir && !songDirectoryRelativePath.isEmpty() && songDirectoryRelativePath != U"./")
+		{
+			const StringView filename = chartFilePath.substr(filenamePos);
+			std::error_code ec;
+			if (!filename.includes(U'/') && !std::filesystem::is_symlink(ToStdPath(chartFilePath), ec) && !ec)
+			{
+				// シンボリックリンクでないファイルは、楽曲フォルダの相対パスにファイル名を追加したものを相対パスとして使用
+				FilePath relativePath{ songDirectoryRelativePath };
+				if (!relativePath.ends_with(U'/'))
+				{
+					relativePath.push_back(U'/');
+				}
+				relativePath.append(filename);
+				return relativePath;
+			}
+		}
+
+		return FileSystem::RelativePath(chartFilePath, baseDirectoryPath);
+	}
+
 	bool AppendChartRows(
 		Array<ChartRow>* pRows,
 		FilePathView baseDirectoryPath,
@@ -267,6 +294,16 @@ namespace
 	{
 		bool chartExists = false;
 		const Array<FilePath> chartFiles = FsUtils::GetChartFilePathsPreferringKson(songDirPath);
+		if (chartFiles.isEmpty())
+		{
+			return false;
+		}
+
+		// 楽曲フォルダ内の譜面で共通の値(conf.iniはパッケージフォルダ単位のため、最初の譜面から取得)
+		const FilePath songDirectoryRelativePath = FileSystem::RelativePath(songDirPath, baseDirectoryPath);
+		const FilePath sectionDirectoryRelativePath = sectionDirPath.isEmpty() ? FilePath{} : FileSystem::RelativePath(sectionDirPath, baseDirectoryPath);
+		const FolderConfIni folderConfIni = FolderConfIni::Load(chartFiles.front());
+
 		for (size_t chartFileIndex = 0; chartFileIndex < chartFiles.size(); ++chartFileIndex)
 		{
 			const auto& chartFilePath = chartFiles[chartFileIndex];
@@ -292,8 +329,8 @@ namespace
 			}
 
 			pRows->push_back(ChartRow{
-				.songDirectoryRelativePath = FileSystem::RelativePath(songDirPath, baseDirectoryPath),
-				.sectionDirectoryRelativePath = sectionDirPath.isEmpty() ? FilePath{} : FileSystem::RelativePath(sectionDirPath, baseDirectoryPath),
+				.songDirectoryRelativePath = songDirectoryRelativePath,
+				.sectionDirectoryRelativePath = sectionDirectoryRelativePath,
 				.sectionDisplayName = sectionDisplayName,
 				.skipSectionHeading = skipSectionHeading,
 				.visibleInDirectoryNameSort = visibleInDirectoryNameSort,
@@ -302,9 +339,9 @@ namespace
 				.songDirectoryIndex = songDirectoryIndex,
 				.chartFileIndex = static_cast<int32>(chartFileIndex),
 				.songSortKey = FsUtils::DirectoryNameByDirectoryPath(songDirPath).lowercased(),
-				.chartFileRelativePath = FileSystem::RelativePath(chartFilePath, baseDirectoryPath),
+				.chartFileRelativePath = ChartFileRelativePath(chartFilePath, songDirPath, songDirectoryRelativePath, baseDirectoryPath),
 				.chartData = chartData,
-				.folderConfIni = FolderConfIni::Load(chartFilePath),
+				.folderConfIni = folderConfIni,
 			});
 			chartExists = true;
 		}
@@ -422,6 +459,12 @@ namespace
 
 	bool IsCacheValid(SQLite::Database& db, FilePathView baseDirectoryPath, const Array<SourceFileInfo>& sourceFiles)
 	{
+		// DBファイルを新規作成した直後はテーブルが存在しない
+		if (!db.tableExists("cache_meta"))
+		{
+			return false;
+		}
+
 		const Optional<String> schemaVersion = GetMeta(db, U"schema_version");
 		const Optional<String> sourceFileCount = GetMeta(db, U"source_file_count");
 		const Optional<String> latestSourceMtime = GetMeta(db, U"latest_source_mtime_ms");
@@ -671,7 +714,6 @@ namespace
 			Array<SourceFileInfo> sourceFiles = CollectSourceFiles(baseDirectoryPath);
 			FileSystem::CreateDirectories(FileSystem::ParentPath(dbPath));
 			SQLite::Database db(dbPath.toUTF8(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-			CreateSchema(db);
 			if (rebuild || !IsCacheValid(db, baseDirectoryPath, sourceFiles))
 			{
 				Rebuild(db, baseDirectoryPath, sourceFiles);
