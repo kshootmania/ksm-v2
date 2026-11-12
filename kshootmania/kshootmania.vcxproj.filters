@@ -648,6 +648,9 @@
     <ClCompile Include="src\Scenes\Select\SearchInputDialog.cpp">
       <Filter>Source Files\Scenes\Select</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\Select\SelectFolderLoading.cpp">
+      <Filter>Source Files\Scenes\Select</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scenes\Result\ResultNewRecordPanel.cpp">
       <Filter>Source Files\Scenes\Result</Filter>
     </ClCompile>
@@ -1415,6 +1418,9 @@
       <Filter>Header Files\Scenes\Select</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\Select\SearchInputDialog.hpp">
+      <Filter>Header Files\Scenes\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\Select\SelectFolderLoading.hpp">
       <Filter>Header Files\Scenes\Select</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\Result\ResultNewRecordPanel.hpp">

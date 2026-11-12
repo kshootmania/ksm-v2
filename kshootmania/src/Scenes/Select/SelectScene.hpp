@@ -49,6 +49,15 @@ private:
 	// 次回のStartボタンの離した判定を無視するか
 	bool m_ignoreNextStartUp = false;
 
+	// 前回開いていたフォルダを複数フレームに分けて読み込み中か
+	bool m_isInitialFolderLoading = false;
+
+	// 前回開いていたフォルダの読み込み完了後に復元する検索の初期状態
+	Optional<SelectSceneSearchParams> m_initialSearchParamsToRestore;
+
+	// 前回開いていたフォルダの読み込み完了後の初期化
+	void onInitialFolderLoaded(const Optional<SelectSceneSearchParams>& initialSearchParams);
+
 	void moveToPlayScene(FilePathView chartFilePath, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState = none);
 
 	void refreshCanvasPlayerName();

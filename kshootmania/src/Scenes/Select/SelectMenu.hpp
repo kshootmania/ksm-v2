@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <CoTaskLib.hpp>
 #include "SelectFolderState.hpp"
 #include "SelectHighScoreCache.hpp"
 #include "UI/ArrayWithLinearMenu.hpp"
@@ -94,6 +95,21 @@ private:
 
 	const ksmaudio::Sample m_folderSelectSe{"se/sel_dir.wav"};
 
+	Optional<Co::ScopedTaskRunner> m_folderLoadingRunner;
+
+	/// @brief ディレクトリの譜面情報を読み込んでからフォルダを開く(読み込みに時間がかかる場合は複数フレームに分けて読み込む)
+	/// @param directoryPaths 読み込むディレクトリ
+	/// @param checkFileChanges ファイルの変更を確認するか
+	/// @param fnOpenFolder 読み込み完了時に実行する処理
+	/// @param fnCancel 読み込みのキャンセル時に実行する処理
+	void openFolderAfterLoading(const Array<FilePath>& directoryPaths, CheckFileChangesYN checkFileChanges, std::function<void()> fnOpenFolder, std::function<void()> fnCancel = nullptr);
+
+	void restoreSavedFolder(StringView savedDirectory, int32 cursor, int32 difficultyIdx);
+
+	void reloadCurrentDirectoryImpl(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk, CheckFileChangesYN checkFileChanges);
+
+	void onReloadCurrentDirectoryCanceled();
+
 	bool openDirectory(FilePathView directoryPath, PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::Yes, SaveToConfigIniYN saveToConfigIni = SaveToConfigIniYN::Yes, CheckFileChangesYN checkFileChanges = CheckFileChangesYN::Yes);
 
 	bool openDirectoryWithNameSort(FilePathView directoryPath, CheckFileChangesYN checkFileChanges);
@@ -167,6 +183,10 @@ public:
 	~SelectMenu(); // ヘッダではISelectMenuItemが不完全型なのでソースファイル側で定義
 
 	void update(SongPreviewOnlyYN songPreviewOnly = SongPreviewOnlyYN::No);
+
+	/// @brief フォルダを複数フレームに分けて読み込み中か
+	[[nodiscard]]
+	bool isLoadingFolder() const;
 
 	/// @brief クリックによる決定・難易度変更を処理(Shift押下中はオートプレイとして決定)
 	void updateClickDecide();

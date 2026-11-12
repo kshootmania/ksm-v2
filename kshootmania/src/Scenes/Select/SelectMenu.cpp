@@ -20,10 +20,14 @@
 #include "NocoExtensions/NocoUtils.hpp"
 #include "RuntimeConfig.hpp"
 #include "SelectMenuCacheDb.hpp"
+#include "SelectFolderLoading.hpp"
 #include "UI/MouseMenuUtils.hpp"
 
 namespace
 {
+	// フォルダの読み込みを複数フレームに分けるまでの時間
+	constexpr Duration kFolderLoadingSyncTimeLimit = 1s;
+
 	// ジャケット画像のSpriteが縮小したテクスチャの選択に使う描画時の情報
 	struct JacketDrawInfo
 	{
@@ -188,6 +192,35 @@ namespace
 	bool IsSpecialPathFavorite(StringView specialPath)
 	{
 		return !specialPath.isEmpty() && specialPath[0] == kFavFolderSpecialPathPrefix;
+	}
+
+	// Allフォルダの対象となる全フォルダを取得
+	Array<FilePath> GetAllFolderDirectories()
+	{
+		const Array<FilePath> searchPaths = {
+			FsUtils::SongsDirectoryPath(), // TODO: 設定可能にする
+		};
+
+		Array<FilePath> allFolderDirectories;
+		for (const auto& path : searchPaths)
+		{
+			allFolderDirectories.append(GetSubDirectories(path).map([](FilePathView p) { return FileSystem::FullPath(p); }));
+		}
+		return allFolderDirectories;
+	}
+
+	// config.iniに保存されたフォルダ(songsフォルダからの相対パス)のフルパスを取得(受け付けないパスの場合はnone)
+	Optional<FilePath> SavedDirectoryFullPath(StringView savedDirectory)
+	{
+		// 絶対パスや..を含むパスは受け付けない
+		const bool isInvalidPath = savedDirectory.starts_with(U'/') || savedDirectory.starts_with(U'\\') || savedDirectory.includes(U':') || savedDirectory.includes(U"..");
+		if (savedDirectory.isEmpty() || isInvalidPath)
+		{
+			return none;
+		}
+
+		// songsフォルダからの相対パスなので結合
+		return FileSystem::PathAppend(FsUtils::SongsDirectoryPath(), savedDirectory);
 	}
 
 	// songsディレクトリ配下の.favファイルを列挙
@@ -845,8 +878,22 @@ SelectMenu::SelectMenu(
 	: m_eventContext
 		{
 			.fnMoveToPlayScene = [fnMoveToPlayScene](FilePath path, MusicGame::IsAutoPlayYN isAutoPlay, const Optional<CoursePlayState>& courseState) { fnMoveToPlayScene(path, isAutoPlay, courseState); },
-			.fnOpenDirectory = [this](FilePath path) { openDirectory(path, PlaySeYN::Yes); },
-			.fnOpenAllFolder = [this]() { openAllFolder(PlaySeYN::Yes); },
+			.fnOpenDirectory = [this](FilePath path)
+			{
+				m_folderSelectSe.play();
+				openFolderAfterLoading(
+					{ path },
+					CheckFileChangesYN::Yes,
+					[this, path] { openDirectory(path, PlaySeYN::No, RefreshSongPreviewYN::Yes, SaveToConfigIniYN::Yes, CheckFileChangesYN::No); });
+			},
+			.fnOpenAllFolder = [this]()
+			{
+				m_folderSelectSe.play();
+				openFolderAfterLoading(
+					GetAllFolderDirectories(),
+					CheckFileChangesYN::Yes,
+					[this] { openAllFolder(PlaySeYN::No, RefreshSongPreviewYN::Yes, SaveToConfigIniYN::Yes, CheckFileChangesYN::No); });
+			},
 			.fnOpenFavoriteFolder = [this](FilePath specialPath) { openFavoriteFolder(specialPath, PlaySeYN::Yes); },
 			.fnOpenCoursesFolder = [this]() { openCoursesFolder(PlaySeYN::Yes); },
 			.fnCloseFolder = [this]() { closeFolder(PlaySeYN::Yes); },
@@ -924,13 +971,40 @@ SelectMenu::SelectMenu(
 	const int32 loadedDifficultyIdx = ConfigIni::GetInt(ConfigIni::Key::kSelectDifficulty);
 
 	// 前回開いていたフォルダを復元
-	const StringView savedDirectory = ConfigIni::GetString(ConfigIni::Key::kSelectDirectory);
+	const String savedDirectory{ ConfigIni::GetString(ConfigIni::Key::kSelectDirectory) };
+	Array<FilePath> directoryPathsToLoad;
+	if (savedDirectory == SelectMenuAllFolderItem::kAllFolderSpecialPath)
+	{
+		directoryPathsToLoad = GetAllFolderDirectories();
+	}
+	else if (savedDirectory != SelectMenuCoursesFolderItem::kCoursesFolderSpecialPath && !IsSpecialPathFavorite(savedDirectory))
+	{
+		if (const Optional<FilePath> fullPath = SavedDirectoryFullPath(savedDirectory))
+		{
+			directoryPathsToLoad.push_back(*fullPath);
+		}
+	}
+	openFolderAfterLoading(
+		directoryPathsToLoad,
+		CheckFileChangesYN::Yes,
+		[this, savedDirectory, loadedCursor, loadedDifficultyIdx] { restoreSavedFolder(savedDirectory, loadedCursor, loadedDifficultyIdx); },
+		[this] { openDirectory(U"", PlaySeYN::No); });
+
+	if (isLoadingFolder())
+	{
+		// 読み込みが完了するまではフォルダを開いていない状態で表示
+		openDirectory(U"", PlaySeYN::No, RefreshSongPreviewYN::No, SaveToConfigIniYN::No);
+	}
+}
+
+void SelectMenu::restoreSavedFolder(StringView savedDirectory, int32 cursor, int32 difficultyIdx)
+{
 	bool openSuccess = false;
 
 	if (savedDirectory == SelectMenuAllFolderItem::kAllFolderSpecialPath)
 	{
 		// Allフォルダの場合
-		openSuccess = openAllFolder(PlaySeYN::No);
+		openSuccess = openAllFolder(PlaySeYN::No, RefreshSongPreviewYN::Yes, SaveToConfigIniYN::Yes, CheckFileChangesYN::No);
 	}
 	else if (savedDirectory == SelectMenuCoursesFolderItem::kCoursesFolderSpecialPath)
 	{
@@ -950,28 +1024,20 @@ SelectMenu::SelectMenu(
 				SaveToConfigIniYN::No);
 		}
 	}
-	else if (!savedDirectory.isEmpty())
+	else if (const Optional<FilePath> fullPath = SavedDirectoryFullPath(savedDirectory))
 	{
-		// 絶対パスや..を含むパスは受け付けない
-		const bool isInvalidPath = savedDirectory.starts_with(U'/') || savedDirectory.starts_with(U'\\') || savedDirectory.includes(U':') || savedDirectory.includes(U"..");
-
-		if (!isInvalidPath)
-		{
-			// songsフォルダからの相対パスなので結合
-			const FilePath fullPath = FileSystem::PathAppend(FsUtils::SongsDirectoryPath(), savedDirectory);
-			openSuccess = openDirectory(fullPath, PlaySeYN::No);
-		}
+		openSuccess = openDirectory(*fullPath, PlaySeYN::No, RefreshSongPreviewYN::Yes, SaveToConfigIniYN::Yes, CheckFileChangesYN::No);
 	}
 
 	if (openSuccess)
 	{
 		// 前回選択していたインデックスを復元
-		m_menu.setCursor(loadedCursor);
-		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, loadedCursor);
+		m_menu.setCursor(cursor);
+		ConfigIni::SetInt(ConfigIni::Key::kSelectSongIndex, cursor);
 
 		// 前回選択していた難易度を復元
-		m_difficultyMenu.setCursor(loadedDifficultyIdx);
-		ConfigIni::SetInt(ConfigIni::Key::kSelectDifficulty, loadedDifficultyIdx);
+		m_difficultyMenu.setCursor(difficultyIdx);
+		ConfigIni::SetInt(ConfigIni::Key::kSelectDifficulty, difficultyIdx);
 	}
 	else
 	{
@@ -981,6 +1047,41 @@ SelectMenu::SelectMenu(
 	resetSongInfoTextDisplayTimer();
 	refreshContentCanvasParams();
 	refreshSongPreview();
+}
+
+void SelectMenu::openFolderAfterLoading(const Array<FilePath>& directoryPaths, CheckFileChangesYN checkFileChanges, std::function<void()> fnOpenFolder, std::function<void()> fnCancel)
+{
+	if (isLoadingFolder())
+	{
+		// 読み込み中は次の読み込みを受け付けない
+		return;
+	}
+
+	SelectMenuCacheDb::Loader loader{ directoryPaths.filter([](FilePathView path) { return FileSystem::IsDirectory(path); }), checkFileChanges.getBool() };
+	loader.advance(kFolderLoadingSyncTimeLimit);
+	if (loader.isFinished())
+	{
+		fnOpenFolder();
+		return;
+	}
+
+	m_folderLoadingRunner = Co::Play<SelectFolderLoading>(std::move(loader)).runScoped(
+		[fnOpenFolder = std::move(fnOpenFolder), fnCancel = std::move(fnCancel)](bool finished)
+		{
+			if (finished)
+			{
+				fnOpenFolder();
+			}
+			else if (fnCancel)
+			{
+				fnCancel();
+			}
+		});
+}
+
+bool SelectMenu::isLoadingFolder() const
+{
+	return m_folderLoadingRunner.has_value() && !m_folderLoadingRunner->done();
 }
 
 SelectMenu::~SelectMenu()
@@ -1069,6 +1170,11 @@ void SelectMenu::update(SongPreviewOnlyYN songPreviewOnly)
 		reloadCurrentDirectory(RefreshSongPreviewYN::Yes, ReloadFromDiskYN::Yes);
 	}
 	fxLRPressed = fxLRPressedNow;
+
+	if (isLoadingFolder())
+	{
+		return;
+	}
 
 	// 各種操作と干渉しないようCtrl・Shift・BT-B+C押下時は無視
 	const bool btBCPressed = KeyConfig::Pressed(kButtonBT_B) && KeyConfig::Pressed(kButtonBT_C);
@@ -1250,6 +1356,46 @@ void SelectMenu::fadeOutSongPreviewForExit(Duration duration)
 }
 
 void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk, CheckFileChangesYN checkFileChanges)
+{
+	if (!reloadFromDisk || !checkFileChanges)
+	{
+		reloadCurrentDirectoryImpl(refreshSongPreview, reloadFromDisk, checkFileChanges);
+		return;
+	}
+
+	Array<FilePath> directoryPathsToLoad;
+	if (m_folderState.folderType == SelectFolderState::kAll)
+	{
+		directoryPathsToLoad = GetAllFolderDirectories();
+	}
+	else if (m_folderState.folderType == SelectFolderState::kDirectory && !m_folderState.fullPath.isEmpty())
+	{
+		directoryPathsToLoad.push_back(m_folderState.fullPath);
+	}
+	openFolderAfterLoading(
+		directoryPathsToLoad,
+		checkFileChanges,
+		[this, refreshSongPreview, reloadFromDisk] { reloadCurrentDirectoryImpl(refreshSongPreview, reloadFromDisk, CheckFileChangesYN::No); },
+		[this] { onReloadCurrentDirectoryCanceled(); });
+}
+
+void SelectMenu::onReloadCurrentDirectoryCanceled()
+{
+	// 再読み込み前の内容が表示されたままにならないよう、フォルダを閉じる
+	const bool wasSearchActive = m_searchActive;
+	m_searchActive = false;
+	m_searchQuery.clear();
+	m_searchPreservedChartPath.reset();
+
+	closeFolder(PlaySeYN::No);
+
+	if (wasSearchActive)
+	{
+		m_eventContext.fnExitSearch();
+	}
+}
+
+void SelectMenu::reloadCurrentDirectoryImpl(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk, CheckFileChangesYN checkFileChanges)
 {
 	FilePath currentChartFilePath;
 	const int32 difficultyCursor = m_difficultyMenu.cursor();
@@ -1842,16 +1988,7 @@ bool SelectMenu::openAllFolderWithNameSort(CheckFileChangesYN checkFileChanges)
 	// TODO: Insert course items
 
 	// 全フォルダの楽曲を収集
-	const Array<FilePath> searchPaths = {
-		FsUtils::SongsDirectoryPath(), // TODO: 設定可能にする
-	};
-
-	// 全フォルダを取得
-	Array<FilePath> allFolderDirectories;
-	for (const auto& path : searchPaths)
-	{
-		allFolderDirectories.append(GetSubDirectories(path).map([](FilePathView p) { return FileSystem::FullPath(p); }));
-	}
+	const Array<FilePath> allFolderDirectories = GetAllFolderDirectories();
 
 	Array<SelectCachedSongEntry> allSongEntries;
 
@@ -1903,16 +2040,7 @@ bool SelectMenu::openAllFolderWithLevelSort(CheckFileChangesYN checkFileChanges)
 	std::array<Array<LevelSortChartFileInfo>, kNumLevels> chartsByLevel;
 
 	// 全フォルダの楽曲を収集
-	const Array<FilePath> searchPaths = {
-		FsUtils::SongsDirectoryPath(), // TODO: 設定可能にする
-	};
-
-	// 全フォルダを取得
-	Array<FilePath> allFolderDirectories;
-	for (const auto& path : searchPaths)
-	{
-		allFolderDirectories.append(GetSubDirectories(path).map([](FilePathView p) { return FileSystem::FullPath(p); }));
-	}
+	const Array<FilePath> allFolderDirectories = GetAllFolderDirectories();
 
 	for (const auto& folderDirectory : allFolderDirectories)
 	{

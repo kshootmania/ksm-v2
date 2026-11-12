@@ -348,50 +348,47 @@ namespace
 		return chartExists;
 	}
 
-	Array<ChartRow> CollectChartRows(FilePathView baseDirectoryPath)
+	// 楽曲フォルダ1つ分(サブフォルダを含む)の譜面を追加
+	void AppendSongDirectoryChartRows(
+		Array<ChartRow>* pRows,
+		FilePathView baseDirectoryPath,
+		const HashTable<String, String>& folderNameTable,
+		const Array<FilePath>& songDirectories,
+		size_t songDirectoryIndex)
 	{
-		Array<ChartRow> rows;
-		const HashTable<String, String> folderNameTable = LoadFolderNameTable(baseDirectoryPath);
+		const auto& songDirectory = songDirectories[songDirectoryIndex];
+		const Array<FilePath> subDirs = GetSubDirectories(songDirectory);
+		const bool directChartExists = AppendChartRows(
+			pRows,
+			baseDirectoryPath,
+			songDirectory,
+			U"",
+			none,
+			false,
+			true,
+			subDirs.isEmpty(),
+			-1,
+			static_cast<int32>(songDirectoryIndex));
 
-		const Array<FilePath> songDirectories = GetSubDirectories(baseDirectoryPath);
-		for (size_t songDirectoryIndex = 0; songDirectoryIndex < songDirectories.size(); ++songDirectoryIndex)
+		for (size_t subDirIndex = 0; subDirIndex < subDirs.size(); ++subDirIndex)
 		{
-			const auto& songDirectory = songDirectories[songDirectoryIndex];
-			const Array<FilePath> subDirs = GetSubDirectories(songDirectory);
-			const bool directChartExists = AppendChartRows(
-				&rows,
+			const auto& subDir = subDirs[subDirIndex];
+			const String folderName = FsUtils::DirectoryNameByDirectoryPath(songDirectory);
+			const Optional<String> displayName = GetDisplayNameFromFolderNameTable(folderNameTable, folderName);
+			const bool skipHeading = displayName.has_value() && displayName->isEmpty();
+
+			AppendChartRows(
+				pRows,
 				baseDirectoryPath,
+				subDir,
 				songDirectory,
-				U"",
-				none,
-				false,
+				displayName,
+				directChartExists ? true : skipHeading,
+				!directChartExists,
 				true,
-				subDirs.isEmpty(),
-				-1,
-				static_cast<int32>(songDirectoryIndex));
-
-			for (size_t subDirIndex = 0; subDirIndex < subDirs.size(); ++subDirIndex)
-			{
-				const auto& subDir = subDirs[subDirIndex];
-				const String folderName = FsUtils::DirectoryNameByDirectoryPath(songDirectory);
-				const Optional<String> displayName = GetDisplayNameFromFolderNameTable(folderNameTable, folderName);
-				const bool skipHeading = displayName.has_value() && displayName->isEmpty();
-
-				AppendChartRows(
-					&rows,
-					baseDirectoryPath,
-					subDir,
-					songDirectory,
-					displayName,
-					directChartExists ? true : skipHeading,
-					!directChartExists,
-					true,
-					static_cast<int32>(songDirectoryIndex),
-					static_cast<int32>(subDirIndex));
-			}
+				static_cast<int32>(songDirectoryIndex),
+				static_cast<int32>(subDirIndex));
 		}
-
-		return rows;
 	}
 
 	void CreateSchema(SQLite::Database& db)
@@ -505,11 +502,8 @@ namespace
 		return index == sourceFiles.size() && FileSystem::FullPath(baseDirectoryPath) == GetMeta(db, U"directory_path").value_or(U"");
 	}
 
-	void Rebuild(SQLite::Database& db, FilePathView baseDirectoryPath, const Array<SourceFileInfo>& sourceFiles)
+	void WriteCache(SQLite::Database& db, FilePathView baseDirectoryPath, const Array<SourceFileInfo>& sourceFiles, const Array<ChartRow>& chartRows)
 	{
-		FolderConfIni::ClearCache();
-		const Array<ChartRow> chartRows = CollectChartRows(baseDirectoryPath);
-
 		SQLite::Transaction transaction(db);
 		db.exec("DROP TABLE IF EXISTS cache_meta");
 		db.exec("DROP TABLE IF EXISTS source_files");
@@ -704,54 +698,211 @@ namespace
 		return rows;
 	}
 
-	Array<ChartRowResult> LoadDirectoryRows(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges, StringView fnName)
+	int32 CountChartFiles(const Array<SourceFileInfo>& sourceFiles)
 	{
-		const FilePath baseDirectoryPath = FileSystem::FullPath(directoryPath);
-		const FilePath dbPath = DbPath(baseDirectoryPath);
-
-		const auto loadOnce = [&](bool rebuild) -> Array<ChartRowResult>
+		int32 count = 0;
+		for (const auto& sourceFile : sourceFiles)
 		{
-			Array<SourceFileInfo> sourceFiles = CollectSourceFiles(baseDirectoryPath);
-			FileSystem::CreateDirectories(FileSystem::ParentPath(dbPath));
-			SQLite::Database db(dbPath.toUTF8(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-			if (rebuild || !IsCacheValid(db, baseDirectoryPath, sourceFiles))
+			const String lowercased = sourceFile.relativePath.lowercased();
+			if (lowercased.ends_with(U".ksh") || lowercased.ends_with(U".kson"))
 			{
-				Rebuild(db, baseDirectoryPath, sourceFiles);
+				++count;
 			}
-			Array<ChartRowResult> rows = ReadChartRows(db, baseDirectoryPath);
-			s_memoryCache[baseDirectoryPath] = MemoryCacheEntry{ .sourceFiles = std::move(sourceFiles), .rows = rows };
-			return rows;
+		}
+		return count;
+	}
+
+	// ディレクトリ内の全譜面の行の読み込み処理
+	// (advance()の1回の呼び出しでは処理の一部のみ行う)
+	class DirectoryRowsLoader
+	{
+	private:
+		enum class Phase
+		{
+			kCollectSourceFiles,
+			kOpenDb,
+			kCollectChartRows,
+			kWriteCache,
+			kFinished,
 		};
 
-		try
+		FilePath m_directoryPath;
+		FilePath m_baseDirectoryPath;
+		FilePath m_dbPath;
+		bool m_forceRebuild;
+		bool m_checkFileChanges;
+		String m_fnName;
+
+		Phase m_phase = Phase::kCollectSourceFiles;
+		bool m_isRetrying = false;
+		Array<SourceFileInfo> m_sourceFiles;
+		std::unique_ptr<SQLite::Database> m_db;
+
+		// キャッシュDBの再生成用
+		HashTable<String, String> m_folderNameTable;
+		Array<FilePath> m_songDirectories;
+		size_t m_songDirectoryIndex = 0;
+		Array<ChartRow> m_chartRows;
+
+		Optional<int32> m_totalChartCount;
+		int32 m_loadedChartCount = 0;
+
+		void finish()
 		{
-			if (!forceRebuild)
-			{
-				if (const auto it = s_memoryCache.find(baseDirectoryPath); it != s_memoryCache.end())
-				{
-					// ファイルの変更を確認しない場合は、読み込み済みの内容をそのまま再利用する
-					if (!checkFileChanges || CollectSourceFiles(baseDirectoryPath) == it->second.sourceFiles)
-					{
-						return it->second.rows;
-					}
-				}
-			}
-			return loadOnce(forceRebuild);
+			m_db.reset();
+			m_loadedChartCount = m_totalChartCount.value_or(0);
+			m_phase = Phase::kFinished;
 		}
-		catch (const std::exception& e)
+
+		void advanceImpl()
 		{
-			Logger << U"[ksm warning] SelectMenuCacheDb::{} failed. Fallback to rebuild. (path:'{}', error:'{}')"_fmt(fnName, directoryPath, Unicode::FromUTF8(e.what()));
-			FileSystem::Remove(dbPath);
+			switch (m_phase)
+			{
+			case Phase::kCollectSourceFiles:
+				{
+					const auto it = m_forceRebuild ? s_memoryCache.end() : s_memoryCache.find(m_baseDirectoryPath);
+					if (it != s_memoryCache.end() && !m_checkFileChanges)
+					{
+						// ファイルの変更を確認しない場合は、読み込み済みの内容をそのまま再利用する
+						m_totalChartCount = CountChartFiles(it->second.sourceFiles);
+						finish();
+						break;
+					}
+
+					m_sourceFiles = CollectSourceFiles(m_baseDirectoryPath);
+					m_totalChartCount = CountChartFiles(m_sourceFiles);
+					if (it != s_memoryCache.end() && m_sourceFiles == it->second.sourceFiles)
+					{
+						finish();
+						break;
+					}
+					m_phase = Phase::kOpenDb;
+				}
+				break;
+
+			case Phase::kOpenDb:
+				FileSystem::CreateDirectories(FileSystem::ParentPath(m_dbPath));
+				m_db = std::make_unique<SQLite::Database>(m_dbPath.toUTF8(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+				if (m_forceRebuild || !IsCacheValid(*m_db, m_baseDirectoryPath, m_sourceFiles))
+				{
+					FolderConfIni::ClearCache();
+					m_folderNameTable = LoadFolderNameTable(m_baseDirectoryPath);
+					m_songDirectories = GetSubDirectories(m_baseDirectoryPath);
+					m_songDirectoryIndex = 0;
+					m_chartRows.clear();
+					m_phase = Phase::kCollectChartRows;
+				}
+				else
+				{
+					s_memoryCache[m_baseDirectoryPath] = MemoryCacheEntry{ .sourceFiles = std::move(m_sourceFiles), .rows = ReadChartRows(*m_db, m_baseDirectoryPath) };
+					finish();
+				}
+				break;
+
+			case Phase::kCollectChartRows:
+				if (m_songDirectoryIndex < m_songDirectories.size())
+				{
+					AppendSongDirectoryChartRows(&m_chartRows, m_baseDirectoryPath, m_folderNameTable, m_songDirectories, m_songDirectoryIndex);
+					++m_songDirectoryIndex;
+					m_loadedChartCount = Min(static_cast<int32>(m_chartRows.size()), m_totalChartCount.value_or(0));
+				}
+				else
+				{
+					m_phase = Phase::kWriteCache;
+				}
+				break;
+
+			case Phase::kWriteCache:
+				WriteCache(*m_db, m_baseDirectoryPath, m_sourceFiles, m_chartRows);
+				m_chartRows.clear();
+				s_memoryCache[m_baseDirectoryPath] = MemoryCacheEntry{ .sourceFiles = std::move(m_sourceFiles), .rows = ReadChartRows(*m_db, m_baseDirectoryPath) };
+				finish();
+				break;
+
+			case Phase::kFinished:
+				break;
+			}
+		}
+
+	public:
+		DirectoryRowsLoader(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges, StringView fnName)
+			: m_directoryPath(directoryPath)
+			, m_baseDirectoryPath(FileSystem::FullPath(directoryPath))
+			, m_dbPath(DbPath(m_baseDirectoryPath))
+			, m_forceRebuild(forceRebuild)
+			, m_checkFileChanges(checkFileChanges)
+			, m_fnName(fnName)
+		{
+		}
+
+		void advance()
+		{
 			try
 			{
-				return loadOnce(true);
+				advanceImpl();
 			}
-			catch (const std::exception& e2)
+			catch (const std::exception& e)
 			{
-				Logger << U"[ksm warning] SelectMenuCacheDb::{} rebuild failed. (path:'{}', error:'{}')"_fmt(fnName, directoryPath, Unicode::FromUTF8(e2.what()));
-				return {};
+				m_db.reset();
+				if (!m_isRetrying)
+				{
+					Logger << U"[ksm warning] SelectMenuCacheDb::{} failed. Fallback to rebuild. (path:'{}', error:'{}')"_fmt(m_fnName, m_directoryPath, Unicode::FromUTF8(e.what()));
+					FileSystem::Remove(m_dbPath);
+					m_isRetrying = true;
+					m_forceRebuild = true;
+					m_phase = Phase::kCollectSourceFiles;
+				}
+				else
+				{
+					Logger << U"[ksm warning] SelectMenuCacheDb::{} rebuild failed. (path:'{}', error:'{}')"_fmt(m_fnName, m_directoryPath, Unicode::FromUTF8(e.what()));
+
+					// 読み込みに失敗したディレクトリは、以前に読み込んだ内容を破棄
+					s_memoryCache.erase(m_baseDirectoryPath);
+					finish();
+				}
 			}
 		}
+
+		bool isFinished() const
+		{
+			return m_phase == Phase::kFinished;
+		}
+
+		// キャッシュの元になるファイルの一覧を取得済みか(取得済みであれば全譜面数が確定している)
+		bool isSourceFilesCollected() const
+		{
+			return m_totalChartCount.has_value();
+		}
+
+		// 読み込んだ行を取得(読み込みに失敗した場合は空)
+		Array<ChartRowResult> rows() const
+		{
+			if (const auto it = s_memoryCache.find(m_baseDirectoryPath); it != s_memoryCache.end())
+			{
+				return it->second.rows;
+			}
+			return {};
+		}
+
+		int32 totalChartCount() const
+		{
+			return m_totalChartCount.value_or(0);
+		}
+
+		int32 loadedChartCount() const
+		{
+			return m_loadedChartCount;
+		}
+	};
+
+	Array<ChartRowResult> LoadDirectoryRows(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges, StringView fnName)
+	{
+		DirectoryRowsLoader loader{ directoryPath, forceRebuild, checkFileChanges, fnName };
+		while (!loader.isFinished())
+		{
+			loader.advance();
+		}
+		return loader.rows();
 	}
 
 	Array<SelectCachedSongEntry> GroupRowsAsSongEntries(const Array<ChartRowResult>& rows)
@@ -852,6 +1003,90 @@ Array<SelectCachedSongEntry> SelectMenuCacheDb::LoadDirectoryForAllNameSort(File
 Array<SelectCachedChartEntry> SelectMenuCacheDb::LoadDirectoryForLevelSort(FilePathView directoryPath, bool forceRebuild, bool checkFileChanges)
 {
 	return RowsToChartEntries(LoadDirectoryRows(directoryPath, forceRebuild, checkFileChanges, U"LoadDirectoryForLevelSort"));
+}
+
+struct SelectMenuCacheDb::Loader::Impl
+{
+	Array<std::unique_ptr<DirectoryRowsLoader>> directoryLoaders;
+
+	// キャッシュの元になるファイルの一覧を取得済みのディレクトリ数
+	size_t sourceFilesCollectedCount = 0;
+
+	// 読み込み完了済みのディレクトリ数
+	size_t finishedCount = 0;
+};
+
+SelectMenuCacheDb::Loader::Loader(const Array<FilePath>& directoryPaths, bool checkFileChanges)
+	: m_pImpl(std::make_unique<Impl>())
+{
+	for (const auto& directoryPath : directoryPaths)
+	{
+		m_pImpl->directoryLoaders.push_back(std::make_unique<DirectoryRowsLoader>(directoryPath, false, checkFileChanges, U"Loader"));
+	}
+}
+
+SelectMenuCacheDb::Loader::~Loader() = default;
+
+SelectMenuCacheDb::Loader::Loader(Loader&&) noexcept = default;
+
+SelectMenuCacheDb::Loader& SelectMenuCacheDb::Loader::operator=(Loader&&) noexcept = default;
+
+void SelectMenuCacheDb::Loader::advance(Duration timeLimit)
+{
+	const Stopwatch stopwatch{ StartImmediately::Yes };
+	auto& directoryLoaders = m_pImpl->directoryLoaders;
+
+	// 全譜面数を確定させるため、先に全ディレクトリのファイルの一覧を取得
+	while (m_pImpl->sourceFilesCollectedCount < directoryLoaders.size())
+	{
+		auto& directoryLoader = *directoryLoaders[m_pImpl->sourceFilesCollectedCount];
+		if (directoryLoader.isSourceFilesCollected() || directoryLoader.isFinished())
+		{
+			++m_pImpl->sourceFilesCollectedCount;
+			continue;
+		}
+		directoryLoader.advance();
+		if (stopwatch.elapsed() >= timeLimit)
+		{
+			return;
+		}
+	}
+
+	while (m_pImpl->finishedCount < directoryLoaders.size())
+	{
+		auto& directoryLoader = *directoryLoaders[m_pImpl->finishedCount];
+		if (directoryLoader.isFinished())
+		{
+			++m_pImpl->finishedCount;
+			continue;
+		}
+		directoryLoader.advance();
+		if (stopwatch.elapsed() >= timeLimit)
+		{
+			return;
+		}
+	}
+}
+
+bool SelectMenuCacheDb::Loader::isFinished() const
+{
+	return m_pImpl->finishedCount >= m_pImpl->directoryLoaders.size();
+}
+
+Optional<SelectMenuCacheDb::Loader::Progress> SelectMenuCacheDb::Loader::progress() const
+{
+	if (m_pImpl->sourceFilesCollectedCount < m_pImpl->directoryLoaders.size())
+	{
+		return none;
+	}
+
+	Progress progress;
+	for (const auto& directoryLoader : m_pImpl->directoryLoaders)
+	{
+		progress.loadedChartCount += directoryLoader->loadedChartCount();
+		progress.totalChartCount += directoryLoader->totalChartCount();
+	}
+	return progress;
 }
 
 void SelectMenuCacheDb::Invalidate(FilePathView directoryPath)

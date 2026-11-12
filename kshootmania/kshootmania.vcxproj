@@ -292,6 +292,7 @@
     <ClCompile Include="src\Scenes\Select\SearchInputDialog.cpp" />
     <ClCompile Include="src\Scenes\Select\SelectChartInfo.cpp" />
     <ClCompile Include="src\Scenes\Select\SelectDifficultyMenu.cpp" />
+    <ClCompile Include="src\Scenes\Select\SelectFolderLoading.cpp" />
     <ClCompile Include="src\Scenes\Select\SelectHighScoreCache.cpp" />
     <ClCompile Include="src\Scenes\Select\SelectMenu.cpp" />
     <ClCompile Include="src\Scenes\Select\SelectMenuCacheDb.cpp" />
@@ -533,6 +534,7 @@
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuBackToFolderItem.hpp" />
     <ClInclude Include="src\Scenes\Select\SelectSceneSearchParams.hpp" />
     <ClInclude Include="src\Scenes\Select\SearchInputDialog.hpp" />
+    <ClInclude Include="src\Scenes\Select\SelectFolderLoading.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuCourseItem.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuCoursesFolderItem.hpp" />
     <ClInclude Include="src\Scenes\Select\MenuItem\SelectMenuDirFolderItem.hpp" />

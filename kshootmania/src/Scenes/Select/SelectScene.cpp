@@ -387,6 +387,19 @@ SelectScene::SelectScene(const Optional<SelectSceneSearchParams>& initialSearchP
 		m_ignoreNextStartUp = true;
 	}
 
+	if (m_menu.isLoadingFolder())
+	{
+		// 残りの初期化は前回開いていたフォルダの読み込み完了後に実行
+		m_initialSearchParamsToRestore = initialSearchParams;
+		m_isInitialFolderLoading = true;
+		return;
+	}
+
+	onInitialFolderLoaded(initialSearchParams);
+}
+
+void SelectScene::onInitialFolderLoaded(const Optional<SelectSceneSearchParams>& initialSearchParams)
+{
 	if (m_menu.empty())
 	{
 		MessageBoxUtils::ShowOK(U"譜面データが見つかりませんでした。", MessageBoxStyle::Warning);
@@ -434,9 +447,18 @@ SelectScene::SelectScene(const Optional<SelectSceneSearchParams>& initialSearchP
 
 void SelectScene::update()
 {
+	if (m_isInitialFolderLoading && !m_menu.isLoadingFolder())
+	{
+		m_isInitialFolderLoading = false;
+
+		// 読み込みをキャンセルした場合はフォルダを開いていないため、検索の初期状態は復元しない
+		onInitialFolderLoaded(m_menu.isFolderOpen() ? m_initialSearchParamsToRestore : none);
+		m_initialSearchParamsToRestore.reset();
+	}
+
 	const noco::HitTestEnabledYN hitTestEnabled{ !isFadingIn() && !isFadingOut() && InputUtils::IsUIMouseInputEnabled() };
 
-	// ダイアログ表示中は必要な更新のみ実行
+	// ダイアログ表示中・フォルダの読み込み中は必要な更新のみ実行
 	if (Co::HasActiveModal())
 	{
 		m_menu.update(SongPreviewOnlyYN::Yes);
