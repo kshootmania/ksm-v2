@@ -221,4 +221,22 @@ inline constexpr std::array<PlatformKeyDef, 2> kPlatformKeys = {{
 	{ kPlatformKeyCodeOffset + 0x66, 0x66 }, // kVK_JIS_Eisu(英数)
 	{ kPlatformKeyCodeOffset + 0x68, 0x68 }, // kVK_JIS_Kana(かな)
 }};
+#elif defined(__linux__)
+// Linuxプラットフォーム特有のキー定義(Siv3Dで取得できないキー)
+constexpr int32 kPlatformKeyCodeOffset = 0;
+
+struct PlatformKeyDef
+{
+	// config.iniに保存される値(Siv3Dのキーコード)
+	int32 code;
+
+	// X11のkeysym
+	int nativeCode;
+};
+
+// X11のkeysymは X11/keysymdef.h で定義
+inline constexpr std::array<PlatformKeyDef, 2> kPlatformKeys = {{
+	{ 0x1C, 0xFF23 }, // XK_Henkan(変換)
+	{ 0x1D, 0xFF22 }, // XK_Muhenkan(無変換)
+}};
 #endif

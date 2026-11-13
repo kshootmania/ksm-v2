@@ -54,7 +54,7 @@ namespace
 		return s_currentEditingTextExists || s_prevEditingTextExists;
 	}
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 	struct PlatformKeyState
 	{
 		bool previousPressed = false;
@@ -236,7 +236,7 @@ namespace
 				{
 					continue;
 				}
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 				bool isPlatformKey = false;
 				for (size_t i = 0; i < kPlatformKeys.size(); ++i)
 				{
@@ -270,12 +270,22 @@ namespace
 		return false;
 	}
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 	void UpdatePlatformKeyboard()
 	{
+#if defined(__linux__)
+		KSMPlatformLinux_UpdateKeyboardState();
+
+		// ウィンドウが非アクティブの場合は押されていない扱い
+		const bool isWindowFocused = Window::GetState().focused;
+#endif
 		for (size_t i = 0; i < kPlatformKeys.size(); ++i)
 		{
+#ifdef __APPLE__
 			const bool pressed = KSMPlatformMacOS_IsKeyPressed(kPlatformKeys[i].nativeCode);
+#else
+			const bool pressed = isWindowFocused && KSMPlatformLinux_IsKeyPressed(kPlatformKeys[i].nativeCode);
+#endif
 			s_platformKeyStates[i].update(pressed);
 		}
 	}
@@ -550,8 +560,8 @@ void KeyConfig::Update()
 	s_virtualDownButtonsThisFrame = s_virtualDownButtonsPending;
 	s_virtualDownButtonsPending.fill(false);
 
-#ifdef __APPLE__
-	// macOSプラットフォーム特有のキーボード状態を更新
+#if defined(__APPLE__) || defined(__linux__)
+	// プラットフォーム特有のキーボード状態を更新
 	UpdatePlatformKeyboard();
 #endif
 
@@ -713,7 +723,7 @@ bool KeyConfig::Down(Button button)
 			{
 				continue;
 			}
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 			bool isPlatformKey = false;
 			for (size_t i = 0; i < kPlatformKeys.size(); ++i)
 			{
@@ -862,7 +872,7 @@ bool KeyConfig::Up(Button button)
 			{
 				continue;
 			}
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 			bool isPlatformKey = false;
 			for (size_t i = 0; i < kPlatformKeys.size(); ++i)
 			{

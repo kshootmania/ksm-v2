@@ -36,8 +36,8 @@ private:
 	OptionKeyConfigMenuState m_state = OptionKeyConfigMenuState::None;
 	LinearMenu m_configSetMenu;
 
-#ifdef __APPLE__
-	// macOSプラットフォーム特有キーの前フレーム状態
+#if defined(__APPLE__) || defined(__linux__)
+	// プラットフォーム特有キーの前フレーム状態
 	std::unordered_map<int, bool> m_platformKeyWasPressed;
 #endif
 

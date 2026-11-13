@@ -67,6 +67,8 @@ target_link_libraries(${TARGET_NAME} PRIVATE
 
 if(APPLE)
 	target_link_libraries(${TARGET_NAME} PRIVATE ksmplatform_macos)
+elseif(UNIX)
+	target_link_libraries(${TARGET_NAME} PRIVATE ksmplatform_linux)
 endif()
 
 target_compile_features(${TARGET_NAME} PRIVATE cxx_std_20)

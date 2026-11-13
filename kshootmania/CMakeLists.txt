@@ -142,6 +142,8 @@ target_link_libraries(kshootmania PRIVATE
 
 if(APPLE)
 	target_link_libraries(kshootmania PRIVATE ksmplatform_macos)
+elseif(UNIX AND NOT EMSCRIPTEN)
+	target_link_libraries(kshootmania PRIVATE ksmplatform_linux)
 endif()
 
 target_compile_features(kshootmania PRIVATE cxx_std_20)

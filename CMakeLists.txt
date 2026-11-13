@@ -52,6 +52,8 @@ add_subdirectory(kshootmania/ThirdParty/SQLiteCpp)
 
 if(APPLE)
 	add_subdirectory(ksmplatform_macos)
+elseif(UNIX AND NOT EMSCRIPTEN)
+	add_subdirectory(ksmplatform_linux)
 endif()
 
 add_subdirectory(kshootmania)

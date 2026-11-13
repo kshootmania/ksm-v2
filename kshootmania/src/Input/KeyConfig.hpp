@@ -4,6 +4,8 @@
 
 #ifdef __APPLE__
 #include <ksmplatform_macos/input_method.h>
+#elif defined(__linux__)
+#include <ksmplatform_linux/keyboard.h>
 #endif
 
 class ILaserInputMethod;
