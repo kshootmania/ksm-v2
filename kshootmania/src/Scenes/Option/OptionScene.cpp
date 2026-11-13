@@ -1,6 +1,7 @@
 ﻿#include "OptionScene.hpp"
 #include "Common/FrameRateLimit.hpp"
 #include "Common/IMEUtils.hpp"
+#include "Addon/DisableIMEAddon.hpp"
 #include "RuntimeConfig.hpp"
 #include "Scenes/Title/TitleScene.hpp"
 #include "Input/InputUtils.hpp"
@@ -169,12 +170,20 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 			}).setOnChangeCallback([]() {
 				InputUtils::InitKsmaxisForCurrentLaserInput();
 			}),
+#if defined(__linux__)
+			// LinuxではIME無効化の実行間隔による違いがないためON/OFFのみ
+			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDisableIME), ConfigIni::Key::kDisableIME, Array<IntStrPair>{
+				IntStrPair{ static_cast<int32>(DisableIMEMode::kOff), I18n::Get(I18n::Option::Off) },
+				IntStrPair{ static_cast<int32>(DisableIMEMode::kHigh), I18n::Get(I18n::Option::On) },
+			}).setDefaultValue(1),
+#else
 			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDisableIME), ConfigIni::Key::kDisableIME, Array<StringView>{
 				I18n::Get(I18n::Option::DisableIMEOff),
 				I18n::Get(I18n::Option::DisableIMEOnLow),
 				I18n::Get(I18n::Option::DisableIMEOnMid),
 				I18n::Get(I18n::Option::DisableIMEOnHigh),
 			}),
+#endif
 			CreateInfo::Int(I18n::Get(I18n::Option::ItemTimingAdjustment), ConfigIni::Key::kInputDelay, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
 				.setAdditionalSuffixes(
 					I18n::Get(I18n::Option::TimingAdjustSuffixNoAdjustment),
