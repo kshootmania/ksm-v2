@@ -12,6 +12,8 @@ namespace
 {
 	constexpr Duration kFadeDuration = 0.6s;
 
+	constexpr double kSettingMenuScrollSmoothTimeSec = 0.08;
+
 	FilePath GetOptionSceneUIFilePath()
 	{
 		return FsUtils::GetResourcePath(U"ui/scene/option.noco");
@@ -295,7 +297,9 @@ void OptionScene::update()
 		}
 		else
 		{
-			if ((*m_optionMenus)[*m_currentOptionMenuIdx].update(settingMenuMouseInput()))
+			const OptionMenu::MouseInput mouseInput = settingMenuMouseInput();
+			const int32 prevCursor = (*m_optionMenus)[*m_currentOptionMenuIdx].cursor();
+			if ((*m_optionMenus)[*m_currentOptionMenuIdx].update(mouseInput))
 			{
 				if (m_languageChangeRequested)
 				{
@@ -304,6 +308,17 @@ void OptionScene::update()
 				}
 				refreshSettingItemParams();
 			}
+
+			// クリックした項目がマウスカーソルの下から動かないよう、クリックによるカーソル移動ではスクロールしない
+			if (mouseInput.clickedItemIdx.has_value())
+			{
+				m_isSettingMenuScrollFollowingCursor = false;
+			}
+			else if ((*m_optionMenus)[*m_currentOptionMenuIdx].cursor() != prevCursor)
+			{
+				m_isSettingMenuScrollFollowingCursor = true;
+			}
+			updateSettingMenuScroll();
 		}
 
 		if (KeyConfig::Down(kButtonBack))
@@ -331,6 +346,7 @@ void OptionScene::update()
 			if (m_currentOptionMenuIdx != OptionMenuType::kKeyConfig)
 			{
 				createSettingItemNodes();
+				resetSettingMenuScroll();
 			}
 		}
 		else if (KeyConfig::Down(kButtonBack))
@@ -360,6 +376,29 @@ void OptionScene::update()
 	}
 
 	const int32 settingHeaderIndex = m_currentOptionMenuIdx.has_value() ? static_cast<int32>(*m_currentOptionMenuIdx) : -1;
+
+	// 設定項目の上下端は、その方向にスクロールできる場合のみフェード表示
+	bool isSettingMenuScrollableUp = false;
+	bool isSettingMenuScrollableDown = false;
+	if (isSetting)
+	{
+		if (const auto containerNode = m_canvas->findByName(U"SettingMenu"))
+		{
+			containerNode->refreshContainedCanvasLayoutImmediately();
+			const double scrollY = containerNode->scrollOffset().y;
+			const auto [minScroll, maxScroll] = containerNode->validScrollRange();
+			isSettingMenuScrollableUp = scrollY > minScroll.y;
+			isSettingMenuScrollableDown = scrollY < maxScroll.y;
+		}
+	}
+	if (const auto fadeTopNode = m_canvas->findByName(U"SettingMenuFadeTop"))
+	{
+		fadeTopNode->setStyleState(isSettingMenuScrollableUp ? U"visible" : U"");
+	}
+	if (const auto fadeBottomNode = m_canvas->findByName(U"SettingMenuFadeBottom"))
+	{
+		fadeBottomNode->setStyleState(isSettingMenuScrollableDown ? U"visible" : U"");
+	}
 
 	// Canvasパラメータの更新
 	m_canvas->setParamValues({
@@ -576,4 +615,67 @@ void OptionScene::refreshSettingItemParams()
 			{ U"valueRightArrowVisible", params.valueRightArrowVisible },
 		});
 	}
+}
+
+Optional<double> OptionScene::settingMenuScrollTargetY() const
+{
+	const auto containerNode = m_canvas->findByName(U"SettingMenu");
+	if (!containerNode)
+	{
+		return none;
+	}
+
+	const auto& children = containerNode->children();
+	const int32 cursorIdx = (*m_optionMenus)[*m_currentOptionMenuIdx].cursor();
+	if (cursorIdx < 0 || static_cast<int32>(children.size()) <= cursorIdx)
+	{
+		return none;
+	}
+
+	containerNode->refreshContainedCanvasLayoutImmediately();
+
+	// カーソルが中央より下にある場合はカーソル位置の項目が中央に来るようにする
+	const double itemCenterY = children[cursorIdx]->regionRect().centerY() + containerNode->scrollOffset().y;
+	const auto [minScroll, maxScroll] = containerNode->validScrollRange();
+	return Clamp(itemCenterY - containerNode->childrenRect().centerY(), minScroll.y, maxScroll.y);
+}
+
+void OptionScene::resetSettingMenuScroll()
+{
+	m_isSettingMenuScrollFollowingCursor = false;
+	m_settingMenuScrollVelocity = 0.0;
+
+	const auto containerNode = m_canvas->findByName(U"SettingMenu");
+	const Optional<double> targetY = settingMenuScrollTargetY();
+	if (!containerNode || !targetY.has_value())
+	{
+		return;
+	}
+
+	containerNode->setScrollOffset(Vec2{ 0.0, *targetY });
+}
+
+void OptionScene::updateSettingMenuScroll()
+{
+	if (!m_isSettingMenuScrollFollowingCursor)
+	{
+		m_settingMenuScrollVelocity = 0.0;
+		return;
+	}
+
+	const auto containerNode = m_canvas->findByName(U"SettingMenu");
+	const Optional<double> targetY = settingMenuScrollTargetY();
+	if (!containerNode || !targetY.has_value())
+	{
+		m_isSettingMenuScrollFollowingCursor = false;
+		return;
+	}
+
+	double scrollY = Math::SmoothDamp(containerNode->scrollOffset().y, *targetY, m_settingMenuScrollVelocity, kSettingMenuScrollSmoothTimeSec);
+	if (Abs(*targetY - scrollY) < 0.01)
+	{
+		scrollY = *targetY;
+		m_isSettingMenuScrollFollowingCursor = false;
+	}
+	containerNode->setScrollOffset(Vec2{ 0.0, scrollY });
 }

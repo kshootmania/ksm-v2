@@ -36,6 +36,11 @@ private:
 	// 言語変更はメニューのコールバックから呼ばれるため、メニューの再生成はupdate内で行う
 	bool m_languageChangeRequested = false;
 
+	// カーソル位置に合わせて設定項目をスクロール中かどうか
+	bool m_isSettingMenuScrollFollowingCursor = false;
+
+	double m_settingMenuScrollVelocity = 0.0;
+
 	ksmaudio::Stream m_bgmStream{ "se/option_bgm.ogg", 1.0, false, false, true };
 
 	std::unique_ptr<std::array<OptionMenu, kOptionMenuTypeEnumCount>> makeOptionMenus();
@@ -47,6 +52,17 @@ private:
 	void createSettingItemNodes();
 
 	void refreshSettingItemParams();
+
+	/// @brief カーソル位置の項目が中央に来る設定項目のスクロール位置を取得する
+	/// @return スクロール位置(設定項目がない場合はnone)
+	[[nodiscard]]
+	Optional<double> settingMenuScrollTargetY() const;
+
+	/// @brief 設定項目のスクロール位置をカーソル位置へ即座に合わせる
+	void resetSettingMenuScroll();
+
+	/// @brief 設定項目のスクロール位置をカーソル位置へ滑らかに近づける
+	void updateSettingMenuScroll();
 
 public:
 	explicit OptionScene();
