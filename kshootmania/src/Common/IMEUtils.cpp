@@ -68,4 +68,32 @@ void IMEUtils::AttachIMEContext()
 	// macOSは入力ソース切替方式のため、再アタッチ処理は不要
 	// (編集中はDisableIMEAddon側でスキップしているのでユーザーが自由にIMEを切替可能)
 }
+#elif defined(__linux__)
+namespace
+{
+	// IMEを無効化した状態かどうか(Siv3Dが状態を保持するため、切り替える時のみ実行)
+	bool s_isIMEDetached = false;
+}
+
+void IMEUtils::DetachIMEContext()
+{
+	if (s_isIMEDetached)
+	{
+		return;
+	}
+
+	Platform::Linux::TextInput::DisableIME();
+	s_isIMEDetached = true;
+}
+
+void IMEUtils::AttachIMEContext()
+{
+	if (!s_isIMEDetached)
+	{
+		return;
+	}
+
+	Platform::Linux::TextInput::EnableIME();
+	s_isIMEDetached = false;
+}
 #endif

@@ -449,7 +449,7 @@ void KSMMain()
 
 	Addon::Register(CommonSEAddon::kAddonName, std::make_unique<CommonSEAddon>(), 2);
 
-#if defined(_WIN32) || defined(__APPLE__)
+#if defined(_WIN32) || defined(__APPLE__) || defined(__linux__)
 	Addon::Register(DisableIMEAddon::kAddonName, std::make_unique<DisableIMEAddon>(), 3);
 #endif
 
@@ -462,6 +462,7 @@ void KSMMain()
 #if defined(_WIN32) || defined(__APPLE__)
 	// 起動時はIME無効化を一度実行
 	// (これは起動時のものなので、IME無効化設定とは関係なく必ず実行)
+	// (Linuxでは無効化した状態が続くため実行しない)
 	IMEUtils::DetachIMEContext();
 #endif
 
