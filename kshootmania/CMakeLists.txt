@@ -25,11 +25,16 @@ list(REMOVE_ITEM COMMON_SRC_FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Main.cpp
 )
 
-add_executable(kshootmania
+# Main.cpp以外はテスト(ksm-v2-test)と共通のオブジェクトを使用
+add_library(kshootmania_objects OBJECT
 	${COMMON_SRC_FILES}
 	${GAME_SRC_FILES}
+)
+
+add_executable(kshootmania
 	src/Main.cpp
 )
+target_link_libraries(kshootmania PRIVATE kshootmania_objects)
 
 if(APPLE)
     set_target_properties(kshootmania PROPERTIES
@@ -124,14 +129,14 @@ if(APPLE)
     )
 endif()
 
-target_include_directories(kshootmania PRIVATE
+target_include_directories(kshootmania_objects PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty
     ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/CoTaskLib/include
 )
 
 find_package(Siv3D REQUIRED)
-target_link_libraries(kshootmania PRIVATE
+target_link_libraries(kshootmania_objects PUBLIC
     Siv3D::Siv3D
     kson
     ksmaudio
@@ -141,34 +146,39 @@ target_link_libraries(kshootmania PRIVATE
 )
 
 if(APPLE)
-	target_link_libraries(kshootmania PRIVATE ksmplatform_macos)
+	target_link_libraries(kshootmania_objects PUBLIC ksmplatform_macos)
 elseif(UNIX AND NOT EMSCRIPTEN)
-	target_link_libraries(kshootmania PRIVATE ksmplatform_linux)
+	target_link_libraries(kshootmania_objects PUBLIC ksmplatform_linux)
 endif()
 
-target_compile_features(kshootmania PRIVATE cxx_std_20)
+target_compile_features(kshootmania_objects PUBLIC cxx_std_20)
 
-target_compile_definitions(kshootmania PRIVATE)
+if(CMAKE_COMPILER_IS_GNUCXX)
+    # テスト(ksm-v2-test)は-pieでリンクするため
+    target_compile_options(kshootmania_objects PRIVATE -fpie)
+endif()
+
+target_compile_definitions(kshootmania_objects PUBLIC)
 
 if(OUTPUT_LICENSE_TXT)
-	target_compile_definitions(kshootmania PRIVATE OUTPUT_LICENSE_TXT)
+	target_compile_definitions(kshootmania_objects PUBLIC OUTPUT_LICENSE_TXT)
 endif()
 
 if(APPLE)
     # Siv3DのmacOS/Linux版はプリコンパイル済みヘッダ非対応のため通常のヘッダとしてインクルード
-    target_compile_options(kshootmania PRIVATE
+    target_compile_options(kshootmania_objects PUBLIC
         -Wall
         -Wextra
         -Wno-unknown-pragmas
         -include ${CMAKE_CURRENT_SOURCE_DIR}/src/stdafx.h
     )
 
-    target_compile_definitions(kshootmania PRIVATE
+    target_compile_definitions(kshootmania_objects PUBLIC
         SIV3D_PLATFORM_MACOS
     )
 elseif(EMSCRIPTEN)
     # Siv3DのWeb版はプリコンパイル済みヘッダ非対応のため通常のヘッダとしてインクルード
-    target_compile_options(kshootmania PRIVATE
+    target_compile_options(kshootmania_objects PUBLIC
         -Wall
         -Wextra
         -Wno-unknown-pragmas
@@ -255,7 +265,7 @@ elseif(EMSCRIPTEN)
     target_link_options(kshootmania PRIVATE "SHELL:-sASYNCIFY_IMPORTS=[${KSM_ASYNCIFY_IMPORTS}]")
 elseif(UNIX)
     # Siv3DのmacOS/Linux版はプリコンパイル済みヘッダ非対応のため通常のヘッダとしてインクルード
-    target_compile_options(kshootmania PRIVATE
+    target_compile_options(kshootmania_objects PUBLIC
         -Wall
         -Wextra
         -Wno-unknown-pragmas

@@ -20,13 +20,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/Ap
 
 file(GLOB TEST_SOURCES "*.cpp")
 
-file(GLOB_RECURSE KSHOOTMANIA_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/src/*.cpp")
-list(REMOVE_ITEM KSHOOTMANIA_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/src/stdafx.cpp)
-list(REMOVE_ITEM KSHOOTMANIA_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/src/Main.cpp)
-
 add_executable(${TARGET_NAME}
     ${TEST_SOURCES}
-    ${KSHOOTMANIA_SOURCES}
 )
 
 if(APPLE)
@@ -48,54 +43,13 @@ if(APPLE)
     endif()
 endif()
 
-target_include_directories(${TARGET_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/ThirdParty
-    ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/ThirdParty/CoTaskLib/include
-)
-
 find_package(Siv3D REQUIRED)
+
+# インクルードパスやコンパイルオプションはkshootmania_objectsのものを使用
 target_link_libraries(${TARGET_NAME} PRIVATE
-    Siv3D::Siv3D
-    kson
-    ksmaudio
-    ksmaxis
-    NocoUI
-    SQLiteCpp
+    kshootmania_objects
     Catch2::Catch2
 )
-
-if(APPLE)
-	target_link_libraries(${TARGET_NAME} PRIVATE ksmplatform_macos)
-elseif(UNIX)
-	target_link_libraries(${TARGET_NAME} PRIVATE ksmplatform_linux)
-endif()
-
-target_compile_features(${TARGET_NAME} PRIVATE cxx_std_20)
-
-target_compile_definitions(${TARGET_NAME} PRIVATE)
-
-if(APPLE)
-    # Siv3DのmacOS/Linux版はプリコンパイル済みヘッダ非対応のため通常のヘッダとしてインクルード
-    target_compile_options(${TARGET_NAME} PRIVATE
-        -Wall
-        -Wextra
-        -Wno-unknown-pragmas
-        -include ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/src/stdafx.h
-    )
-
-    target_compile_definitions(${TARGET_NAME} PRIVATE
-        SIV3D_PLATFORM_MACOS
-    )
-elseif(UNIX)
-    # Siv3DのmacOS/Linux版はプリコンパイル済みヘッダ非対応のため通常のヘッダとしてインクルード
-    target_compile_options(${TARGET_NAME} PRIVATE
-        -Wall
-        -Wextra
-        -Wno-unknown-pragmas
-        -include ${CMAKE_CURRENT_SOURCE_DIR}/../kshootmania/src/stdafx.h
-    )
-endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     target_compile_options(${TARGET_NAME} PRIVATE -fpie)
