@@ -349,8 +349,8 @@ void OptionScene::update()
 		else
 		{
 			const OptionMenu::MouseInput mouseInput = settingMenuMouseInput();
-			const int32 prevCursor = (*m_optionMenus)[*m_currentOptionMenuIdx].cursor();
-			if ((*m_optionMenus)[*m_currentOptionMenuIdx].update(mouseInput))
+			const bool changed = (*m_optionMenus)[*m_currentOptionMenuIdx].update(mouseInput);
+			if (changed)
 			{
 				if (m_languageChangeRequested)
 				{
@@ -365,9 +365,14 @@ void OptionScene::update()
 			{
 				m_isSettingMenuScrollFollowingCursor = false;
 			}
-			else if ((*m_optionMenus)[*m_currentOptionMenuIdx].cursor() != prevCursor)
+			else if (changed)
 			{
 				m_isSettingMenuScrollFollowingCursor = true;
+			}
+			else if (Mouse::Wheel() != 0.0)
+			{
+				// マウスホイールによるスクロールを優先
+				m_isSettingMenuScrollFollowingCursor = false;
 			}
 			updateSettingMenuScroll();
 		}

@@ -43,7 +43,7 @@ OptionMenu::OptionMenu(const Array<Category>& categories)
 		LinearMenu::CreateInfoWithEnumCount{
 			.cursorInputCreateInfo = {
 				.type = CursorInput::Type::Vertical,
-				.buttonFlags = CursorButtonFlags::kArrowOrLaser | CursorButtonFlags::kMouseWheel,
+				.buttonFlags = CursorButtonFlags::kArrowOrLaser,
 				.buttonIntervalSec = 0.1,
 				.buttonIntervalSecFirst = 0.5,
 			},

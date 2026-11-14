@@ -3040,7 +3040,7 @@
             ]
           },
           "verticalScrollable": true,
-          "wheelScrollEnabled": false,
+          "wheelScrollEnabled": true,
           "zOrderInSiblings": 0
         },
         {
