@@ -391,20 +391,14 @@ void OptionScene::update()
 			isSettingMenuScrollableDown = scrollY < maxScroll.y;
 		}
 	}
-	if (const auto fadeTopNode = m_canvas->findByName(U"SettingMenuFadeTop"))
-	{
-		fadeTopNode->setStyleState(isSettingMenuScrollableUp ? U"visible" : U"");
-	}
-	if (const auto fadeBottomNode = m_canvas->findByName(U"SettingMenuFadeBottom"))
-	{
-		fadeBottomNode->setStyleState(isSettingMenuScrollableDown ? U"visible" : U"");
-	}
 
 	// Canvasパラメータの更新
 	m_canvas->setParamValues({
 		{ U"isTop", isTop },
 		{ U"isSetting", isSetting },
 		{ U"isKeyConfig", isKeyConfig },
+		{ U"isSettingMenuScrollableUp", isSettingMenuScrollableUp },
+		{ U"isSettingMenuScrollableDown", isSettingMenuScrollableDown },
 		{ U"guideText", guideText },
 		{ U"settingHeaderIndex", settingHeaderIndex },
 		{ U"isJapanese", I18n::CurrentLanguage() == I18n::StandardLanguage::Japanese },

@@ -3186,6 +3186,9 @@
           "rubberBandScrollEnabled": true,
           "scrollBarType": "Overlay",
           "styleState": "",
+          "styleState_paramRef": "isSettingMenuScrollableUp",
+          "styleState_paramRefMode": "OverrideIfTrue",
+          "styleState_paramRefValue": "visible",
           "transform": {
             "color": {
               "default": [
@@ -3366,6 +3369,9 @@
           "rubberBandScrollEnabled": true,
           "scrollBarType": "Overlay",
           "styleState": "",
+          "styleState_paramRef": "isSettingMenuScrollableDown",
+          "styleState_paramRefMode": "OverrideIfTrue",
+          "styleState_paramRefValue": "visible",
           "transform": {
             "color": {
               "default": [
@@ -3856,6 +3862,14 @@
       "value": false
     },
     "isSetting": {
+      "type": "Bool",
+      "value": false
+    },
+    "isSettingMenuScrollableDown": {
+      "type": "Bool",
+      "value": false
+    },
+    "isSettingMenuScrollableUp": {
       "type": "Bool",
       "value": false
     },
