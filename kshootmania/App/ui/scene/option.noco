@@ -3136,12 +3136,12 @@
               "textureGridRows": 1,
               "textureOffset": [
                 126.5,
-                40.5
+                36.5
               ],
               "textureRegionMode": "OffsetSize",
               "textureSize": [
                 600.0,
-                28.0
+                32.0
               ],
               "type": "Sprite"
             }
@@ -3171,11 +3171,11 @@
             ],
             "posDelta": [
               0.0,
-              -185.5
+              -187.5
             ],
             "sizeDelta": [
               600.0,
-              28.0
+              32.0
             ],
             "sizeDeltaPivot": [
               0.5,
@@ -3324,7 +3324,7 @@
               "textureRegionMode": "OffsetSize",
               "textureSize": [
                 600.0,
-                28.0
+                32.0
               ],
               "type": "Sprite"
             }
@@ -3354,11 +3354,11 @@
             ],
             "posDelta": [
               0.0,
-              189.5
+              191.5
             ],
             "sizeDelta": [
               600.0,
-              28.0
+              32.0
             ],
             "sizeDeltaPivot": [
               0.5,
