@@ -170,7 +170,17 @@
 		"ItemUseNumpadAsArrowKeys": "使用数字键盘作为方向键 (用于带数字键盘的控制器)",
 		"ItemShowTranslitKana": "将含假名的曲名・艺术家名以拉丁字母显示",
 		"ItemShowTranslitHangul": "将含谚文的曲名・艺术家名以拉丁字母显示",
-		"ItemShowTranslitKanji": "将含汉字的曲名・艺术家名以拉丁字母显示"
+		"ItemShowTranslitKanji": "将含汉字的曲名・艺术家名以拉丁字母显示",
+		"HeadingScreen": "屏幕设置",
+		"HeadingDisplay": "显示设置",
+		"HeadingSound": "声音设置",
+		"HeadingJudgment": "判定设置",
+		"HeadingTimingAdjustment": "时机设置",
+		"HeadingLaserInput": "LASER 输入设置",
+		"HeadingKeyboardButton": "键盘・按键设置",
+		"HeadingHispeedType": "Hi-Speed 设置",
+		"HeadingMouseKeyboard": "鼠标・键盘设置",
+		"HeadingTranslit": "拉丁字母显示设置"
 	},
 	"InputGate": {
 		"BulkDownloadConfirm": "有 {0} 个可输入的谱面。\n是否一次全部下载？"

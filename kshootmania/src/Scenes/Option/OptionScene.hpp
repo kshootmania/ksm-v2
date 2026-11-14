@@ -33,6 +33,9 @@ private:
 
 	Optional<OptionMenuType> m_currentOptionMenuIdx = none;
 
+	// 設定項目のノード(見出しは含まない)
+	Array<std::shared_ptr<noco::Node>> m_settingItemNodes;
+
 	// 言語変更はメニューのコールバックから呼ばれるため、メニューの再生成はupdate内で行う
 	bool m_languageChangeRequested = false;
 

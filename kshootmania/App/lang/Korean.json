@@ -170,7 +170,17 @@
 		"ItemUseNumpadAsArrowKeys": "숫자패드를 방향키로 사용 (숫자패드가 있는 컨트롤러용)",
 		"ItemShowTranslitKana": "가나가 포함된 곡명・아티스트명을 영문 표기로 표시",
 		"ItemShowTranslitHangul": "한글이 포함된 곡명・아티스트명을 영문 표기로 표시",
-		"ItemShowTranslitKanji": "한자가 포함된 곡명・아티스트명을 영문 표기로 표시"
+		"ItemShowTranslitKanji": "한자가 포함된 곡명・아티스트명을 영문 표기로 표시",
+		"HeadingScreen": "화면 설정",
+		"HeadingDisplay": "표시 설정",
+		"HeadingSound": "사운드 설정",
+		"HeadingJudgment": "판정 설정",
+		"HeadingTimingAdjustment": "타이밍 설정",
+		"HeadingLaserInput": "LASER 입력 설정",
+		"HeadingKeyboardButton": "키보드・버튼 설정",
+		"HeadingHispeedType": "하이스피드 설정",
+		"HeadingMouseKeyboard": "마우스・키보드 설정",
+		"HeadingTranslit": "영문 표기 설정"
 	},
 	"InputGate": {
 		"BulkDownloadConfirm": "입력 가능한 채보가 {0}개 있습니다.\n일괄 다운로드하시겠습니까?"

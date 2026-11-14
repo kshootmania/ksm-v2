@@ -170,7 +170,17 @@
 		"ItemUseNumpadAsArrowKeys": "使用數字鍵盤作為方向鍵 (用於帶數字鍵盤的控制器)",
 		"ItemShowTranslitKana": "將含假名的曲名・演出者名以拉丁字母顯示",
 		"ItemShowTranslitHangul": "將含諺文的曲名・演出者名以拉丁字母顯示",
-		"ItemShowTranslitKanji": "將含漢字的曲名・演出者名以拉丁字母顯示"
+		"ItemShowTranslitKanji": "將含漢字的曲名・演出者名以拉丁字母顯示",
+		"HeadingScreen": "畫面設定",
+		"HeadingDisplay": "顯示設定",
+		"HeadingSound": "音效設定",
+		"HeadingJudgment": "判定設定",
+		"HeadingTimingAdjustment": "時機設定",
+		"HeadingLaserInput": "LASER 輸入設定",
+		"HeadingKeyboardButton": "鍵盤・按鍵設定",
+		"HeadingHispeedType": "Hi-Speed 設定",
+		"HeadingMouseKeyboard": "滑鼠・鍵盤設定",
+		"HeadingTranslit": "拉丁字母顯示設定"
 	},
 	"InputGate": {
 		"BulkDownloadConfirm": "有 {0} 個可輸入的譜面。\n是否一次全部下載？"

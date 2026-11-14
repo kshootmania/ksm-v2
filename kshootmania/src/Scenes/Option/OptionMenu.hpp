@@ -15,6 +15,22 @@ public:
 		bool valueRightArrowVisible;
 	};
 
+	/// @brief 設定項目のカテゴリ
+	struct Category
+	{
+		String heading;
+		Array<OptionMenuField::CreateInfo> fields;
+	};
+
+	/// @brief 見出しの表示内容
+	struct Heading
+	{
+		/// @brief 直後の設定項目のインデックス
+		int32 itemIdx = 0;
+
+		String name;
+	};
+
 	/// @brief マウス操作の入力内容
 	struct MouseInput
 	{
@@ -30,8 +46,10 @@ private:
 
 	Array<OptionMenuField> m_fields;
 
+	Array<Heading> m_headings;
+
 public:
-	explicit OptionMenu(const Array<OptionMenuField::CreateInfo>& fieldCreateInfos);
+	explicit OptionMenu(const Array<Category>& categories);
 
 	/// @brief メニューを更新する
 	/// @return カーソルまたは値に変更があった場合true
@@ -47,6 +65,10 @@ public:
 	/// @brief 設定項目のパラメータ一覧を取得する
 	[[nodiscard]]
 	Array<SettingItemParams> getSettingItemParamsList() const;
+
+	/// @brief 見出しの一覧を取得する
+	[[nodiscard]]
+	const Array<Heading>& headings() const;
 
 	[[nodiscard]]
 	int32 cursor() const;

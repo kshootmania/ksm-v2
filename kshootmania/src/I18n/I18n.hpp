@@ -258,6 +258,16 @@ namespace I18n
 		ItemShowTranslitKana,
 		ItemShowTranslitHangul,
 		ItemShowTranslitKanji,
+		HeadingScreen,
+		HeadingDisplay,
+		HeadingSound,
+		HeadingJudgment,
+		HeadingTimingAdjustment,
+		HeadingLaserInput,
+		HeadingKeyboardButton,
+		HeadingHispeedType,
+		HeadingMouseKeyboard,
+		HeadingTranslit,
 	};
 
 	/// @brief カテゴリ名とキー名からテキストを直接取得

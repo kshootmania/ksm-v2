@@ -170,7 +170,17 @@
 		"ItemUseNumpadAsArrowKeys": "Use Numpad as Arrow Keys (for Controllers with Numpad)",
 		"ItemShowTranslitKana": "Show romanized song titles and artists containing kana",
 		"ItemShowTranslitHangul": "Show romanized song titles and artists containing hangul",
-		"ItemShowTranslitKanji": "Show romanized song titles and artists containing kanji"
+		"ItemShowTranslitKanji": "Show romanized song titles and artists containing kanji",
+		"HeadingScreen": "Screen Settings",
+		"HeadingDisplay": "Display Settings",
+		"HeadingSound": "Sound Settings",
+		"HeadingJudgment": "Judgment Settings",
+		"HeadingTimingAdjustment": "Timing Settings",
+		"HeadingLaserInput": "Laser Input Settings",
+		"HeadingKeyboardButton": "Keyboard & Button Settings",
+		"HeadingHispeedType": "Hi-Speed Settings",
+		"HeadingMouseKeyboard": "Mouse & Keyboard Settings",
+		"HeadingTranslit": "Romanization Settings"
 	},
 	"InputGate": {
 		"BulkDownloadConfirm": "There are {0} charts available for input.\nWould you like to download them all at once?"

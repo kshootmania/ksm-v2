@@ -2,15 +2,43 @@
 
 namespace
 {
-	Array<OptionMenuField> MakeFields(const Array<OptionMenuField::CreateInfo>& fieldCreateInfos)
+	int32 CountFields(const Array<OptionMenu::Category>& categories)
 	{
-		return fieldCreateInfos.map([](const OptionMenuField::CreateInfo& createInfo) {
-			return OptionMenuField(createInfo);
-		});
+		int32 count = 0;
+		for (const auto& category : categories)
+		{
+			count += static_cast<int32>(category.fields.size());
+		}
+		return count;
+	}
+
+	Array<OptionMenuField> MakeFields(const Array<OptionMenu::Category>& categories)
+	{
+		Array<OptionMenuField> fields;
+		for (const auto& category : categories)
+		{
+			for (const auto& createInfo : category.fields)
+			{
+				fields.emplace_back(createInfo);
+			}
+		}
+		return fields;
+	}
+
+	Array<OptionMenu::Heading> MakeHeadings(const Array<OptionMenu::Category>& categories)
+	{
+		Array<OptionMenu::Heading> headings;
+		int32 itemIdx = 0;
+		for (const auto& category : categories)
+		{
+			headings.push_back({ .itemIdx = itemIdx, .name = category.heading });
+			itemIdx += static_cast<int32>(category.fields.size());
+		}
+		return headings;
 	}
 }
 
-OptionMenu::OptionMenu(const Array<OptionMenuField::CreateInfo>& fieldCreateInfos)
+OptionMenu::OptionMenu(const Array<Category>& categories)
 	: m_menu(
 		LinearMenu::CreateInfoWithEnumCount{
 			.cursorInputCreateInfo = {
@@ -19,9 +47,10 @@ OptionMenu::OptionMenu(const Array<OptionMenuField::CreateInfo>& fieldCreateInfo
 				.buttonIntervalSec = 0.1,
 				.buttonIntervalSecFirst = 0.5,
 			},
-			.enumCount = static_cast<int32>(fieldCreateInfos.size()),
+			.enumCount = CountFields(categories),
 		})
-	, m_fields(MakeFields(fieldCreateInfos))
+	, m_fields(MakeFields(categories))
+	, m_headings(MakeHeadings(categories))
 {
 	KeyConfig::SaveToConfigIni();
 }
@@ -81,6 +110,11 @@ Array<OptionMenu::SettingItemParams> OptionMenu::getSettingItemParamsList() cons
 	}
 
 	return result;
+}
+
+const Array<OptionMenu::Heading>& OptionMenu::headings() const
+{
+	return m_headings;
 }
 
 int32 OptionMenu::cursor() const

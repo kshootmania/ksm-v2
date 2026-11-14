@@ -45,6 +45,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 {
 	using StrPair = std::pair<String, String>;
 	using IntStrPair = std::pair<int32, String>;
+	using Category = OptionMenu::Category;
 	using CreateInfo = OptionMenuField::CreateInfo;
 
 	Array<StrPair> availableLanguageStrPairs;
@@ -55,218 +56,268 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 
 	return std::make_unique<std::array<OptionMenu, kOptionMenuTypeEnumCount>>(std::array<OptionMenu, kOptionMenuTypeEnumCount>{
 		OptionMenu({
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemScreenMode), ConfigIni::Key::kFullScreen, Array<StringView>{
-				I18n::Get(I18n::Option::FullscreenOff),
-				I18n::Get(I18n::Option::FullscreenOn),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemScreenResolutionWindow), ConfigIni::Key::kWindowResolution, Array<StrPair>{
-				StrPair{ U"320,240", U"320x240" },
-				StrPair{ U"480,320", U"480x320" },
-				StrPair{ U"480,360", U"480x360" },
-				StrPair{ U"512,384", U"512x384" },
-				StrPair{ U"580,435", U"580x435" },
-				StrPair{ U"640,480", U"640x480" },
-				StrPair{ U"800,600", U"800x600" },
-				StrPair{ U"1024,768", U"1024x768" },
-				StrPair{ U"1280,720", U"1280x720" },
-				StrPair{ U"1280,1024", U"1280x1024" },
-				StrPair{ U"1366,768", U"1366x768" },
-				StrPair{ U"1920,1080", U"1920x1080" },
-				StrPair{ U"1920,1200", U"1920x1200" },
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemScreenResolutionFullscreen), ConfigIni::Key::kFullScreenResolution, Array<StrPair>{
-				StrPair{ U"640,480", U"640x480" },
-				StrPair{ U"800,600", U"800x600" },
-				StrPair{ U"1024,600", U"1024x600" },
-				StrPair{ U"1024,768", U"1024x768" },
-				StrPair{ U"1280,720", U"1280x720" },
-				StrPair{ U"1280,800", U"1280x800" },
-				StrPair{ U"1280,1024", U"1280x1024" },
-				StrPair{ U"1366,768", U"1366x768" },
-				StrPair{ U"1920,1080", U"1920x1080" },
-				StrPair{ U"1920,1200", U"1920x1200" },
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDisplayLanguage), ConfigIni::Key::kLanguage, availableLanguageStrPairs)
-				.setOnChangeCallback([this]
-				{
-					I18n::LoadLanguage(ConfigIni::GetString(ConfigIni::Key::kLanguage));
-					m_languageChangeRequested = true;
-				}),
-			/*CreateInfo::Enum(ConfigIni::Key::kTextureSize, Array<IntStrPair>{
-				IntStrPair{ ConfigIni::Value::TextureSize::kSmall, I18n::Get(I18n::Option::TextureSizeSmall) },
-				IntStrPair{ ConfigIni::Value::TextureSize::kMedium, I18n::Get(I18n::Option::TextureSizeMedium) },
-				IntStrPair{ ConfigIni::Value::TextureSize::kLarge, I18n::Get(I18n::Option::TextureSizeLarge) },
-			}),*/
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemGameplayBG), ConfigIni::Key::kBGDisplayMode, Array<IntStrPair>{
-				IntStrPair{ ConfigIni::Value::BGDisplayMode::kHide, I18n::Get(I18n::Option::BGDisplayModeHide) },
-				IntStrPair{ ConfigIni::Value::BGDisplayMode::kShowNoLayer, I18n::Get(I18n::Option::BGDisplayModeShowNoLayer) },
-				IntStrPair{ ConfigIni::Value::BGDisplayMode::kShowLayer, I18n::Get(I18n::Option::BGDisplayModeShowLayer) },
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAlwaysShowOtherFolders), ConfigIni::Key::kAlwaysShowOtherFolders, Array<StringView>{
-				I18n::Get(I18n::Option::AlwaysShowOtherFoldersOff),
-				I18n::Get(I18n::Option::AlwaysShowOtherFoldersOn),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHideAllFolder), ConfigIni::Key::kHideAllFolder, Array<StringView>{
-				I18n::Get(I18n::Option::HideAllFolderOff),
-				I18n::Get(I18n::Option::HideAllFolderOn),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAssistTick), ConfigIni::Key::kAssistTick, Array<StringView>{
-				I18n::Get(I18n::Option::AssistTickOff),
-				I18n::Get(I18n::Option::AssistTickOn),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAutoPlaySE), ConfigIni::Key::kAutoPlaySE, Array<StringView>{
-				I18n::Get(I18n::Option::Off),
-				I18n::Get(I18n::Option::On),
-			}),
-			CreateInfo::Int(I18n::Get(I18n::Option::ItemMasterVolume), ConfigIni::Key::kMasterVolume, kMasterVolumeMin, kMasterVolumeMax, kMasterVolumeDefault, I18n::Get(I18n::Option::MasterVolumePercent), 5)
-				.setOnChangeCallback([]
-				{
-					const int32 volume = ConfigIni::GetInt(ConfigIni::Key::kMasterVolume, kMasterVolumeDefault);
-					ksmaudio::SetMasterVolume(volume / 100.0);
-				}),
+			Category{
+				.heading = String{ I18n::Get(I18n::Option::HeadingScreen) },
+				.fields = {
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemScreenMode), ConfigIni::Key::kFullScreen, Array<StringView>{
+						I18n::Get(I18n::Option::FullscreenOff),
+						I18n::Get(I18n::Option::FullscreenOn),
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemScreenResolutionWindow), ConfigIni::Key::kWindowResolution, Array<StrPair>{
+						StrPair{ U"320,240", U"320x240" },
+						StrPair{ U"480,320", U"480x320" },
+						StrPair{ U"480,360", U"480x360" },
+						StrPair{ U"512,384", U"512x384" },
+						StrPair{ U"580,435", U"580x435" },
+						StrPair{ U"640,480", U"640x480" },
+						StrPair{ U"800,600", U"800x600" },
+						StrPair{ U"1024,768", U"1024x768" },
+						StrPair{ U"1280,720", U"1280x720" },
+						StrPair{ U"1280,1024", U"1280x1024" },
+						StrPair{ U"1366,768", U"1366x768" },
+						StrPair{ U"1920,1080", U"1920x1080" },
+						StrPair{ U"1920,1200", U"1920x1200" },
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemScreenResolutionFullscreen), ConfigIni::Key::kFullScreenResolution, Array<StrPair>{
+						StrPair{ U"640,480", U"640x480" },
+						StrPair{ U"800,600", U"800x600" },
+						StrPair{ U"1024,600", U"1024x600" },
+						StrPair{ U"1024,768", U"1024x768" },
+						StrPair{ U"1280,720", U"1280x720" },
+						StrPair{ U"1280,800", U"1280x800" },
+						StrPair{ U"1280,1024", U"1280x1024" },
+						StrPair{ U"1366,768", U"1366x768" },
+						StrPair{ U"1920,1080", U"1920x1080" },
+						StrPair{ U"1920,1200", U"1920x1200" },
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemVsync), ConfigIni::Key::kVsync, Array<StrPair>{
+						StrPair{ U"0;120", I18n::Get(I18n::Option::VsyncOffWithFps, 120) },
+						StrPair{ U"0;144", I18n::Get(I18n::Option::VsyncOffWithFps, 144) },
+						StrPair{ U"0;300", I18n::Get(I18n::Option::VsyncOffWithFps, 300) },
+						StrPair{ U"1", I18n::Get(I18n::Option::VsyncOn) },
+					}),
+				},
+			},
+			Category{
+				.heading = String{ I18n::Get(I18n::Option::HeadingDisplay) },
+				.fields = {
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemDisplayLanguage), ConfigIni::Key::kLanguage, availableLanguageStrPairs)
+						.setOnChangeCallback([this]
+						{
+							I18n::LoadLanguage(ConfigIni::GetString(ConfigIni::Key::kLanguage));
+							m_languageChangeRequested = true;
+						}),
+					/*CreateInfo::Enum(ConfigIni::Key::kTextureSize, Array<IntStrPair>{
+						IntStrPair{ ConfigIni::Value::TextureSize::kSmall, I18n::Get(I18n::Option::TextureSizeSmall) },
+						IntStrPair{ ConfigIni::Value::TextureSize::kMedium, I18n::Get(I18n::Option::TextureSizeMedium) },
+						IntStrPair{ ConfigIni::Value::TextureSize::kLarge, I18n::Get(I18n::Option::TextureSizeLarge) },
+					}),*/
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemGameplayBG), ConfigIni::Key::kBGDisplayMode, Array<IntStrPair>{
+						IntStrPair{ ConfigIni::Value::BGDisplayMode::kHide, I18n::Get(I18n::Option::BGDisplayModeHide) },
+						IntStrPair{ ConfigIni::Value::BGDisplayMode::kShowNoLayer, I18n::Get(I18n::Option::BGDisplayModeShowNoLayer) },
+						IntStrPair{ ConfigIni::Value::BGDisplayMode::kShowLayer, I18n::Get(I18n::Option::BGDisplayModeShowLayer) },
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemAlwaysShowOtherFolders), ConfigIni::Key::kAlwaysShowOtherFolders, Array<StringView>{
+						I18n::Get(I18n::Option::AlwaysShowOtherFoldersOff),
+						I18n::Get(I18n::Option::AlwaysShowOtherFoldersOn),
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemHideAllFolder), ConfigIni::Key::kHideAllFolder, Array<StringView>{
+						I18n::Get(I18n::Option::HideAllFolderOff),
+						I18n::Get(I18n::Option::HideAllFolderOn),
+					}),
+				},
+			},
+			Category{
+				.heading = String{ I18n::Get(I18n::Option::HeadingSound) },
+				.fields = {
+					CreateInfo::Int(I18n::Get(I18n::Option::ItemMasterVolume), ConfigIni::Key::kMasterVolume, kMasterVolumeMin, kMasterVolumeMax, kMasterVolumeDefault, I18n::Get(I18n::Option::MasterVolumePercent), 5)
+						.setOnChangeCallback([]
+						{
+							const int32 volume = ConfigIni::GetInt(ConfigIni::Key::kMasterVolume, kMasterVolumeDefault);
+							ksmaudio::SetMasterVolume(volume / 100.0);
+						}),
 #ifdef _WIN32
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAudioBackend), ConfigIni::Key::kAudioBackend, Array<StrPair>{
-				StrPair{ String{ ConfigIni::Value::AudioBackend::kDefault }, I18n::Get(I18n::Option::AudioBackendDefault) },
-				StrPair{ String{ ConfigIni::Value::AudioBackend::kDirectSound }, I18n::Get(I18n::Option::AudioBackendDirectSound) },
-			}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemAudioBackend), ConfigIni::Key::kAudioBackend, Array<StrPair>{
+						StrPair{ String{ ConfigIni::Value::AudioBackend::kDefault }, I18n::Get(I18n::Option::AudioBackendDefault) },
+						StrPair{ String{ ConfigIni::Value::AudioBackend::kDirectSound }, I18n::Get(I18n::Option::AudioBackendDirectSound) },
+					}),
 #endif
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemVsync), ConfigIni::Key::kVsync, Array<StrPair>{
-				StrPair{ U"0;120", I18n::Get(I18n::Option::VsyncOffWithFps, 120) },
-				StrPair{ U"0;144", I18n::Get(I18n::Option::VsyncOffWithFps, 144) },
-				StrPair{ U"0;300", I18n::Get(I18n::Option::VsyncOffWithFps, 300) },
-				StrPair{ U"1", I18n::Get(I18n::Option::VsyncOn) },
-			}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemAssistTick), ConfigIni::Key::kAssistTick, Array<StringView>{
+						I18n::Get(I18n::Option::AssistTickOff),
+						I18n::Get(I18n::Option::AssistTickOn),
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemAutoPlaySE), ConfigIni::Key::kAutoPlaySE, Array<StringView>{
+						I18n::Get(I18n::Option::Off),
+						I18n::Get(I18n::Option::On),
+					}),
+				},
+			},
 		}),
 		OptionMenu({
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDefaultBTJudgmentMode), ConfigIni::Key::kJudgmentModeBT, Array<StringView>{
-				I18n::Get(I18n::Option::JudgmentOn),
-				I18n::Get(I18n::Option::JudgmentOff),
-				I18n::Get(I18n::Option::JudgmentAuto),
-				I18n::Get(I18n::Option::JudgmentHide),
-			}).setOnChangeCallback([]() {
-				RuntimeConfig::SetJudgmentPlayModeBT(static_cast<JudgmentPlayMode>(ConfigIni::GetInt(ConfigIni::Key::kJudgmentModeBT)));
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDefaultFXJudgmentMode), ConfigIni::Key::kJudgmentModeFX, Array<StringView>{
-				I18n::Get(I18n::Option::JudgmentOn),
-				I18n::Get(I18n::Option::JudgmentOff),
-				I18n::Get(I18n::Option::JudgmentAuto),
-				I18n::Get(I18n::Option::JudgmentHide),
-			}).setOnChangeCallback([]() {
-				RuntimeConfig::SetJudgmentPlayModeFX(static_cast<JudgmentPlayMode>(ConfigIni::GetInt(ConfigIni::Key::kJudgmentModeFX)));
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDefaultLaserJudgmentMode), ConfigIni::Key::kJudgmentModeLaser, Array<StringView>{
-				I18n::Get(I18n::Option::JudgmentOn),
-				I18n::Get(I18n::Option::JudgmentOff),
-				I18n::Get(I18n::Option::JudgmentAuto),
-				I18n::Get(I18n::Option::JudgmentHide),
-			}).setOnChangeCallback([]() {
-				RuntimeConfig::SetJudgmentPlayModeLaser(static_cast<JudgmentPlayMode>(ConfigIni::GetInt(ConfigIni::Key::kJudgmentModeLaser)));
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemLaserInputType), ConfigIni::Key::kLaserInputType, Array<IntStrPair>{
-				IntStrPair{ ConfigIni::Value::LaserInputType::kKeyboard, I18n::Get(I18n::Option::LaserInputTypeKeyboard) },
-				IntStrPair{ ConfigIni::Value::LaserInputType::kSlider, I18n::Get(I18n::Option::LaserInputTypeSlider) },
+			Category{
+				.heading = String{ I18n::Get(I18n::Option::HeadingJudgment) },
+				.fields = {
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemDefaultBTJudgmentMode), ConfigIni::Key::kJudgmentModeBT, Array<StringView>{
+						I18n::Get(I18n::Option::JudgmentOn),
+						I18n::Get(I18n::Option::JudgmentOff),
+						I18n::Get(I18n::Option::JudgmentAuto),
+						I18n::Get(I18n::Option::JudgmentHide),
+					}).setOnChangeCallback([]() {
+						RuntimeConfig::SetJudgmentPlayModeBT(static_cast<JudgmentPlayMode>(ConfigIni::GetInt(ConfigIni::Key::kJudgmentModeBT)));
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemDefaultFXJudgmentMode), ConfigIni::Key::kJudgmentModeFX, Array<StringView>{
+						I18n::Get(I18n::Option::JudgmentOn),
+						I18n::Get(I18n::Option::JudgmentOff),
+						I18n::Get(I18n::Option::JudgmentAuto),
+						I18n::Get(I18n::Option::JudgmentHide),
+					}).setOnChangeCallback([]() {
+						RuntimeConfig::SetJudgmentPlayModeFX(static_cast<JudgmentPlayMode>(ConfigIni::GetInt(ConfigIni::Key::kJudgmentModeFX)));
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemDefaultLaserJudgmentMode), ConfigIni::Key::kJudgmentModeLaser, Array<StringView>{
+						I18n::Get(I18n::Option::JudgmentOn),
+						I18n::Get(I18n::Option::JudgmentOff),
+						I18n::Get(I18n::Option::JudgmentAuto),
+						I18n::Get(I18n::Option::JudgmentHide),
+					}).setOnChangeCallback([]() {
+						RuntimeConfig::SetJudgmentPlayModeLaser(static_cast<JudgmentPlayMode>(ConfigIni::GetInt(ConfigIni::Key::kJudgmentModeLaser)));
+					}),
+				},
+			},
+			Category{
+				.heading = String{ I18n::Get(I18n::Option::HeadingTimingAdjustment) },
+				.fields = {
+					CreateInfo::Int(I18n::Get(I18n::Option::ItemTimingAdjustment), ConfigIni::Key::kInputDelay, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
+						.setAdditionalSuffixes(
+							I18n::Get(I18n::Option::TimingAdjustSuffixNoAdjustment),
+							I18n::Get(I18n::Option::TimingAdjustSuffixLater),
+							I18n::Get(I18n::Option::TimingAdjustSuffixEarlier)),
+					CreateInfo::Int(I18n::Get(I18n::Option::ItemLaserTimingAdjustment), ConfigIni::Key::kLaserInputDelay, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
+						.setAdditionalSuffixes(
+							I18n::Get(I18n::Option::LaserTimingAdjustSuffixNoAdjustment),
+							I18n::Get(I18n::Option::LaserTimingAdjustSuffixLater),
+							I18n::Get(I18n::Option::LaserTimingAdjustSuffixEarlier)),
+					CreateInfo::Int(I18n::Get(I18n::Option::ItemVisualOffset), ConfigIni::Key::kVisualOffset, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
+						.setAdditionalSuffixes(
+							I18n::Get(I18n::Option::VisualOffsetSuffixNoAdjustment),
+							I18n::Get(I18n::Option::VisualOffsetSuffixLater),
+							I18n::Get(I18n::Option::VisualOffsetSuffixEarlier)),
+				},
+			},
+			Category{
+				.heading = String{ I18n::Get(I18n::Option::HeadingLaserInput) },
+				.fields = {
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemLaserInputType), ConfigIni::Key::kLaserInputType, Array<IntStrPair>{
+						IntStrPair{ ConfigIni::Value::LaserInputType::kKeyboard, I18n::Get(I18n::Option::LaserInputTypeKeyboard) },
+						IntStrPair{ ConfigIni::Value::LaserInputType::kSlider, I18n::Get(I18n::Option::LaserInputTypeSlider) },
 #if !defined(__APPLE__) // macOSではマウスデバイスの取得に入力監視の許可が必要で、配布アプリケーション用に正式なコード署名が必要になる(要Apple Developer Program加入)とみられるため実装済みだが一旦除外
-				IntStrPair{ ConfigIni::Value::LaserInputType::kMouseXY, I18n::Get(I18n::Option::LaserInputTypeMouseXY) },
+						IntStrPair{ ConfigIni::Value::LaserInputType::kMouseXY, I18n::Get(I18n::Option::LaserInputTypeMouseXY) },
 #endif
-				IntStrPair{ ConfigIni::Value::LaserInputType::kAnalogStickXY, I18n::Get(I18n::Option::LaserInputTypeAnalogStickXY) },
-			}).setOnChangeCallback([]() {
-				InputUtils::InitKsmaxisForCurrentLaserInput();
-			}),
+						IntStrPair{ ConfigIni::Value::LaserInputType::kAnalogStickXY, I18n::Get(I18n::Option::LaserInputTypeAnalogStickXY) },
+					}).setOnChangeCallback([]() {
+						InputUtils::InitKsmaxisForCurrentLaserInput();
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemMouseXInputDirection), ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
+						I18n::Get(I18n::Option::LaserMouseDirectionLeftThenRight),
+						I18n::Get(I18n::Option::LaserMouseDirectionRightThenRight),
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemMouseYInputDirection), ConfigIni::Key::kLaserMouseDirectionY, Array<StringView>{
+						I18n::Get(I18n::Option::LaserMouseDirectionUpThenRight),
+						I18n::Get(I18n::Option::LaserMouseDirectionDownThenRight),
+					}),
+					CreateInfo::Int(I18n::Get(I18n::Option::ItemSliderMouseInputSensitivity), ConfigIni::Key::kLaserInputSensitivity, kLaserInputSensitivityMin, kLaserInputSensitivityMax, kLaserInputSensitivityDefault), // TODO: additional suffix for zero value
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemSwapLRLaser), ConfigIni::Key::kSwapLaserLR, Array<StringView>{
+						I18n::Get(I18n::Option::Off),
+						I18n::Get(I18n::Option::On),
+					}),
+				},
+			},
+			Category{
+				.heading = String{ I18n::Get(I18n::Option::HeadingKeyboardButton) },
+				.fields = {
 #if defined(__linux__)
-			// LinuxではIME無効化の実行間隔による違いがないためON/OFFのみ
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDisableIME), ConfigIni::Key::kDisableIME, Array<IntStrPair>{
-				IntStrPair{ static_cast<int32>(DisableIMEMode::kOff), I18n::Get(I18n::Option::Off) },
-				IntStrPair{ static_cast<int32>(DisableIMEMode::kHigh), I18n::Get(I18n::Option::On) },
-			}).setDefaultValue(1),
+					// LinuxではIME無効化の実行間隔による違いがないためON/OFFのみ
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemDisableIME), ConfigIni::Key::kDisableIME, Array<IntStrPair>{
+						IntStrPair{ static_cast<int32>(DisableIMEMode::kOff), I18n::Get(I18n::Option::Off) },
+						IntStrPair{ static_cast<int32>(DisableIMEMode::kHigh), I18n::Get(I18n::Option::On) },
+					}).setDefaultValue(1),
 #else
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemDisableIME), ConfigIni::Key::kDisableIME, Array<StringView>{
-				I18n::Get(I18n::Option::DisableIMEOff),
-				I18n::Get(I18n::Option::DisableIMEOnLow),
-				I18n::Get(I18n::Option::DisableIMEOnMid),
-				I18n::Get(I18n::Option::DisableIMEOnHigh),
-			}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemDisableIME), ConfigIni::Key::kDisableIME, Array<StringView>{
+						I18n::Get(I18n::Option::DisableIMEOff),
+						I18n::Get(I18n::Option::DisableIMEOnLow),
+						I18n::Get(I18n::Option::DisableIMEOnMid),
+						I18n::Get(I18n::Option::DisableIMEOnHigh),
+					}),
 #endif
-			CreateInfo::Int(I18n::Get(I18n::Option::ItemTimingAdjustment), ConfigIni::Key::kInputDelay, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
-				.setAdditionalSuffixes(
-					I18n::Get(I18n::Option::TimingAdjustSuffixNoAdjustment),
-					I18n::Get(I18n::Option::TimingAdjustSuffixLater),
-					I18n::Get(I18n::Option::TimingAdjustSuffixEarlier)),
-			CreateInfo::Int(I18n::Get(I18n::Option::ItemLaserTimingAdjustment), ConfigIni::Key::kLaserInputDelay, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
-				.setAdditionalSuffixes(
-					I18n::Get(I18n::Option::LaserTimingAdjustSuffixNoAdjustment),
-					I18n::Get(I18n::Option::LaserTimingAdjustSuffixLater),
-					I18n::Get(I18n::Option::LaserTimingAdjustSuffixEarlier)),
-			CreateInfo::Int(I18n::Get(I18n::Option::ItemVisualOffset), ConfigIni::Key::kVisualOffset, kTimingAdjustMin, kTimingAdjustMax, kTimingAdjustDefault, I18n::Get(I18n::Option::TimingAdjustMs))
-				.setAdditionalSuffixes(
-					I18n::Get(I18n::Option::VisualOffsetSuffixNoAdjustment),
-					I18n::Get(I18n::Option::VisualOffsetSuffixLater),
-					I18n::Get(I18n::Option::VisualOffsetSuffixEarlier)),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemMouseXInputDirection), ConfigIni::Key::kLaserMouseDirectionX, Array<StringView>{
-				I18n::Get(I18n::Option::LaserMouseDirectionLeftThenRight),
-				I18n::Get(I18n::Option::LaserMouseDirectionRightThenRight),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemMouseYInputDirection), ConfigIni::Key::kLaserMouseDirectionY, Array<StringView>{
-				I18n::Get(I18n::Option::LaserMouseDirectionUpThenRight),
-				I18n::Get(I18n::Option::LaserMouseDirectionDownThenRight),
-			}),
-			CreateInfo::Int(I18n::Get(I18n::Option::ItemSliderMouseInputSensitivity), ConfigIni::Key::kLaserInputSensitivity, kLaserInputSensitivityMin, kLaserInputSensitivityMax, kLaserInputSensitivityDefault), // TODO: additional suffix for zero value
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemSwapLRLaser), ConfigIni::Key::kSwapLaserLR, Array<StringView>{
-				I18n::Get(I18n::Option::Off),
-				I18n::Get(I18n::Option::On),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemCloseDirectoryKey), ConfigIni::Key::kSelectCloseFolderKey, Array<StringView>{
-				I18n::Get(I18n::Option::SelectCloseFolderKeyBackspace),
-				I18n::Get(I18n::Option::SelectCloseFolderKeyEsc),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::Item3BTKeysStartBack), ConfigIni::Key::kUse3BTsPlusStartAsBack, Array<StringView>{
-				I18n::Get(I18n::Option::Off),
-				I18n::Get(I18n::Option::On),
-			}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemCloseDirectoryKey), ConfigIni::Key::kSelectCloseFolderKey, Array<StringView>{
+						I18n::Get(I18n::Option::SelectCloseFolderKeyBackspace),
+						I18n::Get(I18n::Option::SelectCloseFolderKeyEsc),
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::Item3BTKeysStartBack), ConfigIni::Key::kUse3BTsPlusStartAsBack, Array<StringView>{
+						I18n::Get(I18n::Option::Off),
+						I18n::Get(I18n::Option::On),
+					}),
+				},
+			},
 		}),
 		OptionMenu({
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHispeedTypeXMod), ConfigIni::Key::kHispeedShowXMod, Array<StringView>{
-				I18n::Get(I18n::Option::HispeedTypeHide),
-				I18n::Get(I18n::Option::HispeedTypeShow),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHispeedTypeOMod), ConfigIni::Key::kHispeedShowOMod, Array<StringView>{
-				I18n::Get(I18n::Option::HispeedTypeHide),
-				I18n::Get(I18n::Option::HispeedTypeShow),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHispeedTypeCMod), ConfigIni::Key::kHispeedShowCMod, Array<StringView>{
-				I18n::Get(I18n::Option::HispeedTypeHide),
-				I18n::Get(I18n::Option::HispeedTypeShow),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemHideMouseCursor), ConfigIni::Key::kHideMouseCursor, Array<StringView>{
-				I18n::Get(I18n::Option::HideMouseCursorOff),
-				I18n::Get(I18n::Option::HideMouseCursorOnPlayOnly),
-				I18n::Get(I18n::Option::HideMouseCursorOnAll),
-			}).setDefaultValue(ConfigIni::Value::HideMouseCursor::kPlayOnly),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemEnableMouseUIInput), ConfigIni::Key::kEnableMouseUIInput, Array<StringView>{
-				I18n::Get(I18n::Option::Off),
-				I18n::Get(I18n::Option::On),
-			}).setDefaultValue(1),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemAssignRightClickToBack), ConfigIni::Key::kAssignRightClickToBack, Array<StringView>{
-				I18n::Get(I18n::Option::RightClickToBackOff),
-				I18n::Get(I18n::Option::RightClickToBackExceptPlay),
-				I18n::Get(I18n::Option::RightClickToBackAll),
-			}).setDefaultValue(ConfigIni::Value::RightClickToBack::kExceptPlay),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemUseNumpadAsArrowKeys), ConfigIni::Key::kUseNumpadAsArrowKeys, Array<StringView>{
-				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOff),
-				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOnKeyboard),
-				I18n::Get(I18n::Option::UseNumpadAsArrowKeysOnController),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemShowTranslitKana), ConfigIni::Key::kShowTranslitKana, Array<StringView>{
-				I18n::Get(I18n::Option::Off),
-				I18n::Get(I18n::Option::On),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemShowTranslitHangul), ConfigIni::Key::kShowTranslitHangul, Array<StringView>{
-				I18n::Get(I18n::Option::Off),
-				I18n::Get(I18n::Option::On),
-			}),
-			CreateInfo::Enum(I18n::Get(I18n::Option::ItemShowTranslitKanji), ConfigIni::Key::kShowTranslitKanji, Array<StringView>{
-				I18n::Get(I18n::Option::Off),
-				I18n::Get(I18n::Option::On),
-			}),
+			Category{
+				.heading = String{ I18n::Get(I18n::Option::HeadingHispeedType) },
+				.fields = {
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemHispeedTypeXMod), ConfigIni::Key::kHispeedShowXMod, Array<StringView>{
+						I18n::Get(I18n::Option::HispeedTypeHide),
+						I18n::Get(I18n::Option::HispeedTypeShow),
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemHispeedTypeOMod), ConfigIni::Key::kHispeedShowOMod, Array<StringView>{
+						I18n::Get(I18n::Option::HispeedTypeHide),
+						I18n::Get(I18n::Option::HispeedTypeShow),
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemHispeedTypeCMod), ConfigIni::Key::kHispeedShowCMod, Array<StringView>{
+						I18n::Get(I18n::Option::HispeedTypeHide),
+						I18n::Get(I18n::Option::HispeedTypeShow),
+					}),
+				},
+			},
+			Category{
+				.heading = String{ I18n::Get(I18n::Option::HeadingMouseKeyboard) },
+				.fields = {
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemHideMouseCursor), ConfigIni::Key::kHideMouseCursor, Array<StringView>{
+						I18n::Get(I18n::Option::HideMouseCursorOff),
+						I18n::Get(I18n::Option::HideMouseCursorOnPlayOnly),
+						I18n::Get(I18n::Option::HideMouseCursorOnAll),
+					}).setDefaultValue(ConfigIni::Value::HideMouseCursor::kPlayOnly),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemEnableMouseUIInput), ConfigIni::Key::kEnableMouseUIInput, Array<StringView>{
+						I18n::Get(I18n::Option::Off),
+						I18n::Get(I18n::Option::On),
+					}).setDefaultValue(1),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemAssignRightClickToBack), ConfigIni::Key::kAssignRightClickToBack, Array<StringView>{
+						I18n::Get(I18n::Option::RightClickToBackOff),
+						I18n::Get(I18n::Option::RightClickToBackExceptPlay),
+						I18n::Get(I18n::Option::RightClickToBackAll),
+					}).setDefaultValue(ConfigIni::Value::RightClickToBack::kExceptPlay),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemUseNumpadAsArrowKeys), ConfigIni::Key::kUseNumpadAsArrowKeys, Array<StringView>{
+						I18n::Get(I18n::Option::UseNumpadAsArrowKeysOff),
+						I18n::Get(I18n::Option::UseNumpadAsArrowKeysOnKeyboard),
+						I18n::Get(I18n::Option::UseNumpadAsArrowKeysOnController),
+					}),
+				},
+			},
+			Category{
+				.heading = String{ I18n::Get(I18n::Option::HeadingTranslit) },
+				.fields = {
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemShowTranslitKana), ConfigIni::Key::kShowTranslitKana, Array<StringView>{
+						I18n::Get(I18n::Option::Off),
+						I18n::Get(I18n::Option::On),
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemShowTranslitHangul), ConfigIni::Key::kShowTranslitHangul, Array<StringView>{
+						I18n::Get(I18n::Option::Off),
+						I18n::Get(I18n::Option::On),
+					}),
+					CreateInfo::Enum(I18n::Get(I18n::Option::ItemShowTranslitKanji), ConfigIni::Key::kShowTranslitKanji, Array<StringView>{
+						I18n::Get(I18n::Option::Off),
+						I18n::Get(I18n::Option::On),
+					}),
+				},
+			},
 		}),
 		OptionMenu({}),
 	});
@@ -490,11 +541,25 @@ void OptionScene::createSettingItemNodes()
 
 	// 既存の子を削除
 	containerNode->removeChildrenAll();
+	m_settingItemNodes.clear();
 
 	// 各設定項目をSubCanvasとして追加
-	for (const auto& params : (*m_optionMenus)[*m_currentOptionMenuIdx].getSettingItemParamsList())
+	const OptionMenu& optionMenu = (*m_optionMenus)[*m_currentOptionMenuIdx];
+	const auto& headings = optionMenu.headings();
+	auto headingItr = headings.begin();
+	for (const auto& params : optionMenu.getSettingItemParamsList())
 	{
-		containerNode->addSubCanvasNodeAsChild(
+		// カテゴリの先頭では見出しを追加
+		for (; headingItr != headings.end() && headingItr->itemIdx <= static_cast<int32>(m_settingItemNodes.size()); ++headingItr)
+		{
+			containerNode->addSubCanvasNodeAsChild(
+				U"ui/parts/option_setting_heading.noco",
+				{
+					{ U"name", headingItr->name },
+				});
+		}
+
+		m_settingItemNodes.push_back(containerNode->addSubCanvasNodeAsChild(
 			U"ui/parts/option_setting_item.noco",
 			{
 				{ U"name", params.name },
@@ -503,7 +568,7 @@ void OptionScene::createSettingItemNodes()
 				{ U"valueArrowIndex", params.valueArrowIndex },
 				{ U"valueLeftArrowVisible", params.valueLeftArrowVisible },
 				{ U"valueRightArrowVisible", params.valueRightArrowVisible },
-			});
+			}));
 	}
 }
 
@@ -511,24 +576,17 @@ OptionMenu::MouseInput OptionScene::settingMenuMouseInput()
 {
 	OptionMenu::MouseInput mouseInput;
 
-	const auto containerNode = m_canvas->findByName(U"SettingMenu");
-	if (!containerNode)
-	{
-		return mouseInput;
-	}
-
 	// イベント発火元のSubCanvasを持つノードから設定項目のインデックスを取得
-	const auto& children = containerNode->children();
-	const auto itemIdxOfEvent = [&children](const noco::Event& event) -> Optional<int32>
+	const auto itemIdxOfEvent = [this](const noco::Event& event) -> Optional<int32>
 	{
 		const auto ownerNode = event.containedSubCanvasOwner.lock();
 		if (!ownerNode)
 		{
 			return none;
 		}
-		for (int32 i = 0; i < static_cast<int32>(children.size()); ++i)
+		for (int32 i = 0; i < static_cast<int32>(m_settingItemNodes.size()); ++i)
 		{
-			if (children[i] == ownerNode)
+			if (m_settingItemNodes[i] == ownerNode)
 			{
 				return i;
 			}
@@ -567,26 +625,18 @@ OptionMenu::MouseInput OptionScene::settingMenuMouseInput()
 
 void OptionScene::refreshSettingItemParams()
 {
-	const auto containerNode = m_canvas->findByName(U"SettingMenu");
-	if (!containerNode)
-	{
-		Logger << U"[ksm error] OptionScene::refreshSettingItemParams(): Container node 'SettingMenu' not found!";
-		return;
-	}
-
 	const auto paramsList = (*m_optionMenus)[*m_currentOptionMenuIdx].getSettingItemParamsList();
-	const auto& children = containerNode->children();
 
-	if (paramsList.size() != children.size())
+	if (paramsList.size() != m_settingItemNodes.size())
 	{
-		Logger << U"[ksm error] OptionScene::refreshSettingItemParams(): Children count mismatch! (params={}, children={})"_fmt(paramsList.size(), children.size());
+		Logger << U"[ksm error] OptionScene::refreshSettingItemParams(): Setting item node count mismatch! (params={}, nodes={})"_fmt(paramsList.size(), m_settingItemNodes.size());
 		return;
 	}
 
 	for (size_t i = 0; i < paramsList.size(); ++i)
 	{
 		const auto& params = paramsList[i];
-		const auto subCanvas = children[i]->getComponent<noco::SubCanvas>();
+		const auto subCanvas = m_settingItemNodes[i]->getComponent<noco::SubCanvas>();
 		if (!subCanvas)
 		{
 			Logger << U"[ksm error] OptionScene::refreshSettingItemParams(): SubCanvas component not found at index {}!"_fmt(i);
@@ -619,9 +669,8 @@ Optional<double> OptionScene::settingMenuScrollTargetY() const
 		return none;
 	}
 
-	const auto& children = containerNode->children();
 	const int32 cursorIdx = (*m_optionMenus)[*m_currentOptionMenuIdx].cursor();
-	if (cursorIdx < 0 || static_cast<int32>(children.size()) <= cursorIdx)
+	if (cursorIdx < 0 || static_cast<int32>(m_settingItemNodes.size()) <= cursorIdx)
 	{
 		return none;
 	}
@@ -629,7 +678,7 @@ Optional<double> OptionScene::settingMenuScrollTargetY() const
 	containerNode->refreshContainedCanvasLayoutImmediately();
 
 	// カーソルが中央より下にある場合はカーソル位置の項目が中央に来るようにする
-	const double itemCenterY = children[cursorIdx]->regionRect().centerY() + containerNode->scrollOffset().y;
+	const double itemCenterY = m_settingItemNodes[cursorIdx]->regionRect().centerY() + containerNode->scrollOffset().y;
 	const auto [minScroll, maxScroll] = containerNode->validScrollRange();
 	return Clamp(itemCenterY - containerNode->childrenRect().centerY(), minScroll.y, maxScroll.y);
 }
