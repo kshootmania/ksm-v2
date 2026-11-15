@@ -384,6 +384,7 @@ kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/favorite_remove_d
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/search_input_dialog.noco	K-Shoot MANIA.app/Contents/Resources/ui/dialog/search_input_dialog.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/simple_dialog.noco	K-Shoot MANIA.app/Contents/Resources/ui/dialog/simple_dialog.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/font.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/font.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/font_monospace.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/font_monospace.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/msel_0_bpmnum.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/msel_0_bpmnum.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/num0.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/num0.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/font/num1.noco	K-Shoot MANIA.app/Contents/Resources/ui/font/num1.noco
@@ -396,8 +397,10 @@ kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/dialog/gate_settings.noc
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/ir_notification.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/ir_notification.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/ir_waiting_overlay.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/ir_waiting_overlay.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/option_key_config_menu.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/option_key_config_menu.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/option_setting_heading.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/option_setting_heading.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/option_setting_item.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/option_setting_item.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/select_course_chart_item.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/select_course_chart_item.noco
+kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/select_folder_loading.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/select_folder_loading.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_bottom.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_bottom.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_center.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_center.noco
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_top.noco	K-Shoot MANIA.app/Contents/Resources/ui/parts/select_item_top.noco

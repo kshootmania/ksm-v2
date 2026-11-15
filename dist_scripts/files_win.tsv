@@ -385,6 +385,7 @@ kshootmania/App/ui/dialog/favorite_remove_dialog.noco	ui/dialog/favorite_remove_
 kshootmania/App/ui/dialog/search_input_dialog.noco	ui/dialog/search_input_dialog.noco
 kshootmania/App/ui/dialog/simple_dialog.noco	ui/dialog/simple_dialog.noco
 kshootmania/App/ui/font/font.noco	ui/font/font.noco
+kshootmania/App/ui/font/font_monospace.noco	ui/font/font_monospace.noco
 kshootmania/App/ui/font/msel_0_bpmnum.noco	ui/font/msel_0_bpmnum.noco
 kshootmania/App/ui/font/num0.noco	ui/font/num0.noco
 kshootmania/App/ui/font/num1.noco	ui/font/num1.noco
@@ -397,8 +398,10 @@ kshootmania/App/ui/dialog/gate_settings.noco	ui/dialog/gate_settings.noco
 kshootmania/App/ui/parts/ir_notification.noco	ui/parts/ir_notification.noco
 kshootmania/App/ui/parts/ir_waiting_overlay.noco	ui/parts/ir_waiting_overlay.noco
 kshootmania/App/ui/parts/option_key_config_menu.noco	ui/parts/option_key_config_menu.noco
+kshootmania/App/ui/parts/option_setting_heading.noco	ui/parts/option_setting_heading.noco
 kshootmania/App/ui/parts/option_setting_item.noco	ui/parts/option_setting_item.noco
 kshootmania/App/ui/parts/select_course_chart_item.noco	ui/parts/select_course_chart_item.noco
+kshootmania/App/ui/parts/select_folder_loading.noco	ui/parts/select_folder_loading.noco
 kshootmania/App/ui/parts/select_item_bottom.noco	ui/parts/select_item_bottom.noco
 kshootmania/App/ui/parts/select_item_center.noco	ui/parts/select_item_center.noco
 kshootmania/App/ui/parts/select_item_top.noco	ui/parts/select_item_top.noco
