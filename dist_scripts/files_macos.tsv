@@ -81,6 +81,7 @@ kshootmania/App/K-Shoot MANIA.app/Contents/Resources/engine/texture/box-shadow/6
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/engine/texture/box-shadow/8.png	K-Shoot MANIA.app/Contents/Resources/engine/texture/box-shadow/8.png
 kshootmania/App/K-Shoot MANIA.app/Contents/Resources/icon.icns	K-Shoot MANIA.app/Contents/Resources/icon.icns
 kshootmania/App/imgs/base.gif	K-Shoot MANIA.app/Contents/Resources/imgs/base.gif
+kshootmania/App/imgs/base_wipe.gif	K-Shoot MANIA.app/Contents/Resources/imgs/base_wipe.gif
 kshootmania/App/imgs/bg/arrow.gif	K-Shoot MANIA.app/Contents/Resources/imgs/bg/arrow.gif
 kshootmania/App/imgs/bg/cloudy0.jpg	K-Shoot MANIA.app/Contents/Resources/imgs/bg/cloudy0.jpg
 kshootmania/App/imgs/bg/cloudy1.jpg	K-Shoot MANIA.app/Contents/Resources/imgs/bg/cloudy1.jpg
@@ -162,6 +163,7 @@ kshootmania/App/imgs/frame_01.png	K-Shoot MANIA.app/Contents/Resources/imgs/fram
 kshootmania/App/imgs/fx_chip.gif	K-Shoot MANIA.app/Contents/Resources/imgs/fx_chip.gif
 kshootmania/App/imgs/fx_chip_se.gif	K-Shoot MANIA.app/Contents/Resources/imgs/fx_chip_se.gif
 kshootmania/App/imgs/fx_long.gif	K-Shoot MANIA.app/Contents/Resources/imgs/fx_long.gif
+kshootmania/App/imgs/fx_long_wipe_mask.gif	K-Shoot MANIA.app/Contents/Resources/imgs/fx_long_wipe_mask.gif
 kshootmania/App/imgs/gate/gate_bg.jpg	K-Shoot MANIA.app/Contents/Resources/imgs/gate/gate_bg.jpg
 kshootmania/App/imgs/gate/gate_bg_mask_overlay.png	K-Shoot MANIA.app/Contents/Resources/imgs/gate/gate_bg_mask_overlay.png
 kshootmania/App/imgs/gate/gate_downloading.png	K-Shoot MANIA.app/Contents/Resources/imgs/gate/gate_downloading.png
@@ -196,6 +198,7 @@ kshootmania/App/imgs/jacket/nowprinting1.jpg	K-Shoot MANIA.app/Contents/Resource
 kshootmania/App/imgs/jacket/nowprinting2.jpg	K-Shoot MANIA.app/Contents/Resources/imgs/jacket/nowprinting2.jpg
 kshootmania/App/imgs/jacket/nowprinting3.jpg	K-Shoot MANIA.app/Contents/Resources/imgs/jacket/nowprinting3.jpg
 kshootmania/App/imgs/judge.gif	K-Shoot MANIA.app/Contents/Resources/imgs/judge.gif
+kshootmania/App/imgs/judge_wipe_mask.gif	K-Shoot MANIA.app/Contents/Resources/imgs/judge_wipe_mask.gif
 kshootmania/App/imgs/judge1.gif	K-Shoot MANIA.app/Contents/Resources/imgs/judge1.gif
 kshootmania/App/imgs/judge2.gif	K-Shoot MANIA.app/Contents/Resources/imgs/judge2.gif
 kshootmania/App/imgs/judge3.gif	K-Shoot MANIA.app/Contents/Resources/imgs/judge3.gif

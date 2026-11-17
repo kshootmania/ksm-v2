@@ -111,4 +111,10 @@ namespace MusicGame::Camera
 		constexpr double kOneLaneCenterSplit = 100.0;
 		return btLaneDiffX * centerSplit / kOneLaneCenterSplit / 2;
 	}
+
+	inline constexpr double HighwayWipeRate(double highwayWipe)
+	{
+		constexpr double kHighwayWipeAbsMax = 100.0;
+		return Min(Abs(highwayWipe), kHighwayWipeAbsMax) / kHighwayWipeAbsMax;
+	}
 }

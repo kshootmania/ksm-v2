@@ -15,6 +15,7 @@ namespace MusicGame::Camera
 		double rotationDegJdgline = 0.0;
 		double rotationDegLayer = 0.0;
 		double centerSplit = 0.0;
+		double highwayWipe = 0.0;
 	};
 
 	class CamSystem

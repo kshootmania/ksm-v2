@@ -117,7 +117,7 @@ namespace MusicGame::Graphics
 
 	void Highway3DGraphics::draw2D(const kson::ChartData& chartData, const std::array<HashSet<kson::Pulse>, kson::kNumLaserLanesSZ>& laserCurvedPulses, const PlayOption& playOption, const kson::TimingCache& timingCache, const GameStatus& gameStatus, const ViewStatus& viewStatus, const Scroll::HighwayScrollContext& highwayScrollContext) const
 	{
-		m_renderTexture.drawBaseTexture(viewStatus.camStatus.centerSplit);
+		m_renderTexture.drawBaseTexture(viewStatus.camStatus.centerSplit, viewStatus.camStatus.highwayWipe);
 
 		{
 			const ScopedRenderTarget2D renderTarget(m_renderTexture.additiveTexture());

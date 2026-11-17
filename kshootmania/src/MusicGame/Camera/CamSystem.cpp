@@ -24,8 +24,9 @@ namespace MusicGame::Camera
 	{
 		const auto& body = chartData.camera.cam.body;
 
-		// centerSplitとrotationDegは緩和時間なし
+		// zoom系以外は緩和時間なし
 		m_status.centerSplit = kson::GraphValueAt(body.centerSplit, currentPulse);
+		m_status.highwayWipe = kson::GraphValueAt(body.highwayWipe, currentPulse);
 		m_status.rotationDeg = kson::GraphValueAt(body.rotationDeg, currentPulse);
 
 		if (m_useLegacyZoomRelaxation)

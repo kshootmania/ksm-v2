@@ -10,6 +10,9 @@ namespace MusicGame::Graphics
 	private:
 		const Texture m_beamTexture;
 
+		// レーン消失の範囲で使用するマスク(画像が無い場合は空)
+		const Texture m_beamWipeMaskTexture;
+
 	public:
 		KeyBeamGraphics();
 

@@ -81,6 +81,7 @@ kshootmania/App/engine/texture/box-shadow/32.png	engine/texture/box-shadow/32.pn
 kshootmania/App/engine/texture/box-shadow/64.png	engine/texture/box-shadow/64.png
 kshootmania/App/engine/texture/box-shadow/8.png	engine/texture/box-shadow/8.png
 kshootmania/App/imgs/base.gif	imgs/base.gif
+kshootmania/App/imgs/base_wipe.gif	imgs/base_wipe.gif
 kshootmania/App/imgs/bg/arrow.gif	imgs/bg/arrow.gif
 kshootmania/App/imgs/bg/cloudy0.jpg	imgs/bg/cloudy0.jpg
 kshootmania/App/imgs/bg/cloudy1.jpg	imgs/bg/cloudy1.jpg
@@ -162,6 +163,7 @@ kshootmania/App/imgs/frame_01.png	imgs/frame_01.png
 kshootmania/App/imgs/fx_chip.gif	imgs/fx_chip.gif
 kshootmania/App/imgs/fx_chip_se.gif	imgs/fx_chip_se.gif
 kshootmania/App/imgs/fx_long.gif	imgs/fx_long.gif
+kshootmania/App/imgs/fx_long_wipe_mask.gif	imgs/fx_long_wipe_mask.gif
 kshootmania/App/imgs/gate/gate_bg.jpg	imgs/gate/gate_bg.jpg
 kshootmania/App/imgs/gate/gate_bg_mask_overlay.png	imgs/gate/gate_bg_mask_overlay.png
 kshootmania/App/imgs/gate/gate_downloading.png	imgs/gate/gate_downloading.png
@@ -196,6 +198,7 @@ kshootmania/App/imgs/jacket/nowprinting1.jpg	imgs/jacket/nowprinting1.jpg
 kshootmania/App/imgs/jacket/nowprinting2.jpg	imgs/jacket/nowprinting2.jpg
 kshootmania/App/imgs/jacket/nowprinting3.jpg	imgs/jacket/nowprinting3.jpg
 kshootmania/App/imgs/judge.gif	imgs/judge.gif
+kshootmania/App/imgs/judge_wipe_mask.gif	imgs/judge_wipe_mask.gif
 kshootmania/App/imgs/judge1.gif	imgs/judge1.gif
 kshootmania/App/imgs/judge2.gif	imgs/judge2.gif
 kshootmania/App/imgs/judge3.gif	imgs/judge3.gif

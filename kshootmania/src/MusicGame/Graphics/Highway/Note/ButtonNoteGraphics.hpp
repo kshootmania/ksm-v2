@@ -19,6 +19,10 @@ namespace MusicGame::Graphics
 		const Texture m_longFXNoteTexture;
 		const Texture m_longFXNoteStartTexture;
 
+		// レーン消失の範囲で使用するロングFXノーツのマスク(画像が無い場合は空)
+		const Texture m_longFXNoteWipeMaskTexture;
+		const Texture m_longFXNoteWipeMaskStartTexture;
+
 		// キー音付きFXチップノーツのpulse(配置後のレーン基準)
 		const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ> m_fxChipKeySoundPulses;
 
