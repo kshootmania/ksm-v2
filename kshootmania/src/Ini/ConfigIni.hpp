@@ -16,6 +16,7 @@ namespace ConfigIni
 		constexpr StringView kLanguage = U"currentlang";
 		constexpr StringView kTextureSize = U"lowquality";
 		constexpr StringView kBGDisplayMode = U"background";
+		constexpr StringView kBGBrightness = U"bg_brightness";
 		constexpr StringView kAlwaysShowOtherFolders = U"showalldir";
 		constexpr StringView kHideAllFolder = U"hide_itemall";
 		constexpr StringView kMasterVolume = U"mastervol";

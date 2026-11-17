@@ -48,6 +48,8 @@ namespace MusicGame::Graphics
 		constexpr Float3 kLayerBillboardPosition = Float3{ 0, -41.0f, 0 };
 		constexpr Float2 kLayerBillboardSize = Float2{ 880.0f, 704.0f } * 0.65f;
 
+		constexpr Float2 kBGDimmerBillboardSize = kBGBillboardSize * 2.0f;
+
 		constexpr FilePathView kDefaultLayerFilePath = U"imgs/bg/arrow.gif";
 
 		std::array<Texture, 2> LoadBGTextures(const kson::ChartData& chartData, FilePathView parentPath)
@@ -278,6 +280,13 @@ namespace MusicGame::Graphics
 		}
 	}
 
+	void GraphicsMain::drawBGDimmer() const
+	{
+		// 背景の明るさ適用
+		const ScopedRenderStates3D renderState(BlendState::NonPremultiplied, DepthStencilState::Default2D);
+		m_bgBillboardMesh.draw(m_bgDimmerTransform, ColorF{ 0.0, 1.0 - m_playOption.bgBrightness });
+	}
+
 	GraphicsMain::GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses, FilePathView parentPath, const PlayOption& playOption)
 		: m_camera(Scene::Size(), kCameraVerticalFOV, kCameraPosition, kCameraLookAt)
 		, m_bgBillboardMesh(MeshData::Billboard())
@@ -285,6 +294,7 @@ namespace MusicGame::Graphics
 		, m_bgTransform(m_camera.billboard(kBGBillboardPosition, kBGBillboardSize))
 		, m_layerFrameTextures(LoadLayerFrameTextures(LayerFilePath(chartData, parentPath)))
 		, m_layerTransform(m_camera.billboard(kLayerBillboardPosition, kLayerBillboardSize))
+		, m_bgDimmerTransform(m_camera.billboard(kLayerBillboardPosition, kBGDimmerBillboardSize))
 		, m_highway3DGraphics(chartData, fxChipKeySoundPulses)
 		, m_jdgoverlay3DGraphics(m_camera)
 		, m_hudCanvas(LoadHUDCanvas())
@@ -385,6 +395,10 @@ namespace MusicGame::Graphics
 		if (m_playOption.showLayer)
 		{
 			drawLayer(chartData, gameStatus, viewStatus);
+		}
+		if (m_playOption.showBG && m_playOption.bgBrightness < 1.0)
+		{
+			drawBGDimmer();
 		}
 		m_highway3DGraphics.draw3D(viewStatus);
 		m_jdgline3DGraphics.draw3D(viewStatus);

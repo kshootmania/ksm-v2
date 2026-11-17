@@ -16,6 +16,10 @@ namespace
 	// プレイ中の誤操作防止のため、Backボタンクリックは長押しで反応させる
 	constexpr Duration kBackButtonClickHoldDuration = 1.0s;
 
+	constexpr int32 kBGBrightnessMin = 0;
+	constexpr int32 kBGBrightnessMax = 100;
+	constexpr int32 kBGBrightnessDefault = 100;
+
 	Array<MusicGame::HispeedType> LoadAvailableHispeedTypesFromConfigIni()
 	{
 		Array<MusicGame::HispeedType> availableTypes;
@@ -92,6 +96,7 @@ namespace
 					const int32 bgDisplayMode = ConfigIni::GetInt(ConfigIni::Key::kBGDisplayMode, ConfigIni::Value::BGDisplayMode::kShowLayer);
 					return bgDisplayMode == ConfigIni::Value::BGDisplayMode::kShowLayer;
 				}(),
+				.bgBrightness = Clamp(ConfigIni::GetInt(ConfigIni::Key::kBGBrightness, kBGBrightnessDefault), kBGBrightnessMin, kBGBrightnessMax) / 100.0,
 			},
 			.assistTickMode = static_cast<AssistTickMode>(ConfigIni::GetInt(ConfigIni::Key::kAssistTick, static_cast<int32>(AssistTickMode::kOff))),
 			.courseContinuation = courseState.has_value() && courseState->currentChartIdx() > 0 ? MakeOptional(courseState->continuation()) : none,

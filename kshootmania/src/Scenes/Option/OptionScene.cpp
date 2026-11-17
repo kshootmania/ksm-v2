@@ -30,6 +30,9 @@ namespace
 		return canvas;
 	}
 
+	constexpr int32 kBGBrightnessMin = 0;
+	constexpr int32 kBGBrightnessMax = 100;
+	constexpr int32 kBGBrightnessDefault = 100;
 	constexpr int32 kMasterVolumeMin = 0;
 	constexpr int32 kMasterVolumeMax = 100;
 	constexpr int32 kMasterVolumeDefault = 100;
@@ -117,6 +120,7 @@ std::unique_ptr<std::array<OptionMenu, OptionScene::kOptionMenuTypeEnumCount>> O
 						IntStrPair{ ConfigIni::Value::BGDisplayMode::kShowNoLayer, I18n::Get(I18n::Option::BGDisplayModeShowNoLayer) },
 						IntStrPair{ ConfigIni::Value::BGDisplayMode::kShowLayer, I18n::Get(I18n::Option::BGDisplayModeShowLayer) },
 					}),
+					CreateInfo::Int(I18n::Get(I18n::Option::ItemGameplayBGBrightness), ConfigIni::Key::kBGBrightness, kBGBrightnessMin, kBGBrightnessMax, kBGBrightnessDefault, I18n::Get(I18n::Option::BGBrightnessPercent), 5),
 					CreateInfo::Enum(I18n::Get(I18n::Option::ItemAlwaysShowOtherFolders), ConfigIni::Key::kAlwaysShowOtherFolders, Array<StringView>{
 						I18n::Get(I18n::Option::AlwaysShowOtherFoldersOff),
 						I18n::Get(I18n::Option::AlwaysShowOtherFoldersOn),

@@ -45,6 +45,7 @@ namespace MusicGame::Graphics
 		const Mat4x4 m_bgTransform;
 		std::array<Array<Texture>, 2> m_layerFrameTextures;
 		const Mat4x4 m_layerTransform;
+		const Mat4x4 m_bgDimmerTransform;
 
 		Highway3DGraphics m_highway3DGraphics;
 
@@ -70,6 +71,8 @@ namespace MusicGame::Graphics
 		void drawBG(const ViewStatus& viewStatus) const;
 
 		void drawLayer(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus) const;
+
+		void drawBGDimmer() const;
 
 	public:
 		explicit GraphicsMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses, FilePathView parentPath, const PlayOption& playOption);

@@ -61,6 +61,8 @@ namespace MusicGame
 
 		bool showLayer = true;
 
+		double bgBrightness = 1.0; // 背景の明るさ(0.0〜1.0)
+
 		Optional<TestPlayOption> testPlayOption;
 
 		// テストプレイで開始小節が指定されているか
