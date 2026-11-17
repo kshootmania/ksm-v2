@@ -36,6 +36,7 @@ namespace MusicGame::Camera
 		m_startPulse = currentPulse;
 		m_durationRelPulse = spinEvent.length;
 		m_direction = direction;
+		m_count = spinEvent.v.count;
         m_alreadyInvokedEventPulses.insert(laserSlamPulse);
 	}
 
@@ -57,7 +58,7 @@ namespace MusicGame::Camera
             double absDegrees;
             if (rate < 360.0 / 675)
             {
-                absDegrees = Sin(rate / (360.0 / 675) * 0.75) / Sin(0.75) * 360;
+                absDegrees = Sin(rate / (360.0 / 675) * 0.75) / Sin(0.75) * 360 * m_count;
             }
             else if (rate < 440.0 / 675)
             {
