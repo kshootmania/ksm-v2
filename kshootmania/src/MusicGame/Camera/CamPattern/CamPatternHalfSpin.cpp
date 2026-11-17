@@ -32,6 +32,7 @@ namespace MusicGame::Camera
 		m_startPulse = currentPulse;
 		m_durationRelPulse = halfSpinEvent.length;
 		m_direction = direction;
+		m_deg = halfSpinEvent.v.deg;
 		m_alreadyInvokedEventPulses.insert(laserSlamPulse);
 	}
 
@@ -51,19 +52,19 @@ namespace MusicGame::Camera
 			constexpr double kDuration = 400.0;
 			if (rate < 110.0 / kDuration)
 			{
-				absDegrees = Sin(rate / (110.0 / kDuration) * 1.8) / Sin(1.8) * 60;
+				absDegrees = Sin(rate / (110.0 / kDuration) * 1.8) / Sin(1.8) * m_deg;
 			}
 			else if (rate < 220.0 / kDuration)
 			{
-				absDegrees = (Cos((rate * kDuration - 110.0) * 1.8 / 110.0) - Cos(1.8)) / (1.0 - Cos(1.8)) * 60;
+				absDegrees = (Cos((rate * kDuration - 110.0) * 1.8 / 110.0) - Cos(1.8)) / (1.0 - Cos(1.8)) * m_deg;
 			}
 			else if (rate < 310.0 / kDuration)
 			{
-				absDegrees = -Sin((rate * kDuration - 220) * 1.8 / 90.0) / Sin(1.8) * 15;
+				absDegrees = -Sin((rate * kDuration - 220) * 1.8 / 90.0) / Sin(1.8) * m_deg / 4;
 			}
 			else
 			{
-				absDegrees = -(Cos((rate * kDuration - 310) * 1.8 / 90.0) - Cos(1.8)) / (1.0 - Cos(1.8)) * 15;
+				absDegrees = -(Cos((rate * kDuration - 310) * 1.8 / 90.0) - Cos(1.8)) / (1.0 - Cos(1.8)) * m_deg / 4;
 			}
 
 			const double degrees = -m_direction * absDegrees;
