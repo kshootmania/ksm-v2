@@ -30,6 +30,7 @@ namespace MusicGame::Camera
 		m_status.rotationDeg = kson::GraphValueAt(body.rotationDeg, currentPulse);
 		m_status.rotationDegHighway = kson::GraphValueAt(body.rotationDegHighway, currentPulse);
 		m_status.rotationDegJdgline = kson::GraphValueAt(body.rotationDegJdgline, currentPulse);
+		m_status.rotationDegLayer = kson::GraphValueAt(body.rotationDegLayer, currentPulse);
 
 		if (m_useLegacyZoomRelaxation)
 		{

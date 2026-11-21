@@ -79,7 +79,7 @@ namespace MusicGame::Camera
 
 		if (rate < 0.75)
 		{
-			camStatusRef.rotationDegLayer += -m_direction * Sin(rate * 1.1 / 0.75) / Sin(1.1) * 360;
+			camStatusRef.spinDegForLayer += -m_direction * Sin(rate * 1.1 / 0.75) / Sin(1.1) * 360;
 		}
 	}
 }

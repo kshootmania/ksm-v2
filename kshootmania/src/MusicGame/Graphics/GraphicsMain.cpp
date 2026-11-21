@@ -239,8 +239,9 @@ namespace MusicGame::Graphics
 		}
 		if (chartData.bg.legacy.layer.rotation.spin)
 		{
-			layerTiltRadians += Math::ToRadians(viewStatus.camStatus.rotationDegLayer);
+			layerTiltRadians += Math::ToRadians(viewStatus.camStatus.spinDegForLayer);
 		}
+		layerTiltRadians += Math::ToRadians(viewStatus.camStatus.rotationDegLayer);
 
 		// ゲージパーセンテージに応じてレイヤーテクスチャのインデックスを決定
 		const int32 percentThreshold = (m_playOption.gaugeType == GaugeType::kHardGauge || m_playOption.gameMode == GameMode::kCourseMode) ? kGaugePercentageThresholdHardWarning : kGaugePercentageThreshold;

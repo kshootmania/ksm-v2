@@ -83,7 +83,7 @@ namespace MusicGame::Camera
 		// 背景アニメーションの角度計算
 		if (rate < 0.75)
 		{
-			camStatusRef.rotationDegLayer += -m_direction * Sin(rate * 1.1 / 0.75) / Sin(1.1) * 360 * 2;
+			camStatusRef.spinDegForLayer += -m_direction * Sin(rate * 1.1 / 0.75) / Sin(1.1) * 360 * 2;
 		}
     }
 }

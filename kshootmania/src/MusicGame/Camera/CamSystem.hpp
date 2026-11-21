@@ -14,6 +14,7 @@ namespace MusicGame::Camera
 		double rotationDegHighway = 0.0;
 		double rotationDegJdgline = 0.0;
 		double rotationDegLayer = 0.0;
+		double spinDegForLayer = 0.0; // 回転・半回転エフェクトによる背景アニメーションの回転角度
 		double centerSplit = 0.0;
 		double highwayWipe = 0.0;
 	};
