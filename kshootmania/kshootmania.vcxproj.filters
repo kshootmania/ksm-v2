@@ -594,6 +594,9 @@
     <ClCompile Include="src\MusicGame\Judgment\JudgmentHandler.cpp">
       <Filter>Source Files\MusicGame\Judgment</Filter>
     </ClCompile>
+    <ClCompile Include="src\MusicGame\Camera\CamPattern\CamPatternCustom.cpp">
+      <Filter>Source Files\MusicGame\Camera\CamPattern</Filter>
+    </ClCompile>
     <ClCompile Include="src\MusicGame\Camera\CamPattern\CamPatternHalfSpin.cpp">
       <Filter>Source Files\MusicGame\Camera\CamPattern</Filter>
     </ClCompile>
@@ -1359,6 +1362,9 @@
     </ClInclude>
     <ClInclude Include="src\MusicGame\Judgment\JudgmentHandler.hpp">
       <Filter>Header Files\MusicGame\Judgment</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MusicGame\Camera\CamPattern\CamPatternCustom.hpp">
+      <Filter>Header Files\MusicGame\Camera\CamPattern</Filter>
     </ClInclude>
     <ClInclude Include="src\MusicGame\Camera\CamPattern\CamPatternHalfSpin.hpp">
       <Filter>Header Files\MusicGame\Camera\CamPattern</Filter>

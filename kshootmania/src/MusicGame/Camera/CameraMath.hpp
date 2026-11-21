@@ -4,6 +4,11 @@
 
 namespace MusicGame::Camera
 {
+	inline constexpr double ZoomSideToShiftX(double zoomSide)
+	{
+		return zoomSide / 6.0;
+	}
+
 	inline constexpr double ScaledCamZoomBottomValue(double zoomBottom)
 	{
 		// 基準値である+100で画面に近過ぎるのを回避するため、zoomBottomは正の値の場合には緩やかに推移させる

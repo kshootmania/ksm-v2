@@ -183,6 +183,15 @@ namespace MusicGame
 			{
 				swing.d = -swing.d;
 			}
+
+			// カスタム視点パターン左右反転
+			for (auto& [name, customEvents] : camera.cam.pattern.laser.slamEvent.custom)
+			{
+				for (auto& [pulse, custom] : customEvents)
+				{
+					custom.d = -custom.d;
+				}
+			}
 		}
 	}
 

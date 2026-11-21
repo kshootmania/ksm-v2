@@ -69,7 +69,7 @@ namespace MusicGame::Graphics
 		{
 			// KSHバージョン167未満の場合、zoom_topは移動として扱う
 			// HSP版: https://github.com/kshootmania/ksm-v1/blob/ea05374a3ece796612b29d927cb3c6f5aabb266e/src/scene/play/play_draw_frame.hsp#L828-L841
-			const float legacyZoomTop = static_cast<float>(camStatus.zoomTop);
+			const float legacyZoomTop = static_cast<float>(Camera::ScaledLegacyZoomTop(camStatus.zoomTop));
 			const float heightRatio = kPlaneHeightBelowJdgline / kPlaneHeightAboveJdgline; // sr/lr
 
 			m_meshData.vertices[0].pos.y = -legacyZoomTop * 100 * Sin(kCameraToJdglineRadians); // 奥の辺 上方向

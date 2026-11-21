@@ -216,6 +216,7 @@
     <ClCompile Include="src\MusicGame\Audio\FXChipSE.cpp" />
     <ClCompile Include="src\MusicGame\Audio\LaserSlamSE.cpp" />
     <ClCompile Include="src\MusicGame\Camera\CamPattern\CamPatternMain.cpp" />
+    <ClCompile Include="src\MusicGame\Camera\CamPattern\CamPatternCustom.cpp" />
     <ClCompile Include="src\MusicGame\Camera\CamPattern\CamPatternHalfSpin.cpp" />
     <ClCompile Include="src\MusicGame\Camera\CamPattern\CamPatternSpin.cpp" />
     <ClCompile Include="src\MusicGame\Camera\CamPattern\CamPatternSwing.cpp" />
@@ -456,6 +457,7 @@
     <ClInclude Include="src\MusicGame\Audio\LaserSlamSE.hpp" />
     <ClInclude Include="src\MusicGame\Camera\CameraMath.hpp" />
     <ClInclude Include="src\MusicGame\Camera\CamPattern\CamPatternMain.hpp" />
+    <ClInclude Include="src\MusicGame\Camera\CamPattern\CamPatternCustom.hpp" />
     <ClInclude Include="src\MusicGame\Camera\CamPattern\CamPatternHalfSpin.hpp" />
     <ClInclude Include="src\MusicGame\Camera\CamPattern\CamPatternSpin.hpp" />
     <ClInclude Include="src\MusicGame\Camera\CamPattern\CamPatternSwing.hpp" />

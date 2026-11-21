@@ -8,11 +8,6 @@ namespace MusicGame::Camera
 	{
 		constexpr int kZoomRelaxationChangedKSHVersion = 167;
 		constexpr double kZoomRelaxationTimeMs = 40.0;
-
-		double ZoomSideToShiftX(double zoomSide)
-		{
-			return zoomSide / 6.0;
-		}
 	}
 
 	CamSystem::CamSystem(const kson::ChartData& chartData)
@@ -40,7 +35,7 @@ namespace MusicGame::Camera
 
 			const double targetZoomTop = kson::GraphValueAt(body.zoomTop, currentPulse);
 			m_legacyCurrentZoomTop = m_legacyCurrentZoomTop * (1.0 - targetRate) + targetZoomTop * targetRate;
-			m_status.zoomTop = ScaledLegacyZoomTop(m_legacyCurrentZoomTop);
+			m_status.zoomTop = m_legacyCurrentZoomTop;
 			m_status.useLegacyZoomTop = true;
 			m_status.useLegacyJdgScale = true;
 
