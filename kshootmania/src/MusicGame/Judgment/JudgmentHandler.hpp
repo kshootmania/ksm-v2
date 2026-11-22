@@ -47,7 +47,8 @@ namespace MusicGame::Judgment
 		/// @param playOption プレイオプション
 		/// @param courseContinuation コース継続情報(コースモード時に使用)
 		/// @param gameMode ゲームモード
-		JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode);
+		/// @param invertCamPattern カスタム視点パターンの方向なしの発動の値を左右反転するか
+		JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode, bool invertCamPattern);
 
 		/// @brief チップノーツ判定時に呼び出される
 		/// @param result 判定結果

@@ -16,7 +16,7 @@ namespace MusicGame::Camera
 			return (itr != last) ? &itr->second : nullptr;
 		}
 
-		void AddCamPatternValues(CamStatus& camStatusRef, const kson::CamGraphs& body, double ry, double scale, int32 direction)
+		void AddCamPatternValues(CamStatus& camStatusRef, const kson::CamGraphs& body, double ry, double scale, int32 flipSign)
 		{
 			const auto fnValueAt = [ry, scale](const kson::Graph& graph)
 			{
@@ -26,21 +26,21 @@ namespace MusicGame::Camera
 			camStatusRef.zoomTop += fnValueAt(body.zoomTop);
 			camStatusRef.zoomBottom += fnValueAt(body.zoomBottom);
 
-			// 左向き直角LASERの場合はzoom_sideとrotation_deg系を左右反転
-			camStatusRef.shiftX += ZoomSideToShiftX(fnValueAt(body.zoomSide)) * direction;
-			camStatusRef.rotationDeg += fnValueAt(body.rotationDeg) * direction;
-			camStatusRef.rotationDegHighway += fnValueAt(body.rotationDegHighway) * direction;
-			camStatusRef.rotationDegJdgline += fnValueAt(body.rotationDegJdgline) * direction;
-			camStatusRef.rotationDegLayer += fnValueAt(body.rotationDegLayer) * direction;
+			camStatusRef.shiftX += ZoomSideToShiftX(fnValueAt(body.zoomSide)) * flipSign;
+			camStatusRef.rotationDeg += fnValueAt(body.rotationDeg) * flipSign;
+			camStatusRef.rotationDegHighway += fnValueAt(body.rotationDegHighway) * flipSign;
+			camStatusRef.rotationDegJdgline += fnValueAt(body.rotationDegJdgline) * flipSign;
+			camStatusRef.rotationDegLayer += fnValueAt(body.rotationDegLayer) * flipSign;
 
 			camStatusRef.centerSplit += fnValueAt(body.centerSplit);
 			camStatusRef.highwayWipe += fnValueAt(body.highwayWipe);
 		}
 	}
 
-	CamPatternCustom::CamPatternCustom(const kson::ChartData& chartData)
+	CamPatternCustom::CamPatternCustom(const kson::ChartData& chartData, bool invertCamPattern)
 		: m_defs(chartData.camera.cam.pattern.def)
 		, m_customEvents(chartData.camera.cam.pattern.laser.slamEvent.custom)
+		, m_baseFlipSign(invertCamPattern ? -1 : 1)
 		, m_slamInvocations(m_defs.size())
 	{
 		for (const auto& [name, def] : m_defs)
@@ -86,7 +86,7 @@ namespace MusicGame::Camera
 		m_slamInvocations[*defIdx] = SlamInvocation{
 			.startPulse = currentPulse,
 			.durationRelPulse = customEvent.length,
-			.direction = direction,
+			.flipSign = def.v.flipByDirection ? direction : m_baseFlipSign,
 			.scale = customEvent.v.scale,
 		};
 		m_alreadyInvokedSlams.insert({ laserSlamPulse, direction });
@@ -109,7 +109,7 @@ namespace MusicGame::Camera
 
 			// 定義の長さを呼び出し時の長さに合わせて伸縮
 			const double ry = static_cast<double>(elapsedPulse) / static_cast<double>(invocation.durationRelPulse) * static_cast<double>(m_defLengths[defIdx]);
-			AddCamPatternValues(camStatusRef, m_defs[defIdx].v.body, ry, invocation.scale, invocation.direction);
+			AddCamPatternValues(camStatusRef, m_defs[defIdx].v.body, ry, invocation.scale, invocation.flipSign);
 		}
 	}
 

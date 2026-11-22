@@ -13,12 +13,15 @@ namespace MusicGame::Camera
 		{
 			kson::Pulse startPulse = kPastPulse;
 			kson::RelPulse durationRelPulse = kson::RelPulse{ 0 };
-			int32 direction = 0;
+			int32 flipSign = 1;
 			double scale = 1.0;
 		};
 
 		const std::vector<kson::CamPatternDefKVP> m_defs;
 		const kson::Dict<kson::ByPulseMulti<kson::CamPatternInvokeCustom>> m_customEvents;
+
+		// 方向なしの発動での値の符号(左右反転時は-1)
+		const int32 m_baseFlipSign;
 
 		Array<kson::RelPulse> m_defLengths;
 
@@ -31,7 +34,10 @@ namespace MusicGame::Camera
 		Optional<std::size_t> findDefIdxForSlam(kson::Pulse laserSlamPulse, int32 direction) const;
 
 	public:
-		explicit CamPatternCustom(const kson::ChartData& chartData);
+		/// @brief コンストラクタ
+		/// @param chartData 譜面データ
+		/// @param invertCamPattern 方向なしの発動の値を左右反転するか
+		CamPatternCustom(const kson::ChartData& chartData, bool invertCamPattern);
 
 		void onLaserSlamJudged(kson::Pulse laserSlamPulse, int32 direction, kson::Pulse currentPulse);
 

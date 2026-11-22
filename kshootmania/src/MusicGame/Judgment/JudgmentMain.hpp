@@ -19,8 +19,15 @@ namespace MusicGame::Judgment
 		JudgmentHandler m_judgmentHandler;
 
 	public:
+		/// @brief コンストラクタ
+		/// @param chartData 譜面データ
+		/// @param timingCache タイミングキャッシュ
 		/// @param fxChipKeySoundPulses キー音付きFXチップノーツのpulse(配置後のレーン基準)
-		explicit JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode);
+		/// @param playOption プレイオプション
+		/// @param courseContinuation コース継続情報(コースモード時に使用)
+		/// @param gameMode ゲームモード
+		/// @param invertCamPattern カスタム視点パターンの方向なしの発動の値を左右反転するか
+		explicit JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode, bool invertCamPattern);
 
 		void update(const kson::ChartData& chartData, GameStatus& gameStatusRef, ViewStatus& viewStatusRef);
 

@@ -4,7 +4,7 @@
 namespace MusicGame::Judgment
 {
 
-	JudgmentMain::JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode)
+	JudgmentMain::JudgmentMain(const kson::ChartData& chartData, const kson::TimingCache& timingCache, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode, bool invertCamPattern)
 		: m_playOption(playOption)
 		, m_btLaneJudgments{
 			ButtonLaneJudgment(playOption.effectiveBtJudgmentPlayMode(), playOption.gaugeType, playOption.fastSlowMode, kButtonBT_A, chartData.note.bt[0], fxChipKeySoundPulses[0], chartData.beat, timingCache),
@@ -17,7 +17,7 @@ namespace MusicGame::Judgment
 		, m_laserLaneJudgments{
 			LaserLaneJudgment(playOption.effectiveLaserJudgmentPlayMode(), 0, chartData.note.laser[0], chartData.beat, timingCache),
 			LaserLaneJudgment(playOption.effectiveLaserJudgmentPlayMode(), 1, chartData.note.laser[1], chartData.beat, timingCache) }
-		, m_judgmentHandler(chartData, m_btLaneJudgments, m_fxLaneJudgments, m_laserLaneJudgments, playOption, courseContinuation, gameMode)
+		, m_judgmentHandler(chartData, m_btLaneJudgments, m_fxLaneJudgments, m_laserLaneJudgments, playOption, courseContinuation, gameMode, invertCamPattern)
 	{
 	}
 

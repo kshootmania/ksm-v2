@@ -17,7 +17,10 @@ namespace MusicGame::Camera
 		CamPatternCustom m_custom;
 
 	public:
-		explicit CamPatternMain(const kson::ChartData& chartData);
+		/// @brief コンストラクタ
+		/// @param chartData 譜面データ
+		/// @param invertCamPattern カスタム視点パターンの方向なしの発動の値を左右反転するか
+		CamPatternMain(const kson::ChartData& chartData, bool invertCamPattern);
 
 		void onLaserSlamJudged(kson::Pulse laserSlamPulse, int32 direction, kson::Pulse currentPulse);
 

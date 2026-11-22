@@ -289,7 +289,8 @@ namespace MusicGame
 			m_fxChipKeySoundPulses,
 			createInfo.playOption,
 			createInfo.courseContinuation,
-			createInfo.playOption.gameMode)
+			createInfo.playOption.gameMode,
+			m_noteArrangement.turnTable.invertLaserValue)
 		, m_camSystem(m_chartData)
 		, m_highwayScroll(m_chartData)
 		, m_bgm(CreateBGM(m_chartData, m_parentPath, createInfo.playOption, createInfo.folderConfIni))

@@ -98,7 +98,7 @@ namespace MusicGame::Judgment
 		}
 	}
 
-	JudgmentHandler::JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode)
+	JudgmentHandler::JudgmentHandler(const kson::ChartData& chartData, const BTLaneJudgments& btLaneJudgments, const FXLaneJudgments& fxLaneJudgments, const LaserLaneJudgments& laserLaneJudgments, const PlayOption& playOption, const Optional<CourseContinuation>& courseContinuation, GameMode gameMode, bool invertCamPattern)
 		: m_playOption(playOption)
 		, m_totalCombo(TotalCombo(btLaneJudgments, fxLaneJudgments, laserLaneJudgments))
 		, m_scoringStatus(
@@ -107,7 +107,7 @@ namespace MusicGame::Judgment
 			playOption.gaugeType,
 			courseContinuation,
 			gameMode)
-		, m_camPatternMain(chartData)
+		, m_camPatternMain(chartData, invertCamPattern)
 	{
 	}
 

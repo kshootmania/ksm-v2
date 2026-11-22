@@ -2,11 +2,11 @@
 
 namespace MusicGame::Camera
 {
-	CamPatternMain::CamPatternMain(const kson::ChartData& chartData)
+	CamPatternMain::CamPatternMain(const kson::ChartData& chartData, bool invertCamPattern)
 		: m_spin(chartData)
 		, m_halfSpin(chartData)
 		, m_swing(chartData)
-		, m_custom(chartData)
+		, m_custom(chartData, invertCamPattern)
 	{
 	}
 
