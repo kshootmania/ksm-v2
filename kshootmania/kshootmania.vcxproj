@@ -240,6 +240,9 @@
     <ClCompile Include="src\MusicGame\Graphics\HUD\TimingAdjustPanel.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\HUD\GaugePanel.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\HUD\MoviePanel.cpp" />
+    <ClCompile Include="src\MusicGame\Graphics\Movie\FullScreenMovie.cpp" />
+    <ClCompile Include="src\MusicGame\Graphics\Movie\MovieFrameReader.cpp" />
+    <ClCompile Include="src\MusicGame\Graphics\Movie\MovieUtils.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\HUD\ScorePanel.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\Jdgline\Jdgline3DGraphics.cpp" />
     <ClCompile Include="src\MusicGame\Graphics\Jdgline\Jdgoverlay3DGraphics.cpp" />
@@ -480,6 +483,9 @@
     <ClInclude Include="src\MusicGame\Graphics\HUD\TimingAdjustPanel.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\HUD\GaugePanel.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\HUD\MoviePanel.hpp" />
+    <ClInclude Include="src\MusicGame\Graphics\Movie\FullScreenMovie.hpp" />
+    <ClInclude Include="src\MusicGame\Graphics\Movie\MovieFrameReader.hpp" />
+    <ClInclude Include="src\MusicGame\Graphics\Movie\MovieUtils.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\HUD\ScorePanel.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\Jdgline\Jdgline3DGraphics.hpp" />
     <ClInclude Include="src\MusicGame\Graphics\Jdgline\Jdgoverlay3DGraphics.hpp" />

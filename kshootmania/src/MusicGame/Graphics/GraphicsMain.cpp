@@ -211,6 +211,27 @@ namespace MusicGame::Graphics
 			return canvas;
 		}
 
+		Mat4x4 FullScreenMovieTransform(const BasicCamera3D& camera, const kson::KshMovieInfo& movieInfo, Size movieSize)
+		{
+			if (movieSize.y <= 0)
+			{
+				return Mat4x4::Identity();
+			}
+
+			// レイヤーアニメーションと同じ奥行きでの画面の高さ
+			const Vec3 eyePosition = camera.getEyePosition();
+			const Vec3 forward = (camera.getFocusPosition() - eyePosition).normalized();
+			const Vec3 right = Vec3::Up().cross(forward).normalized();
+			const Vec3 up = forward.cross(right);
+			const double distance = (Vec3{ kLayerBillboardPosition } - eyePosition).dot(forward);
+			const double screenHeight = 2.0 * distance * Math::Tan(camera.getVerticalFOV() / 2);
+
+			const Vec3 position = eyePosition + forward * distance + right * (movieInfo.x * screenHeight) - up * (movieInfo.y * screenHeight);
+			const double height = screenHeight * movieInfo.scale;
+			const double width = height * movieSize.x / movieSize.y;
+			return camera.billboard(Float3{ position }, Float2{ static_cast<float>(width), static_cast<float>(height) });
+		}
+
 		constexpr double kPreStartOffsetSec = 3.4;
 		constexpr double kPreStartOffsetWithMovieSec = 4.4;
 	}
@@ -281,6 +302,35 @@ namespace MusicGame::Graphics
 		}
 	}
 
+	void GraphicsMain::drawFullScreenMovie(const ViewStatus& viewStatus) const
+	{
+		const ScopedRenderStates3D samplerState(SamplerState::ClampLinear);
+		const ScopedRenderStates3D renderState(m_movieInfo.blendMode == kson::KshMovieBlendMode::kAdditive ? BlendState::Additive : BlendState::NonPremultiplied, DepthStencilState::Default2D);
+
+		double movieTiltRadians = 0.0;
+		if (m_movieInfo.rotation.tilt)
+		{
+			movieTiltRadians += viewStatus.tiltRadiansForBgLayer * 0.8;
+		}
+		if (m_movieInfo.rotation.spin)
+		{
+			movieTiltRadians += Math::ToRadians(viewStatus.camStatus.spinDegForLayer);
+		}
+
+		// 回転の中心はレイヤーアニメーションと同じ位置
+		const Mat4x4 transform = m_fullScreenMovieTransform * TiltTransformMatrix(movieTiltRadians, kLayerBillboardPosition);
+		const double opacity = Clamp(m_movieInfo.opacity, 0.0, 1.0);
+		if (m_fullScreenMovie.hasFrame())
+		{
+			m_bgBillboardMesh.draw(transform, m_fullScreenMovie.texture(), ColorF{ 1.0, opacity });
+		}
+		else
+		{
+			// 再生していない間は黒色
+			m_bgBillboardMesh.draw(transform, ColorF{ 0.0, opacity });
+		}
+	}
+
 	void GraphicsMain::drawBGDimmer() const
 	{
 		// 背景の明るさ適用
@@ -301,9 +351,12 @@ namespace MusicGame::Graphics
 		, m_hudCanvas(LoadHUDCanvas())
 		, m_gaugePanel(ToGaugeCalcType(playOption.gaugeType, playOption.gameMode))
 		, m_laserApproachIndicator(chartData)
-		, m_moviePanel(MovieFilePath(chartData, parentPath), chartData.bg.legacy.movie.offset / 1000.0 / playOption.nonZeroPlaybackSpeed(), playOption.playbackSpeed, playOption.movieEnabled)
+		, m_moviePanel(MovieFilePath(chartData, parentPath), chartData.bg.legacy.movie.offset / 1000.0 / playOption.nonZeroPlaybackSpeed(), playOption.playbackSpeed, chartData.bg.legacy.movie.loop, playOption.movieEnabled && chartData.bg.legacy.movie.placement == kson::KshMoviePlacement::kPanel)
+		, m_fullScreenMovie(MovieFilePath(chartData, parentPath), chartData.bg.legacy.movie.offset / 1000.0 / playOption.nonZeroPlaybackSpeed(), playOption.nonZeroPlaybackSpeed(), chartData.bg.legacy.movie.loop, playOption.movieEnabled && playOption.showBG && chartData.bg.legacy.movie.placement != kson::KshMoviePlacement::kPanel)
+		, m_fullScreenMovieTransform(FullScreenMovieTransform(m_camera, chartData.bg.legacy.movie, m_fullScreenMovie.size()))
+		, m_movieInfo(chartData.bg.legacy.movie)
 		, m_playOption(playOption)
-		, m_layerFrameOriginTimeSec(-TimeSecBeforeStart(m_moviePanel.isEnabled()).count())
+		, m_layerFrameOriginTimeSec(-TimeSecBeforeStart(hasMovie()).count())
 		, m_layerFrameOriginPulse(static_cast<kson::Pulse>(kson::SecToPulseDouble(m_layerFrameOriginTimeSec, chartData.beat, timingCache)))
 	{
 		// HUDのCanvasパラメータを初期設定
@@ -357,6 +410,7 @@ namespace MusicGame::Graphics
 	void GraphicsMain::prepareMovie(double globalOffsetSec)
 	{
 		m_moviePanel.prepare(globalOffsetSec);
+		m_fullScreenMovie.prepare(globalOffsetSec);
 	}
 
 	void GraphicsMain::update(const GameStatus& gameStatus, const ViewStatus& viewStatus, const kson::TimingCache& timingCache)
@@ -366,6 +420,7 @@ namespace MusicGame::Graphics
 		m_highway3DGraphics.update(viewStatus);
 		m_laserApproachIndicator.update(gameStatus, timingCache);
 		m_moviePanel.update(gameStatus.currentTimeSec, gameStatus.isPaused);
+		m_fullScreenMovie.update(gameStatus.currentTimeSec, gameStatus.isPaused);
 
 		// HUDのCanvasパラメータを更新
 		m_hudCanvas->setParamValues({
@@ -393,9 +448,18 @@ namespace MusicGame::Graphics
 		{
 			drawBG(viewStatus);
 		}
+		const bool fullScreenMovieEnabled = m_fullScreenMovie.isEnabled();
+		if (fullScreenMovieEnabled && m_movieInfo.placement == kson::KshMoviePlacement::kBehindLayer)
+		{
+			drawFullScreenMovie(viewStatus);
+		}
 		if (m_playOption.showLayer)
 		{
 			drawLayer(chartData, gameStatus, viewStatus);
+		}
+		if (fullScreenMovieEnabled && m_movieInfo.placement == kson::KshMoviePlacement::kInFrontOfLayer)
+		{
+			drawFullScreenMovie(viewStatus);
 		}
 		if (m_playOption.showBG && m_playOption.bgBrightness < 1.0)
 		{
@@ -408,7 +472,7 @@ namespace MusicGame::Graphics
 
 		// 手前に表示する2DのHUDを描画
 		{
-			const double preStartOffset = m_moviePanel.isEnabled() ? kPreStartOffsetWithMovieSec : kPreStartOffsetSec;
+			const double preStartOffset = hasMovie() ? kPreStartOffsetWithMovieSec : kPreStartOffsetSec;
 			const double totalDurationSec = bgmDuration.count() + preStartOffset;
 			const double progress = Clamp((gameStatus.currentTimeSec + preStartOffset) / totalDurationSec, 0.0, 1.0);
 
@@ -442,7 +506,7 @@ namespace MusicGame::Graphics
 
 	bool GraphicsMain::hasMovie() const
 	{
-		return m_moviePanel.isEnabled();
+		return m_moviePanel.isEnabled() || m_fullScreenMovie.isEnabled();
 	}
 
 	void GraphicsMain::seekMoviePosSec(SecondsF posSec)

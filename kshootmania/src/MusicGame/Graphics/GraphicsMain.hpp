@@ -8,6 +8,7 @@
 #include "HUD/AchievementPanel.hpp"
 #include "HUD/LaserApproachIndicator.hpp"
 #include "HUD/MoviePanel.hpp"
+#include "Movie/FullScreenMovie.hpp"
 #include "MusicGame/GameStatus.hpp"
 #include "MusicGame/ViewStatus.hpp"
 #include "MusicGame/Scroll/HighwayScroll.hpp"
@@ -61,6 +62,9 @@ namespace MusicGame::Graphics
 		AchievementPanel m_achievementPanel;
 		LaserApproachIndicator m_laserApproachIndicator;
 		MoviePanel m_moviePanel;
+		FullScreenMovie m_fullScreenMovie;
+		const Mat4x4 m_fullScreenMovieTransform;
+		const kson::KshMovieInfo m_movieInfo;
 
 		const PlayOption m_playOption;
 
@@ -71,6 +75,8 @@ namespace MusicGame::Graphics
 		void drawBG(const ViewStatus& viewStatus) const;
 
 		void drawLayer(const kson::ChartData& chartData, const GameStatus& gameStatus, const ViewStatus& viewStatus) const;
+
+		void drawFullScreenMovie(const ViewStatus& viewStatus) const;
 
 		void drawBGDimmer() const;
 

@@ -199,8 +199,14 @@
     <Filter Include="Source Files\MusicGame\Graphics\HUD">
       <UniqueIdentifier>{dc5fa313-df9d-4672-8320-d51ab5561013}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\MusicGame\Graphics\Movie">
+      <UniqueIdentifier>{76e8f4e6-0ee7-4d5e-aad1-1d79fd8df792}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\MusicGame\Graphics\HUD">
       <UniqueIdentifier>{47fb5e45-1901-4a62-a380-9e5858586af5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MusicGame\Graphics\Movie">
+      <UniqueIdentifier>{7acb5c6b-570e-4778-85d4-b320c2e622a1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\MusicGame\Judgment">
       <UniqueIdentifier>{42900bc0-ffe3-4d14-85b1-9ce5c2f0b3a6}</UniqueIdentifier>
@@ -488,6 +494,15 @@
     </ClCompile>
     <ClCompile Include="src\MusicGame\Graphics\HUD\MoviePanel.cpp">
       <Filter>Source Files\MusicGame\Graphics\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MusicGame\Graphics\Movie\FullScreenMovie.cpp">
+      <Filter>Source Files\MusicGame\Graphics\Movie</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MusicGame\Graphics\Movie\MovieFrameReader.cpp">
+      <Filter>Source Files\MusicGame\Graphics\Movie</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MusicGame\Graphics\Movie\MovieUtils.cpp">
+      <Filter>Source Files\MusicGame\Graphics\Movie</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\NumberTextureFont.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -1251,6 +1266,15 @@
     </ClInclude>
     <ClInclude Include="src\MusicGame\Graphics\HUD\MoviePanel.hpp">
       <Filter>Header Files\MusicGame\Graphics\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MusicGame\Graphics\Movie\FullScreenMovie.hpp">
+      <Filter>Header Files\MusicGame\Graphics\Movie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MusicGame\Graphics\Movie\MovieFrameReader.hpp">
+      <Filter>Header Files\MusicGame\Graphics\Movie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MusicGame\Graphics\Movie\MovieUtils.hpp">
+      <Filter>Header Files\MusicGame\Graphics\Movie</Filter>
     </ClInclude>
     <ClInclude Include="src\MusicGame\Judgment\ButtonLaneJudgment.hpp">
       <Filter>Header Files\MusicGame\Judgment</Filter>

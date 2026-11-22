@@ -12,6 +12,8 @@ namespace MusicGame::Graphics
 		double m_startTimeSec = 0.0;
 		double m_playbackSpeed = 1.0;
 		double m_fpsScale = 1.0;
+		bool m_loop = false;
+		Optional<double> m_prevLoopMoviePosSec; // ループ再生で前回の更新時に求めた再生位置(折り返す前の値)
 		bool m_enabled = false;
 
 		static constexpr int32 kVideoOffsetFromCenterX = -302;
@@ -24,7 +26,7 @@ namespace MusicGame::Graphics
 		static constexpr double kFrameAlpha = 96.0 / 255.0;
 
 	public:
-		MoviePanel(const FilePath& moviePath, double movieOffsetSec, double playbackSpeed, bool enabled);
+		MoviePanel(const FilePath& moviePath, double movieOffsetSec, double playbackSpeed, bool loop, bool enabled);
 
 		~MoviePanel();
 
