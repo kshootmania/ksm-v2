@@ -17,6 +17,14 @@ namespace MusicGame::Camera
 			double scale = 1.0;
 		};
 
+		struct PulseEvent
+		{
+			kson::Pulse startPulse = kson::Pulse{ 0 };
+			kson::RelPulse durationRelPulse = kson::RelPulse{ 0 };
+			double scale = 1.0;
+			std::size_t defIdx = 0;
+		};
+
 		const std::vector<kson::CamPatternDefKVP> m_defs;
 		const kson::Dict<kson::ByPulseMulti<kson::CamPatternInvokeCustom>> m_customEvents;
 
@@ -29,6 +37,10 @@ namespace MusicGame::Camera
 
 		// m_defsと同じ並び
 		Array<SlamInvocation> m_slamInvocations;
+
+		// pulse_eventのカスタム視点パターン(開始位置順)
+		Array<PulseEvent> m_pulseEvents;
+		kson::RelPulse m_pulseEventMaxDurationRelPulse = kson::RelPulse{ 0 };
 
 		// 直角LASERで発動する視点パターン(複数ある場合は定義順で最初)
 		Optional<std::size_t> findDefIdxForSlam(kson::Pulse laserSlamPulse, int32 direction) const;

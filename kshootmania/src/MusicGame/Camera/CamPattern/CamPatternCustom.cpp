@@ -43,10 +43,26 @@ namespace MusicGame::Camera
 		, m_baseFlipSign(invertCamPattern ? -1 : 1)
 		, m_slamInvocations(m_defs.size())
 	{
-		for (const auto& [name, def] : m_defs)
+		for (std::size_t defIdx = 0; defIdx < m_defs.size(); ++defIdx)
 		{
-			m_defLengths.push_back(def.length());
+			m_defLengths.push_back(m_defs[defIdx].v.length());
+
+			const auto eventsItr = chartData.camera.cam.pattern.pulseEvent.find(m_defs[defIdx].name);
+			if (eventsItr == chartData.camera.cam.pattern.pulseEvent.end())
+			{
+				continue;
+			}
+			for (const auto& [y, pulseEvent] : eventsItr->second)
+			{
+				if (pulseEvent.length <= 0)
+				{
+					continue;
+				}
+				m_pulseEvents.push_back(PulseEvent{ .startPulse = y, .durationRelPulse = pulseEvent.length, .scale = pulseEvent.v.scale, .defIdx = defIdx });
+				m_pulseEventMaxDurationRelPulse = Max(m_pulseEventMaxDurationRelPulse, pulseEvent.length);
+			}
 		}
+		m_pulseEvents.stable_sort_by([](const PulseEvent& a, const PulseEvent& b) { return a.startPulse < b.startPulse; });
 	}
 
 	Optional<std::size_t> CamPatternCustom::findDefIdxForSlam(kson::Pulse laserSlamPulse, int32 direction) const
@@ -110,6 +126,25 @@ namespace MusicGame::Camera
 			// 定義の長さを呼び出し時の長さに合わせて伸縮
 			const double ry = static_cast<double>(elapsedPulse) / static_cast<double>(invocation.durationRelPulse) * static_cast<double>(m_defLengths[defIdx]);
 			AddCamPatternValues(camStatusRef, m_defs[defIdx].v.body, ry, invocation.scale, invocation.flipSign);
+		}
+
+		if (currentPulse < 0)
+		{
+			return;
+		}
+
+		// pulse_eventは発動中のものを全て加算
+		auto itr = std::upper_bound(m_pulseEvents.begin(), m_pulseEvents.end(), currentPulse - m_pulseEventMaxDurationRelPulse,
+			[](kson::Pulse pulse, const PulseEvent& pulseEvent) { return pulse < pulseEvent.startPulse; });
+		for (; itr != m_pulseEvents.end() && itr->startPulse <= currentPulse; ++itr)
+		{
+			const kson::RelPulse elapsedPulse = currentPulse - itr->startPulse;
+			if (elapsedPulse >= itr->durationRelPulse)
+			{
+				continue;
+			}
+			const double ry = static_cast<double>(elapsedPulse) / static_cast<double>(itr->durationRelPulse) * static_cast<double>(m_defLengths[itr->defIdx]);
+			AddCamPatternValues(camStatusRef, m_defs[itr->defIdx].v.body, ry, itr->scale, m_baseFlipSign);
 		}
 	}
 
