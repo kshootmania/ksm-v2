@@ -8,6 +8,7 @@ namespace MusicGame::Graphics
 	namespace
 	{
 		constexpr StringView kShineEffectTextureFilename = U"lanelight.gif";
+		constexpr StringView kShineEffectWipeTextureFilename = U"lanelight_wipe.gif";
 		constexpr StringView kBarLineTextureFilename = U"bline.gif";
 
 		// カメラ座標と判定ラインを線で結んだ場合の垂直からの角度
@@ -50,6 +51,7 @@ namespace MusicGame::Graphics
 
 	Highway3DGraphics::Highway3DGraphics(const kson::ChartData& chartData, const std::array<HashSet<kson::Pulse>, kNumSRandomLanesSZ>& fxChipKeySoundPulses)
 		: m_shineEffectTexture(TextureAsset(kShineEffectTextureFilename))
+		, m_shineEffectWipeTexture(TextureAsset(kShineEffectWipeTextureFilename))
 		, m_barLineTexture(TextureAsset(kBarLineTextureFilename))
 		, m_buttonNoteGraphics(chartData, fxChipKeySoundPulses)
 		, m_meshData(MeshData::Grid({ 0.0, 0.0, 0.0 }, kHighwayPlaneSizeWide, 1, 1, { 1.0f - kUVShrinkX, 1.0f - kUVShrinkY }, { kUVShrinkX / 2, kUVShrinkY / 2 }))
@@ -128,27 +130,45 @@ namespace MusicGame::Graphics
 
 			// 光沢エフェクトを描画
 			{
-
 				const double rate = MathUtils::WrappedFmod(gameStatus.currentTimeSec, kShineEffectLoopSec) / kShineEffectLoopSec;
 				const Vec2 position = kShineEffectPositionOffset + kShineEffectPositionDiff * rate;
-				if (isCenterSplitUsed)
+				const auto fnDraw = [&](const Texture& texture, int32 regionY, int32 regionHeight)
 				{
-					// center_split使用時は左右に分割して描画
-					const Size halfSize = { m_shineEffectTexture.width() / 2, m_shineEffectTexture.height() };
+					if (regionHeight <= 0)
+					{
+						return;
+					}
+
+					const double halfWidth = texture.width() / 2;
 					for (int32 i = 0; i < kNumShineEffects; ++i)
 					{
-						m_shineEffectTexture(0, 0, halfSize).draw(Vec2::Right(-centerSplitShiftX) + position + kShineEffectPositionDiff * i);
-						m_shineEffectTexture(halfSize.x, 0, halfSize).draw(Vec2::Right(halfSize.x + centerSplitShiftX) + position + kShineEffectPositionDiff * i);
+						// 範囲からはみ出す部分は描画しない
+						const Vec2 texturePosition = position + kShineEffectPositionDiff * i;
+						const double top = Max(texturePosition.y, static_cast<double>(regionY));
+						const double bottom = Min(texturePosition.y + texture.height(), static_cast<double>(regionY + regionHeight));
+						if (top >= bottom)
+						{
+							continue;
+						}
+						const double srcY = top - texturePosition.y;
+						const double height = bottom - top;
+
+						if (isCenterSplitUsed)
+						{
+							// center_split使用時は左右に分割して描画
+							texture(0, srcY, halfWidth, height).draw(texturePosition.x - centerSplitShiftX, top);
+							texture(halfWidth, srcY, halfWidth, height).draw(texturePosition.x + halfWidth + centerSplitShiftX, top);
+						}
+						else
+						{
+							texture(0, srcY, texture.width(), height).draw(texturePosition.x, top);
+						}
 					}
-				}
-				else
-				{
-					// center_split不使用時はそのまま描画
-					for (int32 i = 0; i < kNumShineEffects; ++i)
-					{
-						m_shineEffectTexture.draw(position + kShineEffectPositionDiff * i);
-					}
-				}
+				};
+
+				const HighwayWipeRegion region = CalcHighwayWipeRegion(viewStatus.camStatus.highwayWipe);
+				fnDraw(m_shineEffectTexture, region.baseY, region.baseHeight);
+				fnDraw(m_shineEffectWipeTexture, region.wipeY, region.wipeHeight);
 			}
 
 			// 小節線を描画

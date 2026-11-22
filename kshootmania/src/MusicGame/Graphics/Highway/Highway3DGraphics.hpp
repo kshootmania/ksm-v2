@@ -14,6 +14,7 @@ namespace MusicGame::Graphics
 	{
 	private:
 		const Texture m_shineEffectTexture;
+		const Texture m_shineEffectWipeTexture;
 		const Texture m_barLineTexture;
 
 		const HighwayRenderTexture m_renderTexture;
