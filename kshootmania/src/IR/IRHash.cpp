@@ -35,6 +35,8 @@ namespace
 		"mvol=",
 		"bg=",
 		"layer=",
+		"rotation_deg_layer=",
+		"rotation_deg_layer_curve=",
 		"po=",
 		"plength=",
 		"pfiltergain=",
