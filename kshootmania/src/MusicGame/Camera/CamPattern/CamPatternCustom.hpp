@@ -37,6 +37,6 @@ namespace MusicGame::Camera
 
 		void applyToCamStatus(CamStatus& camStatusRef, kson::Pulse currentPulse) const;
 
-		bool hasEvent(kson::Pulse laserSlamPulse, int32 direction) const;
+		bool hasEventWithoutSlamShake(kson::Pulse laserSlamPulse, int32 direction) const;
 	};
 }

@@ -25,6 +25,6 @@ namespace MusicGame::Camera
 
 		bool hasSwingEvent(kson::Pulse laserSlamPulse, int32 direction) const;
 
-		bool hasCustomEvent(kson::Pulse laserSlamPulse, int32 direction) const;
+		bool hasCustomEventWithoutSlamShake(kson::Pulse laserSlamPulse, int32 direction) const;
 	};
 }

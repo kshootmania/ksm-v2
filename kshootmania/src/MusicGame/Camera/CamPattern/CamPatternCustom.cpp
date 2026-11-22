@@ -113,8 +113,9 @@ namespace MusicGame::Camera
 		}
 	}
 
-	bool CamPatternCustom::hasEvent(kson::Pulse laserSlamPulse, int32 direction) const
+	bool CamPatternCustom::hasEventWithoutSlamShake(kson::Pulse laserSlamPulse, int32 direction) const
 	{
-		return findDefIdxForSlam(laserSlamPulse, direction).has_value();
+		const Optional<std::size_t> defIdx = findDefIdxForSlam(laserSlamPulse, direction);
+		return defIdx.has_value() && !m_defs[*defIdx].v.slamShake;
 	}
 }

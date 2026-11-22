@@ -31,8 +31,8 @@ namespace MusicGame::Camera
 		return m_swing.hasEvent(laserSlamPulse, direction);
 	}
 
-	bool CamPatternMain::hasCustomEvent(kson::Pulse laserSlamPulse, int32 direction) const
+	bool CamPatternMain::hasCustomEventWithoutSlamShake(kson::Pulse laserSlamPulse, int32 direction) const
 	{
-		return m_custom.hasEvent(laserSlamPulse, direction);
+		return m_custom.hasEventWithoutSlamShake(laserSlamPulse, direction);
 	}
 }

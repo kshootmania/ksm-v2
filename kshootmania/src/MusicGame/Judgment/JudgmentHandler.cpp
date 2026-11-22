@@ -166,7 +166,7 @@ namespace MusicGame::Judgment
 
 		if (result != JudgmentResult::kError)
 		{
-			if (!m_camPatternMain.hasSwingEvent(laserSlamPulse, direction) && !m_camPatternMain.hasCustomEvent(laserSlamPulse, direction))
+			if (!m_camPatternMain.hasSwingEvent(laserSlamPulse, direction) && !m_camPatternMain.hasCustomEventWithoutSlamShake(laserSlamPulse, direction))
 			{
 				m_laserSlamShakeStatus.onLaserSlamJudged(prevTimeSec, direction);
 			}
