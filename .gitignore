@@ -411,6 +411,7 @@ FodyWeavers.xsd
 # Linux
 kshootmania/App/kshootmania
 kshootmania/App/kshooteditor
+kshootmania/App/ksm-v2-test
 kshootmania/App/resources/
 
 # Web
