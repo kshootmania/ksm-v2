@@ -114,7 +114,7 @@ namespace MusicGame
 			return notes;
 		}
 
-		// カメラエフェクトの左右反転(手動傾き/回転/半回転/ばね/zoom_side)
+		// カメラエフェクトの左右反転
 		void InvertCameraEffects(kson::CameraInfo& camera)
 		{
 			// 手動傾き左右反転
