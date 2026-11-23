@@ -493,7 +493,7 @@ void SelectScene::update()
 	}
 
 	// Ctrl+Fで検索入力へ
-	if (PlatformKey::KeyCommandControl.pressed() && KeyF.down() && m_menu.isFolderOpen())
+	if (PlatformKey::KeyCommandControl.pressed() && KeyF.down())
 	{
 		enterSearchInputPhase();
 	}
@@ -732,9 +732,9 @@ void SelectScene::openFavoriteDialogForCursor()
 					return;
 				}
 
-				// .favファイルが新規作成される場合、他フォルダ表示の更新が必要
+				// .favファイルが新規作成される場合、他フォルダ表示や検索結果のフォルダ項目の更新が必要
 				const bool needsReloadAfterAdd =
-					ConfigIni::GetBool(ConfigIni::Key::kAlwaysShowOtherFolders) &&
+					(ConfigIni::GetBool(ConfigIni::Key::kAlwaysShowOtherFolders) || m_searchPhase != SelectSceneSearchPhase::kNone) &&
 					!FileSystem::Exists(GetFavoriteFilePath(*selectedNumber));
 
 				const bool added = AddSongToFavorite(*selectedNumber, songRelativePath);

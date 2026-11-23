@@ -884,7 +884,10 @@ SelectMenu::SelectMenu(
 				openFolderAfterLoading(
 					{ path },
 					CheckFileChangesYN::Yes,
-					[this, path] { openDirectory(path, PlaySeYN::No, RefreshSongPreviewYN::Yes, SaveToConfigIniYN::Yes, CheckFileChangesYN::No); });
+					[this, path]
+					{
+						openFolderExitingSearchMode([this, &path] { return openDirectory(path, PlaySeYN::No, RefreshSongPreviewYN::Yes, SaveToConfigIniYN::Yes, CheckFileChangesYN::No); });
+					});
 			},
 			.fnOpenAllFolder = [this]()
 			{
@@ -892,10 +895,19 @@ SelectMenu::SelectMenu(
 				openFolderAfterLoading(
 					GetAllFolderDirectories(),
 					CheckFileChangesYN::Yes,
-					[this] { openAllFolder(PlaySeYN::No, RefreshSongPreviewYN::Yes, SaveToConfigIniYN::Yes, CheckFileChangesYN::No); });
+					[this]
+					{
+						openFolderExitingSearchMode([this] { return openAllFolder(PlaySeYN::No, RefreshSongPreviewYN::Yes, SaveToConfigIniYN::Yes, CheckFileChangesYN::No); });
+					});
 			},
-			.fnOpenFavoriteFolder = [this](FilePath specialPath) { openFavoriteFolder(specialPath, PlaySeYN::Yes); },
-			.fnOpenCoursesFolder = [this]() { openCoursesFolder(PlaySeYN::Yes); },
+			.fnOpenFavoriteFolder = [this](FilePath specialPath)
+			{
+				openFolderExitingSearchMode([this, &specialPath] { return openFavoriteFolder(specialPath, PlaySeYN::Yes); });
+			},
+			.fnOpenCoursesFolder = [this]()
+			{
+				openFolderExitingSearchMode([this] { return openCoursesFolder(PlaySeYN::Yes); });
+			},
 			.fnCloseFolder = [this]() { closeFolder(PlaySeYN::Yes); },
 			.fnExitSearch = std::move(fnExitSearchMode),
 			.fnMoveToNextSubDirSection = [this]() { moveToNextSubDirSection(); },
@@ -1379,13 +1391,18 @@ void SelectMenu::reloadCurrentDirectory(RefreshSongPreviewYN refreshSongPreview,
 		[this] { onReloadCurrentDirectoryCanceled(); });
 }
 
+void SelectMenu::resetSearchState()
+{
+	m_searchActive = false;
+	m_searchQuery.clear();
+	m_searchPreservedChartPath.reset();
+}
+
 void SelectMenu::onReloadCurrentDirectoryCanceled()
 {
 	// 再読み込み前の内容が表示されたままにならないよう、フォルダを閉じる
 	const bool wasSearchActive = m_searchActive;
-	m_searchActive = false;
-	m_searchQuery.clear();
-	m_searchPreservedChartPath.reset();
+	resetSearchState();
 
 	closeFolder(PlaySeYN::No);
 
@@ -1395,9 +1412,28 @@ void SelectMenu::onReloadCurrentDirectoryCanceled()
 	}
 }
 
+void SelectMenu::openFolderExitingSearchMode(const std::function<bool()>& fnOpenFolder)
+{
+	// 開いた先のフォルダに検索フィルタが適用されないよう、先に検索モードを抜ける
+	const bool wasSearchActive = m_searchActive;
+	resetSearchState();
+	if (wasSearchActive)
+	{
+		m_eventContext.fnExitSearch();
+	}
+
+	if (!fnOpenFolder() && wasSearchActive)
+	{
+		// 検索結果が表示されたままにならないよう、現在のフォルダを再読み込み
+		reloadCurrentDirectoryImpl(RefreshSongPreviewYN::Yes, ReloadFromDiskYN::Yes, CheckFileChangesYN::No);
+	}
+}
+
 void SelectMenu::reloadCurrentDirectoryImpl(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk, CheckFileChangesYN checkFileChanges)
 {
 	FilePath currentChartFilePath;
+	FilePath currentFolderItemPath;
+	const bool wasSearchResultMenu = m_isSearchResultMenu;
 	const int32 difficultyCursor = m_difficultyMenu.cursor();
 	int32 currentDifficultyIdx = difficultyCursor >= 0 ? difficultyCursor : m_difficultyMenu.rawCursor();
 	int32 currentCursorIndex = m_menu.cursor();
@@ -1449,6 +1485,10 @@ void SelectMenu::reloadCurrentDirectoryImpl(RefreshSongPreviewYN refreshSongPrev
 				}
 			}
 		}
+		else if (pItem->isFolder())
+		{
+			currentFolderItemPath = pItem->fullPath();
+		}
 	}
 
 	if (reloadFromDisk)
@@ -1475,7 +1515,7 @@ void SelectMenu::reloadCurrentDirectoryImpl(RefreshSongPreviewYN refreshSongPrev
 	}
 	else
 	{
-		applySearchModeFilter();
+		applySearchModeFilter(ReloadFromDiskYN::No);
 	}
 
 	// 譜面ファイルパスから項目を探してフォーカスを復元
@@ -1512,6 +1552,21 @@ void SelectMenu::reloadCurrentDirectoryImpl(RefreshSongPreviewYN refreshSongPrev
 		}
 	}
 
+	if (!found && !currentFolderItemPath.isEmpty())
+	{
+		// フォルダのパスから項目を探してフォーカスを復元
+		for (std::size_t i = 0U; i < m_menu.size(); ++i)
+		{
+			const auto& pItem = m_menu[i];
+			if (pItem != nullptr && pItem->isFolder() && pItem->fullPath() == currentFolderItemPath)
+			{
+				m_menu.setCursor(static_cast<int32>(i));
+				found = true;
+				break;
+			}
+		}
+	}
+
 	if (!found)
 	{
 		if (searchFilterApplied)
@@ -1520,6 +1575,11 @@ void SelectMenu::reloadCurrentDirectoryImpl(RefreshSongPreviewYN refreshSongPrev
 			// (楽曲が1つもなければBackToFolderItem自身)
 			const int32 fallbackIndex = m_menu.size() > 1 ? 1 : 0;
 			m_menu.setCursor(fallbackIndex);
+		}
+		else if (wasSearchResultMenu && !currentFolderItemPath.isEmpty())
+		{
+			// フォルダ項目が見つからなかった場合は先頭へカーソル移動
+			m_menu.setCursor(0);
 		}
 		else if (currentCursorIndex < static_cast<int32>(m_menu.size()))
 		{
@@ -2669,12 +2729,34 @@ Optional<FilePath> SelectMenu::currentChartFilePath() const
 	return FilePath{ pChartInfo->chartFilePath() };
 }
 
-void SelectMenu::applySearchModeFilter()
+void SelectMenu::refreshSearchFolderCandidates()
+{
+	m_searchFolderCandidates.clear();
+	for (const auto& folderPath : getSortedFolderPaths())
+	{
+		// AllフォルダとCoursesフォルダは検索対象外
+		if (folderPath == SelectMenuAllFolderItem::kAllFolderSpecialPath || folderPath == SelectMenuCoursesFolderItem::kCoursesFolderSpecialPath)
+		{
+			continue;
+		}
+		const String folderName = IsSpecialPathFavorite(folderPath) ? String{ folderPath.substr(1) } : FsUtils::DirectoryNameByDirectoryPath(folderPath);
+		m_searchFolderCandidates.push_back(SearchFolderCandidate{ .path = folderPath, .lowerName = folderName.lowercased() });
+	}
+}
+
+void SelectMenu::applySearchModeFilter(ReloadFromDiskYN reloadedFromDisk)
 {
 	// 検索クエリ未入力時はフィルタ適用しない
 	if (!m_searchActive || m_searchQuery.isEmpty())
 	{
+		m_isSearchResultMenu = false;
 		return;
+	}
+
+	// 検索結果をさらに絞り込むだけの場合は、フォルダ一覧を取得し直さない
+	if (reloadedFromDisk)
+	{
+		refreshSearchFolderCandidates();
 	}
 
 	const String lowerQuery = m_searchQuery.lowercased();
@@ -2721,6 +2803,16 @@ void SelectMenu::applySearchModeFilter()
 		m_menu.push_back(std::move(pItem));
 	}
 
+	// フォルダ項目を追加(現在開いているフォルダは除く)
+	for (const auto& folder : m_searchFolderCandidates)
+	{
+		if (folder.path != m_folderState.fullPath && folder.lowerName.includes(lowerQuery))
+		{
+			m_menu.push_back(CreateFolderMenuItem(folder.path, IsCurrentFolderYN::No));
+		}
+	}
+	m_isSearchResultMenu = true;
+
 	// フィルタ後のメニュー上の位置で兄弟難易度を対応付け直す(フィルタで除外された兄弟難易度は-1になる)
 	Array<std::pair<int32, SelectMenuLevelSongItem*>> levelItems;
 	for (std::size_t i = 0U; i < m_menu.size(); ++i)
@@ -2742,6 +2834,7 @@ void SelectMenu::enterSearchMode(const Optional<FilePath>& preservedChartPath)
 	m_searchActive = true;
 	m_searchQuery.clear();
 	m_searchPreservedChartPath = preservedChartPath;
+	refreshSearchFolderCandidates();
 }
 
 void SelectMenu::exitSearchMode()
@@ -2751,9 +2844,7 @@ void SelectMenu::exitSearchMode()
 		return;
 	}
 	const bool wasFiltered = !m_searchQuery.isEmpty();
-	m_searchActive = false;
-	m_searchQuery.clear();
-	m_searchPreservedChartPath.reset();
+	resetSearchState();
 	if (wasFiltered)
 	{
 		reloadCurrentDirectory(RefreshSongPreviewYN::Yes, ReloadFromDiskYN::Yes);

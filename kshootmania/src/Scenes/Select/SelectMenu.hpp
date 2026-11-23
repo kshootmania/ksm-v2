@@ -54,6 +54,14 @@ struct SelectMenuEventContext
 class SelectMenu
 {
 private:
+	struct SearchFolderCandidate
+	{
+		FilePath path;
+
+		// 小文字に変換したフォルダ名
+		String lowerName;
+	};
+
 	static constexpr int32 kNumDisplayItems = 8;
 	static constexpr int32 kNumTopItems = kNumDisplayItems / 2;
 	static constexpr int32 kNumBottomItems = kNumDisplayItems - kNumTopItems - 1;
@@ -76,6 +84,12 @@ private:
 
 	// 検索フィルタ有効時のカーソル保持先の譜面ファイルパス
 	Optional<FilePath> m_searchPreservedChartPath;
+
+	// 検索対象のフォルダ
+	Array<SearchFolderCandidate> m_searchFolderCandidates;
+
+	// m_menuが検索フィルタ適用後の内容かどうか
+	bool m_isSearchResultMenu = false;
 
 	ArrayWithLinearMenu<std::unique_ptr<ISelectMenuItem>> m_menu;
 
@@ -108,7 +122,14 @@ private:
 
 	void reloadCurrentDirectoryImpl(RefreshSongPreviewYN refreshSongPreview, ReloadFromDiskYN reloadFromDisk, CheckFileChangesYN checkFileChanges);
 
+	/// @brief 検索モードの状態をリセット
+	void resetSearchState();
+
 	void onReloadCurrentDirectoryCanceled();
+
+	/// @brief 検索モードを抜けてからフォルダを開く
+	/// @param fnOpenFolder フォルダを開く処理(開けなかった場合はfalseを返す)
+	void openFolderExitingSearchMode(const std::function<bool()>& fnOpenFolder);
 
 	bool openDirectory(FilePathView directoryPath, PlaySeYN playSe, RefreshSongPreviewYN refreshSongPreview = RefreshSongPreviewYN::Yes, SaveToConfigIniYN saveToConfigIni = SaveToConfigIniYN::Yes, CheckFileChangesYN checkFileChanges = CheckFileChangesYN::Yes);
 
@@ -170,7 +191,11 @@ private:
 
 	void addOtherFolderItemsSimple();
 
-	void applySearchModeFilter();
+	void refreshSearchFolderCandidates();
+
+	/// @brief 検索フィルタをm_menuに適用
+	/// @param reloadedFromDisk m_menuを再読み込みした直後かどうか
+	void applySearchModeFilter(ReloadFromDiskYN reloadedFromDisk = ReloadFromDiskYN::Yes);
 
 public:
 	explicit SelectMenu(
